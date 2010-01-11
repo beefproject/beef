@@ -1,0 +1,70 @@
+/*
+ * no  >  selectors are used, 'cause some browsers are too stupid
+ */
+div.menu {
+	padding:        3px;
+	margin:         0px;
+	width:          99%;
+	height:         1.5em;
+	border:         1px solid #cccccc;
+	position:       relative;
+	font-size:      150%;
+	font-weight:    bold;
+	background: 	transparent;
+	z-index:         1;
+}
+div.menu ul {
+	padding:        0px;
+	margin:         0px;
+	list-style-type:none;
+	font-size:      inherit;
+}
+div.menu li {
+	float:          left;
+	min-width:      1em;
+	position:       relative;
+	z-index:        11;
+	background: 	transparent;
+}
+div.menu ul ul {
+	visibility:     hidden;
+	min-width:      12em;
+	position:       absolute;
+	height:         0px;
+	top:            1.5em; /* must be <= div.menu>a height */
+}
+div.menu ul ul a, div.menu ul ul a:visited {
+	height:         auto;
+}
+div.menu a, div.menu a:visited, div.menu a:focus {
+	padding:        0px;
+	padding-left:   3px;
+	padding-right:  10px;
+	display:        block;
+	min-height:     1.5em;
+	line-height:    1.4em;
+	z-index:        11;
+	text-decoration:none;
+	background:     white;
+}
+div.menu a:hover {
+	background:     #cccccc;
+}
+div.menu ul li a:hover {
+	background:     #cccccc;
+}
+
+div.menu ul li a {
+	background:     #FFFFFF;
+}
+
+div.menu ul li ul li a {
+	min-width:      17em;
+	border:     	1px solid #cccccc;
+	margin-left:	0px;
+	background:     #FFFFFF;
+}
+
+div.menu ul li:hover ul, div.menu ul a:hover ul {
+	visibility:     visible;
+}

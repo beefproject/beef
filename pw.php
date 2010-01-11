@@ -1,0 +1,3 @@
+<?
+$passwd = 'BeEFConfigPass';
+?>

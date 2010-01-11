@@ -1,0 +1,120 @@
+div.menu {
+	padding:          0px;
+	padding-bottom:   6px;
+	margin:           0px;
+	width:            100%;
+	height:           1.5em;
+	position:         relative;
+	font-size:        150%;
+	font-weight:      bold;
+	z-index:          1;
+	border :          1px solid #cccccc;
+	background-color: transparent;
+        margin-bottom:    0px;
+        text-align:       right;
+}
+div.menu ul {
+	padding:          0px;
+	margin:           0px;
+	list-style-type:  none;
+	font-size:        inherit;
+	border:           0px;
+	margin-top:       2px;
+}
+div.menu li {
+	float:            left;
+	padding-right:    0px;
+	position:         relative;
+	z-index:          11;
+	margin-left:      10px;
+}
+div.menu ul ul {
+	visibility:       hidden;
+	position:         absolute;
+	height:           0px;
+	top:              1.5em; /* must be <= div.menu>a height */
+}
+div.menu ul li a {
+	border:           1px solid #ffffff; 
+        text-align:       left;
+}
+div.menu ul ul a:visited {
+	height:           auto;
+	min-width:        16em; /* dropdown width*/
+	background-color: #ffffff;
+}
+div.menu a {
+	padding:          0px;
+	padding-left:     3px;
+	padding-right:    4px;
+	display:          block;
+	min-height:       1.5em;
+	line-height:      1.4em;
+	z-index:          11;
+	text-decoration:  none;
+	background:       #ffffff;
+	background-color: transparent;
+}
+div.menu a:visited {
+	padding:          0px;
+	padding-left:     3px;
+	display:          block;
+	min-width:        1.5em; /* changes width */
+	min-height:       1.5em;
+	line-height:      1.4em;
+	z-index:          11;
+	text-decoration:none;
+}
+div.menu a:focus {
+	padding:          0px;
+	padding-left:     3px;
+	display:          block;
+	min-width:        11.5em;
+	min-height:       1.5em;
+	line-height:      1.4em;
+	z-index:          11;
+	text-decoration:  none;
+}
+div.menu a:hover {
+	min-width:        16em;
+}
+div.menu ul li a:hover {
+	background:       #cccccc;
+	min-width:        1em;
+	border:           1px solid #ffffff; 
+}
+
+div.menu ul li a:visited {
+	min-width:        1em;
+	border:           1px solid #ffffff; 
+}
+
+div.menu ul li ul a:hover {
+	background:       #cccccc;
+	min-width:        16em;
+}
+
+div.menu ul li ul {
+	background:       #cccccc;
+	min-width:        16em;
+}
+
+div.menu ul li:hover ul, div.menu ul a:hover ul {
+	visibility:       visible;
+	width:            16em;
+}
+
+div.menu div a:hover {
+	background:       #ffffff;
+}
+
+div.menu ul li ul li{ /* zombies menu */
+	border:           0.5px solid #cccccc;
+	margin-left:      0px;
+	width:            17em;
+	background-color: #ffffff;
+}
+
+div.menu ul li ul{
+	width:            16em;
+}

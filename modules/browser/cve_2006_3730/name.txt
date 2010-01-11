@@ -1,0 +1,1 @@
+IE6 setSlice calc.exe (CVE-2006-3730)

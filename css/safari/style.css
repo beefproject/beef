@@ -1,0 +1,478 @@
+/* BODY */
+body {
+	background-color: white;
+	width: 990px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	color: #333;
+ 	font-family: Lucida Grande, Bitstream Vera Sans, Verdana, sans-serif;
+ 	align: center;
+}
+
+#autorun_dyn {
+	text-align: center
+}
+
+/* MAIN */
+#main {
+	position: static;
+	width: 530px;
+	padding-left: 178px;
+	margin-right: 0px;
+	padding-right: 0px;
+ 	margin-top: 0px; 
+}
+
+#bottom {
+	position: relative;
+ 	margin-top: 0px; 
+}
+
+/* PAGE HEADER */
+#pageheader {
+	margin-top: 0px;
+	padding: 0px;
+	padding-bottom: 5px;
+	font-size: 45%;
+}
+
+#pageheader a { 
+	text-decoration: none;
+	color: #000000;
+}
+
+/* BUTTONS */
+#page .button {
+	width: 8em;
+	background: #FFFFFF;
+}
+
+#sidebar .button {
+	width: 100%;
+	background: #FFFFFF;
+	padding: 0;
+	margin: 1px;
+}
+
+/* LOG SIDEBAR */
+#logsidebar {
+	position: absolute;
+	left: 724px;
+	width: 250px;
+	margin: 0px;
+	border: 1px solid #ccc;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	padding: 10px;
+	padding-top: 0px;
+	height: 550px;
+}
+
+#logsidebar h2 {
+	font-size: large;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+}
+
+#logsidebar a {
+	color: rgb(204, 204, 204);
+	display: inline;
+	font-size: 11px;
+	height: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	padding-bottom: 10px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	text-decoration: none;
+	width: 0px;
+	text-align: center
+}
+
+#log_header {
+	margin-bottom: 10px;
+	padding-top: 10px;
+}
+
+#logdyn {
+	font-size: 	9px;
+	overflow: 	auto;
+	height: 	500px;
+}
+
+#logsidebar_heading, #logsidebar_heading a {
+	text-decoration: none;
+	font-size: 75%;
+	color: #000000;
+	text-align: center
+}
+
+
+/* SIDEBAR */
+#sidebar {
+	position: absolute;
+	width: 150px;
+	margin: 0px;
+	border: 1px solid #ccc;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	padding: 10px;
+	padding-top: 0px;
+	height: 550px;
+	overflow: hidden;
+}
+
+#sidebar textarea, #sidebar input, #sidebar select {
+	width: 100%;
+	margin: 5px 0;
+	padding: 1px;
+	border: #CCCCCC 1px solid;
+}
+
+#sidebar a:link { 
+	text-decoration: none;
+	font-size: 75%;
+	color: #FF0000;
+	text-align: center
+}
+
+#beefheading a { 
+	text-decoration: none;
+	font-size: 75%;
+	color: #FF0000;
+	text-align: center
+}
+
+#sidebar #content {
+	background-color: transparent;
+	font-size: 80%;
+}
+
+#sidebar h1 {
+	font-size: x-large;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	padding-top: 2px;
+}
+
+#sidebar h2 {
+	font-size: large;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 1px;
+	padding-top: 2px;
+}
+
+/* PAGE */
+#section {
+	margin: 1px;
+	border: 1px solid #ccc;
+	padding: 1px;
+	padding-top: 0px;
+}
+
+/* PAGE */
+#newpage {
+	margin: 1px;
+	border: 1px solid #ccc;
+	padding: 1px;
+	padding-top: 0px;
+	font-size: 80%;
+}
+
+
+#section_title {
+	margin: 1px;
+	border: 1px solid #ccc;
+	padding: 1px;
+	padding-top: 0px;
+}
+
+#section_content {
+	margin: 1px;
+	border: 1px solid #ccc;
+	padding: 1px;
+	padding-top: 0px;
+	background-color: #ccc;
+
+}
+
+/* PAGE */
+#page {
+	margin-top: 0px;
+	margin-right: -2px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	padding-top: 0px;
+	font-size: 80%;
+	height: 550px;
+	overflow: auto;
+}
+
+#page textarea, #page input, #page select {
+	width: 100%;
+	margin: 5px 0;
+	padding: 1px;
+	border: #CCCCCC 1px solid;
+}
+
+#page #content {
+	background-color: transparent;
+}/*
+
+#page p {
+	margin-top: 0;
+}
+
+#page h2 {
+	font-size: large;
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 2px;
+}
+
+#page h3 {
+	text-align: center;
+	padding-top: 10px;
+	margin: 0px;
+	font-size: 100%;
+}
+
+/* DYNAMIC ZOMBIE SECTION */
+#zombies {
+	text-align: left;
+	vertical-align: -30px;
+	height: 15px;
+	font-size: 110%;
+	padding: 0;
+	margin:0;
+	padding-top: 0px;
+	margin-bottom: 2px;
+	border: 1px solid #ccc;
+	margin-right: -1px;
+	margin-left: 1px;
+	width: 130px;
+}
+
+#zombies p {
+	vertical-align: -10px;
+	margin:0px;
+	padding: 0px;
+}
+
+#zombies img {
+	text-align: left;
+	vertical-align: -1px;
+	padding: 1px;
+	margin:0;
+	padding-top: 0px;
+	padding-left: 2px;
+	margin-bottom: 1px;
+	margin-top: 1px;
+	margin-left: 1px;
+}
+
+/* SELECTED DYNAMIC ZOMBIE SECTION */
+#zombiessel {
+	background-color: #ccc;
+	text-align: left;
+	vertical-align: -30px;
+	height: 15px;
+	font-size: 110%;
+	padding: 0;
+	margin:0;
+	padding-top: 0px;
+	margin-bottom: 2px;
+	border: 1px solid #ccc;
+	margin-right: -1px;
+	margin-left: 1px;
+}
+
+#zombiessel p {
+	vertical-align: -10px;
+	margin:0px;
+	padding: 0px;
+}
+
+#zombiessel img {
+	text-align: left;
+	vertical-align: -1px;
+	padding: 1px;
+	margin:0;
+	padding-top: 0px;
+	padding-left: 2px;
+	margin-bottom: 1px;
+	margin-top: 1px;
+	margin-left: 1px;
+}
+
+#zombiesdyn {
+	text-align: center;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 355px;
+}
+
+#module_header {
+	font-size: large;
+	font-weight: bold;
+	text-align: left;
+	padding-top: 10px;
+	margin: 0px;
+}
+
+#module_subsection {
+	margin-top: 0px;
+	margin-right: 0px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	padding-left: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	font-size: 100%;
+}
+
+/* BUTTONS */
+#module_subsection .button {
+	width: 8em;
+	background: #FFFFFF;
+}
+
+#module_subsection textarea {
+ 	font-family: Lucida Grande, Bitstream Vera Sans, Verdana, sans-serif;
+	width: 100%;
+	font-size: 80%;
+	margin: 5px 0;
+	padding: 1px;
+	border: #CCCCCC 1px solid;
+}
+
+#module_subsection input, #module_subsection select {
+/* 	font-weight: bold; */
+	width: 100%;
+	margin: 5px 0;
+	padding: 1px;
+	border: #CCCCCC 1px solid;
+}
+
+#module_subsection_header {
+	font-weight: bold;
+	margin-top: 0px;
+	margin-right: 0px;
+	padding: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+/* 	font-size: 120%; */
+/* 	display: inline; */
+}
+
+#zombie_header {
+	font-size: large;
+	font-weight: bold;
+	text-align: left;
+	padding-top: 10px;
+	margin: 0px;
+}
+
+#zombie_subsection {
+/* 	font-weight: bold; */
+	margin-top: 0px;
+	margin-right: 0px;
+	border: 1px solid #ccc;
+	padding: 0px;
+	padding-left: 5px;
+	padding-top: 0px;
+	font-size: 100%;
+}
+
+#zombie_subsection_header {
+	font-weight: bold;
+	margin-top: 0px;
+	margin-right: 0px;
+	padding: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+/* 	font-size: 120%; */
+	display: inline;
+}
+
+#zombie_header a {
+	display: inline;
+	text-decoration: none;
+/* 	font-weight: none; */
+	margin-top: 0px;
+	margin-right: 0px;
+	padding: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+/* 	color: #FF0000; */
+	color: #CCCCCC;
+	font-size: 60%; 
+}
+
+#zombie_subsection textarea, #zombie_subsection input, #zombie_subsection select {
+	width: 100%;
+	margin: 5px 0;
+	padding: 1px;
+	border: #CCCCCC 1px solid;
+}
+
+#zombie_page_title {
+	font-weight: bold;
+	text-align: left;
+	padding-top: 100px;
+	margin-top: 100px;
+	font-size: 180%;
+}
+
+/* ZOMBIE TEXT - on buttons*/
+#zombietext {
+	color: black;
+	font-size: 110%;
+	padding-top: 10px;
+	margin-top: -27px;
+	margin-left: 5px;
+}
+
+/* GENERAL CONTENT (HELP, ETC) */
+DIV.entry {
+	margin-bottom: 10px;
+}
+	DIV.entry P {
+		margin: 0;
+	}
+	DIV.entry P.title {
+		font-size: large;
+		font-weight: bold;
+		text-align: left;
+		padding-top: 10px;
+		margin: 0px;
+	}
+
+	DIV.entry a { 
+		text-decoration: none;
+		color: #FF0000;
+	}
+
+#credits {	
+	float:           right;
+	position:        static;
+	margin-right:    10px;
+	margin-top:      -24px;
+	font-size:       70%;
+	text-decoration: none;
+	color:           #FF0000;
+	font-weight:    bold;
+    z-index: 40;
+}
+
+#credits a {	
+	color: #FF0000;
+	text-decoration: none;
+        z-index: 40;
+}
