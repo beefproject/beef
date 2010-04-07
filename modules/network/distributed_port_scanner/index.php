@@ -1,5 +1,5 @@
-<?
-	// Copyright (c) 2006-2009, Wade Alcorn 
+<?php
+	// Copyright (c) 2006-2010, Wade Alcorn 
 	// All Rights Reserved
 	// wade@bindshell.net - http://www.bindshell.net
 
@@ -17,7 +17,7 @@
 <script>
 	// show module results section
 	new Element.show('module_results');
-<? 
+<?php
 	// set javascript variables and update modules results section
 	$tmp = md5(getcwd());
 	echo "result_id = '" . $_SESSION[$tmp] . "';\n"; 
@@ -30,7 +30,7 @@
 		var i = 0;
 		var port_pos = 0;
 		
-		var b64code_template = '<? echo get_b64_file(JS_FILE); ?>';
+		var b64code_template = '<?php echo get_b64_file(JS_FILE); ?>';
 
 		zl.selected_zombies.each( function(id){ 
 			b64code = b64replace(b64code_template, "TARGET", document.myform.target_.value);

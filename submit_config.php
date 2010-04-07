@@ -1,4 +1,10 @@
-<?
+<?php
+	// Copyright (c) 2006-2010, Wade Alcorn 
+	// All Rights Reserved
+	// wade@bindshell.net - http://www.bindshell.net
+?>
+
+<?php
 	include ('pw.php');
     require_once("include/filter.inc.php");
 
@@ -56,7 +62,7 @@
 			<h2>BeEF Successfuly Configured</h2>
 
 			<form name="configform">
-				<input class="button" type="button" value="Finished" onClick="javascript:location.href='<? echo $config ?>ui'"/>
+				<input class="button" type="button" value="Finished" onClick="javascript:location.href='<?php echo $config ?>ui'"/>
 			</form>
 <?php
 		} else {
@@ -66,12 +72,12 @@
 				following command will correct the problem: <br>
 				# chown <?php $apacheuser = posix_getpwuid(posix_geteuid()); printf($apacheuser['name'] . " " . getcwd() . '/include' ) ?><br>
 				# chown -R <?php printf($apacheuser['name'] . " " . getcwd() . '/cache' ) ?><br>
-<?
+<?php
 			}
 	} else { // the password was incorrect
 ?>
 		<h2>Password</h2>
 		Incorrect BeEF password, please try again.
-<?
+<?php
 	}
 ?>

@@ -1,5 +1,5 @@
-<?
-	// Copyright (c) 2006-2009, Wade Alcorn 
+<?php
+	// Copyright (c) 2006-2010, Wade Alcorn 
 	// All Rights Reserved
 	// wade@bindshell.net - http://www.bindshell.net
 ?>
@@ -26,7 +26,7 @@
 	* Set Autorun support added to each module<br>
 	<br>
 
-	Copyright &copy 2006-2009.
+	Copyright &copy 2006-2010.
     <a href=mailto:wade@bindshell.net>Wade Alcorn</a>.
     All Rights Reserved.
 </div>

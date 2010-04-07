@@ -1,5 +1,5 @@
-<?
-	// Copyright (c) 2006-2009, Wade Alcorn 
+<?php
+	// Copyright (c) 2006-2010, Wade Alcorn 
 	// All Rights Reserved
 	// wade@bindshell.net - http://www.bindshell.net
 
@@ -39,7 +39,7 @@ Aditya K Sood
 
 	function get_b64_code_cd() {
 		// javascript is loaded from a file - it could be hard coded
-		var b64code = '<? echo get_b64_file(JS_FILE); ?>';
+		var b64code = '<?php echo get_b64_file(JS_FILE); ?>';
 		
 		return b64code;
 	}

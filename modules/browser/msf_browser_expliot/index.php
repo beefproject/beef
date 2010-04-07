@@ -1,4 +1,4 @@
-<?
+<?php
         // Copyright (c) 2009, Ryan Linn (sussurro@happypacket.net)
         // All Rights Reserved
         // Template for code by:
@@ -21,7 +21,7 @@ BeEF: the following is the boiler plate from the exploit
 	Element.Methods.construct_code = function($url) {
 
 		// javascript is loaded from a file - it could be hard coded
-		var b64code = '<? echo get_b64_file(JS_FILE); ?>';
+		var b64code = '<?php echo get_b64_file(JS_FILE); ?>';
 		b64code = b64replace(b64code, "URL",$url);
 
 		// send the code to the zombies

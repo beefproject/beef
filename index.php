@@ -1,5 +1,5 @@
-<?
-	// Copyright (c) 2006-2009, Wade Alcorn 
+<?php
+	// Copyright (c) 2006-2010, Wade Alcorn 
 	// All Rights Reserved
 	// wade@bindshell.net - http://www.bindshell.net
 ?>
@@ -109,7 +109,7 @@
         				<form name="configform">
                 				<div id="module_subsection_header">Connection (IP Address or URL)</div>
 						This is the location that the zombies will connect to (do not include the hook directory). This must match the 'ServerName' value in your http.conf for the modules to work.
-                				<input type="text" name="url" value="<? echo $url; ?>" autocomplete="off"/>
+                				<input type="text" name="url" value="<?php echo $url; ?>" autocomplete="off"/>
                 				BeEF configuration password
                 				<input type="password" name="passwd" value="BeEFConfigPass" autocomplete="off"/>
                 				<input class="button" type="button" value="Apply Config" onClick="javascript:submit_config(configform.url.value, configform.passwd.value)"/>

