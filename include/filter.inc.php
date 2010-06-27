@@ -3,7 +3,7 @@
 	// All Rights Reserved
 	// wade@bindshell.net - http://www.bindshell.net
 
-		function valid_ip($ip) {		
+	function valid_ip($ip) {		
 		return filter_var($ip, FILTER_VALIDATE_IP);
 	}
 
@@ -14,7 +14,7 @@
 	
 	function valid_url($url) {
 		if( preg_match("/\.\./", $url) ) return FALSE;
-		if( ! preg_match("/^[a-zA-Z0-9\._:\/]*$/", $url) ) return FALSE;
+		if( ! preg_match("/^[a-zA-Z0-9\._:\/~]*$/", $url) ) return FALSE;
 		return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED);
 	}
 	
