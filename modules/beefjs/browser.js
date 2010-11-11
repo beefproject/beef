@@ -243,21 +243,18 @@ beef.browser = {
 	 */
 	hasJava: function() {
 		if(window.navigator.javaEnabled()) {
-			//Java is switched on in the browser, now need to detect whether or not its installed
-			if (document.getElementsByTagName("head")[0])
+			var jvc = document.createElement('applet');
+			var running = false;
+			jvc.id = 'beef_jvc';
+			jvc.classid = 'jvc.class';
+			if (document.body.appendChild(jvc))
 			{
-				var ns = document.createElement('script');
-				ns.type = 'text/javascript';
-				ns.src = 'http://java.com/js/deployJava.js';
-				document.getElementsByTagName('head')[0].appendChild(ns);
-				if (deployJava && deployJava.versionCheck)
-				{
-					try {
-						return deployJava.versionCheck('0.1+');
-					} catch (e) {}
-					
-				}
+				try {
+					running = jvc.isRunning();
+				} catch (e) {}
+				document.body.removeChild(jvc);
 			}
+			return running;
 		}
 		return false;
 	},
@@ -281,18 +278,16 @@ beef.browser = {
 	 */
 	getPlugins: function() {
 		var results = '';
-		
-		if (navigator.plugins && navigator.plugins.length > 0) {
-	        var pluginsArrayLength = navigator.plugins.length;
-
-	        for (pluginsArrayCounter=0; pluginsArrayCounter < pluginsArrayLength; pluginsArrayCounter++ ) {
-	            results += navigator.plugins[pluginsArrayCounter].name;
-	            if(pluginsArrayCounter < pluginsArrayLength-1) {
-	            	results += String.fromCharCode(10);
-	            }
-	        }
-	    }
-		
+		if (navigator.plugins && navigator.plugins.length > 0)
+		{
+			var length = navigator.plugins.length;
+			for (var i=0; i < length; i++)
+			{
+				if (i != 0)
+					results += ',';
+				results += navigator.plugins[i].name;
+			}
+		}
 		return results;
 	},
 
