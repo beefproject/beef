@@ -18,6 +18,6 @@ BeEF::Migration.instance.update_db!
   
 BeEF::Console::Banner.generate
 
-# hook server
+# start the hook server
 http_hook_server = BeEF::HttpHookServer.instance
 http_hook_server.start
