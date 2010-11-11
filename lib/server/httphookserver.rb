@@ -14,7 +14,8 @@ module BeEF
     
     def initialize
       @configuration = BeEF::Configuration.instance
-      @url = "http://#{@configuration.get("http_host")}:#{@configuration.get("http_port")}"
+      beef_host = @configuration.get("http_public") || @configuration.get("http_host")
+      @url = "http://#{beef_host}:#{@configuration.get("http_port")}"
       @root_dir = File.expand_path('../../../', __FILE__)
       @command_urls = {}
     end

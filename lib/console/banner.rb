@@ -10,15 +10,16 @@ module Console
 
       version = BeEF::Configuration.instance.get('beef_version')
 
-      hook_uri  = "http://#{@configuration.get("http_host")}:"
+      beef_host = @configuration.get("http_public") || @configuration.get("http_host") 
+      hook_uri  = "http://#{beef_host}:"
       hook_uri += "#{@configuration.get("http_port")}"
       hook_uri += "#{@configuration.get("hook_file")}"
 
-      ui_uri  = "http://#{@configuration.get("http_host")}:"
+      ui_uri  = "http://#{beef_host}:"
       ui_uri += "#{@configuration.get("http_port")}"
       ui_uri += "#{@configuration.get("http_panel_path")}"
       
-      demo_uri  = "http://#{@configuration.get("http_host")}:"
+      demo_uri  = "http://#{beef_host}:"
       demo_uri += "#{@configuration.get("http_port")}"
       demo_uri += "#{@configuration.get("http_demo_path")}"
       
