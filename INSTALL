@@ -1,0 +1,52 @@
+Most of the contents of this file will eventually be added to /install.rb. In the meantime tips, hints and guides for installing beef should be kept here.  
+
+=============================================
+
+   1. Prerequisites (platform independent)
+   2. Prerequisites (Windows)
+   3. Prerequisites (Linux)
+   4. Prerequisites (Mac OSX)
+   5. Install instructions
+
+
+
+   1. Prerequisites (platform independent)
+
+      Beef requires ruby 1.8  
+
+      
+   2. Prerequisites (Windows)
+      
+      Windows requires the sqlite.dll.  Simply grab the zip file below and extract it to your Ruby bin directory:
+
+	  http://www.sqlite.org/sqlitedll-3_7_0_1.zip
+      
+
+   3. Prerequisites (Linux)
+
+      !!! This must be done PRIOR to running the Beef installer !!!
+      
+      On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
+
+	  sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
+	  
+	  
+   4. Prerequisites (Mac OSX)
+   
+      Make sure you have XCode installed - which provided the sqlite support Beef needs
+      
+
+   5. Install instructions
+   
+      Obtain application code either by downloading an archive from http://code.google.com/p/beef/downloads/list or checking out the source from http://code.google.com/p/beef/source/checkout
+
+	  Navigate to the ruby source directory and run:
+
+	  ruby install.rb
+
+      The installer verifies required gems, including any specific version dependencies, as well as performing a 'gem update --system'
+
+      The installer offers a choice of auto-installing missing gems or provides the command so you can install gems manually
+
+      The installer advises of the default username and password 
+
