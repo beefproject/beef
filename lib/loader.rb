@@ -10,6 +10,7 @@ require 'parseconfig'
 require 'singleton'
 require 'ipaddr'
 require 'base64'
+require 'xmlrpc/client'
 
 require 'lib/patches/webrick/httprequest'
 require 'lib/patches/webrick/cookie'
