@@ -33,7 +33,6 @@ class Requester < BeEF::HttpController
     raw_request = @params['raw_request'] || nil
     raise WEBrick::HTTPStatus::BadRequest, "raw_request is nil" if raw_request.nil?
     raise WEBrick::HTTPStatus::BadRequest, "raw_request contains non-printable chars" if not Filter.has_non_printable_char?(raw_request)
-    raise WEBrick::HTTPStatus::BadRequest, "raw_request is invalid request" if not Filter.is_valid_request?(raw_request)
     
     # validate nonce
     nonce = @params['nonce'] || nil
@@ -46,7 +45,10 @@ class Requester < BeEF::HttpController
     # will raise an exception on failure
     s = StringIO.new raw_request
     webrick.parse(s)
-
+    
+    # if the request is invalide, an exception will be raised
+    Filter.is_valid_request?(webrick)
+    
     # Saves the new HTTP request.
     http = H.new(
       :request => raw_request,

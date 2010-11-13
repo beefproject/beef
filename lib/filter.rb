@@ -88,29 +88,23 @@ module BeEF
     end
 
     # check if request is valid
-    def self.is_valid_request?(str)
-      req_parts = str.split(/ |\n/)
-
-      #check verb
-      verb = req_parts[0]
-      return false if not verb.eql? "GET" or verb.eql? "POST"
-
-      #check uri
-      uri = req_parts[1]
-      return false if not uri.eql? WEBrick::HTTPUtils.normalize_path(uri)
+    # @param: {WEBrick::HTTPUtils::FormData} request object
+    def self.is_valid_request?(request)
+      #check a webrick object is sent
+      raise 'your request is of invalide type' if not request.is_a? WEBrick::HTTPRequest
       
-      # check trailer
-      trailer = req_parts[2]
-      return false if not trailer.eql? "HTTP/1.1" or trailer.eql? "HTTP/1.0"
-
-      # check host
-      host_param_key = req_parts[3]
-      return false if not host_param_key.eql? "Host:"
-
-      # check ip address of target
-      host_param_value = req_parts[4]
-      return false if not host_param_value =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
-            
+      #check http method
+      raise 'only GET or POST requests are supported for http requests' if not request.request_method.eql? 'GET' or request.request_method.eql? 'POST'
+      
+      #check uri
+      raise 'the uri is missing' if not webrick.unparsed_uri
+      
+      #check host
+      raise 'http host missing' if request.host.nil?
+      
+      #check domain
+      raise 'invalid http domain' if not URI.parse(request.host)
+      
       true
     end
 
