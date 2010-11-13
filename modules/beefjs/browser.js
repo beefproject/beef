@@ -336,6 +336,8 @@ beef.browser = {
 		details["BrowserName"] = 		 beef.browser.getBrowserName();
 		details["BrowserVersion"] =      beef.browser.getBrowserVersion();
 		details["BrowserReportedName"] = beef.browser.getBrowserReportedName();
+		details["BrowserLocation"] = 	 beef.dom.getLocation();
+		details["PageTitle"] = 	 		 document.title;
 		
 		return details;
 	}

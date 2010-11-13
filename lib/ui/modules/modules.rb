@@ -41,6 +41,19 @@ class Modules < BeEF::HttpController
       'results' => []
     }
 
+    # set and add the return values for the page name
+    page_title = BD.get(zombie_session, 'PageTitle') 
+    encoded_page_name = CGI.escapeHTML(page_title)
+    encoded_page_hash = { 'Page Title' => encoded_page_name }
+
+    page_name_row = {
+      'category' => 'Browser Hook Initialisation',
+      'data' => encoded_page_hash,
+      'from' => 'Initialisation'
+    }
+    
+    summary_grid_hash['results'].push(page_name_row) # add the row
+
     # set and add the return values for the browser name
     browser_name = BD.get(zombie_session, 'BrowserName') 
     friendly_browser_name = BeEF::Constants::Browsers.friendly_name(browser_name)
@@ -56,7 +69,8 @@ class Modules < BeEF::HttpController
 
     # set and add the return values for the browser version
     browser_version = BD.get(zombie_session, 'BrowserVersion') 
-    browser_version_hash = { 'Browser Version' => browser_version }
+    encoded_browser_version = CGI.escapeHTML(browser_version)
+    browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
     browser_version_row = {
       'category' => 'Browser Hook Initialisation',

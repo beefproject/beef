@@ -24,7 +24,7 @@ beef.dom = {
 	},
 	
 	/**
-	 * Creates an invisible iframe on the zombie's page.
+	 * Creates an invisible iframe on the hook browser's page.
 	 * @return: the iframe.
 	 */
 	createInvisibleIframe: function() {
@@ -37,6 +37,14 @@ beef.dom = {
 		document.body.appendChild(iframe);
 		
 		return iframe;
+	},
+	
+	/**
+	 * Get the location of the current page.
+	 * @return: the location.
+	 */
+	getLocation: function() {
+		return document.location.href;
 	},
 	
 	/**
