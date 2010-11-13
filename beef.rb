@@ -18,6 +18,10 @@ BeEF::Migration.instance.update_db!
   
 BeEF::Console::Banner.generate
 
+# start the requester proxy
+#requester_proxy = BeEF::Requester::ProxyServer.instance
+#requester_proxy.start
+
 # start the hook server
 http_hook_server = BeEF::HttpHookServer.instance
 http_hook_server.start

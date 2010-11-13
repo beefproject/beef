@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'webrick'
+require 'webrick/httpproxy'
 require 'dm-core'
 require 'dm-migrations'
 require 'json'
@@ -56,6 +57,7 @@ require 'lib/server/inithandler'
 
 require 'lib/logger'
 require 'lib/modules/command'
+require 'lib/modules/requester'
 
 require 'openssl'
 
