@@ -7,10 +7,7 @@ class Site_redirect < BeEF::Command
   def initialize
     super({
       'Name' => 'Site Redirect',
-      'Description' => %Q{
-        This module will redirect the selected zombie browsers to the address 
-        specified in the 'Redirect URL' input.
-      },
+      'Description' => 'This module will redirect the hooked browser to the address specified in the \'Redirect URL\' input.',
       'Category' => 'Browser',
       'Author' => ['wade', 'vo'],
       'Data' => [
