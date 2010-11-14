@@ -92,7 +92,9 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 	panel.removeAll();
 	
 	Ext.Ajax.request({
-		url:'/ui/modules/select/command.json?command_id='+command_id,
+		url: '/ui/modules/select/command.json',
+		method: 'POST',
+		params: 'command_id=' + command_id,
 		loadMask: true,
 		success: function(resp) {
 			var xhr = Ext.decode(resp.responseText);
@@ -251,7 +253,9 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 	} else {
 		Ext.Ajax.request({
 			loadMask: true,
-		  	url: '/ui/modules/select/commandmodule.json?command_module_id='+command_module_id,
+			url: '/ui/modules/select/commandmodule.json',
+			method: 'POST',
+			params: 'command_module_id=' + command_module_id,
 			success: function(resp) {
 				var module = Ext.decode(resp.responseText);
 				
