@@ -1,21 +1,18 @@
-require 'erubis'
-
 module BeEF
   
   #
-  #
+  # Handle HTTP requests and call the relevant functions in the derived classes
   #
   class HttpController
     
     attr_accessor :headers, :status, :body, :paths, :currentuser, :params
     
     C = BeEF::Models::Command
-    E = BeEF::Models::CommandModule
+    CM = BeEF::Models::CommandModule
     Z = BeEF::Models::Zombie
     
     #
-    # Class constructor. Takes data from the child class and populates
-    # itself with it.
+    # Class constructor. Takes data from the child class and populates itself with it.
     #
     def initialize(data = {})
       @erubis = nil
@@ -31,7 +28,7 @@ module BeEF
     end
     
     #
-    #
+    # Handle HTTP requests and call the relevant functions in the derived classes
     #
     def run(request, response)
       @request = request
@@ -41,30 +38,27 @@ module BeEF
 
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::UI::Authentication)
-        
-        # request is unauthenicated so redirect to auth page
-        @body = page_redirect(auth_url)
+        @body = page_redirect(auth_url) # redirect to auth page
         return
-        
       end
 
-      # search for matching path and get the function to call
-      function = get_path_function(request.path_info)
+      # get the mapped function (if it exists) from the derived class
+      path = request.path_info
+      raise WEBrick::HTTPStatus::BadRequest, "path is invalid" if not Filter::is_valid_path_info?(path)
+      function = @paths[path] || @paths[path + '/'] # check hash for '<path>' and '<path>/'
       raise WEBrick::HTTPStatus::BadRequest, "path does not exist" if function.nil?
+      
+      # call the relevant mapped function
+      function.call
 
-      eval "self.#{function}"
+      # build the template filename and apply it - if the file exists
+      function_name = function.name # used for filename
+      class_s = self.class.to_s.sub('BeEF::UI::', '').downcase # used for directory name
+      template_ui = "#{$root_dir}/lib/ui/#{class_s}/#{function_name}.html" 
+      @eruby = Erubis::FastEruby.new(File.read(template_ui)) if File.exists? template_ui # load the template file
+      @body = @eruby.result(binding()) if not @eruby.nil? # apply template and set the response
 
-      # use template
-      class_s = self.class.to_s.sub('BeEF::UI::', '').downcase
-
-      template_ui = "#{$root_dir}/lib/ui/#{class_s}/#{function}.html"
-      @eruby = Erubis::FastEruby.new(File.read(template_ui)) if File.exists? template_ui
-
-      template_module = "#{$root_dir}/modules/plugins/#{class_s}/#{function}.html"
-      @eruby = Erubis::FastEruby.new(File.read(template_module)) if File.exists? template_module
-
-      @body = @eruby.result(binding()) if not @eruby.nil?
-
+      # set content type
       if @headers['Content-Type'].nil?
         @headers['Content-Type']='text/html; charset=UTF-8' # default content and charset type for all pages
         @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /.json$/
@@ -72,35 +66,19 @@ module BeEF
 
     end
 
-    #
-    # get the function mapped to path_info
-    #
-    def get_path_function(path_info) 
-
-      return nil if @paths.nil?
-
-      # search the paths
-      @paths.each{ |function, path|
-        return function if path.eql? path_info
-        return function if path.eql? path_info + '/'
-      }
-
-      nil
-    end
-
-    # Forges a redirect page
+    # Constructs a redirect page
     def page_redirect(location) "<html><head></head><body>" + script_redirect(location) + "</body>" end
     
-    # Forges a redirect script
+    # Constructs a redirect script
     def script_redirect(location) "<script> document.location=\"#{location}\"</script>" end
     
-    # Forges a html script tag
+    # Constructs a html script tag
     def script_tag(filename) "<script src=\"#{$url}/ui/public/javascript/#{filename}\" type=\"text/javascript\"></script>" end
     
-    # Forges a html stylesheet tag
+    # Constructs a html stylesheet tag
     def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}/ui/public/css/#{filename}\" type=\"text/css\" />" end
 
-    # Forges a hidden html nonce tag
+    # Constructs a hidden html nonce tag
     def nonce_tag 
       @session = BeEF::UI::Session.instance
       "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"" + @session.get_nonce + "\"/>"

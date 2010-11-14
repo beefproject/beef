@@ -6,15 +6,15 @@ module UI
 #
 class Requester < BeEF::HttpController
   
-  # Variable representing the Http db model.
+  # Variable representing the Http DB model.
   H = BeEF::Models::Http
   
   def initialize
     super({
       'paths' => {
-        'send_request'            => '/send',
-        'get_zombie_history'      => '/history.json',
-        'get_zombie_response'     => '/response.json',
+        '/send'           => method(:send_request),
+        '/history.json'   => method(:get_zombie_history),
+        '/response.json'  => method(:get_zombie_response)
       }
     })
   end

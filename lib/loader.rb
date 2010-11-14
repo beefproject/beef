@@ -12,6 +12,7 @@ require 'singleton'
 require 'ipaddr'
 require 'base64'
 require 'xmlrpc/client'
+require 'erubis'
 
 require 'lib/patches/webrick/httprequest'
 require 'lib/patches/webrick/cookie'
@@ -20,6 +21,7 @@ require 'lib/patches/webrick/httpresponse'
 require 'lib/patches/webrick/httpservlet/filehandler.rb'
 
 require 'lib/constants'
+require 'lib/filter'
 
 require 'lib/model/user'
 require 'lib/model/commandmodule'
@@ -33,7 +35,6 @@ require 'lib/model/http'
 require 'lib/model/browserdetails'
 
 require 'lib/crypto'
-require 'lib/filter'
 
 require 'lib/configuration'
 

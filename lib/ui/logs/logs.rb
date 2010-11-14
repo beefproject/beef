@@ -6,8 +6,8 @@ class Logs < BeEF::HttpController
   def initialize
     super({
       'paths' => {
-        'select_all_logs' => '/all.json',
-        'select_zombie_logs' => '/zombie.json'
+        '/all.json'     => method(:select_all_logs),
+        '/zombie.json'  => method(:select_zombie_logs)
       }
     })
   end

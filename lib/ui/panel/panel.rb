@@ -9,13 +9,14 @@ class Panel < BeEF::HttpController
   def initialize
     super({
       'paths' => {
-        'index' => '/'
+        '/' => method(:index)
       }
     })
   end
   
   #
   def index
+    # should be rendered with Erubis::FastEruby
     @body = 'a'
   end
   

@@ -11,15 +11,15 @@ class Modules < BeEF::HttpController
   def initialize
     super({
       'paths' => {
-        'select_all_command_modules'      => '/select/commandmodules/all.json',
-        'select_command_modules_tree'     => '/select/commandmodules/tree.json',
-        'select_command_module'           => '/select/commandmodule.json',
-        'select_command'                  => '/select/command.json',
-        'select_command_results'          => '/select/command_results.json',
-        'select_zombie_summary'           => '/select/zombie_summary.json',
-        'select_command_module_commands'  => '/commandmodule/commands.json',
-        'attach_command_module'           => '/commandmodule/new',
-        'reexecute_command_module'        => '/commandmodule/reexecute'
+        '/select/commandmodules/all.json'   => method(:select_all_command_modules),
+        '/select/commandmodules/tree.json'  => method(:select_command_modules_tree),
+        '/select/commandmodule.json'        => method(:select_command_module),
+        '/select/command.json'              => method(:select_command),
+        '/select/command_results.json'      => method(:select_command_results),
+        '/select/zombie_summary.json'       => method(:select_zombie_summary),
+        '/commandmodule/commands.json'      => method(:select_command_module_commands),
+        '/commandmodule/new'                => method(:attach_command_module),
+        '/commandmodule/reexecute'          => method(:reexecute_command_module)
       }
     })
     

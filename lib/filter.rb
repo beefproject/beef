@@ -2,6 +2,14 @@ module BeEF
   
   module Filter
     
+    # check if the string is a valid path from a HTTP request
+    def self.is_valid_path_info?(str)
+      return false if str.nil?
+      return false if not str.is_a? String
+      return false if BeEF::Filter.has_non_printable_char?(str)
+      true
+    end
+
     # check if the string is not empty and not nil
     def self.is_non_empty_string?(str)
       return false if str.nil?

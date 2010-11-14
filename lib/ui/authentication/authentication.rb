@@ -12,9 +12,9 @@ class Authentication < BeEF::HttpController
   def initialize
     super({
       'paths' =>  {
-        'index' => '/',
-        'login' => '/login',
-        'logout' => '/logout'
+        '/'        => method(:index), 
+        '/login'   => method(:login),
+        '/logout'  => method(:logout)
       }
     })
     
@@ -30,6 +30,7 @@ class Authentication < BeEF::HttpController
   # Function managing the login
   #
   def login
+    
     username = @params['username-cfrm'] || ''
     password = @params['password-cfrm'] || ''
     config = BeEF::Configuration.instance

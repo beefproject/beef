@@ -9,13 +9,13 @@ class Zombies < BeEF::HttpController
   def initialize
     super({
       'paths' => {
-        'select_all' => '/select/all/complete.json',
-        'select_online' => '/select/online/complete.json',
-        'select_offline' => '/select/offline/complete.json',
+        '/select/all/complete.json'     => method(:select_all),
+        '/select/online/complete.json'  => method(:select_online),
+        '/select/offline/complete.json' => method(:select_offline),
         
-        'select_online_simple' => '/select/online/simple.json',
-        'select_all_simple' => '/select/all/simple.json',
-        'select_offline_simple' => '/select/offline/simple.json'
+        '/select/online/simple.json'    => method(:select_online_simple),
+        '/select/all/simple.json'       => method(:select_all_simple),
+        '/select/offline/simple.json'   => method(:select_offline_simple)
       }
     })
   end
