@@ -37,6 +37,7 @@ var ZombiesMgr = function(zombies) {
 	var updateZombies = function(){
 		Ext.Ajax.request({
 			url: '/ui/zombies/select/offline/simple.json',
+			method: 'POST',
 			success: function(response) {
 				var offline_zombies = Ext.util.JSON.decode(response.responseText);
 
@@ -53,6 +54,7 @@ var ZombiesMgr = function(zombies) {
 				
 		Ext.Ajax.request({
 			url: '/ui/zombies/select/online/simple.json',
+			method: 'POST',
 			success: function(response){
 				var online_zombies = Ext.util.JSON.decode(response.responseText);
 				
