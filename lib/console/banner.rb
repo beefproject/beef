@@ -14,6 +14,7 @@ module Console
       
       if beef_host == '0.0.0.0'
         zcs_hosts = Socket.getaddrinfo(Socket.gethostname, 'www', Socket::AF_INET, Socket::SOCK_STREAM).map { |x| x[3] }
+        zcs_hosts = zcs_hosts << "127.0.0.1"
       else
         zcs_hosts = [beef_host]
       end
