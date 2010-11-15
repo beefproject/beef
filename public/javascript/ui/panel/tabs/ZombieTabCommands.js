@@ -38,7 +38,7 @@ ZombieTab_Commands = function(zombie) {
 		
 		view: new Ext.grid.GridView({
 			forceFit: true,
-			emptyText: "No Command found",
+			emptyText: "The results from executed command modules will be listed here.",
 			enableRowBody:true
 		}),
 		
