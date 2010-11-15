@@ -6,7 +6,7 @@
 beef.browser = {
 	
 	/**
-	 * Returns the user agent that the browser is claming to be.
+	 * Returns the user agent that the browser is claiming to be.
 	 * @example: beef.browser.getBrowserReportedName()
 	 */
 	getBrowserReportedName: function() {						
@@ -171,7 +171,7 @@ beef.browser = {
 	 
 	/**
 	 * Returns the type of browser being used.
-	 * @return: {String} User agant software and version.
+	 * @return: {String} User agent software and version.
 	 *
 	 * @example: beef.browser.getBrowserVersion()
 	 */
@@ -192,7 +192,7 @@ beef.browser = {
 	},
 	
 	/**
-	 * Returns the type of user angent by hooked browser.
+	 * Returns the type of user agent by hooked browser.
 	 * @return: {String} User agent software.
 	 *
 	 * @example: beef.browser.getBrowserName()
