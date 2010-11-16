@@ -89,8 +89,7 @@ class Zombies < BeEF::HttpController
     
     hooked_browser_hash = get_simple_hooked_browser_hash(zombie)
     return hooked_browser_hash.merge( {
-      'lastseen' => zombie.lastseen,
-      'httpheaders' => JSON.parse(zombie.httpheaders)
+      'lastseen' => zombie.lastseen
     })
         
   end

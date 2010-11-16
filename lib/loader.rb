@@ -21,7 +21,10 @@ require 'lib/patches/webrick/httpresponse'
 require 'lib/patches/webrick/httpservlet/filehandler.rb'
 
 require 'lib/constants'
-require 'lib/filter'
+require 'lib/filter/base.rb'
+require 'lib/filter/command.rb'
+require 'lib/filter/requester.rb'
+require 'lib/filter/init.rb'
 
 require 'lib/model/user'
 require 'lib/model/commandmodule'
