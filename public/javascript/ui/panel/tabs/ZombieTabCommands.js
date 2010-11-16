@@ -1,6 +1,6 @@
 /*
  * The command tab panel. Listing the list of commands sent to the zombie.
- * Loaded in /ui/panel/index.html
+ * Loaded in /ui/panel/index.html 
  */
 ZombieTab_Commands = function(zombie) {
 	
