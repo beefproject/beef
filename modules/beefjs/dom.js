@@ -24,6 +24,29 @@ beef.dom = {
 	},
 	
 	/**
+	 * Removes element from the DOM.
+	 * @param: {String or DOM Object} the target element to be removed.
+	 */
+	removeElement: function(el) {
+		if (!beef.dom.isDOMElement(el))
+		{
+			el = document.getElementById(el);
+		}
+		try {
+			el.parentNode.removeChild(el);
+		} catch (e) { }
+	},
+	
+	/**
+	 * Tests if the object is a DOM element.
+	 * @param: {Object} the DOM element.
+	 * @return: true if the object is a DOM element.
+	 */
+	isDOMElement: function(obj) {
+		return (obj.nodeType) ? true : false;
+	},
+	
+	/**
 	 * Creates an invisible iframe on the hook browser's page.
 	 * @return: the iframe.
 	 */

