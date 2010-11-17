@@ -57,7 +57,7 @@ module WEBrick
 
     end
 
-    def get_hook_session_value()
+    def get_hook_session_id()
       
       config = BeEF::Configuration.instance
       hook_session_name = config.get('hook_session_name')

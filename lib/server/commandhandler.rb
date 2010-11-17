@@ -24,7 +24,7 @@ module BeEF
       raise WEBrick::HTTPStatus::BadRequest, "command_id is invalid" if not BeEF::Filter.is_valid_commmamd_id?(command_id)   
 
       # get and check session id from the request
-      hook_session_id = request.get_hook_session_value()
+      hook_session_id = request.get_hook_session_id()
       raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is invalid" if not BeEF::Filter.is_valid_hook_session_id?(hook_session_id)   
 
       @guard.synchronize {

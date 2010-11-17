@@ -38,8 +38,8 @@ module BeEF
       end
 
       # get zombie if already hooked the framework
-      hook_session_value = request.get_hook_session_value()
-      zombie = BeEF::Models::Zombie.first(:session => hook_session_value) if not hook_session_value.nil?
+      hook_session_id = request.get_hook_session_id()
+      zombie = BeEF::Models::Zombie.first(:session => hook_session_id) if not hook_session_id.nil?
       
       if not zombie # is a new browser so set up the hook
       
