@@ -242,19 +242,8 @@ beef.browser = {
 	 * @example: if(beef.browser.hasJava()) { ... }
 	 */
 	hasJava: function() {
-		if(window.navigator.javaEnabled()) {
-			var jvc = document.createElement('applet');
-			var running = false;
-			jvc.id = 'beef_jvc';
-			jvc.classid = 'jvc.class';
-			if (document.body.appendChild(jvc))
-			{
-				try {
-					running = jvc.isRunning();
-				} catch (e) {}
-				document.body.removeChild(jvc);
-			}
-			return running;
+		if(window.navigator.javaEnabled && window.navigator.javaEnabled()) {
+			return true;
 		}
 		return false;
 	},
