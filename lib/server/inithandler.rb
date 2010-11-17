@@ -50,6 +50,11 @@ module BeEF
       raise WEBrick::HTTPStatus::BadRequest, "Invalid page title name" if not Filter.is_valid_pagetitle?(page_title)
       BD.set(session_id, 'PageTitle', page_title)
       
+      # get and store page title
+      host_name = get_param(request.query, 'HostName')
+      raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not Filter.is_valid_hostname?(host_name)
+      BD.set(session_id, 'HostName', host_name)
+      
       # init details have been returned so set flag and save
       hooked_browser.has_init = true
       @guard.synchronize {      

@@ -48,7 +48,6 @@ module BeEF
         
         # create the structure repesenting the hooked browser
         zombie = BeEF::Models::Zombie.new(:ip => request.peeraddr[3], :session => hook_session_value)
-        zombie.domain = request.get_referer_domain
         zombie.firstseen = Time.new.to_i
         zombie.has_init = false # set to true (in inithandler.rb) when the init values returned
         zombie.httpheaders = request.header.to_json

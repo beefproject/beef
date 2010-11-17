@@ -41,14 +41,27 @@ class Modules < BeEF::HttpController
       'results' => []
     }
 
-    # set and add the return values for the page name
+    # set and add the return values for the page title
     page_title = BD.get(zombie_session, 'PageTitle') 
-    encoded_page_name = CGI.escapeHTML(page_title)
-    encoded_page_hash = { 'Page Title' => encoded_page_name }
+    encoded_page_title = CGI.escapeHTML(page_title)
+    encoded_page_hash = { 'Page Title' => encoded_page_title }
 
     page_name_row = {
       'category' => 'Browser Hook Initialisation',
       'data' => encoded_page_hash,
+      'from' => 'Initialisation'
+    }
+    
+    summary_grid_hash['results'].push(page_name_row) # add the row
+
+    # set and add the return values for the host name
+    host_name = BD.get(zombie_session, 'HostName') 
+    encoded_host_name = CGI.escapeHTML(host_name)
+    encoded_host_name_hash = { 'Host Name' => encoded_host_name }
+
+    page_name_row = {
+      'category' => 'Browser Hook Initialisation',
+      'data' => encoded_host_name_hash,
       'from' => 'Initialisation'
     }
     

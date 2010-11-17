@@ -73,11 +73,12 @@ class Zombies < BeEF::HttpController
     
     browser_icon = BeEF::Models::BrowserDetails.browser_icon(hooked_browser.session)
     os_icon = BeEF::Models::BrowserDetails.os_icon(hooked_browser.session)
+    domain = BeEF::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
 
     return {
       'session' => hooked_browser.session,
       'ip' => hooked_browser.ip,
-      'domain' => hooked_browser.domain,
+      'domain' => domain,
       'browser_icon' => browser_icon,
       'os_icon' => os_icon
     }
@@ -89,7 +90,8 @@ class Zombies < BeEF::HttpController
     
     hooked_browser_hash = get_simple_hooked_browser_hash(zombie)
     return hooked_browser_hash.merge( {
-      'lastseen' => zombie.lastseen
+      'lastseen' => zombie.lastseen,
+      'httpheaders' => JSON.parse(zombie.httpheaders)
     })
         
   end
