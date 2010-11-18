@@ -214,12 +214,12 @@ module BeEF
     #  use 'beef.encode.base64'
     #
     def use(component)
-      component_path = component
+      return if @beefjs_components.include? component
+      
+      component_path = '/'+component
       component_path.gsub!(/beef./, '')
       component_path.gsub!(/\./, '/')
       component_path.replace "#{$root_dir}/modules/beefjs/#{component_path}.js"
-      
-      return if beefjs_components.include? component
       
       raise "Invalid beefjs component for command module #{@path}" if not File.exists?(component_path)
       

@@ -18,7 +18,7 @@ module Modules
       # set up values required to construct beefjs
       beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
       beefjs_path = "#{$root_dir}/modules/beefjs/" # location of sub files      
-      js_sub_files = %w(beef.js browser.js browser/cookie.js dom.js net.js updater.js encode/base64.js init.js geolocation.js)
+      js_sub_files = %w(beef.js browser.js browser/cookie.js dom.js net.js updater.js encode/base64.js init.js)
 
       # construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|
@@ -45,30 +45,25 @@ module Modules
     # Ex: build_missing_beefjs_components(['beef.net.local', 'beef.net.requester'])
     #
     def build_missing_beefjs_components(beefjs_components)
-      # if the component is of type String, we convert it to an array
-      beefjs_components = [beefjs_components] if beefjs_components.is_a? String
-      
       # verifies that @beef_js_cmps is not nil to avoid bugs
       @beef_js_cmps = '' if @beef_js_cmps.nil?
       
-      beefjs_components.each {|c|
-        next if @beef_js_cmps.include? c
+      beefjs_components.keys.each {|k|
+        next if @beef_js_cmps.include? beefjs_components[k]
         
-        # we generate the component's file path
-        component_path = c
-        component_path.gsub!(/beef./, '')
-        component_path.gsub!(/\./, '/')
-        component_path.replace "#{$root_dir}/modules/beefjs/#{component_path}.js"
-        
-        # exception in case the component cannot be found
-        raise "Could not build the BeEF JS component: file does not exists" if not File.exists?(component_path)
+        # path to the component
+        component_path = beefjs_components[k]
         
         # we output the component to the hooked browser
         @body << File.read(component_path)+"\n\n"
         
         # finally we add the component to the list of components already generated so it does not
         # get generated numerous times.
-        @beef_js_cmps += ",#{component_path}"
+        if @beef_js_cmps.eql? ''
+          @beef_js_cmps = component_path
+        else
+          @beef_js_cmps += ",#{component_path}"
+        end
       }
     end
     
@@ -96,15 +91,7 @@ module Modules
         command_module.build_datastore(command.data)
         command_module.pre_send
         
-        if not @beef_js_cmps.nil? and not command_module.beefjs_components.empty?
-          command_module.beefjs_components.keys.each{|component|
-            next if @beef_js_cmps.include? component
-            #TODO: code that part so it uses the function build_missing_beefjs_components()
-            
-            @body << File.read(command_module.beefjs_components[component])+"\n\n"
-            @beef_js_cmps += ",#{component}"
-          }
-        end
+        build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
         
         @body << command_module.output + "\n\n"
         
