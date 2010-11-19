@@ -43,55 +43,63 @@ class Modules < BeEF::HttpController
 
     # set and add the return values for the page title
     page_title = BD.get(zombie_session, 'PageTitle') 
-    encoded_page_title = CGI.escapeHTML(page_title)
-    encoded_page_hash = { 'Page Title' => encoded_page_title }
-
-    page_name_row = {
-      'category' => 'Browser Hook Initialisation',
-      'data' => encoded_page_hash,
-      'from' => 'Initialisation'
-    }
-    
-    summary_grid_hash['results'].push(page_name_row) # add the row
+    if not page_title.nil?
+      encoded_page_title = CGI.escapeHTML(page_title)
+      encoded_page_hash = { 'Page Title' => encoded_page_title }
+      
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_page_hash,
+        'from' => 'Initialisation'
+      }
+      
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
 
     # set and add the return values for the host name
     host_name = BD.get(zombie_session, 'HostName') 
-    encoded_host_name = CGI.escapeHTML(host_name)
-    encoded_host_name_hash = { 'Host Name' => encoded_host_name }
+    if not host_name.nil?
+      encoded_host_name = CGI.escapeHTML(host_name)
+      encoded_host_name_hash = { 'Host Name' => encoded_host_name }
     
-    page_name_row = {
-      'category' => 'Browser Hook Initialisation',
-      'data' => encoded_host_name_hash,
-      'from' => 'Initialisation'
-    }
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_host_name_hash,
+        'from' => 'Initialisation'
+      }
     
-    summary_grid_hash['results'].push(page_name_row) # add the row
-
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
     # set and add the return values for the browser name
     browser_name = BD.get(zombie_session, 'BrowserName') 
-    friendly_browser_name = BeEF::Constants::Browsers.friendly_name(browser_name)
-    browser_name_hash = { 'Browser Name' => friendly_browser_name }
+    if not browser_name.nil?
+      friendly_browser_name = BeEF::Constants::Browsers.friendly_name(browser_name)
+      browser_name_hash = { 'Browser Name' => friendly_browser_name }
 
-    browser_name_row = {
-      'category' => 'Browser Hook Initialisation',
-      'data' => browser_name_hash,
-      'from' => 'Initialisation'
-    }
+      browser_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => browser_name_hash,
+        'from' => 'Initialisation'
+      }
     
-    summary_grid_hash['results'].push(browser_name_row) # add the row
-
+      summary_grid_hash['results'].push(browser_name_row) # add the row
+    end
+    
     # set and add the return values for the browser version
     browser_version = BD.get(zombie_session, 'BrowserVersion') 
-    encoded_browser_version = CGI.escapeHTML(browser_version)
-    browser_version_hash = { 'Browser Version' => encoded_browser_version }
+    if not browser_version.nil?
+      encoded_browser_version = CGI.escapeHTML(browser_version)
+      browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
-    browser_version_row = {
-      'category' => 'Browser Hook Initialisation',
-       'data' => browser_version_hash,
-      'from' => 'Initialisation'
-    }
+      browser_version_row = {
+        'category' => 'Browser Hook Initialisation',
+         'data' => browser_version_hash,
+        'from' => 'Initialisation'
+      }
     
-    summary_grid_hash['results'].push(browser_version_row) # add the row
+      summary_grid_hash['results'].push(browser_version_row) # add the row
+    end
     
     # set and add the list of plugins installed in the browser
     browser_plugins = BD.get(zombie_session, 'BrowserPlugins')
