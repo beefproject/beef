@@ -322,12 +322,19 @@ beef.browser = {
 	getDetails: function() {
 		var details = new Array();
 		
-		details["BrowserName"] = 		 beef.browser.getBrowserName();
-		details["BrowserVersion"] =      beef.browser.getBrowserVersion();
-		details["BrowserReportedName"] = beef.browser.getBrowserReportedName();
-		details["PageTitle"] = 	 		 document.title;
-		details["HostName"] = 	 		 document.location.hostname;
-		details["BrowserPlugins"] = 	 beef.browser.getPlugins();
+		var browser_name = beef.browser.getBrowserName();
+		var browser_version = beef.browser.getBrowserVersion();
+		var browser_reported_name = beef.browser.getBrowserReportedName();
+		var page_title = document.title;
+		var hostname = document.location.hostname;
+		var browser_plugins = beef.browser.getPlugins();
+		
+		if(browser_name) details["BrowserName"] = browser_name;
+		if(browser_version) details["BrowserVersion"] = browser_version;
+		if(browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
+		if(page_title) details["PageTitle"] = page_title;
+		if(hostname) details["HostName"] = hostname;
+		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		
 		return details;
 	},
