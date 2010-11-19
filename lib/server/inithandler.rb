@@ -55,6 +55,15 @@ module BeEF
       raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not Filter.is_valid_hostname?(host_name)
       BD.set(session_id, 'HostName', host_name)
       
+      # get and store the browser plugins
+      browser_plugins = get_param(request.query, 'BrowserPlugins')
+      if not browser_plugins.nil?
+        #TODO: add filters
+        #raise WEBrick::HTTPStatus::BadRequest, "Invalid browser plugins: has non printable chars" if not Filter.has_non_printable_char?(browser_plugins)
+        #raise WEBrick::HTTPStatus::BadRequest, "Invalid browser plugins: has null chars" if not Filter.has_null?(browser_plugins)
+        BD.set(session_id, 'BrowserPlugins', browser_plugins)
+      end
+      
       # get and store the internal ip address
       internal_ip = get_param(request.query, 'InternalIP')
       if not internal_ip.nil?

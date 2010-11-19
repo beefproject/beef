@@ -93,9 +93,24 @@ class Modules < BeEF::HttpController
     
     summary_grid_hash['results'].push(browser_version_row) # add the row
     
-    # set and add teh internal ip address
+    # set and add the list of plugins installed in the browser
+    browser_plugins = BD.get(zombie_session, 'BrowserPlugins')
+    if not browser_plugins.nil? and not browser_plugins.empty?
+      encoded_browser_plugins = CGI.escapeHTML(browser_plugins)
+      encoded_browser_plugins_hash = { 'Browser Plugins' => encoded_browser_plugins }
+      
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_browser_plugins_hash,
+        'from' => 'Initialisation'
+      }
+      
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
+    # set and add the internal ip address
     internal_ip = BD.get(zombie_session, 'InternalIP')
-    if internal_ip
+    if not internal_ip.nil?
       encoded_internal_ip = CGI.escapeHTML(internal_ip)
       encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
       
@@ -108,9 +123,9 @@ class Modules < BeEF::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add teh internal hostname
+    # set and add the internal hostname
     internal_hostname = BD.get(zombie_session, 'InternalHostname')
-    if internal_ip
+    if not internal_hostname.nil?
       encoded_internal_hostname = CGI.escapeHTML(internal_hostname)
       encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
       
