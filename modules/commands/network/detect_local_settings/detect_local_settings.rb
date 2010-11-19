@@ -12,7 +12,10 @@ class Detect_local_settings < BeEF::Command
       'Author' => ['pdp', 'wade', 'bm'],
       'File' => __FILE__,
       'Target' => {
-        'browser_name' => BeEF::Constants::Browsers::FF
+        'browser_name' => [
+          BeEF::Constants::Browsers::FF,
+          BeEF::Constants::Browsers::C
+          ]
       }
     })
     

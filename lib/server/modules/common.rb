@@ -18,7 +18,7 @@ module Modules
       # set up values required to construct beefjs
       beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
       beefjs_path = "#{$root_dir}/modules/beefjs/" # location of sub files      
-      js_sub_files = %w(beef.js browser.js browser/cookie.js dom.js net.js updater.js encode/base64.js init.js)
+      js_sub_files = %w(beef.js browser.js browser/cookie.js dom.js net.js updater.js encode/base64.js net/local.js init.js)
 
       # construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|

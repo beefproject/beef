@@ -55,6 +55,20 @@ module BeEF
       raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not Filter.is_valid_hostname?(host_name)
       BD.set(session_id, 'HostName', host_name)
       
+      # get and store the internal ip address
+      internal_ip = get_param(request.query, 'InternalIP')
+      if not internal_ip.nil?
+        #TODO: add Filter
+        BD.set(session_id, 'InternalIP', internal_ip)
+      end
+      
+      # get and store the internal hostname
+      internal_hostname = get_param(request.query, 'InternalHostname')
+      if not internal_hostname.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid internal host name" if not Filter.is_valid_hostname?(host_name)
+        BD.set(session_id, 'InternalHostname', internal_hostname)
+      end
+      
       # init details have been returned so set flag and save
       hooked_browser.has_init = true
       @guard.synchronize {      
@@ -64,7 +78,10 @@ module BeEF
       response.body = ''
     end
     
+    # returns a selected parameter from the query string.
     def get_param(query, key)
+      return nil if query[key].nil?
+      
       b64_param = query[key]
       raise WEBrick::HTTPStatus::BadRequest, "Invalid init base64 value" if Filter.has_non_printable_char?(b64_param)
       escaped_param = CGI.unescapeHTML(b64_param)

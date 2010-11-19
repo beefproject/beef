@@ -58,7 +58,7 @@ class Modules < BeEF::HttpController
     host_name = BD.get(zombie_session, 'HostName') 
     encoded_host_name = CGI.escapeHTML(host_name)
     encoded_host_name_hash = { 'Host Name' => encoded_host_name }
-
+    
     page_name_row = {
       'category' => 'Browser Hook Initialisation',
       'data' => encoded_host_name_hash,
@@ -92,9 +92,38 @@ class Modules < BeEF::HttpController
     }
     
     summary_grid_hash['results'].push(browser_version_row) # add the row
-
-    @body = summary_grid_hash.to_json
+    
+    # set and add teh internal ip address
+    internal_ip = BD.get(zombie_session, 'InternalIP')
+    if internal_ip
+      encoded_internal_ip = CGI.escapeHTML(internal_ip)
+      encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
       
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_internal_ip_hash,
+        'from' => 'Initialisation'
+      }
+      
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
+    # set and add teh internal hostname
+    internal_hostname = BD.get(zombie_session, 'InternalHostname')
+    if internal_ip
+      encoded_internal_hostname = CGI.escapeHTML(internal_hostname)
+      encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
+      
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_internal_hostname_hash,
+        'from' => 'Initialisation'
+      }
+      
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
+    @body = summary_grid_hash.to_json  
   end
       
   # Returns the list of all command_modules in a JSON format
