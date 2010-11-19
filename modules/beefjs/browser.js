@@ -242,7 +242,7 @@ beef.browser = {
 	 * @example: if(beef.browser.hasJava()) { ... }
 	 */
 	hasJava: function() {
-		if(window.navigator.javaEnabled && window.navigator.javaEnabled()) {
+		if(!this.type().IE && window.navigator.javaEnabled && window.navigator.javaEnabled()) {
 			return true;
 		}
 		return false;
