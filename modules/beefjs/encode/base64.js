@@ -12,6 +12,9 @@ beef.encode.base64 = {
 	   	var enc1, enc2, enc3, enc4;
 	   	var i = 0;
 		
+		if(typeof input != "string")
+			input = input.toString();
+		
 	   	do {
 	    	chr1 = input.charCodeAt(i++);
 			chr2 = input.charCodeAt(i++);
