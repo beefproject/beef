@@ -10,59 +10,67 @@ module BeEF
       true
     end
 
+    # check if only the characters in 'chars' are in 'str'
+    def self.only?(chars, str)
+      regex = Regexp.new('[^' + chars + ']')
+      regex.match(str).nil?
+    end
+          
+    # check if one or more characters in 'chars' are in 'str'
+    def self.exists?(chars, str)
+      regex = Regexp.new(chars)
+      not regex.match(str).nil?
+    end
+          
+    # check for null char
+    def self.has_null? (str)
+      return false if not is_non_empty_string?(str)
+      exists?('\x00', str)
+    end
+
+    # check for non-printalbe char
+    def self.has_non_printable_char?(str)
+      return false if not is_non_empty_string?(str)
+      not only?('[:print:]', str)
+    end
+
     # check if num chars only
     def self.nums_only?(str)
-      not (str =~ /^[\d]+$/).nil?
+      return false if not is_non_empty_string?(str)
+      only?('0-9', str)
     end
 
     # check if valid float
     def self.is_valid_float?(str)
+      return false if not is_non_empty_string?(str)
+      return false if not only?('0-9\.', str)
       not (str =~ /^[\d]+\.[\d]+$/).nil?
     end
 
     # check if hex chars only
     def self.hexs_only?(str)
-      not (str =~ /^[0123456789ABCDEFabcdef]+$/).nil?
+      return false if not is_non_empty_string?(str)
+      only?('0123456789ABCDEFabcdef', str)
     end
 
     # check if first char is a num
     def self.first_char_is_num?(str)
+      return false if not is_non_empty_string?(str)
       not (str =~ /^\d.*/).nil?
     end
 
-    # check for word and some punc chars
-    def self.has_valid_key_chars?(str)
-      return false if not BeEF::Filter.is_non_empty_string?(str)
-      (str =~ /[^\w_-]/).nil?
-    end
-          
-    # check for word and underscore chars
-    def self.has_valid_param_chars?(str)
-      return false if str.nil?
-      return false if not str.is_a? String
-      return false if str.empty?
-      (str =~ /[^\w_]/).nil?
-    end
-          
     # check for space chars: \t\n\r\f
     def self.has_whitespace_char?(str)
-      not (str =~ /\s/).nil?
-    end
-          
-    # check for non word chars: a-zA-Z0-9
-    def self.has_nonword_char?(str)
-      not (str =~ /\w/).nil?
-    end
-          
-    # check for null char
-    def self.has_null? (str)
-      not (str =~ /[\000]/).nil?
+      return false if not is_non_empty_string?(str)
+      exists?('\s', str)
     end
 
-    # check for non-printalbe char
-    def self.has_non_printable_char?(str)
-      not (str =~ /[^[:print:]]/m).nil?
+    # check for non word chars: a-zA-Z0-9
+    def self.alphanums_only?(str)
+      return false if not is_non_empty_string?(str)
+      only?("a-zA-Z0-9", str)
     end
+          
 
   end
   

@@ -44,6 +44,13 @@ module BeEF
       (str =~ /[^\w_-]/).nil?
     end
 
+    # check for word and underscore chars
+    def self.has_valid_param_chars?(str)
+      return false if str.nil?
+      return false if not str.is_a? String
+      return false if str.empty?
+      (str =~ /[^\w_]/).nil?
+    end
 
   end
   
