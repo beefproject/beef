@@ -84,7 +84,12 @@ beef.os = {
 		if(this.isSunOS()) return 'Sun OS';
 		
 		//macintosh
-		if(this.isMacintosh()) return 'Macintosh';
+		if(this.isMacintosh()) {
+			if((typeof navigator.oscpu != 'undefined') && (navigator.oscpu.indexOf('Mac OS')!=-1))
+				return navigator.oscpu;
+				
+			return 'Macintosh';
+		}
 		
 		//others
 		if(this.isQNX()) return 'QNX';
