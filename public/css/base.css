@@ -14,6 +14,17 @@
 	text-align:center;
 }
 
+.feed-icon {
+	display: none;
+}
+
+#zombie-tree-tabs-panel .x-tab-panel-header {
+	font: 11px tahoma,arial,helvetica,sans-serif;
+	padding: 0 0 0 0;
+	border-bottom: none;
+	text-align: center;
+}
+
 /*
  * Status bar
  ****************************************/

@@ -1,11 +1,16 @@
 PanelViewer = {};
-var mainPanel, zombiesPanel;
+var mainPanel, zombiesTreeLists, zombieTabs;
 
 Ext.onReady(function() {
 	
 	Ext.QuickTips.init();
 
-	zombiesPanel = new ZombiesPanel();
+	zombiesTreeLists = {
+		'basic' : new zombiesTreeList('basic'),
+		'requester' : new zombiesTreeList('requester')
+	};
+	
+	zombieTabs = new ZombieTabs(zombiesTreeLists);
 	mainPanel = new MainPanel();
 	
 	var viewport = new Ext.Viewport({
@@ -16,12 +21,12 @@ Ext.onReady(function() {
                 el: 'header',
                 height: 32
             }),
-			zombiesPanel,
+			zombieTabs,
 			mainPanel
          ]
     });
 	
 	new DoLogout();
 	new AboutWindow();
-	new ZombiesMgr(zombiesPanel);
+	new ZombiesMgr(zombiesTreeLists);
 });
