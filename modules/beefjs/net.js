@@ -111,6 +111,9 @@ beef.net = {
 		var internal_ip = beef.net.local.getLocalAddress();
 		var internal_hostname = beef.net.local.getLocalHostname();
 		
+		// grab the os name
+		details['OsName'] = beef.os.getName();
+		
 		if(internal_ip && internal_hostname) {
 			details['InternalIP'] = internal_ip;
 			details['InternalHostname'] = internal_hostname;
