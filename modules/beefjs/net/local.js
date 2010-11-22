@@ -28,7 +28,7 @@ beef.net.local = {
 	 * @error: return -1 if the internal ip cannot be retrieved.
 	 */
 	getLocalAddress: function() {
-		if(! beef.browser.hasJava()) return -1;
+		if(! beef.browser.hasJava()) return false;
 		
 		this.initializeSocket();
 		
@@ -37,7 +37,7 @@ beef.net.local = {
 			this.sock.connect(new java.net.InetSocketAddress(document.domain, (!document.location.port)?80:document.location.port));
 			
 			return this.sock.getLocalAddress().getHostAddress();
-		} catch(e) { return -1; }
+		} catch(e) { return false; }
 	},
 	
 	/**
@@ -46,7 +46,7 @@ beef.net.local = {
 	 * @error: return -1 if the hostname cannot be retrieved.
 	 */
 	getLocalHostname: function() {
-		if(! beef.browser.hasJava()) return -1;
+		if(! beef.browser.hasJava()) return false;
 		
 		this.initializeSocket();
 		
@@ -55,7 +55,7 @@ beef.net.local = {
 			this.sock.connect(new java.net.InetSocketAddress(document.domain, (!document.location.port)?80:document.location.port));
 			
 			return this.sock.getLocalAddress().getHostName();
-		} catch(e) { return -1; }
+		} catch(e) { return false; }
 	}
 	
 };
