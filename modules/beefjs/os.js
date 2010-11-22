@@ -12,6 +12,4 @@ beef.os = {
 	
 };
 
-alert(beef.os.isWinXP());
-
 beef.regCmp('beef.net.os');
