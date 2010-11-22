@@ -45,6 +45,11 @@ module BeEF
       raise WEBrick::HTTPStatus::BadRequest, "Invalid browser browser string" if not Filter.is_valid_browserstring?(browser_string)
       BD.set(session_id, 'BrowserReportedName', browser_string)
       
+      # get and store the os name
+      os_name = get_param(request.query, 'OsName')
+      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser os name" if not Filter.is_valid_osname?(os_name)
+      BD.set(session_id, 'OsName', os_name)
+      
       # get and store page title
       page_title = get_param(request.query, 'PageTitle')
       raise WEBrick::HTTPStatus::BadRequest, "Invalid page title name" if not Filter.is_valid_pagetitle?(page_title)

@@ -71,6 +71,21 @@ class Modules < BeEF::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
+    # set and add the return values for the os name
+    os_name = BD.get(zombie_session, 'OsName')
+    if not host_name.nil?
+      encoded_os_name = CGI.escapeHTML(os_name)
+      encoded_os_name_hash = { 'OS Name' => encoded_os_name }
+    
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_os_name_hash,
+        'from' => 'Initialisation'
+      }
+    
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
     # set and add the return values for the browser name
     browser_name = BD.get(zombie_session, 'BrowserName') 
     if not browser_name.nil?

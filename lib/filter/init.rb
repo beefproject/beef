@@ -17,7 +17,15 @@ module BeEF
       return false if BeEF::Filter.has_non_printable_char?(str)  
       true
     end
-
+    
+    # check the os name value - for example, 'Windows XP'
+    def self.is_valid_osname?(str)
+      return false if not BeEF::Filter.is_non_empty_string?(str)
+      return false if BeEF::Filter.has_non_printable_char?(str) 
+      return false if str.length < 2
+      true
+    end
+    
     # verify the browser version string is valid
     def self.is_valid_browserversion?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
