@@ -76,17 +76,41 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
         });
         
 		var node = new Ext.tree.TreeNode(attrs);
-        
+        var mother_node;
+		
+		if(online) {
+			mother_node = this.online_zombies;
+			mother_node = this.addDomain(mother_node, node.attributes.domain);
+		} else {
+			mother_node = this.offline_zombies;
+			mother_node = this.addDomain(mother_node, node.attributes.domain);
+		}
+		
 		if(online) {
 			Ext.apply(attrs, {cls: 'zombie-online'});
-			this.online_zombies.appendChild(node);
+			mother_node.appendChild(node);
 		} else {
 			Ext.apply(attrs, {cls: 'zombie-offline'});
-			this.offline_zombies.appendChild(node);
+			mother_node.appendChild(node);
 		}
 		
         return node;
     },
+
+	addDomain: function(mother_node, domain) {
+		if(mother_node.hasChildNodes()) {
+			//TODO
+			window.console.log('OK!');
+		} else {
+			domain_node = new Ext.tree.TreeNode({
+				text: domain
+			});
+			mother_node.appendChild(domain_node);
+			mother_node = domain_node;
+		}
+		
+		return mother_node;
+	},
 	
 	removeAll : function(){
 		this.online_zombies.removeAll();

@@ -57,8 +57,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 								//TODO logic for the requester starts here
 								zombie['checked'] = true;
 							}
-						
-							window.console.log(zombie['checked']);
+							
 							zombies.addZombie(zombie, false);
 						}
 					}
