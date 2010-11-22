@@ -22,7 +22,7 @@ module BeEF
     def self.is_valid_browserversion?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
       return false if BeEF::Filter.has_non_printable_char?(str)  
-      return false if not BeEF::Filter.is_valid_float?(str)  
+      return false if not BeEF::Filter.nums_only?(str) and not BeEF::Filter.is_valid_float?(str)  
       return false if str.length > 10      
       true
     end
