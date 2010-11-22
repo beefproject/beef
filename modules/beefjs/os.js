@@ -7,7 +7,7 @@ beef.os = {
 	},
 	
 	isWinNT4: function() {
-		return (this.ua.match('(Windows NT 4.0)|(WinNT4.0)|(WinNT)|(Windows NT)') && !this.isWinXP()) ? true : false;
+		return (this.ua.match('(Windows NT 4.0)')) ? true : false;
 	},
 	
 	isWin95: function() {
