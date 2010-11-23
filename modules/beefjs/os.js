@@ -76,6 +76,7 @@ beef.os = {
 		if(this.isWinME()) return 'Windows Millenium';
 		if(this.isWin2000()) return 'Windows 2000';
 		if(this.isWinXP()) return 'Windows XP';
+		if(this.isWinServer2003()) return 'Windows Server 2003';
 		if(this.isWinVista()) return 'Windows Vista';
 		if(this.isWin7()) return 'Windows 7';
 		
