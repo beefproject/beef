@@ -98,6 +98,8 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
     },
 
 	addSubFolder: function(mother_node, folder, checked) {
+		if(!folder) return mother_node;
+		
 		if(mother_node.hasChildNodes()) {
 			for(i in mother_node.childNodes) {
 				node = mother_node.childNodes[i];
@@ -106,7 +108,12 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 					return node;
 			}
 		} else {
-			sub_folder_node = new Ext.tree.TreeNode({text: folder, 'checked' : checked});
+			sub_folder_node = new Ext.tree.TreeNode({
+				id: 'sub-folder-'+folder,
+				text: folder,
+				'checked' : checked
+				});
+				
 			mother_node.appendChild(sub_folder_node);
 			mother_node = sub_folder_node;
 		}
@@ -131,9 +138,9 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			
 			if(exists) {
 				if(!online) {
-					this.online_zombies.removeChild(exists);
+					this.online_zombies.removeChild(exists, true);
 				} else {
-					this.offline_zombies.removeChild(exists);
+					this.offline_zombies.removeChild(exists, true);
 				}
 			}
 		}

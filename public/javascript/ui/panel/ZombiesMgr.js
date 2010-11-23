@@ -94,6 +94,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 					zombies = Ext.getCmp(zombies_tree_lists[tree_type].id);
 					
 					if(zombies.online_zombies.childNodes.length > 0) {
+						//TODO: find a way to destroy folders that are empty
 						zombies.online_zombies.expand(true);
 					}
 					
