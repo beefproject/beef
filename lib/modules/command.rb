@@ -135,7 +135,7 @@ module BeEF
       
       # check if the browser version is targeted
       browser_version = get_browser_detail('BrowserVersion')
-      raise WEBrick::HTTPStatus::BadRequest, "browser_version is nil" if browser_version.nil?      
+      browser_version = 'UNKNOWN' if browser_version.nil?      
       return VERIFIED_UNKNOWN if browser_version.eql? 'UNKNOWN'
       
       # check the browser version number is within range
