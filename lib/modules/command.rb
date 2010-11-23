@@ -122,8 +122,7 @@ module BeEF
 
       # retrieve the target browser name
       browser_name = get_browser_detail('BrowserName')
-      raise WEBrick::HTTPStatus::BadRequest, "browser_name is nil" if browser_name.nil?
-      return VERIFIED_UNKNOWN if browser_name.eql? 'UNKNOWN'
+      return VERIFIED_UNKNOWN if browser_name.eql? 'UNKNOWN' or browser_name.nil?
       
       # check if the browser is targeted
       all_browsers_targeted  = @target['browser_name'].eql? BeEF::Constants::Browsers::ALL
