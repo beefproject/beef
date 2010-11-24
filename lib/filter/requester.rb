@@ -12,7 +12,7 @@ module BeEF
       raise 'only GET or POST requests are supported for http requests' if not request.request_method.eql? 'GET' or request.request_method.eql? 'POST'
       
       #check uri
-      raise 'the uri is missing' if not webrick.unparsed_uri
+      raise 'the uri is missing' if not request.unparsed_uri
       
       #check host
       raise 'http host missing' if request.host.nil?

@@ -40,6 +40,20 @@ module Modules
     end
     
     #
+    # Finds the path to js components
+    #
+    def find_beefjs_component_path(component)
+      component_path = '/'+component
+      component_path.gsub!(/beef./, '')
+      component_path.gsub!(/\./, '/')
+      component_path.replace "#{$root_dir}/modules/beefjs/#{component_path}.js"
+      
+      return false if not File.exists? component_path
+      
+      component_path
+    end
+    
+    #
     # Builds missing beefjs components.
     #
     # Ex: build_missing_beefjs_components(['beef.net.local', 'beef.net.requester'])
@@ -47,6 +61,12 @@ module Modules
     def build_missing_beefjs_components(beefjs_components)
       # verifies that @beef_js_cmps is not nil to avoid bugs
       @beef_js_cmps = '' if @beef_js_cmps.nil?
+      
+      if beefjs_components.is_a? String
+        beefjs_components_path = find_beefjs_component_path(beefjs_components)
+        raise "Invalid component: could not build the beefjs file" if not beefjs_components_path
+        beefjs_components = {beefjs_components => beefjs_components_path} 
+      end
       
       beefjs_components.keys.each {|k|
         next if @beef_js_cmps.include? beefjs_components[k]
