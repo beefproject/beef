@@ -63,11 +63,11 @@ beef.dom = {
 	},
 	
 	/**
-	 * @params: {String} url: target url which is loaded in the iframe.
-	 * @params: {String} method: whether to use a GET or POST HTTP method.
-	 * @params: {Hash} params: list of params that will be sent in request.
-	 * @params: {Boolean} hidden: whether to make the iframe hidden.
-	 * @params: {Boolean} remove: whether to remove the iframe from the dom once it is loaded.
+	 * @param: {String} url: target url which is loaded in the iframe.
+	 * @param: {String} method: whether to use a GET or POST HTTP method.
+	 * @param: {Hash} params: list of params that will be sent in request.
+	 * @param: {Boolean} hidden: whether to make the iframe hidden.
+	 * @param: {Boolean} remove: whether to remove the iframe from the dom once it is loaded.
 	 * @return: {String} result: success, failure or timeout
 	 */
 
