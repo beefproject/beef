@@ -63,6 +63,31 @@ beef.dom = {
 	},
 	
 	/**
+	 * @params: {String} url: target url which is loaded in the iframe.
+	 * @params: {String} method: whether to use a GET or POST HTTP method.
+	 * @params: {Hash} params: list of params that will be sent in request.
+	 * @params: {Boolean} hidden: whether to make the iframe hidden.
+	 * @params: {Boolean} remove: whether to remove the iframe from the dom once it is loaded.
+	 * @return: {String} result: success, failure or timeout
+	 */
+
+	iframeCreate: function(url, method, params, hidden, remove){
+		var iframe = this.createElement('iframe', {
+			width: '1px',
+			height: '1px',
+			style: 'visibility:hidden;',
+			location: url
+		});
+		
+		document.body.appendChild(iframe);
+		
+		var result = "success";
+		
+		return result;
+	},
+
+	
+	/**
 	 * Get the location of the current page.
 	 * @return: the location.
 	 */
