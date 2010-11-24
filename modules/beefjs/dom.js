@@ -83,6 +83,7 @@ beef.dom = {
 			var iframe = this.createElement('iframe', {
 				width: '100%',
 				height: '100%',
+				style: 'position:absolute;top:0px;left:0px;border:none;',
 				src: url
 			});
 		}
