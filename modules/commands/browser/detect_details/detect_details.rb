@@ -2,7 +2,7 @@ module BeEF
 module Modules
 module Commands
 
-class Detect_plugins < BeEF::Command
+class Detect_details < BeEF::Command
   
   def initialize
     super({
@@ -11,7 +11,7 @@ class Detect_plugins < BeEF::Command
         This module will retrieve the selected zombie browser plugins, browser type
         and scripting engines, plus screen dimensions.'
         },
-      'Category' => 'Recon',
+      'Category' => 'Browser',
       'Author' => ['wade','vo','passbe'],
       'File' => __FILE__,
       'Target' => {

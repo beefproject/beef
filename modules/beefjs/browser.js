@@ -340,7 +340,7 @@ beef.browser = {
 	},
 	
 	/**
-	 * Returns boolean (or array of results), whether or not the target zombie has visited the specified URL
+	 * Returns array of results, whether or not the target zombie has visited the specified URL
 	 */
 	hasVisited: function(urls) {
 		var results = new Array();
@@ -373,8 +373,6 @@ beef.browser = {
 		if (results.length == 0) 
 		{
 			return false;
-		} else if (results.length == 1) {
-			return results[0].visited;
 		}
 		return results;
 	}
