@@ -72,12 +72,20 @@ beef.dom = {
 	 */
 
 	iframeCreate: function(url, method, params, hidden, remove){
-		var iframe = this.createElement('iframe', {
-			width: '1px',
-			height: '1px',
-			style: 'visibility:hidden;',
-			location: url
-		});
+		if (hidden){
+			var iframe = this.createElement('iframe', {
+				width: '1px',
+				height: '1px',
+				style: 'visibility:hidden;',
+				src: url
+			});
+		} else {
+			var iframe = this.createElement('iframe', {
+				width: '100%',
+				height: '100%',
+				src: url
+			});
+		}
 		
 		document.body.appendChild(iframe);
 		
