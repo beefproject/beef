@@ -58,6 +58,10 @@ beef.os = {
 		return (this.ua.match('(Mac_PowerPC)|(Macintosh)|(MacIntel)')) ? true : false;
 	},
 	
+	isIphone: function() {
+		return (this.ua.indexOf('iPhone') != -1) ? true : false;
+	},
+
 	isQNX: function() {
 		return (this.ua.indexOf('QNX')) ? true : false;
 	},
@@ -83,6 +87,9 @@ beef.os = {
 		//linux
 		if(this.isLinux()) return 'Linux';
 		if(this.isSunOS()) return 'Sun OS';
+
+		//iPhone
+		if (this.isIphone()) return 'iPhone';
 		
 		//macintosh
 		if(this.isMacintosh()) {

@@ -81,6 +81,8 @@ module Constants
   	OS_LINUX_IMG          = 'linux.png'
   	OS_MAC_UA_STR         = 'Mac'
   	OS_MAC_IMG            = 'mac.png'
+	OS_IPHONE_UA_STR      = 'iPhone'
+ 	OS_IPHONE_IMG         = 'iphone.png'
   	
   end
   

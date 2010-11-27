@@ -82,6 +82,7 @@ class BrowserDetails
     return BeEF::Constants::Os::OS_UNKNOWN_IMG if ua_string.nil? # Unknown
     return BeEF::Constants::Os::OS_WINDOWS_IMG if ua_string.include? BeEF::Constants::Os::OS_WINDOWS_UA_STR # Windows
     return BeEF::Constants::Os::OS_LINUX_IMG if ua_string.include? BeEF::Constants::Os::OS_LINUX_UA_STR     # Linux
+    return BeEF::Constants::Os::OS_IPHONE_IMG if ua_string.include? BeEF::Constants::Os::OS_IPHONE_UA_STR    # iPhone - do this before Mac, because it includes Mac
     return BeEF::Constants::Os::OS_MAC_IMG if ua_string.include? BeEF::Constants::Os::OS_MAC_UA_STR         # Mac OS X
     
     BeEF::Constants::Os::OS_UNKNOWN_IMG
