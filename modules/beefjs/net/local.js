@@ -17,7 +17,11 @@ beef.net.local = {
 	initializeSocket: function() {
 		if(! beef.browser.hasJava()) return -1;
 		
-		this.sock = new java.net.Socket();
+		try {
+			this.sock = new java.net.Socket();
+		} catch(e) {
+			return -1;
+		}
 		
 		return 1;
 	},
