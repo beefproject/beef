@@ -11,13 +11,15 @@ class Iphone_skype < BeEF::Command
   def initialize
     super({
       'Name' => 'iPhone Skype URL',
-      'Description' => 'Utilise Nitesh Dhanjani\'s Insecure Handling of URL Schemes in iOS to try and make the browser execute a skype call',
+      'Description' => 'This module will force the browser to attempt a skype call. It will exploit the insecure handling of URL schemes in iOS<br>
+      <br>
+      The protocol handler used will be: skype',
       'Category' => 'Host',
-      'Author' => 'xntrik',
+      'Author' => 'xntrik, Nitesh Dhanjani',
       'Data' =>
           [
               [   'name' => 'tel_num',
-                  'ui_label'=>'Skype Number',
+                  'ui_label'=>'Number',
                   'value' =>'5551234',
                   'width' => '200px'
               ],
