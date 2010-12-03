@@ -40,7 +40,7 @@ module BeEF
     # check for word and some punc chars
     def self.has_valid_key_chars?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
-      (str =~ /[^\w\d\s()-.,;_\302\256]/).nil?
+      (str =~ /[^\w\d\s()-.,;_\302\256]/).nil? # \302\256 is the (r) character 
     end
 
     # check for word and underscore chars
