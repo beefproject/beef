@@ -1,26 +1,25 @@
 module BeEF
   
   module Filter
+    
+    def self.is_valid_verb?(verb)
+      return true if verb.eql? 'GET' or verb.eql? 'POST'
+      false
+    end
 
-    # check if request is valid
-    # @param: {WEBrick::HTTPUtils::FormData} request object
-    def self.is_valid_request?(request)
-      #check a webrick object is sent
-      raise 'your request is of invalid type' if not request.is_a? WEBrick::HTTPRequest
-      
-      #check http method
-      raise 'only GET or POST requests are supported for http requests' if not request.request_method.eql? 'GET' or request.request_method.eql? 'POST'
-      
-      #check uri
-      raise 'the uri is missing' if not request.unparsed_uri
-      
-      #check host
-      raise 'http host missing' if request.host.nil?
-      
-      #check domain
-      raise 'invalid http domain' if not URI.parse(request.host)
-      
-      true
+    def self.is_valid_url?(uri)
+      return true if uri.eql? WEBrick::HTTPUtils.normalize_path(uri)
+      false
+    end
+
+    def self.is_valid_http_version?(version)
+      return true if version.eql? "HTTP/1.1" or trailer.eql? "HTTP/1.0"
+      false
+    end
+
+    def self.is_valid_host_str?(host_str)
+      return true if host_str.eql? "Host:"
+      false
     end
 
   end

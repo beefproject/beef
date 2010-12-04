@@ -23,7 +23,7 @@ class Requester < BeEF::HttpController
   def send_request
     # validate that the hooked browser's session has been sent
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie session is nil" if zombie_session.nil?
+    raise WEBrick::HTTPStatus::BadRequest, "Invalid session id" if not Filter.is_valid_hook_session_id?(zombie_session)
     
     # validate that the hooked browser exists in the db
     zombie = Z.first(:session => zombie_session) || nil
@@ -39,28 +39,36 @@ class Requester < BeEF::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
     raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
     
-    webrick = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
-    
     # validate that the raw request is correct and can be used
-    # will raise an exception on failure
-    s = StringIO.new raw_request
-    webrick.parse(s)
-    
-    # if the request is invalide, an exception will be raised
-    Filter.is_valid_request?(webrick)
-    
+    req_parts = raw_request.split(/ |\n/) # break up the request
+    verb = req_parts[0]
+    raise 'Only GET or POST requests are supported' if not Filter.is_valid_verb?(verb) #check verb
+    uri = req_parts[1]
+    raise 'Invalid URI' if not Filter.is_valid_url?(uri) #check uri
+    version = req_parts[2]
+    raise 'Invalid HTTP version' if not Filter.is_valid_http_version?(version) # check http version - HTTP/1.0
+    host_str = req_parts[3]
+    raise 'Invalid HTTP version' if not Filter.is_valid_host_str?(host_str) # check host string - Host:
+    host = req_parts[4]
+    raise 'Invalid hostname' if not Filter.is_valid_hostname?(host) # check the target hostname
+
+    # (re)build the request
+    green_request = StringIO.new(verb + " " + uri + " " +  version + "\n" + host_str + " " + host)
+    request = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
+    request.parse(green_request)
+        
     # Saves the new HTTP request.
     http = H.new(
       :request => raw_request,
-      :method => webrick.request_method,
-      :domain => webrick.host,
-      :path => webrick.unparsed_uri,
+      :method => request.request_method,
+      :domain => request.host,
+      :path => request.unparsed_uri,
       :date => Time.now,
       :zombie_id => zombie.id
     )
     
-    if webrick.request_method.eql? 'POST'
-      http.content_length = webrick.content_length
+    if request.request_method.eql? 'POST'
+      http.content_length = request.content_length
     end
     
     http.save

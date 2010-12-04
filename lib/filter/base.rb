@@ -71,6 +71,15 @@ module BeEF
       only?("a-zA-Z0-9", str)
     end
           
+    # check if valid ip address string
+    # TODO add unit tests
+    def self.is_valid_ip?(ip)
+      return true if ip =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
+      false
+    end
+
+          
+          
 
   end
   
