@@ -78,7 +78,11 @@ module BeEF
       false
     end
 
-          
+    # check for valid browser details chars
+    def self.has_valid_browser_details_chars?(str)
+      return false if not is_non_empty_string?(str)
+      not (str =~ /[^\w\d\s()-.,;:_\/\302\256]/).nil? # \302\256 is the (r) character 
+    end  
           
 
   end

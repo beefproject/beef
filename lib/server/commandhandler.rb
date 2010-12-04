@@ -21,7 +21,7 @@ module BeEF
 
       # get and check command id from the request
       command_id  = @request.get_command_id()
-      raise WEBrick::HTTPStatus::BadRequest, "command_id is invalid" if not BeEF::Filter.is_valid_commmamd_id?(command_id)   
+      raise WEBrick::HTTPStatus::BadRequest, "command_id is invalid" if not BeEF::Filter.is_valid_command_id?(command_id)   
 
       # get and check session id from the request
       hook_session_id = request.get_hook_session_id()

@@ -98,17 +98,17 @@ module BeEF
       
       # get, check and add the http_params to the datastore
       http_params.keys.each {|http_params_key|
-        raise WEBrick::HTTPStatus::BadRequest, "http_params_key is invalid" if not BeEF::Filter.is_valid_commmamd_module_datastore_key?(http_params_key)
+        raise WEBrick::HTTPStatus::BadRequest, "http_params_key is invalid" if not BeEF::Filter.is_valid_command_module_datastore_key?(http_params_key)
         http_params_value = Erubis::XmlHelper.escape_xml(http_params[http_params_key])
-        raise WEBrick::HTTPStatus::BadRequest, "http_params_value is invalid" if not BeEF::Filter.is_valid_commmamd_module_datastore_param?(http_params_value)
+        raise WEBrick::HTTPStatus::BadRequest, "http_params_value is invalid" if not BeEF::Filter.is_valid_command_module_datastore_param?(http_params_value)
         @datastore[http_params_key] = http_params_value # add the checked key and value to the datastore
       }
 
       # get, check and add the http_headers to the datastore
       http_header.keys.each { |http_header_key|
-        raise WEBrick::HTTPStatus::BadRequest, "http_header_key is invalid" if not BeEF::Filter.is_valid_commmamd_module_datastore_key?(http_header_key)
+        raise WEBrick::HTTPStatus::BadRequest, "http_header_key is invalid" if not BeEF::Filter.is_valid_command_module_datastore_key?(http_header_key)
         http_header_value = Erubis::XmlHelper.escape_xml(http_header[http_header_key][0])
-        raise WEBrick::HTTPStatus::BadRequest, "http_header_value is invalid" if not BeEF::Filter.is_valid_commmamd_module_datastore_param?(http_header_value)
+        raise WEBrick::HTTPStatus::BadRequest, "http_header_value is invalid" if not BeEF::Filter.is_valid_command_module_datastore_param?(http_header_value)
         @datastore['http_headers'][http_header_key] = http_header_value # add the checked key and value to the datastore
       }
       

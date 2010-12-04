@@ -11,7 +11,7 @@ module BeEF
     end
 
     # check if the command id valid
-    def self.is_valid_commmamd_id?(str)
+    def self.is_valid_command_id?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
       return false if not BeEF::Filter.nums_only?(str)   
       true
@@ -25,13 +25,13 @@ module BeEF
     end
 
     # check if valid command module datastore key
-    def self.is_valid_commmamd_module_datastore_key?(str)
+    def self.is_valid_command_module_datastore_key?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
       return BeEF::Filter.has_valid_key_chars?(str)      
     end
 
     # check if valid command module datastore value
-    def self.is_valid_commmamd_module_datastore_param?(str)
+    def self.is_valid_command_module_datastore_param?(str)
       return false if BeEF::Filter.has_null?(str)
       return false if BeEF::Filter.has_non_printable_char?(str)    
       true  

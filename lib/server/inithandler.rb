@@ -101,7 +101,7 @@ module BeEF
       escaped_param = CGI.unescapeHTML(b64_param)
       raise WEBrick::HTTPStatus::BadRequest, "Invalid init escaped value" if Filter.has_non_printable_char?(escaped_param)        
       param = Base64.decode64(escaped_param)
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid init value" if Filter.has_non_printable_char?(param)
+      raise WEBrick::HTTPStatus::BadRequest, "Invalid init value" if Filter.has_valid_browser_details_chars?(param)
       param
     end
     
