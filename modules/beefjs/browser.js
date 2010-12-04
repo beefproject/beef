@@ -276,6 +276,8 @@ beef.browser = {
 					results += ',';
 				results += navigator.plugins[i].name;
 			}
+		} else {
+			results = 'navigator.plugins is not supported in this browser!';
 		}
 		return results;
 	},
