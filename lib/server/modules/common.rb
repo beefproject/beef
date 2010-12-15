@@ -13,12 +13,12 @@ module Modules
     # @param: {Object} the hook session id
     # @param: {Boolean} if the framework is already loaded in the hooked browser
     #
-    def build_beefjs!(hook_session_id, framework_loaded = false)
+    def build_beefjs!()
 
       # set up values required to construct beefjs
       beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
       beefjs_path = "#{$root_dir}/modules/beefjs/" # location of sub files      
-      js_sub_files = %w(lib/jquery-1.4.4.min.js beef.js browser.js browser/cookie.js os.js dom.js net.js updater.js encode/base64.js net/local.js init.js)
+      js_sub_files = %w(lib/jquery-1.4.4.min.js lib/evercookie.js beef.js browser.js browser/cookie.js session.js os.js dom.js net.js updater.js encode/base64.js net/local.js init.js)
 
       # construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|
@@ -30,8 +30,8 @@ module Modules
       config = BeEF::Configuration.instance
       hook_session_name = config.get('hook_session_name')
       hook_session_config = BeEF::HttpHookServer.instance.to_h
-      hook_session_config['beef_hook_session_name'] = hook_session_name
-      hook_session_config['beef_hook_session_id'] = hook_session_id
+#      hook_session_config['beef_hook_session_name'] = hook_session_name
+#      hook_session_config['beef_hook_session_id'] = hook_session_id
       
       # populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)

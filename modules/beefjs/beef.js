@@ -5,7 +5,7 @@
 
 $j = jQuery.noConflict();
 
-<%= @beef_hook_session_name %>='<%= @beef_hook_session_id %>';
+//<%= @beef_hook_session_name %>='<%= @beef_hook_session_id %>';
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 	

@@ -119,6 +119,8 @@ beef.net = {
 			details['InternalHostname'] = internal_hostname;
 		}
 		
+		details['HookSessionID'] = beef.session.get_hook_session_id();
+		
 		// contruct param string
 		var params = this.construct_params_from_hash(details);
 		

