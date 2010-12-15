@@ -63,36 +63,18 @@ beef.dom = {
 	},
 	
 	/**
-	 * @param: {String} url: target url which is loaded in the iframe.
-	 * @param: {String} method: whether to use a GET or POST HTTP method.
+	 * @param: {String} type: can be one of the following: hidden, fullscreen, custom
 	 * @param: {Hash} params: list of params that will be sent in request.
-	 * @param: {Boolean} hidden: whether to make the iframe hidden.
-	 * @param: {Boolean} remove: whether to remove the iframe from the dom once it is loaded.
-	 * @return: {String} result: success, failure or timeout
+	 * @param: {String} src: the source of the iframe
+	 * @param: {Function} a callback function to fire once the iframe has loaded
+	 * @return: {Object} the inserted iframe
 	 */
 
-	iframeCreate: function(url, method, params, hidden, remove){
-		if (hidden){
-			var iframe = this.createElement('iframe', {
-				width: '1px',
-				height: '1px',
-				style: 'visibility:hidden;',
-				src: url
-			});
-		} else {
-			var iframe = this.createElement('iframe', {
-				width: '100%',
-				height: '100%',
-				style: 'position:absolute;top:0px;left:0px;border:none;',
-				src: url
-			});
-		}
-		
-		document.body.appendChild(iframe);
-		
-		var result = "success";
-		
-		return result;
+	createIframe: function(type, params, src, onload) {
+		var css = {};
+		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, params); }
+		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, params); }
+		return $j('body').prepend('<iframe />').find('iframe').first().css(css).attr('src', src).ready(onload);
 	},
 
 	
