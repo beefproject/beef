@@ -74,7 +74,7 @@ beef.dom = {
 		var css = {};
 		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, params); }
 		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, params); }
-		return $j('body').prepend('<iframe />').find('iframe').first().css(css).attr('src', src).ready(onload);
+		return $j('body').prepend('<iframe />').find('iframe').first().css(css).attr('src', src).load(onload);
 	},
 
 	
