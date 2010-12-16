@@ -6,7 +6,8 @@ Ext.onReady(function() {
 	Ext.QuickTips.init();
 
 	zombiesTreeLists = {
-		'basic' : new zombiesTreeList('basic')
+		'basic' : new zombiesTreeList('basic'),
+		'requester' : new zombiesTreeList('requester')
 	};
 	
 	zombieTabs = new ZombieTabs(zombiesTreeLists);

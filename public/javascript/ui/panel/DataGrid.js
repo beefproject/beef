@@ -7,10 +7,11 @@ DataGrid = function(url, page, base) {
     this.store = new Ext.data.JsonStore({
         root: 'logs',
         autoDestroy: true,
+		autoLoad: false,
         url: this.url,
         storeId: 'myStore',
         baseParams: this.base,
-        autoLoad: {params:{start:0, limit:this.page, sort:"date", dir:"DESC"}},
+        //autoLoad: {params:{start:0, limit:this.page, sort:"date", dir:"DESC"}},
         idProperty: 'id',
         fields: ['id','type','event','date'],
         totalProperty: 'count',
@@ -68,7 +69,13 @@ DataGrid = function(url, page, base) {
 
         viewConfig: {
             forceFit:true
-        }
+        },
+		
+		listeners: {
+			afterrender: function(datagrid) {
+				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"date", dir:"DESC"}});
+			}
+		}
     });
 };
 
