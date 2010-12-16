@@ -11,7 +11,13 @@ config = BeEF::Configuration.instance
 DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("database_file_name")}")
 
 options = BeEF::Console::CommandLine.parse
-if options[:resetdb] then DataMapper.auto_migrate!; BeEF::Migration.instance.update_db!; else DataMapper.auto_upgrade!; end
+
+if options[:resetdb] 
+  DataMapper.auto_migrate!
+  BeEF::Migration.instance.update_db!
+else 
+  DataMapper.auto_upgrade!
+end
 
 # check for new command modules
 BeEF::Migration.instance.update_db!
