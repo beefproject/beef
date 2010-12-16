@@ -1,24 +1,10 @@
 var ZombiesMgr = function(zombies_tree_lists) {
 	
-	var selectedZombie = null;
-	
-	var addZombie = function(zombie){
-		selectedZombie = zombie;
-	}
-	
-	var delZombie = function(zombie){
-		if (selectedZombie.session == zombie.session) {
-			selectedZombie = null;
-		}
-		return null;
-	}
-	
-	var getZombie = function(){
-		return selectedZombie;
-	}
+	//save the list of trees in the object
+	this.zombies_tree_lists = zombies_tree_lists;
 	
 	// this is a helper class to create a zombie object from a JSON hash index
-	var zombieFactory = function(index, zombie_array){
+	this.zombieFactory = function(index, zombie_array){
 		text = "<img src='/ui/public/images/icons/"+escape(zombie_array[index]["browser_icon"])+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text += "<img src='/ui/public/images/icons/"+escape(zombie_array[index]["os_icon"])+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text += zombie_array[index]["ip"];
@@ -35,79 +21,44 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		return new_zombie;
 	}
 	
-	var updateZombies = function(){
-		Ext.Ajax.request({
-			url: '/ui/zombies/select/offline/simple.json',
-			method: 'POST',
-			success: function(response) {
-				var offline_zombies = Ext.util.JSON.decode(response.responseText);
-
-				for(tree_type in zombies_tree_lists) {
-					zombies = zombies_tree_lists[tree_type];
-					zombies.compareAndRemove(offline_zombies, false);
-				}
-				
-				for(tree_type in zombies_tree_lists) {
-					zombies = zombies_tree_lists[tree_type];
-
-					for(var i in offline_zombies) {
-							var zombie = zombieFactory(i, offline_zombies);
-						
-							if(tree_type=='requester') {
-								//TODO logic for the requester starts here
-								zombie['checked'] = true;
-							}
-							
-							zombies.addZombie(zombie, false);
-						}
-					}
-				}
-		});
-				
-		Ext.Ajax.request({
-			url: '/ui/zombies/select/online/simple.json',
-			method: 'POST',
-			success: function(response){
-				var online_zombies = Ext.util.JSON.decode(response.responseText);
-				
-				for(tree_type in zombies_tree_lists) {
-					zombies = zombies_tree_lists[tree_type];
-					zombies.compareAndRemove(online_zombies, true);
-				}
-				for(tree_type in zombies_tree_lists) {
-					zombies = zombies_tree_lists[tree_type];
-					
-					for(var i in online_zombies) {	
-						var zombie = zombieFactory(i, online_zombies);
-						
-						if(tree_type=='requester') {
-							//TODO logic for the requester starts here
-							zombie['checked'] = true;
-						}
-						
-						zombies.addZombie(zombie, true);
-					}
-				}
-				
-				for(tree_type in zombies_tree_lists) {
-					
-					zombies = Ext.getCmp(zombies_tree_lists[tree_type].id);
-					
-					if(zombies.online_zombies.childNodes.length > 0) {
-						//TODO: find a way to destroy folders that are empty
-						zombies.online_zombies.expand(true);
-					}
-					
-					if(zombies.offline_zombies.childNodes.length > 0) {
-						zombies.offline_zombies.expand(true);
-					}
-				}
+	/*
+	 * Update the hooked browser trees
+	 * @param: {Literal Object} an object containing the list of offline and online hooked browsers.
+	 * @param: {Literal Object} an object containing the list of rules from the distributed engine.
+	 */
+	this.updateZombies = function(zombies, rules){
+		var offline_zombies = zombies["offline"];
+		var online_zombies = zombies["online"];
+		
+		for(tree_type in this.zombies_tree_lists) {
+			hooked_browsers_tree = this.zombies_tree_lists[tree_type];
+			
+			//we compare and remove the hooked browsers from online and offline branches for each tree.
+			hooked_browsers_tree.compareAndRemove(offline_zombies, false);
+			hooked_browsers_tree.compareAndRemove(online_zombies, true);
+			
+			//add an offline browser to the tree
+			for(var i in offline_zombies) {
+				var offline_hooked_browser = this.zombieFactory(i, offline_zombies);
+				hooked_browsers_tree.addZombie(offline_hooked_browser, false);
 			}
-		});
+			
+			//add an online browser to the tree
+			for(var i in online_zombies) {
+				var online_hooked_browser = this.zombieFactory(i, online_zombies);
+				hooked_browsers_tree.addZombie(online_hooked_browser, true);
+				//TODO: add the rules here
+			}
+			
+			//expand the online hooked browser tree lists
+			if(hooked_browsers_tree.online_zombies.childNodes.length > 0) {
+				hooked_browsers_tree.online_zombies.expand(true);
+			}
+			
+			//expand the offline hooked browser tree lists
+			if(hooked_browsers_tree.offline_zombies.childNodes.length > 0) {
+				hooked_browsers_tree.offline_zombies.expand(true);
+			}
+		}
 	}
-	
-	Ext.TaskMgr.start({
-		run: updateZombies,
-		interval: 8000
-	});
-}
+};

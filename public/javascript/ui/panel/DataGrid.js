@@ -11,7 +11,6 @@ DataGrid = function(url, page, base) {
         url: this.url,
         storeId: 'myStore',
         baseParams: this.base,
-        //autoLoad: {params:{start:0, limit:this.page, sort:"date", dir:"DESC"}},
         idProperty: 'id',
         fields: ['id','type','event','date'],
         totalProperty: 'count',
