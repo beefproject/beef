@@ -14,7 +14,7 @@ ZombieTab_MainTab = function(zombie) {
 					{name: 'from'}
 				]),
 			
-			autoLoad: true,
+			autoLoad: false,
 			sortInfo:{field: 'from', direction: "ASC"},
 			groupField:'category'
 		});
@@ -25,6 +25,7 @@ ZombieTab_MainTab = function(zombie) {
 			region: 'center',
 			layout: 'fit',
 			hideHeaders: true,
+			loadMask: {msg:'Loading Information...'},
 			
 			view: new Ext.grid.GroupingView({
 				forceFit:true,
