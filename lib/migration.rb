@@ -23,7 +23,9 @@ class Migration
   def update_commands!
     db_commands = [], folders = ''
     
-    BeEF::Models::CommandModule.all.each {|db_command| db_commands.push(db_command.path)}
+    BeEF::Models::CommandModule.all.each {|db_command| 
+      db_commands.push(db_command.path)
+    }
     
     Dir.foreach("#{$root_dir}/modules/commands/") do |folder|
       folders += "#{folder}|" if not ['.', '..'].include? folder and File.directory? "#{$root_dir}/modules/commands/#{folder}"
