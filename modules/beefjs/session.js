@@ -17,6 +17,12 @@ beef.session = {
   	get_hook_session_id: function() {
 		// check if the browser is already known to the framework
 		var id = this.ec.evercookie_cookie("BEEFHOOK");
+		if (typeof id == 'undefined') {
+			var id = this.ec.evercookie_userdata("BEEFHOOK");
+		}
+		if (typeof id == 'undefined') {
+			var id = this.ec.evercookie_window("BEEFHOOK");
+		}
 		
 		// if the browser is not known create a hook session id and set it
 		if (typeof id == 'undefined') {
@@ -36,6 +42,8 @@ beef.session = {
   	set_hook_session_id: function(id) {
 		// persist the hook session id
 		this.ec.evercookie_cookie("BEEFHOOK", id);
+		this.ec.evercookie_userdata("BEEFHOOK", id);
+		this.ec.evercookie_window("BEEFHOOK", id);
 	},
 	
 	/**
