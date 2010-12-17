@@ -83,7 +83,6 @@ module BeEF
       return false if not is_non_empty_string?(str)
       not (str =~ /[^\w\d\s()-.,;:_\/!\302\256]/).nil? # \302\256 is the (r) character 
     end  
-          
 
   end
   
