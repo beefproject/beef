@@ -107,18 +107,7 @@ beef.net = {
 		// get hash of browser details
 		var details = beef.browser.getDetails();
 		
-		// grab the internal ip address and hostname
-		var internal_ip = beef.net.local.getLocalAddress();
-		var internal_hostname = beef.net.local.getLocalHostname();
-		
-		// grab the os name
-		details['OsName'] = beef.os.getName();
-		
-		if(internal_ip && internal_hostname) {
-			details['InternalIP'] = internal_ip;
-			details['InternalHostname'] = internal_hostname;
-		}
-		
+		// get the hook session id
 		details['HookSessionID'] = beef.session.get_hook_session_id();
 		
 		// contruct param string
