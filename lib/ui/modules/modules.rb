@@ -198,6 +198,8 @@ class Modules < BeEF::HttpController
       case command_module.verify_target() # select the correct icon for the command module
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING_IMG
+      when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY
+        command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY_IMG
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING_IMG
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN

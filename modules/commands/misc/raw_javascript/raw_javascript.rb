@@ -21,10 +21,12 @@ class Raw_javascript < BeEF::Command
            'value' => "alert(\'BeEF Raw Javascript\');\nreturn \'It worked!\';", 
            'type' => 'textarea', 'width' => '400px', 'height' => '100px'],
         ],
-      'File' => __FILE__  ,
-        'Target' => {
-          'browser_name' =>     BeEF::Constants::Browsers::ALL
-        }
+      'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_WORKING, 
+      'browser_name' =>     ALL
     })
     
     use_template!

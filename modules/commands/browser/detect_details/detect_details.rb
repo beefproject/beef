@@ -13,11 +13,14 @@ class Detect_details < BeEF::Command
         },
       'Category' => 'Browser',
       'Author' => ['wade','vo','passbe'],
-      'File' => __FILE__,
-      'Target' => {
-            'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
     })
+    
+    set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     ALL
+    })
+    
     use 'beef.dom'
     use_template!
   end

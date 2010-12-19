@@ -25,10 +25,12 @@ class Iphone_tel < BeEF::Command
                   'width' => '200px'
               ],
           ],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>     BeEF::Constants::Browsers::S
-      }
+      'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_WORKING, 
+      'browser_name' =>     S
     })
 
     use 'beef.dom'

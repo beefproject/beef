@@ -11,10 +11,12 @@ class Prompt_dialog < BeEF::Command
       'Category' => 'Misc',
       'Author' => 'bm',
       'Data' => [['name' =>'question', 'ui_label'=>'Prompt text']],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
+    })
+    
+    set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     ALL
     })
     
     use_template!

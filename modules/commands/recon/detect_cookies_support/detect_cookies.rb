@@ -14,10 +14,12 @@ class Detect_cookies < BeEF::Command
       'Category' => 'Recon',
       'Data' => [['name' => 'cookie', 'ui_label' => 'Cookie name', 'value' =>'cookie']],
       'Author' => ['vo'],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>  BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_WORKING, 
+      'browser_name' =>     ALL
     })
 
     use 'beef.browser.cookie'

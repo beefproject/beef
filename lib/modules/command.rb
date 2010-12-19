@@ -39,8 +39,15 @@ module BeEF
     
     BD = BeEF::Models::BrowserDetails
     
+    ALL = BeEF::Constants::Browsers::ALL
+    IE  = BeEF::Constants::Browsers::IE
+    S   = BeEF::Constants::Browsers::S
+    FF  = BeEF::Constants::Browsers::FF
+    C   = BeEF::Constants::Browsers::C
+    
     VERIFIED_WORKING =     BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
     VERIFIED_NOT_WORKING = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
+    VERIFIED_USER_NOTIFY = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY
     VERIFIED_UNKNOWN =     BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN
     
     # Super class controller
@@ -114,37 +121,62 @@ module BeEF
       
     end
 
+    # set the target details 
+    # this function is used when determining the code of the node icon
+    def set_target(definition)
+
+      @target = [] if not @target
+      @target.push(definition)
+
+    end
+
     # verify whether this command module has been checked against the target browser
+    # this function is used when determining the code of the node icon
     def verify_target
+
+      return VERIFIED_UNKNOWN if not @target # no target specified in the module
+
+      @target.each {|definition| 
+        return definition['verified_status'] if test_target(definition)
+      }
+
+      return VERIFIED_UNKNOWN
+
+    end
+    
+    # test if the target definition matches the hooked browser
+    # this function is used when determining the code of the node icon
+    def test_target(target_definition)
       # if the target is not set in the module return unknown
-      return VERIFIED_UNKNOWN if @target.nil?
-      return VERIFIED_UNKNOWN if @target['browser_name'].nil?
+      return false if target_definition.nil?
+      # return false if not target_definition[0]['browser_name']
+      return false if target_definition['browser_name'].nil?
 
       # retrieve the target browser name
       browser_name = get_browser_detail('BrowserName')
-      return VERIFIED_UNKNOWN if browser_name.eql? 'UNKNOWN' or browser_name.nil?
+      return false if browser_name.eql? 'UNKNOWN' or browser_name.nil?
       
       # check if the browser is targeted
-      all_browsers_targeted  = @target['browser_name'].eql? BeEF::Constants::Browsers::ALL
-      target_browser_matches = browser_name.eql? @target['browser_name']
-      return VERIFIED_NOT_WORKING if not (target_browser_matches || all_browsers_targeted) 
+      all_browsers_targeted  = target_definition['browser_name'].eql? BeEF::Constants::Browsers::ALL
+      target_browser_matches = browser_name.eql? target_definition['browser_name']
+      return false if not (target_browser_matches || all_browsers_targeted) 
       
       # assume that the browser_maxver and browser_minver were excluded 
-      return VERIFIED_WORKING if @target['browser_maxver'].nil? && @target['browser_minver'].nil?
+      return true if target_definition['browser_maxver'].nil? && target_definition['browser_minver'].nil?
       
       # check if the browser version is targeted
       browser_version = get_browser_detail('BrowserVersion')
       browser_version = 'UNKNOWN' if browser_version.nil?      
-      return VERIFIED_UNKNOWN if browser_version.eql? 'UNKNOWN'
+      return false if browser_version.eql? 'UNKNOWN'
       
       # check the browser version number is within range
-      return VERIFIED_NOT_WORKING if browser_version.to_f > @target['browser_maxver'].to_f
-      return VERIFIED_NOT_WORKING if browser_version.to_f < @target['browser_minver'].to_f
+      return false if browser_version.to_f > target_definition['browser_maxver'].to_f
+      return false if browser_version.to_f < target_definition['browser_minver'].to_f
       
       # all the checks passed and this module targets the user agent
-      VERIFIED_WORKING
+      true
     end
-
+    
     # Store the browser detail in the database. 
     def set_browser_detail(key, value)
       raise WEBrick::HTTPStatus::BadRequest, "@session_id is invalid" if not BeEF::Filter.is_valid_hook_session_id?(@session_id)

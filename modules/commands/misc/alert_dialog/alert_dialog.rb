@@ -15,10 +15,12 @@ class Alert_dialog < BeEF::Command
       'Category' => 'Misc',
       'Author' => 'bm',
       'Data' => [['name' => 'text', 'ui_label'=>'Alert text', 'type' => 'textarea', 'value' =>'BeEF', 'width' => '400px', 'height' => '100px']],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
+    })
+    
+    set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     ALL
     })
     
     # This tells the framework to use the file 'alert.js' as the command module instructions.

@@ -10,17 +10,25 @@ class Detect_local_settings < BeEF::Command
       'Description' => 'Grab the local network settings (i.e internal ip address)',
       'Category' => 'Network',
       'Author' => ['pdp', 'wade', 'bm'],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' => [
-          BeEF::Constants::Browsers::FF,
-          BeEF::Constants::Browsers::C
-          ]
-      }
+      'File' => __FILE__
     })
     
-    use 'beef.net.local'
+    set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     FF
+    })
     
+    set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     C
+    })
+    
+    set_target({
+        'verified_status' =>  VERIFIED_NOT_WORKING, 
+        'browser_name' =>     IE
+    })
+    
+    use 'beef.net.local'    
     use_template!
   end
   

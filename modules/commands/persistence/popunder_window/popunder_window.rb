@@ -10,15 +10,19 @@ class Popunder_window < BeEF::Command
   	#
 	def initialize
 		super({
-      			'Name' => 'Pop Under Window',
-      			'Description' => 'Creates a new discrete pop under window with the beef hook included.<br><br>This module will add another browser node to the tree. It will be a duplicate. This will be addressed in a future release',
-      			'Category' => 'Persistence',
-      			'Author' => 'ethicalhack3r',
-	      		'File' => __FILE__,
-			      'Target' => { 'browser_name' => BeEF::Constants::Browsers::ALL }
-   		 })
+      'Name' => 'Pop Under Window',
+      'Description' => 'Creates a new discrete pop under window with the beef hook included.<br><br>This module will add another browser node to the tree. It will be a duplicate. This will be addressed in a future release',
+      'Category' => 'Persistence',
+      'Author' => 'ethicalhack3r',
+	    'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_WORKING, 
+      'browser_name' =>     ALL
+    })
    
-    		use_template!
+    use_template!
     
 	end
 

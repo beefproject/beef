@@ -13,11 +13,13 @@ class Detect_visited_urls < BeEF::Command
       'Data' => [
         ['ui_label'=>'URL(s)', 'name'=>'urls', 'type'=>'textarea', 'value'=>'http://www.bindshell.net/', 'width'=>'200px']
       ],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
     })    
+         
+    set_target({
+     'verified_status' =>  VERIFIED_WORKING, 
+     'browser_name' =>     ALL
+    })
               
     use_template!
   end

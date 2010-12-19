@@ -13,10 +13,12 @@ class Physical_location < BeEF::Command
         },
       'Category' => 'Host',
       'Author' => ['antisnatchor'],
-      'File' => __FILE__,
-      'Target' => {
-        'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_USER_NOTIFY, 
+      'browser_name' =>     ALL
     })
 
     use 'beef.geolocation'

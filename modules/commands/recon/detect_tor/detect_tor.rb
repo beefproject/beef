@@ -14,14 +14,15 @@ class Detect_tor < BeEF::Command
           [
               ['name'=>'timeout', 'ui_label' =>'Detection timeout','value'=>'10000']
           ],
-      'File' => __FILE__,
-      'Target' => {
-            'browser_name' =>     BeEF::Constants::Browsers::ALL
-      }
+      'File' => __FILE__
+    })
+
+    set_target({
+      'verified_status' =>  VERIFIED_WORKING, 
+      'browser_name' =>     ALL
     })
     
     use 'beef.net.local'
-    
     use_template!
   end
   
