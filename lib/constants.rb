@@ -23,13 +23,14 @@ module Constants
 
   module Browsers
 
-  	FF  = 'FF'   # Firefox
-  	M   = 'M'    # Mozila
-  	IE  = 'IE'   # Internet Explorer
-  	S   = 'S'    # Safari
-  	K   = 'K'    # Konqueror
-  	C   = 'C'    # Chrome
-  	ALL = 'ALL'  # ALL
+  	FF      = 'FF'       # Firefox
+  	M       = 'M'        # Mozila
+  	IE      = 'IE'       # Internet Explorer
+  	S       = 'S'        # Safari
+  	K       = 'K'        # Konqueror
+  	C       = 'C'        # Chrome
+  	ALL     = 'ALL'      # ALL
+  	UNKNOWN = 'UNKNOWN'  # Unknown
   	
   	FRIENDLY_FF_NAME  = 'Firefox' 
   	FRIENDLY_M_NAME   = 'Mozila'
@@ -50,7 +51,6 @@ module Constants
   	  end
   	  
 	  end
-
 
   end
   
@@ -83,8 +83,8 @@ module Constants
   	OS_LINUX_IMG          = 'linux.png'
   	OS_MAC_UA_STR         = 'Mac'
   	OS_MAC_IMG            = 'mac.png'
-	OS_IPHONE_UA_STR      = 'iPhone'
- 	OS_IPHONE_IMG         = 'iphone.png'
+	  OS_IPHONE_UA_STR      = 'iPhone'
+ 	  OS_IPHONE_IMG         = 'iphone.png'
   	
   end
   

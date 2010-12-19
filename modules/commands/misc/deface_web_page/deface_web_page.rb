@@ -28,7 +28,7 @@ class Deface_web_page < BeEF::Command
     })
 
     set_target({
-      'verified_status' =>  VERIFIED_WORKING, 
+      'verified_status' =>  VERIFIED_USER_NOTIFY, 
       'browser_name' =>     ALL
     })
 

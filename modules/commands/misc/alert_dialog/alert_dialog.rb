@@ -19,8 +19,8 @@ class Alert_dialog < BeEF::Command
     })
     
     set_target({
-        'verified_status' =>  VERIFIED_WORKING, 
-        'browser_name' =>     ALL
+      'verified_status' =>  VERIFIED_USER_NOTIFY, 
+      'browser_name' =>     ALL
     })
     
     # This tells the framework to use the file 'alert.js' as the command module instructions.

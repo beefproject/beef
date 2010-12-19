@@ -39,11 +39,12 @@ module BeEF
     
     BD = BeEF::Models::BrowserDetails
     
-    ALL = BeEF::Constants::Browsers::ALL
-    IE  = BeEF::Constants::Browsers::IE
-    S   = BeEF::Constants::Browsers::S
-    FF  = BeEF::Constants::Browsers::FF
-    C   = BeEF::Constants::Browsers::C
+    UNKNOWN = BeEF::Constants::Browsers::UNKNOWN
+    ALL     = BeEF::Constants::Browsers::ALL
+    IE      = BeEF::Constants::Browsers::IE
+    S       = BeEF::Constants::Browsers::S
+    FF      = BeEF::Constants::Browsers::FF
+    C       = BeEF::Constants::Browsers::C
     
     VERIFIED_WORKING =     BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
     VERIFIED_NOT_WORKING = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
@@ -136,6 +137,7 @@ module BeEF
 
       return VERIFIED_UNKNOWN if not @target # no target specified in the module
 
+      # loop through each definition and check it
       @target.each {|definition| 
         return definition['verified_status'] if test_target(definition)
       }
@@ -146,35 +148,57 @@ module BeEF
     
     # test if the target definition matches the hooked browser
     # this function is used when determining the code of the node icon
-    def test_target(target_definition)
-      # if the target is not set in the module return unknown
-      return false if target_definition.nil?
-      # return false if not target_definition[0]['browser_name']
-      return false if target_definition['browser_name'].nil?
+    def test_target_attribute(hb_attr_name, hb_attr_ver, target_attr_name, target_attr_max_ver, target_attr_min_ver)
 
-      # retrieve the target browser name
-      browser_name = get_browser_detail('BrowserName')
-      return false if browser_name.eql? 'UNKNOWN' or browser_name.nil?
+      # check if wild cards are set
+      return true if not target_attr_name
+      return true if target_attr_name.nil?
+      return true if target_attr_name.eql? ALL
+
+      # can't answer based on hb_attr_name
+      return false if not hb_attr_name
+      return false if hb_attr_name.nil?
+      return false if hb_attr_name.eql? UNKNOWN
       
-      # check if the browser is targeted
-      all_browsers_targeted  = target_definition['browser_name'].eql? BeEF::Constants::Browsers::ALL
-      target_browser_matches = browser_name.eql? target_definition['browser_name']
-      return false if not (target_browser_matches || all_browsers_targeted) 
+      # check if the attribute is targeted
+      return false if not target_attr_name.eql? hb_attr_name
       
-      # assume that the browser_maxver and browser_minver were excluded 
-      return true if target_definition['browser_maxver'].nil? && target_definition['browser_minver'].nil?
+      # assume that the max version and min version were purposefully excluded 
+      return true if target_attr_max_ver.nil? && target_attr_min_ver.nil?
       
-      # check if the browser version is targeted
-      browser_version = get_browser_detail('BrowserVersion')
-      browser_version = 'UNKNOWN' if browser_version.nil?      
-      return false if browser_version.eql? 'UNKNOWN'
+      # check if the framework can detect hb version
+      return false if hb_attr_ver.eql? 'UNKNOWN'
       
-      # check the browser version number is within range
-      return false if browser_version.to_f > target_definition['browser_maxver'].to_f
-      return false if browser_version.to_f < target_definition['browser_minver'].to_f
+      # check the version number is within range
+      return false if hb_attr_ver.to_f > target_attr_max_ver.to_f
+      return false if hb_attr_ver.to_f < target_attr_min_ver.to_f
       
-      # all the checks passed and this module targets the user agent
+      # all the checks passed
       true
+    end
+    
+    # test if the target definition matches the hooked browser
+    # this function is used when determining the code of the node icon
+    def test_target(target_definition)
+      
+      # if the definition is nill we don't know
+      return false if target_definition.nil?
+      
+      # check if the browser is a target
+      hb_browser_name = get_browser_detail('BrowserName')
+      hb_browser_version = get_browser_detail('BrowserVersion')
+      target_browser_name = target_definition['browser_name']
+      target_browser_max_ver = target_definition['browser_maxver']
+      target_browser_min_ver = target_definition['browser_minver']
+      browser_match = test_target_attribute(hb_browser_name, hb_browser_version, target_browser_name, target_browser_max_ver, target_browser_min_ver)
+
+      # check if the operating system is a target
+      hb_os_name = get_browser_detail('OSName')
+      target_os_name = target_definition['os_name']
+      os_match =  test_target_attribute(hb_os_name, nil, target_os_name, nil, nil)
+      
+      return browser_match && os_match
+
     end
     
     # Store the browser detail in the database. 

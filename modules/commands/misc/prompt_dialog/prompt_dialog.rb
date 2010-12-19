@@ -15,8 +15,8 @@ class Prompt_dialog < BeEF::Command
     })
     
     set_target({
-        'verified_status' =>  VERIFIED_WORKING, 
-        'browser_name' =>     ALL
+      'verified_status' =>  VERIFIED_USER_NOTIFY, 
+      'browser_name' =>     ALL
     })
     
     use_template!
