@@ -188,8 +188,8 @@ module BeEF
       hb_browser_name = get_browser_detail('BrowserName')
       hb_browser_version = get_browser_detail('BrowserVersion')
       target_browser_name = target_definition['browser_name']
-      target_browser_max_ver = target_definition['browser_maxver']
-      target_browser_min_ver = target_definition['browser_minver']
+      target_browser_max_ver = target_definition['browser_max_ver']
+      target_browser_min_ver = target_definition['browser_min_ver']
       browser_match = test_target_attribute(hb_browser_name, hb_browser_version, target_browser_name, target_browser_max_ver, target_browser_min_ver)
 
       # check if the operating system is a target
