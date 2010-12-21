@@ -68,6 +68,10 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			}
 			
 			mainPanel.activate(node.attributes.session);
+		},
+		//update the set of rules when a checkbox is clicked
+		checkchange: function(node, checked) {
+			
 		}
 	},
 	
@@ -188,7 +192,8 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			sub_folder_node = new Ext.tree.TreeNode({
 				id: 'sub-folder-'+folder,
 				text: folder,
-				checked: ((checkbox) ? false : null)
+				checked: ((checkbox) ? false : null),
+				type: this.tree_configuration["sub-branch"]
 				});
 			
 			mother_node.appendChild(sub_folder_node);
@@ -246,5 +251,16 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 				}
 			}, this);
 		}, this);
+	},
+	
+	/*
+	 * Apply a new set of distributed engine rules to the nodes in the tree
+	 * @param: {Literal Objects} the rules set. See the zombie manager.
+	 */
+	applyRules: function(rules) {
+		//we return if the tree is not distributed
+		if(!this.tree_configuration["distributed"]) return;
+		
+		//TODO
 	}
 });

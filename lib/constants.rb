@@ -88,5 +88,13 @@ module Constants
   	
   end
   
+  # The distributed engine codes
+  module DistributedEngine
+    
+    REQUESTER     = 1
+    PORTSCANNER   = 2
+    
+  end
+  
 end
 end

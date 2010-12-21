@@ -4,8 +4,15 @@ ZombieTabs = function(zombie_tree_list) {
 	this.tree_items = new Array;
 	
 	//we store the list of trees in a correct array format for ExtJs
-	for(tree in zombie_tree_list) {
-		this.tree_items.push(zombie_tree_list[tree]);
+	for(tree_name in zombie_tree_list) {
+		var tree = zombie_tree_list[tree_name];
+		
+		//set the tree as distributed if it's not the basic tree
+		if(tree_name != "basic") {
+			tree.tree_configuration["distributed"] = true;
+		}
+		
+		this.tree_items.push(tree);
 	}
 	
 	/*

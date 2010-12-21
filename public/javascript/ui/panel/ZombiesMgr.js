@@ -46,8 +46,10 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			for(var i in online_hooked_browsers) {
 				var online_hooked_browser = this.zombieFactory(i, online_hooked_browsers);
 				hooked_browsers_tree.addZombie(online_hooked_browser, true, ((tree_type != 'basic') ? true : false));
-				//TODO: add the rules here
 			}
+			
+			//apply the rules to the tree
+			hooked_browsers_tree.applyRules(rules);
 			
 			//expand the online hooked browser tree lists
 			if(hooked_browsers_tree.online_hooked_browsers_treenode.childNodes.length > 0) {
