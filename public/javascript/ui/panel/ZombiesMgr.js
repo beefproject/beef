@@ -39,13 +39,13 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			//add an offline browser to the tree
 			for(var i in offline_hooked_browsers) {
 				var offline_hooked_browser = this.zombieFactory(i, offline_hooked_browsers);
-				hooked_browsers_tree.addZombie(offline_hooked_browser, false);
+				hooked_browsers_tree.addZombie(offline_hooked_browser, false, ((tree_type != 'basic') ? true : false));
 			}
 			
 			//add an online browser to the tree
 			for(var i in online_hooked_browsers) {
 				var online_hooked_browser = this.zombieFactory(i, online_hooked_browsers);
-				hooked_browsers_tree.addZombie(online_hooked_browser, true);
+				hooked_browsers_tree.addZombie(online_hooked_browser, true, ((tree_type != 'basic') ? true : false));
 				//TODO: add the rules here
 			}
 			

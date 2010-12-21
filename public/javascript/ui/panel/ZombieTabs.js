@@ -1,9 +1,11 @@
 ZombieTabs = function(zombie_tree_list) {
 	
-	var tree_items = new Array;
+	//a variable to store the list of trees.
+	this.tree_items = new Array;
 	
+	//we store the list of trees in a correct array format for ExtJs
 	for(tree in zombie_tree_list) {
-		tree_items.push(zombie_tree_list[tree]);
+		this.tree_items.push(zombie_tree_list[tree]);
 	}
 	
 	MainPanel.superclass.constructor.call(this, {
@@ -18,7 +20,7 @@ ZombieTabs = function(zombie_tree_list) {
         minSize: 175,
         maxSize: 400,
 		deferredRender: false,
-		items: tree_items
+		items: this.tree_items
     });
 };
 
