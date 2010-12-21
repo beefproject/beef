@@ -27,7 +27,7 @@ ZombieTabs = function(zombie_tree_list) {
 		items: [
 			{
 				xtype: 'tbtext',
-				text: 'View by:'
+				text: 'Sort by:'
 			},
 			{
 				//list the hooked browsers by domain
