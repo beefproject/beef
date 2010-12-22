@@ -37,6 +37,7 @@ require 'lib/model/plugin'
 require 'lib/model/http'
 require 'lib/model/browserdetails'
 require 'lib/model/distributedenginerules'
+require 'lib/model/dynamiccommandinfo'
 
 require 'lib/crypto'
 

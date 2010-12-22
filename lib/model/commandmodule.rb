@@ -12,6 +12,8 @@ class CommandModule
   property :name, Text, :lazy => false
   
   has n, :commands
+  has 1, :dynamic_command_info
+
   
 end
 
