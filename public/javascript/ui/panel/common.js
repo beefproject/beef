@@ -52,6 +52,28 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 			case 'hidden':
 				field = new Ext.form.Hidden(input_def);
 				break;
+			case 'checkbox':
+				input_def['name'] = input['name'];
+				field = new Ext.form.Checkbox(input_def);
+				break;
+			case 'checkboxgroup':
+				input_def['name'] = input['name'];
+				input_def['items'] = input['items'];
+				field = new Ext.form.CheckboxGroup(input_def);
+				break;
+      case 'combobox':
+				input_def['triggerAction'] = 'all';
+				field = new Ext.form.ComboBox(input_def);
+
+				switch(input['store_type'].toLowerCase()){
+					case 'arraystore':
+						field['store']  = new Ext.data.ArrayStore( {
+							fields: input['store_fields'],
+							data: input['store_data'],
+						});
+						break;
+					}
+				break;
 			default:
 				field = new Ext.form.TextField(input_def);
 				break;
