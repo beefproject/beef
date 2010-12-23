@@ -75,20 +75,22 @@ ZombieTab_Commands = function(zombie) {
         }),
 		listeners: {
 			'click': function(node) {
-				if(!node.leaf) return;
-				
-				commands_statusbar.showBusy('Loading ' + node.text);
-				
-				command_module_grid.i = 0;
-				command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
-				command_module_grid.store.reload({  //reload the command module grid
-					params: {  // insert the nonce with the request to reload the grid
-						nonce: Ext.get ("nonce").dom.value
-		    		}		
-				});
-				
-				genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
-				commands_statusbar.showValid('Ready');
+				if(!node.leaf) {
+					node.toggle();
+				} else {
+					commands_statusbar.showBusy('Loading ' + node.text);
+					
+					command_module_grid.i = 0;
+					command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
+					command_module_grid.store.reload({  //reload the command module grid
+						params: {  // insert the nonce with the request to reload the grid
+							nonce: Ext.get ("nonce").dom.value
+					}		
+					});
+					
+					genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
+					commands_statusbar.showValid('Ready');
+				}
 			},
 			'afterrender' : function() {
 			}
