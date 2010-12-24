@@ -23,7 +23,7 @@ MainPanel = function(){
         }
     });
 
-    this.grid = new DataGrid('/ui/logs/all.json',25);
+    this.grid = new DataGrid('/ui/logs/all.json',30);
 	this.grid.border = false;
     this.welcome_tab = new WelcomeTab;
 

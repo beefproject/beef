@@ -15,15 +15,7 @@ class Logs < BeEF::HttpController
   # Selects logs in the database and returns them in a JSON format.
   def select_all_logs
 
-    # get params
-    start = @params['start'].to_i || 0
-    limit = @params['limit'].to_i || 25
-    raise WEBrick::HTTPStatus::BadRequest, "start less than 0" if start < 0
-    raise WEBrick::HTTPStatus::BadRequest, "limit less than 1" if limit < 1
-    raise WEBrick::HTTPStatus::BadRequest, "limit less than or equal to start" if limit <= start
-
-    # get log
-    log = BeEF::Models::Log.all(:offset => start, :limit => limit, :order => [:date.desc])
+    log = BeEF::Models::Log.all()
     raise WEBrick::HTTPStatus::BadRequest, "log is nil" if log.nil?
     
     # format log
@@ -37,11 +29,6 @@ class Logs < BeEF::HttpController
     # get params
     session = @params['session'] || nil
     raise WEBrick::HTTPStatus::BadRequest, "session is nil" if session.nil?
-    start = @params['start'].to_i || 0
-    limit = @params['limit'].to_i || 25
-    raise WEBrick::HTTPStatus::BadRequest, "start less than 0" if start < 0
-    raise WEBrick::HTTPStatus::BadRequest, "limit less than 1" if limit < 1
-    raise WEBrick::HTTPStatus::BadRequest, "limit less than or equal to start" if limit <= start
 
     zombie = BeEF::Models::Zombie.first(:session => session)
     raise WEBrick::HTTPStatus::BadRequest, "zombie is nil" if zombie.nil?
@@ -49,7 +36,7 @@ class Logs < BeEF::HttpController
     zombie_id = zombie.id
 
     # get log
-    log = BeEF::Models::Log.all(:offset => start, :limit => limit, :zombie_id => zombie_id, :order => [:date.desc])
+    log = BeEF::Models::Log.all(:zombie_id => zombie_id)
     raise WEBrick::HTTPStatus::BadRequest, "log is nil" if log.nil?
     
     # format log

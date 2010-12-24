@@ -4,7 +4,7 @@ DataGrid = function(url, page, base) {
     this.url = url;
     this.base = typeof(base) != 'undefined' ? base : {};
 
-    this.store = new Ext.data.JsonStore({
+    this.store = new Ext.ux.data.PagingJsonStore({
         root: 'logs',
         autoDestroy: true,
 		autoLoad: false,
@@ -14,7 +14,7 @@ DataGrid = function(url, page, base) {
         idProperty: 'id',
         fields: ['id','type','event','date'],
         totalProperty: 'count',
-        remoteSort: true,
+        remoteSort: false,
         sortInfo: {field: "date", direction: "DESC"}
     });
 
