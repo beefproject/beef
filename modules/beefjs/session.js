@@ -72,7 +72,7 @@ beef.session = {
 			if ($j(this).attr('href') != '')
 			{
 				e.preventDefault();
-				beef.dom.createIframe('fullscreen', {}, $j(this).attr('href'));
+				beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
 				$j(document).attr('title', $j(this).html());
 			}
 		});

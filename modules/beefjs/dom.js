@@ -6,6 +6,15 @@
 beef.dom = {
 	
 	/**
+	 * Generates a random ID for HTML elements
+	 * @param: {String} prefix: a custom prefix before the random id. defaults to "beef-"
+	 * @return: generated id
+	 */
+	generateID: function(prefix) {
+		return ((prefix == null) ? 'beef-' : prefix)+Math.floor(Math.random()*99999);
+	},	
+		
+	/**
 	 * Creates a new element but does not append it to the DOM.
 	 * @param: {String} the name of the element.
 	 * @param: {Literal Object} the attributes of that element.
@@ -64,19 +73,44 @@ beef.dom = {
 	
 	/**
 	 * @param: {String} type: can be one of the following: hidden, fullscreen, custom
+	 * @param: {String} method: can be 'get' or 'post'. defaults to get
 	 * @param: {Hash} params: list of params that will be sent in request.
-	 * @param: {String} src: the source of the iframe
+	 * @param: {Hash} styles: css styling attributes, these are merged with the defaults specified in the type parameter
 	 * @param: {Function} a callback function to fire once the iframe has loaded
 	 * @return: {Object} the inserted iframe
 	 */
-
-	createIframe: function(type, params, src, onload) {
+	createIframe: function(type, method, params, styles, onload) {
 		var css = {};
-		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, params); }
-		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, params); }
-		return $j('body').prepend('<iframe />').find('iframe').first().css(css).attr('src', src).load(onload);
+		var form_submit = (method.toLowerCase() == 'post') ? true : false; 
+		if (form_submit && params['src'])
+		{
+			var form_action = params['src'];
+			params['src'] = '';
+		}
+		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles); }
+		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, styles); }
+		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
+		if (form_submit && form_action)
+		{
+			var id = beef.dom.generateID();
+			$j(iframe).attr({'id': id, 'name':id});
+			var form = beef.dom.createForm({'action':form_action, 'method':'get', 'target':id}, false);
+			$j(form).prependTo('body').submit();
+		}
+		return iframe;
 	},
-
+	
+	/**
+	 * @param: {Hash} params: params to be applied to the form element
+	 * @param: {Boolean} append: automatically append the form to the body
+	 * @return: {Object} a form object
+	 */
+	createForm: function(params, append) {
+		var form = $j('<form></form>').attr(params);
+		if (append)
+			$j('body').append(form);
+		return form;
+	},
 	
 	/**
 	 * Get the location of the current page.
