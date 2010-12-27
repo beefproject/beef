@@ -21,11 +21,12 @@ ZombieTab_Requester = function(zombie) {
 	/*
 	 * The panel that displays the history of all requests performed.
 	 ********************************************/
-	var history_panel_store = new Ext.data.JsonStore({
+	var history_panel_store = new Ext.ux.data.PagingJsonStore({
 		storeId: 'requester-history-store-zombie-'+zombie.session,
 		url: '/ui/requester/history.json',
 		remoteSort: false,
 		autoDestroy: true,
+		autoLoad: false,
 		root: 'history',
 		
 		fields: ['domain', 'date', 'id', 'has_ran', 'path'],
@@ -36,10 +37,21 @@ ZombieTab_Requester = function(zombie) {
 			zombie_session: zombie.session
 		}
 	});
-	
+
+	var req_pagesize = 30;
+
+	var history_panel_bbar = new Ext.PagingToolbar({
+		pageSize: req_pagesize,
+		store: history_panel_store,
+		displayInfo: true,
+		displayMsg: 'Displaying history {0} - {1} of {2}',
+		emptyMsg: 'No history to display'
+	});
+
 	var history_panel_grid = new Ext.grid.GridPanel({
 		id: 'requester-history-grid-zombie-'+zombie.session,
 		store: history_panel_store,
+		bbar: history_panel_bbar,
 		border: false,
 		loadMask: {msg:'Loading History...'},
 		
@@ -74,6 +86,9 @@ ZombieTab_Requester = function(zombie) {
 				if(!tab_panel.get('requester-response-'+r.id)) {
 					genResultTab(r, zombie, commands_statusbar);
 				}
+			},
+			afterrender: function(datagrid) {
+				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
 			}
 		}
 	});
