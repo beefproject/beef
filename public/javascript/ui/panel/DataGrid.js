@@ -79,3 +79,11 @@ DataGrid = function(url, page, base) {
 };
 
 Ext.extend(DataGrid, Ext.grid.GridPanel, {});
+
+//Because we're using paging stores now, we have to override the PagingToolbar refresh
+Ext.override(Ext.PagingToolbar, {
+	doRefresh: function() {
+		delete this.store.lastParams;
+		this.doLoad(this.cursor);
+	}
+});
