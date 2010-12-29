@@ -6,6 +6,12 @@
 	color:#000;
 }
 
+#header a:link,
+#header a:visited {
+	color:#000;
+	text-decoration:underline;
+}
+
 .x-grid3-cell-inner, .x-grid3-hd-inner {
   white-space: normal; /* changed from nowrap */
 }
