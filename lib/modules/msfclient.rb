@@ -73,6 +73,10 @@ module BeEF
 			res = self.call('module.compatible_payloads',name)
 			res
 		end
+		def get_options(name)
+			res = self.call('module.options','exploit',name)
+			res
+		end
 	end
 	
 end
