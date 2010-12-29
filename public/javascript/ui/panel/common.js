@@ -52,6 +52,11 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 			case 'hidden':
 				field = new Ext.form.Hidden(input_def);
 				break;
+			case 'label':
+				input_def['fieldLabel'] = ''
+				input_def['html'] = input['html'];
+				field = new Ext.form.Label(input_def);
+				break;
 			case 'checkbox':
 				input_def['name'] = input['name'];
 				field = new Ext.form.Checkbox(input_def);
