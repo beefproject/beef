@@ -188,6 +188,8 @@ class Modules < BeEF::HttpController
       command_module_name = File.basename command_module_db_details.path, '.rb' # get the name
       command_module = BeEF::Modules::Commands.const_get(command_module_name.capitalize).new
       command_module.session_id = hook_session_id 
+      command_module.update_info(command_module_db_details.id) if(command_module_db_details.path.match(/^Dynamic/))
+
       
       # set command module treeview display properties 
       command_module_friendly_name = command_module.info['Name'].downcase
@@ -257,6 +259,9 @@ class Modules < BeEF::HttpController
     command_module = BeEF::Models::CommandModule.first(:id => command_module_id) 
     raise WEBrick::HTTPStatus::BadRequest, "Invalid command_module id" if command_module.nil?
 
+    # Dynamic modules won't have a real path
+		return command_module.path if (command_module.path.match(/^Dynamic/))
+
     # construct command_module path
     absolute_command_module_path = $root_dir+File::SEPARATOR+command_module.path
     raise WEBrick::HTTPStatus::BadRequest, "command_module file does not exist" if not File.exists?(absolute_command_module_path)
@@ -275,7 +280,11 @@ class Modules < BeEF::HttpController
     # get the command_module path
     absolute_command_module_path = get_command_module_path(command_module_id)
     
-    @body = command_modules2json([absolute_command_module_path]); 
+		if(absolute_command_module_path.match(/^Dynamic/))
+    	@body = dynamic_modules2json(command_module_id);
+		else	
+    	@body = command_modules2json([absolute_command_module_path]); 
+		end
   end
   
   # Returns the list of commands for an command_module
@@ -445,6 +454,25 @@ class Modules < BeEF::HttpController
       return {'success' => 'false'}.to_json
     end
   end
+
+  def dynamic_modules2json(id)
+    command_modules_json = {}
+
+    mod = BeEF::Models::CommandModule.first(:id => id)
+
+    return {'success' => 'false'}.to_json if(not mod)
+		dynamic_type = mod.path.split("/").last
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
+    e.update_info(mod.id)
+    e.update_data()
+    command_modules_json[1] = JSON.parse(e.to_json)
+    if not command_modules_json.empty?
+        return {'success' => 'true', 'command_modules' => command_modules_json}.to_json
+    else
+        return {'success' => 'false'}.to_json
+    end
+  end
+
   
 end
 

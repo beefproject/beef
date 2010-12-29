@@ -64,6 +64,8 @@ require 'lib/server/inithandler'
 require 'lib/logger'
 require 'lib/modules/command'
 require 'lib/modules/requester'
+require 'lib/modules/msfclient'
+require 'lib/modules/msfcommand'
 
 require 'openssl'
 

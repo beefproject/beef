@@ -38,6 +38,27 @@ class Migration
         BeEF::Models::CommandModule.new(:path => command, :name => /.*\/(\w+)\.rb/.match(command).to_a[1]).save if not db_commands.include? command
       end
     end
+
+		msf = BeEF::MsfClient.new()
+		if(msf.is_enabled)
+			msf.login()
+			sploits = msf.browser_exploits()
+			sploits.each do |sploit|
+				if not BeEF::Models::CommandModule.first(:name => sploit)
+					mod = BeEF::Models::CommandModule.new(:path => "Dynamic/Msf", :name => sploit)
+					mod.save
+					if mod.dynamic_command_info == nil
+						msfi = msf.get_exploit_info(sploit)
+						msfci = BeEF::Models::DynamicCommandInfo.new(
+									:name => msfi['name'],
+									:description => msfi['description'])
+						mod.dynamic_command_info = msfci
+						mod.save
+					end
+				end
+			end
+		end
+
   end
   
   #
