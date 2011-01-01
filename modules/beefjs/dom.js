@@ -131,6 +131,22 @@ beef.dom = {
 			linksarray = linksarray.concat(links[i].href)		
 		};
 		return linksarray
+	},
+	
+	/**
+	 * Rewrites all links matched by selector to url, also rebinds the click method to simply return true
+	 * @param: {String} url: the url to be rewritten
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteLinks: function(url, selector) {
+		var sel = (selector == null) ? 'a' : selector;
+		return $j(sel).each(function() {
+			if ($j(this).attr('href') != null)
+			{
+				$j(this).attr('href', url).click(function() { return true; });
+			}
+		}).length;
 	}
 	
 };
