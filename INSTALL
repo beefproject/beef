@@ -31,6 +31,11 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 	  sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
 	  
 	  
+	  You also need to install the ruby-dev package (required for mkmf)
+	  
+	  sudo apt-get install ruby-dev
+	  
+	  
    4. Prerequisites (Mac OSX)
    
       Make sure you have XCode installed - which provided the sqlite support Beef needs
