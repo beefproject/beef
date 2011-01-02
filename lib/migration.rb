@@ -1,3 +1,4 @@
+require 'pp'
 module BeEF
 
 #
@@ -57,6 +58,22 @@ class Migration
 					end
 				end
 			end
+
+			payloads = msf.payloads()
+			payloads.each do |payload|
+				if not  BeEF::Models::DynamicPayloads.first( :name => payload)
+					pl = BeEF::Models::DynamicPayloads.new( :name => payload)
+					pl.save
+					opts = msf.payload_options(payload)
+					opts.keys.each do |opt|
+						next if opts[opt]['advanced'] or opts[opt]['evasion']
+						pl.dynamic_payload_info.new(:name => opt, :description => opts[opt]['desc'], :required => opts[opt]['required'], :value => opts[opt]['default'])
+					end
+					pl.save
+					
+				end
+			end
+
 		end
 
   end

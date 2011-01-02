@@ -38,6 +38,9 @@ require 'lib/model/http'
 require 'lib/model/browserdetails'
 require 'lib/model/distributedenginerules'
 require 'lib/model/dynamiccommandinfo'
+require 'lib/model/dynamicpayloadinfo.rb'
+require 'lib/model/dynamicpayloads.rb'
+
 
 require 'lib/crypto'
 

@@ -77,6 +77,15 @@ module BeEF
 			res = self.call('module.options','exploit',name)
 			res
 		end
+		def payloads()
+			res = self.call('module.payloads')
+			res['modules']
+		end
+		def payload_options(name)
+			res = self.call('module.options','payload',name)
+			res
+		end
+		
 	end
 	
 end
