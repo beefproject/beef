@@ -55,7 +55,7 @@ module BeEF
       true
     end
 
-    # verify the hostname string is valid
+    # verify the browser_plugins string is valid
     def self.is_valid_browser_plugins?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
       return false if BeEF::Filter.has_non_printable_char?(str)
