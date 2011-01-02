@@ -74,7 +74,7 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 					case 'arraystore':
 						field['store']  = new Ext.data.ArrayStore( {
 							fields: input['store_fields'],
-							data: input['store_data'],
+							data: input['store_data']
 						});
 						break;
 					}
