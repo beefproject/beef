@@ -88,8 +88,9 @@ beef.dom = {
 			params['src'] = '';
 		}
 		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles); }
-		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, styles); }
+		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, styles); $j('body').css({'padding':'0px', 'margin':'0px'}); }
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
+		
 		if (form_submit && form_action)
 		{
 			var id = beef.dom.generateID();
