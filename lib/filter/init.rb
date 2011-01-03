@@ -58,10 +58,8 @@ module BeEF
     # verify the browser_plugins string is valid
     def self.is_valid_browser_plugins?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
-      return false if BeEF::Filter.has_non_printable_char?(str)
       return false if str.length > 255  
-      puts "TODO filter browser plugins: issue 179"
-      true
+      return (str =~ /[^\w\d\s()-.,;_\302\256]/).nil? # \302\256 is the (r) character
     end
 
   end

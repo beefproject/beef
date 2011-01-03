@@ -77,7 +77,6 @@ module BeEF
       
       # get and store the browser plugins
       browser_plugins = get_param(request.query, 'BrowserPlugins')
-      #TODO: add filters - is_valid_browser_plugins is only a stub
       raise WEBrick::HTTPStatus::BadRequest, "Invalid browser plugins" if not Filter.is_valid_browser_plugins?(browser_plugins)
       BD.set(session_id, 'BrowserPlugins', browser_plugins)
       
@@ -100,7 +99,6 @@ module BeEF
     # returns a selected parameter from the query string.
     def get_param(query, key)
       return nil if query[key].nil?
-      
       b64_param = query[key]
       raise WEBrick::HTTPStatus::BadRequest, "Invalid init base64 value" if Filter.has_non_printable_char?(b64_param)
       escaped_param = CGI.unescapeHTML(b64_param)
