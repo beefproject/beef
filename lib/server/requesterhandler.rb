@@ -33,7 +33,7 @@ module BeEF
       
       # validates that a hooked browser with the beef_hook token exists in the db
       zombie_db = Z.first(:session => beef_hook) || nil
-      raise WEBrick::HTTPStatus::BadRequest, "Invalide beef hook id: the hooked browser cannot be found in the database" if zombie_db.nil?
+      raise WEBrick::HTTPStatus::BadRequest, "Invalid beef hook id: the hooked browser cannot be found in the database" if zombie_db.nil?
       
       # validates that we have such a http request saved in the db
       http_db = H.first(:id => request_id.to_i, :zombie_id => zombie_db.id) || nil
