@@ -63,10 +63,12 @@ require 'lib/server/commandhandler'
 require 'lib/server/publichandler'
 require 'lib/server/requesterhandler'
 require 'lib/server/inithandler'
+require 'lib/server/eventhandler'
 
 require 'lib/logger'
 require 'lib/modules/command'
 require 'lib/modules/requester'
+
 require 'lib/modules/msfclient'
 require 'lib/modules/msfcommand'
 

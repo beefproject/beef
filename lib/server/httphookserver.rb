@@ -88,6 +88,9 @@ module BeEF
         # registers the init page
         @http_server.mount '/init', BeEF::InitHandler
         
+        # registers the event handler
+        @http_server.mount '/event', BeEF::EventHandler
+        
         @http_server.mount '/ui/public', BeEF::PublicHandler, "#{root_dir}/public"
         @http_server.mount '/favicon.ico', WEBrick::HTTPServlet::FileHandler, "#{root_dir}#{@configuration.get("favicon_dir")}/#{@configuration.get("favicon_file_name")}"
         @http_server.mount '/demos/', WEBrick::HTTPServlet::FileHandler, "#{root_dir}/demos/"
