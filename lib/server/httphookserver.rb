@@ -85,6 +85,9 @@ module BeEF
         # registers the requester page
         @http_server.mount '/requester', BeEF::RequesterHandler
         
+        # registers the event handler
+        @http_server.mount '/event', BeEF::EventHandler
+        
         # registers the init page
         @http_server.mount '/init', BeEF::InitHandler
         

