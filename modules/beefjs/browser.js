@@ -295,7 +295,7 @@ beef.browser = {
 
 	/**
 	 * Returns zombie browser window size.
-	 * @from http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+	 * @from: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
 	 */	
 	getWindowSize: function() {
 		  var myWidth = 0, myHeight = 0;
@@ -383,7 +383,58 @@ beef.browser = {
 			return false;
 		}
 		return results;
+	},
+	
+	/**
+	 * Checks if the zombie has Google Gears installed.
+	 * @return: {Boolean} true or false.
+	 *
+	 * @from: https://code.google.com/apis/gears/gears_init.js
+	 * */
+	hasGoogleGears: function() {
+
+		if (window.google && google.gears) {
+			return true;
+		}
+
+		var ggfactory = null;
+
+		// Firefox
+		if (typeof GearsFactory != 'undefined') {
+			ggfactory = new GearsFactory();
+		} else {
+			// IE
+			try {
+				ggfactory = new ActiveXObject('Gears.Factory');
+				// IE Mobile on WinCE.
+				if (ggfactory.getBuildInfo().indexOf('ie_mobile') != -1) {
+					ggfactory.privateSetGlobalObject(this);
+				}
+			} catch (e) {
+				// Safari
+				if ((typeof navigator.mimeTypes != 'undefined')
+						&& navigator.mimeTypes["application/x-googlegears"]) {
+					ggfactory = document.createElement("object");
+					ggfactory.style.display = "none";
+					ggfactory.width = 0;
+					ggfactory.height = 0;
+					ggfactory.type = "application/x-googlegears";
+					document.documentElement.appendChild(ggfactory);
+					if(ggfactory && (typeof ggfactory.create == 'undefined')) {
+						ggfactory = null;
+					}
+				}
+			}
+		}
+		if (!ggfactory) {
+			return false
+		} else {
+			return true
+		}
 	}
+
+
+	
 	
 };
 

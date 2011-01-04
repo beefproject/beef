@@ -32,6 +32,7 @@ class Detect_details < BeEF::Command
     content['Java enabled'] =  @datastore['java_enabled']
     content['VBscript enabled'] = @datastore['vbscript_enabled']
     content['Has Flash'] = @datastore['has_flash']
+    content['Has Google Gears'] = @datastore['has_googlegears']
     content['Screen Parameters'] = @datastore['screen_params']
     content['Window Size'] = @datastore['window_size']
     
