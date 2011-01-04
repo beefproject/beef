@@ -97,6 +97,10 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "zombie is nil" if command.nil?
       raise WEBrick::HTTPStatus::BadRequest, "zombie.session is nil" if command.command_module_id.nil?
 
+      # flag that the command has been sent to the hooked browser
+      command.has_run = true 
+      command.save
+      
       # get the command module
       command_module = BeEF::Models::CommandModule.first(:id => command.command_module_id)      
       raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?

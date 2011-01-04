@@ -55,7 +55,7 @@ module BeEF
         hooked_browser.save
       
         execute_plugins!
-      
+
         # add all availible command module instructions to the response
         zombie_commands = BeEF::Models::Command.all(:zombie_id => hooked_browser.id, :has_run => false)
         zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}

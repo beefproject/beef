@@ -35,16 +35,12 @@ class Command
     zombie_ip = zombie.ip
 
     # get the command module data structure from the database
-    command = first(:id => command_id.to_i, :has_run => false, :zombie_id => zombie_id) || nil
+    command = first(:id => command_id.to_i, :zombie_id => zombie_id) || nil
     raise WEBrick::HTTPStatus::BadRequest, "command is nil" if command.nil?
 
     # create the entry for the results 
     command.results.new(:zombie_id => zombie_id, :data => result, :date => Time.now.to_i)
-
-    # flag that the command has run and the results have been returned
-    command.has_run = true 
     
-    # write the data to the database
     command.save
 
     # log that the result was returned
