@@ -57,7 +57,7 @@ module BeEF
         execute_plugins!
 
         # add all availible command module instructions to the response
-        zombie_commands = BeEF::Models::Command.all(:zombie_id => hooked_browser.id, :has_run => false)
+        zombie_commands = BeEF::Models::Command.all(:zombie_id => hooked_browser.id, :instructions_sent => false)
         zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
 
         # add all availible autoloading command module instructions to the response

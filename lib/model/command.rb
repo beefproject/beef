@@ -11,7 +11,7 @@ class Command
   property :data, Text
   property :creationdate, String, :length => 15, :lazy => false
   property :label, Text, :lazy => false
-  property :has_run, Boolean, :default => false
+  property :instructions_sent, Boolean, :default => false
   
   has n, :results
   has n, :autoloadings

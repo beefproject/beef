@@ -98,7 +98,7 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "zombie.session is nil" if command.command_module_id.nil?
 
       # flag that the command has been sent to the hooked browser
-      command.has_run = true 
+      command.instructions_sent = true 
       command.save
       
       # get the command module
