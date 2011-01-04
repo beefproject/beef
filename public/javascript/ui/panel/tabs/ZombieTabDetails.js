@@ -1,7 +1,7 @@
 /*
  * The main Tab panel for the selected zombie.
  */
-ZombieTab_MainTab = function(zombie) {
+ZombieTab_DetailsTab = function(zombie) {
 	
 	var store_summary = new Ext.data.GroupingStore({
 			url: '/ui/modules/select/zombie_summary.json',
@@ -61,10 +61,10 @@ ZombieTab_MainTab = function(zombie) {
 				]
 		});
 	
-	ZombieTab_MainTab.superclass.constructor.call(this, {
-		id: 'zombie-main-tab'+zombie.session,
+	ZombieTab_DetailsTab.superclass.constructor.call(this, {
+		id: 'zombie-details-tab'+zombie.session,
 		layout: 'fit',
-		title: 'Main',
+		title: 'Details',
 		
 		items: {
 			layout:'border',
@@ -81,4 +81,4 @@ ZombieTab_MainTab = function(zombie) {
 	
 };
 
-Ext.extend(ZombieTab_MainTab, Ext.Panel, {});
+Ext.extend(ZombieTab_DetailsTab, Ext.Panel, {});

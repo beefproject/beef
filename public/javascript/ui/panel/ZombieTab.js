@@ -1,6 +1,6 @@
 ZombieTab = function(zombie) {
 	
-	main_tab = new ZombieTab_MainTab(zombie);
+	main_tab = new ZombieTab_DetailsTab(zombie);
 	log_tab = new ZombieTab_LogTab(zombie);
 	commands_tab = new ZombieTab_Commands(zombie);
 	requester_tab = new ZombieTab_Requester(zombie);
