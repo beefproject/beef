@@ -193,10 +193,9 @@ module BeEF
       browser_match = test_target_attribute(hb_browser_name, hb_browser_version, target_browser_name, target_browser_max_ver, target_browser_min_ver)
 
       # check if the operating system is a target
-      hb_os_name = get_browser_detail('OSName')
+      hb_os_name = get_browser_detail('OsName')
       target_os_name = target_definition['os_name']
       os_match =  test_target_attribute(hb_os_name, nil, target_os_name, nil, nil)
-      
       return browser_match && os_match
 
     end
