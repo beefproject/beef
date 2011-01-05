@@ -10,6 +10,10 @@ if( beef.pageIsLoaded ) {
 }
 
 window.onload = function() {
+	beef_init();
+}
+
+function beef_init() {
   if (!beef.pageIsLoaded) {
     beef.pageIsLoaded = true;
 	beef.net.sendback_browser_details()
