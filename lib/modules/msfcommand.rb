@@ -1,4 +1,3 @@
-require 'pp'
 module BeEF
 module Modules
 module Commands
@@ -20,10 +19,6 @@ class Msf < BeEF::Command
       'File' => __FILE__,
     })
     
-    set_target({
-      'browser_name' =>     ALL
-    })
-
     use 'beef.dom'
     use_template!
   end
@@ -35,21 +30,39 @@ class Msf < BeEF::Command
 	def update_info(id)
 				mod = BeEF::Models::CommandModule.first(:id => id)
 				msfinfo = nil
+        targets = []
 
 				if mod.dynamic_command_info == nil
 					msf = BeEF::MsfClient.new
 					msf.login()
 					msfinfo = msf.get_exploit_info(mod.name)
+
+				  st = mod.name.split('/').first
+
+					os_name = BeEF::Constants::Os::match_os(st)
+					browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
+
+					targets << {'os_name' => os_name, 'browser_name' => 'ALL'} if browsers.count == 0
+
+					browsers.each do |bn|
+						targets << {'os_name' => os_name, 'browser_name' => bn}
+					end
+
+
 				  mod.dynamic_command_info = BeEF::Models::DynamicCommandInfo.new( 
 																				 :name => msfinfo['name'],
-																				 :description => msfinfo['description']);
+																				 :description => msfinfo['description'],
+																				 :targets => targets.to_json);
 					mod.save
 				else
 					msfinfo = mod.dynamic_command_info
+					targets = JSON.parse(msfinfo['targets'])
 				end
 				@info['Name'] = msfinfo['name']
 				@info['Description'] = msfinfo['description']
 				@info['MsfModName'] = mod.name
+				@target = targets
+
 
 	end
 	def update_data()
@@ -73,7 +86,6 @@ class Msf < BeEF::Command
 								else
 									print "K => #{k}\n"
 									print "Status => #{msfoptions[k]['advanced']}\n"
-									p msfoptions[k]
 								end
 				}
 

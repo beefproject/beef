@@ -1,4 +1,3 @@
-require 'pp'
 module BeEF
 
 #
@@ -50,9 +49,25 @@ class Migration
 					mod.save
 					if mod.dynamic_command_info == nil
 						msfi = msf.get_exploit_info(sploit)
+
+						st = sploit.split('/').first
+						targets = []
+
+						os_name = BeEF::Constants::Os::match_os(st)
+
+						browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
+
+						targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 2} if browsers.count == 0
+
+						browsers.each do |bn|
+							targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 2}
+						end
+
 						msfci = BeEF::Models::DynamicCommandInfo.new(
 									:name => msfi['name'],
-									:description => msfi['description'])
+									:description => msfi['description'],
+									:targets => targets.to_json)
+
 						mod.dynamic_command_info = msfci
 						mod.save
 					end
@@ -98,6 +113,7 @@ class Migration
       end
     end
   end
+
   
 end
 

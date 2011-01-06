@@ -10,6 +10,7 @@ class DynamicCommandInfo
 	property :id, Serial
   property :name, Text, :lazy => false
   property :description, Text, :lazy => false
+	property :targets, Text, :lazy => false
 	belongs_to :command_module
   
 end

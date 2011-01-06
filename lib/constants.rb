@@ -52,6 +52,27 @@ module Constants
   	  
 	  end
 
+		def self.match_browser(browserstring)
+				matches = []
+				browserstring.split(" ").each do |chunk|
+				  case chunk
+				    when /Firefox/ , /FF/
+					    matches << FF
+				    when /Mozilla/
+					    matches << M
+					  when /Internet Explorer/, /IE/
+						  matches << IE
+					  when /Safari/
+				      matches << S
+					  when /Konqueror/
+					    matches << K
+					  when /Chrome/
+					    matches << C
+					end
+				end
+				matches.uniq
+		end
+
   end
   
   # The User Agent strings for browser detection
@@ -85,6 +106,21 @@ module Constants
   	OS_MAC_IMG            = 'mac.png'
 	  OS_IPHONE_UA_STR      = 'iPhone'
  	  OS_IPHONE_IMG         = 'iphone.png'
+
+		def self.match_os(name)
+			case name.downcase
+				when /win/
+					OS_WINDOWS_UA_STR
+				when /lin/
+					OS_LINUX_UA_STR
+				when /os x/, /osx/, /mac/
+					OS_MAC_UA_STR
+				when /iphone/
+					OS_IPHONE_UA_STR
+				else
+					'ALL'
+				end
+		end
   	
   end
   
