@@ -74,11 +74,13 @@ module BeEF
       response.header['Content-Type'] = 'text/javascript' 
       response.header['Access-Control-Allow-Origin'] = '*'
       response.header['Access-Control-Allow-Methods'] = 'POST, GET'
+      response.header['Access-Control-Allow-Headers'] = 'Content-Type'
       response.body = @body
       
     end
       
     alias do_POST do_GET
+    alias do_OPTIONS do_GET
     
     private
     

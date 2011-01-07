@@ -24,6 +24,9 @@ module BeEF
     #
     def do_POST(request, response)
 
+      response.header['Access-Control-Allow-Origin'] = '*'
+      response.header['Access-Control-Allow-Methods'] = 'POST, GET'
+      response.header['Access-Control-Allow-Headers'] = 'Content-Type'
       response.body = ''
       
       # validate hook session value
@@ -95,6 +98,8 @@ module BeEF
       end
 
     end
+    
+    alias do_OPTIONS do_POST
     
     # returns a selected parameter from the query string.
     def get_param(query, key)
