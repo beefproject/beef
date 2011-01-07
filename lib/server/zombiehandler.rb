@@ -44,7 +44,7 @@ module BeEF
       if not hooked_browser # is a new browser so return instructions to set up the hook
         
         # generate the instructions to hook the browser
-        build_beefjs!()
+        build_beefjs!(@request.host)
       
       else # is a known browseer so send instructions 
       

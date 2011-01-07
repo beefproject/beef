@@ -13,7 +13,7 @@ module Modules
     # @param: {Object} the hook session id
     # @param: {Boolean} if the framework is already loaded in the hooked browser
     #
-    def build_beefjs!()
+    def build_beefjs!(req_host)
 
       # set up values required to construct beefjs
       beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
@@ -30,8 +30,12 @@ module Modules
       config = BeEF::Configuration.instance
       hook_session_name = config.get('hook_session_name')
       hook_session_config = BeEF::HttpHookServer.instance.to_h
-#      hook_session_config['beef_hook_session_name'] = hook_session_name
-#      hook_session_config['beef_hook_session_id'] = hook_session_id
+
+      # if http_host="0.0.0.0" in config ini, use the host requested by client
+      if hook_session_config['beef_host'].eql? "0.0.0.0" 
+        hook_session_config['beef_host'] = req_host 
+        hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)  
+      end
       
       # populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)
