@@ -51,6 +51,8 @@ module BeEF
       response.body = @body
     end
     
+    alias do_GET do_POST
+    
     private
     
     @request

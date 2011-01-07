@@ -99,7 +99,8 @@ module BeEF
 
     end
     
-    alias do_OPTIONS do_POST
+    alias do_OPTIONS do_POST 
+    alias do_GET do_POST
     
     # returns a selected parameter from the query string.
     def get_param(query, key)

