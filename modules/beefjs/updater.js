@@ -52,7 +52,6 @@ beef.updater = {
 				'POST',
 				function(response, textStatus) { 
 					if(response != null && response.length > 0) {
-						eval(response); 
 						beef.updater.execute_commands();
 					} 
 				},

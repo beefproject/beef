@@ -69,7 +69,7 @@ beef.net = {
 	 * @example: beef.net.raw_request("http://beef.com/", 'POST', handlerfunction, "param1=value1&param2=value2");
 	 */
 	raw_request: function(url, method, handler, params) {
-		$j.getScript( url + '?' + params);
+		$j.getScript( url + '?' + params, handler);
 	},
 	
 	/**
