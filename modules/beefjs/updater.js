@@ -87,7 +87,9 @@ beef.updater = {
 			command = beef.commands.pop();
 			try {
 				command();
-			} catch(e) {}
+			} catch(e) {
+				console.error('execute_commands - command failed to execute: ' + e.message);
+			}
 		}
 		
 		this.lock = false;
