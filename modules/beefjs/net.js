@@ -11,6 +11,25 @@ beef.net = {
 
 	
 	/**
+     * Gets an object that can be used for ajax requests.
+     * 
+     * @example: var http = beef.net.get_ajax();
+     */
+    get_ajax: function() {
+            
+        // try objects
+        try {return new XMLHttpRequest()} catch(e) {};
+        try {return new ActiveXObject('Msxml2.XMLHTTP')} catch(e) {};
+        try {return new ActiveXObject('Microsoft.XMLHTTP')} catch(e) {};
+    
+        // unsupported browser
+        console.error('You browser is not supported')
+        console.error('please provide details to dev team')
+        return false;
+    },
+    
+	
+	/**
 	 * Build param string from hash.
 	 */
 	construct_params_from_hash: function(param_array) {
@@ -49,7 +68,7 @@ beef.net = {
 	 * 
 	 * @example: beef.net.raw_request("http://beef.com/", 'POST', handlerfunction, "param1=value1&param2=value2");
 	 */
-	raw_request: function(url, method, handler, params) {		
+	raw_request: function(url, method, handler, params) {
 		$j.getScript( url + '?' + params);
 	},
 	
