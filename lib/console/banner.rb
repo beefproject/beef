@@ -17,7 +17,7 @@ module Console
       
       # create an array of the interfaces the framework is listening on
       if beef_host == '0.0.0.0' # the framework will listen on all interfaces 
-        interfaces = Socket.getaddrinfo(Socket.gethostname, 'www', Socket::AF_INET, Socket::SOCK_STREAM).map { |x| x[3] }
+        interfaces = Socket.getaddrinfo(Socket.gethostname, 0, Socket::AF_UNSPEC, Socket::SOCK_STREAM, nil, Socket::AI_CANONNAME).map { |x| x[3] }
         interfaces = interfaces << "127.0.0.1"
         interfaces.uniq!
       else # the framework will listen on only one interface
