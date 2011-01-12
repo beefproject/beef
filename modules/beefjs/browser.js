@@ -267,20 +267,96 @@ beef.browser = {
 	 */
 	getPlugins: function() {
 		var results = '';
-		if (navigator.plugins && navigator.plugins.length > 0)
-		{
-			var length = navigator.plugins.length;
-			for (var i=0; i < length; i++)
-			{
-				if (i != 0)
-					results += ',';
-				results += navigator.plugins[i].name;
-			}
-		} else {
-			results = 'navigator.plugins is not supported in this browser!';
-		}
+        if (this.isIE())
+        {
+            results = this.getPluginsIE();
+        } else {
+            if (navigator.plugins && navigator.plugins.length > 0)
+            {
+                var length = navigator.plugins.length;
+                for (var i=0; i < length; i++)
+                {
+                    if (i != 0)
+                        results += ', ';
+                    results += navigator.plugins[i].name;
+                }
+            } else {
+                results = 'navigator.plugins is not supported in this browser!';
+            }
+        }
 		return results;
 	},
+	
+	/**
+	 * Returns a list of plugins detected by IE. This is a hack because IE doesn't
+	 * support navigator.plugins 
+	 */
+     getPluginsIE: function() {
+        var results = '';
+        var plugins = {'AdobePDF6':{
+            'control':'PDF.PdfCtrl', 
+            'return': function(control) {
+                version = control.getVersions().split(',');
+                version = version[0].split('=');
+                return 'Acrobat Reader v'+parseFloat(version[1]);
+            }}, 
+            'AdobePDF7':{
+            'control':'AcroPDF.PDF',
+            'return': function(control) {
+                version = control.getVersions().split(',');
+                version = version[0].split('=');
+                return 'Acrobat Reader v'+parseFloat(version[1]);
+            }},
+            'Flash':{
+            'control':'ShockwaveFlash.ShockwaveFlash',
+            'return': function(control) {
+                version = control.getVariable('$version').substring(4);
+                version = version.split(',');
+                return 'Flash Player v'+parseFloat(version[0]+'.'+version[1]);
+            }},
+            'Quicktime':{
+            'control': 'QuickTime.QuickTime',
+            'return': function(control) {
+                return 'QuickTime Player';
+            }},
+            'RealPlayer':{
+            'control': 'RealPlayer',
+            'return': function(control) {
+                version = control.getVersionInfo();
+                return 'RealPlayer v'+parseFloat(version);
+            }},
+            'Shockwave':{
+            'control': 'SWCtl.SWCtl',
+            'return': function(control) {
+                version = control.ShockwaveVersion('').split('r');
+                return 'Shockwave v'+parseFloat(version[0]);
+            }},
+            'WindowsMediaPlayer': {
+            'control': 'WMPlayer.OCX',
+            'return': function(control) {
+                return 'Windows Media Player v'+parseFloat(control.versionInfo);
+            }}
+            };
+        if (window.ActiveXObject) {
+            var j = 0;
+            for (var i in plugins)
+            {
+                var control = null;
+                var version = null;
+                try {
+                    control = new ActiveXObject(plugins[i]['control']);
+                } catch (e) { }
+                if (control)
+                {
+                    if (j != 0)
+                        results += ', ';
+                    results += plugins[i]['return'](control);
+                    j++;
+                }
+            }
+        }
+        return results;
+    },
 
 	/**
 	 * Returns zombie screen size and color depth.
