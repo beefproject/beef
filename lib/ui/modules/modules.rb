@@ -280,8 +280,16 @@ class Modules < BeEF::HttpController
     # get the command_module path
     absolute_command_module_path = get_command_module_path(command_module_id)
     
+    # check if the request relates to a dynamic module
 		if(absolute_command_module_path.match(/^Dynamic/))
-    	@body = dynamic_modules2json(command_module_id);
+		  # get command_module id
+      payload_name = @params['payload_name'] || nil
+      
+      if not payload_name.nil? 
+        @body = dynamic_payload2json(command_module_id, payload_name) 
+      else
+    	  @body = dynamic_modules2json(command_module_id);
+  	  end
 		else	
     	@body = command_modules2json([absolute_command_module_path]); 
 		end
@@ -455,13 +463,18 @@ class Modules < BeEF::HttpController
     end
   end
 
+  # return the input requred for the module in JSON format
   def dynamic_modules2json(id)
     command_modules_json = {}
-
+    
     mod = BeEF::Models::CommandModule.first(:id => id)
 
+    # if the module id is not in the database return false
     return {'success' => 'false'}.to_json if(not mod)
+    
+    # the path will equal Dynamic/<type> and this will get just the type
 		dynamic_type = mod.path.split("/").last
+		
     e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
     e.update_info(mod.id)
     e.update_data()
@@ -473,6 +486,24 @@ class Modules < BeEF::HttpController
     end
   end
 
+  def dynamic_payload2json(id, payload_name)
+    command_modules_json = {}
+
+    dynamic_command_module = BeEF::Models::CommandModule.first(:id => id)
+    raise WEBrick::HTTPStatus::BadRequest, "Module does not exists" if dynamic_command_module.nil?
+
+    # the path will equal Dynamic/<type> and this will get just the type
+		dynamic_type = dynamic_command_module.path.split("/").last
+
+    # get payload options in JSON
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new    
+    payload_options_json = []
+    payload_options_json[1] = e.get_payload_options(payload_name)
+    raise WEBrick::HTTPStatus::BadRequest, "Payload JSON generation error" if payload_options_json.empty?
+    
+    return {'success' => 'true', 'command_modules' => payload_options_json}.to_json
+
+  end
   
 end
 

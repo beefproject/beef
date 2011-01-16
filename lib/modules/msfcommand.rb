@@ -27,17 +27,20 @@ class Msf < BeEF::Command
                 save({'result' => @datastore['result']})
   end
 
+  # 
 	def update_info(id)
 				mod = BeEF::Models::CommandModule.first(:id => id)
 				msfinfo = nil
         targets = []
-
+        
 				if mod.dynamic_command_info == nil
+				  
 					msf = BeEF::MsfClient.new
 					msf.login()
 					msfinfo = msf.get_exploit_info(mod.name)
 
 				  st = mod.name.split('/').first
+				  puts "st: " + st
 
 					os_name = BeEF::Constants::Os::match_os(st)
 					browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
@@ -47,7 +50,6 @@ class Msf < BeEF::Command
 					browsers.each do |bn|
 						targets << {'os_name' => os_name, 'browser_name' => bn}
 					end
-
 
 				  mod.dynamic_command_info = BeEF::Models::DynamicCommandInfo.new( 
 																				 :name => msfinfo['name'],
@@ -62,7 +64,6 @@ class Msf < BeEF::Command
 				@info['Description'] = msfinfo['description']
 				@info['MsfModName'] = mod.name
 				@target = targets
-
 
 	end
 	def update_data()
@@ -106,11 +107,46 @@ class Msf < BeEF::Command
 					'displayField' => 'payload' , 
 					'autoWidth' => true,
 					'mode' => 'local',
+					'reloadOnChange' => true,
 					'emptyText' => "select a payload..."]
-
 				
 	end
 
+  def get_payload_options(payload_name)
+    # get payload options from metasploit
+  	msf_xmlrpc_clinet = BeEF::MsfClient.new()
+		msf_xmlrpc_clinet.login()
+    payload_options = msf_xmlrpc_clinet.payload_options(payload_name)
+    
+    info = {}
+    info['Data'] = []
+
+	  payload_options.keys.each { |k|
+						next if payload_options[k]['advanced'] == true
+						next if payload_options[k]['evasion'] == true
+					    info['Data'] << [ 'name' => k + '_txt', 'type' => 'label', 'html' => payload_options[k]['desc']]
+					  case payload_options[k]['type']
+					  when "string","address","port","raw","path"
+							info['Data'] << ['name' => k , 'ui_label' => k, 'value' => payload_options[k]['default']]
+						when "bool"
+							info['Data'] <<  ['name' => k, 'type' => 'checkbox', 'ui_label' => k ]
+					  when "enum"
+							info['Data'] << [ 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => payload_options[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => payload_options[k]['default']]
+						else
+						  # Debug output if the payload option type isn't found
+							puts "K => #{k}\n"
+							puts "Status => #{payload_options[k]['advanced']}\n"
+							puts "Type => #{payload_options[k]['type']}\n"
+							puts payload_options[k]
+						end
+		}
+    
+    # turn results into JSON
+    payload_options_json = []
+    payload_options_json[1] = JSON.parse(info.to_json)
+    
+  end
+
 end
 
 
@@ -118,16 +154,4 @@ end
 end
 end
 
-#@info = info
-#@datastore = @info['Data'] || nil
-#@friendlyname = @info['Name'] || nil
-#@target = @info['Target'] || nil
-#@output = ''
-#@path = @info['File'].sub(BeEF::HttpHookServer.instance.root_dir, '')
-#@default_command_url = '/command/'+(File.basename @path, '.rb')+'.js'
-#@id = BeEF::Models::CommandModule.first(:path => @info['File']).object_id
-#@use_template = false
-#@auto_update_zombie = false
-#@results = {}
-#@beefjs_components = {}
 
