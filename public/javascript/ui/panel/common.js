@@ -69,15 +69,17 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
       case 'combobox':
 				input_def['triggerAction'] = 'all';
 				
-				if(input.reloadOnChange) {
-					Ext.getCmp("payload-panel").show();
+				// add a listener so that when the check box is changed it will update the payload options
+				if(input.reloadOnChange) { // input.reloadOnChange is set in msfcommand.rb
+					Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
 					input_def['listeners'] = {
 						'select': function(combo, value) {
-									  get_metasploit_payload_details(combo.getValue(), zombie, sb);									
-								  }
+							get_metasploit_payload_details(combo.getValue(), zombie, sb); // combo.getValue() is the selected payload				
+						}
 			    	};
 				}
 
+				// create store to contain options for the combo box
 				input_def['store']  = new Ext.data.ArrayStore( {
 					fields: input['store_fields'],
 					data: input['store_data']
@@ -119,11 +121,13 @@ function get_metasploit_payload_details(payload, zombie, sb) {
 			var module = Ext.decode(resp.responseText);
 			module = module.command_modules[1];
 			
-			Ext.getCmp("payload-panel").removeAll();
-			Ext.each(module.Data, function(input){genExploitFormControl(Ext.getCmp("payload-panel"), input, null, false, zombie, sb)});
+			Ext.getCmp("payload-panel").removeAll(); // clear the panel contents
+			Ext.each(module.Data, function(input){
+				// generate each of the payload input options
+				genExploitFormControl(Ext.getCmp("payload-panel"), input, null, false, zombie, sb);
+			});
 			
-			Ext.getCmp("payload-panel").doLayout();
-						
+			Ext.getCmp("payload-panel").doLayout();				
 		}
 	})
 }

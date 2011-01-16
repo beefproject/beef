@@ -107,7 +107,7 @@ class Msf < BeEF::Command
 					'displayField' => 'payload' , 
 					'autoWidth' => true,
 					'mode' => 'local',
-					'reloadOnChange' => true,
+					'reloadOnChange' => true, # this will trigger a reload of the payload options
 					'emptyText' => "select a payload..."]
 				
 	end
