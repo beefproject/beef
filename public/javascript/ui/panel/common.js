@@ -13,101 +13,87 @@ var re_execute_command_title = 'Re-execute command'
  * @param: {Object} the status bar.
  */
 function genExploitFormControl(form, input, value, disabled, zombie, sb) {
-	var input_name;
-	var input_type = 'TextField';
-	
-	if(typeof input == 'string') {
-		input_name = input;
-		var field = new Ext.form.TextField({
-				id: 'form-zombie-'+zombie.session+'-field-'+input_name,
-				fieldLabel: input_name,
-				name: 'txt_'+input_name,
-				width: 175,
-				allowBlank:false
-			});
+	var input_field = null;
+	var input_def = null;
 		
-		if(value) field.setValue(value);
-		
-		if(disabled) field.setDisabled(true);
-		
-		form.add(field);
+	if(typeof input[0] == 'object') {
+		input = input[0];
 	}
-	else if(typeof input == 'object') {
-		var field = null, input_def;
+			
+	if (!input['ui_label']) input['ui_label'] = input['name'];
+	if (!input['type']) input['type'] = 'textfield';
+	if (!input['value']) input['value'] = '';
 		
-		if(typeof input[0] == 'object') input = input[0];
+	input_id = 'form-zombie-'+zombie.session+'-field-'+input['name'];
+	input_def = { 
+		id: input_id, 
+		name: 'txt_'+input['name'], 
+		fieldLabel: input['ui_label'], 
+		allowBlank: false, 
+		value: input['value']
+	};
 		
-		if (!input['name']) return;
-		if (!input['ui_label']) input['ui_label'] = input['name'];
-		if (!input['type']) input['type'] = 'textfield';
-		if (!input['value']) input['value'] = '';
-		
-		input_id = 'form-zombie-'+zombie.session+'-field-'+input['name'];
-		input_def = {id: input_id, name: 'txt_'+input['name'], fieldLabel: input['ui_label'], allowBlank:false, value: input['value']};
-		
-		switch(input['type'].toLowerCase()) {
-			case 'textarea':
-				field = new Ext.form.TextArea(input_def);
-				break;
-			case 'hidden':
-				field = new Ext.form.Hidden(input_def);
-				break;
-			case 'label':
-				input_def['fieldLabel'] = ''
-				input_def['html'] = input['html'];
-				field = new Ext.form.Label(input_def);
-				break;
-			case 'checkbox':
-				input_def['name'] = input['name'];
-				field = new Ext.form.Checkbox(input_def);
-				break;
-			case 'checkboxgroup':
-				input_def['name'] = input['name'];
-				input_def['items'] = input['items'];
-				field = new Ext.form.CheckboxGroup(input_def);
-				break;
-      case 'combobox':
-				input_def['triggerAction'] = 'all';
+	// create the input field object based upon the type supplied
+	switch(input['type'].toLowerCase()) {
+		case 'textarea':
+			input_field = new Ext.form.TextArea(input_def);
+			break;
+		case 'hidden':
+			input_field = new Ext.form.Hidden(input_def);
+			break;
+		case 'label':
+			input_def['fieldLabel'] = ''
+			input_def['html'] = input['html'];
+			input_field = new Ext.form.Label(input_def);
+			break;
+		case 'checkbox':
+			input_def['name'] = input['name'];
+			input_field = new Ext.form.Checkbox(input_def);
+			break;
+		case 'checkboxgroup':
+			input_def['name'] = input['name'];
+			input_def['items'] = input['items'];
+			input_field = new Ext.form.CheckboxGroup(input_def);
+			break;
+   		case 'combobox':
+			input_def['triggerAction'] = 'all';
 				
-				// add a listener so that when the check box is changed it will update the payload options
-				if(input.reloadOnChange) { // input.reloadOnChange is set in msfcommand.rb
-					Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
-					input_def['listeners'] = {
-						'select': function(combo, value) {
-							get_metasploit_payload_details(combo.getValue(), zombie, sb); // combo.getValue() is the selected payload				
-						}
-			    	};
-				}
-
-				// create store to contain options for the combo box
-				input_def['store']  = new Ext.data.ArrayStore( {
-					fields: input['store_fields'],
-					data: input['store_data']
-				});
-				
-				field = new Ext.form.ComboBox(input_def);
-					
-				break;
-			default:
-				field = new Ext.form.TextField(input_def);
-				break;
-		}
-		
-		for(definition in input) {
-			if(input[definition] && (typeof input[definition] == 'string') && (definition != 'type')
-				&& (definition != 'name')) {
-				field[definition] = input[definition];
+			// add a listener so that when the check box is changed it will update the payload options
+			if(input.reloadOnChange) { // input.reloadOnChange is set in msfcommand.rb
+				Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
+				input_def['listeners'] = {
+					'select': function(combo, value) {
+						get_metasploit_payload_details(combo.getValue(), zombie, sb); // combo.getValue() is the selected payload				
+					}
+		    	};
 			}
-		}
-		
-		if(value) field.setValue(value);
-		
-		if(disabled) field.setDisabled(true);
-		
-		form.add(field);
-	} else {
-		return;
+
+			// create store to contain options for the combo box
+			input_def['store']  = new Ext.data.ArrayStore( {
+				fields: input['store_fields'],
+				data: input['store_data']
+			});
+				
+			input_field = new Ext.form.ComboBox(input_def);
+								
+			break;
+		default:
+			input_field = new Ext.form.TextField(input_def);
+			break;
 	}
+		
+	// add the properties for the input element, for example: widths, default values and the html lables
+	for(definition in input) {
+		if( (typeof input[definition] == 'string') && (definition != 'type') && (definition != 'name')) {
+			input_field[definition] = input[definition];
+		}
+	}
+
+	if(value) input_field.setValue(value);
+	if(disabled) input_field.setDisabled(true);
+		
+	form.add(input_field);
+		
 };
 
 function get_metasploit_payload_details(payload, zombie, sb) {
