@@ -17,14 +17,9 @@ class Iphone_tel < BeEF::Command
       The protocol handler used will be: tel',
       'Category' => 'Host',
       'Author' => 'xntrik, Nitesh Dhanjani',
-      'Data' =>
-          [
-              [   'name' => 'tel_num',
-                  'ui_label'=>'Number',
-                  'value' =>'5551234',
-                  'width' => '200px'
-              ],
-          ],
+      'Data' => [
+        { 'name' => 'tel_num', 'ui_label'=>'Number', 'value' =>'5551234','width' => '200px' },
+      ],
       'File' => __FILE__
     })
 

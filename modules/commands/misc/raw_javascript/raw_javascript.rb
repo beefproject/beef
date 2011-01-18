@@ -17,9 +17,7 @@ class Raw_javascript < BeEF::Command
       'Author' => ['wade','vo'],
       'Data' =>
         [
-          ['name' => 'cmd', 'ui_label' => 'Javascript Code', 
-           'value' => "alert(\'BeEF Raw Javascript\');\nreturn \'It worked!\';", 
-           'type' => 'textarea', 'width' => '400px', 'height' => '100px'],
+          {'name' => 'cmd', 'ui_label' => 'Javascript Code', 'value' => "alert(\'BeEF Raw Javascript\');\nreturn \'It worked!\';", 'type' => 'textarea', 'width' => '400px', 'height' => '100px'},
         ],
       'File' => __FILE__
     })

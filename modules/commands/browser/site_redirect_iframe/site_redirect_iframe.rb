@@ -15,9 +15,9 @@ class Site_redirect_iframe < BeEF::Command
       'Category' => 'Browser',
       'Author' => ['ethicalhack3r, Yori Kvitchko'],
 			'Data' => [
-			  ['name' => 'iframe_title', 'ui_label' => 'New Page Title', 'value' => 'BindShell.Net: Home', 'width'=>'200px'],
-			  ['name' => 'iframe_src', 'ui_label' => 'Redirect URL', 'value' => 'http://www.bindshell.net/', 'width'=>'200px'],
-			  ['name' => 'iframe_timeout', 'ui_label' => 'Timeout', 'value' => '3500', 'width'=>'150px']
+			  { 'name' => 'iframe_title', 'ui_label' => 'New Page Title', 'value' => 'BindShell.Net: Home', 'width'=>'200px' },
+			  { 'name' => 'iframe_src', 'ui_label' => 'Redirect URL', 'value' => 'http://www.bindshell.net/', 'width'=>'200px' },
+			  { 'name' => 'iframe_timeout', 'ui_label' => 'Timeout', 'value' => '3500', 'width'=>'150px' }
 			],
 	    'File' => __FILE__
     })

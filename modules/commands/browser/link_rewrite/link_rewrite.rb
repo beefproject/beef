@@ -11,8 +11,8 @@ class Link_rewrite < BeEF::Command
       'Category' => 'Browser',
       'Author' => ['passbe'],
       'Data' => [
-        ['ui_label'=>'URL', 'name'=>'url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px'],
-        ['ui_label'=>'jQuery Selector', 'name'=>'selector', 'value'=>'a', 'width'=>'200px']
+        { 'ui_label'=>'URL', 'name'=>'url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' },
+        { 'ui_label'=>'jQuery Selector', 'name'=>'selector', 'value'=>'a', 'width'=>'200px' }
       ],
       'File' => __FILE__
     })

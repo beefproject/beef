@@ -11,7 +11,7 @@ class Detect_visited_urls < BeEF::Command
       'Category' => 'Browser',
       'Author' => ['passbe'],
       'Data' => [
-        ['ui_label'=>'URL(s)', 'name'=>'urls', 'type'=>'textarea', 'value'=>'http://www.bindshell.net/', 'width'=>'200px']
+        { 'ui_label'=>'URL(s)', 'name'=>'urls', 'type'=>'textarea', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
       ],
       'File' => __FILE__
     })    

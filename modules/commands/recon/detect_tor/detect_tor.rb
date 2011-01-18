@@ -10,10 +10,9 @@ class Detect_tor < BeEF::Command
       'Description' => 'This module will detect if the zombie is currently using TOR (The Onion Router).',
       'Category' => 'Recon',
       'Author' => ['pdp', 'wade', 'bm', 'xntrik'],
-      'Data' =>
-          [
-              ['name'=>'timeout', 'ui_label' =>'Detection timeout','value'=>'10000']
-          ],
+      'Data' => [
+        {'name'=>'timeout', 'ui_label' =>'Detection timeout','value'=>'10000'}
+      ],
       'File' => __FILE__
     })
 

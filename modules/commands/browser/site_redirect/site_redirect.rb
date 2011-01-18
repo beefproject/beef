@@ -11,7 +11,7 @@ class Site_redirect < BeEF::Command
       'Category' => 'Browser',
       'Author' => ['wade', 'vo'],
       'Data' => [
-        ['ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px']
+        { 'ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
       ],
       'File' => __FILE__
     })

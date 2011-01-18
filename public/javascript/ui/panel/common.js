@@ -15,10 +15,6 @@ var re_execute_command_title = 'Re-execute command'
 function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 	var input_field = null;
 	var input_def = null;
-		
-	if(typeof input[0] == 'object') {
-		input = input[0];
-	}
 			
 	if (!input['ui_label']) input['ui_label'] = input['name'];
 	if (!input['type']) input['type'] = 'textfield';
@@ -35,6 +31,9 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 		
 	// create the input field object based upon the type supplied
 	switch(input['type'].toLowerCase()) {
+		case 'textfield':
+			input_field = new Ext.form.TextField(input_def);
+			break;
 		case 'textarea':
 			input_field = new Ext.form.TextArea(input_def);
 			break;

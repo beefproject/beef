@@ -10,7 +10,9 @@ class Prompt_dialog < BeEF::Command
       'Description' => 'Sends a prompt dialog to the victim',
       'Category' => 'Misc',
       'Author' => 'bm',
-      'Data' => [['name' =>'question', 'ui_label'=>'Prompt text']],
+      'Data' => [
+        {'name' =>'question', 'ui_label'=>'Prompt text'}
+      ],
       'File' => __FILE__
     })
     

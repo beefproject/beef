@@ -16,8 +16,8 @@ class Replace_video < BeEF::Command
       'Author' => 'Yori Kvitchko',
       'Data' =>
         [
-			['name' => 'youtube_id', 'ui_label' => 'YouTube Video ID', 'value' => 'dQw4w9WgXcQ', 'width'=>'150px'],
-			['name' => 'jquery_selector', 'ui_label' => 'jQuery Selector', 'value' => 'embed', 'width'=>'150px']
+			    {'name' => 'youtube_id', 'ui_label' => 'YouTube Video ID', 'value' => 'dQw4w9WgXcQ', 'width'=>'150px'},
+			    {'name' => 'jquery_selector', 'ui_label' => 'jQuery Selector', 'value' => 'embed', 'width'=>'150px'}
         ],
       'File' => __FILE__
     })

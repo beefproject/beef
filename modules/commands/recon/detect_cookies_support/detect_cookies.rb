@@ -12,7 +12,9 @@ class Detect_cookies < BeEF::Command
         This module will check if the browser allows a cookie with specified name to be set.
         },
       'Category' => 'Recon',
-      'Data' => [['name' => 'cookie', 'ui_label' => 'Cookie name', 'value' =>'cookie']],
+      'Data' => [
+        {'name' => 'cookie', 'ui_label' => 'Cookie name', 'value' =>'cookie'}
+      ],
       'Author' => ['vo'],
       'File' => __FILE__
     })

@@ -14,7 +14,9 @@ class Alert_dialog < BeEF::Command
       'Description' => 'Sends an alert dialog to the victim',
       'Category' => 'Misc',
       'Author' => 'bm',
-      'Data' => [['name' => 'text', 'ui_label'=>'Alert text', 'type' => 'textarea', 'value' =>'BeEF', 'width' => '400px', 'height' => '100px']],
+      'Data' => [
+        {'name' => 'text', 'ui_label'=>'Alert text', 'type' => 'textarea', 'value' =>'BeEF', 'width' => '400px', 'height' => '100px'}
+      ],
       'File' => __FILE__
     })
     

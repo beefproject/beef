@@ -14,16 +14,9 @@ class Deface_web_page < BeEF::Command
       'Description' => 'Overwrite the body of the page the victim is on with the "Deface Content" string',
       'Category' => 'Misc',
       'Author' => 'antisnatchor',
-      'Data' =>
-          [
-              [   'name' => 'deface_content',
-                  'ui_label'=>'Deface Content',
-                  'type' => 'textarea',
-                  'value' =>'Defaced!',
-                  'width' => '400px',
-                  'height' => '100px'
-              ],
-          ],
+      'Data' => [
+        { 'name' => 'deface_content', 'ui_label'=>'Deface Content', 'type' => 'textarea', 'value' =>'Defaced!', 'width' => '400px', 'height' => '100px' },
+      ],
       'File' => __FILE__
     })
 

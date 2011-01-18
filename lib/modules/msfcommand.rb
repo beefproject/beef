@@ -76,14 +76,14 @@ class Msf < BeEF::Command
 			  msfoptions.keys.each { |k|
 								next if msfoptions[k]['advanced'] == true
 								next if msfoptions[k]['evasion'] == true
-							  @info['Data'] << [ 'name' => k + '_txt', 'type' => 'label', 'html' => msfoptions[k]['desc']]
+							  @info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => msfoptions[k]['desc']}
 							  case msfoptions[k]['type']
 							  when "string","address","port"
-									@info['Data'] << ['name' => k , 'ui_label' => k, 'value' => msfoptions[k]['default']]
+									@info['Data'] << {'name' => k , 'ui_label' => k, 'value' => msfoptions[k]['default']}
 								when "bool"
-									@info['Data'] <<  ['name' => k, 'type' => 'checkbox', 'ui_label' => k ]
+									@info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
 							  when "enum"
-									@info['Data'] << [ 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => msfoptions[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => msfoptions[k]['default']]
+									@info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => msfoptions[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => msfoptions[k]['default']}
 								else
 									print "K => #{k}\n"
 									print "Status => #{msfoptions[k]['advanced']}\n"
@@ -97,7 +97,7 @@ class Msf < BeEF::Command
 						pl << [p]
 			  }	
 				
-				@info['Data'] << [ 'name' => 'Payload', 
+				@info['Data'] << { 'name' => 'Payload', 
 				  'type' => 'combobox', 
 					'ui_label' => 'Payload',
 					'store_type' => 'arraystore', 
@@ -108,7 +108,7 @@ class Msf < BeEF::Command
 					'autoWidth' => true,
 					'mode' => 'local',
 					'reloadOnChange' => true, # this will trigger a reload of the payload options
-					'emptyText' => "select a payload..."]
+					'emptyText' => "select a payload..."}
 				
 	end
 
@@ -124,14 +124,14 @@ class Msf < BeEF::Command
 	  payload_options.keys.each { |k|
 						next if payload_options[k]['advanced'] == true
 						next if payload_options[k]['evasion'] == true
-					    info['Data'] << [ 'name' => k + '_txt', 'type' => 'label', 'html' => payload_options[k]['desc']]
+					    info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => payload_options[k]['desc']}
 					  case payload_options[k]['type']
-					  when "string","address","port","raw","path"
-							info['Data'] << ['name' => k , 'ui_label' => k, 'value' => payload_options[k]['default']]
+					  when "string","address","port","raw","path", "integer"
+							info['Data'] << {'name' => k , 'ui_label' => k, 'value' => payload_options[k]['default']}
 						when "bool"
-							info['Data'] <<  ['name' => k, 'type' => 'checkbox', 'ui_label' => k ]
+							info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
 					  when "enum"
-							info['Data'] << [ 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => payload_options[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => payload_options[k]['default']]
+							info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => payload_options[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => payload_options[k]['default']}
 						else
 						  # Debug output if the payload option type isn't found
 							puts "K => #{k}\n"
@@ -144,6 +144,8 @@ class Msf < BeEF::Command
     # turn results into JSON
     payload_options_json = []
     payload_options_json[1] = JSON.parse(info.to_json)
+    
+    JSON.parse(info.to_json)
     
   end
 
