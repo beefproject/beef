@@ -10,9 +10,8 @@ var re_execute_command_title = 'Re-execute command'
  * @param: {String} the value that field should have.
  * @param: {Boolean} set to true if you want the field to be disabled.
  * @param: {Object} the targeted Zombie.
- * @param: {Object} the status bar.
  */
-function genExploitFormControl(form, input, value, disabled, zombie, sb) {
+function generate_form_input_field(form, input, value, disabled, zombie) {
 	var input_field = null;
 	var input_def = null;
 			
@@ -62,7 +61,7 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 				Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
 				input_def['listeners'] = {
 					'select': function(combo, value) {
-						get_metasploit_payload_details(combo.getValue(), zombie, sb); // combo.getValue() is the selected payload				
+						get_metasploit_payload_details(combo.getValue(), zombie); // combo.getValue() is the selected payload				
 					}
 		    	};
 			}
@@ -95,7 +94,7 @@ function genExploitFormControl(form, input, value, disabled, zombie, sb) {
 		
 };
 
-function get_metasploit_payload_details(payload, zombie, sb) {
+function get_metasploit_payload_details(payload, zombie) {
 	
 	Ext.Ajax.request({
 		loadMask: true,
@@ -109,7 +108,7 @@ function get_metasploit_payload_details(payload, zombie, sb) {
 			Ext.getCmp("payload-panel").removeAll(); // clear the panel contents
 			Ext.each(module.Data, function(input){
 				// generate each of the payload input options
-				genExploitFormControl(Ext.getCmp("payload-panel"), input, null, false, zombie, sb);
+				generate_form_input_field(Ext.getCmp("payload-panel"), input, null, false, zombie);
 			});
 			
 			Ext.getCmp("payload-panel").doLayout();				
@@ -198,7 +197,7 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 					value = xhr.data[input[0]['name']]
 				}
 				
-				genExploitFormControl(form, input, value, false, zombie, sb);
+				generate_form_input_field(form, input, value, false, zombie);
 			});
 			
 			var grid_store = new Ext.data.JsonStore({
@@ -376,7 +375,9 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				});
 				payload_panel.hide();
 				
-				Ext.each(module.Data, function(input){genExploitFormControl(form, input, null, false, zombie, sb)});
+				Ext.each(module.Data, function(input){
+					generate_form_input_field(form, input, null, false, zombie)}
+				);
 				
 				form.add(payload_panel);
 				
