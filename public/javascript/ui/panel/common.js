@@ -71,7 +71,7 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 				fields: input['store_fields'],
 				data: input['store_data']
 			});
-				
+
 			input_field = new Ext.form.ComboBox(input_def);
 								
 			break;
@@ -96,11 +96,12 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 
 function get_metasploit_payload_details(payload, zombie) {
 	
+	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod-id').value
 	Ext.Ajax.request({
 		loadMask: true,
 		url: '/ui/modules/select/commandmodule.json',
 		method: 'POST',
-		params: 'command_module_id=' + '29' + '&' + 'payload_name=' + payload,
+		params: 'command_module_id=' + modid  + '&' + 'payload_name=' + payload,
 		success: function(resp) {
 			var module = Ext.decode(resp.responseText);
 			module = module.command_modules[1];
@@ -369,6 +370,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				var payload_panel = new Ext.Panel({  
 					id: 'payload-panel',  // used with Ext.GetCmp('payload-panel')
 				    bodyStyle: 'padding:10px;', // we can assign styles to the main div  
+						layout : 'form',
 					bodyBorder: false,
 				    height:200,  
 				    border: false //we can remove the border of the panel  

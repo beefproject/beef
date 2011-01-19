@@ -63,6 +63,7 @@ class Msf < BeEF::Command
 				@info['Name'] = msfinfo['name']
 				@info['Description'] = msfinfo['description']
 				@info['MsfModName'] = mod.name
+				@info['mod-id'] = mod.id
 				@target = targets
 
 	end
@@ -109,6 +110,8 @@ class Msf < BeEF::Command
 					'mode' => 'local',
 					'reloadOnChange' => true, # this will trigger a reload of the payload options
 					'emptyText' => "select a payload..."}
+
+					@info['Data'] << { 'name' => 'mod-id' , 'id' => 'mod-id', 'type' => 'hidden', 'value' => @info['mod-id'] }
 				
 	end
 
