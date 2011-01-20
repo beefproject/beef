@@ -337,7 +337,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 							var form = Ext.getCmp('form-command-module-zombie-'+zombie.session), command_module_params = new Array();
 														
 							if(!form || !form.getForm().isValid()) {
-								console.log("TODO: Update status bar with message to complete the form")
+								sb.update_fail("Please complete all input fields!"); // status bar update
 								return;
 							}
 							
