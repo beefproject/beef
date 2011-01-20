@@ -75,7 +75,6 @@ module BeEF
           command_class = (File.basename command, '.rb').capitalize
           command_file = (File.basename command, '.rb')+'.js'
           
-          #TODO: implement URL obfuscation at start up.
           @http_server.mount "/command/#{command_file}", BeEF::CommandHandler, command_class
         }
         

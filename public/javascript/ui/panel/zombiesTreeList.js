@@ -261,6 +261,5 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		//we return if the tree is not distributed
 		if(!this.tree_configuration["distributed"]) return;
 		
-		//TODO
 	}
 });

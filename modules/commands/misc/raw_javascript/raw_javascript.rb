@@ -1,4 +1,3 @@
-#TODO: review when multi zombie hooks are available
 module BeEF
 module Modules
 module Commands

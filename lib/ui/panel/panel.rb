@@ -48,11 +48,8 @@ class Panel < BeEF::HttpController
   
   # Takes a list distributed engine rules and format the results into JSON
   def distributed_engine_rules_2_json_simple(rules)
-    #TODO
+
   end
-  
-# TODO: we have duplicate functions here (see ui/zombies/zombies.rb), maybe we need to
-# organize the code differently.
   
   # Takes a list of zombies and format the results in a JSON array.
   def zombies2json_simple(zombies)

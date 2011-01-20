@@ -71,7 +71,6 @@ class Authentication < BeEF::HttpController
     # add session cookie to response header
     @headers['Set-Cookie'] = session_cookie.to_s
       
-    # TODO add escape username and password submitted
     BeEF::Logger.instance.register('Authentication', "User with ip #{@request.peeraddr[3]} has successfuly authenticated in the application.")
     @body = "{ success : true }"
   end

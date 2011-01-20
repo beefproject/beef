@@ -132,7 +132,7 @@ module Modules
     # Executes every plugins in the framework.
     #
     def execute_plugins!
-      #TODO
+
     end
 
   end
