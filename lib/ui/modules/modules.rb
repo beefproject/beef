@@ -19,6 +19,7 @@ class Modules < BeEF::HttpController
         '/select/zombie_summary.json'       => method(:select_zombie_summary),
         '/commandmodule/commands.json'      => method(:select_command_module_commands),
         '/commandmodule/new'                => method(:attach_command_module),
+        '/commandmodule/dynamicnew'         => method(:attach_dynamic_command_module),
         '/commandmodule/reexecute'          => method(:reexecute_command_module)
       }
     })
@@ -385,6 +386,57 @@ class Modules < BeEF::HttpController
       
     @body = '{success : true}'
   end
+
+  def attach_dynamic_command_module
+    
+    definition = {}
+
+    # get params
+    zombie_session = @params['zombie_session'] || nil
+    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_session.nil?
+    command_module_id = @params['command_module_id'] || nil
+    raise WEBrick::HTTPStatus::BadRequest, "command_module id is nil" if command_module_id.nil?
+    # validate nonce
+    nonce = @params['nonce'] || nil
+    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
+    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    
+    @params.keys.each {|param| 
+      raise WEBrick::HTTPStatus::BadRequest, "invalid key param string" if not Filter.has_valid_param_chars?(param)
+      raise WEBrick::HTTPStatus::BadRequest, "first char is num" if Filter.first_char_is_num?(param)
+      definition[param[4..-1]] = params[param]
+    }
+
+    zombie = Z.first(:session => zombie_session)
+    raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
+    zombie_id = zombie.id
+    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
+    
+    mod = BeEF::Models::CommandModule.first(:id => command_module_id)
+
+    # if the module id is not in the database return false
+    return {'success' => 'false'}.to_json if(not mod)
+    
+    # the path will equal Dynamic/<type> and this will get just the type
+		dynamic_type = mod.path.split("/").last
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new    
+    e.update_info(command_module_id)
+    e.update_data()
+		ret = e.launch_exploit(definition)
+
+    return {'success' => 'false'}.to_json if ret['result'] != 'success'
+
+		basedef = {}
+		basedef['sploit_url'] = ret['uri']
+
+		C.new(  :data => basedef.to_json,
+			:zombie_id => zombie_id,
+			:command_module_id => command_module_id,
+			:creationdate => Time.new.to_i
+			).save
+    
+    @body = '{success : true}'
+  end
   
   # Returns the results of a command
   def select_command_results
@@ -480,7 +532,7 @@ class Modules < BeEF::HttpController
     e.update_data()
     command_modules_json[1] = JSON.parse(e.to_json)
     if not command_modules_json.empty?
-        return {'success' => 'true', 'command_modules' => command_modules_json}.to_json
+        return {'success' => 'true', 'dynamic' => 'true', 'command_modules' => command_modules_json}.to_json
     else
         return {'success' => 'false'}.to_json
     end

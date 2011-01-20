@@ -89,6 +89,27 @@ module BeEF
 			end
 			res
 		end
+		def launch_exploit(exploit,opts)
+				begin
+					res = self.call('module.execute','exploit',exploit,opts)
+				rescue Exception => e
+					print "Exploit failed for #{exploit} \n"
+					return false
+				end
+
+				uri = ""
+				if opts['SSL'] 
+					uri += "https://"
+				else
+					uri += "http://"
+				end
+
+				uri += @config.get('msf_callback_host') + ":" + opts['SRVPORT'] + "/" + opts['URIPATH']
+
+				res['uri'] = uri
+				res
+		end
+
 		
 	end
 	
