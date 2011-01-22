@@ -18,10 +18,9 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 	if (!input['ui_label']) input['ui_label'] = input['name'];
 	if (!input['type']) input['type'] = 'textfield';
 	if (!input['value']) input['value'] = '';
-		
-	input_id = 'form-zombie-'+zombie.session+'-field-'+input['name'];
+
 	input_def = { 
-		id: input_id, 
+		id: 'form-zombie-'+zombie.session+'-field-'+input['name'], 
 		name: 'txt_'+input['name'], 
 		fieldLabel: input['ui_label'], 
 		allowBlank: false, 
@@ -147,11 +146,6 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 				return;
 			}
 			
-			if(xhr.command_module_name == 'some specific command module') {
-				//HERE we will develop specific panels for the command modules that require it.
-				return;
-			}
-			
 			var form = new Ext.form.FormPanel({
 				url: '/ui/modules/commandmodule/reexecute',
 				id: 'form-command-module-zombie-'+zombie.session,
@@ -188,7 +182,7 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 			});
 			
 			Ext.each(xhr.definition.Data, function(input) {
-				var value;
+				var value = null;
 				
 				if(typeof input == 'string') {
 					value = xhr.data[input];
@@ -377,10 +371,10 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				    bodyStyle: 'padding:10px;', // we can assign styles to the main div  
 						layout : 'form',
 					bodyBorder: false,
-				    height:200,  
+				    height: 200,  
+					hidden: true,
 				    border: false //we can remove the border of the panel  
 				});
-				payload_panel.hide();
 				
 				Ext.each(module.Data, function(input){
 					generate_form_input_field(form, input, null, false, zombie)}
