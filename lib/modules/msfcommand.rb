@@ -84,7 +84,11 @@ class Msf < BeEF::Command
 								when "bool"
 									@info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
 							  when "enum"
-									@info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => msfoptions[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => msfoptions[k]['default']}
+									enumdata = []
+									msfoptions[k]['enums'].each { |e|
+													enumdata << [e]
+									}
+									@info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => enumdata, 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => msfoptions[k]['default']}
 								else
 									print "K => #{k}\n"
 									print "Status => #{msfoptions[k]['advanced']}\n"
