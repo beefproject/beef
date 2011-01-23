@@ -58,7 +58,7 @@ beef.session = {
 		// construct the random string 
 		for(var i=0; i<this.hook_session_id_length; i++) {
 		  var rand_num = Math.floor(Math.random()*this.hook_session_id_chars.length);
-		  hook_session_id += this.hook_session_id_chars[rand_num]
+		  hook_session_id += this.hook_session_id_chars.charAt(rand_num);
 		}
 		
 		return hook_session_id;
