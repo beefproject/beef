@@ -80,6 +80,7 @@ class Msf < BeEF::Command
 							  @info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => msfoptions[k]['desc']}
 							  case msfoptions[k]['type']
 							  when "string","address","port"
+									msfoptions[k]['default'] = rand(32**20).to_s(32)  if k == "URIPATH"
 									@info['Data'] << {'name' => k , 'ui_label' => k, 'value' => msfoptions[k]['default']}
 								when "bool"
 									@info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
@@ -134,6 +135,7 @@ class Msf < BeEF::Command
 					    info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => payload_options[k]['desc']}
 					  case payload_options[k]['type']
 					  when "string","address","port","raw","path", "integer"
+							payload_options[k]['default'] = "127.0.0.1" if k == "RHOST"
 							info['Data'] << {'name' => k , 'ui_label' => k, 'value' => payload_options[k]['default']}
 						when "bool"
 							info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
