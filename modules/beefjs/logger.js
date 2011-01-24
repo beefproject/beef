@@ -137,8 +137,8 @@ beef.logger = {
 		var s = '';
 		for (var i in this.stream)
 		{
-			s += (this.stream[i]['modifiers']['alt']) ? '*alt* ' : '';
-			s += (this.stream[i]['modifiers']['ctrl']) ? '*ctrl* ' : '';
+			//s += (this.stream[i]['modifiers']['alt']) ? '*alt* ' : '';
+			//s += (this.stream[i]['modifiers']['ctrl']) ? '*ctrl* ' : '';
 			//s += (this.stream[i]['modifiers']['shift']) ? 'Shift+' : '';
 			s += String.fromCharCode(this.stream[i]['char']);
 		}
