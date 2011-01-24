@@ -59,7 +59,7 @@ module BeEF
 			begin
 				super(meth, *args)
 			rescue Errno::ECONNREFUSED
-				print "WARNING: Connection to Metasploit backend failed.  This is typically because it is either not running your your connection information is incorrect, please verify this information and try again.  Metasploit capabilities have been disabled until this is fixed\n"
+				print "WARNING: Connection to Metasploit backend failed.  This is typically because it is either not running your connection information is incorrect, please verify this information and try again.  Metasploit capabilities have been disabled until this is fixed\n"
 				@enabled = false
 				return false
 			rescue XMLRPC::FaultException => e
