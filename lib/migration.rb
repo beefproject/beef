@@ -39,9 +39,8 @@ class Migration
       end
     end
 
-		msf = BeEF::MsfClient.new()
-		if(msf.is_enabled)
-			msf.login()
+		msf = BeEF::MsfClient.instance
+		if(msf.is_enabled && msf.login())
 			sploits = msf.browser_exploits()
 			sploits.each do |sploit|
 				if not BeEF::Models::CommandModule.first(:name => sploit)

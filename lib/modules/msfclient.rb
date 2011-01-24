@@ -4,6 +4,7 @@ module BeEF
   # XML RPC Client for Metasploit
   #
 	class MsfClient < ::XMLRPC::Client
+		include Singleton
 
 	  def initialize
 			@config = BeEF::Configuration.instance
@@ -16,14 +17,14 @@ module BeEF
 			@pw = @config.get('msf_pass')
 
 			if(not host or not path or not port or not @un or not @pw)
-				raise RuntimeError, "#{@enabled}:Insufficient information to initliaze Metasploit"
+				print "There is not enough information to initalize Metasploit connectivity at this time.  Please check your options in config.ini to verify that all information is present\n"
 				@enabled = false
 			end
 
 			@token = nil
 			@lastauth = nil
 
-			super(host,path,port)
+				super(host,path,port)
 
 
 	  end	
@@ -36,7 +37,10 @@ module BeEF
     # login into metasploit
 		def login
 			res = self.call("auth.login", @un ,@pw )
-		 	raise RuntimeError, "MSF Authentication failed" if(not (res and res['result'] == "success")) 
+		 	if(not (res and res['result'] == "success")) 
+				@enabled = false
+				return false
+			end
 			@token = res['token']
 			@lastauth = Time.now
 			
@@ -46,50 +50,79 @@ module BeEF
     
     # sends commands to the metasploit xml rpc server
 		def call(meth, *args)
+			return if not @enabled
 			if(meth != "auth.login")
-				raise RuntimeError, "client not authenticated" if(not @token)  
+				self.login() if not @token
 				args.unshift(@token)
 			end
 			
-			super(meth, *args)
+			begin
+				super(meth, *args)
+			rescue Errno::ECONNREFUSED
+				print "WARNING: Connection to Metasploit backend failed.  This is typically because it is either not running your your connection information is incorrect, please verify this information and try again.  Metasploit capabilities have been disabled until this is fixed\n"
+				@enabled = false
+				return false
+			rescue XMLRPC::FaultException => e
+				if e.faultCode == 401 and meth == "auth.login"
+					print "WARNING: Your username and password combination was rejected by the Metasploit backend server.  Please verify your settings and restart the BeEF server.  Metasploit connectivity has been disabled.\n"
+					@enabled = false
+				elsif e.faultCode == 401
+					res = self.login()
+				else
+					print "WARNING: An unknown exception has occured while talking to the Metasploit backend.  The Exception text is (#{e.faultCode} : #{e.faultString}. Please check the Metasploit logs for more details.\n"
+				end
+				return false
+			rescue Exception => e
+					print "WARNING: An unknown exception (#{e}) has occured while talking to the Metasploit backend.  Please check the Metasploit logs for more details.\n"
+					return false
+			end
+
 		end
 
 		def browser_exploits()
+				return if not @enabled
+
 				res = self.call('module.exploits')
-				raise RuntimeError, "Metasploit exploit retreval failed" if(not res['modules'])  
+				return [] if not res or not res['modules']
+
 				mods = res['modules']
 				ret = []
 				mods.each do |m|
 					ret << m if(m.include? '/browser/')
 				end
+
 				ret.sort
 		end
 
 		def get_exploit_info(name)
+			return if not @enabled
 			res = self.call('module.info','exploit',name)
-			res
+			res || {}
 		end
 		def get_payloads(name)
+			return if not @enabled
 			res = self.call('module.compatible_payloads',name)
-			res
+			res || {}
 		end
 		def get_options(name)
+			return if not @enabled
 			res = self.call('module.options','exploit',name)
-			res
+			res || {}
 		end
 		def payloads()
+			return if not @enabled
 			res = self.call('module.payloads')
+			return {} if not res or not res['modules']
 			res['modules']
 		end
 		def payload_options(name)
-			begin
-				res = self.call('module.options','payload',name)
-			rescue Exception => e
-				return {}
-			end
+			return if not @enabled
+			res = self.call('module.options','payload',name)
+			return {} if not res
 			res
 		end
 		def launch_exploit(exploit,opts)
+				return if not @enabled
 				begin
 					res = self.call('module.execute','exploit',exploit,opts)
 				rescue Exception => e

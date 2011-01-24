@@ -34,7 +34,7 @@ class Msf < BeEF::Command
         
 				if mod.dynamic_command_info == nil
 				  
-					msf = BeEF::MsfClient.new
+					msf = BeEF::MsfClient.instance
 					msf.login()
 					msfinfo = msf.get_exploit_info(mod.name)
 
@@ -70,9 +70,12 @@ class Msf < BeEF::Command
 	def update_data()
 				modname = @info['MsfModName']
 
-				msf = BeEF::MsfClient.new
-				msf.login()
-
+				msf = BeEF::MsfClient.instance
+				if not msf.is_enabled
+						@info['Description'] += "<BR>" + "*"*15 + "WARNING" + "*"*15 + "<BR>"
+						@info['Description'] += "Metasploit capapbilities have been disabled, please verify your configuration or if msf_enabled = 1 then check the BeEF console for errors"
+						return
+				end
 				msfoptions = msf.get_options(modname)
 			  msfoptions.keys.each { |k|
 								next if msfoptions[k]['advanced'] == true
@@ -97,6 +100,8 @@ class Msf < BeEF::Command
 				}
 
 				msfpayloads = msf.get_payloads(modname)
+				return if not msfpayloads or not msfpayloads['payloads']
+
 				payloads = msfpayloads['payloads']
 				pl = []
 				payloads.each { |p|
@@ -122,7 +127,7 @@ class Msf < BeEF::Command
 
   def get_payload_options(payload_name)
     # get payload options from metasploit
-  	msf_xmlrpc_clinet = BeEF::MsfClient.new()
+  	msf_xmlrpc_clinet = BeEF::MsfClient.instance
 		msf_xmlrpc_clinet.login()
     payload_options = msf_xmlrpc_clinet.payload_options(payload_name)
     
@@ -159,7 +164,7 @@ class Msf < BeEF::Command
   end
   def launch_exploit(opts)
 
-		msf = BeEF::MsfClient.new
+		msf = BeEF::MsfClient.instance
 		msf.login()
 		ret = msf.launch_exploit(@info['msfid'],opts)
 		@output = "<script>alert('#{ret['uri']}')</script>\n" if ret['result'] == 'success'
