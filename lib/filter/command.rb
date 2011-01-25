@@ -33,7 +33,7 @@ module BeEF
     # check if valid command module datastore value
     def self.is_valid_command_module_datastore_param?(str)
       return false if BeEF::Filter.has_null?(str)
-      return false if BeEF::Filter.has_non_printable_char?(str)    
+      return BeEF::Filter.has_valid_key_chars?(str)     
       true  
     end
 
