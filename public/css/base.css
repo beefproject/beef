@@ -87,3 +87,7 @@
 	margin-bottom: 10px;
 	padding-top: 4px;
 }
+
+label {
+	font: 11px tahoma,arial,helvetica,sans-serif;
+}

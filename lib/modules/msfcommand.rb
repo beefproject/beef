@@ -80,7 +80,7 @@ class Msf < BeEF::Command
 			  msfoptions.keys.each { |k|
 								next if msfoptions[k]['advanced'] == true
 								next if msfoptions[k]['evasion'] == true
-							  @info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => msfoptions[k]['desc']}
+							  @info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'text' => msfoptions[k]['desc']}
 							  case msfoptions[k]['type']
 							  when "string","address","port"
 									msfoptions[k]['default'] = rand(32**20).to_s(32)  if k == "URIPATH"
@@ -110,6 +110,7 @@ class Msf < BeEF::Command
 				
 				@info['Data'] << { 'name' => 'PAYLOAD', 
 				  'type' => 'combobox', 
+					'anchor' => '100% -100',
 					'ui_label' => 'Payload',
 					'store_type' => 'arraystore', 
 					'store_fields' => ['payload'], 
@@ -137,7 +138,7 @@ class Msf < BeEF::Command
 	  payload_options.keys.each { |k|
 						next if payload_options[k]['advanced'] == true
 						next if payload_options[k]['evasion'] == true
-					    info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'html' => payload_options[k]['desc']}
+					    info['Data'] << { 'name' => k + '_txt', 'type' => 'label', 'text' => payload_options[k]['desc']}
 					  case payload_options[k]['type']
 					  when "string","address","port","raw","path", "integer"
 							payload_options[k]['default'] = "127.0.0.1" if k == "RHOST"
