@@ -33,14 +33,13 @@ module BeEF
     # check if valid command module datastore value
     def self.is_valid_command_module_datastore_param?(str)
       return false if BeEF::Filter.has_null?(str)
-      return BeEF::Filter.has_valid_key_chars?(str)     
-      true  
+      has_valid_base_chars?(str)
     end
 
     # check for word and some punc chars
     def self.has_valid_key_chars?(str)
       return false if not BeEF::Filter.is_non_empty_string?(str)
-      (str =~ /[^\w\d\s()-.,;_\302\256]/).nil? # \302\256 is the (r) character 
+      has_valid_base_chars?(str)
     end
 
     # check for word and underscore chars
