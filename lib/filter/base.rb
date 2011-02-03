@@ -89,12 +89,6 @@ module BeEF
       return false if not is_non_empty_string?(str)
       (str =~ /[^\302\256[:print:]]/).nil? # \302\256 is the (r) character 
     end  
-    
-    # verbose filter
-    def self.has_valid_verbose_details_chars?(str)
-      return false if not is_non_empty_string?(str)
-      (str =~ /[^\w\d\s{}()-.,;:&_=\/!\302\256]/).nil? # \302\256 is the (r) character 
-    end
 
   end
   
