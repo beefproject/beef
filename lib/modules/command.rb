@@ -105,7 +105,7 @@ module BeEF
       @datastore = {'http_headers' => {}} # init the datastore
       
       # get, check and add the http_params to the datastore
-      http_params.keys.each {|http_params_key|
+      http_params.keys.each { |http_params_key|
         raise WEBrick::HTTPStatus::BadRequest, "http_params_key is invalid" if not BeEF::Filter.is_valid_command_module_datastore_key?(http_params_key)
         http_params_value = Erubis::XmlHelper.escape_xml(http_params[http_params_key])
         raise WEBrick::HTTPStatus::BadRequest, "http_params_value is invalid" if not BeEF::Filter.is_valid_command_module_datastore_param?(http_params_value)

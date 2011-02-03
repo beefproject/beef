@@ -34,7 +34,7 @@ module BeEF
     # check if valid command module datastore value
     def self.is_valid_command_module_datastore_param?(str)
       return false if has_null?(str)
-      return false if not has_valid_base_chars?(str)
+      return false if not has_valid_verbose_details_chars?(str)
       true
     end
 
