@@ -201,14 +201,19 @@ class Modules < BeEF::HttpController
       case command_module.verify_target() # select the correct icon for the command module
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING_IMG
+        command_module_status = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY_IMG
+        command_module_status = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_USER_NOTIFY
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING_IMG
+        command_module_status = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
       when BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN_IMG
+        command_module_status = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN
       else
         command_module_icon_path += BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN_IMG
+        command_module_status = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_UNKNOWN
       end
       
       # construct the category branch if it doesn't exist for the command module tree
@@ -226,6 +231,7 @@ class Modules < BeEF::HttpController
           'text' => command_module_friendly_name,
           'leaf' => true,
           'icon' => command_module_icon_path,
+          'status' => command_module_status,
           'id' => command_module_db_details.id
       }
         
@@ -239,8 +245,13 @@ class Modules < BeEF::HttpController
     
     }
       
-    # sort the array/tree 
+    # sort the parent array nodes 
     command_modules_tree_array.sort! {|a,b| a['text'] <=> b['text']}
+    
+    # sort the children nodes by status then alpha
+    command_modules_tree_array.each {|x|
+      x['children'] = x['children'].sort_by {|a| [a['status'], a['text']]}
+    }
       
     # append the number of command modules so the branch name results in: "<category name> (num)"
     command_modules_tree_array.each {|command_module_branch|
