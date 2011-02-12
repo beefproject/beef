@@ -1,10 +1,17 @@
 /*!
- * Ext JS Library 3.1.1
- * Copyright(c) 2006-2010 Ext JS, LLC
- * licensing@extjs.com
- * http://www.extjs.com/license
+ * Ext JS Library 3.3.1
+ * Copyright(c) 2006-2010 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
  */
-html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td{margin:0;padding:0;}img,body,html{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;}q:before,q:after{content:'';}.ext-el-mask {
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td{margin:0;padding:0;}img,body,html{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;}q:before,q:after{content:'';}
+
+.ext-forced-border-box, .ext-forced-border-box * {
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.ext-el-mask {
     z-index: 100;
     position: absolute;
     top:0;
@@ -68,6 +75,16 @@ html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,bloc
     display:none !important;
 }
 
+.x-hide-nosize,
+.x-hide-nosize *    /* Emulate display:none for children */
+ {
+   height:0px!important;
+   width:0px!important;
+   visibility:hidden!important;
+   border:none!important;
+   zoom:1;
+}
+
 .x-hide-visibility {
     visibility:hidden !important;
 }
@@ -109,6 +126,10 @@ html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,bloc
 
 .x-item-disabled * {
     cursor: default !important;
+}
+
+.x-form-radio-group .x-item-disabled {
+    filter: none;
 }
 
 .x-splitbar-proxy {
@@ -220,7 +241,7 @@ html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,bloc
 .x-shadow .xsmc {
     float: left;
     height: 100%;
-    background: transparent;
+    background-color: transparent;
 }
 
 .x-shadow .xst, .x-shadow .xsb {
@@ -638,18 +659,26 @@ ul.x-tab-strip li.x-tab-edge {
 /*
  * Horrible hack for IE8 in quirks mode
  */
-.ext-ie8 ul.x-tab-strip li {
+.ext-ie8 .x-tab-strip li {
     position: relative;
 }
-.ext-ie8 .x-tab-strip .x-tab-right{
-    margin-bottom: 0 !important;
+.ext-border-box .ext-ie8 .x-tab-strip-top .x-tab-right {
     top: 1px;
 }
-.ext-ie8 ul.x-tab-strip-top {
+.ext-ie8 .x-tab-strip-top {
+    padding-top: 1;
+}
+.ext-border-box .ext-ie8 .x-tab-strip-top {
     padding-top: 0;
 }
 .ext-ie8 .x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
+    top:3px;
+}
+.ext-border-box .ext-ie8 .x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
     top:4px;
+}
+.ext-ie8 .x-tab-strip-bottom .x-tab-right{
+    top:0;
 }
 
 
@@ -877,6 +906,10 @@ textarea.x-form-field {
     line-height:18px;
 }
 
+.ext-ie6 .x-form-field-wrap .x-form-file-btn, .ext-ie7 .x-form-field-wrap .x-form-file-btn {
+    top: -1px; /* because of all these margin hacks, these buttons are off by one pixel in IE6,7 */
+}
+
 .ext-ie6 textarea.x-form-field, .ext-ie7 textarea.x-form-field {
     margin:-1px 0; /* ie bogus margin bug */
 }
@@ -889,13 +922,19 @@ textarea.x-form-field {
     margin-bottom:-2px; /* another bogus margin bug, safari/mac only */
 }
 
+/*
 .ext-strict .ext-ie8 .x-form-text, .ext-strict .ext-ie8 textarea.x-form-field {
-	margin-bottom: 1px;
+    margin-bottom: 1px;
 }
+*/
 
 .ext-gecko .x-form-text , .ext-ie8 .x-form-text {
     padding-top:2px; /* FF won't center the text vertically */
     padding-bottom:0;
+}
+
+.ext-ie6 .x-form-composite .x-form-text.x-box-item, .ext-ie7 .x-form-composite .x-form-text.x-box-item {
+    margin: 0 !important; /* clear ie bogus margin bug fix */
 }
 
 textarea {
@@ -917,7 +956,7 @@ textarea {
 /* 2.0.2 style */
 .x-form-check-wrap {
     line-height:18px;
-    height: 22px;
+    height: auto;
 }
 
 .ext-ie .x-form-check-wrap input {
@@ -960,10 +999,6 @@ textarea {
     cursor:pointer;
 }
 
-.ext-webkit .x-form-field-wrap .x-form-trigger{
-    right:0;
-}
-
 .x-form-field-wrap .x-form-twin-triggers .x-form-trigger{
     position:static;
     top:auto;
@@ -973,8 +1008,13 @@ textarea {
 .x-form-field-wrap {
     position:relative;
     left:0;top:0;
+    text-align: left;
     zoom:1;
     white-space: nowrap;
+}
+
+.ext-strict .ext-ie8 .x-toolbar-cell .x-form-field-trigger-wrap .x-form-trigger {
+    right: 0; /* IE8 Strict mode trigger bug */
 }
 
 .x-form-field-wrap .x-form-trigger-over{
@@ -1017,21 +1057,17 @@ textarea {
 
 /* field focus style */
 .x-form-focus, textarea.x-form-focus{
-	border: 1px solid;
+    border: 1px solid;
 }
 
 /* invalid fields */
 .x-form-invalid, textarea.x-form-invalid{
-	background:repeat-x bottom;
-	border: 1px solid;
-}
-
-.ext-webkit .x-form-invalid{
-	border: 1px solid;
+    background:repeat-x bottom;
+    border: 1px solid;
 }
 
 .x-form-inner-invalid, textarea.x-form-inner-invalid{
-	background:repeat-x bottom;
+    background:repeat-x bottom;
 }
 
 /* editors */
@@ -1043,11 +1079,11 @@ textarea {
 
 .x-form-grow-sizer {
     left: -10000px;
-	padding: 8px 3px;
+    padding: 8px 3px;
     position: absolute;
     visibility:hidden;
     top: -10000px;
-	white-space: pre-wrap;
+    white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
@@ -1178,7 +1214,7 @@ textarea {
 }
 
 .ext-ie6 .x-form-check-wrap input, .ext-border-box .x-form-check-wrap input{
-   margin-top: 3px; 
+   margin-top: 3px;
 }
 
 .x-form-cb-label {
@@ -1222,59 +1258,59 @@ textarea {
 
 /* buttons */
 .x-form .x-form-btns-ct .x-btn{
-	float:right;
-	clear:none;
+    float:right;
+    clear:none;
 }
 
 .x-form .x-form-btns-ct .x-form-btns td {
-	border:0;
-	padding:0;
+    border:0;
+    padding:0;
 }
 
 .x-form .x-form-btns-ct .x-form-btns-right table{
-	float:right;
-	clear:none;
+    float:right;
+    clear:none;
 }
 
 .x-form .x-form-btns-ct .x-form-btns-left table{
-	float:left;
-	clear:none;
+    float:left;
+    clear:none;
 }
 
 .x-form .x-form-btns-ct .x-form-btns-center{
-	text-align:center; /*ie*/
+    text-align:center; /*ie*/
 }
 
 .x-form .x-form-btns-ct .x-form-btns-center table{
-	margin:0 auto; /*everyone else*/
+    margin:0 auto; /*everyone else*/
 }
 
 .x-form .x-form-btns-ct table td.x-form-btn-td{
-	padding:3px;
+    padding:3px;
 }
 
 .x-form .x-form-btns-ct .x-btn-focus .x-btn-left{
-	background-position:0 -147px;
+    background-position:0 -147px;
 }
 
 .x-form .x-form-btns-ct .x-btn-focus .x-btn-right{
-	background-position:0 -168px;
+    background-position:0 -168px;
 }
 
 .x-form .x-form-btns-ct .x-btn-focus .x-btn-center{
-	background-position:0 -189px;
+    background-position:0 -189px;
 }
 
 .x-form .x-form-btns-ct .x-btn-click .x-btn-center{
-	background-position:0 -126px;
+    background-position:0 -126px;
 }
 
 .x-form .x-form-btns-ct .x-btn-click  .x-btn-right{
-	background-position:0 -84px;
+    background-position:0 -84px;
 }
 
 .x-form .x-form-btns-ct .x-btn-click .x-btn-left{
-	background-position:0 -63px;
+    background-position:0 -63px;
 }
 
 .x-form-invalid-icon {
@@ -1299,7 +1335,7 @@ textarea {
 /* make top of checkbox/tools visible in webkit */
 .ext-webkit .x-fieldset-header {
     padding-top: 1px;
-}        
+}
 
 .ext-ie .x-fieldset legend {
     margin-bottom:10px;
@@ -1328,8 +1364,8 @@ fieldset.x-panel-collapsed {
     border-width: 1px 1px 0 1px !important;
     border-left-color: transparent;
     border-right-color: transparent;
-}      
-  
+}
+
 .ext-ie6 fieldset.x-panel-collapsed{
     padding-bottom:0 !important;
     border-width: 1px 0 0 0 !important;
@@ -1365,11 +1401,15 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     position: absolute;
     left:16px;
 }
-        
+
 .ext-gecko .x-window-body .x-form-item {
     -moz-outline: none;
     outline: none;
     overflow: auto;
+}
+
+.ext-mac.ext-gecko .x-window-body .x-form-item {
+    overflow:hidden;
 }
 
 .ext-gecko .x-form-item {
@@ -1401,8 +1441,6 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 .x-fieldset-body {
     overflow:hidden;
 }
-
-
 .x-btn{
 	cursor:pointer;
 	white-space: nowrap;
@@ -1410,7 +1448,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 
 .x-btn button{
     border:0 none;
-    background:transparent;
+    background-color:transparent;
     padding-left:3px;
     padding-right:3px;
     cursor:pointer;
@@ -1425,7 +1463,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     width:1px;
 }
 
-.ext-gecko .x-btn button {
+.ext-gecko .x-btn button, .ext-webkit .x-btn button {
     padding-left:0;
     padding-right:0;
 }
@@ -1742,7 +1780,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 /* height adjustment class */
 .x-btn-as-arrow .x-btn-mc em {
     display:block;
-    background:transparent;
+    background-color:transparent;
 	padding-bottom:14px;
 }
 
@@ -1801,7 +1839,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 }
 
 .x-btn-group-mc .x-btn-group-body {
-    background:transparent;
+    background-color:transparent;
     border: 0 none;
 }
 
@@ -2026,7 +2064,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 
 .x-toolbar-more em.x-btn-arrow {
     display:inline;
-    background:transparent;
+    background-color:transparent;
 	padding-right:0;
 }
 
@@ -2146,6 +2184,16 @@ div.x-toolbar-no-items {
 	text-overflow: ellipsis;
     padding:3px 3px 3px 5px;
     white-space: nowrap;
+}
+
+/* ActionColumn, reduce padding to accommodate 16x16 icons in normal row height */
+.x-action-col-cell .x-grid3-cell-inner {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.x-action-col-icon {
+    cursor: pointer;
 }
 
 .x-grid3-hd-inner {
@@ -2425,7 +2473,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 .x-grid3-col-dd {
     border:0 none;
     padding:0;
-    background:transparent;
+    background-color:transparent;
 }
 
 .x-dd-drag-ghost .x-grid3-dd-wrap {
@@ -2635,17 +2683,83 @@ a.x-grid3-hd-btn:hover {
     position: static;
 }
 
-
 .ext-ie6 .x-grid3-header {
     position: relative;
 }
+
+/* Fix WebKit bug in Grids */
+.ext-webkit .x-grid-panel .x-panel-bwrap{
+    -webkit-user-select:none;
+}
+.ext-webkit .x-tbar-page-number{
+    -webkit-user-select:ignore;
+}
+/* end*/
 
 /* column lines */
 .x-grid-with-col-lines .x-grid3-row td.x-grid3-cell {
     padding-right:0;
     border-right:1px solid;
 }
-.x-dd-drag-proxy{
+.x-pivotgrid .x-grid3-header-offset table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.x-pivotgrid .x-grid3-header-offset table td {
+    padding: 4px 3px 4px 5px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    line-height: 13px;
+    font-family: tahoma;
+}
+
+.x-pivotgrid .x-grid3-row-headers {
+    display: block;
+    float: left;
+}
+
+.x-pivotgrid .x-grid3-row-headers table {
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.x-pivotgrid .x-grid3-row-headers table td {
+    height: 18px;
+    padding: 2px 7px 0 0;
+    text-align: right;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    font-family: tahoma;
+}
+
+.ext-gecko .x-pivotgrid .x-grid3-row-headers table td {
+    height: 21px;
+}
+
+.x-grid3-header-title {
+    top: 0%;
+    left: 0%;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    font-family: tahoma;
+    font-size: 11px;
+    padding: auto 1px;
+    display: table-cell;
+}
+
+.x-grid3-header-title span {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 100%;
+    margin-top: -6px;
+}.x-dd-drag-proxy{
 	position:absolute;
 	left:0;
     top:0;
@@ -2770,20 +2884,20 @@ input.x-tree-node-cb {
 
 /* No line styles */
 .x-tree-no-lines .x-tree-elbow{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-no-lines .x-tree-elbow-end{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-no-lines .x-tree-elbow-line{
-	background:transparent;
+	background-color:transparent;
 }
 
 /* Arrows */
 .x-tree-arrows .x-tree-elbow{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-arrows .x-tree-elbow-plus{
@@ -2795,7 +2909,7 @@ input.x-tree-node-cb {
 }
 
 .x-tree-arrows .x-tree-elbow-end{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-arrows .x-tree-elbow-end-plus{
@@ -2807,7 +2921,7 @@ input.x-tree-node-cb {
 }
 
 .x-tree-arrows .x-tree-elbow-line{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus{
@@ -2868,7 +2982,7 @@ input.x-tree-node-cb {
 }
 
 .x-tree-node .x-tree-node-inline-icon{
-	background:transparent;
+	background-color:transparent;
 }
 
 .x-tree-node a:hover, .x-dd-drag-ghost a:hover{
@@ -3342,7 +3456,7 @@ td.x-date-mp-sep {
 
 .x-menu-list{
     padding: 2px;
-	background:transparent;
+	background-color:transparent;
 	border:0 none;
     overflow:hidden;
     overflow-y: hidden;
@@ -3464,7 +3578,7 @@ a.x-menu-item {
 }
 
 .x-menu-group-item .x-menu-item-icon{
-	background: transparent;
+	background-color: transparent;
 }
 
 .x-menu-item-checked .x-menu-group-item .x-menu-item-icon{
@@ -3507,6 +3621,13 @@ a.x-menu-item {
 }
 .ext-strict .ext-ie6 .x-menu-sep {
     margin: 0;
+    height: 1px;
+}
+
+/*
+ * Fixes an issue with "fat" separators in webkit
+ */
+.ext-webkit .x-menu-sep{
     height: 1px;
 }
 
@@ -3708,7 +3829,7 @@ a.x-menu-item {
 .x-panel-tl .x-panel-header {
     padding:5px 0 4px 0;
     border:0 none;
-    background:transparent;
+    background:transparent no-repeat;
 }
 
 .x-panel-tl .x-panel-icon, .x-window-tl .x-panel-icon {
@@ -3781,7 +3902,7 @@ a.x-menu-item {
 }
 
 .x-panel-mc .x-panel-body {
-    background:transparent;
+    background-color:transparent;
     border: 0 none;
 }
 
@@ -3919,6 +4040,22 @@ a.x-menu-item {
     background-position:-15px -90px;
 }
 
+.x-tool-prev {
+    background-position:0 -105px;
+}
+
+.x-tool-prev-over {
+    background-position:-15px -105px;
+}
+
+.x-tool-next {
+    background-position:0 -120px;
+}
+
+.x-tool-next-over {
+    background-position:-15px -120px;
+}
+
 .x-tool-pin {
     background-position:0 -135px;
 }
@@ -3951,20 +4088,20 @@ a.x-menu-item {
     background-position:-15px -180px;
 }
 
-.x-tool-up {
-    background-position:0 -210px;
-}
-
-.x-tool-up-over {
-    background-position:-15px -210px;
-}
-
 .x-tool-down {
     background-position:0 -195px;
 }
 
 .x-tool-down-over {
     background-position:-15px -195px;
+}
+
+.x-tool-up {
+    background-position:0 -210px;
+}
+
+.x-tool-up-over {
+    background-position:-15px -210px;
 }
 
 .x-tool-refresh {
@@ -3975,20 +4112,20 @@ a.x-menu-item {
     background-position:-15px -225px;
 }
 
-.x-tool-minus {
-    background-position:0 -255px;
-}
-
-.x-tool-minus-over {
-    background-position:-15px -255px;
-}
-
 .x-tool-plus {
     background-position:0 -240px;
 }
 
 .x-tool-plus-over {
     background-position:-15px -240px;
+}
+
+.x-tool-minus {
+    background-position:0 -255px;
+}
+
+.x-tool-minus-over {
+    background-position:-15px -255px;
 }
 
 .x-tool-search {
@@ -4021,6 +4158,38 @@ a.x-menu-item {
 
 .x-tool-print-over {
     background-position:-15px -315px;
+}
+
+.x-tool-expand {
+    background-position:0 -330px;
+}
+
+.x-tool-expand-over {
+    background-position:-15px -330px;
+}
+
+.x-tool-collapse {
+    background-position:0 -345px;
+}
+
+.x-tool-collapse-over {
+    background-position:-15px -345px;
+}
+
+.x-tool-resize {
+    background-position:0 -360px;
+}
+
+.x-tool-resize-over {
+    background-position:-15px -360px;
+}
+
+.x-tool-move {
+    background-position:0 -375px;
+}
+
+.x-tool-move-over {
+    background-position:-15px -375px;
 }
 
 /* Ghosting */
@@ -4221,7 +4390,7 @@ a.x-menu-item {
 .x-panel-reset .x-panel-body :before, .x-panel-reset .x-panel-body :after { white-space: pre-line }
 .x-panel-reset .x-panel-body center          { text-align: center }
 .x-panel-reset .x-panel-body :link, .x-panel-reset .x-panel-body :visited { text-decoration: underline }
-.x-panel-reset .x-panel-body :focus          { outline: thin dotted invert }
+.x-panel-reset .x-panel-body :focus          { outline: invert dotted thin }
 
 /* Begin bidirectionality settings (do not change) */
 .x-panel-reset .x-panel-body BDO[DIR="ltr"]  { direction: ltr; unicode-bidi: bidi-override }
@@ -4376,7 +4545,7 @@ a.x-menu-item {
 }
 
 .x-window-body {
-    background:transparent;
+    background-color:transparent;
 }
 
 .x-panel-ghost .x-window-tl {
@@ -4653,7 +4822,7 @@ body.ext-ie6.x-body-masked .x-window select {
 
 .x-tool-expand-east, .x-tool-expand-west {
     float:none;
-    margin:3px auto;
+    margin:3px 2px;
 }
 
 .x-accordion-hd .x-tool-toggle {
@@ -4817,14 +4986,14 @@ body.ext-ie6.x-body-masked .x-window select {
     border:0 none;
     width:5px !important;
     padding:0;
-    background:transparent;
+    background-color:transparent;
 }
 
 .x-layout-cmini-north, .x-layout-cmini-south {
     border:0 none;
     height:5px !important;
     padding:0;
-    background:transparent;
+    background-color:transparent;
 }
 
 .x-viewport, .x-viewport body {
@@ -5119,12 +5288,9 @@ body.ext-ie6.x-body-masked .x-window select {
     height:32px;
 }
 
-.ext-ie .x-window-dlg .ext-mb-icon {
-    width:44px; /* 3px IE margin issue */
-}
-
 .x-window-dlg .x-dlg-icon .ext-mb-content{
-    zoom: 1; margin-left: 47px;
+    zoom: 1; 
+    margin-left: 47px;
 }
 
 .x-window-dlg .ext-mb-info, .x-window-dlg .ext-mb-warning, .x-window-dlg .ext-mb-question, .x-window-dlg .ext-mb-error {
@@ -5175,9 +5341,11 @@ body.ext-ie6.x-body-masked .x-window select {
     background-color: #deecfd;
 }
 
+/*
 .x-color-palette em:hover, .x-color-palette span:hover{   
     background-color: #deecfd;
 }
+*/
 
 .x-color-palette em {
     border-color:#aca899;
@@ -5327,11 +5495,11 @@ ul.x-tab-strip-bottom{
 
 .x-tab-panel-bbar .x-toolbar, .x-tab-panel-tbar .x-toolbar {
     border-color:#99bbe8;
-}.x-form-field{
+}.x-form-field {
     font:normal 12px tahoma, arial, helvetica, sans-serif;
 }
 
-.x-form-text, textarea.x-form-field{
+.x-form-text, textarea.x-form-field {
     background-color:#fff;
     background-image:url(../images/default/form/text-bg.gif);
     border-color:#b5b8c8;
@@ -5351,51 +5519,57 @@ ul.x-tab-strip-bottom{
     background-color:#fff;
 }
 
-.x-form-field-wrap .x-form-trigger{
+.x-form-field-wrap .x-form-trigger {
     background-image:url(../images/default/form/trigger.gif);
     border-bottom-color:#b5b8c8;
 }
 
-.x-form-field-wrap .x-form-date-trigger{
+.x-form-field-wrap .x-form-date-trigger {
     background-image: url(../images/default/form/date-trigger.gif);
 }
 
-.x-form-field-wrap .x-form-clear-trigger{
+.x-form-field-wrap .x-form-clear-trigger {
     background-image: url(../images/default/form/clear-trigger.gif);
 }
 
-.x-form-field-wrap .x-form-search-trigger{
+.x-form-field-wrap .x-form-search-trigger {
     background-image: url(../images/default/form/search-trigger.gif);
 }
 
-.x-trigger-wrap-focus .x-form-trigger{
+.x-trigger-wrap-focus .x-form-trigger {
     border-bottom-color:#7eadd9;
 }
 
-.x-item-disabled .x-form-trigger-over{
+.x-item-disabled .x-form-trigger-over {
     border-bottom-color:#b5b8c8;
 }
 
-.x-item-disabled .x-form-trigger-click{
+.x-item-disabled .x-form-trigger-click {
     border-bottom-color:#b5b8c8;
 }
 
-.x-form-focus, textarea.x-form-focus{
+.x-form-focus, textarea.x-form-focus {
 	border-color:#7eadd9;
 }
 
-.x-form-invalid, textarea.x-form-invalid{
+.x-form-invalid, textarea.x-form-invalid {
     background-color:#fff;
 	background-image:url(../images/default/grid/invalid_line.gif);
 	border-color:#c30;
 }
 
-.ext-webkit .x-form-invalid{
-	background-color:#fee;
-	border-color:#ff7870;
+.x-form-invalid.x-form-composite {
+    border: none;
+    background-image: none;
 }
 
-.x-form-inner-invalid, textarea.x-form-inner-invalid{
+.x-form-invalid.x-form-composite .x-form-invalid {
+    background-color:#fff;
+	background-image:url(../images/default/grid/invalid_line.gif);
+	border-color:#c30;
+}
+
+.x-form-inner-invalid, textarea.x-form-inner-invalid {
     background-color:#fff;
 	background-image:url(../images/default/grid/invalid_line.gif);
 }
@@ -5588,7 +5762,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-item-disabled .x-tbar-loading{
-	background-image: url(../images/default/grid/loading.gif) !important;
+	background-image: url(../images/default/grid/refresh-disabled.gif) !important;
 }
 
 .x-item-disabled .x-tbar-page-first{
@@ -5658,9 +5832,14 @@ ul.x-tab-strip-bottom{
     border-color:#99bbe8;
 }
 
-.x-grid3-hd-row td, .x-grid3-row td, .x-grid3-summary-row td{
-	font:normal 11px arial, tahoma, helvetica, sans-serif;
+.x-grid3-row td, .x-grid3-summary-row td{
+	font:normal 11px/13px arial, tahoma, helvetica, sans-serif;
 }
+
+.x-grid3-hd-row td {
+	font:normal 11px/15px arial, tahoma, helvetica, sans-serif;
+}
+
 
 .x-grid3-hd-row td {
     border-left-color:#eee;
@@ -5752,6 +5931,10 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 
 .col-move-bottom{
 	background-image:url(../images/default/grid/col-move-bottom.gif);
+}
+
+td.grid-hd-group-cell {
+    background: url(../images/default/grid/grid3-hrow.gif) repeat-x bottom;
 }
 
 .x-grid3-row-selected {
@@ -5911,7 +6094,29 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 
 .x-grid-with-col-lines .x-grid3-row-selected {
 	border-top-color:#a3bae9;
-}.x-dd-drag-ghost{
+}.x-pivotgrid .x-grid3-header-offset table td {
+    background: url(../images/default/grid/grid3-hrow.gif) repeat-x 50% 100%;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-left-color: #EEE;
+    border-right-color: #D0D0D0;
+}
+
+.x-pivotgrid .x-grid3-row-headers {
+    background-color: #f9f9f9;
+}
+
+.x-pivotgrid .x-grid3-row-headers table td {
+    background: #EEE url(../images/default/grid/grid3-rowheader.gif) repeat-x left top;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-left-color: #EEE;
+    border-right-color: #D0D0D0;
+    border-bottom: 1px solid;
+    border-bottom-color: #D0D0D0;
+    height: 18px;
+}
+.x-dd-drag-ghost{
 	color:#000;
 	font: normal 11px arial, helvetica, sans-serif;
     border-color: #ddd #bbb #bbb #ddd;

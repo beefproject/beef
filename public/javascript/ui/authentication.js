@@ -16,7 +16,7 @@ Ext.onReady(function() {
 	}
 
 
-	var login_form = new Ext.FormPanel({
+	var login_form = new Ext.form.FormPanel({
       	
 		url: 'authentication/login',
 		formId: 'login_form',
@@ -61,8 +61,7 @@ Ext.onReady(function() {
 		
 		buttons: [{
 			text: 'Login',
-			handler: function()	{ // xntrik 9/7/10 removed the logic here, placed
-							//in function above and added here
+			handler: function()	{ 
 				submitAuthForm();
 			}
 		}]

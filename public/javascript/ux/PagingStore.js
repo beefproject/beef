@@ -1,18 +1,9 @@
 /*
- * PagingStore for Ext 3 - v0.4.1
+ * PagingStore for Ext 3.2 - v0.5
  */
 Ext.ns('Ext.ux.data');
 Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
-    destroy: function() {
-        if (this.storeId) {
-            Ext.StoreMgr.unregister(this);
-        }
-        this.data = this.allData = this.snapshot = null;
-        Ext.destroy(this.proxy);
-        this.reader = this.writer = null;
-        this.purgeListeners();
-    },
-    add: function(records) {
+    add: function (records) {
         records = [].concat(records);
         if (records.length < 1) {
             return;
@@ -22,90 +13,151 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
         }
         var index = this.data.length;
         this.data.addAll(records);
+        // *** add ***
         if (this.allData) {
             this.allData.addAll(records);
         }
+        // *** end ***
         if (this.snapshot) {
             this.snapshot.addAll(records);
         }
-        this.fireEvent("add", this, records, index);
+        // *** add ***
+        this.totalLength += records.length;
+        // *** end ***
+        this.fireEvent('add', this, records, index);
     },
-    remove: function(record) {
+    remove: function (record) {
+        if (Ext.isArray(record)) {
+            Ext.each(record, function (r) {
+                this.remove(r);
+            }, this);
+            return;
+        }
+        // *** add ***
+        if (this != record.store) {
+            return;
+        }
+        record.join(null);
+        // *** end ***
         var index = this.data.indexOf(record);
-        if(index > -1){
+        if (index > -1) {
+            // record.join(null);
             this.data.removeAt(index);
-        }
-        if (this.allData) {
-            this.allData.remove(record);
-        }
-        if (this.snapshot) {
-            this.snapshot.remove(record);
         }
         if (this.pruneModifiedRecords) {
             this.modified.remove(record);
         }
-        if(index > -1){
-            this.fireEvent("remove", this, record, index);
+        // *** add ***
+        if (this.allData) {
+            this.allData.remove(record);
+        }
+        // *** end ***
+        if (this.snapshot) {
+            this.snapshot.remove(record);
+        }
+        // *** add ***
+        this.totalLength--;
+        // *** end ***
+        if (index > -1) {
+            this.fireEvent('remove', this, record, index);
         }
     },
-    removeAll: function() {
-        this.data.clear();
-        if (this.allData) {
-            this.allData.clear();
-        }
-        if (this.snapshot) {
-            this.snapshot.clear();
-        }
+    removeAll: function (silent) {
+        // *** add ***
+        var items = [].concat((this.snapshot || this.allData || this.data).items);
+        // *** end ***
+        // var items = [];
+        // this.each(function (rec) {
+        //     items.push(rec);
+        // });
+        this.clearData();
+        // if (this.snapshot) {
+        //     this.snapshot.clear();
+        // }
         if (this.pruneModifiedRecords) {
             this.modified = [];
         }
-        this.fireEvent("clear", this);
+        // *** add ***
+        this.totalLength = 0;
+        // *** end ***
+        if (silent !== true) {
+            this.fireEvent('clear', this, items);
+        }
     },
-    insert: function(index, records) {
+    insert: function (index, records) {
         records = [].concat(records);
         for (var i = 0, len = records.length; i < len; i++) {
             this.data.insert(index, records[i]);
             records[i].join(this);
         }
+        // *** add ***
         if (this.allData) {
             this.allData.addAll(records);
         }
+        // *** end ***
         if (this.snapshot) {
             this.snapshot.addAll(records);
         }
-        this.fireEvent("add", this, records, index);
+        // *** add ***
+        this.totalLength += records.length;
+        // *** end ***
+        this.fireEvent('add', this, records, index);
     },
-    getById: function(id) {
+    getById: function (id) {
+        // *** add ***
         return (this.snapshot || this.allData || this.data).key(id);
+        // *** end ***
+        // return this.data.key(id);
     },
-    execute: function(action, rs, options) {
+    clearData: function () {
+        // *** add ***
+        if (this.allData) {
+            this.data = this.allData;
+            delete this.allData;
+        }
+        if (this.snapshot) {
+            this.data = this.snapshot;
+            delete this.snapshot;
+        }
+        // *** end ***
+        this.data.each(function (rec) {
+            rec.join(null);
+        });
+        this.data.clear();
+    },
+    execute: function (action, rs, options, batch) {
         if (!Ext.data.Api.isAction(action)) {
             throw new Ext.data.Api.Error('execute', action);
         }
-        options = Ext.applyIf(options || {}, {params: {}});
+        options = Ext.applyIf(options || {}, {
+            params: {}
+        });
+        if (batch !== undefined) {
+            this.addToBatch(batch);
+        }
         var doRequest = true;
-        if (action === "read") {
+        if (action === 'read') {
             doRequest = this.fireEvent('beforeload', this, options);
+            Ext.applyIf(options.params, this.baseParams);
         }
         else {
             if (this.writer.listful === true && this.restful !== true) {
-                rs = (Ext.isArray(rs)) ? rs: [rs];
+                rs = (Ext.isArray(rs)) ? rs : [rs];
             }
             else if (Ext.isArray(rs) && rs.length == 1) {
                 rs = rs.shift();
             }
             if ((doRequest = this.fireEvent('beforewrite', this, action, rs, options)) !== false) {
-                this.writer.write(action, options.params, rs);
+                this.writer.apply(options.params, this.baseParams, action, rs);
             }
         }
         if (doRequest !== false) {
-            //var params = Ext.apply(options.params || {}, this.baseParams);
-            var params = Ext.apply({}, options.params, this.baseParams);
             if (this.writer && this.proxy.url && !this.proxy.restful && !Ext.data.Api.hasUniqueUrl(this.proxy, action)) {
-                params.xaction = action;
+                options.params.xaction = action;
             }
-            if (action === "read" && this.isPaging(params)) {
-                (function() {
+            // *** add ***
+            if (action === "read" && this.isPaging(Ext.apply({}, options.params))) {
+                (function () {
                     if (this.allData) {
                         this.data = this.allData;
                         delete this.allData;
@@ -120,21 +172,26 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
                 }).defer(1, this);
                 return true;
             }
-            this.proxy.request(Ext.data.Api.actions[action], rs, params, this.reader, this.createCallback(action, rs), this, options);
+            // *** end ***
+            this.proxy.request(Ext.data.Api.actions[action], rs, options.params, this.reader, this.createCallback(action, rs, batch), this, options);
         }
         return doRequest;
     },
-    loadRecords: function(o, options, success) {
+    loadRecords: function (o, options, success) {
+        if (this.isDestroyed === true) {
+            return;
+        }
         if (!o || success === false) {
             if (success !== false) {
-                this.fireEvent("load", this, [], options);
+                this.fireEvent('load', this, [], options);
             }
             if (options.callback) {
                 options.callback.call(options.scope || this, [], options, false, o);
             }
             return;
         }
-        var r = o.records, t = o.totalRecords || r.length;
+        var r = o.records,
+            t = o.totalRecords || r.length;
         if (!options || options.add !== true) {
             if (this.pruneModifiedRecords) {
                 this.modified = [];
@@ -142,73 +199,134 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
             for (var i = 0, len = r.length; i < len; i++) {
                 r[i].join(this);
             }
-            if (this.allData) {
-                this.data = this.allData;
-                delete this.allData;
-            }
-            if (this.snapshot) {
-                this.data = this.snapshot;
-                delete this.snapshot;
-            }
-            this.data.clear();
+            //if (this.snapshot) {
+            //    this.data = this.snapshot;
+            //    delete this.snapshot;
+            //}
+            this.clearData();
             this.data.addAll(r);
             this.totalLength = t;
             this.applySort();
+            // *** add ***
             if (!this.allData) {
                 this.applyPaging();
             }
-            if (r.length != this.getCount()) {
+            if (r.length > this.getCount()) {
                 r = [].concat(this.data.items);
             }
-            this.fireEvent("datachanged", this);
+            // *** end ***
+            this.fireEvent('datachanged', this);
         } else {
             this.totalLength = Math.max(t, this.data.length + r.length);
             this.add(r);
         }
-        this.fireEvent("load", this, r, options);
+        this.fireEvent('load', this, r, options);
         if (options.callback) {
             options.callback.call(options.scope || this, r, options, true);
         }
     },
-    loadData: function(o, append) {
+    loadData: function (o, append) {
+        // *** add ***
         this.isPaging(Ext.apply({}, this.lastOptions ? this.lastOptions.params : null, this.baseParams));
+        // *** end ***
         var r = this.reader.readRecords(o);
-        this.loadRecords(r, {add: append}, true);
+        this.loadRecords(r, {
+            add: append
+        }, true);
     },
-    getTotalCount: function() {
-        return this.allData ? this.allData.getCount() : this.totalLength || 0;
+    getTotalCount: function () {
+        // *** add ***
+        if (this.allData) {
+            return this.allData.getCount();
+        }
+        // *** end ***
+        return this.totalLength || 0;
     },
-    sortData: function(f, direction) {
-        direction = direction || 'ASC';
-        var st = this.fields.get(f).sortType;
-        var fn = function(r1, r2) {
-            var v1 = st(r1.data[f]), v2 = st(r2.data[f]);
-            return v1 > v2 ? 1 : (v1 < v2 ? -1 : 0);
+    sortData: function () {
+        var sortInfo = this.hasMultiSort ? this.multiSortInfo : this.sortInfo,
+            direction = sortInfo.direction || "ASC",
+            sorters = sortInfo.sorters,
+            sortFns = [];
+        if (!this.hasMultiSort) {
+            sorters = [{
+                direction: direction,
+                field: sortInfo.field
+            }];
+        }
+        for (var i = 0, j = sorters.length; i < j; i++) {
+            sortFns.push(this.createSortFunction(sorters[i].field, sorters[i].direction));
+        }
+        if (!sortFns.length) {
+            return;
+        }
+        var directionModifier = direction.toUpperCase() == "DESC" ? -1 : 1;
+        var fn = function (r1, r2) {
+            var result = sortFns[0].call(this, r1, r2);
+            if (sortFns.length > 1) {
+                for (var i = 1, j = sortFns.length; i < j; i++) {
+                    result = result || sortFns[i].call(this, r1, r2);
+                }
+            }
+            return directionModifier * result;
         };
+        // *** add ***
         if (this.allData) {
             this.data = this.allData;
             delete this.allData;
         }
+        // *** end ***
         this.data.sort(direction, fn);
         if (this.snapshot && this.snapshot != this.data) {
             this.snapshot.sort(direction, fn);
         }
+        // *** add ***
         this.applyPaging();
+        // *** end ***
     },
-    filterBy: function(fn, scope) {
+    filterBy: function (fn, scope) {
+        // *** add ***
         this.snapshot = this.snapshot || this.allData || this.data;
-        delete this.allData;
+        // *** end ***
+        // this.snapshot = this.snapshot || this.data;
         this.data = this.queryBy(fn, scope || this);
+        // *** add ***
         this.applyPaging();
-        this.fireEvent("datachanged", this);
+        // *** end ***
+        this.fireEvent('datachanged', this);
     },
-    queryBy: function(fn, scope) {
+    clearFilter: function (suppressEvent) {
+        if (this.isFiltered()) {
+            this.data = this.snapshot;
+            delete this.snapshot;
+            // *** add ***
+            delete this.allData;
+            this.applyPaging();
+            // *** end ***
+            if (suppressEvent !== true) {
+                this.fireEvent('datachanged', this);
+            }
+        }
+    },
+    isFiltered: function () {
+        // *** add ***
+        return !!this.snapshot && this.snapshot != (this.allData || this.data);
+        // *** end ***
+        // return !!this.snapshot && this.snapshot != this.data;
+    },
+    queryBy: function (fn, scope) {
+        // *** add ***
         var data = this.snapshot || this.allData || this.data;
+        // *** end ***
+        // var data = this.snapshot || this.data;
         return data.filterBy(fn, scope || this);
     },
-    collect: function(dataIndex, allowNull, bypassFilter) {
-        var d = (bypassFilter === true ? this.snapshot || this.allData || this.data: this.data).items;
-        var v, sv, r = [], l = {};
+    collect: function (dataIndex, allowNull, bypassFilter) {
+        // *** add ***
+        var d = (bypassFilter === true ? this.snapshot || this.allData || this.data : this.data).items;
+        // *** end ***
+        // var d = (bypassFilter === true && this.snapshot) ? this.snapshot.items : this.data.items;
+        var v, sv, r = [],
+            l = {};
         for (var i = 0, len = d.length; i < len; i++) {
             v = d[i].data[dataIndex];
             sv = String(v);
@@ -219,22 +337,24 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
         }
         return r;
     },
-    clearFilter: function(suppressEvent) {
-        if (this.isFiltered()) {
-            this.data = this.snapshot;
-            delete this.allData;
-            delete this.snapshot;
-            this.applyPaging();
-            if (suppressEvent !== true) {
-                this.fireEvent("datachanged", this);
-            }
-        }
+    findInsertIndex : function(record){
+        this.suspendEvents();
+        var data = this.data.clone();
+        this.data.add(record);
+        this.applySort();
+        var index = this.data.indexOf(record);
+        this.data = data;
+        // *** add ***
+        this.totalLength--;
+        // *** end ***
+        this.resumeEvents();
+        return index;
     },
-    isFiltered: function() {
-        return this.snapshot && this.snapshot != (this.allData || this.data);
-    },
-    isPaging: function(params) {
-        var pn = this.paramNames, start = params[pn.start], limit = params[pn.limit];
+    // *** add ***
+    isPaging: function (params) {
+        var pn = this.paramNames,
+            start = params[pn.start],
+            limit = params[pn.limit];
         if ((typeof start != 'number') || (typeof limit != 'number')) {
             delete this.start;
             delete this.limit;
@@ -265,10 +385,12 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
         }
         return true;
     },
-    applyPaging: function() {
-        var start = this.start, limit = this.limit;
+    applyPaging: function () {
+        var start = this.start,
+            limit = this.limit;
         if ((typeof start == 'number') && (typeof limit == 'number')) {
-            var allData = this.data, data = new Ext.util.MixedCollection(allData.allowFunctions, allData.getKey);
+            var allData = this.data,
+                data = new Ext.util.MixedCollection(allData.allowFunctions, allData.getKey);
             data.items = allData.items.slice(start, start + limit);
             data.keys = allData.keys.slice(start, start + limit);
             var len = data.length = data.items.length;
@@ -282,39 +404,27 @@ Ext.ux.data.PagingStore = Ext.extend(Ext.data.Store, {
             this.data = data;
         }
     }
+    // *** end ***
 });
-Ext.ux.data.PagingDirectStore = function(c) {
-    c.batchTransactions = false;
-    Ext.ux.data.PagingDirectStore.superclass.constructor.call(this, Ext.apply(c, {
-        proxy: (typeof(c.proxy) == 'undefined') ? new Ext.data.DirectProxy(Ext.copyTo({}, c, 'paramOrder,paramsAsHash,directFn,api')) : c.proxy,
-        reader: (typeof(c.reader) == 'undefined' && typeof(c.fields) == 'object') ? new Ext.data.JsonReader(Ext.copyTo({}, c, 'totalProperty,root,idProperty'), c.fields) : c.reader
-    }));
-};
-Ext.extend(Ext.ux.data.PagingDirectStore, Ext.ux.data.PagingStore, {});
+
+Ext.ux.data.PagingDirectStore = Ext.extend(Ext.ux.data.PagingStore, {
+    constructor: Ext.data.DirectStore.prototype.constructor
+});
 Ext.reg('pagingdirectstore', Ext.ux.data.PagingDirectStore);
+
 Ext.ux.data.PagingJsonStore = Ext.extend(Ext.ux.data.PagingStore, {
-    constructor: function(config) {
-        Ext.ux.data.PagingJsonStore.superclass.constructor.call(this, Ext.apply(config, {
-            reader: new Ext.data.JsonReader(config)
-        }));
-    }
+    constructor: Ext.data.JsonStore.prototype.constructor
 });
 Ext.reg('pagingjsonstore', Ext.ux.data.PagingJsonStore);
+
 Ext.ux.data.PagingXmlStore = Ext.extend(Ext.ux.data.PagingStore, {
-    constructor: function(config) {
-        Ext.ux.data.PagingXmlStore.superclass.constructor.call(this, Ext.apply(config, {
-            reader: new Ext.data.XmlReader(config)
-        }));
-    }
+    constructor: Ext.data.XmlStore.prototype.constructor
 });
 Ext.reg('pagingxmlstore', Ext.ux.data.PagingXmlStore);
+
 Ext.ux.data.PagingArrayStore = Ext.extend(Ext.ux.data.PagingStore, {
-    constructor: function(config) {
-        Ext.ux.data.PagingArrayStore.superclass.constructor.call(this, Ext.apply(config, {
-            reader: new Ext.data.ArrayReader(config)
-        }));
-    },
-    loadData: function(data, append) {
+    constructor: Ext.data.ArrayStore.prototype.constructor,
+    loadData: function (data, append) {
         if (this.expandData === true) {
             var r = [];
             for (var i = 0, len = data.length; i < len; i++) {
@@ -326,5 +436,118 @@ Ext.ux.data.PagingArrayStore = Ext.extend(Ext.ux.data.PagingStore, {
     }
 });
 Ext.reg('pagingarraystore', Ext.ux.data.PagingArrayStore);
+
 Ext.ux.data.PagingSimpleStore = Ext.ux.data.PagingArrayStore;
 Ext.reg('pagingsimplestore', Ext.ux.data.PagingSimpleStore);
+
+Ext.ux.data.PagingGroupingStore = Ext.extend(Ext.ux.data.PagingStore, Ext.copyTo({}, Ext.data.GroupingStore.prototype, [
+    'constructor',
+    'remoteGroup',
+    'groupOnSort',
+    'groupDir',
+    'clearGrouping',
+    'groupBy',
+    'sort',
+    'applyGroupField',
+    'applyGrouping',
+    'getGroupState'
+]));
+Ext.reg('paginggroupingstore', Ext.ux.data.PagingGroupingStore);
+
+Ext.ux.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
+    onLoad: function (store, r, o) {
+        if (!this.rendered) {
+            this.dsLoaded = [store, r, o];
+            return;
+        }
+        var p = this.getParams();
+        this.cursor = (o.params && o.params[p.start]) ? o.params[p.start] : 0;
+        this.onChange();
+        // *** end ***
+        // var d = this.getPageData(),
+        //     ap = d.activePage,
+        //     ps = d.pages;
+        // this.afterTextItem.setText(String.format(this.afterPageText, d.pages));
+        // this.inputItem.setValue(ap);
+        // this.first.setDisabled(ap == 1);
+        // this.prev.setDisabled(ap == 1);
+        // this.next.setDisabled(ap == ps);
+        // this.last.setDisabled(ap == ps);
+        // this.refresh.enable();
+        // this.updateInfo();
+        // this.fireEvent('change', this, d);
+    },
+    onChange: function () {
+        // *** add ***
+        var t = this.store.getTotalCount(),
+            s = this.pageSize;
+        if (this.cursor >= t) {
+            this.cursor = Math.ceil((t + 1) / s) * s;
+        }
+        // *** end ***
+        var d = this.getPageData(),
+            ap = d.activePage,
+            ps = d.pages;
+        this.afterTextItem.setText(String.format(this.afterPageText, d.pages));
+        this.inputItem.setValue(ap);
+        this.first.setDisabled(ap == 1);
+        this.prev.setDisabled(ap == 1);
+        this.next.setDisabled(ap == ps);
+        this.last.setDisabled(ap == ps);
+        this.refresh.enable();
+        this.updateInfo();
+        this.fireEvent('change', this, d);
+    },
+    onClear: function () {
+        this.cursor = 0;
+        this.onChange();
+    },
+    doRefresh: function () {
+        // *** add ***
+        delete this.store.lastParams;
+        // *** end ***
+        this.doLoad(this.cursor);
+    },
+    bindStore: function (store, initial) {
+        var doLoad;
+        if (!initial && this.store) {
+            if (store !== this.store && this.store.autoDestroy) {
+                this.store.destroy();
+            } else {
+                this.store.un('beforeload', this.beforeLoad, this);
+                this.store.un('load', this.onLoad, this);
+                this.store.un('exception', this.onLoadError, this);
+                // *** add ***
+                this.store.un('datachanged', this.onChange, this);
+                this.store.un('add', this.onChange, this);
+                this.store.un('remove', this.onChange, this);
+                this.store.un('clear', this.onClear, this);
+                // *** end ***
+            }
+            if (!store) {
+                this.store = null;
+            }
+        }
+        if (store) {
+            store = Ext.StoreMgr.lookup(store);
+            store.on({
+                scope: this,
+                beforeload: this.beforeLoad,
+                load: this.onLoad,
+                exception: this.onLoadError,
+                // *** add ***
+                datachanged: this.onChange,
+                add: this.onChange,
+                remove: this.onChange,
+                clear: this.onClear
+                // *** end ***
+            });
+            doLoad = true;
+        }
+        this.store = store;
+        if (doLoad) {
+            this.onLoad(store, null, {});
+        }
+    }
+});
+Ext.reg('ux.paging', Ext.ux.PagingToolbar);
