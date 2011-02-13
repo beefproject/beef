@@ -44,7 +44,9 @@ module BeEF
       if not hooked_browser # is a new browser so return instructions to set up the hook
         
         # generate the instructions to hook the browser
-        build_beefjs!(@request.host)
+        host_name = @request.host # get the host from the HOST attribute in the HTTP header
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not Filter.is_valid_hostname?(host_name)
+        build_beefjs!(host_name)
       
       else # is a known browseer so send instructions 
       
