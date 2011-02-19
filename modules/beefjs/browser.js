@@ -116,7 +116,8 @@ beef.browser = {
 	 * @example: beef.browser.isC5()
 	 */
 	isC5: function() {
-		return !!window.chrome && !window.webkitPerformance;
+		/*return !!window.chrome && !window.webkitPerformance;*/
+		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false;
 	},
 		
 	/**
@@ -124,15 +125,43 @@ beef.browser = {
 	 * @example: beef.browser.isC6()
 	 */
 	isC6: function() {
-		return !!window.chrome && !!window.webkitPerformance;
+		/*return !!window.chrome && !!window.webkitPerformance;*/
+		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==6)?true:false;
 	},
 
+	/**
+	 * Returns true if Chrome 7.
+	 * @example: beef.browser.isC7()
+	 */
+	isC7: function() {
+		/*return !!window.chrome && !!window.webkitPerformance;*/
+		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==7)?true:false;
+	},
+
+	/**
+	 * Returns true if Chrome 8.
+	 * @example: beef.browser.isC8()
+	 */
+	isC8: function() {
+		/*return !!window.chrome && !!window.webkitPerformance;*/
+		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false;
+	},
+	
+	/**
+	 * Returns true if Chrome 9.
+	 * @example: beef.browser.isC9()
+	 */
+	isC9: function() {
+		/*return !!window.chrome && !!window.webkitPerformance;*/
+		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false;
+	},
+		
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9();
 	},
 		
 	/**
@@ -154,6 +183,9 @@ beef.browser = {
 		return {
 			C5:		this.isC5(), 	// Chrome 5
 			C6:		this.isC6(), 	// Chrome 6
+			C7:		this.isC7(), 	// Chrome 7
+			C8:		this.isC8(), 	// Chrome 8
+			C9:		this.isC9(), 	// Chrome 9
 			C:		this.isC(), 	// Chrome any version
 			FF2:	this.isFF2(),	// Firefox 2
 			FF3:	this.isFF3(),	// Firefox 3
@@ -181,6 +213,9 @@ beef.browser = {
 				
 		if (this.isC5())	{ return '5'  }; 	// Chrome 5
 		if (this.isC6())	{ return '6'  }; 	// Chrome 6
+		if (this.isC7())	{ return '7'  }; 	// Chrome 7
+		if (this.isC8())	{ return '8'  }; 	// Chrome 8
+		if (this.isC9())	{ return '9'  }; 	// Chrome 9
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF35())	{ return '3.5' };	// Firefox 3.5
