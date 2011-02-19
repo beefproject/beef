@@ -116,8 +116,7 @@ beef.browser = {
 	 * @example: beef.browser.isC5()
 	 */
 	isC5: function() {
-		/*return !!window.chrome && !window.webkitPerformance;*/
-		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false;
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false);
 	},
 		
 	/**
@@ -125,8 +124,7 @@ beef.browser = {
 	 * @example: beef.browser.isC6()
 	 */
 	isC6: function() {
-		/*return !!window.chrome && !!window.webkitPerformance;*/
-		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==6)?true:false;
+		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==6)?true:false);
 	},
 
 	/**
@@ -134,8 +132,7 @@ beef.browser = {
 	 * @example: beef.browser.isC7()
 	 */
 	isC7: function() {
-		/*return !!window.chrome && !!window.webkitPerformance;*/
-		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==7)?true:false;
+		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==7)?true:false);
 	},
 
 	/**
@@ -143,8 +140,7 @@ beef.browser = {
 	 * @example: beef.browser.isC8()
 	 */
 	isC8: function() {
-		/*return !!window.chrome && !!window.webkitPerformance;*/
-		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false;
+		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false);
 	},
 	
 	/**
@@ -152,8 +148,7 @@ beef.browser = {
 	 * @example: beef.browser.isC9()
 	 */
 	isC9: function() {
-		/*return !!window.chrome && !!window.webkitPerformance;*/
-		return (parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false;
+		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false);
 	},
 		
 	/**
