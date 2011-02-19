@@ -34,7 +34,8 @@ beef.browser = {
 	 * @example: beef.browser.isIE8()
 	 */
 	isIE8: function() {						
-		return !!document.documentMode && document.documentMode == 8;
+		$j("body").append('<!--[if IE 8]>     <div id="beefiecheck" class="ie ie8"></div>      <![endif]-->');
+		return ($j('#beefiecheck').hasClass('ie8'))?true:false;
 	},
 	
 	/**
@@ -42,7 +43,8 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		return !!document.documentMode && document.documentMode >= 9;
+		$j("body").append('<!--[if IE 9]>     <div id="beefiecheck" class="ie ie9"></div>      <![endif]-->');
+		return ($j('#beefiecheck').hasClass('ie9'))?true:false;
 	},
 	
 	/**
@@ -160,9 +162,9 @@ beef.browser = {
 			FF4:	this.isFF4(),   // Firefox 4
 			FF:		this.isFF(),	// Firefox any version
 			IE6:	this.isIE6(),	// Internet Explorer 6
-			IE7:	this.isIE7(),	// Internet Explorer 7
-			IE8:	this.isIE8(),	// Internet Explorer 8
 			IE9:	this.isIE9(),	// Internet Explorer 9
+			IE8:	this.isIE8(),	// Internet Explorer 8
+			IE7:	this.isIE7(),	// Internet Explorer 7
 			IE:		this.isIE(),	// Internet Explorer any version
 			O:      this.isO(), 	// Opera any version
 			S:		this.isS()		// Safari any version
@@ -185,9 +187,9 @@ beef.browser = {
 		if (this.isFF36())	{ return '3.6' };	// Firefox 3.6
 		if (this.isFF4())	{ return '4'  };	// Firefox 4
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
-		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
-		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
 		if (this.isIE9())	{ return '9'  };	// Internet Explorer 9
+		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
+		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
 		return 'UNKNOWN';						// Unknown UA
 	},
 	
