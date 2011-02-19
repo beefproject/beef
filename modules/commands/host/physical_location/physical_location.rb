@@ -30,7 +30,7 @@ class Physical_location < BeEF::Command
     content['Geolocation Enabled'] = @datastore['geoLocEnabled']
     content['Latitude'] = @datastore['latitude']
     content['Longitude'] = @datastore['longitude']
-    content['Open Street Map Address'] = @datastore['openStreetMap']
+    content['OSM address'] = @datastore['osm']
     save content
   end
 
