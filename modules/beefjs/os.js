@@ -62,6 +62,10 @@ beef.os = {
 		return (this.ua.indexOf('iPhone') != -1) ? true : false;
 	},
 
+	isIpad: function() {
+		return (this.ua.indexOf('iPad') != -1) ? true : false;
+	},
+
 	isQNX: function() {
 		return (this.ua.indexOf('QNX')) ? true : false;
 	},
@@ -90,6 +94,8 @@ beef.os = {
 
 		//iPhone
 		if (this.isIphone()) return 'iPhone';
+		//iPad
+		if (this.isIpad()) return 'iPad';
 		
 		//macintosh
 		if(this.isMacintosh()) {
