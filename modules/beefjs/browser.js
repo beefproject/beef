@@ -539,10 +539,25 @@ beef.browser = {
 		} else {
 			return true
 		}
-	}
+	},
 
-
+	/**
+	 * Changes the favicon in firefox only
+	 **/
+	changeFavicon: function(favicon_url) {
+	    var link = document.createElement('link');
+	    link.type = 'image/x-icon';
+	    link.rel = 'shortcut icon';
+	    link.href = favicon_url;
+	    document.getElementsByTagName('head')[0].appendChild(link);
+	},
 	
+	/**
+	 * Changes page title
+	 **/
+	changePageTitle: function(title) {
+		document.title = title;
+	}
 	
 };
 
