@@ -115,12 +115,12 @@ beef.net = {
 		// process a GET request
 		if (method.toUpperCase() == "GET"){
 			
-			//set the datatype to html if its the same domain and not set to execute
-			if (same_domain && !execute){
-				dataType = "html"
-			}else{
-				//otherwise set to script (either because you want to execute script or its cross domain)
+			//set the dataType to script if set to execute
+			if (execute){
 				dataType = "script"
+			}else{
+				//otherwise leave blank
+				dataType = ""
 			}
 			
 			//build and execute request
