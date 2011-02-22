@@ -87,6 +87,45 @@ beef.net = {
 	},
 	
 	/**
+	*Performs http requests
+	* @param: {String} scheme: HTTP or HTTPS
+	* @param: {String} method: GET or POST
+	* @param: {String} domain: bindshell.net, 192.168.3.4, etc
+	* @param: {Int} port: 80, 5900, etc
+	* @param: {String} path: /path/to/resource
+	* @param: {String} anchor: this is the value that comes after the # in the URL
+	* @param: {String} query: a=1&b=string&c=3.14
+	* @param: {Int} timeout: timeout the request after N seconds
+	* @param: {Bool} execute: execute the response as if it was a JavaScript file. 
+	* @param: {Funtion} callback: call the callback function at the completion of the method
+	*
+	* @return: {Object} response: this object contains the response details
+	*/
+	//TODO logic for same domain vs cross domain (cross domain get requires dataType: script)
+	//TODO implement execute
+	//TODO implement post
+	//TODO build response object and return it
+	request_new: function(scheme, method, domain, port, path, anchor, query, timeout, execute, callback) {
+		if (method.toUpperCase() == "GET"){
+				$j.ajax({type: method,
+					 dataType: "script",
+				     url: scheme+"://"+domain+":"+port+path,
+				     data: query+"#"+anchor,
+				     timeout: timeout,
+				     success: function(data, textStatus, jqXHR){
+					    console.log(data);
+				     },
+	     			 error: function(jqXHR, textStatus, errorThrown){
+			            console.log(errorThrown);
+		             }
+				});
+	  }else{
+		//POST
+		console.log("POST");
+	  }
+	},
+	
+	/**
 	 * Send browser details back to the framework. This function will gather the details 
 	 * and send them back to the framework
 	 * 
