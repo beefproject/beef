@@ -44,15 +44,16 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 			input_field = new Ext.form.Label(input_def);
 			break;
 		case 'checkbox':
-			input_def['name'] = input['name'];
+			input_def['name'] = 'chk_' + input['name'];
 			input_field = new Ext.form.Checkbox(input_def);
 			break;
 		case 'checkboxgroup':
-			input_def['name'] = input['name'];
+			input_def['name'] = 'chkg_' + input['name'];
 			input_def['items'] = input['items'];
 			input_field = new Ext.form.CheckboxGroup(input_def);
 			break;
    		case 'combobox':
+            input_def['name'] = 'com_' + input['name'];
 			input_def['triggerAction'] = 'all';
 				
 			// add a listener so that when the check box is changed it will update the payload options
