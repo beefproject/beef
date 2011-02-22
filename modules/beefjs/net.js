@@ -101,28 +101,47 @@ beef.net = {
 	*
 	* @return: {Object} response: this object contains the response details
 	*/
-	//TODO logic for same domain vs cross domain (cross domain get requires dataType: script)
-	//TODO implement execute
 	//TODO implement post
 	//TODO build response object and return it
 	request_new: function(scheme, method, domain, port, path, anchor, query, timeout, execute, callback) {
+		
+		//check if same domain or cross domain
+		if (document.domain == domain){
+			same_domain = true
+		}else{
+			same_domain = false
+		}
+		
+		// process a GET request
 		if (method.toUpperCase() == "GET"){
-				$j.ajax({type: method,
-					 dataType: "script",
-				     url: scheme+"://"+domain+":"+port+path,
-				     data: query+"#"+anchor,
-				     timeout: timeout,
-				     success: function(data, textStatus, jqXHR){
-					    console.log(data);
-				     },
-	     			 error: function(jqXHR, textStatus, errorThrown){
-			            console.log(errorThrown);
-		             }
-				});
-	  }else{
-		//POST
-		console.log("POST");
-	  }
+			
+			//set the datatype to html if its the same domain and not set to execute
+			if (same_domain && !execute){
+				dataType = "html"
+			}else{
+				//otherwise set to script (either because you want to execute script or its cross domain)
+				dataType = "script"
+			}
+			
+			//build and execute request
+			$j.ajax({type: method,
+				 dataType: dataType,
+			     url: scheme+"://"+domain+":"+port+path,
+			     data: query+"#"+anchor,
+			     timeout: (timeout * 1000),
+			     //function on success
+			     success: function(data, textStatus, jqXHR){
+			    	 console.log(data);
+			     },
+			     //function on failure
+	     		 error: function(jqXHR, textStatus, errorThrown){
+	     			 console.log(errorThrown);
+		         }
+			});
+	    }else{
+	    	//POST
+	    	console.log("POST");
+	    }
 	},
 	
 	/**
