@@ -94,16 +94,15 @@ beef.net = {
 	* @param: {Int} port: 80, 5900, etc
 	* @param: {String} path: /path/to/resource
 	* @param: {String} anchor: this is the value that comes after the # in the URL
-	* @param: {String} query: a=1&b=string&c=3.14
+	* @param: {String} data: This will be used as the query string for a GET or post data for a POST
 	* @param: {Int} timeout: timeout the request after N seconds
-	* @param: {Bool} execute: execute the response as if it was a JavaScript file. 
+	* @param: {Bool} dataType: specify the data return type expected (ie text/html/script) 
 	* @param: {Funtion} callback: call the callback function at the completion of the method
 	*
 	* @return: {Object} response: this object contains the response details
 	*/
-	//TODO implement post
 	//TODO build response object and return it
-	request_new: function(scheme, method, domain, port, path, anchor, query, timeout, execute, callback) {
+	request_new: function(scheme, method, domain, port, path, anchor, data, timeout, execute, callback) {
 		
 		//check if same domain or cross domain
 		if (document.domain == domain){
@@ -112,36 +111,21 @@ beef.net = {
 			same_domain = false
 		}
 		
-		// process a GET request
-		if (method.toUpperCase() == "GET"){
-			
-			//set the dataType to script if set to execute
-			if (execute){
-				dataType = "script"
-			}else{
-				//otherwise leave blank
-				dataType = ""
-			}
-			
-			//build and execute request
-			$j.ajax({type: method,
-				 dataType: dataType,
-			     url: scheme+"://"+domain+":"+port+path,
-			     data: query+"#"+anchor,
-			     timeout: (timeout * 1000),
-			     //function on success
-			     success: function(data, textStatus, jqXHR){
-			    	 console.log(data);
-			     },
-			     //function on failure
-	     		 error: function(jqXHR, textStatus, errorThrown){
-	     			 console.log(errorThrown);
-		         }
-			});
-	    }else{
-	    	//POST
-	    	console.log("POST");
-	    }
+		//build and execute request
+		$j.ajax({type: method,
+			 dataType: dataType,
+		     url: scheme+"://"+domain+":"+port+path+"#"+anchor,
+		     data: data,
+		     timeout: (timeout * 1000),
+		     //function on success
+		     success: function(data, textStatus, jqXHR){
+		    	 console.log(data);
+		     },
+		     //function on failure
+	    	 error: function(jqXHR, textStatus, errorThrown){
+	    		 console.log(errorThrown);
+		     }
+		});
 	},
 	
 	/**
