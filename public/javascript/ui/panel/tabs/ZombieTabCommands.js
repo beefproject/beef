@@ -63,6 +63,8 @@ ZombieTab_Commands = function(zombie) {
 		border: false,
 		region: 'west',
 		width: 190,
+        minSize: 190,
+        maxSize: 500, // if some command module names are even longer, adjust this value
 		useArrows: true,
 		autoScroll: true,
 		animate: true,
@@ -108,6 +110,11 @@ ZombieTab_Commands = function(zombie) {
 		items: {
 			layout: 'border',
 			border: false,
+            // enable width resize of the command_module_tree
+            defaults: {
+                collapsible: false,
+                split: true
+            },
 			items: [command_module_tree, 
 				new Ext.Panel({
 					id: 'zombie-command-module-west-'+zombie.session,
