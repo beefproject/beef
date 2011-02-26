@@ -1,3 +1,4 @@
+=begin
 module BeEF
 module UI
 
@@ -100,3 +101,4 @@ end
 
 end
 end
+=end
