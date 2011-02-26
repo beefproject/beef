@@ -9,6 +9,8 @@ ZombieTab_Commands = function(zombie) {
 		region: 'center',
 		border: false,
 		layout: 'fit',
+        autoScroll: true,
+        containerScroll: true,
 		html: "<div class='x-grid-empty'>Please select a command module from the command module tree on the left<br /><br />Most command modules are javascript commands that are executed against the selected Hooked Browser. Command modules are able to perform any actions that can be achieved with javascript, for example they may gather information about the Hooked Browser, or perform other activities such as exploiting vulnerabilities within the local network of the Hooked Browser.<br /><br />To learn more about writing your own modules review the wiki:<br /><a href='http://code.google.com/p/beef/wiki/DevDocs'>http://code.google.com/p/beef/wiki/DevDocs</a><br /><br />The traffic lights indicate the following:<ul><li>Red - Command does not work against this target</li><li>Grey - It is unknown if this command works against this target</li><li>Orange - The command works against the target, but may be visible to the user</li><li>Green - The command works against the target and should be invisible to the user</li></ul></div>"
 	});
 	
