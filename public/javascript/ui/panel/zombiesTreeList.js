@@ -240,7 +240,14 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 					if(node) {
 						//remove the node from the tree
 						branch_node.removeChild(node);
-						
+
+                        var parentNode = node.parentNode;
+                        // remove the node parent sub-folder only if there are not any other HBs as child of it
+                        // (basically, zombies that comes from the same IP)
+                        if(parentNode.childNodes.length <= 1){
+                            branch_node.removeChild(parentNode);
+                        }
+
 						//because ExtJs has a bug with node.destroy() this is a hack to make it work for beef.
 						node.setId("hooked-browser-node-destroyed");
 						
