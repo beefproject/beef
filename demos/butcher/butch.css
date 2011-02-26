@@ -40,6 +40,11 @@ body {
 	font-family: "Lucida Sans", arial;
 	font-size: 14px;
 }
+.smaller {
+	padding-top: 20px;
+	font-family: "Lucida Sans", arial;
+	font-size: 8px;
+}
 #friends {
 	display: none;
 	padding-top: 20px;
