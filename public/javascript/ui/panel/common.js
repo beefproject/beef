@@ -22,7 +22,8 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 	input_def = { 
 		id: 'form-zombie-'+zombie.session+'-field-'+input['name'], 
 		name: 'txt_'+input['name'], 
-		fieldLabel: input['ui_label'], 
+		fieldLabel: input['ui_label'],
+        anchor:'70%',
 		allowBlank: false, 
 		value: input['value']
 	};
