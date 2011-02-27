@@ -9,7 +9,18 @@ beef.net = {
 	beef_hook: "<%= @beef_hook %>",
 	beef_queue: [],
 
-	
+	/**
+	 * Response Object - returned from beef.net.request with result of request
+	 */
+	response: function() {
+		this.status_code = null; 			 	// 500, 404, 200, 302
+		this.response_body = null; 			// "<html>…." if not a cross domain request
+		this.port_status = null; 				// tcp port is open, closed or not http
+		this.was_cross_domain = null; 	// true or false
+		this.was_timedout = null; 			// the user specified timeout was reached
+		this.duration = null;  					// how long it took for the request to complete
+	},
+
 	/**
      * Gets an object that can be used for ajax requests.
      * 
@@ -101,15 +112,18 @@ beef.net = {
 	*
 	* @return: {Object} response: this object contains the response details
 	*/
-	//TODO build response object and return it
-	request_new: function(scheme, method, domain, port, path, anchor, data, timeout, execute, callback) {
-		
+	request_new: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
+
 		//check if same domain or cross domain
 		if (document.domain == domain){
-			same_domain = true
+			cross_domain = false
 		}else{
-			same_domain = false
+			cross_domain = true
 		}
+		
+		//define response object
+		var response = new this.response;
+		response.was_cross_domain = cross_domain;
 		
 		//build and execute request
 		$j.ajax({type: method,
@@ -119,13 +133,19 @@ beef.net = {
 		     timeout: (timeout * 1000),
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
-		    	 console.log(data);
+		    	 console.log(data); //TODO remove after testing
+		    	 response.status_code = "200";
+		    	 response.response_body = data;
+		    	 response.port_status = "open";
+		    	 response.was_timedout = false;
 		     },
 		     //function on failure
 	    	 error: function(jqXHR, textStatus, errorThrown){
-	    		 console.log(errorThrown);
-		     }
+	    		 console.log(errorThrown); //TODO remove after testing
+		    	 response.status_code = "TODO: errorThrown";
+		    }
 		});
+		//return response;
 	},
 	
 	/**
