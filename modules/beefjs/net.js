@@ -125,6 +125,8 @@ beef.net = {
 		var response = new this.response;
 		response.was_cross_domain = cross_domain;
 		
+		var start_time = new Date().getTime();
+		
 		//build and execute request
 		$j.ajax({type: method,
 			 dataType: dataType,
@@ -133,19 +135,23 @@ beef.net = {
 		     timeout: (timeout * 1000),
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
+		    	 var end_time = new Date().getTime();
 		    	 console.log(data); //TODO remove after testing
 		    	 response.status_code = "200";
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
+		    	 response.duration = (end_time - start_time);
 		     },
 		     //function on failure
 	    	 error: function(jqXHR, textStatus, errorThrown){
+	    		 var end_time = new Date().getTime();
 	    		 console.log(errorThrown); //TODO remove after testing
 		    	 response.status_code = "TODO: errorThrown";
+		    	 response.duration = end_time - start_time;
 		    }
 		});
-		//return response;
+		return response;
 	},
 	
 	/**
