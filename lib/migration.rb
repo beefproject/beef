@@ -57,11 +57,14 @@ class Migration
     
 						    browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
     
-						    targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 2} if browsers.count == 0
+						    targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 3} if browsers.count == 0
     
 						    browsers.each do |bn|
-							    targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 2}
+							    targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 1}
 						    end
+
+                            targets << {'os_name' => "ALL", 'verified_status' => 0 }
+
     
 						    msfci = BeEF::Models::DynamicCommandInfo.new(
 									    :name => msfi['name'],
