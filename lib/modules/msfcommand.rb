@@ -110,7 +110,7 @@ class Msf < BeEF::Command
 				
 				@info['Data'] << { 'name' => 'PAYLOAD', 
 				  'type' => 'combobox', 
-					'anchor' => '100% -100',
+					'anchor' => '95% -100',
 					'ui_label' => 'Payload',
 					'store_type' => 'arraystore', 
 					'store_fields' => ['payload'], 
