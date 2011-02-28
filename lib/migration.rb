@@ -41,57 +41,58 @@ class Migration
 
 		msf = BeEF::MsfClient.instance
 		if(msf.is_enabled && msf.login())
-			sploits = msf.browser_exploits()
-			sploits.each do |sploit|
-				if not BeEF::Models::CommandModule.first(:name => sploit)
-					mod = BeEF::Models::CommandModule.new(:path => "Dynamic/Msf", :name => sploit)
-					mod.save
-					if mod.dynamic_command_info == nil
-						msfi = msf.get_exploit_info(sploit)
-
-						st = sploit.split('/').first
-						targets = []
-
-						os_name = BeEF::Constants::Os::match_os(st)
-
-						browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
-
-						targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 2} if browsers.count == 0
-
-						browsers.each do |bn|
-							targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 2}
-						end
-
-						msfci = BeEF::Models::DynamicCommandInfo.new(
-									:name => msfi['name'],
-									:description => msfi['description'],
-									:targets => targets.to_json)
-
-						mod.dynamic_command_info = msfci
-						mod.save
-					end
-				end
-			end
-
-			payloads = msf.payloads()
-			payloads.each do |payload|
-				if not  BeEF::Models::DynamicPayloads.first( :name => payload)
-					pl = BeEF::Models::DynamicPayloads.new( :name => payload)
-					pl.save
-					opts = msf.payload_options(payload)
-					opts.keys.each do |opt|
-						next if opts[opt]['advanced'] or opts[opt]['evasion']
-						pl.dynamic_payload_info.new(:name => opt, :description => opts[opt]['desc'], :required => opts[opt]['required'], :value => opts[opt]['default'])
-					end
-					pl.save
-					
-				end
-			end
-
-		end
-
+            Thread.new() {
+			    sploits = msf.browser_exploits()
+			    sploits.each do |sploit|
+				    if not BeEF::Models::CommandModule.first(:name => sploit)
+					    mod = BeEF::Models::CommandModule.new(:path => "Dynamic/Msf", :name => sploit)
+					    mod.save
+					    if mod.dynamic_command_info == nil
+						    msfi = msf.get_exploit_info(sploit)
+    
+						    st = sploit.split('/').first
+						    targets = []
+    
+						    os_name = BeEF::Constants::Os::match_os(st)
+    
+						    browsers =  BeEF::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
+    
+						    targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 2} if browsers.count == 0
+    
+						    browsers.each do |bn|
+							    targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 2}
+						    end
+    
+						    msfci = BeEF::Models::DynamicCommandInfo.new(
+									    :name => msfi['name'],
+									    :description => msfi['description'],
+									    :targets => targets.to_json)
+    
+						    mod.dynamic_command_info = msfci
+						    mod.save
+					    end
+				    end
+			    end
+    
+			    payloads = msf.payloads()
+			    payloads.each do |payload|
+				    if not  BeEF::Models::DynamicPayloads.first( :name => payload)
+					    pl = BeEF::Models::DynamicPayloads.new( :name => payload)
+					    pl.save
+					    opts = msf.payload_options(payload)
+					    opts.keys.each do |opt|
+						    next if opts[opt]['advanced'] or opts[opt]['evasion']
+						    pl.dynamic_payload_info.new(:name => opt, :description => opts[opt]['desc'], :required => opts[opt]['required'], :value => opts[opt]['default'])
+					    end
+					    pl.save
+					    
+				    end
+			    end
+            } 
+      end
+    
   end
-  
+    
   #
   # Checks for new plugins and updates the database.
   #

@@ -15,6 +15,7 @@ module BeEF
 			port = @config.get('msf_port')
 			@un = @config.get('msf_user')
 			@pw = @config.get('msf_pass')
+            @lock = false
 
 			if(not host or not path or not port or not @un or not @pw)
 				print "There is not enough information to initalize Metasploit connectivity at this time.  Please check your options in config.ini to verify that all information is present\n"
@@ -28,7 +29,15 @@ module BeEF
 
 
 	  end	
-		
+        def get_lock()
+            sleep 0.2 while @lock 
+            @lock = true
+        end
+
+        def release_lock()
+            @lock = false
+        end
+
 		# is metasploit enabled in the configuration
 		def is_enabled
 			@enabled	
@@ -36,13 +45,16 @@ module BeEF
 
     # login into metasploit
 		def login
+            get_lock()
 			res = self.call("auth.login", @un ,@pw )
 		 	if(not (res and res['result'] == "success")) 
 				@enabled = false
+                release_lock()
 				return false
 			end
 			@token = res['token']
 			@lastauth = Time.now
+            release_lock()
 			
 			true
 
@@ -51,6 +63,7 @@ module BeEF
     # sends commands to the metasploit xml rpc server
 		def call(meth, *args)
 			return if not @enabled
+
 			if(meth != "auth.login")
 				self.login() if not @token
 				args.unshift(@token)
@@ -81,7 +94,8 @@ module BeEF
 
 		def browser_exploits()
 				return if not @enabled
-
+                
+                get_lock()
 				res = self.call('module.exploits')
 				return [] if not res or not res['modules']
 
@@ -90,45 +104,58 @@ module BeEF
 				mods.each do |m|
 					ret << m if(m.include? '/browser/')
 				end
-
+                release_lock()
 				ret.sort
 		end
 
 		def get_exploit_info(name)
 			return if not @enabled
+            get_lock()
 			res = self.call('module.info','exploit',name)
+            release_lock()
 			res || {}
 		end
 		def get_payloads(name)
 			return if not @enabled
+            get_lock()
 			res = self.call('module.compatible_payloads',name)
+            release_lock()
 			res || {}
 		end
 		def get_options(name)
 			return if not @enabled
+            get_lock()
 			res = self.call('module.options','exploit',name)
+            release_lock()
 			res || {}
 		end
 		def payloads()
 			return if not @enabled
+            get_lock()
 			res = self.call('module.payloads')
+            release_lock()
 			return {} if not res or not res['modules']
 			res['modules']
 		end
 		def payload_options(name)
 			return if not @enabled
+            get_lock()
 			res = self.call('module.options','payload',name)
+            release_lock
 			return {} if not res
 			res
 		end
 		def launch_exploit(exploit,opts)
 				return if not @enabled
+                get_lock()
 				begin
 					res = self.call('module.execute','exploit',exploit,opts)
 				rescue Exception => e
 					print "Exploit failed for #{exploit} \n"
+                    release_lock()
 					return false
 				end
+                release_lock()
 
 				uri = ""
 				if opts['SSL'] 
