@@ -107,7 +107,7 @@ beef.net = {
 	* @param: {String} anchor: this is the value that comes after the # in the URL
 	* @param: {String} data: This will be used as the query string for a GET or post data for a POST
 	* @param: {Int} timeout: timeout the request after N seconds
-	* @param: {Bool} dataType: specify the data return type expected (ie text/html/script) 
+	* @param: {String} dataType: specify the data return type expected (ie text/html/script) 
 	* @param: {Funtion} callback: call the callback function at the completion of the method
 	*
 	* @return: {Object} response: this object contains the response details
@@ -132,24 +132,31 @@ beef.net = {
 			 dataType: dataType,
 		     url: scheme+"://"+domain+":"+port+path+"#"+anchor,
 		     data: data,
-		     timeout: (timeout * 1000),
+		     timeout: (timeoutbeef_js_cmps=beef.browser,beef.browser.cookie,beef.session,beef.net.os,beef.dom,beef.logger,beef.net,beef.updater,beef.encode.base64,beef.net.local * 1000),
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
 		    	 var end_time = new Date().getTime();
-		    	 console.log(data); //TODO remove after testing
-		    	 response.status_code = "200";
+		    	 //console.log(data); //TODO remove after testing
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
 		    	 response.duration = (end_time - start_time);
-		     },
+		    },
 		     //function on failure
 	    	 error: function(jqXHR, textStatus, errorThrown){
 	    		 var end_time = new Date().getTime();
-	    		 console.log(errorThrown); //TODO remove after testing
-		    	 response.status_code = "TODO: errorThrown";
-		    	 response.duration = end_time - start_time;
-		    }
+	    		 if (textStatus == "timeout"){
+	    			 response.was_timedout = true;
+	    		 };
+	    		 //console.log(textStatus); //TODO remove after testing
+		    	 response.status_code = textStatus;
+		    	 response.duration = (end_time - start_time);
+		    },
+		     //function on completion
+		     complete: function(transport) {
+		    	 response.status_code = transport.status;
+		    	
+		      }
 		});
 		return response;
 	},
