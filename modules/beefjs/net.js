@@ -136,7 +136,6 @@ beef.net = {
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
 		    	 var end_time = new Date().getTime();
-		    	 //console.log(data); //TODO remove after testing
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
@@ -148,8 +147,7 @@ beef.net = {
 	    		 if (textStatus == "timeout"){
 	    			 response.was_timedout = true;
 	    		 };
-	    		 //console.log(textStatus); //TODO remove after testing
-		    	 response.status_code = textStatus;
+	    		 response.status_code = textStatus;
 		    	 response.duration = (end_time - start_time);
 		    },
 		     //function on completion
