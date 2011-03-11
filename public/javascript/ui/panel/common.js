@@ -386,6 +386,8 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				
 				panel.add(form);
 				panel.doLayout();
+                // hide the load mask after rendering of the config panel is done
+                panel.configLoadMask.hide();
 			}
 		});
 	}

@@ -10,9 +10,7 @@ ZombieTab_Commands = function(zombie) {
 		border: false,
 		layout: 'fit',
         autoScroll: true
-        // commenting it for now: it's causing troubles (don't disappear) when enabling the autoScroll and anchor of form inputs
-		//html: "<div class='x-grid-empty'>Please select a command module from the command module tree on the left<br /><br />Most command modules are javascript commands that are executed against the selected Hooked Browser. Command modules are able to perform any actions that can be achieved with javascript, for example they may gather information about the Hooked Browser, or perform other activities such as exploiting vulnerabilities within the local network of the Hooked Browser.<br /><br />To learn more about writing your own modules review the wiki:<br /><a href='http://code.google.com/p/beef/wiki/DevDocs'>http://code.google.com/p/beef/wiki/DevDocs</a><br /><br />The traffic lights indicate the following:<ul><li>Red - Command does not work against this target</li><li>Grey - It is unknown if this command works against this target</li><li>Orange - The command works against the target, but may be visible to the user</li><li>Green - The command works against the target and should be invisible to the user</li></ul></div>"
-	});
+    });
 	
 	var command_module_grid = new Ext.grid.GridPanel({
 		store: new Ext.data.JsonStore({
@@ -75,16 +73,30 @@ ZombieTab_Commands = function(zombie) {
 		root: {nodeType: 'async'},
 		loader: new Ext.tree.TreeLoader({
           dataUrl: '/ui/modules/select/commandmodules/tree.json',
-          baseParams: {zombie_session: zombie.session} 
+          baseParams: {zombie_session: zombie.session},
+          listeners:{
+            beforeload: function(treeloader, node, callback) {
+                       // Show loading mask on body, to prevent the user interacting with the UI
+                       treeloader.treeLoadingMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait, command tree is loading..."});
+                       treeloader.treeLoadingMask.show();
+                       return true;
+             },
+             load: function(treeloader, node, response) {
+                       // Hide loading mask after tree is fully loaded
+                       treeloader.treeLoadingMask.hide();
+                       return true;
+             }
+          }
         }),
 		listeners: {
 			'click': function(node) {
 				if(!node.leaf) {
 					node.toggle();
 				} else {
-					commands_statusbar.showBusy('Loading ' + node.text);
-					
-					command_module_grid.i = 0;
+					command_module_config.configLoadMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait, module config is loading..."});
+					command_module_config.configLoadMask.show();
+
+                    command_module_grid.i = 0;
 					command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
 					command_module_grid.store.reload({  //reload the command module grid
 						params: {  // insert the nonce with the request to reload the grid
