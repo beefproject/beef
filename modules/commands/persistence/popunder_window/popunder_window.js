@@ -6,5 +6,5 @@ beef.execute(function() {
 
 	window.focus();	
 
-	beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
+	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
 });

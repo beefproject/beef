@@ -10,7 +10,7 @@ module BeEF
     
     VERSION = BeEF::Configuration.instance.get('beef_version')
     
-    attr_reader :root_dir, :url, :configuration, :command_urls
+    attr_reader :root_dir, :url, :configuration, :command_urls, :mounts
     
     def initialize
       @configuration = BeEF::Configuration.instance
@@ -18,6 +18,7 @@ module BeEF
       @url = "http://#{beef_host}:#{@configuration.get("http_port")}"
       @root_dir = File.expand_path('../../../', __FILE__)
       @command_urls = {}
+      @mounts = {}
     end
     
     #
@@ -70,33 +71,28 @@ module BeEF
           @http_server.mount "/ui/#{mod_name}", BeEF::HttpHandler, mod_name
         }
         
+        # registers the hook page
+        @http_server.mount "#{@configuration.get("hook_file")}", BeEF::ZombieHandler
+        @http_server.mount '/ui/public', BeEF::PublicHandler, "#{root_dir}/public"
+        @http_server.mount '/favicon.ico', WEBrick::HTTPServlet::FileHandler, "#{root_dir}#{@configuration.get("favicon_dir")}/#{@configuration.get("favicon_file_name")}"
+        @http_server.mount '/demos/', WEBrick::HTTPServlet::FileHandler, "#{root_dir}/demos/"
+
+        #dynamic handler
+        @http_server.mount '/dh', BeEF::DynamicHandler
+
+        #register mounts handled by dynamic handler
+        mounts['/init'] = BeEF::InitHandler
+        mounts['/event'] = BeEF::EventHandler
+        mounts['/requester'] = BeEF::RequesterHandler
+
         # registers the command module pages
         Dir["#{root_dir}/modules/commands/**/*.rb"].each { |command|
           command_class = (File.basename command, '.rb').capitalize
           command_file = (File.basename command, '.rb')+'.js'
           
-          @http_server.mount "/command/#{command_file}", BeEF::CommandHandler, command_class
+          mounts["/command/#{command_file}"] = BeEF::CommandHandler, command_class
         }
-        
-        # registers the hook page
-        @http_server.mount "#{@configuration.get("hook_file")}", BeEF::ZombieHandler
-        
-        # registers the requester page
-        @http_server.mount '/requester', BeEF::RequesterHandler
-        
-        # registers the event handler
-        @http_server.mount '/event', BeEF::EventHandler
-        
-        # registers the init page
-        @http_server.mount '/init', BeEF::InitHandler
-        
-        # registers the event handler
-        @http_server.mount '/event', BeEF::EventHandler
-        
-        @http_server.mount '/ui/public', BeEF::PublicHandler, "#{root_dir}/public"
-        @http_server.mount '/favicon.ico', WEBrick::HTTPServlet::FileHandler, "#{root_dir}#{@configuration.get("favicon_dir")}/#{@configuration.get("favicon_file_name")}"
-        @http_server.mount '/demos/', WEBrick::HTTPServlet::FileHandler, "#{root_dir}/demos/"
-        
+
         trap("INT") { BeEF::HttpHookServer.instance.stop }
         
         @http_server.start

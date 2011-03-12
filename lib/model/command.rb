@@ -39,8 +39,7 @@ class Command
     raise WEBrick::HTTPStatus::BadRequest, "command is nil" if command.nil?
 
     # create the entry for the results 
-    command.results.new(:zombie_id => zombie_id, :data => result, :date => Time.now.to_i)
-    
+    command.results.new(:zombie_id => zombie_id, :data => result.to_json, :date => Time.now.to_i)
     command.save
 
     # log that the result was returned

@@ -64,6 +64,7 @@ require 'lib/server/publichandler'
 require 'lib/server/requesterhandler'
 require 'lib/server/inithandler'
 require 'lib/server/eventhandler'
+require 'lib/server/dynamichandler'
 
 require 'lib/logger'
 require 'lib/modules/command'
