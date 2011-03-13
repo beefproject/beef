@@ -150,13 +150,21 @@ beef.browser = {
 	isC9: function() {
 		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false);
 	},
+	
+	/**
+	 * Returns true if Chrome 10.
+	 * @example: beef.browser.isC10()
+	 */
+	isC10: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==10)?true:false);
+	},
 		
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10();
 	},
 		
 	/**
@@ -181,6 +189,7 @@ beef.browser = {
 			C7:		this.isC7(), 	// Chrome 7
 			C8:		this.isC8(), 	// Chrome 8
 			C9:		this.isC9(), 	// Chrome 9
+			C10:		this.isC10(), 	// Chrome 10
 			C:		this.isC(), 	// Chrome any version
 			FF2:	this.isFF2(),	// Firefox 2
 			FF3:	this.isFF3(),	// Firefox 3
@@ -211,6 +220,7 @@ beef.browser = {
 		if (this.isC7())	{ return '7'  }; 	// Chrome 7
 		if (this.isC8())	{ return '8'  }; 	// Chrome 8
 		if (this.isC9())	{ return '9'  }; 	// Chrome 9
+		if (this.isC10())	{ return '10'  }; 	// Chrome 10
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF35())	{ return '3.5' };	// Firefox 3.5
