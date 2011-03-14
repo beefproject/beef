@@ -23,7 +23,7 @@ class Insecure_url_skype < BeEF::Command
     })
 
     set_target({
-      'verified_status' =>  VERIFIED_USER_NOTIFY, 
+      'verified_status' =>  VERIFIED_WORKING,
       'browser_name' =>     S
     })
     
@@ -35,6 +35,11 @@ class Insecure_url_skype < BeEF::Command
     set_target({
       'verified_status' => VERIFIED_USER_NOTIFY,
       'browser_name' => FF
+    })
+
+    set_target({
+      'verified_status' => VERIFIED_USER_NOTIFY,
+      'browser_name' => O
     })
 
     use 'beef.dom'
