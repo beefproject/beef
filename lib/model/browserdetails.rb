@@ -67,6 +67,7 @@ class BrowserDetails
     return BeEF::Constants::Agents::AGENT_FIREFOX_IMG if browser.eql? "FF" # Firefox
     return BeEF::Constants::Agents::AGENT_SAFARI_IMG  if browser.eql? "S"  # Safari
     return BeEF::Constants::Agents::AGENT_CHROME_IMG  if browser.eql? "C"  # Chrome
+    return BeEF::Constants::Agents::AGENT_OPERA_IMG   if browser.eql? "O"  # Opera
     
     BeEF::Constants::Agents::AGENT_UNKNOWN_IMG
   end

@@ -43,6 +43,7 @@ class Zombie
     return BeEF::Constants::Agents::AGENT_SAFARI_IMG  if agent.include? BeEF::Constants::Agents::AGENT_SAFARI_UA_STR
     return BeEF::Constants::Agents::AGENT_KONQ_IMG    if agent.include? BeEF::Constants::Agents::AGENT_KONQ_UA_STR
     return BeEF::Constants::Agents::AGENT_CHROME_IMG  if agent.include? BeEF::Constants::Agents::AGENT_CHROME_UA_STR
+    return BeEF::Constants::Agents::AGENT_OPERA_IMG   if agent.include? BeEF::Constants::Agents::AGENT_OPERA_UA_STR
     
     BeEF::Constants::Agents::AGENT_UNKNOWN_IMG
   end
