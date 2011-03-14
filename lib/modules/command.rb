@@ -45,6 +45,7 @@ module BeEF
     S       = BeEF::Constants::Browsers::S
     FF      = BeEF::Constants::Browsers::FF
     C       = BeEF::Constants::Browsers::C
+    O       = BeEF::Constants::Browsers::O
     
     VERIFIED_WORKING =     BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_WORKING
     VERIFIED_NOT_WORKING = BeEF::Constants::CommandModule::MODULE_TARGET_VERIFIED_NOT_WORKING
