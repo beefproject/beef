@@ -246,7 +246,7 @@ beef.browser = {
 		if (this.isIE())	{ return 'IE' };	// Internet Explorer any version
 		if (this.isO())		{ return 'O' };		// Opera any version
 		if (this.isS())		{ return 'S' };		// Safari any version
-		return 'UNKNOWN';						// Unknown UA
+		return 'UN';							// Unknown UA
 	},
 	
 	/**
