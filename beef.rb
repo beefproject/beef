@@ -7,6 +7,9 @@ require 'lib/loader'
 # load config
 config = BeEF::Configuration.instance
 
+# disable reverse dns
+Socket.do_not_reverse_lookup = true 
+
 # setup database
 DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("database_file_name")}")
 
