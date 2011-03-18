@@ -166,13 +166,46 @@ beef.browser = {
 	isC: function() {
 		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10();
 	},
-		
+
+    /**
+        * Returns true if Opera 9.50 trough 9.52.
+        * @example: beef.browser.isO952()
+        */
+       isO952: function() {
+           return (!!window.opera  && (window.navigator.userAgent.match(/Opera\/9\.5/) != null));
+       },
+
+       /**
+        * Returns true if Opera 9.60 trough 9.64.
+        * @example: beef.browser.isO960()
+        */
+       isO960: function() {
+           return (!!window.opera  && (window.navigator.userAgent.match(/Opera\/9\.6/) != null));
+       },
+
+       /**
+        * Returns true if Opera 10.xx.
+        * @example: beef.browser.isO10()
+        */
+       isO10: function() {
+           return (!!window.opera  && (window.navigator.userAgent.match(/Opera\/9\.80.*Version\/10\./) != null));
+       },
+
+       /**
+        * Returns true if Opera 11.xx.
+        * @example: beef.browser.isO11()
+        */
+       isO11: function() {
+           return (!!window.opera && (window.navigator.userAgent.match(/Opera\/9\.80.*Version\/11\./) != null));
+       },
+
 	/**
 	 * Returns true if Opera.
 	 * @example: beef.browser.isO()
 	 */
 	isO: function() {
-		return !!window.opera;
+        console.log("isO called");
+		return this.isO952() || this.isO960() || this.isO10() || this.isO11();
 	},
 		
 	/**
@@ -189,7 +222,7 @@ beef.browser = {
 			C7:		this.isC7(), 	// Chrome 7
 			C8:		this.isC8(), 	// Chrome 8
 			C9:		this.isC9(), 	// Chrome 9
-			C10:		this.isC10(), 	// Chrome 10
+			C10:	this.isC10(), 	// Chrome 10
 			C:		this.isC(), 	// Chrome any version
 			FF2:	this.isFF2(),	// Firefox 2
 			FF3:	this.isFF3(),	// Firefox 3
@@ -202,6 +235,10 @@ beef.browser = {
 			IE8:	this.isIE8(),	// Internet Explorer 8
 			IE7:	this.isIE7(),	// Internet Explorer 7
 			IE:		this.isIE(),	// Internet Explorer any version
+            O952:   this.isO952(),  // Opera 9.50 trough 9.52
+            O960:   this.isO960(),  // Opera 9.60 trough 9.64
+            O10:    this.isO10(),  // Opera 10.xx
+            O11:    this.isO11(),  // Opera 11.xx
 			O:      this.isO(), 	// Opera any version
 			S:		this.isS()		// Safari any version
 		}
@@ -230,6 +267,10 @@ beef.browser = {
 		if (this.isIE9())	{ return '9'  };	// Internet Explorer 9
 		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
+        if (this.isO952())	{ return '9.5'  };	// Opera 9.5x
+        if (this.isO960())	{ return '9.6'  };	// Opera 9.6
+        if (this.isO10())	{ return '10'  };	// Opera 10.xx
+        if (this.isO11())	{ return '11'  };	// Opera 11.xx
 		return 'UNKNOWN';						// Unknown UA
 	},
 	
