@@ -6,7 +6,7 @@
 BEEFHOOK=beef.session.get_hook_session_id()
 
 if( beef.pageIsLoaded ) {
-  beef.net.sendback_browser_details();	
+  beef.net.browser_details();	
 }
 
 window.onload = function() {
