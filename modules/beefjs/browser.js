@@ -608,6 +608,77 @@ beef.browser = {
 	 **/
 	changePageTitle: function(title) {
 		document.title = title;
+	},
+
+
+	/**
+	 *  A function that gets the max number of simaltaneous connections the browser can make
+	 *  per domain, or globally on all domains.
+	 * @parameter {ENUM: 'PER_DOMAIN', 'GLOBAL'=>default}
+	 * @return {Deferred promise} A jQuery deferred object promise, which when resolved passes
+	 *	the number of connections to the callback function as "this"
+	 *
+	 *	example usage:
+	 *		$j.when(getMaxConnections()).done(function(){
+	 *			console.debug("Max Connections: " + this);
+	 *			});
+	 *
+	 */
+	getMaxConnections: function(scope) {
+
+		var imagesCount = 30;		// Max number of images to test.
+		var secondsTimeout = 5;		// Image load timeout threashold.
+		var testUrl ="";			// The image testing service URL.
+
+		// User broserspy.dk max connections service URL.
+		if(scope=='PER_DOMAIN')
+			 testUrl = "http://browserspy.dk/connections.php?img=1&amp;random=";
+		else
+			// The token will be replaced by a different number with each request(different domain).
+			testUrl = "http://<token>.browserspy.dk/connections.php?img=1&amp;random=";
+
+
+		var imagesLoaded = 0;				// Number of responding images before timeout.
+		var imagesRequested = 0;			// Number of requested images.
+		var testImages = new Array();		// Array of all images.
+		var deferredObject = $j.Deferred();	// A jquery Deferred object.
+
+		for (var i = 1; i <= imagesCount; i++)
+		{
+			// Asynchronously request image.
+			testImages[i] =
+				$j.ajax({
+					type: "get",
+					dataType: true,
+					url: (testUrl.replace("<token>",i)) + Math.random(),
+					data: "",
+					timeout: (secondsTimeout * 1000),
+
+					// Function on completion of request.
+					complete: function(jqXHR, textStatus){
+
+						imagesRequested++;
+
+						// If the image returns a 200 or a 302, the text Status is "error", else null
+						if(textStatus == "error")
+						{
+							imagesLoaded++;
+						}
+
+						// If all images requested
+						if(imagesRequested >= imagesCount)
+						{
+							// resolve the deferred object passing the number of loaded images.
+							deferredObject.resolveWith(imagesLoaded);
+						}
+					 }
+				});
+
+		}
+
+		// Return a promise to resolve the deffered object when the images are loaded.
+		return deferredObject.promise();
+
 	}
 	
 };
