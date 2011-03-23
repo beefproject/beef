@@ -28,7 +28,6 @@ Ext.onReady(function() {
     });
 	
 	new DoLogout();
-	new AboutWindow();
 });
 
 /*
