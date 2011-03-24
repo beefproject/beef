@@ -58,6 +58,8 @@ require 'lib/server/httpcontroller'
 
 require 'lib/server/httphookserver'
 
+require 'lib/server/assethandler'
+require 'lib/server/filehandler'
 require 'lib/server/zombiehandler'
 require 'lib/server/commandhandler'
 require 'lib/server/publichandler'

@@ -63,34 +63,34 @@ module BeEF
         config[:ServerSoftware] =  "BeEF " + VERSION
 
         @http_server = WEBrick::HTTPServer.new(config)
+        @asset_handler = BeEF::AssetHandler.instance
 
         # registers the ui pages
         Dir["#{$root_dir}/lib/ui/**/*.rb"].each { |http_module|
           require http_module
           mod_name = File.basename http_module, '.rb'
-          @http_server.mount "/ui/#{mod_name}", BeEF::HttpHandler, mod_name
+          mount("/ui/#{mod_name}", true, BeEF::HttpHandler, mod_name)
         }
         
         # registers the hook page
-        @http_server.mount "#{@configuration.get("hook_file")}", BeEF::ZombieHandler
-        @http_server.mount '/ui/public', BeEF::PublicHandler, "#{root_dir}/public"
-        @http_server.mount '/favicon.ico', WEBrick::HTTPServlet::FileHandler, "#{root_dir}#{@configuration.get("favicon_dir")}/#{@configuration.get("favicon_file_name")}"
-        @http_server.mount '/demos/', WEBrick::HTTPServlet::FileHandler, "#{root_dir}/demos/"
+        mount("#{@configuration.get("hook_file")}", true, BeEF::ZombieHandler)
+        mount('/ui/public', true, BeEF::PublicHandler, "#{root_dir}/public")
+        mount('/favicon.ico', true, WEBrick::HTTPServlet::FileHandler, "#{root_dir}#{@configuration.get("favicon_dir")}/#{@configuration.get("favicon_file_name")}")
+        mount('/demos/', true, WEBrick::HTTPServlet::FileHandler, "#{root_dir}/demos/")
 
         #dynamic handler
-        @http_server.mount '/dh', BeEF::DynamicHandler
+        mount('/dh', true, BeEF::DynamicHandler)
 
         #register mounts handled by dynamic handler
-        mounts['/init'] = BeEF::InitHandler
-        mounts['/event'] = BeEF::EventHandler
-        mounts['/requester'] = BeEF::RequesterHandler
+        mount('/init', false, BeEF::InitHandler)
+        mount('/event', false, BeEF::EventHandler)
+        mount('/requester', false, BeEF::RequesterHandler)
 
         # registers the command module pages
         Dir["#{root_dir}/modules/commands/**/*.rb"].each { |command|
           command_class = (File.basename command, '.rb').capitalize
           command_file = (File.basename command, '.rb')+'.js'
-          
-          mounts["/command/#{command_file}"] = BeEF::CommandHandler, command_class
+          mount("/command/#{command_file}", false, BeEF::CommandHandler, command_class)
         }
 
         trap("INT") { BeEF::HttpHookServer.instance.stop }
@@ -113,10 +113,40 @@ module BeEF
     # Restarts the BeEF http server.
     #
     def restart; stop; start; end
-    
+   
+    # 
+    # Mounts a handler, can either be a hard or soft mount (soft mounts are handled by the command handler
+    #
+    def mount(url, hard, c, args = nil)
+       if hard
+           if args == nil
+               @http_server.mount url, c
+            else
+               @http_server.mount url, c, *args
+            end
+        else
+            if args == nil
+                mounts[url] = c
+            else
+                mounts[url] = c, *args
+            end
+        end
+    end
+
+    #
+    # Unmounts handler
+    #
+    def unmount(url, hard)
+        if hard
+            @http_server.umount(url)
+        else
+            mounts.delete(url)
+        end
+    end
     
     private
     @http_server
+    @asset_handler
     
   end
   

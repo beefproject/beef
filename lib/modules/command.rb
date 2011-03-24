@@ -94,7 +94,7 @@ module BeEF
     
     # Builds the 'datastore' attribute of the command which is used to generate javascript code.
     def build_datastore(data); 
-      @datastore = JSON.parse(data); 
+        @datastore = JSON.parse(data);
     end
     
     # Sets the datastore for the callback function. This function is meant to be called by the CommandHandler
@@ -279,6 +279,10 @@ module BeEF
       raise "Invalid beefjs component for command module #{@path}" if not File.exists?(component_path)
       
       @beefjs_components[component] = component_path
+    end
+
+    def map_file_to_url(file, path=nil, extension=nil, count=1)
+        return BeEF::AssetHandler.instance.bind(file, path, extension, count)
     end
   
     private
