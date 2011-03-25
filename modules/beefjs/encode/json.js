@@ -12,7 +12,7 @@ beef.encode.json = {
             return "null";
     
         if (type == "undefined")
-            return undefined;
+            return '\"\"';
         
         if (type == "number" || type == "boolean")
             return o + "";
