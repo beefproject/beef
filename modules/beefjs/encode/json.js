@@ -18,12 +18,12 @@ beef.encode.json = {
             return o + "";
     
         if (type == "string")
-            return $.quoteString(o);
+            return $j.quoteString(o);
     
         if (type == 'object')
         {
             if (typeof o.toJSON == "function") 
-                return $.toJSON( o.toJSON() );
+                return $j.toJSON( o.toJSON() );
             
             if (o.constructor === Date)
             {
@@ -57,7 +57,7 @@ beef.encode.json = {
             {
                 var ret = [];
                 for (var i = 0; i < o.length; i++)
-                    ret.push( $.toJSON(o[i]) || "null" );
+                    ret.push( $j.toJSON(o[i]) || "null" );
 
                 return "[" + ret.join(",") + "]";
             }
@@ -70,22 +70,50 @@ beef.encode.json = {
                 if (type == "number")
                     name = '"' + k + '"';
                 else if (type == "string")
-                    name = $.quoteString(k);
+                    name = $j.quoteString(k);
                 else
                     continue;  //skip non-string or number keys
             
                 if (typeof o[k] == "function") 
                     continue;  //skip pairs where the value is a function.
             
-                var val = $.toJSON(o[k]);
+                var val = $j.toJSON(o[k]);
             
                 pairs.push(name + ":" + val);
             }
 
             return "{" + pairs.join(", ") + "}";
         }
-	
+    },
+
+    quoteString: function(string) {
+        if (string.match(this._escapeable))
+        {
+            return '"' + string.replace(this._escapeable, function (a) 
+            {
+                var c = this._meta[a];
+                if (typeof c === 'string') return c;
+                c = a.charCodeAt();
+                return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+            }) + '"';
+        }
+        return '"' + string + '"';
+    },
+    
+    _escapeable: /["\\\x00-\x1f\x7f-\x9f]/g,
+    
+    _meta : {
+        '\b': '\\b',
+        '\t': '\\t',
+        '\n': '\\n',
+        '\f': '\\f',
+        '\r': '\\r',
+        '"' : '\\"',
+        '\\': '\\\\'
     }
 }
+
+$j.toJSON = function(o) {return beef.encode.json.stringify(o);}
+$j.quoteString = function(o) {return beef.encode.json.quoteString(o);}
 
 beef.regCmp('beef.encode.json');

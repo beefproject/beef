@@ -204,7 +204,6 @@ beef.browser = {
 	 * @example: beef.browser.isO()
 	 */
 	isO: function() {
-        console.log("isO called");
 		return this.isO952() || this.isO960() || this.isO10() || this.isO11();
 	},
 		
