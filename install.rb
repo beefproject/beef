@@ -5,7 +5,7 @@ puts "\nWelcome to the BEeF installer!"
 puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the INSTALL file"
 
 # array of required gems - add to as needed (specify a version if needed eg "gem_name, =x.x.x")
-$gems_required = ["ansi", "dm-core", "json", "data_objects", "do_sqlite3", "sqlite3-ruby", "dm-sqlite-adapter", 
+$gems_required = ["ansi", "dm-core", "json", "data_objects", "do_sqlite3", "sqlite3", "dm-sqlite-adapter", 
                   "parseconfig", "erubis", "dm-migrations"]
 
 # array of missing non-version specific gems installed
