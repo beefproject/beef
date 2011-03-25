@@ -51,7 +51,7 @@ module BeEF
                         data += sp[:data]
                     end
                 end
-                p Base64.decode64(data)
+                
                 data = JSON.parse(Base64.decode64(data)).first
                 data['beefhook'] = packet[:beefhook]
                 data['request'] = @request
