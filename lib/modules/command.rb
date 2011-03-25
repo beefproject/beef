@@ -55,7 +55,7 @@ module BeEF
     # Super class controller
     def initialize(info)
       @info = info
-      @datastore = @info['Data'] || nil
+      @datastore = @info['Data'] || {}
       @friendlyname = @info['Name'] || nil
       @target = @info['Target'] || nil
       @output = ''
@@ -94,7 +94,7 @@ module BeEF
     
     # Builds the 'datastore' attribute of the command which is used to generate javascript code.
     def build_datastore(data); 
-        @datastore = JSON.parse(data);
+        @datastore = JSON.parse(data)
     end
     
     # Sets the datastore for the callback function. This function is meant to be called by the CommandHandler

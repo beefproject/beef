@@ -100,10 +100,6 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "zombie.session is nil" if zombie.session.nil?
       raise WEBrick::HTTPStatus::BadRequest, "zombie is nil" if command.nil?
       raise WEBrick::HTTPStatus::BadRequest, "zombie.session is nil" if command.command_module_id.nil?
-
-      # flag that the command has been sent to the hooked browser
-      command.instructions_sent = true 
-      command.save
       
       # get the command module
       command_module = BeEF::Models::CommandModule.first(:id => command.command_module_id)      
@@ -111,7 +107,7 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "command_module.path is nil" if command_module.path.nil?
 
       klass = File.basename command_module.path, '.rb'
-
+      
       @guard.synchronize {
         command_module = BeEF::Modules::Commands.const_get(klass.capitalize).new
         command_module.command_id = command.id
@@ -126,6 +122,10 @@ module Modules
         puts "+ Hooked browser #{zombie.ip} sent command module #{klass}" if @cmd_opts[:verbose]
         
       }
+      
+      # flag that the command has been sent to the hooked browser
+      command.instructions_sent = true 
+      command.save
     end
     
     #
