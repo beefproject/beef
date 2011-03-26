@@ -2,13 +2,13 @@ module BeEF
 module Modules
 module Commands
 
-class Detect_details < BeEF::Command
+class Detect_plugins < BeEF::Command
   
   def initialize
     super({
-      'Name' => 'Browser Type',
+      'Name' => 'Installed Plugins',
       'Description' => %Q{
-        This module will retrieve the selected zombie browser details.'
+        This module will retrieve the selected zombie browser plugins.'
         },
       'Category' => 'Browser',
       'Author' => ['wade','vo','passbe','saafan'],
@@ -26,7 +26,7 @@ class Detect_details < BeEF::Command
 
   def callback
     content = {}
-    content['Browser type'] = @datastore['browser_type']    
+    content['Plugins'] = @datastore['plugins']
     
     save content
     #update_zombie!

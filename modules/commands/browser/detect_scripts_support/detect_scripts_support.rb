@@ -2,13 +2,13 @@ module BeEF
 module Modules
 module Commands
 
-class Detect_details < BeEF::Command
+class Detect_scripts_support < BeEF::Command
   
   def initialize
     super({
-      'Name' => 'Browser Type',
+      'Name' => 'Scripts Support',
       'Description' => %Q{
-        This module will retrieve the selected zombie browser details.'
+        This module will retrieve the selected zombie browser scripting engines.'
         },
       'Category' => 'Browser',
       'Author' => ['wade','vo','passbe','saafan'],
@@ -25,8 +25,11 @@ class Detect_details < BeEF::Command
   end
 
   def callback
-    content = {}
-    content['Browser type'] = @datastore['browser_type']    
+    content = {}    
+    content['Java enabled'] =  @datastore['java_enabled']
+    content['VBscript enabled'] = @datastore['vbscript_enabled']
+    content['Has Flash'] = @datastore['has_flash']
+    content['Has Google Gears'] = @datastore['has_googlegears']
     
     save content
     #update_zombie!
