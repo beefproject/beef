@@ -31,8 +31,8 @@ class Alert_dialog < BeEF::Command
   
   def callback
     content = {}
-    content['User Response'] = "The user clicked the 'OK' button when presented with an alert box saying: '"
-    content['User Response'] += @datastore['text'] + "'"
+    puts @results
+    content['User Response'] = "The user clicked the 'OK' button when presented with an alert box."
     save content
   end
   
