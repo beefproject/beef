@@ -50,8 +50,14 @@ class Requester < BeEF::HttpController
     host_str = req_parts[3]
     raise 'Invalid HTTP version' if not Filter.is_valid_host_str?(host_str) # check host string - Host:
     host = req_parts[4]
-    raise 'Invalid hostname' if not Filter.is_valid_hostname?(host) # check the target hostname
-
+    host_parts = host.split(/:/)
+    hostname = host_parts[0]
+    raise 'Invalid hostname' if not Filter.is_valid_hostname?(hostname) # check the target hostname
+    hostport = host_parts[1] || nil
+    if !hostport.nil?
+      raise 'Invalid hostport' if not Filter.nums_only?(hostport) # check the target hostport
+    end
+    
     # (re)build the request
     green_request = StringIO.new(verb + " " + uri + " " +  version + "\n" + host_str + " " + host)
     request = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)

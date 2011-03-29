@@ -70,7 +70,6 @@ require 'lib/server/dynamichandler'
 
 require 'lib/logger'
 require 'lib/modules/command'
-require 'lib/modules/requester'
 
 require 'lib/modules/msfclient'
 require 'lib/modules/msfcommand'

@@ -13,22 +13,18 @@ module BeEF
     #
     # Class constructor
     #
-    def initialize(config)
-      # we set up a mutex
+    def initialize(data)
       @guard = Mutex.new
+      @data = data
+      setup()
     end
     
-    #
-    # This function receives any POST http requests. We only
-    # allow the hooked browser to send back results using POST.
-    #
-    def do_POST(request, response)
+    def setup()
       # validates the hook token
-      beef_hook = request.query['BEEFHOOK'] || nil
+      beef_hook = @data['beefhook'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "beef_hook is null" if beef_hook.nil?
-      
       # validates the request id
-      request_id = request.query['id'] || nil
+      request_id = @data['cid'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "request_id is null" if request_id.nil?
       
       # validates that a hooked browser with the beef_hook token exists in the db
@@ -41,11 +37,12 @@ module BeEF
       
       # validates that the http request has not be ran before
       raise WEBrick::HTTPStatus::BadRequest, "This http request has been saved before" if http_db.has_ran.eql? true
-      
+  
       # validates the body
-      body = request.query['body'] || nil
-      raise WEBrick::HTTPStatus::BadRequest, "body is null" if body.nil?
       
+      body = @data['results'] || nil
+      raise WEBrick::HTTPStatus::BadRequest, "body is null" if body.nil?
+
       @guard.synchronize {
         # save the results in the database
         http_db.response = body
@@ -53,14 +50,7 @@ module BeEF
         http_db.save
       }
       
-      response.set_no_cache()
-      response.header['Content-Type'] = 'text/javascript' 
-      response.header['Access-Control-Allow-Origin'] = '*'
-      response.header['Access-Control-Allow-Methods'] = 'POST'
-      response.body = ''
     end
-    
-    alias do_GET do_POST
     
   end
   
