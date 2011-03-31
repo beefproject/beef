@@ -613,6 +613,9 @@ beef.browser = {
 	/**
 	 *  A function that gets the max number of simaltaneous connections the browser can make
 	 *  per domain, or globally on all domains.
+	 * 
+	 * This code is based on research from browserspy.dk
+	 *
 	 * @parameter {ENUM: 'PER_DOMAIN', 'GLOBAL'=>default}
 	 * @return {Deferred promise} A jQuery deferred object promise, which when resolved passes
 	 *	the number of connections to the callback function as "this"
