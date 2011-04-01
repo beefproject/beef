@@ -36,6 +36,8 @@ module Console
       end
  
       puts
+      puts "Ensure you are running the latest framework version.  Run 'svn update' to update"
+      puts
 
     end
   end
