@@ -155,6 +155,7 @@ beef.net = {
 		     //function on success
 		     success: function(data, textStatus, jqXHR){
 		    	 var end_time = new Date().getTime();
+		    	 response.status_code = textStatus;
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
