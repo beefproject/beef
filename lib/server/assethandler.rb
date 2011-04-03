@@ -23,7 +23,7 @@ module BeEF
         url = buildURL(path, extension) 
         @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
         @http_server.mount(url, true, BeEF::FileHandler, @allocations[url]['file'])
-        puts @allocations
+        puts "+ File [" + "#{root_dir}"+file + "] binded to url [" + url + "]"
         return url
     end
     
