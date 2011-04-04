@@ -57,6 +57,9 @@ require 'lib/server/httphandler'
 require 'lib/server/httpcontroller'
 
 require 'lib/server/httphookserver'
+require 'lib/httpproxybase'   
+require 'lib/httpproxyzombie'   
+require 'lib/httpproxyzombiehandler'
 
 require 'lib/server/assethandler'
 require 'lib/server/filehandler'

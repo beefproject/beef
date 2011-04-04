@@ -35,6 +35,12 @@ module Console
         puts detail_tab + "Demo URL:  http://#{host}:#{@configuration.get("http_port")}#{@configuration.get("http_demo_path")}"
       end
  
+       # if the proxy is enabled output the address
+      if (@configuration.get('http_proxy_enable').to_i > 0)
+        puts
+        puts detail_tab + "HTTP Proxy: http://#{@configuration.get("http_proxy_bind_address")}:#{@configuration.get("http_proxy_bind_port")}"
+      end
+  
       puts
       puts "Ensure you are running the latest framework version. Run 'svn update' to update"
       puts

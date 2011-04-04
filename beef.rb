@@ -27,9 +27,11 @@ BeEF::Migration.instance.update_db!
   
 BeEF::Console::Banner.generate
 
-# start the requester proxy
-#requester_proxy = BeEF::Requester::ProxyServer.instance
-#requester_proxy.start
+# start the http proxy if enabled in config.ini
+if (config.get('http_proxy_enable').to_i > 0)
+  http_proxy_zombie = BeEF::HttpProxyZombie.instance
+  http_proxy_zombie.start
+end
 
 # start the hook server
 http_hook_server = BeEF::HttpHookServer.instance
