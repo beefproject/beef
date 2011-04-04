@@ -3,7 +3,6 @@
  * Loaded in /ui/panel/index.html 
  */
 ZombieTab_Commands = function(zombie) {
-	
 	var command_module_config = new Ext.Panel({
 		id: 'zombie-command-module-config-'+zombie.session,
 		region: 'center',
@@ -114,7 +113,13 @@ ZombieTab_Commands = function(zombie) {
              load: function(treeloader, node, response) {
                        // Hide loading mask after tree is fully loaded
                        treeloader.treeLoadingMask.hide();
-                       welcomeWindow.show();
+
+                       if(Ext.get('welcomeWinShown') == null){
+                         welcomeWindow.show();
+                         // add a div in the header section, to prevent displaying the Welcome Window every time
+                         // the module_tree_panel is loaded
+                         Ext.DomHelper.append('header', {tag: 'div', id: 'welcomeWinShown'});
+                       }
                        return true;
              }
           }
