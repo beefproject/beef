@@ -87,7 +87,7 @@ class Msf < BeEF::Command
 							  case msfoptions[k]['type']
 							  when "string","address","port"
 									msfoptions[k]['default'] = rand(32**20).to_s(32)  if k == "URIPATH"
-									@info['Data'] << {'name' => k , 'ui_label' => k, 'value' => msfoptions[k]['default']}
+									@info['Data'] << {'name' => k , 'ui_label' => k, 'value' => (oc_value(k) ||  msfoptions[k]['default'])}
 								when "bool"
 									@info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
 							  when "enum"
@@ -95,7 +95,7 @@ class Msf < BeEF::Command
 									msfoptions[k]['enums'].each { |e|
 													enumdata << [e]
 									}
-									@info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => enumdata, 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => msfoptions[k]['default']}
+									@info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => enumdata, 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => (oc_value(k) || msfoptions[k]['default'])}
 								else
 									print "K => #{k}\n"
 									print "Status => #{msfoptions[k]['advanced']}\n"
@@ -107,6 +107,7 @@ class Msf < BeEF::Command
 
 				payloads = msfpayloads['payloads']
 				pl = []
+				pl << [(oc_value('PAYLOAD') || 'generic/shell_bind_tcp')]
 				payloads.each { |p|
 						pl << [p]
 			  }	
@@ -145,11 +146,11 @@ class Msf < BeEF::Command
 					  case payload_options[k]['type']
 					  when "string","address","port","raw","path", "integer"
 							payload_options[k]['default'] = "127.0.0.1" if k == "RHOST"
-							info['Data'] << {'name' => k , 'ui_label' => k, 'value' => payload_options[k]['default']}
+							info['Data'] << {'name' => k , 'ui_label' => k, 'value' => (oc_value(k) || payload_options[k]['default'])}
 						when "bool"
 							info['Data'] <<  {'name' => k, 'type' => 'checkbox', 'ui_label' => k }
 					  when "enum"
-							info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => payload_options[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => payload_options[k]['default']}
+							info['Data'] << { 'name' => k, 'type' => 'combobox', 'ui_label' => k, 'store_type' => 'arraystore', 'store_fields' => ['enum'], 'store_data' => payload_options[k]['enums'], 'valueField' => 'enum', 'displayField' => 'enum' , 'autoWidth' => true, 'mode' => 'local', 'value' => (oc_value(k) || payload_options[k]['default'])}
 						else
 						  # Debug output if the payload option type isn't found
 							puts "K => #{k}\n"

@@ -363,6 +363,9 @@ class Modules < BeEF::HttpController
       raise WEBrick::HTTPStatus::BadRequest, "invalid key param string" if not Filter.has_valid_param_chars?(param)
       raise WEBrick::HTTPStatus::BadRequest, "first char is num" if Filter.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
+			oc = BeEF::Models::OptionCache.first_or_create(:name => param[4..-1])
+			oc.value = params[param]
+			oc.save
     }
 
     zombie = Z.first(:session => zombie_session)
@@ -416,6 +419,9 @@ class Modules < BeEF::HttpController
       raise WEBrick::HTTPStatus::BadRequest, "invalid key param string" if not Filter.has_valid_param_chars?(param)
       raise WEBrick::HTTPStatus::BadRequest, "first char is num" if Filter.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
+			oc = BeEF::Models::OptionCache.first_or_create(:name => param[4..-1])
+			oc.value = params[param]
+			oc.save
     }
 
     zombie = Z.first(:session => zombie_session)
@@ -518,7 +524,7 @@ class Modules < BeEF::HttpController
       command_modules_json[i] = JSON.parse(e.to_json)
       i += 1
     end
-    
+
     if not command_modules_json.empty?
       return {'success' => 'true', 'command_modules' => command_modules_json}.to_json
     else

@@ -40,6 +40,7 @@ require 'lib/model/distributedenginerules'
 require 'lib/model/dynamiccommandinfo'
 require 'lib/model/dynamicpayloadinfo.rb'
 require 'lib/model/dynamicpayloads.rb'
+require 'lib/model/optioncache.rb'
 
 
 require 'lib/crypto'

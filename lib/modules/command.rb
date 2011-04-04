@@ -284,7 +284,19 @@ module BeEF
     def map_file_to_url(file, path=nil, extension=nil, count=1)
         return BeEF::AssetHandler.instance.bind(file, path, extension, count)
     end
-  
+
+		def oc_value(name)
+      	option =  BeEF::Models::OptionCache.first(:name => name)
+				return nil if not option
+      	return option.value
+		end
+
+		def apply_defaults()
+				@datastore.each { |opt|
+						opt["value"] = oc_value(opt["name"]) || opt["value"]
+				}
+		end
+
     private
     
     @use_template
