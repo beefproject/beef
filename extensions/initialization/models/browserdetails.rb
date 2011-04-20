@@ -52,11 +52,9 @@ module Models
               :detail_key => detail_key,
               :detail_value => detail_value)
 
-      @@guard.synchronize {
-        result = browserdetails.save
-        # if the attempt to save the browser details fails return a bad request
-        raise WEBrick::HTTPStatus::BadRequest, "Failed to save browser details" if result.nil?    
-      }
+      result = browserdetails.save
+      # if the attempt to save the browser details fails return a bad request
+      raise WEBrick::HTTPStatus::BadRequest, "Failed to save browser details" if result.nil?    
     
       browserdetails
     end

@@ -28,10 +28,9 @@ module Handlers
       @response = response
       
       controller = nil
-      @guard.synchronize {
-        controller = @klass.new
-        controller.run(@request, @response)
-      }
+
+      controller = @klass.new
+      controller.run(@request, @response)
       
       response.header.replace(controller.headers)
       response.body = controller.body.to_s

@@ -46,12 +46,10 @@ module Requester
       body = @data['results'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "body is null" if body.nil?
       
-      @guard.synchronize {
-        # save the results in the database
-        http_db.response = body
-        http_db.has_ran = true
-        http_db.save
-      }
+      # save the results in the database
+      http_db.response = body
+      http_db.has_ran = true
+      http_db.save
       
     end
     

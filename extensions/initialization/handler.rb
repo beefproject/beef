@@ -30,9 +30,8 @@ module Initialization
       zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].peeraddr[3], :session => session_id)
       zombie.firstseen = Time.new.to_i
       zombie.httpheaders = @data['request'].header.to_json
-      @guard.synchronize {      
-        zombie.save # the save needs to be conducted before any hooked browser specific logging
-      }
+
+      zombie.save # the save needs to be conducted before any hooked browser specific logging
       
       # add a log entry for the newly hooked browser
       log_zombie_domain = zombie.domain
