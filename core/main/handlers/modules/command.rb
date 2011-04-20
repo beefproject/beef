@@ -2,9 +2,9 @@ module BeEF
 module Core
 module Handlers
 module Modules
-  
+
   module Command
-    
+
     #
     # Adds the command module instructions to a hooked browser's http response. 
     #
@@ -14,7 +14,7 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser.session is nil" if hooked_browser.session.nil?
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser is nil" if command.nil?
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser.command_module_id is nil" if command.command_module_id.nil?
-      
+
       # get the command module
       command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)      
       raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
@@ -28,9 +28,9 @@ module Modules
       command_module.session_id = hooked_browser.session
       command_module.build_datastore(command.data)
       command_module.pre_send
-      
+
       build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
-      
+
       @body << command_module.output + "\n\n"
       
       # prints the event to the console
@@ -43,7 +43,7 @@ module Modules
       command.instructions_sent = true 
       command.save
     end
-    
+
   end
 
 end
