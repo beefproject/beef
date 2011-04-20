@@ -6,7 +6,7 @@
 # Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
 beef:
     extension:
-        msf:
+        metasploit:
             enable: true 
             host: "10.211.55.2"
             path: "/RPC2"

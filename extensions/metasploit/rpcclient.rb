@@ -11,15 +11,15 @@ module Metasploit
 
 	  def initialize
 			@config = BeEF::Core::Configuration.instance
-			@enabled = (@config.get('beef.msf.enable'))
+			@enabled = (@config.get('beef.extension.metasploit.enable'))
 			
 		  return if (not @enabled)
 		  
-			host = @config.get('beef.msf.host')
-			path = @config.get('beef.msf.path')
-			port = @config.get('beef.msf.port')
-			@un = @config.get('beef.msf.user')
-			@pw = @config.get('beef.msf.pass')
+			host = @config.get('beef.extension.metasploit.host')
+			path = @config.get('beef.extension.metasploit.path')
+			port = @config.get('beef.extension.metasploit.port')
+			@un = @config.get('beef.extension.metasploit.user')
+			@pw = @config.get('beef.extension.metasploit.pass')
       @lock = false
       
 			if(not host or not path or not port or not @un or not @pw)
@@ -183,7 +183,7 @@ module Metasploit
 				uri += "http://"
 			end
 
-			uri += @config.get('beef.msf.callback_host') + ":" + opts['SRVPORT'] + "/" + opts['URIPATH']
+			uri += @config.get('beef.extension.metasploit.callback_host') + ":" + opts['SRVPORT'] + "/" + opts['URIPATH']
 
 			res['uri'] = uri
 			res

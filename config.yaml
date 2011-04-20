@@ -53,5 +53,5 @@ beef:
             enable: true 
         proxy:
             enable: true 
-        msf:
-            enable: false
+        metasploit:
+            enable: false 
