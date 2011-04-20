@@ -1,0 +1,5 @@
+beef:
+    extension:
+        events:
+            enable: true 
+

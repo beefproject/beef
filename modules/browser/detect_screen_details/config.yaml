@@ -1,0 +1,5 @@
+beef:
+    module:
+        detect_screen_details:
+            enable: true
+            category: "Browser"

@@ -1,0 +1,5 @@
+beef:
+    module:
+        site_redirect_iframe:
+            enable: true
+            category: "Browser"

@@ -1,0 +1,8 @@
+beef:
+    module:
+        detect_local_settings:
+            enable: true
+            category: "Network"
+        fingerprint_local_network:
+            enable: false 
+            category: "Network"

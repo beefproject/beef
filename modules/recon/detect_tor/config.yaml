@@ -1,0 +1,5 @@
+beef:
+    module:
+        detect_tor:
+            enable: true
+            category: "Recon"

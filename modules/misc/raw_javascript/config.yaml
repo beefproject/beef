@@ -1,0 +1,5 @@
+beef:
+    module:
+        raw_javascript:
+            enable: true
+            category: "Misc"

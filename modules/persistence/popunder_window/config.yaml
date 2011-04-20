@@ -1,0 +1,5 @@
+beef:
+    module:
+        popunder_window:
+            enable: true
+            category: "Persistence"

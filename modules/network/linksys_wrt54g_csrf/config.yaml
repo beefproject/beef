@@ -1,0 +1,5 @@
+beef:
+    module:
+        linksys_wrt54g_csrf:
+            enable: true
+            category: "Network"

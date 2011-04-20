@@ -1,0 +1,93 @@
+#header .right-menu {
+	float: right;
+	margin: 10px;
+	word-spacing: 5px;
+	font: 11px arial, tahoma, verdana, helvetica;
+	color:#000;
+}
+
+#header a:link,
+#header a:visited {
+	color:#000;
+	text-decoration:underline;
+}
+
+.x-grid3-cell-inner, .x-grid3-hd-inner {
+  white-space: normal; /* changed from nowrap */
+}
+
+.x-grid-empty {
+	text-align:left;
+}
+
+.feed-icon {
+	display: none;
+}
+
+#zombie-tree-tabs-panel .x-tab-panel-header {
+	font: 11px tahoma,arial,helvetica,sans-serif;
+	padding: 0 0 0 0;
+	border-bottom: none;
+	text-align: center;
+}
+
+/*
+ * Status bar
+ ****************************************/
+.x-statusbar .x-status-busy,
+.x-statusbar .x-status-error,
+.x-statusbar .x-status-valid {
+	background: transparent no-repeat 3px 2px;
+	padding-left: 25px !important;
+	padding-bottom: 2px !important;
+}
+
+.x-statusbar .x-status-busy {
+    background-image: url(../images/statusbar/loading.gif);
+}
+
+.x-statusbar .x-status-error {
+    color: #C33;
+    background-image: url(../images/statusbar/exclamation.gif);
+}
+
+.x-statusbar .x-status-valid {
+    background-image: url(../images/statusbar/accept.png);
+}
+
+.x-tree-node-leaf .x-tree-node-icon {
+	width: 13px;
+	height: 13px;
+	padding-top: 3px;
+}
+
+/*
+ * Ext.beef.msg
+ ****************************************/
+.msg .x-box-mc {
+    font-size:14px;
+}
+
+#msg-div {
+    position:absolute;
+    left:35%;
+    top:20px;
+    width:250px;
+    z-index:20000;
+}
+
+/*
+ * Exploit Panel
+ ****************************************/
+.x-form-item-label, .x-form-element {
+	font: 11px tahoma,arial,helvetica,sans-serif;
+}
+
+.command-module-panel-description {
+	margin-bottom: 10px;
+	padding-top: 4px;
+}
+
+label {
+	font: 11px tahoma,arial,helvetica,sans-serif;
+}

@@ -1,0 +1,16 @@
+# Enable MSF by changing enable_msf to 1
+# Then set msf_callback_host to be the public IP of your MSF server
+#
+# Ensure you load the xmlrpc interface in Metasploit
+# msf > load xmlrpc ServerHost=10.211.55.2 Pass=abc123 ServerType=Web
+# Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
+beef:
+    extension:
+        msf:
+            enable: true 
+            host: "10.211.55.2"
+            path: "/RPC2"
+            port: 55553
+            user: "msf"
+            pass: "abc123"
+            callback_host: "10.211.55.2"

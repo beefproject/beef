@@ -1,0 +1,5 @@
+beef:
+    module:
+        link_rewrite:
+            enable: true
+            category: "Browser"

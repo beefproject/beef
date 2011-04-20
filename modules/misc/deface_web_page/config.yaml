@@ -1,0 +1,5 @@
+beef:
+    module:
+        deface_web_page:
+            enable: true
+            category: "Misc"

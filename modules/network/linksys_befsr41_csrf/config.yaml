@@ -1,0 +1,5 @@
+beef:
+    module:
+        linksys_befsr41_csrf:
+            enable: true
+            category: "Network"

@@ -1,0 +1,5 @@
+beef:
+    module:
+        alert_dialog:
+            enable: true
+            category: "Misc"

@@ -1,0 +1,5 @@
+beef:
+    module:
+        physical_location:
+            enable: true
+            category: "Host"

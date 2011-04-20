@@ -1,0 +1,5 @@
+beef:
+    module:
+        detect_cookies_support:
+            enable: true
+            category: "Recon"

@@ -1,0 +1,5 @@
+beef:
+    module:
+        replace_video:
+            enable: true
+            category: "Misc"

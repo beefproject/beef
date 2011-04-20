@@ -1,0 +1,5 @@
+beef:
+    module:
+        insecure_url_skype:
+            enable: true
+            category: "Host"

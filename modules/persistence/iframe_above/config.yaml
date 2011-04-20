@@ -1,0 +1,5 @@
+beef:
+    module:
+        iframe_above:
+            enable: true
+            category: "Persistence"

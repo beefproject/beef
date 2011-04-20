@@ -1,0 +1,59 @@
+html {
+	height: 100%;
+}
+body {
+	background: #fff;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+#content {
+	position: relative;
+	width: 800px;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	/*border: solid 1px black;*/
+	background-image: url("right.jpg");
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#logo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 368px;
+}
+#stuff {
+	position: relative;
+	/*border: solid 1px red;*/
+	top: 200px;
+	width: 420px;
+}
+.bigger {
+	font-family: "Lucida Sans", arial;
+	font-size: 18px;
+}
+.normal {
+	padding-top: 20px;
+	font-family: "Lucida Sans", arial;
+	font-size: 14px;
+}
+.smaller {
+	padding-top: 20px;
+	font-family: "Lucida Sans", arial;
+	font-size: 8px;
+}
+#friends {
+	display: none;
+	padding-top: 20px;
+}
+#hamper {
+	display: none;
+	padding-top: 20px;
+}
+a:link {color:#000;}      /* unvisited link */
+a:visited {color:#000}  /* visited link */
+a:hover {color:#000;}  /* mouse over link */
+a:active {color:#000;}  /* selected link */

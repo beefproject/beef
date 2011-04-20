@@ -1,0 +1,5 @@
+beef:
+    module:
+        iphone_tel:
+            enable: true
+            category: "Host"

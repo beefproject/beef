@@ -1,0 +1,5 @@
+beef:
+    module:
+        detect_scripts_support:
+            enable: true
+            category: "Browser"

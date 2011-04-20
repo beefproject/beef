@@ -1,0 +1,5 @@
+beef:
+    module:
+        detect_soc_nets:
+            enable: true
+            category: "Recon"

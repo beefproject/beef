@@ -1,0 +1,5 @@
+beef:
+    module:
+        collect_links:
+            enable: true
+            category: "Recon"
