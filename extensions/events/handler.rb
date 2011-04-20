@@ -36,9 +36,6 @@ module Events
      
       events = @data['results']
 
-      # sort events by id
-      events.sort_by { |e| e[:id] }
-
       # push events to logger
       if (events.kind_of?(Array))
         logger = BeEF::Core::Logger.instance
