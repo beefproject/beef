@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+$:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
+
+$root_dir = File.expand_path('..', __FILE__)
+
+require 'core/loader'
+
+#prints welcome message
+BeEF::Extension::Console::Banners.print_welcome_msg
+
+# load config
+config = BeEF::Core::Configuration.instance
+
+# disable reverse dns
+Socket.do_not_reverse_lookup = true 
+
+# setup database
+case config.get("beef.default_db")
+  when "sqlite"
+    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.sqlite.db_name")}")
+  when "mysql"
+    DataMapper.setup(:default, "mysql://#{config.get("beef.database.mysql.db_user")}:#{config.get("beef.database.mysql.db_passwd")}@#{config.get("beef.database.mysql.db_host")}/#{config.get("beef.database.mysql.db_name")}")
+  else
+    print_error 'No default database selected. Please add one in config.yaml'
+end
+
+
+BeEF::Extension::Console::Banners.print_network_interfaces_count
+
+if BeEF::Extension::Console.resetdb?
+  print_info 'Resetting the database for BeEF.'
+  DataMapper.auto_migrate!
+else 
+  DataMapper.auto_upgrade!
+end
+
+# if metasploit is unreachable it can take 10/15 seconds to load
+print_info 'BeEF is loading. Wait a few seconds...'
+
+# check for new command modules
+BeEF::Core::Migration.instance.update_db!
+
+# prepare the web server to run
+http_hook_server = BeEF::Core::Server.instance
+http_hook_server.prepare
+
+
+
+# prints information back to the user before running the server
+BeEF::Extension::Console::Banners.print_loaded_extensions
+BeEF::Extension::Console::Banners.print_network_interfaces_routes
+
+# We dynamically get the list of all browser hook handler using the API and register them
+BeEF::API.fire(BeEF::API::Server::Handler, :pre_http_start, http_hook_server)
+
+# starts the web server
+http_hook_server.start
