@@ -54,7 +54,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     end
     
     # check username and password
-    if not (username.eql? config.get('beef.ui.username') and password.eql? config.get('beef.ui.password') )
+    if not (username.eql? config.get('beef.extension.admin_ui.username') and password.eql? config.get('beef.extension.admin_ui.password') )
       BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.peeraddr[3]} has failed to authenticate in the application.")
       return
     end
@@ -126,7 +126,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
   #
   def timeout?(time)
     config = BeEF::Core::Configuration.instance
-    login_fail_delay = config.get('beef.ui.login_fail_delay') # get fail delay
+    login_fail_delay = config.get('beef.extension.admin_ui.login_fail_delay') # get fail delay
     
     # test if the last login attempt was less then login_fail_delay seconds
     time - @session.get_auth_timestamp > login_fail_delay.to_i

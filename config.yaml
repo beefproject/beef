@@ -25,13 +25,6 @@ beef:
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
 
-    ui:
-        username: "beef"
-        password: "beef"
-        favicon_file_name: "favicon.ico"
-        favicon_dir: "/images"
-        login_fail_delay: 1
-
     database:
         # please note that the db should exists. Schema will be created automatically.
         # mysql> create database beef;

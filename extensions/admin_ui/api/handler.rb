@@ -30,7 +30,7 @@ module API
       beef_server.mount('/ui/media', true, BeEF::Extension::AdminUI::Handlers::MediaHandler, media_dir)
       
       # mount the favicon file
-      beef_server.mount('/favicon.ico', true, WEBrick::HTTPServlet::FileHandler, "#{media_dir}#{configuration.get("beef.ui.favicon_dir")}/#{configuration.get("beef.ui.favicon_file_name")}")
+      beef_server.mount('/favicon.ico', true, WEBrick::HTTPServlet::FileHandler, "#{media_dir}#{configuration.get("beef.extension.admin_ui.favicon_dir")}/#{configuration.get("beef.extension.admin_ui.favicon_file_name")}")
     end
     
   end
