@@ -21,6 +21,7 @@ module Core
     #
     def update_commands!
       db_commands = [], folders = ''
+      config = BeEF::Core::Configuration.instance
     
       BeEF::Core::Models::CommandModule.all.each {|db_command| 
         db_commands.push(db_command.path)
@@ -34,9 +35,21 @@ module Core
     
       Dir["#{$root_dir}/modules/**/*.rb"].each do |command|
         if (command = command.match(regex)[0])
-          BeEF::Core::Models::CommandModule.new(:path => command, :name => /.*\/(\w+)\.rb/.match(command).to_a[1]).save if not db_commands.include? command
+            name = ''
+            path = command.split(File::SEPARATOR).reverse
+            if path.size >= 1
+                name = path[1].to_s
+            end
+            BeEF::Core::Models::CommandModule.new(:name => name, :path => command).save if not db_commands.include? command
         end
       end
+
+      BeEF::Core::Models::CommandModule.all.each{|mod|
+        if config.get('beef.module.'+mod.name) != nil
+            config.set('beef.module.'+mod.name+'.db.id', mod.id)
+            config.set('beef.module.'+mod.name+'.db.path', mod.path)
+        end
+      }
       
       # We use the API to execute the migration code for each extensions that needs it.
       # For example, the metasploit extensions requires to add new commands into the database.

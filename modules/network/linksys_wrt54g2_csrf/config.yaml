@@ -3,3 +3,8 @@ beef:
         linksys_wrt54g2_csrf:
             enable: true
             category: "Network"
+            name: "Linksys WRT54G2 CSRF Exploit"
+            description: "Attempts to enable remote administration and change the password on a Linksys WRT54G2 router."
+            authors: ["Martin Barbella"]
+            target:
+                working: ["ALL"]

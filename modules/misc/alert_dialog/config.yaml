@@ -3,3 +3,8 @@ beef:
         alert_dialog:
             enable: true
             category: "Misc"
+            name: "Alert Dialog"
+            description: "Sends an alert dialog to the hooked browser."
+            authors: ["bm"]
+            target:
+                user_notify: ['ALL']

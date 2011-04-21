@@ -3,3 +3,8 @@ beef:
         detect_plugins:
             enable: true
             category: "Browser"
+            name: "Installed Plugins"
+            description: "This module will retrieve the selected hooked browser plugins."
+            authors: ["wade", "vo", "passbe", "saafan"]
+            target:
+                working: ["ALL"]

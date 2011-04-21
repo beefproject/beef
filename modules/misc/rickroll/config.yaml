@@ -3,3 +3,8 @@ beef:
         rickroll:
             enable: true
             category: "Misc"
+            name: "Rickroll"
+            description: "Overwrite the body of the page the victim is on with a full screen Rickroll."
+            authors: ["Yori Kvitchko"]
+            target:
+                user_notify: ['ALL']

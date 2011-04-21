@@ -3,3 +3,8 @@ beef:
         deface_web_page:
             enable: true
             category: "Misc"
+            name: "Deface Web Page"
+            description: "Overwrite the body of the page the hooked browser is on with the 'Deface Content' string."
+            authors: ["antisnatchor"]
+            target:
+                user_notify: ['ALL']

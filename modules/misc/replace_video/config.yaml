@@ -3,3 +3,8 @@ beef:
         replace_video:
             enable: true
             category: "Misc"
+            name: "Replace Video"
+            description: "Replaces an object selected with jQuery (all embed tags by default) with an embed tag containing the youtube video of your choice (rickroll by default)."
+            authors: ["Yori Kvitchko"]
+            target:
+                user_notify: ['ALL']

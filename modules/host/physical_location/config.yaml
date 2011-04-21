@@ -3,3 +3,8 @@ beef:
         physical_location:
             enable: true
             category: "Host"
+            name: "Physical Location"
+            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
+            authors: ["antisnatchor"]
+            target:
+                user_notify: ['ALL']

@@ -3,3 +3,8 @@ beef:
         detect_cookies_support:
             enable: true
             category: "Recon"
+            name: "Detect Cookie Support"
+            description: "This module will check if the browser allows a cookie with the specified name to be set."
+            authors: ["vo"]
+            target:
+                working: ["ALL"]

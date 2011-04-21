@@ -3,3 +3,8 @@ beef:
         prompt_dialog:
             enable: true
             category: "Misc"
+            name: "Prompt Dialog"
+            description: "Sends a prompt dialog to the hooked browser."
+            authors: ["bm"]
+            target:
+                user_notify: ['ALL']

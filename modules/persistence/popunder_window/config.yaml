@@ -3,3 +3,8 @@ beef:
         popunder_window:
             enable: true
             category: "Persistence"
+            name: "Pop Under Window"
+            description: "Creates a new discrete pop under window with the beef hook included.<br><br>This module will add another browser node to the tree. It will be a duplicate. This will be addressed in a future release"
+            authors: ["ethicalhack3r"]
+            target:
+                user_notify: ["ALL"]

@@ -3,3 +3,8 @@ beef:
         detect_visited_urls:
             enable: true
             category: "Browser"
+            name: "Detect Visited URLs"
+            description: "This module will detect whether or not the zombie has visited the specified URL(s)"
+            authors: ["passbe"]
+            target:
+                working: ["ALL"]

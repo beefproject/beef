@@ -3,3 +3,4 @@ beef:
         inter-protocol:
             enable: false
             category: "Network"
+            name: "Inter-Protocol"

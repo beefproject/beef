@@ -3,6 +3,18 @@ beef:
         detect_local_settings:
             enable: true
             category: "Network"
+            name: "Detect local settings"
+            description: "Grab the local network settings (ie internal ip address)."
+            authors: ["pdp", "wade", "bm"]
+            target:
+                working: ["FF", "C"]
+                not_working: ["IE"]
         fingerprint_local_network:
             enable: false 
             category: "Network"
+            name: "Fingerprint local network"
+            description: "Scan common local network IP addresses for embedded devices."
+            authors: ["bcoles@gmail.com", "wade"]
+            target:
+                user_notify: ["FF", "IE"]
+                not_working: ["O"]

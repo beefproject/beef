@@ -3,3 +3,8 @@ beef:
         detect_scripts_support:
             enable: true
             category: "Browser"
+            name: "Scripts Support"
+            description: "This module will retrieve the selected hooked browser scripting engines."
+            authors: ["wade", "vo", "passbe", "saafan"]
+            target:
+                working: ["ALL"]

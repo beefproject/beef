@@ -19,6 +19,7 @@ modules = config.get('beef.module').select{|key, mod|
     mod['enable'] == true and mod['category'] != nil
 }
 
+# Include each module
 modules.each{ |k,v|
     cat = BeEF::Module.safe_category(v['category'])
     if File.exists?('modules/'+cat+'/'+k+'/module.rb')
@@ -26,3 +27,4 @@ modules.each{ |k,v|
         config.set('beef.module.'+k+'.loaded', true)
     end
 }
+

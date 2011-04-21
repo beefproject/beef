@@ -9,8 +9,8 @@ module Models
     storage_names[:default] = 'core.command_modules'
   
     property :id, Serial
-    property :path, Text, :lazy => false
     property :name, Text, :lazy => false
+    property :path, Text, :lazy => false
   
     has n, :commands
     has 1, :dynamic_command_info

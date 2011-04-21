@@ -3,3 +3,8 @@ beef:
         collect_links:
             enable: true
             category: "Recon"
+            name: "Collect Links"
+            description: "This module will retrieve HREFs from the target page."
+            authors: ["vo"]
+            target:
+                working: ["ALL"]
