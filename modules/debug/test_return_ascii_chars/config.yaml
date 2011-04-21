@@ -1,0 +1,10 @@
+beef:
+    module:
+        Test_return_ascii_chars:
+            enable: true
+            category: "Debug"
+            name: "Return Ascii Chars"
+            description: "This module will return the set of ascii chars."
+            authors: ["wade"]
+            target:
+                working: ["ALL"]

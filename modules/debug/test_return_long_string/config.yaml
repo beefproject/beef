@@ -1,0 +1,10 @@
+beef:
+    module:
+        Test_return_long_string:
+            enable: true
+            category: "Debug"
+            name: "Test Returning Results"
+            description: "This module will return a string of the specified length."
+            authors: ["wade"]
+            target:
+                working: ["ALL"]
