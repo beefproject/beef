@@ -188,9 +188,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       hook_session_id = @params['zombie_session'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
 
-      # create an instance of the comand module, bad way of doing it, but have to until dynamic loadding is merged
-      command_module_name = command_module_db_details.path.split('/').reverse[1]
-      #command_module_name = File.basename command_module_db_details.path, '.rb' # get the name
+      if(command_module_db_details.path.match(/^Dynamic/))
+         command_module_name = command_module_db_details.path.split('/').last
+         print_debug ("Loading Dynamic command module [#{command_module_name.capitalize.to_s}]")
+      else
+         command_module_name = command_module_db_details.path.split('/').reverse[1]
+         print_debug ("Loading command module [#{command_module_name.capitalize.to_s}]")
+      end
+
       command_module = BeEF::Core::Command.const_get(command_module_name.capitalize).new
       command_module.session_id = hook_session_id 
       command_module.update_info(command_module_db_details.id) if(command_module_db_details.path.match(/^Dynamic/))
@@ -252,10 +257,12 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # sort the parent array nodes 
     command_modules_tree_array.sort! {|a,b| a['text'] <=> b['text']}
     
-    # sort the children nodes by status then alpha
-    command_modules_tree_array.each {|x|
-      x['children'] = x['children'].sort_by {|a| [a['status'], a['text']]}
+    # sort the children nodes by status
+    command_modules_tree_array.each {|x| x['children'] =
+      x['children'].sort_by {|a| a['status']}
     }
+
+
       
     # append the number of command modules so the branch name results in: "<category name> (num)"
     command_modules_tree_array.each {|command_module_branch|
