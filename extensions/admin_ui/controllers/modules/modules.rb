@@ -191,13 +191,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       if(command_module_db_details.path.match(/^Dynamic/))
          command_module_name = command_module_db_details.path.split('/').last
          print_debug ("Loading Dynamic command module [#{command_module_name.capitalize.to_s}]")
+         command_module = BeEF::Modules::Commands.const_get(command_module_name.capitalize).new
       else
          command_module_name = command_module_db_details.path.split('/').reverse[1]
          print_debug ("Loading command module [#{command_module_name.capitalize.to_s}]")
+         command_module = BeEF::Core::Command.const_get(command_module_name.capitalize).new
       end
 
-      command_module = BeEF::Core::Command.const_get(command_module_name.capitalize).new
-      command_module.session_id = hook_session_id 
+      command_module.session_id = hook_session_id
       command_module.update_info(command_module_db_details.id) if(command_module_db_details.path.match(/^Dynamic/))
 
       
@@ -447,7 +448,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     # the path will equal Dynamic/<type> and this will get just the type
 		dynamic_type = mod.path.split("/").last
-    e = BeEF::Core::Command.const_get(dynamic_type.capitalize).new    
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
     e.update_info(command_module_id)
     e.update_data()
 		ret = e.launch_exploit(definition)
@@ -558,7 +559,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # the path will equal Dynamic/<type> and this will get just the type
 		dynamic_type = mod.path.split("/").last
 		
-    e = BeEF::Core::Command.const_get(dynamic_type.capitalize).new
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
     e.update_info(mod.id)
     e.update_data()
     command_modules_json[1] = JSON.parse(e.to_json)
@@ -579,7 +580,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 		dynamic_type = dynamic_command_module.path.split("/").last
 
     # get payload options in JSON
-    e = BeEF::Core::Command.const_get(dynamic_type.capitalize).new    
+    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
     payload_options_json = []
     payload_options_json[1] = e.get_payload_options(payload_name)
     raise WEBrick::HTTPStatus::BadRequest, "Payload JSON generation error" if payload_options_json.empty?

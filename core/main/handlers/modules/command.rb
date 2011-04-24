@@ -20,10 +20,14 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
       raise WEBrick::HTTPStatus::BadRequest, "command_module.path is nil" if command_module.path.nil?
 
-      #klass = File.basename command_module.path, '.rb'
-      klass = command_module.path.split('/').reverse[1]
+      if(command_module.path.match(/^Dynamic/))
+         klass = command_module.path.split('/').last
+         command_module = BeEF::Modules::Commands.const_get(klass.capitalize).new
+      else
+         klass = command_module.path.split('/').reverse[1]
+         command_module = BeEF::Core::Command.const_get(klass.capitalize).new
+      end
 
-      command_module = BeEF::Core::Command.const_get(klass.capitalize).new
       command_module.command_id = command.id
       command_module.session_id = hooked_browser.session
       command_module.build_datastore(command.data)
