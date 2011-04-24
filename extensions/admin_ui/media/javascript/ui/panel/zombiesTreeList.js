@@ -57,6 +57,32 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	
 	//store the distributed engine rules
 	distributed_engine_rules: null,
+
+    //add a context menu that will contain common action shortcuts for HBs
+    contextMenu: new Ext.menu.Menu({
+          items: [{
+                id: 'use_as_proxy',
+                text: 'Use as Proxy',
+                iconCls: 'zombie-tree-ctxMenu-proxy'
+              }
+          ],
+          listeners: {
+              itemclick: function(item, object) {
+                  switch (item.id) {
+                      case 'use_as_proxy':
+                           var hb_id = this.contextNode.id.split('zombie-online-')[1];
+                           Ext.Ajax.request({
+                                url: '/ui/proxy/setTargetZombie',
+                                method: 'POST',
+                                params: 'hb_id=' + hb_id //,
+                                //success: alert('set target zombie' + hb_id),
+                                //failure: alert('error setting target zombie' + hb_id)
+                            });
+                          break;
+                  }
+              }
+          }
+      }),
 	
 	listeners: {
 		//creates a new hooked browser tab when a hooked browser is clicked
@@ -69,6 +95,16 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			
 			mainPanel.activate(node.attributes.session);
 		},
+        //show the context menu when a HB is right-clicked
+        contextmenu: function(node, event){
+                if(!node.leaf) return;
+
+                node.select();
+                var c = node.getOwnerTree().contextMenu;
+                c.contextNode = node;
+                c.showAt(event.getXY());
+
+        },
 		//update the set of rules when a checkbox is clicked
 		checkchange: function(node, checked) {
 			

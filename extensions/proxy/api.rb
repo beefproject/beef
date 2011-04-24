@@ -14,6 +14,10 @@ module API
         config = BeEF::Core::Configuration.instance
         print_success "HTTP Proxy: http://#{config.get('beef.extension.proxy.address')}:#{config.get('beef.extension.proxy.port')}"
     end
+
+    def self.mount_handlers(beef_server)
+      beef_server.mount('/proxy', false, BeEF::Extension::Events::Handler)
+    end
     
   end
 

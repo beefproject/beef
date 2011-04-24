@@ -22,6 +22,7 @@ module API
       Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each { |http_module|
         require http_module
         mod_name = File.basename http_module, '.rb'
+        print_debug("Registering controller [#{mod_name}] for extension [AdminUI]")
         beef_server.mount("/ui/#{mod_name}", true, BeEF::Extension::AdminUI::Handlers::UI, mod_name)
       }
       

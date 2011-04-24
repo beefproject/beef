@@ -19,6 +19,7 @@ module Models
     property :domain, Text, :lazy => false # the domain originating the hook request
     property :count, Integer, :lazy => false
     property :has_init, Boolean, :default => false
+    property :is_proxy, Boolean, :default => false # if true the HB is used as a tunneling proxy
     
     has n, :commands
     has n, :results

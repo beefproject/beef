@@ -6,6 +6,8 @@ module Proxy
 
     attr_accessor :proxy_zombie_id
 
+    HB = BeEF::Core::Models::HookedBrowser
+
     def initialize
       @configuration = BeEF::Core::Configuration.instance
       
@@ -21,14 +23,13 @@ module Proxy
 
     def service(req, res)
       
-      # TODO implement which HB to target
-      if false 
-        return if proxy_zombie_id.nil? # check if zombie is set
-        zombie = BeEF::Core::Models::Zombie.get(proxy_zombie_id)
-        return if not zombie # check if zombie is registered with beef
-      else                     
-        proxy_zombie_id = 1    
-      end                      
+       proxy_zombie = HB.first(:is_proxy => true)
+      if(proxy_zombie != nil)
+        proxy_zombie_id = proxy_zombie.id.to_s
+      else
+        proxy_zombie_id = 1
+        print_debug("Defaulting proxy zombie to the first one in the DB")
+      end
 
       # blocking request
       res = BeEF::Extension::Proxy::Handlers::Zombie::Handler.forward_request(proxy_zombie_id, req, res)

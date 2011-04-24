@@ -8,7 +8,6 @@ module Zombie
     
     # Variable representing the Http DB model.
     H = BeEF::Core::Models::Http
-    
     # This function will forward requests to the zombie and 
     # the browser will perform the request. Then the results
     # will be sent back to use
@@ -41,15 +40,18 @@ module Zombie
       # Polls the DB for the response and then sets it when present
       
       http_db = H.first(:id => http_id)
-      
+
       while !http_db.has_ran
-        sleep 1
+        #sleep 1  # adding a sleep here is a bottleneck. Even querying in this way is not a good way.
+                  # By the way removing the sleep instead the proxy response time is 8/10 seconds instead of almost 20 seconds.
+                  # This code should be reimplemented with Threading.
         http_db = H.first(:id => http_id)
       end
-      
+#
       res.body = http_db.response
-        
+
       res
+
     end
 
     module_function :forward_request

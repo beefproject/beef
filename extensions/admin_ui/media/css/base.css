@@ -55,6 +55,10 @@
     background-image: url(../images/statusbar/accept.png);
 }
 
+.zombie-tree-ctxMenu-proxy {
+   background-image: url(../images/icons/proxy.gif);
+}
+
 .x-tree-node-leaf .x-tree-node-icon {
 	width: 13px;
 	height: 13px;
