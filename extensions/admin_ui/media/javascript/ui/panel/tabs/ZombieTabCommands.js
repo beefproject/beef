@@ -34,10 +34,11 @@ ZombieTab_Commands = function(zombie) {
                           "the wiki:<br /><a href='http://code.google.com/p/beef/wiki/DevDocs'>" +
                             "http://code.google.com/p/beef/wiki/DevDocs</a><br/><br/>" +
                             "Each command module has a traffic light icon, which is used to indicate the following:<ul>" +
-                            "<li><img alt='' src='media/images/icons/red.png'  unselectable='on'> - Command does not work against this target</li>" +
-                            "<li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> - It is unknown if this command works against this target</li>" +
+                            "<li><img alt='' src='media/images/icons/green.png'  unselectable='on'> - The command works against the target and should be invisible to the user</li>" +
                             "<li><img alt='' src='media/images/icons/orange.png'  unselectable='on'> - The command works against the target, but may be visible to the user</li>" +
-                            "<li><img alt='' src='media/images/icons/green.png'  unselectable='on'> - The command works against the target and should be invisible to the user</li></ul>"
+                            "<li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> - It is unknown if this command works against this target</li>" +
+                            "<li><img alt='' src='media/images/icons/red.png'  unselectable='on'> - Command does not work against this target</li></ul>"
+
                 })
                ]
     });

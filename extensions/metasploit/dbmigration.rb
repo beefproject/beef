@@ -27,14 +27,17 @@ module Metasploit
                   
   				        browsers =  BeEF::Core::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
                   
-  				        targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' => 3} if browsers.count == 0
-              
-  				        browsers.each do |bn|
-  					        targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' => 1}
-  				        end
-              
-                  targets << {'os_name' => "ALL", 'verified_status' => 0 }
-			        
+                  targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' =>
+                      BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN} if browsers.count == 0
+
+						      browsers.each do |bn|
+							        targets << {'os_name' => os_name, 'browser_name' => bn, 'verified_status' =>
+                                  BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+                                 }
+						      end
+
+                  targets << {'os_name' => "ALL", 'verified_status' => BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING}
+
   				        msfci = BeEF::Core::Models::DynamicCommandInfo.new(
   							    :name => msfi['name'],
   							    :description => msfi['description'],
