@@ -592,14 +592,28 @@ beef.browser = {
 	},
 
 	/**
-	 * Changes the favicon in firefox only
+	 * Dynamically changes the favicon: works in Firefox, Chrome and Opera
 	 **/
 	changeFavicon: function(favicon_url) {
-	    var link = document.createElement('link');
-	    link.type = 'image/x-icon';
-	    link.rel = 'shortcut icon';
-	    link.href = favicon_url;
-	    document.getElementsByTagName('head')[0].appendChild(link);
+        var iframe = null;
+        if (this.isC()) {
+            iframe = document.createElement('iframe');
+            iframe.src = 'about:blank';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+        }
+        var link = document.createElement('link'),
+        oldLink = document.getElementById('dynamic-favicon');
+        link.id = 'dynamic-favicon';
+        link.rel = 'shortcut icon';
+        link.href = favicon_url;
+        if (oldLink) {
+          document.head.removeChild(oldLink);
+        }
+        document.head.appendChild(link);
+        if (this.isC()) {
+          iframe.src += '';
+        }
 	},
 	
 	/**
