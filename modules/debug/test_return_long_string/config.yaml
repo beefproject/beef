@@ -1,6 +1,6 @@
 beef:
     module:
-        Test_return_long_string:
+        test_return_long_string:
             enable: true
             category: "Debug"
             name: "Test Returning Results"
