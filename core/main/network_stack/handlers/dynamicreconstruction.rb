@@ -18,6 +18,10 @@ module Handlers
     #Combines packet information and pushes to PQ, then checks packets
     def do_POST(request, response)
         @request = request
+        response.set_no_cache
+        response.header['Content-Type'] = 'text/javascript' 
+        response.header['Access-Control-Allow-Origin'] = '*'
+        response.header['Access-Control-Allow-Methods'] = 'POST'
         response.body = ''
         PQ << {
             :beefhook =>  get_param(@request.query, 'bh'),
