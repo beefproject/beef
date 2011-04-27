@@ -82,8 +82,7 @@ module Core
         Dir["#{root_dir}/modules/**/*.rb"].each { |command|
           #command_class = (File.basename command, '.rb').capitalize
           command_class = command.split('/').reverse[1]
-          command_file = (File.basename command, '.rb')+'.js'
-          mount("/command/#{command_file}", false, BeEF::Core::Handlers::Commands, command_class)
+          mount("/command/#{command_class}.js", false, BeEF::Core::Handlers::Commands, command_class)
         }
         
         #

@@ -53,7 +53,7 @@ module Core
       @target = @info['Target'] || nil
       @output = ''
       @path = @info['File'].sub(BeEF::Core::Server.instance.root_dir, '')
-      @default_command_url = '/command/'+(File.basename @path, '.rb')+'.js'
+      @default_command_url = '/command/'+@path.split(File::SEPARATOR).reverse[1]+'.js'
       @id = BeEF::Core::Models::CommandModule.first(:path => @info['File']).object_id
       @use_template = false
       @auto_update_zombie = false
