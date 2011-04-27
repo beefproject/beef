@@ -16,5 +16,16 @@ module Extension
         return (self.is_enabled(ext) and BeEF::Core::Configuration.instance.get('beef.extension.'+ext.to_s+'.loaded') == true)
     end
 
+    # Loads extension 
+    def self.load(ext)
+        if File.exists?('extensions/'+ext+'/extension.rb')
+            require 'extensions/'+ext+'/extension.rb'
+            print_debug "Loaded extension: '#{ext}'"
+            BeEF::Core::Configuration.instance.set('beef.extension.'+ext+'.loaded', true)
+            return true
+        end 
+        print_error "Unable to load extension '#{ext}'"
+        return false
+    end
 end
 end

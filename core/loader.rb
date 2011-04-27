@@ -39,23 +39,3 @@ require 'core/module'
 require 'core/modules'
 require 'core/extension'
 require 'core/extensions'
-
-config = BeEF::Core::Configuration.instance
-
-# Include extensions defined in the Configuration
-extensions = config.get('beef.extension').select{|key, ext| ext['enable'] == true }
-extensions.each{ |k,v|
-    if File.exists?('extensions/'+k+'/extension.rb')
-        require 'extensions/'+k+'/extension.rb'
-    end
-}
-
-# Include modules defined in the Configuration
-modules = config.get('beef.module').select{|key, mod| mod['enable'] == true and mod['category'] != nil }
-modules.each{ |k,v|
-    cat = BeEF::Module.safe_category(v['category'])
-    if File.exists?('modules/'+cat+'/'+k+'/module.rb')
-        require 'modules/'+cat+'/'+k+'/module.rb'
-        config.set('beef.module.'+k+'.loaded', true)
-    end
-}

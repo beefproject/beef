@@ -5,11 +5,17 @@ $root_dir = File.expand_path('..', __FILE__)
 
 require 'core/loader'
 
+# load config
+config = BeEF::Core::Configuration.instance
+
+# Loads extensions
+BeEF::Extensions.load
+
 #prints welcome message
 BeEF::Extension::Console::Banners.print_welcome_msg
 
-# load config
-config = BeEF::Core::Configuration.instance
+# Loads modules
+BeEF::Modules.load
 
 # disable reverse dns
 Socket.do_not_reverse_lookup = true 
