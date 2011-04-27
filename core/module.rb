@@ -1,5 +1,5 @@
 module BeEF
-module Modules
+module Module 
 
     def self.safe_category(cat)
         return cat.to_s.strip.downcase.sub(/\s/, '_')
@@ -7,3 +7,5 @@ module Modules
 
 end
 end
+
+

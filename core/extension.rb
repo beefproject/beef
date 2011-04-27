@@ -1,6 +1,5 @@
 module BeEF
-module Extensions
+module Extension
 
 end
 end
-
