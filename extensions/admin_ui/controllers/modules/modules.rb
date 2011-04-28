@@ -93,7 +93,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     browser_name = BD.get(zombie_session, 'BrowserName') 
     if not browser_name.nil?
       friendly_browser_name = BeEF::Core::Constants::Browsers.friendly_name(browser_name)
-      browser_name_hash = { 'Browser Name' => friendly_browser_name }
+      browser_name_hash = { 'Detected Browser Name' => friendly_browser_name }
 
       browser_name_row = {
         'category' => 'Browser Hook Initialisation',
@@ -108,7 +108,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     browser_version = BD.get(zombie_session, 'BrowserVersion') 
     if not browser_version.nil?
       encoded_browser_version = CGI.escapeHTML(browser_version)
-      browser_version_hash = { 'Browser Version' => encoded_browser_version }
+      browser_version_hash = { 'Detected Browser Version' => encoded_browser_version }
 
       browser_version_row = {
         'category' => 'Browser Hook Initialisation',
@@ -117,6 +117,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       }
     
       summary_grid_hash['results'].push(browser_version_row) # add the row
+    end
+    
+    # set and add the return values for the browser ua string
+    browser_uastring = BD.get(zombie_session, 'BrowserReportedName')
+    #browser_uastring = "test" 
+    if not browser_uastring.nil?
+      browser_uastring_hash = { 'Browser UA String' => browser_uastring }
+
+      browser_uastring_row = {
+        'category' => 'Browser Hook Initialisation',
+         'data' => browser_uastring_hash,
+        'from' => 'Initialisation'
+      }
+    
+      summary_grid_hash['results'].push(browser_uastring_row) # add the row
     end
     
     # set and add the list of plugins installed in the browser
