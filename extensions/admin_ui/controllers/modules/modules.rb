@@ -121,7 +121,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     # set and add the return values for the browser ua string
     browser_uastring = BD.get(zombie_session, 'BrowserReportedName')
-    #browser_uastring = "test" 
     if not browser_uastring.nil?
       browser_uastring_hash = { 'Browser UA String' => browser_uastring }
 
