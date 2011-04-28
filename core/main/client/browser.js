@@ -158,13 +158,21 @@ beef.browser = {
 	isC10: function() {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==10)?true:false);
 	},
-		
+
+	/**
+	 * Returns true if Chrome 11.
+	 * @example: beef.browser.isC11()
+	 */
+	isC11: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==11)?true:false);
+	},
+	
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11();
 	},
 
     /**
@@ -221,18 +229,19 @@ beef.browser = {
 			C7:		this.isC7(), 	// Chrome 7
 			C8:		this.isC8(), 	// Chrome 8
 			C9:		this.isC9(), 	// Chrome 9
-			C10:	this.isC10(), 	// Chrome 10
-			C:		this.isC(), 	// Chrome any version
-			FF2:	this.isFF2(),	// Firefox 2
-			FF3:	this.isFF3(),	// Firefox 3
+			C10:		this.isC10(), 	// Chrome 10
+			C11:		this.isC11(), //Chrome 11
+			C:			this.isC(), 	// Chrome any version
+			FF2:		this.isFF2(),	// Firefox 2
+			FF3:		this.isFF3(),	// Firefox 3
 			FF35:	this.isFF35(),	// Firefox 3.5
 			FF36:	this.isFF36(),	// Firefox 3.6
-			FF4:	this.isFF4(),   // Firefox 4
+			FF4:		this.isFF4(),   // Firefox 4
 			FF:		this.isFF(),	// Firefox any version
-			IE6:	this.isIE6(),	// Internet Explorer 6
-			IE9:	this.isIE9(),	// Internet Explorer 9
-			IE8:	this.isIE8(),	// Internet Explorer 8
-			IE7:	this.isIE7(),	// Internet Explorer 7
+			IE6:		this.isIE6(),	// Internet Explorer 6
+			IE9:		this.isIE9(),	// Internet Explorer 9
+			IE8:		this.isIE8(),	// Internet Explorer 8
+			IE7:		this.isIE7(),	// Internet Explorer 7
 			IE:		this.isIE(),	// Internet Explorer any version
             O952:   this.isO952(),  // Opera 9.50 trough 9.52
             O960:   this.isO960(),  // Opera 9.60 trough 9.64
@@ -257,6 +266,7 @@ beef.browser = {
 		if (this.isC8())	{ return '8'  }; 	// Chrome 8
 		if (this.isC9())	{ return '9'  }; 	// Chrome 9
 		if (this.isC10())	{ return '10'  }; 	// Chrome 10
+		if (this.isC11())  { return '11'}; //Chrome 11
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF35())	{ return '3.5' };	// Firefox 3.5
