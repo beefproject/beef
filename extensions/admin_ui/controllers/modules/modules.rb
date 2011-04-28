@@ -183,46 +183,32 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       
   # Returns the list of all command_modules in a JSON format
   def select_all_command_modules
-    #modules = BeEF::Module.loaded
-    @body = command_modules2json(Dir["#{$root_dir}/modules/**/*.rb"])
+    @body = command_modules2json(BeEF::Modules.get_loaded.keys)
   end
   
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
-    command_modules_tree_array = []
-    command_modules_categories = []
+    tree = []
+    categories = []
     
-    # get an array of all the command modules in the database
-    db_command_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
-    raise WEBrick::HTTPStatus::BadRequest, "db_command_modules is nil" if db_command_modules.nil?
-    
-    db_command_modules.each {|command_module_db_details|
-
+    BeEF::Modules.get_loaded.each{|k,mod|
       # get the hooked browser session id and set it in the command module
       hook_session_id = @params['zombie_session'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
 
-      if(command_module_db_details.path.match(/^Dynamic/))
-         command_module_name = command_module_db_details.path.split('/').last
-         print_debug ("Loading Dynamic command module [#{command_module_name.capitalize.to_s}]")
-         command_module = BeEF::Modules::Commands.const_get(command_module_name.capitalize).new
+      if(mod['db']['path'].match(/^Dynamic/))
+         print_debug ("Loading Dynamic command module: #{mod['name'].to_s}")
+         command_mod = BeEF::Modules::Commands.const_get(k.capitalize).new
       else
-         command_module_name = command_module_db_details.path.split('/').reverse[1]
-         print_debug ("Loading command module [#{command_module_name.capitalize.to_s}]")
-         command_module = BeEF::Core::Command.const_get(command_module_name.capitalize).new
+         command_mod = BeEF::Core::Command.const_get(k.capitalize).new
       end
 
-      command_module.session_id = hook_session_id
-      command_module.update_info(command_module_db_details.id) if(command_module_db_details.path.match(/^Dynamic/))
-
-      
-      # set command module treeview display properties 
-      command_module_friendly_name = command_module.info['Name'].downcase
-      command_module_category = command_module.info['Category'].downcase
-      
+      command_mod.session_id = hook_session_id
+      command_mod.update_info(mod['db']['id']) if (mod['db']['path'].match(/^Dynamic/))
+        
       # create url path and file for the command module icon
       command_module_icon_path = BeEF::Extension::AdminUI::Constants::Icons::MODULE_TARGET_IMG_PATH # add icon path
-      case command_module.verify_target() # select the correct icon for the command module
+      case command_mod.verify_target() # select the correct icon for the command module
       when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
         command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_NOT_WORKING_IMG
         command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
@@ -241,10 +227,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       end
       
       # construct the category branch if it doesn't exist for the command module tree
-      if not command_modules_categories.include? command_module_category
-        command_modules_categories.push(command_module_category) # flag that the categor has been added
-        command_modules_tree_array.push({ # add the branch structure
-          'text' => command_module_category,
+      if not categories.include? mod['category']
+        categories.push(mod['category']) # flag that the categor has been added
+        tree.push({ # add the branch structure
+          'text' => mod['category'],
           'cls' => 'folder',
           'children' => []
         })
@@ -252,16 +238,16 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
       # construct leaf node for the command module tree
       leaf_node = {
-          'text' => command_module_friendly_name,
+          'text' => mod['name'],
           'leaf' => true,
           'icon' => command_module_icon_path,
           'status' => command_module_status,
-          'id' => command_module_db_details.id
+          'id' => mod['db']['id']
       }
         
       # add the node to the branch in the command module tree
-      command_modules_tree_array.each {|x|
-        if x['text'].eql? command_module_category
+      tree.each {|x|
+        if x['text'].eql? mod['category']
           x['children'].push( leaf_node )
             break
         end
@@ -270,43 +256,24 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     }
       
     # sort the parent array nodes 
-    command_modules_tree_array.sort! {|a,b| a['text'] <=> b['text']}
+    tree.sort! {|a,b| a['text'] <=> b['text']}
     
     # sort the children nodes by status
-    command_modules_tree_array.each {|x| x['children'] =
+    tree.each {|x| x['children'] =
       x['children'].sort_by {|a| a['status']}
     }
 
 
       
     # append the number of command modules so the branch name results in: "<category name> (num)"
-    command_modules_tree_array.each {|command_module_branch|
+    tree.each {|command_module_branch|
       num_of_command_modules = command_module_branch['children'].length
       command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
     }
       
     # return a JSON array of hashes
-    @body = command_modules_tree_array.to_json
+    @body = tree.to_json
   end
-  
-  # Returns the absolute path of the rb file mapped to the id in the database
-  def get_command_module_path(command_module_id)
-
-    # get command_module from database
-    raise WEBrick::HTTPStatus::BadRequest, "command_module id is nil" if command_module_id.nil?
-    command_module = BeEF::Core::Models::CommandModule.first(:id => command_module_id) 
-    raise WEBrick::HTTPStatus::BadRequest, "Invalid command_module id" if command_module.nil?
-
-    # Dynamic modules won't have a real path
-		return command_module.path if (command_module.path.match(/^Dynamic/))
-
-    # construct command_module path
-    absolute_command_module_path = $root_dir+File::SEPARATOR+command_module.path
-    raise WEBrick::HTTPStatus::BadRequest, "command_module file does not exist" if not File.exists?(absolute_command_module_path)
-    
-    absolute_command_module_path
-  end
-  
   
   # Returns the inputs definition of an command_module.
   def select_command_module  
@@ -316,10 +283,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "command_module_id is nil" if command_module_id.nil?
 
     # get the command_module path
-    absolute_command_module_path = get_command_module_path(command_module_id)
-    
+    mod = BeEF::Modules.get_by_database_id(command_module_id)
+    key = mod.keys[0]
+    mod = mod[key]
+
+    path = (mod['db']['path'].match(/^Dynamic/)) ? mod['db']['path'] : "#{$root_dir}"+mod['db']['path']
+
     # check if the request relates to a dynamic module
-		if(absolute_command_module_path.match(/^Dynamic/))
+	if(path.match(/^Dynamic/))
 		  # get command_module id
       payload_name = @params['payload_name'] || nil
       
@@ -329,8 +300,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     	  @body = dynamic_modules2json(command_module_id);
   	  end
 		else	
-    	@body = command_modules2json([absolute_command_module_path]); 
-		end
+    	@body = command_modules2json([key]); 
+	end
   end
   
   # Returns the list of commands for an command_module
@@ -455,17 +426,17 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     zombie_id = zombie.id
     raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
     
-    mod = BeEF::Core::Models::CommandModule.first(:id => command_module_id)
+    mod = BeEF::Modules.get_by_database_id(command_module_id)
+    mod = mod[mod.keys[0]]
 
     # if the module id is not in the database return false
     return {'success' => 'false'}.to_json if(not mod)
     
     # the path will equal Dynamic/<type> and this will get just the type
-		dynamic_type = mod.path.split("/").last
-    e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
+    e = BeEF::Modules::Commands.const_get(mod['class']).new
     e.update_info(command_module_id)
     e.update_data()
-		ret = e.launch_exploit(definition)
+ 	ret = e.launch_exploit(definition)
 
     return {'success' => 'false'}.to_json if ret['result'] != 'success'
 
@@ -494,8 +465,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # get command_module
     command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
     raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
-    command_module_name = command_module.path.split('/').reverse[1]
-    #command_module_name = File.basename command_module.path, '.rb'
     
     resultsdb = BeEF::Core::Models::Result.all(:command_id => command_id)
     raise WEBrick::HTTPStatus::BadRequest, "Command id result is nil" if resultsdb.nil?
@@ -504,7 +473,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     @body = {
       'success'             => 'true', 
-      'command_module_name' => command_module_name,
+      'command_module_name' => command_module.name,
       'command_module_id'   => command_module.id,
       'results'             => results}.to_json
 
@@ -522,14 +491,12 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
     raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
-    command_module_name = command_module.path.split('/').reverse[1]
-    #command_module_name = File.basename command_module.path, '.rb'
       
-    e = BeEF::Core::Command.const_get(command_module_name.capitalize).new
+    e = BeEF::Core::Command.const_get(command_module.name.capitalize).new
             
     @body = {
       'success' => 'true', 
-      'command_module_name'  => command_module_name,
+      'command_module_name'  => command_module.name,
       'command_module_id'    => command_module.id,
       'data'                 => JSON.parse(command.data),
       'definition'           => JSON.parse(e.to_json)
@@ -543,13 +510,12 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def command_modules2json(command_modules)
     command_modules_json = {}
     i = 1
-    
+    config = BeEF::Core::Configuration.instance
     command_modules.each do |command_module|
-      next if not File.exists?(command_module)
+      mod = config.get('beef.module.'+command_module)
+      next if not File.exists?("#{$root_dir}"+mod['db']['path'])
       
-      e = command_module.split('/').reverse[1]
-      #e = File.basename command_module, '.rb'
-      e = BeEF::Core::Command.const_get(e.capitalize).new
+      e = BeEF::Core::Command.const_get(mod['class']).new
       command_modules_json[i] = JSON.parse(e.to_json)
       i += 1
     end

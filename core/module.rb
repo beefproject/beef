@@ -22,6 +22,7 @@ module Module
         if File.exists?('modules/'+cat+'/'+mod+'/module.rb')
             require 'modules/'+cat+'/'+mod+'/module.rb'
             BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
+            BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
             print_debug "Loaded module: '#{mod}'"
             return true
         end 
