@@ -46,7 +46,7 @@ module Core
     # Super class controller
     def initialize(info)
       get_extensions
-      
+
       @info = info
       @datastore = @info['Data'] || {}
       @friendlyname = @info['Name'] || nil

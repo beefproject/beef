@@ -79,10 +79,8 @@ module Core
         mount("#{@configuration.get("beef.http.hook_file")}", true, BeEF::Core::Handlers::HookedBrowsers)
         
         # Create http handlers for all commands in the framework
-        Dir["#{root_dir}/modules/**/*.rb"].each { |command|
-          #command_class = (File.basename command, '.rb').capitalize
-          command_class = command.split('/').reverse[1]
-          mount("/command/#{command_class}.js", false, BeEF::Core::Handlers::Commands, command_class)
+        BeEF::Modules.get_loaded.each { |k,v|
+            mount("/command/#{k}.js", false, BeEF::Core::Handlers::Commands, k)
         }
         
         #

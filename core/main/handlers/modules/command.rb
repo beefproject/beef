@@ -21,11 +21,9 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "command_module.path is nil" if command_module.path.nil?
 
       if(command_module.path.match(/^Dynamic/))
-         klass = command_module.path.split('/').last
-         command_module = BeEF::Modules::Commands.const_get(klass.capitalize).new
+         command_module = BeEF::Modules::Commands.const_get(command_module.name.capitalize).new
       else
-         klass = command_module.path.split('/').reverse[1]
-         command_module = BeEF::Core::Command.const_get(klass.capitalize).new
+         command_module = BeEF::Core::Command.const_get(command_module.name.capitalize).new
       end
 
       command_module.command_id = command.id
