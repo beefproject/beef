@@ -30,6 +30,12 @@ module Module
         return false
     end
     
+    # Return module configuration by database id
+    def self.get_key_by_database_id(id)
+        ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('db') and v['db']['id'].to_i == id.to_i }
+        return (ret.kind_of?(Array)) ? ret.first : ret.keys[0]
+    end
+
     # Returns category name in a system folder format
     def self.safe_category(cat)
         return cat.to_s.strip.downcase.sub(/\s/, '_')

@@ -283,9 +283,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "command_module_id is nil" if command_module_id.nil?
 
     # get the command_module path
-    mod = BeEF::Modules.get_by_database_id(command_module_id)
-    key = mod.keys[0]
-    mod = mod[key]
+    key = BeEF::Module.get_key_by_database_id(command_module_id)
+    mod = BeEF::Core::Configuration.instance.get('beef.module.'+key.to_s)
 
     path = (mod['db']['path'].match(/^Dynamic/)) ? mod['db']['path'] : "#{$root_dir}"+mod['db']['path']
 
@@ -426,8 +425,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     zombie_id = zombie.id
     raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
     
-    mod = BeEF::Modules.get_by_database_id(command_module_id)
-    mod = mod[mod.keys[0]]
+    key = BeEF::Module.get_key_by_database_id(command_module_id)
+    mod = BeEF::Core::Configuration.instance.get('beef.module.'+key.to_s)
 
     # if the module id is not in the database return false
     return {'success' => 'false'}.to_json if(not mod)
