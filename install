@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'rubygems'
 
 puts "\nWelcome to the BEeF installer!"
