@@ -21,7 +21,7 @@ BeEF::Modules.load
 Socket.do_not_reverse_lookup = true 
 
 # setup database
-case config.get("beef.default_db")
+case config.get("beef.database.default")
   when "sqlite"
     DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.sqlite.db_name")}")
   when "mysql"
