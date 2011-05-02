@@ -133,7 +133,7 @@ beef.net = {
 	*/
 	request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
 		//check if same domain or cross domain
-        cross_domain = (document.domain == domain) ? false : true;
+        cross_domain = !((document.domain == domain) && (document.location.port == port));
 
         //build the url
         var url = scheme+"://"+domain;
