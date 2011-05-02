@@ -44,11 +44,12 @@ beef.net = {
     },
     
     /**
-     * Response Object - returned from beef.net.request with result of request
+     * Response Object - used in the beef.net.request callback
+     * Note: as we are using async mode, the response object will be empty if returned.Using sync mode, request obj fields will be populated.
      */
     response: function() {
         this.status_code = null;        // 500, 404, 200, 302
-        this.response_body = null;               // "<html>…." if not a cross domain request
+        this.response_body = null;      // "<html>…." if not a cross domain request
         this.port_status = null;        // tcp port is open, closed or not http
         this.was_cross_domain = null;   // true or false
         this.was_timedout = null;       // the user specified timeout was reached
@@ -126,7 +127,7 @@ beef.net = {
 	* @param: {String} anchor: this is the value that comes after the # in the URL
 	* @param: {String} data: This will be used as the query string for a GET or post data for a POST
 	* @param: {Int} timeout: timeout the request after N seconds
-	* @param: {String} dataType: specify the data return type expected (ie text/html/script) 
+	* @param: {String} dataType: specify the data return type expected (ie text/html/script)
 	* @param: {Funtion} callback: call the callback function at the completion of the method
 	*
 	* @return: {Object} response: this object contains the response details
@@ -148,12 +149,16 @@ beef.net = {
 		var start_time = new Date().getTime();
 		//build and execute request
 		$j.ajax({type: method,
+             /*
+              * For Cross-Domain XHR always use dataType: script,
+              * otherwise even if the HTTP resp is 200, jQuery.ajax will always launch the error() event
+              */
 			 dataType: dataType,
 		     url: url,
 		     data: data,
 		     timeout: (timeout * 1000),
 		     //function on success
-		     success: function(data, textStatus, jqXHR){
+		     success: function(data, textStatus, xhr){
 		    	 var end_time = new Date().getTime();
                  response.status_code = textStatus;
 		    	 response.response_body = data;
@@ -164,9 +169,7 @@ beef.net = {
 		     //function on failure
 	    	 error: function(jqXHR, textStatus, errorThrown){
 	    		 var end_time = new Date().getTime();
-	    		 if (textStatus == "timeout"){
-	    			 response.was_timedout = true;
-	    		 };
+	    		 if (textStatus == "timeout"){response.was_timedout = true;}
 	    		 response.status_code = textStatus;
 		    	 response.duration = (end_time - start_time);
 		    },
