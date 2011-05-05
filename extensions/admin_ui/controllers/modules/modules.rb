@@ -222,6 +222,35 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 #      return command_module_status
       command_module_status
   end
+
+  def update_command_module_tree(tree, categories, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
+      # construct the category branch if it doesn't exist for the command module tree
+      if not categories.include? cmd_category
+        categories.push(cmd_category) # flag that the category has been added
+        tree.push({ # add the branch structure
+          'text' => cmd_category,
+          'cls' => 'folder',
+          'children' => []
+        })
+      end
+
+      # construct leaf node for the command module tree
+      leaf_node = {
+          'text' => cmd_name,
+          'leaf' => true,
+          'icon' => cmd_icon_path,
+          'status' => cmd_status,
+          'id' => cmd_id
+      }
+
+      # add the node to the branch in the command module tree
+      tree.each {|x|
+        if x['text'].eql? cmd_category
+          x['children'].push( leaf_node )
+            break
+        end
+      }
+  end
   
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
@@ -235,47 +264,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
       command_mod = BeEF::Core::Command.const_get(k.capitalize).new
       command_mod.session_id = hook_session_id
-      command_mod.update_info(mod['db']['id']) if (mod['db']['path'].match(/^Dynamic/))
-        
+
       # create url path and file for the command module icon
       command_module_icon_path = set_command_module_icon(command_mod)
       command_module_status = set_command_module_status(command_mod)
-      
-      # construct the category branch if it doesn't exist for the command module tree
-      if not categories.include? mod['category']
-        categories.push(mod['category']) # flag that the category has been added
-        tree.push({ # add the branch structure
-          'text' => mod['category'],
-          'cls' => 'folder',
-          'children' => []
-        })
-      end
 
-      # construct leaf node for the command module tree
-      leaf_node = {
-          'text' => mod['name'],
-          'leaf' => true,
-          'icon' => command_module_icon_path,
-          'status' => command_module_status,
-          'id' => mod['db']['id']
-      }
-        
-      # add the node to the branch in the command module tree
-      tree.each {|x|
-        if x['text'].eql? mod['category']
-          x['children'].push( leaf_node )
-            break
-        end
-      }
-    
+      update_command_module_tree(tree, categories, mod['category'], command_module_icon_path, command_module_status, mod['name'],mod['db']['id'])
     }
 
     # if dynamic modules are found in the DB, then we don't have yaml config for them
     # and loading must proceed in a different way.
-    dynamic_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+    dynamic_modules = BeEF::Core::Models::CommandModule.all(:path.like => "Dynamic/")
 
     if(dynamic_modules != nil)
-         dynamic_modules.each{|dyn_mod|
+         all_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+         all_modules.each{|dyn_mod|
          next if !dyn_mod.path.split('/').first.match(/^Dynamic/)
 
          hook_session_id = @params['zombie_session'] || nil
@@ -299,32 +302,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
           command_module_icon_path = set_command_module_icon(command_mod)
           command_module_status = set_command_module_status(command_mod)
 
-          # construct the category branch if it doesn't exist for the command module tree
-          if not categories.include? dyn_mod_category
-            categories.push(dyn_mod_category) # flag that the category has been added
-            tree.push({ # add the branch structure
-              'text' => dyn_mod_category,
-              'cls' => 'folder',
-              'children' => []
-            })
-          end
-
-          # construct leaf node for the command module tree
-          leaf_node = {
-              'text' => command_mod_name,
-              'leaf' => true,
-              'icon' => command_module_icon_path,
-              'status' => command_module_status,
-              'id' => dyn_mod.id
-          }
-
-          # add the node to the branch in the command module tree
-          tree.each {|x|
-            if x['text'].eql? dyn_mod_category
-              x['children'].push( leaf_node )
-                break
-            end
-          }
+         update_command_module_tree(tree, categories, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
        }
     end
       
@@ -554,8 +532,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "Command id is nil" if command_id.nil?
     command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
     raise WEBrick::HTTPStatus::BadRequest, "Command is nil" if command.nil?
-    
-    command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
+
+    command_module = BeEF::Core::Models::CommandModule.get(command.command_module_id)
+    if(command_module.path.split('/').first.match(/^Dynamic/))
+      command_module = command_module.path.split('/').last
+    end
     raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
       
     e = BeEF::Core::Command.const_get(command_module.name.capitalize).new
