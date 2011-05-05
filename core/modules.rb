@@ -10,6 +10,10 @@ module Modules
     def self.get_loaded
         return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['loaded'] == true }
     end
+
+    def self.get_stored_in_db
+      return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+    end
     
 
     # Loads modules 

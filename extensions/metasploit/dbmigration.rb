@@ -26,7 +26,6 @@ module Metasploit
   				        os_name = BeEF::Core::Constants::Os::match_os(st)
                   
   				        browsers =  BeEF::Core::Constants::Browsers::match_browser(msfi['name'] + msfi['targets'].to_json)
-                  
                   targets << {'os_name' => os_name, 'browser_name' => 'ALL', 'verified_status' =>
                       BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN} if browsers.count == 0
 

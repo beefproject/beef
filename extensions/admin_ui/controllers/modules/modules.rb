@@ -185,50 +185,65 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def select_all_command_modules
     @body = command_modules2json(BeEF::Modules.get_loaded.keys)
   end
+
+  # Set the correct icon for the command module
+  def set_command_module_icon(command_mod)
+      command_module_icon_path = BeEF::Extension::AdminUI::Constants::Icons::MODULE_TARGET_IMG_PATH # add icon path
+      case command_mod.verify_target()
+      when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_NOT_WORKING_IMG
+      when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
+        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_USER_NOTIFY_IMG
+      when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_WORKING_IMG
+      when BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
+      else
+        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
+      end
+      #return command_module_icon_path
+      command_module_icon_path
+  end
+
+   # Set the correct working status for the command module
+  def set_command_module_status(command_mod)
+      case command_mod.verify_target()
+      when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+      when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
+        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
+      when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+      when BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+      else
+        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+      end
+#      return command_module_status
+      command_module_status
+  end
   
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
     tree = []
     categories = []
-    
-    BeEF::Modules.get_loaded.each{|k,mod|
+
+    BeEF::Modules.get_loaded.each{|k, mod|
       # get the hooked browser session id and set it in the command module
       hook_session_id = @params['zombie_session'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
 
-      if(mod['db']['path'].match(/^Dynamic/))
-         print_debug ("Loading Dynamic command module: #{mod['name'].to_s}")
-         command_mod = BeEF::Modules::Commands.const_get(k.capitalize).new
-      else
-         command_mod = BeEF::Core::Command.const_get(k.capitalize).new
-      end
-
+      command_mod = BeEF::Core::Command.const_get(k.capitalize).new
       command_mod.session_id = hook_session_id
       command_mod.update_info(mod['db']['id']) if (mod['db']['path'].match(/^Dynamic/))
         
       # create url path and file for the command module icon
-      command_module_icon_path = BeEF::Extension::AdminUI::Constants::Icons::MODULE_TARGET_IMG_PATH # add icon path
-      case command_mod.verify_target() # select the correct icon for the command module
-      when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_NOT_WORKING_IMG
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-      when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_USER_NOTIFY_IMG
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
-      when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_WORKING_IMG
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-      when BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-      else
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-      end
+      command_module_icon_path = set_command_module_icon(command_mod)
+      command_module_status = set_command_module_status(command_mod)
       
       # construct the category branch if it doesn't exist for the command module tree
       if not categories.include? mod['category']
-        categories.push(mod['category']) # flag that the categor has been added
+        categories.push(mod['category']) # flag that the category has been added
         tree.push({ # add the branch structure
           'text' => mod['category'],
           'cls' => 'folder',
@@ -254,6 +269,64 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       }
     
     }
+
+    # if dynamic modules are found in the DB, then we don't have yaml config for them
+    # and loading must proceed in a different way.
+    dynamic_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+
+    if(dynamic_modules != nil)
+         dynamic_modules.each{|dyn_mod|
+         next if !dyn_mod.path.split('/').first.match(/^Dynamic/)
+
+         hook_session_id = @params['zombie_session'] || nil
+         raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
+
+          dyn_mod_name = dyn_mod.path.split('/').last
+          dyn_mod_category = nil
+          if(dyn_mod_name == "Msf")
+             dyn_mod_category = "Metasploit"
+          else
+             # future dynamic modules...
+          end
+
+          print_debug ("Loading Dynamic command module: category [#{dyn_mod_category}] - name [#{dyn_mod.name.to_s}]")
+          command_mod = BeEF::Modules::Commands.const_get(dyn_mod_name.capitalize).new
+          command_mod.session_id = hook_session_id
+          command_mod.update_info(dyn_mod.id)
+          command_mod_name = command_mod.info['Name'].downcase
+
+          # create url path and file for the command module icon
+          command_module_icon_path = set_command_module_icon(command_mod)
+          command_module_status = set_command_module_status(command_mod)
+
+          # construct the category branch if it doesn't exist for the command module tree
+          if not categories.include? dyn_mod_category
+            categories.push(dyn_mod_category) # flag that the category has been added
+            tree.push({ # add the branch structure
+              'text' => dyn_mod_category,
+              'cls' => 'folder',
+              'children' => []
+            })
+          end
+
+          # construct leaf node for the command module tree
+          leaf_node = {
+              'text' => command_mod_name,
+              'leaf' => true,
+              'icon' => command_module_icon_path,
+              'status' => command_module_status,
+              'id' => dyn_mod.id
+          }
+
+          # add the node to the branch in the command module tree
+          tree.each {|x|
+            if x['text'].eql? dyn_mod_category
+              x['children'].push( leaf_node )
+                break
+            end
+          }
+       }
+    end
       
     # sort the parent array nodes 
     tree.sort! {|a,b| a['text'] <=> b['text']}
@@ -276,31 +349,22 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   end
   
   # Returns the inputs definition of an command_module.
-  def select_command_module  
-    
-    # get command_module id
+  def select_command_module
     command_module_id = @params['command_module_id'] || nil
     raise WEBrick::HTTPStatus::BadRequest, "command_module_id is nil" if command_module_id.nil?
+    command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
 
-    # get the command_module path
-    key = BeEF::Module.get_key_by_database_id(command_module_id)
-    mod = BeEF::Core::Configuration.instance.get('beef.module.'+key.to_s)
-
-    path = (mod['db']['path'].match(/^Dynamic/)) ? mod['db']['path'] : "#{$root_dir}"+mod['db']['path']
-
-    # check if the request relates to a dynamic module
-	if(path.match(/^Dynamic/))
-		  # get command_module id
-      payload_name = @params['payload_name'] || nil
-      
-      if not payload_name.nil? 
-        @body = dynamic_payload2json(command_module_id, payload_name) 
-      else
-    	  @body = dynamic_modules2json(command_module_id);
-  	  end
-		else	
-    	@body = command_modules2json([key]); 
-	end
+    if(command_module != nil && command_module.path.match(/^Dynamic/))
+        payload_name = @params['payload_name'] || nil
+        if not payload_name.nil?
+          @body = dynamic_payload2json(command_module_id, payload_name)
+        else
+          @body = dynamic_modules2json(command_module_id);
+        end
+    else
+      key = BeEF::Module.get_key_by_database_id(command_module_id)
+      @body = command_modules2json([key]);
+    end
   end
   
   # Returns the list of commands for an command_module
@@ -361,7 +425,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       definition[param[4..-1]] = params[param]
       oc = BeEF::Core::Models::OptionCache.first_or_create(:name => param[4..-1])
       oc.value = params[param]
-	  oc.save
+	    oc.save
     }
 
     zombie = Z.first(:session => zombie_session)
@@ -424,31 +488,34 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
     zombie_id = zombie.id
     raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
-    
-    key = BeEF::Module.get_key_by_database_id(command_module_id)
-    mod = BeEF::Core::Configuration.instance.get('beef.module.'+key.to_s)
+    command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
 
-    # if the module id is not in the database return false
-    return {'success' => 'false'}.to_json if(not mod)
-    
-    # the path will equal Dynamic/<type> and this will get just the type
-    e = BeEF::Modules::Commands.const_get(mod['class']).new
-    e.update_info(command_module_id)
-    e.update_data()
- 	ret = e.launch_exploit(definition)
+    if(command_module != nil && command_module.path.match(/^Dynamic/))
+      dyn_mod_name = command_module.path.split('/').last
+      e = BeEF::Modules::Commands.const_get(dyn_mod_name.capitalize).new
+      e.update_info(command_module_id)
+      e.update_data()
+ 	    ret = e.launch_exploit(definition)
 
-    return {'success' => 'false'}.to_json if ret['result'] != 'success'
+      return {'success' => 'false'}.to_json if ret['result'] != 'success'
 
-		basedef = {}
-		basedef['sploit_url'] = ret['uri']
+      basedef = {}
+		  basedef['sploit_url'] = ret['uri']
 
-		C.new(  :data => basedef.to_json,
-			:hooked_browser_id => zombie_id,
-			:command_module_id => command_module_id,
-			:creationdate => Time.new.to_i
-			).save
-    
-    @body = '{success : true}'
+      C.new(  :data => basedef.to_json,
+        :hooked_browser_id => zombie_id,
+        :command_module_id => command_module_id,
+        :creationdate => Time.new.to_i
+        ).save
+
+      @body = '{success : true}'
+    else
+#       return {'success' => 'false'}.to_json
+      {'success' => 'false'}.to_json
+    end
+
+
+
   end
   
   # Returns the results of a command

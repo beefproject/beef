@@ -60,7 +60,7 @@ module Metasploit
 				return false
 			end
 			
-			print_info 'Successful connection with Metastploit.' if not @lastauth
+			print_info 'Successful connection with Metasploit.' if not @lastauth
 			
 			@token = res['token']
 			@lastauth = Time.now
