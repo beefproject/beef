@@ -534,16 +534,19 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "Command is nil" if command.nil?
 
     command_module = BeEF::Core::Models::CommandModule.get(command.command_module_id)
-    if(command_module.path.split('/').first.match(/^Dynamic/))
-      command_module = command_module.path.split('/').last
-    end
     raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
-      
-    e = BeEF::Core::Command.const_get(command_module.name.capitalize).new
+
+    if(command_module.path.split('/').first.match(/^Dynamic/))
+      dyn_mod_name = command_module.path.split('/').last
+      e = BeEF::Modules::Commands.const_get(dyn_mod_name.capitalize).new
+    else
+      command_module_name = command_module.name
+      e = BeEF::Core::Command.const_get(command_module_name.capitalize).new
+    end
             
     @body = {
       'success' => 'true', 
-      'command_module_name'  => command_module.name,
+      'command_module_name'  => command_module_name,
       'command_module_id'    => command_module.id,
       'data'                 => JSON.parse(command.data),
       'definition'           => JSON.parse(e.to_json)
