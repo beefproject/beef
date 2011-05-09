@@ -433,7 +433,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
     raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
     
-    command.has_run = false#TODO: there's a bug here. Need to recode this function.
+    command.instructions_sent = false
     command.save
     
     @body = '{success : true}'
