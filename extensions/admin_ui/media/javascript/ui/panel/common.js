@@ -56,16 +56,22 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
    		case 'combobox':
             input_def['name'] = 'com_' + input['name'];
 			input_def['triggerAction'] = 'all';
-				
-			// add a listener so that when the check box is changed it will update the payload options
-			if(input.reloadOnChange) { // input.reloadOnChange is set in msfcommand.rb
+
+            if(input.reloadOnChange || input.defaultPayload != null) { // defined in msfcommand.rb
 				Ext.getCmp("payload-panel").show(); // initially the panel will be empty so it may appear still hidden
 				input_def['listeners'] = {
+                    // update the payload options when one of them is selected
 					'select': function(combo, value) {
-						get_dynamic_payload_details(combo.getValue(), zombie); // combo.getValue() is the selected payload				
-					}
+						get_dynamic_payload_details(combo.getValue(), zombie);
+                    },
+                    // set the default payload value as defined in defaultPayload
+                    'afterrender': function(combo){
+                        combo.setValue(input.defaultPayload);
+                        get_dynamic_payload_details(combo.getValue(),zombie);
+                    }
 		    	};
 			}
+
 
 			// create store to contain options for the combo box
 			input_def['store']  = new Ext.data.ArrayStore( {

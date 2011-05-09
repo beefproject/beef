@@ -128,7 +128,8 @@ module Commands
     		'displayField' => 'payload' , 
     		'autoWidth' => true,
     		'mode' => 'local',
-    		'reloadOnChange' => true, # this will trigger a reload of the payload options
+    		'reloadOnChange' => true, # reload payloads
+        'defaultPayload' => "generic/shell_bind_tcp", # default combobox value
     		'emptyText' => "select a payload..."
     	}
     
