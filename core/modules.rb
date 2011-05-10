@@ -15,7 +15,6 @@ module Modules
       return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
     end
     
-
     # Loads modules 
     def self.load
         self.get_enabled.each { |k,v|

@@ -18,14 +18,21 @@ module Module
 
     # Loads module
     def self.load(mod, cat)
-        cat = BeEF::Module.safe_category(cat)
+        cat = self.safe_category(cat)
         if File.exists?('modules/'+cat+'/'+mod+'/module.rb')
             require 'modules/'+cat+'/'+mod+'/module.rb'
-            BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
             BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
-            print_debug "Loaded module: '#{mod}'"
-            return true
-        end 
+            if self.exists?(mod)
+                BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
+                print_debug "Loaded module: '#{mod}'"
+                return true
+            else
+                BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', false)
+                print_debug "Unable to locate module class: BeEF::Core::Commands::#{mod.capitalize}"
+            end
+        else
+            print_debug "Unable to locate module file: modules/#{cat}/#{mod}/module.rb"
+        end
         print_error "Unable to load module '#{mod}'"
         return false
     end
@@ -39,6 +46,16 @@ module Module
     # Returns category name in a system folder format
     def self.safe_category(cat)
         return cat.to_s.strip.downcase.sub(/\s/, '_')
+    end
+
+    #checks to see if module class exists
+    def self.exists?(mod)
+        begin
+            kclass = BeEF::Core::Command.const_get(mod.capitalize)
+            return kclass.is_a?(Class)
+        rescue NameError
+            return false
+        end
     end
 end
 end
