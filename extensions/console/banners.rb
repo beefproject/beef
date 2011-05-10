@@ -88,9 +88,8 @@ module Banners
     
     #
     # Print loaded modules
-    # TODO: This should display the count of modules like the extensions function, however this is blocked on issue 319
     def print_loaded_modules
-        print_info "modules loaded."
+        print_info "#{BeEF::Modules::get_loaded.count} modules loaded."
     end
   end
 end
