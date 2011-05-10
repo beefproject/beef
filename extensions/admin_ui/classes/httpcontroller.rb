@@ -40,7 +40,7 @@ module AdminUI
       
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
-        @body = page_redirect(auth_url) # redirect to auth page
+        response.set_redirect(WEBrick::HTTPStatus::Found, auth_url)
         return
       end
       
@@ -68,9 +68,6 @@ module AdminUI
 
     end
 
-    # Constructs a redirect page
-    def page_redirect(location) "<html><head></head><body>" + script_redirect(location) + "</body></html>" end
-    
     # Constructs a redirect script
     def script_redirect(location) "<script> document.location=\"#{location}\"</script>" end
     
