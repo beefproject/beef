@@ -1,6 +1,6 @@
 # BeEF Configuration file
 beef:
-    version: '0.4.2.5-alpha'
+    version: '0.4.2.6-alpha'
     debug: false
 
     restrictions:
@@ -46,4 +46,4 @@ beef:
         proxy:
             enable: true 
         metasploit:
-            enable: false 
+            enable: true 
