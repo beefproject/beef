@@ -513,8 +513,16 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     resultsdb = BeEF::Core::Models::Result.all(:command_id => command_id)
     raise WEBrick::HTTPStatus::BadRequest, "Command id result is nil" if resultsdb.nil?
     
-    resultsdb.each{ |result| results.push({'date' => result.date, 'data' => JSON.parse(result.data)}) }
-    
+    resultsdb.each{ |result| 
+        begin
+            r = JSON.parse(result.data)
+            results.push({'date' => result.date, 'data' => BeEF::Renderers::HTML.render('basic', r['type'], r['data'])})
+        rescue JSON::ParserError => e
+            print_debug "Invalid JSON on command_id: #{command_id}"
+            print_error "Unable to JSON parse result set from database"
+        end
+    }
+
     @body = {
       'success'             => 'true', 
       'command_module_name' => command_module.name,
