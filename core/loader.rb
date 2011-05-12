@@ -22,9 +22,6 @@ require 'term/ansicolor'
 # Include the filters
 require 'core/filters'
 
-# Include the filters
-require 'core/renderers'
-
 # Include our patches for ruby and gems
 require 'core/ruby'
 
