@@ -49,7 +49,7 @@ end
 
 # generate install command for missing gems
 def install_command
-  if RUBY_PLATFORM =~ /linux/ or RUBY_PLATFORM =~ /darwin/
+  if (RUBY_PLATFORM =~ /linux/ or RUBY_PLATFORM =~ /darwin/) and Process.uid != 0
     cmd = "sudo gem install"
     $gems_missing.each do |current_gem|
       cmd = cmd + " #{current_gem}"
