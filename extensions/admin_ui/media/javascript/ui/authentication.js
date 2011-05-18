@@ -1,19 +1,19 @@
 Ext.onReady(function() {
 	
-	var bd = Ext.getBody();
-	
-	submitAuthForm = function() {	
+	submitAuthForm = function() {
 		login_form.getForm().submit({
-			waitMsg: 'Logging in ...',
+
 			success: function() {
 				window.location.href = '/ui/panel'
 			}, 
 			failure: function() {
-				Ext.MessageBox.alert('Message', 'Error with username or password')
+                if(Ext.get('loginError') == null){
+                    Ext.DomHelper.insertAfter('loadingError', {id:'loginError', html: '<b>ERROR</b>: invalid username or password'});
+                }
+                login_form.mask.hide();
 			}
 		});
 	}
-
 
 	var login_form = new Ext.form.FormPanel({
       	
@@ -24,7 +24,8 @@ Ext.onReady(function() {
       	title: 'Authentication',
       	bodyStyle:'padding:5px 5px 0',
       	width: 350,
-      	
+
+
 		defaults: {
         	width: 175,
         	inputType: 'password'
@@ -60,13 +61,17 @@ Ext.onReady(function() {
 		
 		buttons: [{
 			text: 'Login',
-			handler: function()	{ 
+            id: 'loginButton',
+			handler: function()	{
+                login_form.mask = new Ext.LoadMask('login_form', {msg:"Authenticating to BeEF..."});
+                login_form.mask.show();
 				submitAuthForm();
 			}
 		}]
 	});
 		
 	login_form.render('centered');
+    Ext.DomHelper.append('login_form', {tag: 'div', id: 'loadingError'});
 	document.getElementById('user').focus();
 	
 });
