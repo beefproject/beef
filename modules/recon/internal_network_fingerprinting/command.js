@@ -1,6 +1,7 @@
 beef.execute(function() {
 
 	var dom = document.createElement('b');
+
 	var ips = [
 		'http://192.168.0.1',
 		'http://192.168.0.100',
@@ -15,7 +16,8 @@ beef.execute(function() {
 		'http://192.168.100.1',
 		'http://192.168.100.254',
 		'http://192.168.123.1',
-		'http://192.168.123.254'
+		'http://192.168.123.254',
+        'http://192.168.10.1'
 	];
 	var urls = new Array(
 	new Array("QNAP NAS",":8080","/ajax_obj/img/running.gif",16,16),
@@ -29,8 +31,10 @@ beef.execute(function() {
 	new Array("Cisco IP Phone",":80","/Images/Logo",120,66),
 	new Array("Snom Phone",":80","/img/snom_logo.png",168,62),
 	new Array("Brother Printer",":80","/pbio/brother.gif",144,52),
-	new Array("HP LaserJet",":80","/hp/device/images/logo.gif",42,27)
+	new Array("HP LaserJet",":80","/hp/device/images/logo.gif",42,27),
+    new Array("JBoss Application server",":8080","/images/logo.gif",226,105)
 	);
+    //console.log("Array loaded [" + urls + "]");
 
 	// for each ip
 	for(var i=0; i < ips.length; i++) {
@@ -38,6 +42,7 @@ beef.execute(function() {
 		// for each url
 		for(var u=0; u < urls.length; u++) {
 			var img = new Image;
+            //console.log("Detecting  [" + urls[u][0] + "] at IP [" + ips[i] + "]");
 			img.id = u;
 			img.src = ips[i]+urls[u][1]+urls[u][2];
 			//img.title = ips[i]+urls[u][1];
