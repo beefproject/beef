@@ -28,11 +28,12 @@ beef.execute(function() {
 		url: "https://twitter.com/account/use_phx?setting=false&amp;format=text",
 		dataType: "script",
 		cache: "false",
-		error: function(one, two, three) {
-			twitterresult = "User is authenticated to Twitter";
-		},
-		success: function(one, two, three) {
-			twitterresult = "User is NOT authenticated to Twitter";
+		complete: function(one, two) {
+			if (two == "success") {
+				twitterresult = "User is NOT authenticated to Twitter (response:"+two+")";
+			} else if (two == "timeout") {
+				twitterresult = "User is authenticated to Twitter (response:"+two+")";
+			}
 		},
 		timeout: <%= @timeout %>
 	});
