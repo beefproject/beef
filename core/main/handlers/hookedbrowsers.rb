@@ -52,6 +52,12 @@ module Handlers
       
         # record the last poll from the browser
         hooked_browser.lastseen = Time.new.to_i
+        
+        # Check for a change in zombie IP and log an event
+        if hooked_browser.ip != @request.peeraddr[3].to_s
+          BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{@request.peeraddr[3].to_s}","#{hooked_browser.id}")
+          hooked_browser.ip = @request.peeraddr[3].to_s
+        end
       
         hooked_browser.count!
         hooked_browser.save
