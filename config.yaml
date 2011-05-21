@@ -23,7 +23,7 @@ beef:
         session_cookie_name: "BEEFSESSION"
 
     database:
-        #supported DBs: sqlite, MySQL
+        #supported DBs: sqlite, mysql
         default: "sqlite"
         # please note that the db should exists. Schema will be created automatically.
         # mysql> create database beef;
