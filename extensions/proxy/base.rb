@@ -18,6 +18,7 @@ module Proxy
 
     # remove beef hook if it exists
     def remove_hook(res)
+      print_debug "[PROXY] Removing beef hook from page if present"
       res.body.gsub!(%r'<script.*?http.*?exploit.js.*?</script>', '')
     end
   end

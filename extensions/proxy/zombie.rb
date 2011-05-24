@@ -22,13 +22,13 @@ module Proxy
     end
 
     def service(req, res)
-      
-       proxy_zombie = HB.first(:is_proxy => true)
-      if(proxy_zombie != nil)
-        proxy_zombie_id = proxy_zombie.id.to_s
+      proxy_browser = HB.first(:is_proxy => true)
+      if(proxy_browser != nil)
+        proxy_browser_id = proxy_browser.id.to_s
+        print_debug "[PROXY] Current proxy browser id is #" + proxy_browser_id
       else
         proxy_zombie_id = 1
-        print_debug("Defaulting proxy zombie to the first one in the DB")
+        print_debug "[PROXY] Proxy browser not set so defaulting to browser id #1"
       end
 
       # blocking request

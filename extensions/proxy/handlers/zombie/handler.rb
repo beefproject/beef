@@ -8,7 +8,7 @@ module Zombie
     
     # Variable representing the Http DB model.
     H = BeEF::Core::Models::Http
-    # This function will forward requests to the zombie and 
+    # This function will forward requests to the target and 
     # the browser will perform the request. Then the results
     # will be sent back to use
     def forward_request(hooked_browser_id, req, res)
@@ -22,10 +22,7 @@ module Zombie
         http_db = H.first(:id => http_id) || nil
       end
 
-      # some debug info
-      print_debug "[PROXY] Forwarding request #" + http_id.to_s + " from zombie [" + hooked_browser_id.to_s + "]" + " to host [" + req.host.to_s + "]"
-
-      # Saves the new HTTP request to the db for processing by HB
+      # Saves the new HTTP request to the db for processing by browser
       http = H.new(
         :id => http_id,
         :request => req,
@@ -36,18 +33,18 @@ module Zombie
         :hooked_browser_id => hooked_browser_id
       )
       http.save
+
+      print_debug "[PROXY] Request #" + http_id.to_s + " to " + req.host.to_s + req.path.to_s + " added to queue for browser id #" + hooked_browser_id.to_s
       
       # Polls the DB for the response and then sets it when present
-      
       http_db = H.first(:id => http_id)
 
       while !http_db.has_ran
-        #sleep 1  # adding a sleep here is a bottleneck. Even querying in this way is not a good way.
-                  # By the way removing the sleep instead the proxy response time is 8/10 seconds instead of almost 20 seconds.
-                  # This code should be reimplemented with Threading.
         http_db = H.first(:id => http_id)
       end
-#
+      
+      print_debug "[PROXY] Response to request #" + http_id.to_s + " to " + req.host.to_s + req.path.to_s + " using browser id #" + hooked_browser_id.to_s + " recieved"
+      
       res.body = http_db.response
 
       res
