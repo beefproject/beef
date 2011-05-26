@@ -13,7 +13,7 @@ module Zombie
     # will be sent back to use
     def forward_request(hooked_browser_id, req, res)
 
-      # Generate a id for the req in the http table and check it doesnt already exist
+      # Generate an id for the req in the http table and check it doesnt already exist
       http_id = rand(10000)
       http_db = H.first(:id => http_id) || nil
       
@@ -22,19 +22,26 @@ module Zombie
         http_db = H.first(:id => http_id) || nil
       end
 
+      # Append port to domain string if not 80 or 443
+      if req.port != 80 or req.port != 443
+        domain = req.host.to_s + ':' + req.port.to_s
+      else
+        domain = req.host.to_s
+      end
+      
       # Saves the new HTTP request to the db for processing by browser
       http = H.new(
         :id => http_id,
         :request => req,
         :method => req.request_method.to_s,
-        :domain => req.host.to_s,
+        :domain => domain,
         :path => req.path.to_s,
         :date => Time.now,
         :hooked_browser_id => hooked_browser_id
       )
       http.save
 
-      print_debug "[PROXY] Request #" + http_id.to_s + " to " + req.host.to_s + req.path.to_s + " added to queue for browser id #" + hooked_browser_id.to_s
+      print_debug "[PROXY] Request #" + http_id.to_s + " to " + domain + req.path.to_s + " added to queue for browser id #" + hooked_browser_id.to_s
       
       # Polls the DB for the response and then sets it when present
       http_db = H.first(:id => http_id)
