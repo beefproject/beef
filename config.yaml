@@ -24,10 +24,16 @@ beef:
 
     database:
         #supported DBs: sqlite, mysql
+        
         default: "sqlite"
-        # please note that the db should exists. Schema will be created automatically.
-        # mysql> create database beef;
-        # mysql> grant all privileges on beef.* to 'beef'@'localhost' identified by 'beef123';
+        # MySQL Notes:
+        #   Your system will require MySQL, MySQL-Server, MySQL-Devel and Ruby's MySQL libraries installed
+        #   You will also need to "sudo gem install dm-mysql-adapter"
+        #
+        #   please note that the db should exists. Schema will be created automatically.
+        #   mysql> create database beef;
+        #   mysql> grant all privileges on beef.* to 'beef'@'localhost' identified by 'beef123';
+        
         mysql:
           db_host: "localhost"
           db_name: "beef"
@@ -46,4 +52,4 @@ beef:
         proxy:
             enable: true 
         metasploit:
-            enable: true 
+            enable: true
