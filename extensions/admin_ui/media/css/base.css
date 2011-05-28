@@ -62,6 +62,7 @@
 .x-tree-node-leaf .x-tree-node-icon {
 	width: 13px;
 	height: 13px;
+	padding-left: 3px;
 	padding-top: 3px;
 }
 
