@@ -90,7 +90,33 @@ ZombieTab_Commands = function(zombie) {
 		genExisingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
 	});
 	
+	LoadCommandPanelEvent = function(node,keyclick) {
+		if(!node.leaf && !keyclick) {
+			node.toggle();
+		} else if (!node.leaf && keyclick) {
+			return;
+		} else {
+            // if the user don't close the welcome window, let hide it automatically
+            welcomeWindow.hide();
+
+			command_module_config.configLoadMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait, module config is loading..."});
+			command_module_config.configLoadMask.show();
+
+            command_module_grid.i = 0;
+			command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
+			command_module_grid.store.reload({  //reload the command module grid
+				params: {  // insert the nonce with the request to reload the grid
+					nonce: Ext.get ("nonce").dom.value
+			}		
+			});
+			
+			genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
+			commands_statusbar.showValid('Ready');
+		}
+	};
+	
 	var command_module_tree = new Ext.tree.TreePanel({
+		id: "zombie-command-modules"+zombie.session,
 		border: false,
 		region: 'west',
 		width: 190,
@@ -127,28 +153,26 @@ ZombieTab_Commands = function(zombie) {
         }),
 		listeners: {
 			'click': function(node) {
-				if(!node.leaf) {
-					node.toggle();
-				} else {
-                    // if the user don't close the welcome window, let hide it automatically
-                    welcomeWindow.hide();
-
-					command_module_config.configLoadMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait, module config is loading..."});
-					command_module_config.configLoadMask.show();
-
-                    command_module_grid.i = 0;
-					command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
-					command_module_grid.store.reload({  //reload the command module grid
-						params: {  // insert the nonce with the request to reload the grid
-							nonce: Ext.get ("nonce").dom.value
-					}		
-					});
-					
-					genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
-					commands_statusbar.showValid('Ready');
-				}
+				LoadCommandPanelEvent(node,false);
 			},
 			'afterrender' : function() {
+			},
+			'selectionchange' : function() {
+				console.log("selection changed");
+			},
+			'activate' : function() {
+				console.log("activate");
+			},
+			'select' : function() {
+				console.log("select");
+			},
+			'keyup' : function() {
+				console.log("Key up");
+			},
+			'render' : function(c) {
+				c.getEl().on('keyup', function() {
+					LoadCommandPanelEvent(Ext.getCmp('zombie-command-modules'+zombie.session).getSelectionModel().getSelectedNode(),true);
+				});
 			}
 		}
 	});
