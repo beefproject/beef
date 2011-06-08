@@ -8,7 +8,7 @@ class Replace_video < BeEF::Core::Command
       'Name' => 'Replace Video',
       'Description' => 'Replaces an object selected with jQuery (all embed tags by default) with an embed tag containing the youtube video of your choice (rickroll by default).',
       'Category' => 'Misc',
-      'Author' => 'Yori Kvitchko',
+      'Author' => ['Yori Kvitchko','antisnatchor'],
       'Data' =>
         [
 			    {'name' => 'youtube_id', 'ui_label' => 'YouTube Video ID', 'value' => 'XZ5TajZYW6Y', 'width'=>'150px'},
