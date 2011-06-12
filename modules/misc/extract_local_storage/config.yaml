@@ -1,0 +1,10 @@
+beef:
+    module:
+        extract_local_storage:
+            enable: true
+            category: "Misc"
+            name: "Extract Local Storage"
+            description: "Extracts data from the HTML5 localStorage object."
+            authors: ["bcoles"]
+            target:
+                working: ['FF']
