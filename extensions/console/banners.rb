@@ -12,8 +12,7 @@ module Banners
     def print_welcome_msg
 	config = BeEF::Core::Configuration.instance
 	version = config.get('beef.version')
-        print_info " -=[ BeEF v#{version} ]=-"
-        print_info "Ensure you're running the latest framework version. Run 'svn update' to update."
+        print_info "Version: #{version} - Run 'svn update' to update to the latest version."
     end
 
     #
@@ -50,12 +49,12 @@ module Banners
     # [14:06:48][+] running on network interface: 192.168.255.1
     # [14:06:48]    |   Hook URL: http://192.168.255.1:3000/hook.js
     # [14:06:48]    |   UI URL:   http://192.168.255.1:3000/ui/panel
-    # [14:06:48]    |_  Demo URL: http://192.168.255.1:3000/demos/basic.html
     # [14:06:48][+] running on network interface: 127.0.0.1
     # [14:06:48]    |   Hook URL: http://127.0.0.1:3000/hook.js
     # [14:06:48]    |   UI URL:   http://127.0.0.1:3000/ui/panel
-    # [14:06:48]    |_  Demo URL: http://127.0.0.1:3000/demos/basic.html
     #
+
+
     def print_network_interfaces_routes
       configuration = BeEF::Core::Configuration.instance
       
@@ -63,7 +62,6 @@ module Banners
         print_success "running on network interface: #{host}"
         data = "Hook URL: http://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.hook_file")}\n"
         data += "UI URL:   http://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.panel_path")}\n"
-        data += "Demo URL: http://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.demo_path")}"
         
         print_more data
       end
