@@ -239,7 +239,7 @@ beef.browser = {
 			C9:		this.isC9(), 	// Chrome 9
 			C10:	this.isC10(), 	// Chrome 10
 			C11:	this.isC11(), 	// Chrome 11
-			C11:	this.isC12(), 	// Chrome 12
+			C12:	this.isC12(), 	// Chrome 12
 			C:		this.isC(), 	// Chrome any version
 			FF2:	this.isFF2(),	// Firefox 2
 			FF3:	this.isFF3(),	// Firefox 3
