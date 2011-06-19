@@ -27,6 +27,11 @@ class Extract_local_storage < BeEF::Core::Command
       'browser_name' => S
     })
 
+    set_target({
+      'verified_status' => VERIFIED_WORKING,
+      'browser_name' => C
+    })
+
     use_template!
   end
   
