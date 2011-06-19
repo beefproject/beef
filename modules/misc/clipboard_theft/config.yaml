@@ -1,0 +1,13 @@
+beef:
+    module:
+        clipboard_theft:
+            enable: true
+            category: "Misc"
+            name: "Clipboard Theft"
+            description: "Retrieves the clipboard contents. This module will work automatically with Internet Explorer 6.x however Internet Explorer 7.x will prompt the user and ask for permission to access the clipboard."
+            authors: ["bcoles"]
+            target:
+                working: [IE6]
+                not_working: [FF, O, C, IE8]
+                user_notify: [IE7]
+
