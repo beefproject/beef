@@ -10,20 +10,20 @@ class Clipboard_theft < BeEF::Core::Command
     })
     
     set_target({
+      'verified_status' => VERIFIED_WORKING,
+      'browser_name' => IE,
+      'browser_max_ver' => "6",
+      'browser_min_ver' => "6"
+    })
+    set_target({
       'verified_status' => VERIFIED_USER_NOTIFY,
-      'browser_name' => IE
+      'browser_name' => IE,
+      'browser_max_ver' => "7",
+      'browser_min_ver' => "7"
     })
     set_target({
       'verified_status' => VERIFIED_NOT_WORKING,
-      'browser_name' => O
-    })
-    set_target({
-      'verified_status' => VERIFIED_NOT_WORKING,
-      'browser_name' => FF
-    })
-    set_target({
-      'verified_status' => VERIFIED_NOT_WORKING,
-      'browser_name' => C
+      'browser_name' => ALL
     })
 
     use_template!
