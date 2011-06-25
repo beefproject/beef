@@ -8,7 +8,7 @@ beef.encode.base64 = {
 
     encode : function (input) {
         if (window.btoa) {
-            return btoa(input);
+           return btoa(unescape(encodeURIComponent(input)));
         }
 
         var output = "";
@@ -46,7 +46,7 @@ beef.encode.base64 = {
 
     decode : function (input) {
         if (window.atob) {
-            return atob(input);
+            return atob(escape(input));
         }
 
         var output = "";
