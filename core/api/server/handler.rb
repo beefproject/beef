@@ -23,6 +23,11 @@ module Server
   #
   module Handler
     
+    API_PATHS = {
+        'pre_http_start' => :pre_http_start,
+        'mount_handlers' => :mount_handlers
+    }
+    
     #
     # This method is being called when the BeEF server mounts handlers
     #

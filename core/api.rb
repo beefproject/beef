@@ -10,14 +10,28 @@ module API
     # Calls a API fire against a certain class / module (c) method (m) with n parameters (*args)
     #
     def self.fire(c, m, *args)
-        c.extended_in_modules.each do |mod|
-          begin
-            mod.send m.to_sym, *args
-          rescue Exception => e
-            puts e.message  
-            puts e.backtrace
-          end
+        if self.verify_api_path(c, m)
+            method = self.get_api_path(c, m)
+            c.extended_in_modules.each do |mod|
+              begin
+                mod.send method, *args
+              rescue Exception => e
+                print_error e.message  
+              end
+            end
+        else
+            print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
         end
+    end
+
+    # Verifies that the api_path has been regitered
+    def self.verify_api_path(c, m)
+        return (c.const_defined?('API_PATHS', false) and c.const_get('API_PATHS', false).has_key?(m))
+    end
+
+    # Gets the sym set to the api_path
+    def self.get_api_path(c, m)
+        return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS', false)[m] : nil;
     end
    
 end

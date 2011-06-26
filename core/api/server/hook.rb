@@ -22,6 +22,10 @@ module Server
   #   end
   #
   module Hook 
+
+    API_PATHS = {
+        'pre_hook_send' => :pre_hook_send
+    }
     
     #
     # This method is being called as the hooked response is being built 
