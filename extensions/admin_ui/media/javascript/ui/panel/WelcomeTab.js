@@ -2,7 +2,7 @@ WelcomeTab = function() {
 
     welcome = " \
               <div style='font:13px tahoma,arial,helvetica,sans-serif'> \
-              <p><img src='/ui/media/images/icons/beef.gif' />&nbsp; <span style='font:bold 15px tahoma,arial,helvetica,sans-serif'>BeEF - The Browser Exploitation Framework</span></p><br /> \
+              <p><img src='/ui/media/images/beef.jpg' alt='BeEF - The Browser Exploitation Framework' /></p><br /> \
               <p>Welcome to BeEF!</p><br /> \
               <p>Before being able to fully explore the framework you will have to 'hook' a browser. To begin with you can point a browser towards the basic demo page <a href='/demos/basic.html' target='_blank'>here</a>, or the advanced version <a href='/demos/butcher/index.html' target='_blank'>here</a>.</p><br /> \
               <p>After a browser is hooked into the framework they will appear in the 'Hooked Browsers' panel on the left. Hooked browsers will appear in either an online or offline state, depending on how recently they have polled the framework. To interact with a hooked browser simply click it, a new tab will appear.</p><br /> \
