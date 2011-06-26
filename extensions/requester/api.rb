@@ -20,7 +20,7 @@ module Requester
     extend BeEF::API::Server::Hook
 
     def self.pre_hook_send(hooked_browser, body, params, request, response)
-        dhook = BeEF::Extension::Requester::API::Hook.new 
+        dhook = BeEF::Extension::Requester::API::Hook.new
         dhook.requester_run(hooked_browser, body)
     end
 

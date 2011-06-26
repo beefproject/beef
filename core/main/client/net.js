@@ -20,7 +20,6 @@ beef.net = {
         this.results = null;
         this.handler = null;
         this.callback = null;
-        this.results = null;
     },
 
     //Packet object
@@ -49,6 +48,7 @@ beef.net = {
      */
     response: function() {
         this.status_code = null;        // 500, 404, 200, 302
+        this.status_text = null;        // success, timeout, error, ...
         this.response_body = null;      // "<html>…." if not a cross domain request
         this.port_status = null;        // tcp port is open, closed or not http
         this.was_cross_domain = null;   // true or false
@@ -128,7 +128,7 @@ beef.net = {
 	* @param: {String} data: This will be used as the query string for a GET or post data for a POST
 	* @param: {Int} timeout: timeout the request after N seconds
 	* @param: {String} dataType: specify the data return type expected (ie text/html/script)
-	* @param: {Funtion} callback: call the callback function at the completion of the method
+	* @param: {Function} callback: call the callback function at the completion of the method
 	*
 	* @return: {Object} response: this object contains the response details
 	*/
@@ -147,13 +147,32 @@ beef.net = {
 		response.was_cross_domain = cross_domain;
 		
 		var start_time = new Date().getTime();
-		//build and execute request
+
+        //configure the ajax object for dataType
+        if(dataType == null){
+          /*
+          * For Cross-Domain XHR always use dataType: script,
+          * otherwise even if the HTTP resp is 200, jQuery.ajax will always launch the error() event
+          */
+          if(cross_domain){
+            $j.ajaxSetup({
+              dataType: 'script'
+            });
+          }
+
+          // if the request is not crossdomain, let jQuery infer the dataType based on the MIME type of the response
+
+        }else{
+          //if the dataType is explicitly set, let use it
+          $j.ajaxSetup({
+              dataType: dataType
+          });
+        }
+
+		//build and execute the request
 		$j.ajax({type: method,
-             /*
-              * For Cross-Domain XHR always use dataType: script,
-              * otherwise even if the HTTP resp is 200, jQuery.ajax will always launch the error() event
-              */
-			 dataType: dataType,
+
+			 //dataType: dataType,
 		     url: url,
 		     data: data,
 		     timeout: (timeout * 1000),
@@ -180,6 +199,97 @@ beef.net = {
 		}).done(function() { if (callback != null) { callback(response); } });
 		return response;
 	},
+
+    /*
+     * Similar to this.request, except from a few things that are needed when dealing with proxy requests:
+     *  - requestid parameter: needed on the callback,
+     *  - crossdomain checks: if crossdomain requests are tunneled through the proxy, they must be not issued because
+     *                        they will always throw error for SoP. This can happen when tunneling a browser: for example
+     *                        Firefox and Chrome automatically requests /safebrowsing/downloads (XHR)
+     */
+    proxyrequest: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, requestid, callback) {
+		//check if same domain or cross domain
+        cross_domain = !((document.domain == domain) && ((document.location.port == port) || (document.location.port == "" && port == "80")));
+
+        //build the url
+        var url = scheme+"://"+domain;
+        url = (port != null) ? url+":"+port : url;
+        url = (path != null) ? url+path : url;
+        url = (anchor != null) ? url+"#"+anchor : url;
+
+		//define response object
+		var response = new this.response;
+		response.was_cross_domain = cross_domain;
+
+        // if the request is crossdomain, don't proceed and return
+        if (cross_domain && callback != null) {
+            response.status_code = -1;
+            response.status_text = "crossdomain";
+            response.response_body = "ERROR: Cross Domain Request";
+            callback(response, requestid);
+            return response;
+        }
+
+		var start_time = new Date().getTime();
+
+        //configure the ajax object for dataType
+        if(dataType == null){
+          /*
+          * For Cross-Domain XHR always use dataType: script,
+          * otherwise even if the HTTP resp is 200, jQuery.ajax will always launch the error() event
+          */
+          if(cross_domain){
+            $j.ajaxSetup({
+              dataType: 'script'
+            });
+          }
+
+          // if the request is not crossdomain, let jQuery infer the dataType based on the MIME type of the response
+
+        }else{
+          //if the dataType is explicitly set, let use it
+          $j.ajaxSetup({
+              dataType: dataType
+          });
+        }
+
+
+		//build and execute the request
+		$j.ajax({type: method,
+
+			 //dataType: dataType,
+		     url: url,
+		     data: data,
+		     timeout: (timeout * 1000),
+
+		     //function on success
+		     success: function(data, textStatus, xhr){
+		    	 var end_time = new Date().getTime();
+                 response.status_code = xhr.status;
+                 response.status_text = textStatus;
+		    	 response.response_body = data;
+		    	 response.port_status = "open";
+		    	 response.was_timedout = false;
+		    	 response.duration = (end_time - start_time);
+		    },
+		     //function on failure
+	    	 error: function(xhr, textStatus, errorThrown){
+	    		 var end_time = new Date().getTime();
+	    		 if (textStatus == "timeout"){response.was_timedout = true;}
+	    		 response.status_code = xhr.status;
+                 response.status_text = textStatus;
+		    	 response.duration = (end_time - start_time);
+		    },
+		     //function on completion
+		     complete: function(xhr, textStatus) {
+		    	 response.status_code = xhr.status;
+                 response.status_text = textStatus;
+		         callback(response, requestid);
+             }
+		});
+		return response;
+
+    },
 
     //this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
     //http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/

@@ -3,24 +3,17 @@ module Extension
 module Proxy
 module Handlers
 module Zombie
- 
-  module Handler
-    
-    # Variable representing the Http DB model.
+
+  class Handler
+
+    attr_reader :guard
+    @response_body = nil
     H = BeEF::Core::Models::Http
+
     # This function will forward requests to the target and 
     # the browser will perform the request. Then the results
-    # will be sent back to use
+    # will be sent back.
     def forward_request(hooked_browser_id, req, res)
-
-      # Generate an id for the req in the http table and check it doesnt already exist
-      http_id = rand(10000)
-      http_db = H.first(:id => http_id) || nil
-      
-      while !http_db.nil?
-        http_id = rand(10000)
-        http_db = H.first(:id => http_id) || nil
-      end
 
       # Append port to domain string if not 80 or 443
       if req.port != 80 or req.port != 443
@@ -29,39 +22,37 @@ module Zombie
         domain = req.host.to_s
       end
       
-      # Saves the new HTTP request to the db for processing by browser
+      # Saves the new HTTP request to the db for processing by browser.
+      # IDs are created and incremented automatically by DataMapper.
       http = H.new(
-        :id => http_id,
         :request => req,
         :method => req.request_method.to_s,
         :domain => domain,
         :path => req.path.to_s,
-        :date => Time.now,
+        :request_date => Time.now,
         :hooked_browser_id => hooked_browser_id
       )
       http.save
 
-      print_debug "[PROXY] Request #" + http_id.to_s + " to " + domain + req.path.to_s + " added to queue for browser id #" + hooked_browser_id.to_s
-      
-      # Polls the DB for the response and then sets it when present
-      http_db = H.first(:id => http_id)
+      # Starts a new thread scoped to this Handler instance, in order to minimize performance degradation
+      # while waiting for the HTTP response to be stored in the db.
+      print_info("[PROXY] Thread started in order to process request ##{http.id} to [#{req.path.to_s}] on domain [#{domain}]")
+      @response_thread = Thread.new do
 
-      while !http_db.has_ran
-        http_db = H.first(:id => http_id)
+        while !H.first(:id => http.id).has_ran
+          sleep 0.5
+        end
+
+        @response_body = H.first(:id => http.id).response_data
+
       end
-      
-      print_debug "[PROXY] Response to request #" + http_id.to_s + " to " + req.host.to_s + req.path.to_s + " using browser id #" + hooked_browser_id.to_s + " recieved"
-      
-      res.body = http_db.response
 
-      res
+      @response_thread.join
+      print_info("[PROXY] Response for request ##{http.id} to [#{req.path.to_s}] on domain [#{domain}] correctly processed")
 
+      res.body = @response_body
     end
-
-    module_function :forward_request
-    
   end
-
 end
 end
 end

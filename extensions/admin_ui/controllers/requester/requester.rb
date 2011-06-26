@@ -71,7 +71,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       :method => request.request_method,
       :domain => request.host,
       :path => request.unparsed_uri,
-      :date => Time.now,
+      :request_date => Time.now,
       :hooked_browser_id => zombie.id
     )
     
@@ -106,7 +106,10 @@ class Requester < BeEF::Extension::AdminUI::HttpController
         'domain'  => http.domain,
         'path'    => http.path,
         'has_ran' => http.has_ran,
-        'date'    => http.date
+        'request_date'    => http.request_date,
+        'response_date'    => http.response_date,
+        'response_status_code'    => http.response_status_code,
+        'response_status_text'    => http.response_status_text
       }
     }
     
@@ -131,10 +134,10 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     res = {
       'id'        => http_db.id,
       'request'   => http_db.request,
-      'response'  => http_db.response,
+      'response'  => http_db.response_data,
       'domain'    => http_db.domain,
       'path'      => http_db.path,
-      'date'      => http_db.date,
+      'date'      => http_db.request_date,
       'has_ran'   => http_db.has_ran
     }
     

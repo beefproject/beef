@@ -115,8 +115,8 @@ module Commands
 
       payloads.each { |p|
   			pl << [p]
-      }	
-				
+      }
+
     	@info['Data'] << { 'name' => 'PAYLOAD', 
     	  'type' => 'combobox', 
     		'anchor' => '95% -100',
@@ -130,6 +130,7 @@ module Commands
     		'mode' => 'local',
     		'reloadOnChange' => true, # reload payloads
         'defaultPayload' => "generic/shell_bind_tcp", # default combobox value
+        'defaultPayload' => "generic/shell_bind_tcp",
     		'emptyText' => "select a payload..."
     	}
     

@@ -29,8 +29,8 @@ ZombieTab_Requester = function(zombie) {
 		autoLoad: false,
 		root: 'history',
 		
-		fields: ['domain', 'date', 'id', 'has_ran', 'path'],
-		sortInfo: {field: 'date', direction: 'DESC'},
+		fields: ['domain', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text'],
+		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
 		baseParams: {
 			nonce: Ext.get("nonce").dom.value,
@@ -67,10 +67,14 @@ ZombieTab_Requester = function(zombie) {
 		
 		columns: [
 			{header: 'id', width: 10, sortable: true, dataIndex: 'id', hidden: true},
-			{header: 'domain', sortable: true, dataIndex: 'domain'},
-			{header: 'path', sortable: true, dataIndex: 'path'},
-			{header: 'response', width: 20, sortable: true, dataIndex: 'has_ran'},
-			{header: 'date', width: 50, sortable: true, dataIndex: 'date'}
+			{header: 'Domain', sortable: true, dataIndex: 'domain'},
+			{header: 'Path', sortable: true, dataIndex: 'path'},
+            {header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
+            {header: 'Res TextCode', width: 35, sortable: true, dataIndex: 'response_status_text'},
+			{header: 'Processed', width: 30, sortable: true, dataIndex: 'has_ran'},
+			{header: 'Req Date', width: 50, sortable: true, dataIndex: 'request_date'},
+            {header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date'}
+
 		],
 		
 		listeners: {

@@ -8,7 +8,8 @@ module API
   # That module is dependent on 'Common'. Hence to use it,
   # your code also needs to include that module.
   #
-  class Hook 
+  require 'uri'
+  class Hook
 
     include BeEF::Core::Handlers::Modules::BeEFJS
 
@@ -22,11 +23,13 @@ module API
       BeEF::Core::Models::Http.all(:hooked_browser_id => hb.id, :has_ran => false).each {|h|
           output << self.requester_parse_db_request(h)
         }
-      
-      # we stop here of our output in empty, that means they aren't any requests to send  
+
+      # stop here of our output in empty, that means there aren't any requests to send
       return if output.empty?
+
+      #print_debug("[REQUESTER] Sending request(s): #{output.to_json}")
       
-      # we build the beefjs requester component
+      # build the beefjs requester component
       build_missing_beefjs_components 'beef.net.requester'
       
       # we send the command to perform the requests to the hooked browser
@@ -38,7 +41,6 @@ module API
         });
       }
     end
-
     
     #
     # Converts a HTTP DB Object into a BeEF JS command that
@@ -74,7 +76,8 @@ module API
           return
         end
       end
-      
+
+      uri = req.unparsed_uri
       # creating the request object
       http_request_object = {
         'id' => http_db_object.id,
@@ -82,12 +85,11 @@ module API
         'host' => req.host,
         'port' => req.port,
         'params' => params,
-        'uri' => req.unparsed_uri,
+        'uri' => URI.parse(uri).path,
         'headers' => {}
       }
-      
       req.header.keys.each{|key| http_request_object['headers'][key] = req.header[key]}
-      
+
       http_request_object
     end
     
