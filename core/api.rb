@@ -26,12 +26,12 @@ module API
 
     # Verifies that the api_path has been regitered
     def self.verify_api_path(c, m)
-        return (c.const_defined?('API_PATHS', false) and c.const_get('API_PATHS', false).has_key?(m))
+        return (c.const_defined?('API_PATHS') and c.const_get('API_PATHS').has_key?(m))
     end
 
     # Gets the sym set to the api_path
     def self.get_api_path(c, m)
-        return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS', false)[m] : nil;
+        return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS')[m] : nil;
     end
    
 end
