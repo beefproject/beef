@@ -7,10 +7,10 @@
 beef:
     extension:
         metasploit:
-            enable: false
-            host: "192.168.10.128"
+            enable: true
+            host: "192.168.84.1"
             path: "/RPC2"
             port: 55553
             user: "msf"
             pass: "abc123"
-            callback_host: "192.168.10.128"
+            callback_host: "192.168.84.1"
