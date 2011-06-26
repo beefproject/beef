@@ -18,7 +18,7 @@ end
 def print_debug(s)
     config = BeEF::Core::Configuration.instance
     if config.get('beef.debug') || (BeEF::Extension.is_loaded('console') && BeEF::Extension::Console.verbose?)
-        puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s
+        puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s.to_s
     end
 end
 
