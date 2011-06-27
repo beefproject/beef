@@ -10,7 +10,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'core.logs'
+    storage_names[:default] = 'core_logs'
   
     property :id, Serial
     property :type, Text, :lazy => false

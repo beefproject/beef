@@ -6,7 +6,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'core.command_modules'
+    storage_names[:default] = 'core_commandmodules'
   
     property :id, Serial
     property :name, Text, :lazy => false

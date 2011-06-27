@@ -9,7 +9,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'extensions.distributed_engine.rules'
+    storage_names[:default] = 'extension_distributedengine_rules'
   
     property :id, Serial
     property :data, Text

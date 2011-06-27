@@ -6,7 +6,7 @@ class OptionCache
   
   include DataMapper::Resource
   
-  storage_names[:default] = 'core.option_cache'
+  storage_names[:default] = 'core_optioncache'
   
   property :id, Serial
   property :name, Text

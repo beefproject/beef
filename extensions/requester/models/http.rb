@@ -8,7 +8,7 @@ module Models
   
     include DataMapper::Resource
     
-    storage_names[:default] = 'extension.requester.http'
+    storage_names[:default] = 'extension_requester_http'
     
     property :id, Serial
 

@@ -6,7 +6,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'core.dynamic_payloads'
+    storage_names[:default] = 'core_dynamicpayloads'
   
     property :id, Serial
     property :name, Text, :lazy => false

@@ -11,7 +11,7 @@ module Models
   
     include DataMapper::Resource
     
-    storage_names[:default] = 'extension.initialization.browser_details'
+    storage_names[:default] = 'extension_initialization_browserdetails'
     
     attr_reader :guard
   

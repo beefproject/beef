@@ -10,7 +10,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'extension.admin_ui.users'
+    storage_names[:default] = 'extension_adminui_users'
     
     property :id, Serial
     property :session_id, String, :length => 255

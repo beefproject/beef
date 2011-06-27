@@ -8,7 +8,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'core.hooked_browsers'
+    storage_names[:default] = 'core_hookedbrowsers'
     
     property :id, Serial
     property :session, Text, :lazy => false

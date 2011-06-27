@@ -8,7 +8,7 @@ module Models
   
     include DataMapper::Resource
   
-    storage_names[:default] = 'core.results'
+    storage_names[:default] = 'core_results'
   
     property :id, Serial
     property :date, String, :length => 15, :lazy => false
