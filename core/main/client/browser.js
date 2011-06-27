@@ -84,7 +84,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF36()
 	 */
 	isFF36: function() {
-		return !!window.globalStorage && !!window.FileReader && !window.multitouchData;
+		return !!window.globalStorage && !!window.FileReader && !window.multitouchData && !window.history.replaceState;
 	},
 
 	/**
