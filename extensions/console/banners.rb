@@ -5,7 +5,20 @@ module Console
 module Banners
   class << self
     attr_accessor :interfaces
-  
+
+    #
+    # Prints BeEF's ascii art
+    #
+    def print_ascii_art
+        if File.exists?('extensions/console/beef.ascii')
+            File.open('extensions/console/beef.ascii', 'r') do |f|
+                while line = f.gets
+                    puts line 
+                end
+            end
+        end
+    end
+
     #
     # Prints BeEF's welcome message
     #
