@@ -289,6 +289,10 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 						eval('this.'+branch_type+'_hooked_browsers_array = hooked_browser_array');
 					}
 				}
+				
+				if(new_set_zombies_sessions.indexOf(hb_session)!=-1) {
+					// TODO #144 if the hb does exist in both the tree and the new set of HBs received - check the HB details in the tree and update where necessary(new IP address etc).
+				}
 			}, this);
 		}, this);
 	},
