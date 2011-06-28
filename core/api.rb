@@ -10,7 +10,7 @@ module API
     # Calls a API fire against a certain class / module (c) method (m) with n parameters (*args)
     #
     def self.fire(c, m, *args)
-        if self.verify_api_path(c, m)
+        if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
             method = self.get_api_path(c, m)
             c.extended_in_modules.each do |mod|
               begin
