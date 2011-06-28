@@ -241,6 +241,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	 * @param: {Literal Object} object containing the list of hooked browsers.
 	 */
 	compareAndRemove: function(zombies) {
+		
 		var arr = ['online', 'offline'];
 		
 		Ext.each(arr, function(branch_type) {
@@ -290,9 +291,15 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 					}
 				}
 				
+				// if a HB is in both the node list and the new list - check its ip is still correct - and if not update it
 				if(new_set_zombies_sessions.indexOf(hb_session)!=-1) {
-					// TODO #144 if the hb does exist in both the tree and the new set of HBs received - check the HB details in the tree and update where necessary(new IP address etc).
+					Ext.iterate(new_set_zombies, function(key, new_zombie) {
+						if (new_zombie.session == known_hooked_browser.session && new_zombie.ip != known_hooked_browser.ip) {
+							known_hooked_browser.ip = new_zombie.ip;
+						}
+	                });
 				}
+				
 			}, this);
 		}, this);
 	},
