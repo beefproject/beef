@@ -60,6 +60,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			if(hooked_browsers_tree.offline_hooked_browsers_treenode.childNodes.length > 0) {
 				hooked_browsers_tree.offline_hooked_browsers_treenode.expand(true);
 			}
+
 		}
 	}
 };

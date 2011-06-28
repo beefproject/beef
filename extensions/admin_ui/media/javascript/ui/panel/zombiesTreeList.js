@@ -75,8 +75,6 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                                 url: '/ui/proxy/setTargetZombie',
                                 method: 'POST',
                                 params: 'hb_id=' + hb_id //,
-                                //success: alert('set target zombie' + hb_id),
-                                //failure: alert('error setting target zombie' + hb_id)
                             });
                           break;
                   }
@@ -132,7 +130,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			this.addZombie(online_hooked_browser, online_hooked_browser["online"], online_hooked_browser["checkbox"]);
 		}, this)
 		
-		//expends the online hooked browser branch
+		//expands the online hooked browser branch
 		if(this.online_hooked_browsers_treenode.childNodes.length > 0)
 			this.online_hooked_browsers_treenode.expand(true);
 		
@@ -144,7 +142,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			this.addZombie(offline_hooked_browser, offline_hooked_browser["online"], offline_hooked_browser["checkbox"]);
 		}, this)
 		
-		//expends the online hooked browser branch
+		//expands the online hooked browser branch
 		if(this.offline_hooked_browsers_treenode.childNodes.length > 0)
 			this.offline_hooked_browsers_treenode.expand(true);
 	},
@@ -165,7 +163,6 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			hb_id = 'zombie-offline-' + hooked_browser.session;
 			mother_node = this.offline_hooked_browsers_treenode;
 		}
-		//window.console.log(this.online_hooked_browsers_array)
 		var exists = this.getNodeById(hb_id);
 		if(exists) return;
 		
@@ -189,7 +186,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			checkbox: checkbox
         });
         
-		//creates a new node for that hooed browser
+		//creates a new node for that hooked browser
 		node = new Ext.tree.TreeNode(hooked_browser);
 		
 		//creates a sub-branch for that HB if necessary
