@@ -1,4 +1,4 @@
-# Enable MSF by changing enable_msf to 1
+# Enable MSF by changing extension:metasploit:enable to true
 # Then set msf_callback_host to be the public IP of your MSF server
 #
 # Ensure you load the xmlrpc interface in Metasploit
