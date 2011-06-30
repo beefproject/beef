@@ -297,19 +297,19 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 					Ext.iterate(new_set_zombies, function(key, new_zombie) {
 						if (new_zombie.session == known_hooked_browser.session && new_zombie.ip != known_hooked_browser.ip) {
 							known_hooked_browser.ip = new_zombie.ip;
-							known_hooked_browser.domain = new_zombie.domain;
-							known_hooked_browser.text = "pwned";
+							known_hooked_browser.domain = new_zombie.ip;
+							known_hooked_browser.text = known_hooked_browser.text.replace(/\d*\.\d*\.\d*\.\d*/gi, new_zombie.ip);
 							has_changed = true;
 						}
 	                });
 				}
 			}, this);
 		}, this);
+		
+		// if an ip change was made - reload the try to show the change
 	    if (has_changed) {
 			this.reload();
 		}
-			console.log(this.online_hooked_browsers_array);
-		
 	},
 	
 	/*
