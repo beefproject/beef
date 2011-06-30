@@ -243,6 +243,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	compareAndRemove: function(zombies) {
 		
 		var arr = ['online', 'offline'];
+		var has_changed = false;
 		
 		Ext.each(arr, function(branch_type) {
 			var new_set_zombies = zombies[branch_type];
@@ -290,18 +291,25 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 						eval('this.'+branch_type+'_hooked_browsers_array = hooked_browser_array');
 					}
 				}
-				
+
 				// if a HB is in both the node list and the new list - check its ip is still correct - and if not update it
 				if(new_set_zombies_sessions.indexOf(hb_session)!=-1) {
 					Ext.iterate(new_set_zombies, function(key, new_zombie) {
 						if (new_zombie.session == known_hooked_browser.session && new_zombie.ip != known_hooked_browser.ip) {
 							known_hooked_browser.ip = new_zombie.ip;
+							known_hooked_browser.domain = new_zombie.domain;
+							known_hooked_browser.text = "pwned";
+							has_changed = true;
 						}
 	                });
 				}
-				
 			}, this);
 		}, this);
+	    if (has_changed) {
+			this.reload();
+		}
+			console.log(this.online_hooked_browsers_array);
+		
 	},
 	
 	/*
