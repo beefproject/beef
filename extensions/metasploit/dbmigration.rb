@@ -68,6 +68,8 @@ module Metasploit
             puts e.message  
             puts e.backtrace
           end
+          msf.launch_autopwn()
+
         }#thread end
       end
     end

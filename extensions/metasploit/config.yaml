@@ -8,9 +8,10 @@ beef:
     extension:
         metasploit:
             enable: true
-            host: "192.168.84.1"
+            host: "127.0.0.1"
             path: "/RPC2"
             port: 55553
             user: "msf"
             pass: "abc123"
             callback_host: "192.168.84.1"
+            autopwn_url: "autopwn"
