@@ -29,7 +29,7 @@ config = BeEF::Core::Configuration.instance
 BeEF::Extensions.load
 
 #prints welcome message
-BeEF::Extension::Console::Banners.print_ascii_art
+#BeEF::Extension::Console::Banners.print_ascii_art
 BeEF::Extension::Console::Banners.print_welcome_msg
 
 # Loads modules
