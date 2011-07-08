@@ -67,4 +67,4 @@ beef:
         proxy:
             enable: true 
         metasploit:
-            enable: true
+            enable: false
