@@ -86,6 +86,37 @@ module WEBrick
       @query['command_id'] || nil
     end
 
+    #
+    # Attack vectors send through the Requester/Proxy by default  are parsed as Bad URIs, and not sent.
+    # For example: request like the following: http://192.168.10.128/dvwa/vulnerabilities/xss_r/?name=ciccioba83e<a>7918817a3ad
+    # is blocked  (ERROR bad URI)
+    # We're overwriting the URI Parser UNRESERVED regex to prevent such behavior (see tolerant_parser)
+    #
+    def parse_uri(str, scheme="http")
+      if @config[:Escape8bitURI]
+        str = HTTPUtils::escape8bit(str)
+      end
+
+      tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
+      uri = tolerant_parser.parse(str)
+      return uri if uri.absolute?
+      if @forwarded_host
+        host, port = @forwarded_host, @forwarded_port
+      elsif self["host"]
+        pattern = /\A(#{URI::REGEXP::PATTERN::HOST})(?::(\d+))?\z/n
+        host, port = *self['host'].scan(pattern)[0]
+      elsif @addr.size > 0
+        host, port = @addr[2], @addr[1]
+      else
+        host, port = @config[:ServerName], @config[:Port]
+      end
+      uri.scheme = @forwarded_proto || scheme
+      uri.host = host
+      uri.port = port ? port.to_i : nil
+
+      return tolerant_parser::parse(uri.to_s)
+    end
+
     
   end
   

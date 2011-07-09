@@ -62,6 +62,9 @@ module BeEF
           # can be executed by the hooked browser.
           #
           def requester_parse_db_request(http_db_object)
+
+            # We're overwriting the URI Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
+            tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
             req = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
             params = nil
 
@@ -99,17 +102,17 @@ module BeEF
                   'host' => req.host,
                   'port' => req.port,
                   'params' => params,
-                  'uri' => URI.parse(uri).path,
+                  'uri' => tolerant_parser.parse(uri).path,
                   'headers' => {}
               }
             else
               #non-POST request (ex. GET): query parameters in URL need to be parsed and added to the URI
               # creating the request object
-              query_params = URI.split(uri)[7]
+              query_params = tolerant_parser.split(uri)[7]
               if not query_params.nil?
-                req_uri = URI.parse(uri).path + "?" + query_params
+                req_uri = tolerant_parser.parse(uri).path + "?" + query_params
               else
-                req_uri = URI.parse(uri).path
+                req_uri = tolerant_parser.parse(uri).path
               end
               http_request_object = {
                   'id' => http_db_object.id,
@@ -121,7 +124,7 @@ module BeEF
                   'headers' => {}
               }
             end
-            print_debug("[PROXY] Forwarding request: host[#{req.host}], method[#{req.request_method}], path[#{URI.parse(uri).path}], urlparams[#{query_params}], body[#{params}]")
+            print_debug("[PROXY] Forwarding request: host[#{req.host}], method[#{req.request_method}], path[#{tolerant_parser.parse(uri).path}], urlparams[#{query_params}], body[#{params}]")
             req.header.keys.each { |key| http_request_object['headers'][key] = req.header[key] }
 
             http_request_object

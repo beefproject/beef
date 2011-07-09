@@ -15,9 +15,8 @@
 #
 beef:
     extension:
-        proxy:
-            enable: true 
-            address: "127.0.0.1"
-            port: 6789
+        requester:
+            enable: true
+            # used to overwrite the Uri parser regex when sending attack vectors. This prevents Bad URI errors.
+            uri_unreserved_chars: "-_.!~*'()a-zA-Z\\d><|\"\\[\\]\\\'`"
             authors: ["antisnatchor", "scotty"]
-
