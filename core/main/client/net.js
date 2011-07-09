@@ -69,6 +69,7 @@ beef.net = {
         this.was_cross_domain = null;   // true or false
         this.was_timedout = null;       // the user specified timeout was reached
         this.duration = null;           // how long it took for the request to complete
+        this.headers = null;            // full response headers
     },
 
     //Queues the command, to be sent back to the framework on the next refresh
@@ -299,6 +300,7 @@ beef.net = {
 		     complete: function(xhr, textStatus) {
 		    	 response.status_code = xhr.status;
                  response.status_text = textStatus;
+                 response.headers = xhr.getAllResponseHeaders();
 		         callback(response, requestid);
              }
 		});

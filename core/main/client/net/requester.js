@@ -35,7 +35,8 @@ beef.net.requester = {
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data:res.response_body,
                                            response_status_code: res.status_code,
-                                           response_status_text: res.status_text});
+                                           response_status_text: res.status_text,
+                                           response_headers: res.headers});
                                        }
                                  );
         }

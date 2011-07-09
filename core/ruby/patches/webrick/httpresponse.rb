@@ -19,6 +19,13 @@ module WEBrick
   class HTTPResponse
 
     #
+    # Add/Update HTTP response headers with those contained in original_headers Hash
+    #
+    def override_headers(original_headers)
+      original_headers.each{ |key, value| @header[key.downcase] = value }
+    end
+
+    #
     # set caching headers none
     #
     def set_no_cache()

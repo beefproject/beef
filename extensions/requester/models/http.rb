@@ -42,6 +42,9 @@ module Models
     # The http response code. Human-readable code: success, error, ecc..
     property :response_status_text, Text, :lazy => true
 
+    # The XHR Http response raw headers
+    property :response_headers, Text, :lazy => true
+
     # The http response method. GET or POST.
     property :method, Text, :lazy => false
 
