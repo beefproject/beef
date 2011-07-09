@@ -20,6 +20,12 @@ $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
 
 $root_dir = File.expand_path('..', __FILE__)
 
+# prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
+if RUBY_VERSION =~ /1.9/
+    Encoding.default_external = Encoding::UTF_8
+    Encoding.default_internal = Encoding::UTF_8
+end
+
 require 'core/loader'
 
 # load config
@@ -28,7 +34,7 @@ config = BeEF::Core::Configuration.instance
 # Loads extensions
 BeEF::Extensions.load
 
-#prints welcome message
+# prints welcome message
 #BeEF::Extension::Console::Banners.print_ascii_art
 BeEF::Extension::Console::Banners.print_welcome_msg
 
