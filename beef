@@ -49,7 +49,17 @@ case config.get("beef.database.default")
   when "sqlite"
     DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.sqlite.db_name")}")
   when "mysql"
-    DataMapper.setup(:default, "mysql://#{config.get("beef.database.mysql.db_user")}:#{config.get("beef.database.mysql.db_passwd")}@#{config.get("beef.database.mysql.db_host")}/#{config.get("beef.database.mysql.db_name")}")
+    # === Remove comment of next line for logging queries (very verbose) ===
+    # DataMapper::Logger.new($stdout, :debug)
+    #
+    DataMapper.setup(:default,
+      :adapter => 'mysql',
+      :host => config.get("beef.database.mysql.db_host"),
+      :username => config.get("beef.database.mysql.db_user"),
+      :password => config.get("beef.database.mysql.db_passwd"),
+      :database => config.get("beef.database.mysql.db_name"),
+      :encoding => config.get("beef.database.mysql.db_encoding")
+    )
   else
     print_error 'No default database selected. Please add one in config.yaml'
 end

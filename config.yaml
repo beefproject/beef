@@ -40,20 +40,34 @@ beef:
     database:
         #supported DBs: sqlite, mysql
         
-        default: "sqlite"
+        default: "mysql"
         # MySQL Notes:
+        # It's recommended to install MySQL >= 5.5.x
         #   Your system will require MySQL, MySQL-Server, MySQL-Devel and Ruby's MySQL libraries installed
         #   You will also need to "sudo gem install dm-mysql-adapter"
         #
-        #   please note that the db should exists. Schema will be created automatically.
-        #   mysql> create database beef;
+        # UTF8 notes. Update/Add in my.cnf (or my.ini on Win) the following. Then save and reboot MySQL.
+        # Read more here: http://cameronyule.com/2008/07/configuring-mysql-to-use-utf-8
+        #        [mysql]
+        #          default-character-set=utf8
+        #        [mysqld]
+        #          character-set-server=utf8
+        #          collation-server=utf8_general_ci
+        #          init-connect='SET NAMES utf8'
+        #        [client]
+        #          default-character-set=utf8
+        #
+        #   Please note that the db must exists. Schema will be created automatically.
+        #   mysql> CREATE DATABASE beef CHARACTER SET utf8 COLLATE utf8_general_ci;
         #   mysql> grant all privileges on beef.* to 'beef'@'localhost' identified by 'beef123';
+        #
         
         mysql:
           db_host: "localhost"
           db_name: "beef"
           db_user: "beef"
           db_passwd: "beef123"
+          db_encoding: "UTF-8"
 
         sqlite:
           db_name: "beef.db"
