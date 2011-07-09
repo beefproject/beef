@@ -63,6 +63,26 @@ ZombieTab_Requester = function(zombie) {
 		emptyMsg: 'No history to display'
 	});
 
+    /*
+     * Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
+     */
+//    var history_panel_context_menu = new Ext.menu.Menu({
+//        items: [{
+//            id: 'do-something',
+//            text: 'Do something'
+//        }],
+//        listeners: {
+//            itemclick: function(item) {
+//                switch (item.id) {
+//                    case 'do-something':
+//                        console.log("history_panel_context_menu.rowIndex: " + history_panel_context_menu.rowIndex);
+//                        console.log("history_panel_context_menu.dbIndex: " + history_panel_context_menu.dbIndex);
+//                        break;
+//                }
+//            }
+//        }
+//    });
+
 	var history_panel_grid = new Ext.grid.GridPanel({
 		id: 'requester-history-grid-zombie-'+zombie.session,
 		store: history_panel_store,
@@ -81,8 +101,9 @@ ZombieTab_Requester = function(zombie) {
 		}),
 		
 		columns: [
-			{header: 'id', width: 10, sortable: true, dataIndex: 'id', hidden: true},
+            {header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
 			{header: 'Domain', sortable: true, dataIndex: 'domain'},
+            {header: 'Method', width: 30, sortable: true, dataIndex: 'method'},
 			{header: 'Path', sortable: true, dataIndex: 'path'},
             {header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
             {header: 'Res TextCode', width: 35, sortable: true, dataIndex: 'response_status_text'},
@@ -109,6 +130,14 @@ ZombieTab_Requester = function(zombie) {
 			afterrender: function(datagrid) {
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
 			}
+            //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
+//            ,rowcontextmenu: function(grid, rowIndex, event){
+//                 event.stopEvent();
+//
+//                 history_panel_context_menu.showAt(event.xy);
+//                 history_panel_context_menu.rowIndex = rowIndex;
+//                 history_panel_context_menu.dbIndex = getHttpDbId(grid, rowIndex);
+//            }
 		}
 	});
 	
@@ -125,6 +154,16 @@ ZombieTab_Requester = function(zombie) {
 			}
 		}
 	});
+
+     // Return the extension_requester_http table row ID given a grid row index
+    function getHttpDbId(grid, rowIndex){
+		var row = grid.getStore().getAt(rowIndex).data;
+        var result = null;
+        if(row != null){
+          result = row.id;
+        }
+        return result;
+    }
 	
 	// Function generating the requests panel to send raw requests
 	//-------------------------------------------------------------
@@ -208,11 +247,11 @@ ZombieTab_Requester = function(zombie) {
 				var xhr = Ext.decode(response.responseText);
 				
 				var tab_result_response = new Ext.Panel({
-					title: 'Reponse',
+                    title: 'Response',
 					border: false,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
-					items:[new Ext.form.TextArea({id: 'requester-response-res-'+request.id, value: xhr.result.response})]
+                    items:[new Ext.form.TextArea({id: 'requester-response-res-'+request.id, value: xhr.result.response_headers + "\n" + xhr.result.response})]
 				});
 		
 				var tab_result_request = new Ext.Panel({
@@ -230,7 +269,7 @@ ZombieTab_Requester = function(zombie) {
 					border: false,
 					layout:'accordion',
 					closable: true,
-					items:[tab_result_response, tab_result_request]
+                    items:[tab_result_request, tab_result_response]
 				});
 		
 				tab_panel.add(tab_result_accordion);
