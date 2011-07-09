@@ -40,7 +40,7 @@ beef:
     database:
         #supported DBs: sqlite, mysql
         
-        default: "mysql"
+        default: "sqlite"
         # MySQL Notes:
         # It's recommended to install MySQL >= 5.5.x
         #   Your system will require MySQL, MySQL-Server, MySQL-Devel and Ruby's MySQL libraries installed
