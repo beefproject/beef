@@ -24,7 +24,7 @@ beef.net = {
     port: "<%= @beef_port %>",
 	hook: "<%= @beef_hook %>",
     handler: '/dh',
-    chop: 1000,
+    chop: 500,
     pad: 30, //this is the amount of padding for extra params such as pc, pid and sid
     sid_count: 0,
 	cmd_queue: [],
