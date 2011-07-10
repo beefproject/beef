@@ -14,8 +14,9 @@
 #   limitations under the License.
 #
 # BeEF Configuration file
+
 beef:
-    version: '0.4.2.7-alpha'
+    version: '0.4.2.8-alpha'
     debug: false
 
     restrictions:
