@@ -44,7 +44,7 @@ ZombieTab_Requester = function(zombie) {
 		autoLoad: false,
 		root: 'history',
 		
-		fields: ['domain', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text'],
+		fields: ['domain', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
 		baseParams: {
