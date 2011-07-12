@@ -45,20 +45,20 @@ BeEF::Modules.load
 Socket.do_not_reverse_lookup = true 
 
 # setup database
-case config.get("beef.database.default")
+case config.get("beef.database.driver")
   when "sqlite"
-    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.sqlite.db_name")}")
-  when "mysql"
+    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
+  when "mysql","postgres"
     # === Remove comment of next line for logging queries (very verbose) ===
     # DataMapper::Logger.new($stdout, :debug)
     #
     DataMapper.setup(:default,
-      :adapter => 'mysql',
-      :host => config.get("beef.database.mysql.db_host"),
-      :username => config.get("beef.database.mysql.db_user"),
-      :password => config.get("beef.database.mysql.db_passwd"),
-      :database => config.get("beef.database.mysql.db_name"),
-      :encoding => config.get("beef.database.mysql.db_encoding")
+      :adapter => config.get("beef.database.driver"),
+      :host => config.get("beef.database.db_host"),
+      :username => config.get("beef.database.db_user"),
+      :password => config.get("beef.database.db_passwd"),
+      :database => config.get("beef.database.db_name"),
+      :encoding => config.get("beef.database.db_encoding")
     )
   else
     print_error 'No default database selected. Please add one in config.yaml'

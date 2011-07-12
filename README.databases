@@ -1,0 +1,30 @@
+ MySQL Notes:
+  * It's recommended to install MySQL >= 5.5.x
+  * Your system will require MySQL, MySQL-Server, MySQL-Devel and Ruby's MySQL libraries installed
+  * You will also need to "sudo gem install dm-mysql-adapter"
+
+  * UTF8 notes. Update/Add in my.cnf (or my.ini on Win) the following. Then save and reboot MySQL.
+    - Read more here: http://cameronyule.com/2008/07/configuring-mysql-to-use-utf-8
+        [mysql]
+          default-character-set=utf8
+        [mysqld]
+          character-set-server=utf8
+          collation-server=utf8_general_ci
+          init-connect='SET NAMES utf8'
+        [client]
+          default-character-set=utf8
+
+   * Please note that the db must exists. Schema will be created automatically.
+   mysql> CREATE DATABASE beef CHARACTER SET utf8 COLLATE utf8_general_ci;
+   mysql> grant all privileges on beef.* to 'beef'@'localhost' identified by 'beef123';
+
+        
+
+Postgres Notes
+  * You will need to install the postgresql package as well as the libpq-dev package
+  * You will need to "sudo gem install dm-postgres-adapter"
+  * As the postgres user:
+    - createuser -P beef
+    - createdb --owner=beef beef
+  * you may also need to change the pg_hba.conf file in /etc/postgresql so that the local all all optionis labeled as either trust or md5
+
