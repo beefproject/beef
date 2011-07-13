@@ -20,7 +20,7 @@ beef:
             category: "Network"
             name: "Detect local settings"
             description: "Grab the local network settings (ie internal ip address)."
-            authors: ["pdp", "wade", "bm"]
+            authors: ["pdp", "wade", "bm", "xntrik"]
             target:
                 working: ["FF", "C"]
                 not_working: ["IE"]
