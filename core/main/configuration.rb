@@ -97,6 +97,7 @@ module Core
         Dir.glob("#{$root_dir}/modules/**/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
+                y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
                 @config = y.recursive_merge(@config)
             end
         end

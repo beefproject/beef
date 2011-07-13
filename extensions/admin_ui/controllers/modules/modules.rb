@@ -238,16 +238,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       command_module_status
   end
 
-  def update_command_module_tree(tree, categories, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
-      # construct the category branch if it doesn't exist for the command module tree
-      if not categories.include? cmd_category
-        categories.push(cmd_category) # flag that the category has been added
-        tree.push({ # add the branch structure
-          'text' => cmd_category,
-          'cls' => 'folder',
-          'children' => []
-        })
-      end
+  def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
 
       # construct leaf node for the command module tree
       leaf_node = {
@@ -270,7 +261,13 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
     tree = []
-    categories = []
+    BeEF::Modules.get_categories.each { |c|
+        tree.push({
+            'text' => c,
+            'cls' => 'folder',
+            'children' => []
+        })
+    }
 
     BeEF::Modules.get_loaded.each{|k, mod|
       # get the hooked browser session id and set it in the command module
@@ -284,7 +281,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       command_module_icon_path = set_command_module_icon(command_mod)
       command_module_status = set_command_module_status(command_mod)
 
-      update_command_module_tree(tree, categories, mod['category'], command_module_icon_path, command_module_status, mod['name'],mod['db']['id'])
+      update_command_module_tree(tree, mod['category'], command_module_icon_path, command_module_status, mod['name'],mod['db']['id'])
     }
 
     # if dynamic modules are found in the DB, then we don't have yaml config for them
@@ -317,7 +314,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
           command_module_icon_path = set_command_module_icon(command_mod)
           command_module_status = set_command_module_status(command_mod)
 
-         update_command_module_tree(tree, categories, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
+         update_command_module_tree(tree, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
        }
     end
       

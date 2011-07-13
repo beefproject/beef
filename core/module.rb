@@ -32,10 +32,10 @@ module Module
     end
 
     # Loads module
-    def self.load(mod, cat)
-        cat = self.safe_category(cat)
-        if File.exists?('modules/'+cat+'/'+mod+'/module.rb')
-            require 'modules/'+cat+'/'+mod+'/module.rb'
+    def self.load(mod)
+        config = BeEF::Core::Configuration.instance
+        if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
+            require config.get('beef.module.'+mod+'.path')+'/module.rb'
             BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
             if self.exists?(mod)
                 BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
@@ -46,7 +46,7 @@ module Module
                 print_debug "Unable to locate module class: BeEF::Core::Commands::#{mod.capitalize}"
             end
         else
-            print_debug "Unable to locate module file: modules/#{cat}/#{mod}/module.rb"
+            print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
         end
         print_error "Unable to load module '#{mod}'"
         return false
@@ -56,11 +56,6 @@ module Module
     def self.get_key_by_database_id(id)
         ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('db') and v['db']['id'].to_i == id.to_i }
         return (ret.kind_of?(Array)) ? ret.first.first : ret.keys.first
-    end
-
-    # Returns category name in a system folder format
-    def self.safe_category(cat)
-        return cat.to_s.strip.downcase.sub(/\s/, '_')
     end
 
     #checks to see if module class exists

@@ -26,6 +26,17 @@ module Modules
         return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['loaded'] == true }
     end
 
+    # Return an array of categories specified in module configuration files
+    def self.get_categories
+        categories = []
+        BeEF::Core::Configuration.instance.get('beef.module').each {|k,v|
+            if not categories.include?(v['category'])
+                categories << v['category']
+            end
+        }
+        return categories.sort
+    end
+
     def self.get_stored_in_db
       return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
     end
@@ -33,7 +44,7 @@ module Modules
     # Loads modules 
     def self.load
         self.get_enabled.each { |k,v|
-            BeEF::Module.load(k, v['category'])
+            BeEF::Module.load(k)
         }
     end
 end
