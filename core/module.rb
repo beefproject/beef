@@ -67,6 +67,89 @@ module Module
             return false
         end
     end
+
+    # Translates module target configuration
+    def self.parse_targets(mod)
+        target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
+        if target_config
+            targets = {}
+            target_config.each{|k,v|
+                if BeEF::Core::Constants::CommandModule.const_defined?('VERIFIED_'+k.upcase)
+                    key = BeEF::Core::Constants::CommandModule.const_get('VERIFIED_'+k.upcase)
+                    if not targets.key?(key)
+                        targets[key] = []
+                    end
+                    targets[key] << self.parse_target_browsers(v)
+                else
+                    print_debug "Module \"#{mod}\" configuration has invalid target status defined \"#{k}\""
+                end
+
+            }
+        end
+        puts targets
+    end
+
+    # Translates browser target configuration
+    # TODO: problems, once yaml merges duplicate keys, the item can either be an array or hash. What happens if there is a hash inside of the array
+    def self.parse_target_browsers(v)
+        browser = nil
+        case v
+            when String
+                if BeEF::Core::Constants::Browsers.const_defined?(v.upcase)
+                    browser = BeEF::Core::Constants::Browsers.const_get(v.upcase)
+                end
+            when Array
+                v.each{|c|
+                    if BeEF::Core::Constants::Browsers.const_defined?(c.upcase)
+                        if browser == nil
+                            browser = []
+                        end
+                        browser << self.parse_target_browsers(c)
+                    end
+                }
+            when Hash
+               return 
+                if BeEF::Core::Constants::Browsers.const_defined?(v.upcase)
+                    details = {}
+                    if v.key?('max_ver') and (v['max_ver'].is_a(Fixnum) or v['max_ver'].is_a(Float))
+                        details['max_ver'] = v['max_ver']
+                    end
+                    if v.key?('min_ver') and (v['min_ver'].is_a(Fixnum) or v['min_ver'].is_a(Float))
+                        details['min_ver'] = v['min_ver']
+                    end
+                    if v.key?('os')
+                        if v['os'].is_a(String)
+                            if BeEF::Core::Constants::Os.const_defined?('OS_'+v['os'].upcase+'_UA_STR')
+                                details['os'] = [BeEF::Core::Constants::Os.const_get('OS_'+v['os'].upcase+'_UA_STR')]
+                            else
+                                print_debug "Could not identify OS target specified in module \"#{mod}\" configuration"
+                            end
+                        else v['os'].is_a(Array)
+                            v['os'].each{|o|
+                                if BeEF::Core::Constants::Os.const_defined?('OS_'+o.upcase+'_UA_STR')
+                                    details['os'] = [BeEF::Core::Constants::Os.const_get('OS_'+o.upcase+'_UA_STR')]
+                                else
+                                    print_debug "Could not identify OS target specified in module \"#{mod}\" configuration"
+                                end
+                            }
+                        end
+                    end
+                    targets[key] << BeEF::Core::Constants::Browers.const_get(v.upcase)
+                    targets[key][BeEF::Core::Constants::Browers.const_get(v.upcase)] = details
+                else
+                    print_debug "Could not identify browser target specified in module \"#{mod}\" configuration"
+                end
+            else
+                print_debug "Module \"#{mod}\" configuration has invalid target definition"
+        end
+
+        if not browser
+            print_debug "Could not identify browser target specified in module \"#{mod}\" configuration"
+            return
+        end
+        browser
+    end
+
 end
 end
 

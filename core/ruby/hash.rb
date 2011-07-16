@@ -13,9 +13,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# http://snippets.dzone.com/posts/show/3401
 class Hash
-    def recursive_merge(h)
-        self.merge!(h) {|key, _old, _new| if _old.class == Hash then _old.recursive_merge(_new) else _new end  } 
+
+    # http://snippets.dzone.com/posts/show/4706
+    def deep_merge(hash)
+        target = dup
+        hash.keys.each do |key|
+          if hash[key].is_a? Hash and self[key].is_a? Hash
+            target[key] = target[key].deep_merge(hash[key])
+            next
+          end
+          target[key] = hash[key]
+        end
+        target
     end
 end

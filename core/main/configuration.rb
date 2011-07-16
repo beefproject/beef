@@ -74,7 +74,7 @@ module Core
         subkeys.each{|v|
             hash = {v.to_s => hash}
         }
-        @config = @config.recursive_merge(hash)
+        @config = @config.deep_merge(hash)
         return true
     end
     
@@ -85,7 +85,7 @@ module Core
         Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
-                @config = y.recursive_merge(@config)
+                @config = y.deep_merge(@config)
             end
         end
     end
@@ -98,7 +98,7 @@ module Core
             y = self.load(cf)
             if y != nil
                 y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
-                @config = y.recursive_merge(@config)
+                @config = y.deep_merge(@config)
             end
         end
     end
