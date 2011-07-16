@@ -192,7 +192,38 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
-    
+   
+    # set and add the zombie screen size and color depth
+    screen_params = BD.get(zombie_session, 'ScreenParams')
+    if not screen_params.nil?
+      encoded_screen_params = CGI.escapeHTML(screen_params)
+      encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_screen_params_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the zombie browser window size
+    window_size = BD.get(zombie_session, 'WindowSize')
+    if not window_size.nil?
+      encoded_window_size = CGI.escapeHTML(window_size)
+      encoded_window_size_hash = { 'Window Size' => encoded_window_size }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_window_size_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+ 
     @body = summary_grid_hash.to_json  
   end
       

@@ -100,6 +100,23 @@ module Initialization
         raise WEBrick::HTTPStatus::BadRequest, "Invalid internal host name" if not BeEF::Filters.is_valid_hostname?(host_name)
         BD.set(session_id, 'InternalHostname', internal_hostname)
       end
+
+      # get and store the zombie screen size and color depth
+      screen_params = get_param(@data['results'], 'ScreenParams')
+      if screen_params.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid screen size and color depth"
+      else
+        BD.set(session_id, 'ScreenParams', screen_params)
+      end
+
+      # get and store the window size
+      window_size = get_param(@data['results'], 'WindowSize')
+      if window_size.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid window size"
+      else
+        BD.set(session_id, 'WindowSize', window_size)
+      end
+
     end
    
     def get_param(query, key)
