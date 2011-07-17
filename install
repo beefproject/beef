@@ -20,6 +20,16 @@ require 'rubygems'
 
 puts "\nWelcome to the BEeF installer!"
 
+if  RUBY_VERSION < '1.9'
+  puts "\n"
+  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
+  puts "\n"
+  exit
+end
+
+puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
+
+
 puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
 
 # array of required gems - add to as needed (specify a version if needed eg "gem_name, =x.x.x")
