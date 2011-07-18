@@ -223,6 +223,65 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the yes|no value for JavaEnabled
+    java_enabled = BD.get(zombie_session, 'JavaEnabled')
+    if not java_enabled.nil?
+      encoded_java_enabled = CGI.escapeHTML(java_enabled)
+      encoded_java_enabled_hash = { 'Java Enabled' => encoded_java_enabled }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_java_enabled_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for VBScriptEnabled
+    vbscript_enabled = BD.get(zombie_session, 'VBScriptEnabled')
+    if not vbscript_enabled.nil?
+      encoded_vbscript_enabled = CGI.escapeHTML(vbscript_enabled)
+      encoded_vbscript_enabled_hash = { 'VBScript Enabled' => encoded_vbscript_enabled }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_vbscript_enabled_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for HasFlash
+    has_flash = BD.get(zombie_session, 'HasFlash')
+    if not has_flash.nil?
+      encoded_has_flash = CGI.escapeHTML(has_flash)
+      encoded_has_flash_hash = { 'Has Flash' => encoded_has_flash }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_flash_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for HasGoogleGears
+    has_googlegears = BD.get(zombie_session, 'HasGoogleGears')
+    if not has_googlegears.nil?
+      encoded_has_googlegears = CGI.escapeHTML(has_googlegears)
+      encoded_has_googlegears_hash = { 'Has GoogleGears' => encoded_has_googlegears }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_googlegears_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
  
     @body = summary_grid_hash.to_json  
   end

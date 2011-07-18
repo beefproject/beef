@@ -538,8 +538,11 @@ beef.browser = {
 		var internal_hostname = beef.net.local.getLocalHostname();
 		var screen_params = beef.browser.getScreenParams();
 		var window_size = beef.browser.getWindowSize();
+		var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
+		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
+		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
+		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
 
-		
 		if(browser_name) details["BrowserName"] = browser_name;
 		if(browser_version) details["BrowserVersion"] = browser_version;
 		if(browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
@@ -551,7 +554,11 @@ beef.browser = {
 		if(internal_hostname) details['InternalHostname'] = internal_hostname;
 		if(screen_params) details['ScreenParams'] = screen_params;
 		if(window_size) details['WindowSize'] = window_size;
-		
+		if(java_enabled) details['JavaEnabled'] = java_enabled
+		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
+		if(has_flash) details['HasFlash'] = has_flash
+		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
+
 		return details;
 	},
 	

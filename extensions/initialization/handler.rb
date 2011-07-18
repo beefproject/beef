@@ -117,6 +117,38 @@ module Initialization
         BD.set(session_id, 'WindowSize', window_size)
       end
 
+      # get and store the yes|no value for JavaEnabled
+      java_enabled = get_param(@data['results'], 'JavaEnabled')
+      if java_enabled.nil? or java_enabled !~ /^(Yes|No)$/
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for JavaEnabled"
+      else
+        BD.set(session_id, 'JavaEnabled', java_enabled)
+      end
+
+      # get and store the yes|no value for VBScriptEnabled
+      vbscript_enabled = get_param(@data['results'], 'VBScriptEnabled')
+      if vbscript_enabled.nil? or vbscript_enabled !~ /^(Yes|No)$/
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for VBScriptEnabled"
+      else
+        BD.set(session_id, 'VBScriptEnabled', vbscript_enabled)
+      end
+
+      # get and store the yes|no value for HasFlash
+      has_flash = get_param(@data['results'], 'HasFlash')
+      if has_flash.nil? or has_flash !~ /^(Yes|No)$/
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasFlash"
+      else
+        BD.set(session_id, 'HasFlash', has_flash)
+      end
+
+      # get and store the yes|no value for HasGoogleGears
+      has_googlegears = get_param(@data['results'], 'HasGoogleGears')
+      if has_googlegears.nil? or has_googlegears !~ /^(Yes|No)$/
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasGoogleGears"
+      else
+        BD.set(session_id, 'HasGoogleGears', has_googlegears)
+      end
+
     end
    
     def get_param(query, key)
