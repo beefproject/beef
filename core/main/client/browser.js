@@ -536,6 +536,7 @@ beef.browser = {
 		var os_name = beef.os.getName();
 		var internal_ip = beef.net.local.getLocalAddress();
 		var internal_hostname = beef.net.local.getLocalHostname();
+		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_params = beef.browser.getScreenParams();
 		var window_size = beef.browser.getWindowSize();
 		var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
@@ -552,6 +553,7 @@ beef.browser = {
 		if(os_name) details['OsName'] = os_name;
 		if(internal_ip) details['InternalIP'] = internal_ip;
 		if(internal_hostname) details['InternalHostname'] = internal_hostname;
+		if(browser_type) details['BrowserType'] = browser_type;
 		if(screen_params) details['ScreenParams'] = screen_params;
 		if(window_size) details['WindowSize'] = window_size;
 		if(java_enabled) details['JavaEnabled'] = java_enabled

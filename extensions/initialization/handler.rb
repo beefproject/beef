@@ -101,6 +101,14 @@ module Initialization
         BD.set(session_id, 'InternalHostname', internal_hostname)
       end
 
+      # get and store the zombie browser type
+      browser_type = get_param(@data['results'], 'BrowserType')
+      if browser_type.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser type"
+      else
+        BD.set(session_id, 'BrowserType', browser_type)
+      end
+
       # get and store the zombie screen size and color depth
       screen_params = get_param(@data['results'], 'ScreenParams')
       if screen_params.nil?

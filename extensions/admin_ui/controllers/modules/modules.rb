@@ -163,6 +163,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
+    # set and add the browser type
+    browser_type = BD.get(zombie_session, 'BrowserType')
+    if not browser_type.nil? and not browser_type.empty?
+      encoded_browser_type = CGI.escapeHTML(browser_type)
+      encoded_browser_type_hash = { 'Browser Type' => encoded_browser_type }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_browser_type_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the internal ip address
     internal_ip = BD.get(zombie_session, 'InternalIP')
     if not internal_ip.nil?
