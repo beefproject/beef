@@ -31,6 +31,18 @@ module Module
         return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.loaded') == true)
     end
 
+    def self.get_options(mod)
+        begin
+            class_name = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class")
+            class_symbol = BeEF::Core::Command.const_get(class_name)
+            if class_symbol
+              return class_symbol.options
+            end
+        rescue
+          print_debug "Unable to find module class: BeEF::Core::Commands::#{mod.capitalize}"
+        end
+    end
+    
     # Loads module
     def self.load(mod)
         config = BeEF::Core::Configuration.instance

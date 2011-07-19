@@ -39,6 +39,19 @@ class Alert_dialog < BeEF::Core::Command
     use_template!
   end
   
+  # set and return all options for this module
+  def self.options
+    return {
+      'name' => 'alert_dialog', 
+      'description' => 'Sends an alert dialog to the victim', 
+      'type' => 'textarea',
+      'filter' => '',
+      'default_value' => 'Alert box text',
+      'adminui_width' => '400px', 
+      'adminui_height' => '100px'
+      }
+  end
+
   def callback
     content = {}
     content['User Response'] = "The user clicked the 'OK' button when presented with an alert box."
