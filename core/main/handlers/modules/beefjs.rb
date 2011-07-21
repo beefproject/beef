@@ -34,7 +34,7 @@ module Modules
       # set up values required to construct beefjs
       beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
       beefjs_path = "#{$root_dir}/core/main/client/" # location of sub files      
-      js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js beef.js browser.js browser/cookie.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js)
+      js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js)
 
       # construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|
