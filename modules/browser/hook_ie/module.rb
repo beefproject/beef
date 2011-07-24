@@ -1,6 +1,3 @@
-<<<<<<< .mine
-class Hook_ie < BeEF::Core::Command
-=======
 #
 #   Copyright 2011 Wade Alcorn wade@bindshell.net
 #
@@ -16,8 +13,8 @@ class Hook_ie < BeEF::Core::Command
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Detect_details < BeEF::Core::Command
->>>>>>> .r1087
+
+class Hook_ie < BeEF::Core::Command
   
   def initialize
     super({
