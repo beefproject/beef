@@ -74,6 +74,10 @@
    background-image: url(../images/icons/proxy.gif);
 }
 
+.zombie-tree-ctxMenu-xssrays {
+   background-image: url(../images/icons/xssrays.png);
+}
+
 .x-tree-node-leaf .x-tree-node-icon {
 	width: 13px;
 	height: 13px;

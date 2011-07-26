@@ -76,20 +76,32 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
     //add a context menu that will contain common action shortcuts for HBs
     contextMenu: new Ext.menu.Menu({
           items: [{
-                id: 'use_as_proxy',
-                text: 'Use as Proxy',
-                iconCls: 'zombie-tree-ctxMenu-proxy'
-              }
+                        id: 'use_as_proxy',
+                        text: 'Use as Proxy',
+                        iconCls: 'zombie-tree-ctxMenu-proxy'
+                    },{
+                        id: 'xssrays_hooked_domain',
+                        text: 'Launch XssRays on Hooked Homain',
+                        iconCls: 'zombie-tree-ctxMenu-xssrays'
+                    }
+
           ],
           listeners: {
               itemclick: function(item, object) {
+                  var hb_id = this.contextNode.id.split('zombie-online-')[1];
                   switch (item.id) {
                       case 'use_as_proxy':
-                           var hb_id = this.contextNode.id.split('zombie-online-')[1];
                            Ext.Ajax.request({
                                 url: '/ui/proxy/setTargetZombie',
                                 method: 'POST',
-                                params: 'hb_id=' + hb_id //,
+                                params: 'hb_id=' + escape(hb_id)
+                            });
+                          break;
+                       case 'xssrays_hooked_domain':
+                           Ext.Ajax.request({
+                                url: '/ui/xssrays/set_scan_target',
+                                method: 'POST',
+                                params: 'hb_id=' + escape(hb_id)
                             });
                           break;
                   }
