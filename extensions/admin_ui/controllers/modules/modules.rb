@@ -679,12 +679,16 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     i = 1
     config = BeEF::Core::Configuration.instance
     command_modules.each do |command_module|
-      mod = config.get('beef.module.'+command_module)
-      next if not File.exists?("#{$root_dir}"+mod['db']['path'])
-      
-      e = BeEF::Core::Command.const_get(mod['class']).new
-      command_modules_json[i] = JSON.parse(e.to_json)
-      i += 1
+      if BeEF::Module.is_enabled(command_module)
+        h = {
+          'Name'=> config.get("beef.module.#{command_module}.name"),
+          'Description'=> config.get("beef.module.#{command_module}.description"),
+          'Category'=> config.get("beef.module.#{command_module}.category"),
+          'Data'=> BeEF::Module.get_options(command_module)
+        }
+        command_modules_json[i] = h
+        i += 1
+      end
     end
     
     if not command_modules_json.empty?

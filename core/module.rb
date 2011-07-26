@@ -31,6 +31,7 @@ module Module
         return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.loaded') == true)
     end
 
+    # Gets all module options
     def self.get_options(mod)
         begin
             class_name = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class")
