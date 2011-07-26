@@ -77,7 +77,7 @@ module Core
         @config = @config.deep_merge(hash)
         return true
     end
-    
+
     #
     # load extensions configurations
     #

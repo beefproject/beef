@@ -25,7 +25,9 @@ beef:
                 working:
                     IE:
                         min_ver: 7
-                        os: ["Windows", "Mac"]
-                working: ["F", "C"]
-                user_notify: "K"
+                        max_ver: 8
+                        os: "Windows"
+                    FF: true
+                    C: false
+                user_notify: ["K", "O"]
                 not_working: "S"
