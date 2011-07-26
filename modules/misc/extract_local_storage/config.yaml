@@ -22,4 +22,4 @@ beef:
             description: "Extracts data from the HTML5 localStorage object."
             authors: ["bcoles"]
             target:
-                working: [FF,S,C]
+                working: ["FF", "S", "C"]
