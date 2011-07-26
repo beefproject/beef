@@ -51,6 +51,7 @@ module Module
             BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
             if self.exists?(mod)
                 BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
+                self.parse_targets(mod)
                 print_debug "Loaded module: '#{mod}'"
                 return true
             else
@@ -80,49 +81,139 @@ module Module
         end
     end
 
+    # Checks target configuration to see if browser / version / operating system is supported
+    # Support uses a rating system to provide the most accurate results.
+    # 1 = All match. ie: All was defined.
+    # 2 = String match. ie: Firefox was defined as working.
+    # 3 = Hash match. ie: Firefox defined with 1 additional parameter (eg max_ver).
+    # 4+ = As above but with extra parameters.
+    # Please note this rating system has no correlation to the return constant value BeEF::Core::Constants::CommandModule::*
+    def self.support(mod, opts)
+        target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target_new')
+        if target_config and opts.kind_of? Hash
+            if opts.key?('browser')
+                results = []
+                target_config.each{|k,m|
+                    m.each{|v|
+                        case v
+                            when String
+                                if opts['browser'] == v
+                                    results << {'rating' => 2, 'const' => k}
+                                end
+                            when Hash
+                                if opts['browser'] == v.keys.first
+                                    subv = v[v.keys.first]
+                                    rating = 1
+                                    #version check
+                                    if opts.key?('ver')
+                                        if subv.key?('min_ver')
+                                            if subv['min_ver'].kind_of? Fixnum and opts['ver'] >= subv['min_ver']
+                                                rating += 1
+                                            else
+                                                break
+                                            end
+                                        end
+                                        if subv.key?('max_ver')
+                                            if subv['max_ver'].kind_of? Fixnum and opts['ver'] <= subv['max_ver']
+                                                rating += 1
+                                            else
+                                                break
+                                            end
+                                        end
+                                    end
+                                    # os check
+                                    if opts.key?('os') and subv.key?('os')
+                                        match = false
+                                        opts['os'].each{|o|
+                                            case subv['os']
+                                                when String
+                                                    if o == subv['os']
+                                                        rating += 1
+                                                        match = true
+                                                    elsif subv['os'] == BeEF::Core::Constants::Os::OS_ALL_UA_STR
+                                                        rating += 1
+                                                        match = true
+                                                    end
+                                                when Array
+                                                    subv['os'].each{|p|
+                                                        if o == p or p == BeEF::Core::Constants::Os::OS_ALL_UA_STR
+                                                            rating += 1
+                                                            match = true
+                                                        end
+                                                    }
+                                            end
+                                        }
+                                        if not match 
+                                            break
+                                        end
+                                    end
+                                    if rating != 1
+                                        results << {'rating' => rating, 'const' => k}
+                                    end
+                                end
+                        end
+                        if v == BeEF::Core::Constants::Browsers::ALL
+                            results << {'rating' => 1, 'const' => k}
+                        end
+                    }
+                }
+                if results.count > 0
+                    return results.sort_by {|v| v['rating']}.last['const']
+                else
+                    return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+                end
+            else
+                print_error "BeEF::Module.support() was passed a hash without a valid browser constant"
+            end
+        end
+        return nil
+    end
+
     # Translates module target configuration
     def self.parse_targets(mod)
         target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
         if target_config
             targets = {}
             target_config.each{|k,v|
-                if BeEF::Core::Constants::CommandModule.const_defined?('VERIFIED_'+k.upcase)
-                    key = BeEF::Core::Constants::CommandModule.const_get('VERIFIED_'+k.upcase)
-                    if not targets.key?(key)
-                        targets[key] = []
-                    end
-                    browser = nil
-                    case v
-                        when String
-                            browser = self.match_target_browser(v)
-                            if browser
-                                targets[key] << browser
-                            end
-                        when Array
-                            v.each{|c|
-                                browser = self.match_target_browser(c)
+                begin
+                    if BeEF::Core::Constants::CommandModule.const_defined?('VERIFIED_'+k.upcase)
+                        key = BeEF::Core::Constants::CommandModule.const_get('VERIFIED_'+k.upcase)
+                        if not targets.key?(key)
+                            targets[key] = []
+                        end
+                        browser = nil
+                        case v
+                            when String
+                                browser = self.match_target_browser(v)
                                 if browser
                                     targets[key] << browser
                                 end
-                            }
-                        when Hash
-                            v.each{|k,c|
-                                browser = self.match_target_browser(k)
-                                if browser
-                                    case c
-                                        when TrueClass
-                                            targets[key] << browser
-                                        when Hash
-                                            details = self.match_target_browser_spec(c)
-                                            if details
-                                                targets[key] << {browser => details}
-                                            end
+                            when Array
+                                v.each{|c|
+                                    browser = self.match_target_browser(c)
+                                    if browser
+                                        targets[key] << browser
                                     end
-                                end
-                            }
+                                }
+                            when Hash
+                                v.each{|k,c|
+                                    browser = self.match_target_browser(k)
+                                    if browser
+                                        case c
+                                            when TrueClass
+                                                targets[key] << browser
+                                            when Hash
+                                                details = self.match_target_browser_spec(c)
+                                                if details
+                                                    targets[key] << {browser => details}
+                                                end
+                                        end
+                                    end
+                                }
+                        end
                     end
-                else
-                    print_debug "Module \"#{mod}\" configuration has invalid target status defined \"#{k}\""
+                rescue NameError
+                    print_error "Module \"#{mod}\" configuration has invalid target status defined \"#{k}\""
                 end
             }
             BeEF::Core::Configuration.instance.set("beef.module.#{mod}.target_new", targets)
@@ -133,13 +224,15 @@ module Module
     def self.match_target_browser(v)
         browser = false
         if v.class == String
-            if BeEF::Core::Constants::Browsers.const_defined?(v.upcase)
-                browser = BeEF::Core::Constants::Browsers.const_get(v.upcase)
-            else
-                print_debug "Could not identify browser target specified as \"#{v}\""
+            begin
+                if BeEF::Core::Constants::Browsers.const_defined?(v.upcase)
+                    browser = BeEF::Core::Constants::Browsers.const_get(v.upcase)
+                end
+            rescue NameError
+                print_error "Could not identify browser target specified as \"#{v}\""
             end
         else
-            print_debug "Invalid datatype passed to BeEF::Module.match_target_browser()"
+            print_error "Invalid datatype passed to BeEF::Module.match_target_browser()"
         end
         return browser
     end
@@ -172,7 +265,7 @@ module Module
                 end
             end
         else
-            print_debug "Invalid datatype passed to BeEF::Module.match_target_browser_spec()"
+            print_error "Invalid datatype passed to BeEF::Module.match_target_browser_spec()"
         end
         return browser
     end
@@ -181,13 +274,15 @@ module Module
     def self.match_target_os(v)
         os = false
         if v.class == String
-            if BeEF::Core::Constants::Os.const_defined?("OS_#{v.upcase}_UA_STR")
-                os = BeEF::Core::Constants::Os.const_get("OS_#{v.upcase}_UA_STR")
-            else
-                print_debug "Could not identify OS target specified as \"#{v}\""
+            begin
+                if BeEF::Core::Constants::Os.const_defined?("OS_#{v.upcase}_UA_STR")
+                    os = BeEF::Core::Constants::Os.const_get("OS_#{v.upcase}_UA_STR")
+                end
+            rescue NameError
+                print_error "Could not identify OS target specified as \"#{v}\""
             end
         else
-            print_debug "Invalid datatype passed to BeEF::Module.match_target_os()"
+            print_error "Invalid datatype passed to BeEF::Module.match_target_os()"
         end
         return os
     end

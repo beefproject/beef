@@ -38,6 +38,19 @@ class Alert_dialog < BeEF::Core::Command
     # This tells the framework to use the file 'alert.js' as the command module instructions.
     use_template!
   end
+
+ # set and return all options for this module
+  def self.options
+    return {
+      'name' => 'alert_dialog', 
+      'description' => 'Sends an alert dialog to the victim', 
+      'type' => 'textarea',
+      'filter' => '',
+      'default_value' => 'Alert box text',
+      'adminui_width' => '400px', 
+      'adminui_height' => '100px'
+      }
+  end
   
   # set and return all options for this module
   def self.options
