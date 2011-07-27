@@ -85,6 +85,7 @@ module Core
         Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
+                y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
                 @config = y.deep_merge(@config)
             end
         end
