@@ -22,4 +22,4 @@ beef:
             description: "This module will attempt to hook IE if it is the default browser."
             authors: ["saafan"]
             target:
-                user_notify: ["FF", "O"]
+                working: ["All"]

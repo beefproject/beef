@@ -22,5 +22,5 @@ beef:
             description: "Creates a 100% by 100% iFrame overlay displaying the choosen resource, and add JS keylogging capabilities on that iFrame. Useful to grab same-domain login page credentials."
             authors: ["antisnatchor"]
             target:
-                working: [IE, FF, S, C]
-                not_working: [O]
+                working: "All"
+                not_working: "O"

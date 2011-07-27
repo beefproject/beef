@@ -22,16 +22,4 @@ beef:
             description: "Sends an alert dialog to the hooked browser."
             authors: ["bm"]
             target:
-                user_notify: ["O"]
-                working:
-                    IE:
-                        min_ver: 6
-                        max_ver: 8
-                        os: ["Mac", "Linux"]
-                    C: false
-                not_working:
-                    IE:
-                        max_ver: 8
-                        os: "All"
-                    S: true
-                    FF: true
+                working: ["All"]
