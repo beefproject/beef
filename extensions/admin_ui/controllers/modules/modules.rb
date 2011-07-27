@@ -307,40 +307,31 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   end
 
   # Set the correct icon for the command module
-  def set_command_module_icon(command_mod)
-      command_module_icon_path = BeEF::Extension::AdminUI::Constants::Icons::MODULE_TARGET_IMG_PATH # add icon path
-      case command_mod.verify_target()
+  def set_command_module_icon(status)
+      path = BeEF::Extension::AdminUI::Constants::Icons::MODULE_TARGET_IMG_PATH # add icon path
+      case status
       when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_NOT_WORKING_IMG
+        path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_NOT_WORKING_IMG
       when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_USER_NOTIFY_IMG
+        path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_USER_NOTIFY_IMG
       when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_WORKING_IMG
+        path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_WORKING_IMG
       when BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
+        path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
       else
-        command_module_icon_path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
+        path += BeEF::Extension::AdminUI::Constants::Icons::VERIFIED_UNKNOWN_IMG
       end
-      #return command_module_icon_path
-      command_module_icon_path
+      #return path
+      path
   end
 
    # Set the correct working status for the command module
-  def set_command_module_status(command_mod)
-      case command_mod.verify_target()
-      when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-      when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
-      when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-      when BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-      else
-        command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+  def set_command_module_status(mod)
+      hook_session_id = @params['zombie_session'] || nil
+      if hook_session_id == nil
+          return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
       end
-#      return command_module_status
-      command_module_status
+      return BeEF::Module.support(mod, {'browser' => BD.get(hook_session_id, 'BrowserName'), 'ver' => BD.get(hook_session_id, 'BrowserVersion'), 'os' => [BD.get(hook_session_id, 'OsName')]})
   end
 
   def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
@@ -383,8 +374,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       command_mod.session_id = hook_session_id
 
       # create url path and file for the command module icon
-      command_module_icon_path = set_command_module_icon(command_mod)
-      command_module_status = set_command_module_status(command_mod)
+      command_module_status = set_command_module_status(k)
+      command_module_icon_path = set_command_module_icon(command_module_status)
 
       update_command_module_tree(tree, mod['category'], command_module_icon_path, command_module_status, mod['name'],mod['db']['id'])
     }
@@ -416,8 +407,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
           command_mod_name = command_mod.info['Name'].downcase
 
           # create url path and file for the command module icon
+          #command_module_status = set_command_module_status(command_mod)
+          command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
           command_module_icon_path = set_command_module_icon(command_mod)
-          command_module_status = set_command_module_status(command_mod)
 
          update_command_module_tree(tree, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
        }
