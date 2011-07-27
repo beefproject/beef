@@ -79,6 +79,20 @@ module Core
     end
 
     #
+    # Clears the given key hash
+    #
+    def clear(key)
+        subkeys = key.split('.')
+        return false if subkeys.length == 0
+        lastkey = subkeys.pop
+        hash = @config
+        subkeys.each{|v|
+            hash = hash[v]
+        }
+        return (hash.delete(lastkey) == nil) ? false : true    
+    end
+
+    #
     # load extensions configurations
     #
     def load_extensions_config

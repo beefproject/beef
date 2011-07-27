@@ -90,7 +90,7 @@ module Module
     # 4+ = As above but with extra parameters.
     # Please note this rating system has no correlation to the return constant value BeEF::Core::Constants::CommandModule::*
     def self.support(mod, opts)
-        target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target_new')
+        target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
         if target_config and opts.kind_of? Hash
             if opts.key?('browser')
                 results = []
@@ -217,7 +217,8 @@ module Module
                     print_error "Module \"#{mod}\" configuration has invalid target status defined \"#{k}\""
                 end
             }
-            BeEF::Core::Configuration.instance.set("beef.module.#{mod}.target_new", targets)
+            BeEF::Core::Configuration.instance.clear("beef.module.#{mod}.target")
+            BeEF::Core::Configuration.instance.set("beef.module.#{mod}.target", targets)
         end
     end
 
