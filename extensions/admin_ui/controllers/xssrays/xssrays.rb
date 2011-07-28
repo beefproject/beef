@@ -66,8 +66,6 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
    def set_scan_target
     hooked_browser = HB.first(:session => @params['hb_id'].to_s)
     if(hooked_browser != nil)
-      hooked_browser.update(:start_xssrays => true)
-
       xssrays_scan = XS.new(
           :hooked_browser_id => hooked_browser.id,
           :scan_start => Time.now,
