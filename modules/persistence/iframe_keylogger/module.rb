@@ -15,34 +15,11 @@
 #
 class Iframe_keylogger < BeEF::Core::Command
   
-  #
-  # Defines and set up the command module.
-  #
-  def initialize
-    super({
-      'Name' => 'iFrame keylogger',
-      'Description' => 'Creates a 100% by 100% iFrame overlay displaying the choosen resource, and add JS keylogging capabilities on that iFrame. Useful to grab same-domain login page credentials.',
-      'Category' => 'Misc',
-      'Author' => 'antisnatchor',
-      'Data' => [
+  def self.options
+    return [
         {'name' => 'iFrameSrc', 'ui_label'=>'iFrame Src', 'type' => 'textarea', 'value' =>'/demos/secret_page.html', 'width' => '400px', 'height' => '50px'},
         {'name' => 'sendBackInterval', 'ui_label' => 'Send Back Interval (ms)', 'value' => '2000', 'width'=>'100px' }
-
-      ],
-      'File' => __FILE__
-    })
-
-    # works in every latest browser (IE8, Firefox 5, Chrome 12, Safari 5) except Opera
-    set_target({
-      'verified_status' => VERIFIED_WORKING,
-      'browser_name' => ALL
-    })
-    set_target({
-      'verified_status' => VERIFIED_NOT_WORKING,
-      'browser_name' => O
-    })
-    
-    use_template!
+    ]
   end
   
   def callback

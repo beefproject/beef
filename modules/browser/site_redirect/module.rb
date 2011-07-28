@@ -15,24 +15,10 @@
 #
 class Site_redirect < BeEF::Core::Command
   
-  def initialize
-    super({
-      'Name' => 'Site Redirect',
-      'Description' => 'This module will redirect the hooked browser to the address specified in the \'Redirect URL\' input.',
-      'Category' => 'Browser',
-      'Author' => ['wade', 'vo'],
-      'Data' => [
-        { 'ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
-      ],
-      'File' => __FILE__
-    })
-    
-    set_target({
-      'verified_status' =>  VERIFIED_USER_NOTIFY, 
-      'browser_name' =>     ALL
-    })
-              
-    use_template!
+  def self.options
+    return [
+        { 'ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'description' => 'The URL the target will be redirected to.', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
+    ]
   end
 
   def callback

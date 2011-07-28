@@ -15,34 +15,6 @@
 #
 class Detect_local_settings < BeEF::Core::Command
   
-  def initialize
-    super({
-      'Name' => 'Detect local settings',
-      'Description' => 'Grab the local network settings (i.e internal ip address)',
-      'Category' => 'Network',
-      'Author' => ['pdp', 'wade', 'bm', 'xntrik'],
-      'File' => __FILE__
-    })
-    
-    set_target({
-        'verified_status' =>  VERIFIED_WORKING, 
-        'browser_name' =>     FF
-    })
-    
-    set_target({
-        'verified_status' =>  VERIFIED_USER_NOTIFY, 
-        'browser_name' =>     C
-    })
-    
-    set_target({
-        'verified_status' =>  VERIFIED_NOT_WORKING, 
-        'browser_name' =>     IE
-    })
-    
-    use 'beef.net.local'    
-    use_template!
-  end
-  
   def pre_send
     #Mount the Beeffeine.class on /Beeffeine.class
     #Unsure if there's something we can add here to check if the module was already mounted?

@@ -36,37 +36,11 @@
 
 class Internal_network_fingerprinting < BeEF::Core::Command
   
-  def initialize
-    super({
-      'Name' => 'Internal Network Fingerprinting',
-      'Description' => 'Discover devices and applications in the internal network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea). </br>If no IP range or ports are specified, the default device (after a default install) IP/port will be used.</br>Only successfully discovered devices/applications will be shown in the command results.',
-      'Category' => 'Recon',
-      'Author' => ['bcoles@gmail.com', 'wade', 'antisnatchor'],
-      'Data' => [
+  def self.options
+    return [
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class)', 'value' => '192.168.0.1-192.168.0.254'},
         {'name' => 'ports', 'ui_label' => 'Ports to test', 'value' => '80,8080'}
-      ],
-      'File' => __FILE__
-    })
-
-    set_target({
-        'verified_status' =>  VERIFIED_USER_NOTIFY,
-        'browser_name' =>     FF  # works also in FF 4.0.1
-    })
-
-    set_target({
-        'verified_status' =>  VERIFIED_NOT_WORKING,
-        'browser_name' =>     O
-    })
-
-    set_target({
-        'verified_status' =>  VERIFIED_USER_NOTIFY,
-        'browser_name' =>     IE
-    })
-
-
-    
-    use_template!
+    ]
   end
   
   def callback

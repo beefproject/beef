@@ -15,25 +15,11 @@
 #
 class Link_rewrite < BeEF::Core::Command
   
-  def initialize
-    super({
-      'Name' => 'Link Rewriter',
-      'Description' => 'This module will rewrite the href attribute of all matched links.<br /><br />The jQuery selector field can be used to limit the selection of links. eg: a[href="http://www.bindshell.net"]. For more information please see: http://api.jquery.com/category/selectors/',
-      'Category' => 'Browser',
-      'Author' => ['passbe'],
-      'Data' => [
-        { 'ui_label'=>'URL', 'name'=>'url', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' },
-        { 'ui_label'=>'jQuery Selector', 'name'=>'selector', 'value'=>'a', 'width'=>'200px' }
-      ],
-      'File' => __FILE__
-    })
-    
-    set_target({
-      'verified_status' =>  VERIFIED_WORKING, 
-      'browser_name' =>     ALL
-    })
-              
-    use_template!
+  def self.options
+    return [
+        { 'ui_label'=>'URL', 'name'=>'url', 'description' => 'Target URL', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' },
+        { 'ui_label'=>'jQuery Selector', 'name'=>'selector', 'description' => 'Optional link selector other than all a* tags', 'value'=>'a', 'width'=>'200px' }
+    ]
   end
 
   def callback

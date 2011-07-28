@@ -16,26 +16,6 @@
 
 class Hook_ie < BeEF::Core::Command
   
-  def initialize
-    super({
-      'Name' => 'Hook IE',
-      'Description' => %Q{
-       This module will attempt to hook IE if it is the default browser.'
-        },
-      'Category' => 'Browser',
-      'Author' => ['saafan'],
-      'File' => __FILE__
-    })
-		
-		set_target({
-        'verified_status' =>  VERIFIED_WORKING, 
-        'browser_name' =>     ALL
-    })
-    
-    use 'beef.dom'
-    use_template!
-  end
-  
   def pre_send
     #Get the servers configurations.
     configuration = BeEF::Core::Configuration.instance
