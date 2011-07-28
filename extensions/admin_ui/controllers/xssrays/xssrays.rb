@@ -55,11 +55,20 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
         'id'      => log.id,
         'vector_method'  => log.vector_method,
         'vector_name'    => log.vector_name,
-        'vector_poc' => log.vector_poc
+        'vector_poc' => escape_for_html(log.vector_poc)
       }
     }
 
     @body = {'success' => 'true', 'logs' => logs}.to_json
+  end
+
+  def escape_for_html(str)
+        str.gsub!(/</, '&lt;')
+        str.gsub!(/>/, '&gt;')
+        str.gsub!(/\u0022/, '&quot;')
+        str.gsub!(/\u0027/, '&#39;')
+        str.gsub!(/\\/, '&#92;')
+    str
   end
 
    # called by the UI. needed to pass the hooked browser ID/session and store a new scan in the DB
