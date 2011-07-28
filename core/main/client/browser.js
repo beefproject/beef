@@ -543,6 +543,8 @@ beef.browser = {
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
+		var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie"))? "Yes":"No";
+		var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie"))? "Yes":"No";
 
 		if(browser_name) details["BrowserName"] = browser_name;
 		if(browser_version) details["BrowserVersion"] = browser_version;
@@ -560,6 +562,8 @@ beef.browser = {
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
 		if(has_flash) details['HasFlash'] = has_flash
 		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
+		if(has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
+		if(has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 
 		return details;
 	},

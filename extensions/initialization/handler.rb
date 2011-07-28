@@ -157,6 +157,22 @@ module Initialization
         BD.set(session_id, 'HasGoogleGears', has_googlegears)
       end
 
+      # get and store whether the browser has session cookies enabled
+      has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
+      if has_session_cookies.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasSessionCookies"
+      else
+        BD.set(session_id, 'hasSessionCookies', has_session_cookies)
+      end
+
+      # get and store whether the browser has persistent cookies enabled
+      has_persistent_cookies = get_param(@data['results'], 'hasPersistentCookies')
+      if has_persistent_cookies.nil?
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasPersistentCookies"
+      else
+        BD.set(session_id, 'hasPersistentCookies', has_persistent_cookies)
+      end
+
     end
    
     def get_param(query, key)

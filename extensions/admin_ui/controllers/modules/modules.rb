@@ -297,6 +297,36 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
+
+    # set and add the return values for hasSessionCookies
+    has_session_cookies = BD.get(zombie_session, 'hasSessionCookies')
+    if not has_session_cookies.nil?
+      encoded_has_session_cookies = CGI.escapeHTML(has_session_cookies)
+      encoded_has_session_cookies_hash = { 'Session Cookies' => encoded_has_session_cookies }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_session_cookies_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the return values for hasPersistentCookies
+    has_persistent_cookies = BD.get(zombie_session, 'hasPersistentCookies')
+    if not has_persistent_cookies.nil?
+      encoded_has_persistent_cookies = CGI.escapeHTML(has_persistent_cookies)
+      encoded_has_persistent_cookies_hash = { 'Persistent Cookies' => encoded_has_persistent_cookies }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_persistent_cookies_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
  
     @body = summary_grid_hash.to_json  
   end
