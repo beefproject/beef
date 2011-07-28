@@ -93,11 +93,6 @@ module Core
         # Create http handler for the javascript hook file
         mount("#{@configuration.get("beef.http.hook_file")}", true, BeEF::Core::Handlers::HookedBrowsers)
         
-        # Create http handlers for all commands in the framework
-        BeEF::Modules.get_loaded.each { |k,v|
-            mount("/command/#{k}.js", false, BeEF::Core::Handlers::Commands, k)
-        }
-        
         #
         # We dynamically get the list of all http handler using the API and register them
         #

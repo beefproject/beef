@@ -38,7 +38,8 @@ module Modules
       if(command_module.path.match(/^Dynamic/))
          command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
       else
-         command_module = BeEF::Core::Command.const_get(command_module.name.capitalize).new
+         key = BeEF::Module.get_key_by_database_id(command.command_module_id) 
+         command_module = BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{key}.class")).new(key)
       end
 
       command_module.command_id = command.id

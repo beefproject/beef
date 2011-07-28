@@ -48,7 +48,7 @@ module Handlers
       raise WEBrick::HTTPStatus::BadRequest, "beefhook is invalid" if not BeEF::Filters.is_valid_hook_session_id?(beefhook)   
 
       # create the command module to handle the response
-      command = @kclass.new # create the commamd module 
+      command = @kclass.new(BeEF::Module.get_key_by_class(@kclass)) # create the commamd module 
       command.build_callback_datastore(@http_params, @http_header) # build datastore from the response
       command.session_id = beefhook 
       command.callback # call the command module's callback function - it will parse and save the results

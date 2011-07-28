@@ -115,7 +115,7 @@ module Banners
     #
     # Print loaded modules
     def print_loaded_modules
-        print_info "#{BeEF::Modules::get_loaded.count} modules loaded."
+        print_info "#{BeEF::Modules::get_enabled.count} modules loaded."
     end
   end
 end

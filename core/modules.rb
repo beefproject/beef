@@ -44,7 +44,7 @@ module Modules
     # Loads modules 
     def self.load
         self.get_enabled.each { |k,v|
-            BeEF::Module.load(k)
+            BeEF::Module.soft_load(k)
         }
     end
 end

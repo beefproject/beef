@@ -33,42 +33,79 @@ module Module
 
     # Gets all module options
     def self.get_options(mod)
-        begin
+        if self.check_hard_load(mod)
             class_name = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class")
             class_symbol = BeEF::Core::Command.const_get(class_name)
-            if class_symbol
+            if class_symbol and class_symbol.respond_to?(:options)
               return class_symbol.options
+            else
+                print_debug "Module '#{mod}', no options method defined"
             end
-        rescue
-          print_debug "Unable to find module class: BeEF::Core::Commands::#{mod.capitalize}"
         end
+        return []
     end
     
-    # Loads module
-    def self.load(mod)
+    # Soft Load, loads the module without requiring the module.rb file
+    def self.soft_load(mod)
         config = BeEF::Core::Configuration.instance
-        if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
-            require config.get('beef.module.'+mod+'.path')+'/module.rb'
-            BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
-            if self.exists?(mod)
-                BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
+        if not config.get("beef.module.#{mod}.loaded")
+            if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
+                BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
                 self.parse_targets(mod)
-                print_debug "Loaded module: '#{mod}'"
+                print_debug "Soft Load module: '#{mod}'"
                 return true
             else
+                print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
+            end
+            print_error "Unable to load module '#{mod}'"
+        end
+        return false
+    end
+
+    # Hard Load, loads a pre-soft-loaded module by requiring the module.rb
+    def self.hard_load(mod)
+        config = BeEF::Core::Configuration.instance
+        if self.is_enabled(mod)
+            begin
+                require config.get("beef.module.#{mod}.path")+'/module.rb'
+                if self.exists?(mod)
+                    # start server mount point
+                    BeEF::Core::Server.instance.mount("/command/#{mod}.js", false, BeEF::Core::Handlers::Commands, mod)
+                    BeEF::Core::Configuration.instance.set("beef.module.#{mod}.mount", "/command/#{mod}.js")
+                    BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
+                    print_debug "Hard Load module: '#{mod.to_s}'"
+                    return true
+                else
+                    print_error "Hard loaded module '#{mod.to_s}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"
+                end
+            rescue => e
                 BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', false)
-                print_debug "Unable to locate module class: BeEF::Core::Commands::#{mod.capitalize}"
+                print_error "There was a problem loading the module '#{mod.to_s}'"
+                print_debug "Hard load module syntax error: #{e.to_s}"
             end
         else
-            print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
+            print_error "Hard load attempted on module '#{mod.to_s}' that is not enabled."
         end
-        print_error "Unable to load module '#{mod}'"
         return false
+    end
+
+    # Utility function to check if hard load has occured, if not attempt hard load
+    def self.check_hard_load(mod)
+        if not self.is_loaded(mod)
+            return self.hard_load(mod)
+        end
+        return true
     end
     
     # Return module key by database id
     def self.get_key_by_database_id(id)
         ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('db') and v['db']['id'].to_i == id.to_i }
+        return (ret.kind_of?(Array)) ? ret.first.first : ret.keys.first
+    end
+
+    # Return module key by database id
+    def self.get_key_by_class(c)
+        ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('class') and v['class'].to_s == c.to_s }
         return (ret.kind_of?(Array)) ? ret.first.first : ret.keys.first
     end
 

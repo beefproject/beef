@@ -303,7 +303,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       
   # Returns the list of all command_modules in a JSON format
   def select_all_command_modules
-    @body = command_modules2json(BeEF::Modules.get_loaded.keys)
+    @body = command_modules2json(BeEF::Modules.get_enabled.keys)
   end
 
   # Set the correct icon for the command module
@@ -365,13 +365,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         })
     }
 
-    BeEF::Modules.get_loaded.each{|k, mod|
+    BeEF::Modules.get_enabled.each{|k, mod|
       # get the hooked browser session id and set it in the command module
       hook_session_id = @params['zombie_session'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
-
-      command_mod = BeEF::Core::Command.const_get(k.capitalize).new
-      command_mod.session_id = hook_session_id
 
       # create url path and file for the command module icon
       command_module_status = set_command_module_status(k)
@@ -650,14 +647,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       e = BeEF::Modules::Commands.const_get(dyn_mod_name.capitalize).new
     else
       command_module_name = command_module.name
-      e = BeEF::Core::Command.const_get(command_module_name.capitalize).new
+      e = BeEF::Core::Command.const_get(command_module_name.capitalize).new(command_module_name)
     end
             
     @body = {
       'success' => 'true', 
       'command_module_name'  => command_module_name,
       'command_module_id'    => command_module.id,
-      'data'                 => JSON.parse(command.data),
+      'data'                 => BeEF::Module.get_options(command_module_name),
       'definition'           => JSON.parse(e.to_json)
     }.to_json
 
@@ -671,7 +668,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     i = 1
     config = BeEF::Core::Configuration.instance
     command_modules.each do |command_module|
-      if BeEF::Module.is_enabled(command_module)
         h = {
           'Name'=> config.get("beef.module.#{command_module}.name"),
           'Description'=> config.get("beef.module.#{command_module}.description"),
@@ -680,7 +676,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         }
         command_modules_json[i] = h
         i += 1
-      end
     end
     
     if not command_modules_json.empty?

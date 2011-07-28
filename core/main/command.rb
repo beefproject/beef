@@ -51,26 +51,25 @@ module Core
   #
   class Command
   
-    attr_reader :info, :datastore, :path, :default_command_url, :beefjs_components, :friendlyname
-    attr_accessor :zombie, :command_id, :session_id, :target
+    attr_reader :datastore, :path, :default_command_url, :beefjs_components, :friendlyname
+    attr_accessor :zombie, :command_id, :session_id
     
     include BeEF::Core::CommandUtils
     include BeEF::Core::Constants::Browsers
     include BeEF::Core::Constants::CommandModule
 
     # Super class controller
-    def initialize(info)
+    def initialize(key)
       get_extensions
+      config = BeEF::Core::Configuration.instance
 
-      @info = info
-      @datastore = @info['Data'] || {}
-      @friendlyname = @info['Name'] || nil
-      @target = @info['Target'] || nil
+      @key = key
+      @datastore = {}
+      @friendlyname = config.get("beef.module.#{key}.name")
       @output = ''
-      @path = @info['File'].sub(BeEF::Core::Server.instance.root_dir, '')
-      @default_command_url = '/command/'+@path.split(File::SEPARATOR).reverse[1]+'.js'
-      @id = BeEF::Core::Models::CommandModule.first(:path => @info['File']).object_id
-      @use_template = false
+      @path = config.get("beef.module.#{key}.path")
+      @default_command_url = config.get("beef.module.#{key}.mount")
+      @id = config.get("beef.module.#{key}.id")
       @auto_update_zombie = false
       @results = {}
       @beefjs_components = {}
@@ -114,10 +113,10 @@ module Core
     #
     def to_json
        {
-        'Name'          => info['Name'],
-        'Description'   => info['Description'],
-        'Category'      => info['Category'],
-        'Data'          => info['Data']            
+        'Name'          => @friendlyname,
+        'Description'   => BeEF::Core::Configuration.instance.get("beef.module.#{@key}.description"),
+        'Category'      => BeEF::Core::Configuration.instance.get("beef.module.#{@key}.category"),
+        'Data'          => BeEF::Module.get_options(@key)            
       }.to_json
     end
     
@@ -154,39 +153,13 @@ module Core
     end
     
     #
-    # set the target details 
-    # this function is used when determining the code of the node icon
-    #
-    def set_target(definition)
-      @target = [] if not @target
-      @target.push(definition)
-    end
-    
-    #
-    # Tells the framework that the command module will be using a template file.
-    #
-    def use_template!;
-      tpl = @info['File'].sub(/module.rb$/, 'command.js')
-      @template = tpl if File.exists? tpl
-      
-      @use_template = true;
-    end
-    
-    #
-    # Returns true if the command uses a template. False if not.
-    #
-    def use_template?; @use_template; end
-    
-    #
     # Returns the output of the command. These are the actual instructions sent to the browser.
     #
     def output
-      if use_template?
-        #TODO: name exceptions correctly
-        raise Exception::TypeError, "@template is nil" if @template.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "@template file does not exist" if not File.exists? @template
+        f = @path+'command.js'
+        raise WEBrick::HTTPStatus::BadRequest, "#{f} file does not exist" if not File.exists? f
         
-        @eruby = Erubis::FastEruby.new(File.read(@template)) 
+        @eruby = Erubis::FastEruby.new(File.read(f)) 
         
         if @datastore
           @datastore['command_url'] = BeEF::Core::Server.instance.get_command_url(@default_command_url)
@@ -201,7 +174,6 @@ module Core
         else
           @ouput = @eruby.result()
         end
-      end
       
       @output
     end
