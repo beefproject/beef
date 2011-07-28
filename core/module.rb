@@ -39,7 +39,8 @@ module Module
             if class_symbol and class_symbol.respond_to?(:options)
               return class_symbol.options
             else
-                print_debug "Module '#{mod}', no options method defined"
+                #makes too much noise as many modules dont have options defined
+                #print_debug "Module '#{mod}', no options method defined"
             end
         end
         return []
