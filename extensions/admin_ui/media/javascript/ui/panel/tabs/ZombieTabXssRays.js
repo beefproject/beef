@@ -106,4 +106,4 @@ ZombieTab_XssRaysTab = function(zombie) {
 	});
 };
 
-Ext.extend(ZombieTab_XssRaysTab, Ext.Panel, {} );
+Ext.extend(ZombieTab_XssRaysTab, Ext.TabPanel, {} );
