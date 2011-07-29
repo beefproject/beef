@@ -17,7 +17,7 @@ beef:
     module:
         linksys_wrt54g_csrf:
             enable: true
-            category: "Network"
+            category: "Router"
             name: "Linksys WRT54G CSRF Exploit"
             description: "Attempts to enable remote administration and change the password on a Linksys WRT54G router."
             authors: ["Martin Barbella"]
