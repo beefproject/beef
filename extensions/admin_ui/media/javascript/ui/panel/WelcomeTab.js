@@ -26,7 +26,7 @@ WelcomeTab = function() {
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Logs:</span> Displays recent log entries related to this particular hooked browser.</li> \
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Commands:</span> This tab is where modules can be executed against the hooked browser. This is where most of the BeEF functionality resides.</li> \
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Requester:</span> The Requester tab is a special module that allows you to submit arbitrary HTTP requests on behalf of the hooked browser.</li></ul></p><br /> \
-              <p>For more information visit: <a href='http://code.google.com/p/beef/'>http://code.google.com/p/beef/</a></p><br />\
+              <p>Official website: <a href='http://beefproject.com/'>http://beefproject.com/</a></p><br />\
               </div> \
               ";
 
