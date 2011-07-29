@@ -22,7 +22,7 @@ class Alert_dialog < BeEF::Core::Command
       'description' => 'Sends an alert dialog to the victim', 
       'type' => 'textarea',
       'ui_label' => 'Alert text',
-      'value' => 'Alert box text',
+      'value' => 'BeEF Alert Dialog',
       'width' => '400px' 
       }]
   end
