@@ -78,7 +78,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     host_name = BD.get(zombie_session, 'HostName') 
     if not host_name.nil?
       encoded_host_name = CGI.escapeHTML(host_name)
-      encoded_host_name_hash = { 'Host Name' => encoded_host_name }
+      encoded_host_name_hash = { 'Hostname/IP' => encoded_host_name }
     
       page_name_row = {
         'category' => 'Browser Hook Initialisation',
@@ -108,7 +108,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     browser_name = BD.get(zombie_session, 'BrowserName') 
     if not browser_name.nil?
       friendly_browser_name = BeEF::Core::Constants::Browsers.friendly_name(browser_name)
-      browser_name_hash = { 'Detected Browser Name' => friendly_browser_name }
+      browser_name_hash = { 'Browser Name' => friendly_browser_name }
 
       browser_name_row = {
         'category' => 'Browser Hook Initialisation',
@@ -123,7 +123,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     browser_version = BD.get(zombie_session, 'BrowserVersion') 
     if not browser_version.nil?
       encoded_browser_version = CGI.escapeHTML(browser_version)
-      browser_version_hash = { 'Detected Browser Version' => encoded_browser_version }
+      browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
       browser_version_row = {
         'category' => 'Browser Hook Initialisation',
@@ -197,7 +197,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     screen_params = BD.get(zombie_session, 'ScreenParams')
     if not screen_params.nil?
       
-      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up string
+      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = screen_params_hash['width']
       raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
       height = screen_params_hash['height']
@@ -205,7 +205,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       colordepth = screen_params_hash['colordepth']
       raise WEBrick::HTTPStatus::BadRequest, "colordepth is wrong type" if not colordepth.is_a?(Fixnum)
       
-      # construct the string to be displayed in the details 
+      # construct the string to be displayed in the details tab
       encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
       encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
       
@@ -222,13 +222,13 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     window_size = BD.get(zombie_session, 'WindowSize')
     if not window_size.nil?
 
-      window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up string
+      window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = window_size_hash['width']
       raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
       height = window_size_hash['height']
       raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
 
-      # construct the string to be displayed in the details 
+      # construct the string to be displayed in the details tab
       encoded_window_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s)
       encoded_window_size_hash = { 'Window Size' => encoded_window_size }
 
