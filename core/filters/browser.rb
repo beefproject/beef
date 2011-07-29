@@ -52,7 +52,8 @@ module Filters
 
   # verify the browser_plugins string is valid
   def self.is_valid_browser_plugins?(str)
-    return false if not is_non_empty_string?(str)
+    # this string can be empty if there are no browser plugins
+    return true if not is_non_empty_string?(str)
     return false if str.length > 400
     if RUBY_VERSION >= "1.9" && str.encoding === Encoding.find('UTF-8')
       return (str =~ /[^\w\d\s()-.,;_!\302\256]/u).nil?
