@@ -18,8 +18,8 @@ beef:
         iframe_keylogger:
             enable: true
             category: "Persistence"
-            name: "iFrame keylogger"
-            description: "Creates a 100% by 100% iFrame overlay displaying the choosen resource, and add JS keylogging capabilities on that iFrame. Useful to grab same-domain login page credentials."
+            name: "iFrame Event Logger"
+            description: "Creates a 100% by 100% iFrame overlay with event logging. The content of the overlay is set in the 'iFrame Src' option."
             authors: ["antisnatchor"]
             target:
                 working: "All"
