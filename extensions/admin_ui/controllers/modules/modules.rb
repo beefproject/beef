@@ -196,9 +196,19 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # set and add the zombie screen size and color depth
     screen_params = BD.get(zombie_session, 'ScreenParams')
     if not screen_params.nil?
-      encoded_screen_params = CGI.escapeHTML(screen_params)
+      
+      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up string
+      width = screen_params_hash['width']
+      raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
+      height = screen_params_hash['height']
+      raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
+      colordepth = screen_params_hash['colordepth']
+      raise WEBrick::HTTPStatus::BadRequest, "colordepth is wrong type" if not colordepth.is_a?(Fixnum)
+      
+      # construct the string to be displayed in the details 
+      encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
       encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
-
+      
       page_name_row = {
         'category' => 'Browser Hook Initialisation',
         'data' => encoded_screen_params_hash,
@@ -211,7 +221,15 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # set and add the zombie browser window size
     window_size = BD.get(zombie_session, 'WindowSize')
     if not window_size.nil?
-      encoded_window_size = CGI.escapeHTML(window_size)
+
+      window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up string
+      width = window_size_hash['width']
+      raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
+      height = window_size_hash['height']
+      raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
+
+      # construct the string to be displayed in the details 
+      encoded_window_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s)
       encoded_window_size_hash = { 'Window Size' => encoded_window_size }
 
       page_name_row = {
