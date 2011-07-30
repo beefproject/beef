@@ -18,8 +18,8 @@ beef:
         internal_network_fingerprinting:
             enable: true
             category: "Recon"
-            name: "Internal Network Fingerprinting"
-            description: "Discover devices and applications in the internal network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea)"
+            name: "Network Fingerprinting"
+            description: "Discover devices and applications in the network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea)"
             authors: ["bcoles@gmail.com", "wade", "antisnatchor"]
             target:
                 user_notify: ["FF", "IE"]
