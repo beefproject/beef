@@ -31,7 +31,7 @@ module Metasploit
 		  return if (not @enabled)
 		  
 			host = @config.get('beef.extension.metasploit.host')
-			path = @config.get('beef.extension.metasploit.path')
+			path = @config.get('beef.extension.metasploit.url-path')
 			port = @config.get('beef.extension.metasploit.port')
 			@un = @config.get('beef.extension.metasploit.user')
 			@pw = @config.get('beef.extension.metasploit.pass')

@@ -24,7 +24,7 @@ beef:
         metasploit:
             enable: true
             host: "127.0.0.1"
-            path: "/RPC2"
+            url-path: "/RPC2"
             port: 55553
             user: "msf"
             pass: "abc123"
