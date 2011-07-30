@@ -17,7 +17,7 @@ class Site_redirect < BeEF::Core::Command
   
   def self.options
     return [
-        { 'ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'description' => 'The URL the target will be redirected to.', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
+        { 'ui_label'=>'Redirect URL', 'name'=>'redirect_url', 'description' => 'The URL the target will be redirected to.', 'value'=>'http://beefproject.com/', 'width'=>'200px' }
     ]
   end
 
