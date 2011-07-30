@@ -17,7 +17,7 @@ class Deface_web_page < BeEF::Core::Command
 
   def self.options
     return [
-        { 'name' => 'deface_content', 'description' => 'Your defacement content', 'ui_label'=>'Deface Content', 'type' => 'textarea', 'value' =>'Defaced!', 'width' => '400px', 'height' => '100px' }
+        { 'name' => 'deface_content', 'description' => 'Your defacement content', 'ui_label'=>'Deface Content', 'type' => 'textarea', 'value' =>'BeEF!', 'width' => '400px', 'height' => '100px' }
     ]
   end
 
