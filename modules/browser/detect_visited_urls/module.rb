@@ -17,7 +17,7 @@ class Detect_visited_urls < BeEF::Core::Command
   
   def self.options
     return [
-        { 'ui_label'=>'URL(s)', 'name'=>'urls', 'description' => 'Enter target URL(s)', 'type'=>'textarea', 'value'=>'http://www.bindshell.net/', 'width'=>'200px' }
+        { 'ui_label'=>'URL(s)', 'name'=>'urls', 'description' => 'Enter target URL(s)', 'type'=>'textarea', 'value'=>'http://beefproject.com/', 'width'=>'200px' }
     ]
   end
 
