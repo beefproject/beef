@@ -41,16 +41,24 @@ module Initialization
       hooked_browser = HB.first(:session => session_id)
       return if not hooked_browser.nil? # browser is already registered with framework
 
-      # create the structure repesenting the hooked browser
+      # create the structure representing the hooked browser
       zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].peeraddr[3], :session => session_id)
       zombie.firstseen = Time.new.to_i
+
+      # set the zombie hooked domain. Uses the origin header, or the host header if the origin is not present (same-domain)
+      if @data['request'].header['origin'].nil? or @data['request'].header['origin'].empty?
+        log_zombie_domain = @data['request'].header['host'].first
+      else
+        log_zombie_domain =  @data['request'].header['origin'].first
+      end
+      log_zombie_domain.gsub!('http://', '')
+      log_zombie_domain.gsub!('https://', '')
+      zombie.domain = log_zombie_domain
       zombie.httpheaders = @data['request'].header.to_json
 
       zombie.save # the save needs to be conducted before any hooked browser specific logging
       
       # add a log entry for the newly hooked browser
-      log_zombie_domain = zombie.domain
-      log_zombie_domain = "(blank)" if log_zombie_domain.nil? or log_zombie_domain.empty?
       BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}", "#{zombie.id}") 
       # get and store browser name
       browser_name = get_param(@data['results'], 'BrowserName')
