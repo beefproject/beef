@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Recon"
             name: "Detect Tor" 
-            description: "This module will detect if the zombie is currently using TOR (The Onion Router)."
+            description: "This module will detect if the zombie is currently using Tor (https://www.torproject.org/)."
             authors: ["wade", "pdp", "bm", "xntrik"]
             target:
                 working: ["ALL"]
