@@ -18,8 +18,8 @@ beef:
         hook_ie:
             enable: true
             category: "Browser"
-            name: "Hook IE"
-            description: "This module will attempt to hook IE if it is the default browser. It will launch a PDF and use that to start IE."
+            name: "Hook Default Browser"
+            description: "This module will attempt to hook the default browser (assuming it isn't currently hooked). Normally, this will be IE but it will also work when Chrome is set to the default. When executed, the hooked browser will load a PDF and use that to start the default browser. If successful another browser will appear in the browser tree."
             authors: ["saafan"]
             target:
                 working: ["All"]
