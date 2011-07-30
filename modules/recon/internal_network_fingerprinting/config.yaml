@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Recon"
             name: "Network Fingerprinting"
-            description: "Discover devices and applications in the network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea)"
+            description: "Discover devices and applications in the network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea)."
             authors: ["bcoles@gmail.com", "wade", "antisnatchor"]
             target:
                 user_notify: ["FF", "IE"]
