@@ -15,12 +15,12 @@
 //
 beef.execute(function() {
 
-	var dom = document.createElement('b');
+    var dom = document.createElement('b');
     var ips = new Array();
     ipRange = "<%= @ipRange %>";
     ports = "<%= @ports %>";
     if(ports != null){
-     ports = ports.split(',');
+      ports = ports.split(',');
     }
 
     if(ipRange != null){
@@ -56,8 +56,12 @@ beef.execute(function() {
         ];
     }
 
-	var urls = new Array(
+    var urls = new Array(
     // in the form of: "Dev/App Name","Default Port","Use Multiple Ports if specified","IMG url","IMG width","IMG height"
+	new Array("Apache",":80",false,"/icons/apache_pb.gif",259,32),
+	new Array("Apache 2.x",":80",false,"/icons/apache_pb2.gif",259,32),
+	new Array("Microsoft IIS 7.x",":80",false,"/welcome.png",571,411),
+	new Array("Microsoft IIS",":80",false,"/pagerror.gif",36,48),
 	new Array("QNAP NAS",":8080",false,"/ajax_obj/img/running.gif",16,16),
 	new Array("QNAP NAS",":8080",false,"/ajax_obj/images/qnap_logo_w.gif",115,21),
 	new Array("Belkin Router",":80",false,"/images/title_2.gif",321,28),
@@ -70,7 +74,11 @@ beef.execute(function() {
 	new Array("Snom Phone",":80",false,"/img/snom_logo.png",168,62),
 	new Array("Brother Printer",":80",false,"/pbio/brother.gif",144,52),
 	new Array("HP LaserJet",":80",false,"/hp/device/images/logo.gif",42,27),
-    new Array("JBoss Application server",":8080",true,"/images/logo.gif",226,105)
+	new Array("JBoss Application server",":8080",true,"/images/logo.gif",226,105),
+	new Array("Siemens Simatic",":80",false,"/Images/Siemens_Firmenmarke.gif",115,76),
+	new Array("APC InfraStruXure Manager",":80",false,"/images/Xlogo_Layer-1.gif",342,327),
+	new Array("Barracuda Spam/Virus Firewall",":8000",true,"/images/powered_by.gif",211,26),
+	new Array("Wordpress",":80",false,"/wp-includes/images/wpmini-blue.png",16,16)
 	);
 
 	// for each ip
