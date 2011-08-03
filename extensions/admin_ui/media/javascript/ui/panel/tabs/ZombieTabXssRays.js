@@ -24,6 +24,12 @@ ZombieTab_XssRaysTab = function(zombie) {
 
      var req_pagesize = 30;
 
+    var xssrays_config_panel = new Ext.Panel({
+		id: 'xssrays-config-zombie-'+zombie.session,
+		title: 'Scan Config',
+		layout: 'fit'
+	});
+
      var xssrays_logs_store = new Ext.ux.data.PagingJsonStore({
         storeId: 'xssrays-logs-store-zombie-' + zombie.session,
         url: '/ui/xssrays/zombie.json',
@@ -93,6 +99,58 @@ ZombieTab_XssRaysTab = function(zombie) {
 		}
 	});
 
+    function genScanSettingsPanel(zombie, bar, value) {
+		var form = new Ext.FormPanel({
+			title: 'Scan settings',
+			id: 'xssrays-config-form-zombie'+zombie.session,
+			url: '/ui/xssrays/createNewScan',
+            labelWidth: 230,
+			border: false,
+			padding: '3px 5px 0 5px',
+            defaults: {width: 100},
+            defaultType: 'textfield',
+
+			items:[{
+                fieldLabel: 'Clean Timeout (milliseconds before the injected iFrames are removed from the DOM)',
+                name: 'clean_timeout',
+                allowBlank:false,
+                value: 5000,
+                padding: '10px 5px 0 5px'
+            },{
+               xtype:'checkbox',
+               fieldLabel: 'Cross-domain (check for XSS on cross-domain resources)',
+               name: 'cross_domain',
+               checked: true
+            }],
+
+			buttons: [{
+				text: 'Start Scan',
+				handler: function() {
+					var form = Ext.getCmp('xssrays-config-form-zombie'+zombie.session).getForm();
+
+                    bar.update_sending('Saving settings and ready to start XssRays... ' + zombie.ip + '...');
+
+					form.submit({
+						params: {
+							nonce: Ext.get("nonce").dom.value,
+							zombie_session: zombie.session
+						},
+						success: function() {
+							bar.update_sent("Scan settings saved for hooked browser [" + zombie.ip + "]. XssRays will be added to victim DOM on next polling.");
+						},
+						failure: function() {
+							bar.update_fail("Error! Something went wrong saving scan settings.");
+						}
+					});
+				}
+			}]
+		});
+
+		panel = Ext.getCmp('xssrays-config-zombie-'+zombie.session);
+		panel.setTitle('Scan Config');
+		panel.add(form);
+	}
+
 	ZombieTab_XssRaysTab.superclass.constructor.call(this, {
         id: 'xssrays-log-tab-'+zombie.session,
 		title: 'XssRays',
@@ -101,8 +159,13 @@ ZombieTab_XssRaysTab = function(zombie) {
 			forceFit: true,
 			type: 'fit'
 		},
-        items: [xssrays_logs_panel],
-        bbar: commands_statusbar
+        items: [xssrays_logs_panel, xssrays_config_panel],
+        bbar: commands_statusbar,
+        listeners: {
+			afterrender : function(){
+				genScanSettingsPanel(zombie, commands_statusbar);
+			}
+		}
 	});
 };
 

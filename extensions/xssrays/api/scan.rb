@@ -45,19 +45,17 @@ module BeEF
 
             # the URI of the HTTP controller where rays should come back if the vulnerability is verified
             beefurl = "#{BeEF::Core::Server.instance.url}/ui/xssrays/rays"
-
-            #TODO: this must be configurable is some ways, through the web UI
-            cross_domain = true
-            timeout = 5000
-
+            cross_domain = xs.cross_domain
+            timeout = xs.clean_timeout
+            debug = BeEF::Core::Configuration.instance.get("beef.extension.xssrays.js_console_logs")
 
             @body << %Q{
               beef.execute(function() {
-                beef.net.xssrays.startScan('#{xs.id}', '#{hb.session}', '#{beefurl}', #{cross_domain}, #{timeout});
+                beef.net.xssrays.startScan('#{xs.id}', '#{hb.session}', '#{beefurl}', #{cross_domain}, #{timeout}, #{debug});
               });
             }
 
-            print_debug("[XSSRAYS] Adding XssRays to the DOM. Scan id [#{xs.id}], started at [#{xs.scan_start}]")
+            print_debug("[XSSRAYS] Adding XssRays to the DOM. Scan id [#{xs.id}], started at [#{xs.scan_start}], cross domain [#{cross_domain}], clean timeout [#{timeout}], js console debug [#{debug}].")
 
           end
         end

@@ -42,7 +42,7 @@ module Xssrays
       
       # validates the scan id
       scan_id = @data['cid'] || nil
-      raise WEBrick::HTTPStatus::BadRequest, "Scan id (cid) is null" if request_id.nil?
+      raise WEBrick::HTTPStatus::BadRequest, "Scan id (cid) is null" if scan_id.nil?
 
       # validates that a hooked browser with the beef_hook token exists in the db
       hooked_browser = HB.first(:session => beef_hook) || nil

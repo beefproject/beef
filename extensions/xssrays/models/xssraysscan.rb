@@ -32,9 +32,9 @@ module Models
     property :scan_start, DateTime, :lazy => true
     property :scan_finish, DateTime, :lazy => true
 
-    #TODO: the domain field is never filled, because the hooked_browser table has the same field empty too...
     property :domain, Text, :lazy => true
-    property :same_origin, Text, :lazy => true
+    property :cross_domain, Text, :lazy => true
+    property :clean_timeout, Integer, :lazy => false
 
     property :is_started, Boolean, :lazy => false, :default => false
     property :is_finished, Boolean, :lazy => false, :default => false

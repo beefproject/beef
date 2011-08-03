@@ -18,3 +18,6 @@ beef:
         xssrays:
             enable: true
             authors: ["antisnatchor"]
+            clean_timeout: 5000
+            cross_domain: false
+            js_console_logs: true
