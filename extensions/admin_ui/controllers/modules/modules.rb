@@ -148,6 +148,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(browser_uastring_row) # add the row
     end
     
+    # set and add the list of cookies
+    cookies = BD.get(zombie_session, 'Cookies')
+    if not cookies.nil? and not cookies.empty?
+      encoded_cookies = CGI.escapeHTML(cookies)
+      encoded_cookies_hash = { 'Cookies' => encoded_cookies }
+      
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_cookies_hash,
+        'from' => 'Initialisation'
+      }
+      
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+    
     # set and add the list of plugins installed in the browser
     browser_plugins = BD.get(zombie_session, 'BrowserPlugins')
     if not browser_plugins.nil? and not browser_plugins.empty?

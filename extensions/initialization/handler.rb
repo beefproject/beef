@@ -75,6 +75,10 @@ module Initialization
       raise WEBrick::HTTPStatus::BadRequest, "Invalid browser browser string" if not BeEF::Filters.is_valid_browserstring?(browser_string)
       BD.set(session_id, 'BrowserReportedName', browser_string)
 
+      # get and store the cookies
+      cookies = get_param(@data['results'], 'Cookies')
+      BD.set(session_id, 'Cookies', cookies)
+
       # get and store the os name
       os_name = get_param(@data['results'], 'OsName')
       raise WEBrick::HTTPStatus::BadRequest, "Invalid browser os name" if not BeEF::Filters.is_valid_osname?(os_name)
