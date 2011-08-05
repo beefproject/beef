@@ -82,7 +82,7 @@ module WEBrick
       <TR>
       <TD>
 
-      <h1><a href="http://www.bindshell.net/tools/beef/">These aren't the pages you're looking for</a></h1>
+      <h1><a href="http://beefproject.com/">These aren't the pages you're looking for</a></h1>
       
       </TD>
       </TR>
