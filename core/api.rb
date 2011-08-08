@@ -52,8 +52,8 @@ module API
 end
 end
 
-require 'core/api/command'
+require 'core/api/module'
 require 'core/api/extension'
-require 'core/api/migration'
-require 'core/api/server/handler'
-require 'core/api/server/hook'
+require 'core/api/main/migration'
+require 'core/api/main/server/handler'
+require 'core/api/main/server/hook'

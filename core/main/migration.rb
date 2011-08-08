@@ -65,17 +65,10 @@ module Core
             config.set('beef.module.'+mod.name+'.db.path', mod.path)
         end
       }
+
+      # Call Migration method
+      BeEF::API.fire(BeEF::API::Migration, 'migrate_commands')
       
-      # We use the API to execute the migration code for each extensions that needs it.
-      # For example, the metasploit extensions requires to add new commands into the database.
-      BeEF::API::Migration.extended_in_modules.each do |mod|
-        begin
-          mod.migrate_commands!
-        rescue Exception => e
-          puts e.message  
-          puts e.backtrace
-        end
-      end
     end
   end
 end

@@ -21,7 +21,7 @@ module Metasploit
     
     extend BeEF::API::Migration
     
-    def self.migrate_commands!
+    def self.migrate_commands
       msf = BeEF::Extension::Metasploit::RpcClient.instance
       
       # verify that metasploit is enabled and we are logged in.

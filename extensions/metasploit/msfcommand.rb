@@ -20,19 +20,15 @@ module Commands
   class Msf < BeEF::Core::Command
   
     def initialize
-      super({
-        'Name' => 'Generic Metasploit Exploit',
+      h = {
+        'name' => 'Generic Metasploit Exploit',
+        'description' => 'This module will launch a Metasploit exploit against the host',
+        'category' => 'Metasploit',
+        'author' => ['sussurro']
+      }
 
-        'Description' => %Q{
-          This module will launch a Metasploit exploit against the host
-          },
-        'Category' => 'Metasploit',
-        'Author' => ['sussurro'],
-        'Data' => [ ], 
-        'File' => __FILE__,
-      })
-
-      use 'beef.dom'
+      BeEF::Core::Configuration.instance.set('beef.module.gmsf', h)
+      super('gmsf')
     end
   
     def callback
