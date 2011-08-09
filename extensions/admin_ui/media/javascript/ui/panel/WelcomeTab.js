@@ -26,7 +26,7 @@ WelcomeTab = function() {
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Logs:</span> Displays recent log entries related to this particular hooked browser.</li> \
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Commands:</span> This tab is where modules can be executed against the hooked browser. This is where most of the BeEF functionality resides.</li> \
               <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Requester:</span> The Requester tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser.</li> \
-              <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS. It works also cross-domain.</li></ul></p><br /> \
+              <li><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS.</li></ul></p><br /> \
               <p>Official website: <a href='http://beefproject.com/'>http://beefproject.com/</a></p><br />\
               </div> \
               ";
