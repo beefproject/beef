@@ -16,7 +16,7 @@
 beef:
     module:
         browser_autopwn:
-            enable: true
+            enable: false
             category: "Metasploit"
             name: "Browser AutoPwn"
             description: "This module will redirect a user to the autopwn port on a Metasploit listener and then rely on Metasploit to handle the resulting shells.  If the Metasploit extension is loaded, this module will pre-populate the URL to the pre-launched listener.  Otherwise, enter the URL you would like the user to be redirected to."
