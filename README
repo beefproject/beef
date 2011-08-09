@@ -27,7 +27,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
    1. Prerequisites (platform independent)
 
-      Beef requires ruby 1.8  
+      Beef requires ruby 1.9
 
       
    2. Prerequisites (Windows)
