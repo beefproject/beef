@@ -81,7 +81,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                         iconCls: 'zombie-tree-ctxMenu-proxy'
                     },{
                         id: 'xssrays_hooked_domain',
-                        text: 'Launch XssRays on Hooked Homain',
+                        text: 'Launch XssRays on Hooked Domain',
                         iconCls: 'zombie-tree-ctxMenu-xssrays'
                     }
 
