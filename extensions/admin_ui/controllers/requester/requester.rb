@@ -125,7 +125,8 @@ class Requester < BeEF::Extension::AdminUI::HttpController
         'request_date'    => http.request_date,
         'response_date'    => http.response_date,
         'response_status_code'    => http.response_status_code,
-        'response_status_text'    => http.response_status_text
+        'response_status_text'    => http.response_status_text,
+	'response_port_status'    => http.response_port_status
       }
     }
     

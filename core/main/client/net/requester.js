@@ -36,6 +36,7 @@ beef.net.requester = {
                                            response_data:res.response_body,
                                            response_status_code: res.status_code,
                                            response_status_text: res.status_text,
+					   response_port_status: res.port_status,
                                            response_headers: res.headers});
                                        }
                                  );

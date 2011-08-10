@@ -195,19 +195,21 @@ beef.net = {
 		     //function on success
 		     success: function(data, textStatus, xhr){
 		    	 var end_time = new Date().getTime();
-                 response.status_code = textStatus;
+	                 response.status_code = textStatus;
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
 		    	 response.duration = (end_time - start_time);
-		    },
+		     },
 		     //function on failure
-	    	 error: function(jqXHR, textStatus, errorThrown){
+		     error: function(jqXHR, textStatus, errorThrown){
 	    		 var end_time = new Date().getTime();
-	    		 if (textStatus == "timeout"){response.was_timedout = true;}
+	    		 if (textStatus == "timeout"){response.was_timedout = true; response.port_status = "closed"; } else { response.port_status = "open"; }
+			 response.status_code = jqXHR.status;
+			 response.response_body = jqXHR.responseText;
 	    		 response.status_code = textStatus;
 		    	 response.duration = (end_time - start_time);
-		    },
+		     },
 		     //function on completion
 		     complete: function(transport) {
 		    	 response.status_code = transport.status;
@@ -281,27 +283,28 @@ beef.net = {
 		     //function on success
 		     success: function(data, textStatus, xhr){
 		    	 var end_time = new Date().getTime();
-                 response.status_code = xhr.status;
-                 response.status_text = textStatus;
+			 response.status_code = xhr.status;
+			 response.status_text = textStatus;
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
 		    	 response.duration = (end_time - start_time);
-		    },
+		     },
 		     //function on failure
-	    	 error: function(xhr, textStatus, errorThrown){
+	    	     error: function(xhr, textStatus, errorThrown){
 	    		 var end_time = new Date().getTime();
-	    		 if (textStatus == "timeout"){response.was_timedout = true;}
+	    		 if (textStatus == "timeout"){response.was_timedout = true; response.port_status = "closed"; } else { response.port_status = "open"; }
+			 response.response_body = xhr.responseText;
 	    		 response.status_code = xhr.status;
-                 response.status_text = textStatus;
+	                 response.status_text = textStatus;
 		    	 response.duration = (end_time - start_time);
-		    },
+		     },
 		     //function on completion
 		     complete: function(xhr, textStatus) {
 		    	 response.status_code = xhr.status;
-                 response.status_text = textStatus;
-                 response.headers = xhr.getAllResponseHeaders();
-		         callback(response, requestid);
+			 response.status_text = textStatus;
+			 response.headers = xhr.getAllResponseHeaders();
+			 callback(response, requestid);
              }
 		});
 		return response;

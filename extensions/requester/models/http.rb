@@ -42,6 +42,9 @@ module Models
     # The http response code. Human-readable code: success, error, ecc..
     property :response_status_text, Text, :lazy => true
 
+   # The port status. closed, open or not http
+    property :response_port_status, Text, :lazy => true
+
     # The XHR Http response raw headers
     property :response_headers, Text, :lazy => true
 

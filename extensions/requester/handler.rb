@@ -67,6 +67,7 @@ module Requester
       http_db.response_headers = @data['results']['response_headers']
       http_db.response_status_code = @data['results']['response_status_code']
       http_db.response_status_text = @data['results']['response_status_text']
+      http_db.response_port_status = @data['results']['response_port_status']
       http_db.response_data = @data['results']['response_data']
       http_db.response_date = Time.now
       http_db.has_ran = true
