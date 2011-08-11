@@ -28,7 +28,7 @@ module API
                 mods.each do |mod|
                   begin
                     #Only used for API Development
-                    #print_info "API: #{mod} called #{method}"
+                    #print_info "API: #{mod} fired #{method}"
                     mod.send method, *args
                   rescue Exception => e
                     print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
@@ -57,6 +57,7 @@ require 'core/api/module'
 require 'core/api/extension'
 require 'core/api/extensions'
 require 'core/api/main/migration'
+require 'core/api/main/network_stack/assethandler.rb'
 require 'core/api/main/server/handler'
 require 'core/api/main/server/hook'
 require 'core/api/main/configuration'
