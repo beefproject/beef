@@ -48,12 +48,16 @@ module Module
     
     # Soft Load, loads the module without requiring the module.rb file
     def self.soft_load(mod)
+        # API call for pre-soft-load module
+        BeEF::API.fire(BeEF::API::Module, 'pre_soft_load', mod)
         config = BeEF::Core::Configuration.instance
         if not config.get("beef.module.#{mod}.loaded")
             if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
                 BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
                 self.parse_targets(mod)
                 print_debug "Soft Load module: '#{mod}'"
+                # API call for post-soft-load module
+                BeEF::API.fire(BeEF::API::Module, 'post_soft_load', mod)
                 return true
             else
                 print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
@@ -65,6 +69,8 @@ module Module
 
     # Hard Load, loads a pre-soft-loaded module by requiring the module.rb
     def self.hard_load(mod)
+        # API call for pre-hard-load module
+        BeEF::API.fire(BeEF::API::Module, 'pre_hard_load', mod)
         config = BeEF::Core::Configuration.instance
         if self.is_enabled(mod)
             begin
@@ -75,6 +81,8 @@ module Module
                     BeEF::Core::Configuration.instance.set("beef.module.#{mod}.mount", "/command/#{mod}.js")
                     BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
                     print_debug "Hard Load module: '#{mod.to_s}'"
+                    # API call for post-hard-load module
+                    BeEF::API.fire(BeEF::API::Module, 'post_hard_load', mod)
                     return true
                 else
                     print_error "Hard loaded module '#{mod.to_s}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"

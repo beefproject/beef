@@ -39,8 +39,6 @@ module Core
       @config = self.load(configuration_file)
       # set default value if key? does not exist
       @config.default = nil
-      load_extensions_config
-      load_modules_config
     end
 
     #
@@ -96,6 +94,7 @@ module Core
     # load extensions configurations
     #
     def load_extensions_config
+        self.set('beef.extension', {})
         Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
@@ -109,11 +108,14 @@ module Core
     # Load module configurations
     #
     def load_modules_config
+        self.set('beef.module', {})
         Dir.glob("#{$root_dir}/modules/**/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
                 y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
                 @config = y.deep_merge(@config)
+                # API call for post module config load
+                BeEF::API.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
             end
         end
     end

@@ -17,4 +17,5 @@ beef:
     extension:
         autoloader:
             enable: true 
+            name: 'Autoloader'
 

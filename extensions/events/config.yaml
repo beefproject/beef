@@ -17,4 +17,5 @@ beef:
     extension:
         events:
             enable: true 
+            name: 'Events'
 

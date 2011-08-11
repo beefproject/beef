@@ -17,4 +17,5 @@ beef:
     extension:
         initialization:
             enable: true 
+            name: 'Initialization'
 

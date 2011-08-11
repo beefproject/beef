@@ -99,14 +99,13 @@ module Banners
     # Print loaded extensions
     #
     def print_loaded_extensions
-      extensions = BeEF::API::Extension.extended_in_modules
+      extensions = BeEF::Extensions.get_loaded
       print_info "#{extensions.size} extensions loaded:"
       output = ''
       
-      extensions.each do |extension|
-        if extension.full_name
-          output += "#{extension.full_name}\n"
-        end
+      
+      extensions.each do |key,ext|
+        output += "#{ext['name']}\n"
       end
       
       print_more output
@@ -115,8 +114,7 @@ module Banners
     #
     # Print loaded modules
     def print_loaded_modules
-        puts BeEF::API::Module.extended_in_modules
-        print_info "#{BeEF::Modules::get_enabled.count} modules loaded."
+        print_info "#{BeEF::Modules::get_enabled.count} modules enabled."
     end
   end
 end

@@ -16,6 +16,7 @@
 beef:
     extension:
         admin_ui:
+            name: 'Admin UI'
             enable: true 
             username: "beef"
             password: "beef"

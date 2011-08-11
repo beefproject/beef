@@ -17,4 +17,5 @@ beef:
     extension:
         console:
             enable: true 
+            name: 'Console'
 

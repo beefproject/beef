@@ -13,11 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-=begin
 
-  
-
-=end
 module BeEF
 module API
 
@@ -25,17 +21,22 @@ module API
     # Calls a API fire against a certain class / module (c) method (m) with n parameters (*args)
     #
     def self.fire(c, m, *args)
-        if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
-            method = self.get_api_path(c, m)
-            c.extended_in_modules.each do |mod|
-              begin
-                mod.send method, *args
-              rescue Exception => e
-                print_error e.message  
-              end
+        mods = c.extended_in_modules
+        if mods.length > 0
+            if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
+                method = self.get_api_path(c, m)
+                mods.each do |mod|
+                  begin
+                    #Only used for API Development
+                    #print_info "API: #{mod} called #{method}"
+                    mod.send method, *args
+                  rescue Exception => e
+                    print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
+                  end
+                end
+            else
+                print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
             end
-        else
-            print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
         end
     end
 
@@ -54,6 +55,9 @@ end
 
 require 'core/api/module'
 require 'core/api/extension'
+require 'core/api/extensions'
 require 'core/api/main/migration'
 require 'core/api/main/server/handler'
 require 'core/api/main/server/hook'
+require 'core/api/main/configuration'
+

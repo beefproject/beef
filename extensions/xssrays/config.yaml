@@ -17,6 +17,7 @@ beef:
     extension:
         xssrays:
             enable: true
+            name: 'XSSRays'
             authors: ["antisnatchor"]
             clean_timeout: 5000
             cross_domain: false

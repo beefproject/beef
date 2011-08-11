@@ -22,6 +22,7 @@
 beef:
     extension:
         metasploit:
+            name: 'Metasploit'
             enable: true
             host: "127.0.0.1"
             url-path: "/RPC2"

@@ -13,9 +13,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    extension:
-        demos:
-            enable: true 
-            name: 'Demos'
+module BeEF
+module API
+  module Configuration 
+    
+    API_PATHS = {
+        'module_configuration_load' => :module_configuration_load
+    }
+    
+    def module_configuration_load(mod); end
 
+  end
+  
+end
+end

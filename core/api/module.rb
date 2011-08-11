@@ -20,6 +20,22 @@ module API
   end
 
   module Module
+    
+    API_PATHS = {
+        'pre_soft_load' => :pre_soft_load,
+        'post_soft_load' => :post_soft_load,
+        'pre_hard_load' => :pre_hard_load,
+        'post_hard_load' => :post_hard_load
+    }
+    
+    def pre_soft_load(mod); end
+
+    def post_soft_load(mod); end
+
+    def pre_hard_load(mod); end
+
+    def post_hard_load(mod); end
+
   end
   
 end

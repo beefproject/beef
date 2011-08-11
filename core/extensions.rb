@@ -28,9 +28,12 @@ module Extensions
 
     # Loads all enabled extensions
     def self.load
+        BeEF::Core::Configuration.instance.load_extensions_config
         self.get_enabled.each { |k,v|
             BeEF::Extension.load(k)
         }
+        # API post extension load
+        BeEF::API.fire(BeEF::API::Extensions, 'post_load')
     end
 
 end

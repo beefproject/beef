@@ -13,9 +13,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    extension:
-        demos:
-            enable: true 
-            name: 'Demos'
+module BeEF
+module API
+module Extensions
+    
+    API_PATHS = {
+        'post_load' => :post_load
+    }
+    
+    def post_load; end
 
+
+  
+end
+end
+end

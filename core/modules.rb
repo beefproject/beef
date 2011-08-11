@@ -43,6 +43,7 @@ module Modules
     
     # Loads modules 
     def self.load
+        BeEF::Core::Configuration.instance.load_modules_config
         self.get_enabled.each { |k,v|
             BeEF::Module.soft_load(k)
         }
