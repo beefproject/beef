@@ -40,7 +40,7 @@ beef.session = {
 		}
 		
 		// if the browser is not known create a hook session id and set it
-		if (typeof id == 'undefined') {
+		if ((typeof id == 'undefined') || (id == null)) {
 			id = this.gen_hook_session_id();
 			this.set_hook_session_id(id);
 		}
