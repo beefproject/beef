@@ -187,15 +187,14 @@ beef.net = {
 
 		//build and execute the request
 		$j.ajax({type: method,
-
-			 //dataType: dataType,
+			 dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
 		     url: url,
 		     data: data,
 		     timeout: (timeout * 1000),
 		     //function on success
 		     success: function(data, textStatus, xhr){
 		    	 var end_time = new Date().getTime();
-	                 response.status_code = textStatus;
+		    	 response.status_code = textStatus;
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
@@ -274,8 +273,7 @@ beef.net = {
 
 		//build and execute the request
 		$j.ajax({type: method,
-
-			 //dataType: dataType,
+		     dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
 		     url: url,
 		     data: data,
 		     timeout: (timeout * 1000),
@@ -283,28 +281,28 @@ beef.net = {
 		     //function on success
 		     success: function(data, textStatus, xhr){
 		    	 var end_time = new Date().getTime();
-			 response.status_code = xhr.status;
-			 response.status_text = textStatus;
+		    	 response.status_code = xhr.status;
+		    	 response.status_text = textStatus;
 		    	 response.response_body = data;
 		    	 response.port_status = "open";
 		    	 response.was_timedout = false;
 		    	 response.duration = (end_time - start_time);
 		     },
 		     //function on failure
-	    	     error: function(xhr, textStatus, errorThrown){
-	    		 var end_time = new Date().getTime();
+		    	 error: function(xhr, textStatus, errorThrown){
+		    	 var end_time = new Date().getTime();
 	    		 if (textStatus == "timeout"){response.was_timedout = true; response.port_status = "closed"; } else { response.port_status = "open"; }
-			 response.response_body = xhr.responseText;
+		    	 response.response_body = xhr.responseText;
 	    		 response.status_code = xhr.status;
-	                 response.status_text = textStatus;
+		    	 response.status_text = textStatus;
 		    	 response.duration = (end_time - start_time);
 		     },
 		     //function on completion
 		     complete: function(xhr, textStatus) {
 		    	 response.status_code = xhr.status;
-			 response.status_text = textStatus;
-			 response.headers = xhr.getAllResponseHeaders();
-			 callback(response, requestid);
+		    	 response.status_text = textStatus;
+		    	 response.headers = xhr.getAllResponseHeaders();
+		    	 callback(response, requestid);
              }
 		});
 		return response;
