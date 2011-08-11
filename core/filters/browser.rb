@@ -24,6 +24,15 @@ module Filters
     true
   end
 
+  # check the browser type value - for example, {"FF5":true,"FF":true} & {"S":true}
+  def self.is_valid_browsertype?(str)
+    return false if not is_non_empty_string?(str)
+    return false if str.length < 10
+    return false if str.length > 50
+    return false if has_non_printable_char?(str)
+    true
+  end
+
   # check the os name value - for example, 'Windows XP'
   def self.is_valid_osname?(str)
     return false if not is_non_empty_string?(str)
@@ -47,6 +56,35 @@ module Filters
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)    
     return false if str.length > 200      
+    true
+  end
+  
+  # verify the cookies are valid
+  def self.is_valid_cookies?(str)
+    return false if has_non_printable_char?(str)    
+    return false if str.length > 2000
+    true
+  end
+
+  # verify the screen params are valid
+  def self.is_valid_screen_params?(str)
+    return false if has_non_printable_char?(str)    
+    return false if str.length > 200
+    true
+  end
+
+  # verify the window size is valid
+  def self.is_valid_window_size?(str)
+    return false if has_non_printable_char?(str)    
+    return false if str.length > 200
+    true
+  end
+
+  # verify the yes and no is valid
+  def self.is_valid_yes_no?(str)
+    return false if has_non_printable_char?(str)
+    return false if str !~ /^(Yes|No)$/
+    return false if str.length > 200
     true
   end
 

@@ -60,129 +60,194 @@ module Initialization
       
       # add a log entry for the newly hooked browser
       BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}", "#{zombie.id}") 
+
       # get and store browser name
-      browser_name = get_param(@data['results'], 'BrowserName')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser name" if not BeEF::Filters.is_valid_browsername?(browser_name)
-      BD.set(session_id, 'BrowserName', browser_name)
+      begin
+        browser_name = get_param(@data['results'], 'BrowserName')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser name" if not BeEF::Filters.is_valid_browsername?(browser_name)
+        BD.set(session_id, 'BrowserName', browser_name)
+      rescue
+        print_error "Invalid browser name returned from the hook browser's initial connection."
+      end
       
       # get and store browser version
-      browser_version = get_param(@data['results'], 'BrowserVersion')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser version" if not BeEF::Filters.is_valid_browserversion?(browser_version)
-      BD.set(session_id, 'BrowserVersion', browser_version)
+      begin
+        browser_version = get_param(@data['results'], 'BrowserVersion')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser version" if not BeEF::Filters.is_valid_browserversion?(browser_version)
+        BD.set(session_id, 'BrowserVersion', browser_version)
+      rescue
+        print_error "Invalid browser version returned from the hook browser's initial connection."
+      end
 
       # get and store browser string
-      browser_string = get_param(@data['results'], 'BrowserReportedName')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser browser string" if not BeEF::Filters.is_valid_browserstring?(browser_string)
-      BD.set(session_id, 'BrowserReportedName', browser_string)
+      begin
+        browser_string = get_param(@data['results'], 'BrowserReportedName')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser string" if not BeEF::Filters.is_valid_browserstring?(browser_string)
+        BD.set(session_id, 'BrowserReportedName', browser_string)
+      rescue
+        print_error "Invalid browser string returned from the hook browser's initial connection."
+      end
 
       # get and store the cookies
-      cookies = get_param(@data['results'], 'Cookies')
-      BD.set(session_id, 'Cookies', cookies)
+      begin
+        cookies = get_param(@data['results'], 'Cookies')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid cookies" if not BeEF::Filters.is_valid_cookies?(cookies)
+        BD.set(session_id, 'Cookies', cookies)
+      rescue
+        print_error "Invalid cookies returned from the hook browser's initial connection."
+      end
 
       # get and store the os name
-      os_name = get_param(@data['results'], 'OsName')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser os name" if not BeEF::Filters.is_valid_osname?(os_name)
-      BD.set(session_id, 'OsName', os_name)
+      begin
+        os_name = get_param(@data['results'], 'OsName')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser os name" if not BeEF::Filters.is_valid_osname?(os_name)
+        BD.set(session_id, 'OsName', os_name)
+      rescue
+        print_error "Invalid operating system name returned from the hook browser's initial connection."
+      end
 
       # get and store page title
-      page_title = get_param(@data['results'], 'PageTitle')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid page title name" if not BeEF::Filters.is_valid_pagetitle?(page_title)
-      BD.set(session_id, 'PageTitle', page_title)
+      begin
+        page_title = get_param(@data['results'], 'PageTitle')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid page title" if not BeEF::Filters.is_valid_pagetitle?(page_title)
+        BD.set(session_id, 'PageTitle', page_title)
+      rescue
+        print_error "Invalid page title returned from the hook browser's initial connection."
+      end
 
       # get and store page title
-      host_name = get_param(@data['results'], 'HostName')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not BeEF::Filters.is_valid_hostname?(host_name)
-      BD.set(session_id, 'HostName', host_name)
+      begin
+        host_name = get_param(@data['results'], 'HostName')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not BeEF::Filters.is_valid_hostname?(host_name)
+        BD.set(session_id, 'HostName', host_name)
+      rescue
+        print_error "Invalid host name returned from the hook browser's initial connection."
+      end
 
       # get and store the browser plugins
-      browser_plugins = get_param(@data['results'], 'BrowserPlugins')
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid browser plugins" if not BeEF::Filters.is_valid_browser_plugins?(browser_plugins)
-      BD.set(session_id, 'BrowserPlugins', browser_plugins)
+      begin
+        browser_plugins = get_param(@data['results'], 'BrowserPlugins')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser plugins" if not BeEF::Filters.is_valid_browser_plugins?(browser_plugins)
+        BD.set(session_id, 'BrowserPlugins', browser_plugins)
+      rescue
+        print_error "Invalid browser plugins returned from the hook browser's initial connection."
+      end
 
       # get and store the internal ip address
-      internal_ip = get_param(@data['results'], 'InternalIP')
-      if not internal_ip.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid internal IP address" if not BeEF::Filters.is_valid_ip?(internal_ip)
-        BD.set(session_id, 'InternalIP', internal_ip)
+      begin
+        internal_ip = get_param(@data['results'], 'InternalIP')
+        if not internal_ip.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid internal IP address" if not BeEF::Filters.is_valid_ip?(internal_ip)
+          BD.set(session_id, 'InternalIP', internal_ip)
+        end
+      rescue
+        print_error "Invalid internal IP address returned from the hook browser's initial connection."
       end
 
       # get and store the internal hostname
-      internal_hostname = get_param(@data['results'], 'InternalHostname')
-      if not internal_hostname.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid internal host name" if not BeEF::Filters.is_valid_hostname?(host_name)
-        BD.set(session_id, 'InternalHostname', internal_hostname)
+      begin
+        internal_hostname = get_param(@data['results'], 'InternalHostname')
+        if not internal_hostname.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid internal host name" if not BeEF::Filters.is_valid_hostname?(host_name)
+          BD.set(session_id, 'InternalHostname', internal_hostname)
+        end
+      rescue
+        print_error "Invalid internal hostname returned from the hook browser's initial connection."
       end
 
-      # get and store the zombie browser type
-      browser_type = get_param(@data['results'], 'BrowserType')
-      if browser_type.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid browser type"
-      else
-        BD.set(session_id, 'BrowserType', browser_type)
+      # get and store the hooked browser type
+      begin
+        browser_type = get_param(@data['results'], 'BrowserType')
+        if not browser_type.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid browser type" if not BeEF::Filters.is_valid_browsertype?(browser_type)
+          BD.set(session_id, 'BrowserType', browser_type)
+        end
+      rescue
+        print_error "Invalid hooked browser type returned from the hook browser's initial connection."
       end
 
       # get and store the zombie screen size and color depth
-      screen_params = get_param(@data['results'], 'ScreenParams')
-      if screen_params.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid screen size and color depth"
-      else
+      begin
+        screen_params = get_param(@data['results'], 'ScreenParams')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid screen params" if not BeEF::Filters.is_valid_screen_params?(screen_params)
         BD.set(session_id, 'ScreenParams', screen_params)
+      rescue
+        print_error "Invalid screen params returned from the hook browser's initial connection."
       end
 
       # get and store the window size
-      window_size = get_param(@data['results'], 'WindowSize')
-      if window_size.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid window size"
-      else
+      begin
+        window_size = get_param(@data['results'], 'WindowSize')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid window size" if not BeEF::Filters.is_valid_window_size?(window_size)
         BD.set(session_id, 'WindowSize', window_size)
+      rescue
+        print_error "Invalid window size returned from the hook browser's initial connection."
       end
 
       # get and store the yes|no value for JavaEnabled
-      java_enabled = get_param(@data['results'], 'JavaEnabled')
-      if java_enabled.nil? or java_enabled !~ /^(Yes|No)$/
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for JavaEnabled"
-      else
-        BD.set(session_id, 'JavaEnabled', java_enabled)
+      begin
+        java_enabled = get_param(@data['results'], 'JavaEnabled')
+        if not java_enabled.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for JavaEnabled" if not BeEF::Filters.is_valid_yes_no?(java_enabled)
+          BD.set(session_id, 'JavaEnabled', java_enabled)
+        end
+      rescue
+        print_error "Invalid value for JavaEnabled returned from the hook browser's initial connection."
       end
 
       # get and store the yes|no value for VBScriptEnabled
-      vbscript_enabled = get_param(@data['results'], 'VBScriptEnabled')
-      if vbscript_enabled.nil? or vbscript_enabled !~ /^(Yes|No)$/
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for VBScriptEnabled"
-      else
-        BD.set(session_id, 'VBScriptEnabled', vbscript_enabled)
+      begin
+        vbscript_enabled = get_param(@data['results'], 'VBScriptEnabled')
+        if not vbscript_enabled.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for VBScriptEnabled" if not BeEF::Filters.is_valid_yes_no?(vbscript_enabled)
+          BD.set(session_id, 'VBScriptEnabled', vbscript_enabled)
+        end
+      rescue
+        print_error "Invalid value for VBScriptEnabled returned from the hook browser's initial connection."
       end
-
+    
       # get and store the yes|no value for HasFlash
-      has_flash = get_param(@data['results'], 'HasFlash')
-      if has_flash.nil? or has_flash !~ /^(Yes|No)$/
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasFlash"
-      else
-        BD.set(session_id, 'HasFlash', has_flash)
+      begin
+        has_flash = get_param(@data['results'], 'HasFlash')
+        if not has_flash.nil? 
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasFlash" if not BeEF::Filters.is_valid_yes_no?(has_flash)
+          BD.set(session_id, 'HasFlash', has_flash)
+        end
+      rescue
+        print_error "Invalid value for HasFlash returned from the hook browser's initial connection."
       end
 
       # get and store the yes|no value for HasGoogleGears
-      has_googlegears = get_param(@data['results'], 'HasGoogleGears')
-      if has_googlegears.nil? or has_googlegears !~ /^(Yes|No)$/
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasGoogleGears"
-      else
-        BD.set(session_id, 'HasGoogleGears', has_googlegears)
+      begin
+        has_googlegears = get_param(@data['results'], 'HasGoogleGears')
+        if not has_googlegears.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasGoogleGears" if not BeEF::Filters.is_valid_yes_no?(has_googlegears)
+          BD.set(session_id, 'HasGoogleGears', has_googlegears)
+        end
+      rescue
+        print_error "Invalid value for HasGoogleGears returned from the hook browser's initial connection."
       end
 
       # get and store whether the browser has session cookies enabled
-      has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
-      if has_session_cookies.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasSessionCookies"
-      else
-        BD.set(session_id, 'hasSessionCookies', has_session_cookies)
+      begin
+        has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
+        if not has_session_cookies.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasSessionCookies" if not BeEF::Filters.is_valid_yes_no?(has_session_cookies)
+          BD.set(session_id, 'hasSessionCookies', has_session_cookies)
+        end
+      rescue
+        print_error "Invalid value for hasSessionCookies returned from the hook browser's initial connection."
       end
-
+    
       # get and store whether the browser has persistent cookies enabled
-      has_persistent_cookies = get_param(@data['results'], 'hasPersistentCookies')
-      if has_persistent_cookies.nil?
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasPersistentCookies"
-      else
-        BD.set(session_id, 'hasPersistentCookies', has_persistent_cookies)
+      begin
+        has_persistent_cookies = get_param(@data['results'], 'hasPersistentCookies')
+        if not has_persistent_cookies.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for hasPersistentCookies" if not BeEF::Filters.is_valid_yes_no?(has_persistent_cookies)
+          BD.set(session_id, 'hasPersistentCookies', has_persistent_cookies)
+        end
+      rescue
+        print_error "Invalid value for hasPersistentCookies returned from the hook browser's initial connection."
       end
 
     end
