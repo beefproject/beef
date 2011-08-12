@@ -28,7 +28,7 @@ ZombieTab_Commands = function(zombie) {
     });
 
     var welcomeWindow = new Ext.Window({
-				title: 'Welcome to BeEF',
+				title: 'Welcome to the BeEF Command Modules',
                 id: 'welcome-window',
 				closable:true,
 				width:450,
