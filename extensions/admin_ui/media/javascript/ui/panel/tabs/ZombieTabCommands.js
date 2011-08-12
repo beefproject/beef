@@ -91,7 +91,11 @@ ZombieTab_Commands = function(zombie) {
 		columns: [
 			{header: 'id', width: 35, sortable: true, dataIndex: 'id'},
 			{header: 'date', width: 100, sortable: true, dataIndex: 'creationdate'},
-			{header: 'label', sortable: true, dataIndex: 'label', renderer: function(value) { if(value==null) {command_module_grid.i +=1; return 'command '+command_module_grid.i;} else return value;}},
+			{header: 'label', sortable: true, dataIndex: 'label', renderer: 
+				function(value, metaData, record, rowIndex, colIndex, store) {
+					return 'command '+(record.get("id")+1);
+				}
+			},
 			{header: 'object_id', sortable: true, dataIndex: 'object_id', hidden: true, menuDisabled: true}
 		]
 	});
