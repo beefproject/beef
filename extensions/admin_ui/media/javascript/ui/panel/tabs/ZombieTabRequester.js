@@ -40,7 +40,7 @@ ZombieTab_Requester = function(zombie) {
 		id: 'requester-welcome-window',
 		closable:true,
 		width:450,
-		height:200,
+		height:230,
 		plain:true,
 		layout: 'border',
 		shadow: true,
@@ -48,11 +48,17 @@ ZombieTab_Requester = function(zombie) {
 			new Ext.Panel({
 			region: 'center',
 			padding: '3 3 3 3',
-			html: "Each request sent by the Requester or Proxy is recorded in the history panel. Click a history item for the HTTP headers and HTML source of the request.<br /><br />" +
-			"The Forge Request tab allows you to submit arbitrary HTTP requests on behalf of the Hooked Browser.<br /><br />" +
-			"The proxy allows you to use a browser as a proxy. Simply right-click a zombie from the Hooked Browsers tree to the left and select \"Use as Proxy\".<br /><br />" +
-			"To learn more about the Requester and Proxy please review the wiki:<br /><br />" +
-			"<a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a>"
+			html: "The Requester functionality tunnels HTTP requests through the hooked browser. Each request sent by " + 
+				"the Forge Request or Proxy is recorded in the History panel. Click a history item for the HTTP headers " + 
+				"and HTML source of the request.<br />" + 
+				"<br />" +
+				"The Forge Request tab allows you to submit arbitrary HTTP requests on behalf of the Hooked Browser.<br />" + 
+				"<br />" +
+				"The proxy allows you to use a browser as a proxy. Simply right-click a browser from the Hooked Browsers " + 
+				"tree to the left and select \"Use as Proxy\".<br />" + 
+				"<br />" +
+				"To learn more about the Requester, Forge Request and Proxy please review the wiki:<br />" +
+				"<a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a>"
 			})
 		]
 	});
