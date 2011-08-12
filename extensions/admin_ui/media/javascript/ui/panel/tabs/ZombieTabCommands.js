@@ -46,8 +46,8 @@ ZombieTab_Commands = function(zombie) {
                           "trough Javascript: for example they may gather information about the Hooked Browser, manipulate the DOM " +
                           "or perform other activities such as exploiting vulnerabilities within the local network " +
                           "of the Hooked Browser.<br/><br/>To learn more about writing your own modules please review " +
-                          "the wiki:<br /><a href='http://code.google.com/p/beef/wiki/DevDocs'>" +
-                            "http://code.google.com/p/beef/wiki/DevDocs</a><br/><br/>" +
+                          "the wiki:<br /><a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>" +
+                            "https://code.google.com/p/beef/wiki/CommandModuleAPI</a><br/><br/>" +
                             "Each command module has a traffic light icon, which is used to indicate the following:<ul>" +
                             "<li><img alt='' src='media/images/icons/green.png'  unselectable='on'> - The command works against the target and should be invisible to the user</li>" +
                             "<li><img alt='' src='media/images/icons/orange.png'  unselectable='on'> - The command works against the target, but may be visible to the user</li>" +
