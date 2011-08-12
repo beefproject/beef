@@ -31,8 +31,32 @@ ZombieTab_Requester = function(zombie) {
 		title: 'Forge Request',
 		layout: 'fit'
 	});
-	
-	
+
+	/*
+	 * The welcome message window
+	 ********************************************/
+	var requesterWelcomeWindow = new Ext.Window({
+		title: 'Welcome to the BeEF Requester',
+		id: 'requester-welcome-window',
+		closable:true,
+		width:450,
+		height:200,
+		plain:true,
+		layout: 'border',
+		shadow: true,
+		items: [
+			new Ext.Panel({
+			region: 'center',
+			padding: '3 3 3 3',
+			html: "Each request sent by the Requester or Proxy is recorded in the history panel. Click a history item for the HTTP headers and HTML source of the request.<br /><br />" +
+			"The Forge Request tab allows you to submit arbitrary HTTP requests on behalf of the Hooked Browser.<br /><br />" +
+			"The proxy allows you to use a browser as a proxy. Simply right-click a zombie from the Hooked Browsers tree to the left and select \"Use as Proxy\".<br /><br />" +
+			"To learn more about the Requester and Proxy please review the wiki:<br /><br />" +
+			"<a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a>"
+			})
+		]
+	});
+
 	/*
 	 * The panel that displays the history of all requests performed.
 	 ********************************************/
@@ -115,6 +139,10 @@ ZombieTab_Requester = function(zombie) {
 		],
 		
 		listeners: {
+			click: function() {
+			// if the user doesn't close the welcome window, lets hide it automatically
+				requesterWelcomeWindow.hide();
+			},
 			rowclick: function(grid, rowIndex) {
 				var tab_panel = Ext.getCmp('zombie-requester-tab-zombie-'+zombie.session);
 				var r = grid.getStore().getAt(rowIndex).data;
@@ -129,6 +157,11 @@ ZombieTab_Requester = function(zombie) {
 				}
 			},
 			afterrender: function(datagrid) {
+				if(Ext.get('requesterWelcomeWinShown') == null){
+					requesterWelcomeWindow.show();
+					// add a div in the header section, to prevent displaying the Welcome Window every time the tab_panel is loaded
+					Ext.DomHelper.append('header', {tag: 'div', id: 'requesterWelcomeWinShown'});
+				}
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
 			}
             //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
@@ -280,7 +313,7 @@ ZombieTab_Requester = function(zombie) {
 			},
 			
 			failure: function() {
-				bar.update_fail("Error! Could you retrieve the response.");
+				bar.update_fail("Error! Could not retrieve the response.");
 			}
 		});
 	};
