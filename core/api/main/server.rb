@@ -16,18 +16,24 @@
 module BeEF
 module API
 module Server
-  module Handler
-    
+
     API_PATHS = {
-        'pre_http_start' => :pre_http_start,
-        'mount_handlers' => :mount_handlers
+        'mount_handler' => :mount_handler,
+        'pre_http_start' => :pre_http_start
     }
     
-    def mount_handlers(beef_server); end
-
     def pre_http_start(http_hook_server); end
+    
+    def mount_handler(server); end
+    
+    def self.mount(url, hard, http_handler_class, args = nil)
+      BeEF::Core::Server.instance.mount(url, hard, http_handler_class, *args)
+    end
 
-  end
+    def self.unmount(url, hard)
+        BeEF::Core::Server.instance.unmount(url, hard)
+    end
+
   
 end
 end

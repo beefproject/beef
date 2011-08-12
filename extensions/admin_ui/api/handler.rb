@@ -24,12 +24,12 @@ module API
   module Handler
     
     # use of the API right here
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
     #
     # This function gets called automatically by the server.
     #
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(beef_server)
       # retrieve the configuration class instance
       configuration = BeEF::Core::Configuration.instance
       

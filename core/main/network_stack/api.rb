@@ -19,14 +19,14 @@ module NetworkStack
   
   module RegisterHttpHandler
     # use of the API right here
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
     #
     # Register the http handler for the network stack
     #
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(server)
       #dynamic handler
-      beef_server.mount('/dh', true, BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
+      server.mount('/dh', true, BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
     end
     
   end

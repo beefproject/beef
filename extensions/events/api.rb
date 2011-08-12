@@ -19,13 +19,13 @@ module Events
   
   module RegisterHttpHandler
     # use of the API right here
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
     #
     # Mounts the http handlers for the events extension. We use that to retrieve stuff
     # like keystroke, mouse clicks and form submission.
     #
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(beef_server)
       beef_server.mount('/event', false, BeEF::Extension::Events::Handler)
     end
     

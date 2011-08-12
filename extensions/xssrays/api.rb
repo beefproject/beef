@@ -20,11 +20,11 @@ module Xssrays
   module RegisterHttpHandler
     
     # use of the API
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
     # We register the http handler for the requester.
     # This http handler will retrieve the http responses for all requests
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(beef_server)
       beef_server.mount('/xssrays', false, BeEF::Extension::Xssrays::Handler)
     end
     

@@ -99,7 +99,7 @@ BeEF::Extension::Console::Banners.print_network_interfaces_count
 BeEF::Extension::Console::Banners.print_network_interfaces_routes
 
 # We dynamically get the list of all browser hook handler using the API and register them
-BeEF::API.fire(BeEF::API::Server::Handler, 'pre_http_start', http_hook_server)
+BeEF::API.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
 # starts the web server
 http_hook_server.start

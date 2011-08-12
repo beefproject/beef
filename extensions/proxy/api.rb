@@ -21,7 +21,7 @@ module API
   module RegisterHttpHandler
     
     # use of the API
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
     def self.pre_http_start(http_hook_server)
         proxy = BeEF::Extension::Proxy::HttpProxyZombie.instance
@@ -30,7 +30,7 @@ module API
         print_success "HTTP Proxy: http://#{config.get('beef.extension.proxy.address')}:#{config.get('beef.extension.proxy.port')}"
     end
 
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(beef_server)
       beef_server.mount('/proxy', false, BeEF::Extension::Events::Handler)
     end
     

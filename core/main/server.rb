@@ -96,7 +96,7 @@ module Core
         #
         # We dynamically get the list of all http handler using the API and register them
         #
-        BeEF::API.fire(BeEF::API::Server::Handler, 'mount_handlers', self)
+        BeEF::API.fire(BeEF::API::Server, 'mount_handler', self)
       end
     end
     

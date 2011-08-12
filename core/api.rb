@@ -58,7 +58,7 @@ require 'core/api/extension'
 require 'core/api/extensions'
 require 'core/api/main/migration'
 require 'core/api/main/network_stack/assethandler.rb'
-require 'core/api/main/server/handler'
+require 'core/api/main/server'
 require 'core/api/main/server/hook'
 require 'core/api/main/configuration'
 

@@ -19,9 +19,9 @@ module Demos
   
   module RegisterHttpHandlers
     
-    extend BeEF::API::Server::Handler
+    extend BeEF::API::Server
     
-    def self.mount_handlers(beef_server)
+    def self.mount_handler(beef_server)
       # mount the handler to support the demos
       dir = File.dirname(__FILE__)+'/html/'
       
