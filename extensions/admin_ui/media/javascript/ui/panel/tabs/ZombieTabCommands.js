@@ -136,6 +136,7 @@ ZombieTab_Commands = function(zombie) {
 	
 	var command_module_tree = new Ext.tree.TreePanel({
 		id: "zombie-command-modules"+zombie.session,
+		title: "Module Tree",
 		border: false,
 		region: 'west',
 		width: 190,
