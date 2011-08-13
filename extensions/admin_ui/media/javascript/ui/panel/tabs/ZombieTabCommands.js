@@ -22,7 +22,7 @@ ZombieTab_Commands = function(zombie) {
 	var command_module_config = new Ext.Panel({
 		id: 'zombie-command-module-config-'+zombie.session,
 		region: 'center',
-		border: false,
+		border: true,
 		layout: 'fit',
         autoScroll: true
     });
@@ -78,7 +78,7 @@ ZombieTab_Commands = function(zombie) {
 		region: 'west',
 		stripeRows: true,
 		autoScroll: true,
-		border: false,
+		border: true,
 		width: 260,
 		bodyStyle: 'border-right: 1px solid #99BBE8; border-left: 1px solid #99BBE8;',
 		i:0,
@@ -138,7 +138,7 @@ ZombieTab_Commands = function(zombie) {
 	var command_module_tree = new Ext.tree.TreePanel({
 		id: "zombie-command-modules"+zombie.session,
 		title: "Module Tree",
-		border: false,
+		border: true,
 		region: 'west',
 		width: 190,
         minSize: 190,
