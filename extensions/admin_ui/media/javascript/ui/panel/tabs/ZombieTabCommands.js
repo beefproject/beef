@@ -72,6 +72,7 @@ ZombieTab_Commands = function(zombie) {
 			}),
 		
 		id: 'command-module-grid-zombie-'+zombie.session,
+		title: "Module Results History",
 		sortable: true,
 		autoWidth: false,
 		region: 'west',
