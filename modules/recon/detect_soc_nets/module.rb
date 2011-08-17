@@ -21,7 +21,7 @@ class Detect_soc_nets < BeEF::Core::Command
     ]
   end
   
-  def callback
+  def post_execute
     content = {}
     content['GMail'] = @datastore['gmail']
     content['Facebook'] = @datastore['facebook']

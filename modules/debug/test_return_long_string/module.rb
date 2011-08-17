@@ -23,7 +23,7 @@ class Test_return_long_string < BeEF::Core::Command
   end
 
   
-  def callback
+  def post_execute
     content = {}
     content['Result String'] = @datastore['result_string']
     save content

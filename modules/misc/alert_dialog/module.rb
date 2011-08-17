@@ -26,8 +26,8 @@ class Alert_dialog < BeEF::Core::Command
       'width' => '400px' 
       }]
   end
-  
-  def callback
+
+  def post_execute 
     content = {}
     content['User Response'] = "The user clicked the 'OK' button when presented with an alert box."
     save content

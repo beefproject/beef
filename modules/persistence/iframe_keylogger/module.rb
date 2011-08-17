@@ -22,7 +22,7 @@ class Iframe_keylogger < BeEF::Core::Command
     ]
   end
   
-  def callback
+  def post_execute
     content = {}
     content['keystrokes'] = @datastore['keystrokes']
     save content

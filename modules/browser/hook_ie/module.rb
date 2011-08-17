@@ -47,7 +47,7 @@ class Hook_ie < BeEF::Core::Command
     
   end
 
-  def callback
+  def post_execute
     content = {}
     content['result'] = @datastore['result']          
     

@@ -31,6 +31,11 @@ module Module
         return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.loaded') == true)
     end
 
+    # Returns module class definition
+    def self.get_definition(mod)
+        return BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{mod.to_s}.class"))
+    end
+
     # Gets all module options
     def self.get_options(mod)
         if self.check_hard_load(mod)
@@ -345,6 +350,10 @@ module Module
         if not hb
             print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
             return false
+        end
+        command_module = self.get_definition(mod).new(mod)
+        if command_module.respond_to?(:pre_execute)
+            command_module.pre_execute
         end
         c = BeEF::Core::Models::Command.new(:data => self.merge_options(mod, opts).to_json,
             :hooked_browser_id => hb.id,

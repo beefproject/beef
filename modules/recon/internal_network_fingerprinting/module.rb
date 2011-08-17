@@ -43,7 +43,7 @@ class Internal_network_fingerprinting < BeEF::Core::Command
     ]
   end
   
-  def callback
+  def post_execute
     content = {}
     content['device'] =@datastore['device'] if not @datastore['device'].nil?
     content['url'] = @datastore['url'] if not @datastore['url'].nil?

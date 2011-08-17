@@ -15,7 +15,7 @@
 #
 class Physical_location < BeEF::Core::Command
 
-  def callback
+  def post_execute
     content = {}
     content['Geolocation Enabled'] = @datastore['geoLocEnabled']
     content['Latitude'] = @datastore['latitude']

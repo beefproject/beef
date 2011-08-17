@@ -21,7 +21,7 @@ class Detect_tor < BeEF::Core::Command
     ]
   end
   
-  def callback
+  def post_execute
     return if @datastore['result'].nil?
     
     save({'result' => @datastore['result']})

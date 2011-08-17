@@ -21,7 +21,7 @@ class Detect_local_settings < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/detect_local_settings/Beeffeine.class','/Beeffeine','class')
   end
   
-  def callback
+  def post_execute
     content = {}
     content['internal ip'] = @datastore['internal_ip'] if not @datastore['internal_ip'].nil?
     content['internal hostname'] = @datastore['internal_hostname'] if not @datastore['internal_hostname'].nil?

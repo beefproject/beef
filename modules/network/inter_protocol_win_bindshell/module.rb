@@ -68,7 +68,7 @@ class Inter_protocol_win_bindshell < BeEF::Core::Command
     ]
   end
 
-  def callback
+  def post_execute
     content = {}
     content['result'] = @datastore['result'] if not @datastore['result'].nil?
     content['fail'] = @datastore['fail'] if not @datastore['fail'].nil?

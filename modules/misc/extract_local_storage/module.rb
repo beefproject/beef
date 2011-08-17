@@ -20,7 +20,7 @@ class Extract_local_storage < BeEF::Core::Command
   #   http://diveintohtml5.org/storage.html
   #
   
-  def callback
+  def post_execute
     content = {}
     content['localStorage'] = @datastore['localStorage']
     save content

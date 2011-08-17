@@ -170,6 +170,9 @@ module Core
         JSON.parse(command['data']).each{|v|
             cc[v['name']] = v['value']
         }
+        if self.respond_to?(:execute)
+            self.execute
+        end
         @output = @eruby.evaluate(cc)
       
       @output

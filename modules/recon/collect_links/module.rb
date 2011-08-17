@@ -15,7 +15,7 @@
 #
 class Collect_links < BeEF::Core::Command
   
-  def callback
+  def post_execute
     content = {}
     content['Links'] = @datastore['links']
     

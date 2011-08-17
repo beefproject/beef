@@ -21,7 +21,7 @@ class Deface_web_page < BeEF::Core::Command
     ]
   end
 
-  def callback
+  def post_execute
     content = {}
     content['Result'] = @datastore['result']
     save content

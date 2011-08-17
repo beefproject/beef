@@ -15,7 +15,7 @@
 #
 class Rickroll < BeEF::Core::Command
   
-  def callback
+  def post_execute
     content = {}
     content['Result'] = @datastore['result']
     save content

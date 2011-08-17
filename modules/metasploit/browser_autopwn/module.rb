@@ -33,7 +33,7 @@ class Browser_autopwn < BeEF::Core::Command
   # This method is being called when a hooked browser sends some
   # data back to the framework.
   #
-  def callback
+  def post_execute
     save({'result' => @datastore['result']})
   end
   

@@ -22,7 +22,7 @@ class Link_rewrite < BeEF::Core::Command
     ]
   end
 
-  def callback
+  def post_execute
     save({'result' => @datastore['result']})
   end
   

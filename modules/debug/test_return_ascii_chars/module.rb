@@ -15,7 +15,7 @@
 #
 class Test_return_ascii_chars < BeEF::Core::Command
   
-  def callback
+  def post_execute
     content = {}
     content['Result String'] = @datastore['result_string']
     save content

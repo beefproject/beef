@@ -21,7 +21,7 @@ class Iphone_tel < BeEF::Core::Command
     ]
   end
 
-  def callback
+  def post_execute
     content = {}
     content['Result'] = @datastore['result']
     save content

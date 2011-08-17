@@ -51,7 +51,9 @@ module Handlers
       command = @kclass.new(BeEF::Module.get_key_by_class(@kclass)) # create the commamd module 
       command.build_callback_datastore(@http_params, @http_header) # build datastore from the response
       command.session_id = beefhook 
-      command.callback # call the command module's callback function - it will parse and save the results
+      if command.respond_to?(:post_execute)
+        command.post_execute
+      end
 
       # get/set details for datastore and log entry
       command_friendly_name = command.friendlyname
