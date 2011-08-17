@@ -351,10 +351,12 @@ module Module
             print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
             return false
         end
+        self.check_hard_load(mod)
         command_module = self.get_definition(mod).new(mod)
         if command_module.respond_to?(:pre_execute)
             command_module.pre_execute
         end
+        h = self.merge_options(mod, [])
         c = BeEF::Core::Models::Command.new(:data => self.merge_options(mod, opts).to_json,
             :hooked_browser_id => hb.id,
             :command_module_id => BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
@@ -369,16 +371,17 @@ module Module
             self.check_hard_load(mod)
             merged = []
             defaults = self.get_options(mod)
-            h.each{|v|
-                if v.has_key?('name')
-                    match = false
-                    defaults.each{|o|
-                        if o.has_key?('name') and v['name'] == o['name']
-                            match = true
-                            merged.push(o.deep_merge(v))
-                        end
-                    }
-                    merged.push(v) if not match
+            defaults.each{|v|
+                mer = nil
+                h.each{|o|
+                    if v.has_key?('name') and o.has_key?('name') and v['name'] == o['name']
+                        mer = v.deep_merge(o)
+                    end
+                }
+                if mer != nil
+                    merged.push(mer)
+                else
+                    merged.push(v)
                 end
             }
             return merged

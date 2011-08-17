@@ -250,6 +250,21 @@ module Initialization
         print_error "Invalid value for hasPersistentCookies returned from the hook browser's initial connection."
       end
 
+      # Call autorun modules, this will be moved to core along with the Initialization extension
+      autorun = []
+      BeEF::Core::Configuration.instance.get('beef.module').each{|k,v|
+        if v.has_key?('autorun') and v['autorun'] == true
+            if BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name}) == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+                BeEF::Module.execute(k, session_id)
+                autorun.push(k)
+            else
+                print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser #{zombie.ip}"
+            end
+        end
+      }
+      if autorun.length > 0
+          print_info "Autorun executed: #{autorun.join(', ')} against Hooked browser #{zombie.ip}"
+      end
     end
    
     def get_param(query, key)
