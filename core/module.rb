@@ -335,6 +335,48 @@ module Module
         return os
     end
 
+    # Executes module 
+    def self.execute(mod, hbsession, opts=[])
+        if not (self.is_present(mod) and self.is_enabled(mod))
+            print_error "Module not found '#{mod}'. Failed to execute module."
+            return false
+        end
+        hb = BeEF::HBManager.get_by_session(hbsession)        
+        if not hb
+            print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
+            return false
+        end
+        c = BeEF::Core::Models::Command.new(:data => self.merge_options(mod, opts).to_json,
+            :hooked_browser_id => hb.id,
+            :command_module_id => BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
+            :creationdate => Time.new.to_i
+          ).save
+        return true
+    end
+
+    # Merges default module options with array of custom options
+    def self.merge_options(mod, h)
+        if self.is_present(mod)
+            self.check_hard_load(mod)
+            merged = []
+            defaults = self.get_options(mod)
+            h.each{|v|
+                if v.has_key?('name')
+                    match = false
+                    defaults.each{|o|
+                        if o.has_key?('name') and v['name'] == o['name']
+                            match = true
+                            merged.push(o.deep_merge(v))
+                        end
+                    }
+                    merged.push(v) if not match
+                end
+            }
+            return merged
+        end
+        return nil
+    end
+
 end
 end
 

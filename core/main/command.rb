@@ -69,7 +69,7 @@ module Core
       @output = ''
       @path = config.get("beef.module.#{key}.path")
       @default_command_url = config.get("beef.module.#{key}.mount")
-      @id = config.get("beef.module.#{key}.id")
+      @id = config.get("beef.module.#{key}.db.id")
       @auto_update_zombie = false
       @results = {}
       @beefjs_components = {}
@@ -158,22 +158,19 @@ module Core
     def output
         f = @path+'command.js'
         raise WEBrick::HTTPStatus::BadRequest, "#{f} file does not exist" if not File.exists? f
+
+        command = BeEF::Core::Models::Command.first(:id => @command_id)
         
         @eruby = Erubis::FastEruby.new(File.read(f)) 
-        
-        if @datastore
-          @datastore['command_url'] = BeEF::Core::Server.instance.get_command_url(@default_command_url)
-          @datastore['command_id'] = @command_id
-          
-          command_context = BeEF::Core::CommandContext.new
-          @datastore.each{|k,v| 
-            command_context[k] = v
-          }
-          
-          @output = @eruby.evaluate(command_context)
-        else
-          @ouput = @eruby.result()
-        end
+
+        data = BeEF::Core::Configuration.instance.get("beef.module.#{@key}")
+        cc = BeEF::Core::CommandContext.new
+        cc['command_url'] = @default_command_url
+        cc['command_id'] = @command_id
+        JSON.parse(command['data']).each{|v|
+            cc[v['name']] = v['value']
+        }
+        @output = @eruby.evaluate(cc)
       
       @output
     end

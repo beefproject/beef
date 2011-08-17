@@ -560,18 +560,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 	    oc.save
     }
 
-    zombie = Z.first(:session => zombie_session)
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
-    zombie_id = zombie.id
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
-    
-    C.new(  :data => definition.to_json,
-            :hooked_browser_id => zombie_id,
-            :command_module_id => command_module_id,
-            :creationdate => Time.new.to_i
-          ).save
-    
-    @body = '{success : true}'
+    mod_key = BeEF::Module.get_key_by_database_id(command_module_id)
+    # Hack to rework the old option system into the new option system
+    def2 = []
+    definition.each{|k,v|
+        def2.push({'name' => k, 'value' => v})
+    }
+    # End hack
+    @body = (BeEF::Module.execute(mod_key, zombie_session, def2)) ? '{success: true}' : '{success: false}'
   end
   
   # Re-execute an command_module to a zombie.
