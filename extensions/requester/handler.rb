@@ -72,15 +72,13 @@ module Requester
       http_db.response_date = Time.now
       http_db.has_ran = true
 
-      # temporary hack to prevent MySQL errors when saving images
-      # see issue http://code.google.com/p/beef/issues/detail?id=368
-      if BeEF::Core::Configuration.instance.get("beef.database.default") == "mysql"
-        if http_db.response_headers.to_s =~ /Content-Type: image/
-         print_debug("Found [Content-Type: image] in the http response headers: saving dummy data instead of original raw image data")
-         http_db.response_data = "IMAGE CONTENT"
-        end
-      end
-
+			
+      # Store images as binary
+      # see issue http://code.google.com/p/beef/issues/detail?id=368   
+			if http_db.response_headers =~ /Content-Type: image/
+				http_db.response_data = http_db.response_data.unpack('a*')					
+			end
+     
 
       http_db.save
     end

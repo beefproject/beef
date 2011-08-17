@@ -61,7 +61,7 @@ beef.encode.base64 = {
 
     decode : function (input) {
         if (window.atob) {
-            return atob(escape(input));
+            return escape(atob(input));
         }
 
         var output = "";
