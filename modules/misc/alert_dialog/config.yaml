@@ -22,4 +22,4 @@ beef:
             description: "Sends an alert dialog to the hooked browser."
             authors: ["bm"]
             target:
-                working: ["All"]
+                user_notify: ["All"]
