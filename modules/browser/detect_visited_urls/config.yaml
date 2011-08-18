@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Detect Visited URLs"
-            description: "This module will detect whether or not the zombie has visited the specified URL(s)"
+            description: "This module will detect whether or not the hooked browser has visited the specified URL(s)"
             authors: ["passbe"]
             target:
                 working: ["ALL"]
