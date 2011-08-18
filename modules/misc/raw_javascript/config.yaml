@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Raw JavaScript"
-            description: "This module will send the code entered in the 'JavaScript Code' section to the selected zombie browsers where it will be executed. Code is run inside an anonymous function and the return value is passed to the framework. Multiline scripts are allowed, no special encoding is required."
+            description: "This module will send the code entered in the 'JavaScript Code' section to the selected hooked browsers where it will be executed. Code is run inside an anonymous function and the return value is passed to the framework. Multiline scripts are allowed, no special encoding is required."
             authors: ["wade", "vo"]
             target:
                 working: ['ALL']
