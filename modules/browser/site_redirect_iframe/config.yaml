@@ -19,7 +19,8 @@ beef:
             enable: true
             category: "Browser"
             name: "Site Redirect (iframe)"
-            description: "This module will redirect the selected hooked browser to the address specified in the 'Redirect URL' input. It creates a 100% x 100% overlaying iframe to keep the victim hooked and changes the page title to the provided value which should be set to the title of the redirect URL."
+            description: "This module creates a 100% x 100% overlaying iframe and keeps the browers hooked to the framework. The content of the iframe, page title and the time delay are specified in the parameters below.<br><br>The content of the URL bar will not be changed in the hooked browser."
             authors: ["ethicalhack3r", "Yori Kvitchko"]
             target:
                 user_notify: ["ALL"]
+
