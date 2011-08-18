@@ -17,9 +17,9 @@ beef:
     module:
         inter_protocol_win_bindshell:
             enable: true
-            category: "Network"
-            name: "Inter-Protocol Windows Bindshell"
-            description: "Using <a href='http://www.bindshell.net/papers/ipc'>Inter-protocol Communication</a> the zombie browser will send commands to a listening Windows shell bound on the target specified in the 'Target Address' input. The target address can be on the zombie's subnet which is potentially not directly accessible from the Internet.<br><br>The command results are returned to the BeEF control panel."
+            category: "IPEC"
+            name: "Bindshell (Windows)"
+            description: "Using <a href='http://www.bindshell.net/papers/ipc'>Inter-protocol Expliotation/Communication (IPEC)</a> the hooked browser will send commands to a listening Windows shell bound on the target specified in the 'Target Address' input. <br><br>The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet."
             authors: ["bcoles", "wade"]
             target:
                 working: ["FF"]
