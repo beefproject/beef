@@ -30,6 +30,25 @@ module Zombie
     # will be sent back.
     def forward_request(hooked_browser_id, req, res)
 
+      # validate that the raw request is correct and can be used
+      req_parts = req.to_s.split(/ |\n/) # break up the request
+      verb = req_parts[0]
+      raise 'Only HEAD, GET, POST, OPTIONS, PUT or DELETE requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
+      uri = req_parts[1]
+      raise 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
+      version = req_parts[2]
+      raise 'Invalid HTTP version' if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
+      host_str = req_parts[3]
+      raise 'Invalid HTTP host header' if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
+      host = req_parts[4]
+      host_parts = host.split(/:/)
+      hostname = host_parts[0]
+      raise 'Invalid hostname' if not BeEF::Filters.is_valid_hostname?(hostname) #check the target hostname
+      hostport = host_parts[1] || nil
+      if !hostport.nil?
+          raise 'Invalid hostport' if not BeEF::Filters.nums_only?(hostport) #check the target hostport
+      end
+
       # Append port to domain string if not 80 or 443
       if req.port != 80 or req.port != 443
         domain = req.host.to_s + ':' + req.port.to_s

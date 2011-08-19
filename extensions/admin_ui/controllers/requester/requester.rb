@@ -59,13 +59,13 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     # validate that the raw request is correct and can be used
     req_parts = raw_request.split(/ |\n/) # break up the request
     verb = req_parts[0]
-    raise 'Only GET or POST requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
+    raise 'Only HEAD, GET, POST, OPTIONS, PUT or DELETE requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
     uri = req_parts[1]
     raise 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
     version = req_parts[2]
     raise 'Invalid HTTP version' if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
     host_str = req_parts[3]
-    raise 'Invalid HTTP version' if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
+    raise 'Invalid HTTP host header' if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
     host = req_parts[4]
     host_parts = host.split(/:/)
     hostname = host_parts[0]

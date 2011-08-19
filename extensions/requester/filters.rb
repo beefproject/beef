@@ -18,17 +18,19 @@ module BeEF
   module Filters
     
     def self.is_valid_verb?(verb)
-      return true if verb.eql? 'GET' or verb.eql? 'POST'
+      ["HEAD", "GET", "POST", "OPTIONS", "PUT", "DELETE"].each {|v| return true if verb.eql? v }
       false
     end
 
     def self.is_valid_url?(uri)
+      # OPTIONS * is not yet supported
+      # return true if uri.eql? "*"
       return true if uri.eql? WEBrick::HTTPUtils.normalize_path(uri)
       false
     end
 
     def self.is_valid_http_version?(version)
-      return true if version.eql? "HTTP/1.1" or trailer.eql? "HTTP/1.0"
+      return true if version.eql? "HTTP/1.1" or version.eql? "HTTP/1.0"
       false
     end
 
