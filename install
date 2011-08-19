@@ -18,7 +18,7 @@
 
 require 'rubygems'
 
-puts "\nWelcome to the BEeF installer!"
+puts "\nWelcome to the BeEF installer!"
 
 if  RUBY_VERSION < '1.9'
   puts "\n"
