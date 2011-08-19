@@ -80,9 +80,11 @@ ZombieTab_Commands = function(zombie) {
 		autoScroll: true,
 		border: true,
 		width: 260,
-		bodyStyle: 'border-right: 1px solid #99BBE8; border-left: 1px solid #99BBE8;',
 		i:0,
-		
+		minSize: 160,
+		maxSize: 300,
+		split: true,
+
 		view: new Ext.grid.GridView({
 			forceFit: true,
 			emptyText: "The results from executed command modules will be listed here.",
