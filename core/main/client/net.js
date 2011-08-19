@@ -203,7 +203,7 @@ beef.net = {
 		     //function on failure
 		     error: function(jqXHR, textStatus, errorThrown){
 	    		 var end_time = new Date().getTime();
-	    		 if (textStatus == "timeout"){response.was_timedout = true; response.port_status = "closed"; } else { response.port_status = "open"; }
+	    		 if (textStatus == "timeout") { response.was_timedout = true; response.port_status = "closed"; } else if (textStatus == "parsererror") response.port_status = "not http"; else response.port_status = "open";
 			 response.status_code = jqXHR.status;
 			 response.response_body = jqXHR.responseText;
 	    		 response.status_code = textStatus;
@@ -242,7 +242,7 @@ beef.net = {
         if (cross_domain && callback != null) {
             response.status_code = -1;
             response.status_text = "crossdomain";
-            response.response_body = "ERROR: Cross Domain Request";
+            response.response_body = "ERROR: Cross Domain Request\n";
             callback(response, requestid);
             return response;
         }
@@ -291,7 +291,7 @@ beef.net = {
 		     //function on failure
 		    	 error: function(xhr, textStatus, errorThrown){
 		    	 var end_time = new Date().getTime();
-	    		 if (textStatus == "timeout"){response.was_timedout = true; response.port_status = "closed"; } else { response.port_status = "open"; }
+	    		 if (textStatus == "timeout") { response.was_timedout = true; response.port_status = "closed"; } else if (textStatus == "parsererror") response.port_status = "not http"; else response.port_status = "open";
 		    	 response.response_body = xhr.responseText;
 	    		 response.status_code = xhr.status;
 		    	 response.status_text = textStatus;
