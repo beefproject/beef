@@ -49,19 +49,13 @@ module Zombie
           raise 'Invalid hostport' if not BeEF::Filters.nums_only?(hostport) #check the target hostport
       end
 
-      # Append port to domain string if not 80 or 443
-      if req.port != 80 or req.port != 443
-        domain = req.host.to_s + ':' + req.port.to_s
-      else
-        domain = req.host.to_s
-      end
-      
       # Saves the new HTTP request to the db for processing by browser.
       # IDs are created and incremented automatically by DataMapper.
       http = H.new(
         :request => req,
         :method => req.request_method.to_s,
-        :domain => domain,
+        :domain => req.host,
+	:port => req.port,
         :path => req.path.to_s,
         :request_date => Time.now,
         :hooked_browser_id => hooked_browser_id
@@ -70,7 +64,7 @@ module Zombie
 
       # Starts a new thread scoped to this Handler instance, in order to minimize performance degradation
       # while waiting for the HTTP response to be stored in the db.
-      print_info("[PROXY] Thread started in order to process request ##{http.id} to [#{req.path.to_s}] on domain [#{domain}]")
+      print_info("[PROXY] Thread started in order to process request ##{http.id} to [#{req.path.to_s}] on domain [#{req.host}:#{req.port}]")
       @response_thread = Thread.new do
         while !H.first(:id => http.id).has_ran
           sleep 0.5
@@ -79,7 +73,7 @@ module Zombie
       end
 
       @response_thread.join
-      print_info("[PROXY] Response for request ##{http.id} to [#{req.path.to_s}] on domain [#{domain}] correctly processed")
+      print_info("[PROXY] Response for request ##{http.id} to [#{req.path.to_s}] on domain [#{req.host}:#{req.port}] correctly processed")
 
       res.body = @response['response_data']
 

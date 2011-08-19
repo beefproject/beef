@@ -57,6 +57,9 @@ module Models
     # The domain on which perform the request.
     property :domain, Text, :lazy => false
 
+    # The port on which perform the request.
+    property :port, Text, :lazy => false
+
     # Boolean value to say if the request was cross-domain
     property :has_ran, Boolean, :default => false
 

@@ -85,6 +85,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       :request => raw_request,
       :method => request.request_method,
       :domain => request.host,
+      :port => request.port,
       :path => request.unparsed_uri,
       :request_date => Time.now,
       :hooked_browser_id => zombie.id
@@ -119,6 +120,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       history << {
         'id'      => http.id,
         'domain'  => http.domain,
+	'port'    => http.port,
         'path'    => http.path,
         'has_ran' => http.has_ran,
         'method'  => http.method,
@@ -154,6 +156,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       'response'  => http_db.response_data,
       'response_headers' => http_db.response_headers,
       'domain'    => http_db.domain,
+      'port'      => http_db.port,
       'path'      => http_db.path,
       'date'      => http_db.request_date,
       'has_ran'   => http_db.has_ran

@@ -74,7 +74,7 @@ ZombieTab_Requester = function(zombie) {
 		autoLoad: false,
 		root: 'history',
 		
-		fields: ['domain', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
+		fields: ['domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
 		baseParams: {
@@ -133,14 +133,15 @@ ZombieTab_Requester = function(zombie) {
 		columns: [
             {header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
 			{header: 'Domain', sortable: true, dataIndex: 'domain'},
-            {header: 'Method', width: 30, sortable: true, dataIndex: 'method'},
+			{header: 'Port', width: 30, sortable: true, dataIndex: 'port'},
+			{header: 'Method', width: 30, sortable: true, dataIndex: 'method'},
 			{header: 'Path', sortable: true, dataIndex: 'path'},
-            {header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
-            {header: 'Res TextCode', width: 35, sortable: true, dataIndex: 'response_status_text'},
-            {header: 'Port Status', width: 35, sortable: true, dataIndex: 'response_port_status'},
+			{header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
+			{header: 'Res TextCode', width: 35, sortable: true, dataIndex: 'response_status_text'},
+			{header: 'Port Status', width: 35, sortable: true, dataIndex: 'response_port_status'},
 			{header: 'Processed', width: 30, sortable: true, dataIndex: 'has_ran'},
 			{header: 'Req Date', width: 50, sortable: true, dataIndex: 'request_date'},
-            {header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date'}
+			{header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date'}
 
 		],
 		
@@ -250,12 +251,9 @@ ZombieTab_Requester = function(zombie) {
 		
 		if(!value) {
 			value = "GET /demos/secret_page.html HTTP/1.1\n";
-			
-			if(zombie.domain) {
-				value += "Host: "+zombie.domain.split(':')[0]+"\n";
-			} else {
-				value += "Host: \n";
-			}
+
+			if (zombie.domain) value += "Host: "+zombie.domain+"\n";
+			else value += "Host: \n";
 		}
 		
 		form.get('raw-request-zombie-'+zombie.session).value = value;
