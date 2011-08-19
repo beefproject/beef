@@ -32,7 +32,6 @@ beef:
         # if running behind a nat set the public ip address here
         #public: ""
         dns: "localhost"
-        demo_path: "/demos/basic.html"
         panel_path: "/ui/panel"
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"

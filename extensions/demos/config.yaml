@@ -18,4 +18,5 @@ beef:
         demos:
             enable: true 
             name: 'Demos'
+            demo_path: "/demos/basic.html"
 
