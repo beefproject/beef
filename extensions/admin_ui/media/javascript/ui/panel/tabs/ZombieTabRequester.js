@@ -284,14 +284,22 @@ ZombieTab_Requester = function(zombie) {
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
 				
-				var tab_result_response = new Ext.Panel({
-                    title: 'Response',
+				var tab_result_response_headers = new Ext.Panel({
+					title: 'Response Headers',
 					border: false,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
-                    items:[new Ext.form.TextArea({id: 'requester-response-res-'+request.id, value: xhr.result.response_headers + "\n" + xhr.result.response})]
+		                    items:[new Ext.form.TextArea({id: 'requester-response-res-headers-'+request.id, value: xhr.result.response_headers + "\n"})]
 				});
-		
+
+				var tab_result_response_body = new Ext.Panel({
+					title: 'Response Body',
+					border: false,
+					layout: 'fit',
+					padding: '5px 5px 5px 5px',
+					items:[new Ext.form.TextArea({id: 'requester-response-res-body-'+request.id, value: xhr.result.response + "\n"})]
+				});
+
 				var tab_result_request = new Ext.Panel({
 					title: 'Request',
 					border: false,
@@ -307,7 +315,7 @@ ZombieTab_Requester = function(zombie) {
 					border: false,
 					layout:'accordion',
 					closable: true,
-                    items:[tab_result_request, tab_result_response]
+                    items:[tab_result_request, tab_result_response_headers, tab_result_response_body]
 				});
 		
 				tab_panel.add(tab_result_accordion);
