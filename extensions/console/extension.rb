@@ -60,3 +60,4 @@ end
 
 require 'extensions/console/banners'
 require 'extensions/console/commandline'
+require 'extensions/console/shell'

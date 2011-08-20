@@ -101,5 +101,16 @@ BeEF::Extension::Console::Banners.print_network_interfaces_routes
 # We dynamically get the list of all browser hook handler using the API and register them
 BeEF::API.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
-# starts the web server
-http_hook_server.start
+# We check now for whether we load the Console Shell or not
+if config.get("beef.extension.console.shell.enable") == true
+  puts ""
+  begin
+    FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
+    BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
+      BeEF::Extension::Console::Shell::DefaultPromptChar,{'config' => config, 'http_hook_server' => http_hook_server}).run
+  rescue Interrupt
+  end
+else
+  # starts the web server
+  http_hook_server.start
+end

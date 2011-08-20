@@ -13,13 +13,25 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    extension:
-        console:
-            enable: true 
-            name: 'Console'
-            shell:
-                enable: true
-                historyfolder: '~/.beef/'
-                historyfile: 'history'
+module BeEF
+module Extension
+module Console
 
+module CommandDispatcher
+  include Rex::Ui::Text::DispatcherShell::CommandDispatcher
+  
+  def initialize(driver)
+    super
+    
+    self.driver = driver
+  end
+  
+  attr_accessor :driver
+  
+end
+
+end end end
+
+require 'extensions/console/lib/command_dispatcher/core'
+require 'extensions/console/lib/command_dispatcher/target'
+require 'extensions/console/lib/command_dispatcher/command'

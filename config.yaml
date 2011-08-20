@@ -64,3 +64,6 @@ beef:
             enable: true 
         metasploit:
             enable: false
+        console:
+            shell:
+                enable: false
