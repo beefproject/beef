@@ -61,7 +61,7 @@ module Models
     property :port, Text, :lazy => false
 
     # Boolean value to say if the request was cross-domain
-    property :has_ran, Boolean, :default => false
+    property :has_ran, Text, :lazy => false, :default => "waiting"
 
     # The path of the request.
     # Example: /secret.html
@@ -73,9 +73,6 @@ module Models
     # The date at which the http request has been saved.
     property :request_date, DateTime, :lazy => false
 
-    # Boolean value to say if the http response has been received or not.
-    property :has_ran, Boolean, :default => false
-    
   end
   
 end

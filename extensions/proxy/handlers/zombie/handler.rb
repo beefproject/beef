@@ -66,7 +66,7 @@ module Zombie
       # while waiting for the HTTP response to be stored in the db.
       print_info("[PROXY] Thread started in order to process request ##{http.id} to [#{req.path.to_s}] on domain [#{req.host}:#{req.port}]")
       @response_thread = Thread.new do
-        while !H.first(:id => http.id).has_ran
+        while H.first(:id => http.id).has_ran != "complete"
           sleep 0.5
         end
         @response = H.first(:id => http.id)

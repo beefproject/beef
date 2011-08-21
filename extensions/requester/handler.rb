@@ -56,8 +56,8 @@ module Requester
       raise WEBrick::HTTPStatus::BadRequest, "Invalid http_db: no such request found in the database" if http_db.nil?
       
       # validates that the http request has not be ran before
-      raise WEBrick::HTTPStatus::BadRequest, "This http request has been saved before" if http_db.has_ran.eql? true
-      
+      raise WEBrick::HTTPStatus::BadRequest, "This http request has been saved before" if http_db.has_ran.eql? "complete"
+
       # validates the response code
       response_code = @data['results']['response_status_code'] || nil
       raise WEBrick::HTTPStatus::BadRequest, "Http response code is null" if response_code.nil?
@@ -70,7 +70,7 @@ module Requester
       http_db.response_port_status = @data['results']['response_port_status']
       http_db.response_data = @data['results']['response_data']
       http_db.response_date = Time.now
-      http_db.has_ran = true
+      http_db.has_ran = "complete"
 
 			
       # Store images as binary

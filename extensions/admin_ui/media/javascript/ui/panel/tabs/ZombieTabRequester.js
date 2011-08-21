@@ -73,7 +73,7 @@ ZombieTab_Requester = function(zombie) {
 		autoDestroy: true,
 		autoLoad: false,
 		root: 'history',
-		
+
 		fields: ['domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
@@ -154,7 +154,7 @@ ZombieTab_Requester = function(zombie) {
 				var tab_panel = Ext.getCmp('zombie-requester-tab-zombie-'+zombie.session);
 				var r = grid.getStore().getAt(rowIndex).data;
 				
-				if(!r.has_ran) {
+				if(r.has_ran != "complete") {
 					commands_statusbar.update_fail("Response for this request has not been received yet.");
 					return;
 				}
@@ -170,7 +170,8 @@ ZombieTab_Requester = function(zombie) {
 					Ext.DomHelper.append('header', {tag: 'div', id: 'requesterWelcomeWinShown'});
 				}
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
-			}
+			},
+
             //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
 //            ,rowcontextmenu: function(grid, rowIndex, event){
 //                 event.stopEvent();
@@ -191,20 +192,20 @@ ZombieTab_Requester = function(zombie) {
 		
 		listeners: {
 			activate: function(history_panel) {
-				history_panel.items.items[0].store.reload();
+				history_panel.items.items[0].store.reload({params:{url:'/ui/requester/history.json'}});
 			}
 		}
 	});
 
-     // Return the extension_requester_http table row ID given a grid row index
-    function getHttpDbId(grid, rowIndex){
+	// Return the extension_requester_http table row ID given a grid row index
+	function getHttpDbId(grid, rowIndex){
 		var row = grid.getStore().getAt(rowIndex).data;
-        var result = null;
-        if(row != null){
-          result = row.id;
-        }
-        return result;
-    }
+		var result = null;
+		if(row != null){
+			result = row.id;
+		}
+		return result;
+	}
 	
 	// Function generating the requests panel to send raw requests
 	//-------------------------------------------------------------
@@ -248,14 +249,14 @@ ZombieTab_Requester = function(zombie) {
 				}
 			}]
 		});
-		
-		if(!value) {
-			value = "GET /demos/secret_page.html HTTP/1.1\n";
 
-			if (zombie.domain) value += "Host: "+zombie.domain+"\n";
-			else value += "Host: \n";
+		if(!value) {
+			if (zombie.domain) {
+				value = "GET /demos/secret_page.html HTTP/1.1\n";
+				value += "Host: "+zombie.domain+":3000\n";
+			} else value = "GET / HTTP/1.1\nHost: \n";
 		}
-		
+
 		form.get('raw-request-zombie-'+zombie.session).value = value;
 		
 		panel = Ext.getCmp('requester-forge-requests-zombie-'+zombie.session);
@@ -287,14 +288,16 @@ ZombieTab_Requester = function(zombie) {
 				var tab_result_response_headers = new Ext.Panel({
 					title: 'Response Headers',
 					border: false,
+					collapsed: false,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
-		                    items:[new Ext.form.TextArea({id: 'requester-response-res-headers-'+request.id, value: xhr.result.response_headers + "\n"})]
+					items:[new Ext.form.TextArea({id: 'requester-response-res-headers-'+request.id, value: xhr.result.response_headers + "\n"})]
 				});
 
 				var tab_result_response_body = new Ext.Panel({
 					title: 'Response Body',
 					border: false,
+					collapsed: false,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
 					items:[new Ext.form.TextArea({id: 'requester-response-res-body-'+request.id, value: xhr.result.response + "\n"})]
@@ -303,6 +306,7 @@ ZombieTab_Requester = function(zombie) {
 				var tab_result_request = new Ext.Panel({
 					title: 'Request',
 					border: false,
+					collapsed: true,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
 					items:[new Ext.form.TextArea({id: 'requester-response-req-'+request.id, value: xhr.result.request})]
@@ -315,7 +319,7 @@ ZombieTab_Requester = function(zombie) {
 					border: false,
 					layout:'accordion',
 					closable: true,
-                    items:[tab_result_request, tab_result_response_headers, tab_result_response_body]
+					items:[tab_result_request, tab_result_response_headers, tab_result_response_body]
 				});
 		
 				tab_panel.add(tab_result_accordion);
@@ -329,8 +333,8 @@ ZombieTab_Requester = function(zombie) {
 			}
 		});
 	};
-	
-	
+
+
 	ZombieTab_Requester.superclass.constructor.call(this, {
 		id: 'zombie-requester-tab-zombie-'+zombie.session,
 		title: 'Requester',
