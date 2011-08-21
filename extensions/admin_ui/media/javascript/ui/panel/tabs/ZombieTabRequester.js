@@ -288,7 +288,7 @@ ZombieTab_Requester = function(zombie) {
 				var tab_result_response_headers = new Ext.Panel({
 					title: 'Response Headers',
 					border: false,
-					collapsed: false,
+					collapsed: true,
 					layout: 'fit',
 					padding: '5px 5px 5px 5px',
 					items:[new Ext.form.TextArea({id: 'requester-response-res-headers-'+request.id, value: xhr.result.response_headers + "\n"})]
