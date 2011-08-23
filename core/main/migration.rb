@@ -35,30 +35,14 @@ module Core
     # Checks for new command modules and updates the database.
     #
     def update_commands!
-      db_commands = [], folders = ''
       config = BeEF::Core::Configuration.instance
-    
-      BeEF::Core::Models::CommandModule.all.each {|db_command| 
-        db_commands.push(db_command.path)
+
+      db_modules = BeEF::Core::Models::CommandModule.all
+
+      config.get('beef.module').each{|k,v|
+        BeEF::Core::Models::CommandModule.new(:name => k, :path => "#{v['path']}module.rb").save if not db_modules.include? k
       }
     
-      Dir.foreach("#{$root_dir}/modules/") do |folder|
-        folders += "#{folder}|" if not ['.', '..'].include? folder and File.directory? "#{$root_dir}/modules/#{folder}"
-      end
-    
-      regex = /\/modules\/(#{folders})\/(.*).rb/i
-    
-      Dir["#{$root_dir}/modules/**/*.rb"].each do |command|
-        if (command = command.match(regex)[0])
-            name = ''
-            path = command.split(File::SEPARATOR).reverse
-            if path.size >= 1
-                name = path[1].to_s
-            end
-            BeEF::Core::Models::CommandModule.new(:name => name, :path => command).save if not db_commands.include? command
-        end
-      end
-
       BeEF::Core::Models::CommandModule.all.each{|mod|
         if config.get('beef.module.'+mod.name) != nil
             config.set('beef.module.'+mod.name+'.db.id', mod.id)
