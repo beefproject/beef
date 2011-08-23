@@ -79,8 +79,8 @@ module Module
         config = BeEF::Core::Configuration.instance
         if self.is_enabled(mod)
             begin
-                require config.get("beef.module.#{mod}.path")+'/module.rb'
-                if self.exists?(mod)
+                require config.get("beef.module.#{mod}.path")+'module.rb'
+                if self.exists?(config.get("beef.module.#{mod}.class"))
                     # start server mount point
                     BeEF::Core::Server.instance.mount("/command/#{mod}.js", false, BeEF::Core::Handlers::Commands, mod)
                     BeEF::Core::Configuration.instance.set("beef.module.#{mod}.mount", "/command/#{mod}.js")

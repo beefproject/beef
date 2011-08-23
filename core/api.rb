@@ -54,6 +54,7 @@ end
 end
 
 require 'core/api/module'
+require 'core/api/modules'
 require 'core/api/extension'
 require 'core/api/extensions'
 require 'core/api/main/migration'
