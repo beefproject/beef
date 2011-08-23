@@ -98,7 +98,7 @@ module Core
         Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
-                y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
+                y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
                 @config = y.deep_merge(@config)
             end
         end
@@ -112,7 +112,7 @@ module Core
         Dir.glob("#{$root_dir}/modules/**/*/config.yaml") do | cf |
             y = self.load(cf)
             if y != nil
-                y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '')
+                y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
                 @config = y.deep_merge(@config)
                 # API call for post module config load
                 BeEF::API.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
