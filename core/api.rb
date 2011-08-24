@@ -24,26 +24,35 @@ module API
 
         def initialize
             @registry = []
+            @count = 1
         end
         
         # Register owner, c, method and matching params
         def register(owner, c, method, params = [])
-            if not self.registered?(owner, c, method)
-                @registry << {
-                    'owner' => owner,
-                    'class' => c,
-                    'method' => method,
-                    'params' => params
-                }
+            if self.verify_api_path(c, method)
+                if not self.registered?(owner, c, method, params)
+                    id = @count
+                    @registry << {
+                        'id' => id,
+                        'owner' => owner,
+                        'class' => c,
+                        'method' => method,
+                        'params' => params
+                    }
+                    @count += 1
+                    return id
+                else
+                    print_debug "API Registra: Attempting to re-register API call #{c.to_s} :#{method.to_s}"
+                end
             else
-                print_debug "API Registra: Attempting to re-register API call #{c.to_s} :#{method.to_s}"
+                print_error "API Registra: Attempted to register non-existant API method #{c.to_s} :#{method.to_s}"
             end
         end
         
         # returns boolean whether or not any owner has registered
-        def registered?(owner, c, method)
+        def registered?(owner, c, method, params = [])
             @registry.each{|r|
-                if r['owner'] == owner and r['class'] == c and r['method'] == method
+                if r['owner'] == owner and r['class'] == c and r['method'] == method and params == r['params']
                     return true
                 end
             }
@@ -51,9 +60,9 @@ module API
         end
 
         # unregister API call from owner, class and method
-        def unregister(owner, c, method)
+        def unregister(id)
             @registry.delete_if{|r|
-                r['owner'] == owner and r['class'] == c and r['method'] == method
+                r['id'] == id
             }
         end
 

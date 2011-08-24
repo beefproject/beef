@@ -32,7 +32,7 @@ module Xssrays
 
   module RegisterPreHookCallback
 
-    BeEF::API::Registra.instance.register(BeEF::Extension::Xssrays::RegisterPreHookCallback, BeEF::API::Server, 'pre_hook_send')
+    BeEF::API::Registra.instance.register(BeEF::Extension::Xssrays::RegisterPreHookCallback, BeEF::API::Server::Hook, 'pre_hook_send')
 
     # checks at every polling if there are new scans to be started
     def self.pre_hook_send(hooked_browser, body, params, request, response)
