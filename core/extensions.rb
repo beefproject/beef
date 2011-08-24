@@ -33,7 +33,7 @@ module Extensions
             BeEF::Extension.load(k)
         }
         # API post extension load
-        BeEF::API.fire(BeEF::API::Extensions, 'post_load')
+        BeEF::API::Registra.instance.fire(BeEF::API::Extensions, 'post_load')
     end
 
 end

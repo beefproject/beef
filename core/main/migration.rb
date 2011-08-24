@@ -51,7 +51,7 @@ module Core
       }
 
       # Call Migration method
-      BeEF::API.fire(BeEF::API::Migration, 'migrate_commands')
+      BeEF::API::Registra.instance.fire(BeEF::API::Migration, 'migrate_commands')
       
     end
   end

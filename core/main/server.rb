@@ -96,7 +96,7 @@ module Core
         #
         # We dynamically get the list of all http handler using the API and register them
         #
-        BeEF::API.fire(BeEF::API::Server, 'mount_handler', self)
+        BeEF::API::Registra.instance.fire(BeEF::API::Server, 'mount_handler', self)
       end
     end
     
@@ -150,12 +150,14 @@ module Core
         else
           @http_server.mount url, http_handler_class, *args
         end
+        print_debug("Server: mounted handler '#{url}'")
       else
         if args == nil
           mounts[url] = http_handler_class
         else
           mounts[url] = http_handler_class, *args
         end
+        print_debug("Server: mounted handler '#{url}'")
       end
     end
     

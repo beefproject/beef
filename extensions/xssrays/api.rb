@@ -18,9 +18,8 @@ module Extension
 module Xssrays
   
   module RegisterHttpHandler
-    
-    # use of the API
-    extend BeEF::API::Server
+
+    BeEF::API::Registra.instance.register(BeEF::Extension::Xssrays::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     # We register the http handler for the requester.
     # This http handler will retrieve the http responses for all requests
@@ -30,9 +29,10 @@ module Xssrays
     
   end
 
+
   module RegisterPreHookCallback
 
-    extend BeEF::API::Server::Hook
+    BeEF::API::Registra.instance.register(BeEF::Extension::Xssrays::RegisterPreHookCallback, BeEF::API::Server, 'pre_hook_send')
 
     # checks at every polling if there are new scans to be started
     def self.pre_hook_send(hooked_browser, body, params, request, response)

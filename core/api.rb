@@ -17,37 +17,92 @@
 module BeEF
 module API
 
-    #
-    # Calls a API fire against a certain class / module (c) method (m) with n parameters (*args)
-    #
-    def self.fire(c, m, *args)
-        mods = c.extended_in_modules
-        if mods.length > 0
-            if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
-                method = self.get_api_path(c, m)
-                mods.each do |mod|
-                  begin
-                    #Only used for API Development
-                    #print_info "API: #{mod} fired #{method}"
-                    mod.send method, *args
-                  rescue Exception => e
-                    print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
-                  end
-                end
+    # Registra class to handle all registered timed API calls
+    class Registra
+
+        include Singleton
+
+        def initialize
+            @registry = []
+        end
+        
+        # Register owner, c, method and matching params
+        def register(owner, c, method, params = [])
+            if not self.registered?(owner, c, method)
+                @registry << {
+                    'owner' => owner,
+                    'class' => c,
+                    'method' => method,
+                    'params' => params
+                }
             else
-                print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
+                print_debug "API Registra: Attempting to re-register API call #{c.to_s} :#{method.to_s}"
             end
         end
-    end
+        
+        # returns boolean whether or not any owner has registered
+        def registered?(owner, c, method)
+            @registry.each{|r|
+                if r['owner'] == owner and r['class'] == c and r['method'] == method
+                    return true
+                end
+            }
+            return false
+        end
 
-    # Verifies that the api_path has been regitered
-    def self.verify_api_path(c, m)
-        return (c.const_defined?('API_PATHS') and c.const_get('API_PATHS').has_key?(m))
-    end
+        # unregister API call from owner, class and method
+        def unregister(owner, c, method)
+            @registry.delete_if{|r|
+                r['owner'] == owner and r['class'] == c and r['method'] == method
+            }
+        end
 
-    # Gets the sym set to the api_path
-    def self.get_api_path(c, m)
-        return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS')[m] : nil;
+        # gets all owners registered to an API call
+        def get_owners(c, method, params = [])
+            owners = []
+            @registry.each{|r|
+                if r['class'] == c and r['method'] == method
+                    if r['params'].length == 0 or r['params'] == params
+                        owners << r['owner'] 
+                    end
+                end
+            }
+            return owners
+        end
+
+        # Verifies that the api_path has been regitered
+        def verify_api_path(c, m)
+            return (c.const_defined?('API_PATHS') and c.const_get('API_PATHS').has_key?(m))
+        end
+
+        # Gets the sym set to the api_path
+        def get_api_path(c, m)
+            return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS')[m] : nil;
+        end
+
+        #
+        # Calls a API fire against a certain class / module (c) method (m) with n parameters (*args)
+        #
+        def fire(c, m, *args)
+            mods = self.get_owners(c, m, args)
+            if mods.length > 0
+                if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
+                    method = self.get_api_path(c, m)
+                    mods.each do |mod|
+                      begin
+                        #Only used for API Development
+                        #print_info "API: #{mod} fired #{method}"
+                        mod.send method, *args
+                      rescue Exception => e
+                        print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
+                      end
+                    end
+                else
+                    print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
+                end
+            end
+        end
+
     end
    
 end

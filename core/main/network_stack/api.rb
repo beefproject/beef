@@ -18,9 +18,6 @@ module Core
 module NetworkStack
   
   module RegisterHttpHandler
-    # use of the API right here
-    extend BeEF::API::Server
-    
     #
     # Register the http handler for the network stack
     #
@@ -31,6 +28,9 @@ module NetworkStack
     
   end
   
+    # Register core API calls
+    BeEF::API::Registra.instance.register(BeEF::Core::NetworkStack::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+
 end
 end
 end

@@ -18,8 +18,9 @@ module Extension
 module Initialization
   
   module RegisterHttpHandler
-    # use of the API right here
-    extend BeEF::API::Server
+
+    # Register API calls
+    BeEF::API::Registra.instance.register(BeEF::Extension::Initialization::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     #
     # Register the http handler for the initialization script that retrieves
@@ -30,6 +31,7 @@ module Initialization
     end
     
   end
+
   
 end
 end

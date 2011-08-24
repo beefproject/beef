@@ -19,8 +19,7 @@ module Requester
   
   module RegisterHttpHandler
     
-    # use of the API
-    extend BeEF::API::Server
+    BeEF::API::Registra.instance.register(BeEF::Extension::Requester::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     # We register the http handler for the requester.
     # This http handler will retrieve the http responses for all requests
@@ -32,7 +31,7 @@ module Requester
 
   module RegisterPreHookCallback
 
-    extend BeEF::API::Server::Hook
+    BeEF::API::Registra.instance.register(BeEF::Extension::Requester::RegisterPreHookCallback, BeEF::API::Server::Hook, 'pre_hook_send')
 
     def self.pre_hook_send(hooked_browser, body, params, request, response)
         dhook = BeEF::Extension::Requester::API::Hook.new

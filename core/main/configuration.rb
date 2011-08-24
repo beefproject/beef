@@ -115,7 +115,7 @@ module Core
                 y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
                 @config = y.deep_merge(@config)
                 # API call for post module config load
-                BeEF::API.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
+                BeEF::API::Registra.instance.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
             end
         end
     end

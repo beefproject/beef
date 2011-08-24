@@ -19,7 +19,7 @@ module Demos
   
   module RegisterHttpHandlers
     
-    extend BeEF::API::Server
+    BeEF::API::Registra.instance.register(BeEF::Extension::Demos::RegisterHttpHandlers, BeEF::API::Server, 'mount_handler')
     
     def self.mount_handler(beef_server)
       # mount the handler to support the demos
@@ -29,6 +29,7 @@ module Demos
     end
     
   end
+  
 
 end
 end
