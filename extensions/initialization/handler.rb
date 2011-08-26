@@ -228,6 +228,17 @@ module Initialization
         print_error "Invalid value for HasGoogleGears returned from the hook browser's initial connection."
       end
 
+      # get and store the yes|no value for HasWebSocket
+      begin
+        has_web_socket = get_param(@data['results'], 'HasWebSocket')
+        if not has_web_socket.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasWebSocket" if not BeEF::Filters.is_valid_yes_no?(has_web_socket)
+          BD.set(session_id, 'HasWebSocket', has_web_socket)
+        end
+      rescue
+        print_error "Invalid value for HasWebSocket returned from the hook browser's initial connection."
+      end
+
       # get and store whether the browser has session cookies enabled
       begin
         has_session_cookies = get_param(@data['results'], 'hasSessionCookies')

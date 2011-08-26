@@ -525,6 +525,21 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the yes|no value for HasWebSocket
+    has_web_socket = BD.get(self.targetsession, 'HasWebSocket')
+    if not has_web_socket.nil?
+      encoded_has_web_socket = CGI.escapeHTML(has_web_socket)
+      encoded_has_web_socket_hash = { 'Has GoogleGears' => encoded_has_web_socket }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_web_socket_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for hasSessionCookies
     has_session_cookies = BD.get(self.targetsession, 'hasSessionCookies')
     if not has_session_cookies.nil?

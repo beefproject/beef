@@ -564,6 +564,7 @@ beef.browser = {
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
+		var has_web_socket=(beef.browser.hasWebSocket())? "Yes":"No";
 		var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie"))? "Yes":"No";
 		var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie"))? "Yes":"No";
 
@@ -583,6 +584,7 @@ beef.browser = {
 		if(java_enabled) details['JavaEnabled'] = java_enabled
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
 		if(has_flash) details['HasFlash'] = has_flash
+		if(has_web_socket) details['HasWebSocket'] = has_web_socket
 		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
 		if(has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
 		if(has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
@@ -627,7 +629,16 @@ beef.browser = {
 		}
 		return results;
 	},
-	
+
+	/**
+	 * Checks if the zombie has Web Sockets enabled.
+	 * @return: {Boolean} true or false.
+	 *
+	 * */
+	hasWebSocket: function() {
+		if (!!window.WebSocket) return true; else return false;
+	},
+
 	/**
 	 * Checks if the zombie has Google Gears installed.
 	 * @return: {Boolean} true or false.
