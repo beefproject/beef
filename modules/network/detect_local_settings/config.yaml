@@ -22,6 +22,6 @@ beef:
             description: "Grab the local network settings (ie internal ip address)."
             authors: ["pdp", "wade", "bm", "xntrik"]
             target:
-                working: "FF"
+                working: ["FF", "IE"]
                 user_notify: "C"
-                not_working: "IE"
+                not_working: "S"

