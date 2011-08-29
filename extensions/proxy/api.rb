@@ -31,7 +31,7 @@ module API
     end
 
     def self.mount_handler(beef_server)
-      beef_server.mount('/proxy', false, BeEF::Extension::Events::Handler)
+      beef_server.mount('/proxy', false, BeEF::Extension::Requester::Handler)
     end
     
   end
