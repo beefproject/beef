@@ -120,7 +120,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       history << {
         'id'      => http.id,
         'domain'  => http.domain,
-	'port'    => http.port,
+	      'port'    => http.port,
         'path'    => http.path,
         'has_ran' => http.has_ran,
         'method'  => http.method,
@@ -128,7 +128,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
         'response_date'    => http.response_date,
         'response_status_code'    => http.response_status_code,
         'response_status_text'    => http.response_status_text,
-	'response_port_status'    => http.response_port_status
+	      'response_port_status'    => http.response_port_status
       }
     }
     

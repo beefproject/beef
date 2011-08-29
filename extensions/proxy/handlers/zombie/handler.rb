@@ -34,20 +34,23 @@ module Zombie
       req_parts = req.to_s.split(/ |\n/) # break up the request
       verb = req_parts[0]
       raise 'Only HEAD, GET, POST, OPTIONS, PUT or DELETE requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
-      uri = req_parts[1]
-      raise 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
+      # antisnatchor: is_valid_url supposes that the uri is relative, while here we're passing an absolute one
+      #uri = req_parts[1]
+      #raise 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
       version = req_parts[2]
       raise 'Invalid HTTP version' if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
-      host_str = req_parts[3]
-      raise 'Invalid HTTP host header' if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
-      host = req_parts[4]
-      host_parts = host.split(/:/)
-      hostname = host_parts[0]
-      raise 'Invalid hostname' if not BeEF::Filters.is_valid_hostname?(hostname) #check the target hostname
-      hostport = host_parts[1] || nil
-      if !hostport.nil?
-          raise 'Invalid hostport' if not BeEF::Filters.nums_only?(hostport) #check the target hostport
-      end
+      # antisnatchor: the following checks are wrong. the req_parts array can always contains elements at different postions.
+      # for example proxying Opera, the req_parts[3] is the User-Agent header...
+#      host_str = req_parts[3]
+#      raise 'Invalid HTTP host header' if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
+#      host = req_parts[4]
+#      host_parts = host.split(/:/)
+#      hostname = host_parts[0]
+#      raise 'Invalid hostname' if not BeEF::Filters.is_valid_hostname?(hostname) #check the target hostname
+#      hostport = host_parts[1] || nil
+#      if !hostport.nil?
+#          raise 'Invalid hostport' if not BeEF::Filters.nums_only?(hostport) #check the target hostport
+#      end
 
       # Saves the new HTTP request to the db for processing by browser.
       # IDs are created and incremented automatically by DataMapper.
@@ -55,7 +58,7 @@ module Zombie
         :request => req,
         :method => req.request_method.to_s,
         :domain => req.host,
-	:port => req.port,
+	      :port => req.port,
         :path => req.path.to_s,
         :request_date => Time.now,
         :hooked_browser_id => hooked_browser_id

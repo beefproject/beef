@@ -30,12 +30,16 @@ module BeEF
     end
 
     def self.is_valid_http_version?(version)
-      return true if version.eql? "HTTP/1.1" or version.eql? "HTTP/1.0"
+      # from browsers the http version contains a space at the end ("HTTP/1.0\r")
+      version.gsub!(/[\r]+/,"")
+      return true if "HTTP/1.1".eql?(version) or "HTTP/1.0".eql?(version)
       false
     end
 
     def self.is_valid_host_str?(host_str)
-      return true if host_str.eql? "Host:"
+      # from browsers the host header contains a space at the end
+      host_str.gsub!(/[\r]+/,"")
+      return true if "Host:".eql?(host_str)
       false
     end
 
