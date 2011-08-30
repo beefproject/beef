@@ -16,7 +16,7 @@
 # Uses methods described here:
 # http://www.itsecuritysolutions.org/2010-03-29_fingerprinting_browsers_using_protocol_handlers/
 
-class Fingerprint_browser < BeEF::Core::Command
+class Browser_fingerprinting < BeEF::Core::Command
 
   def post_execute
     content = {}
