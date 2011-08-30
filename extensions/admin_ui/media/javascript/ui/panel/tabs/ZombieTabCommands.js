@@ -29,7 +29,7 @@ ZombieTab_Commands = function(zombie) {
 
     var welcomeWindow = new Ext.Window({
 				title: 'Welcome to the BeEF Command Modules',
-                id: 'welcome-window',
+				id: 'welcome-window',
 				closable:true,
 				width:450,
 				height:300,
@@ -43,7 +43,7 @@ ZombieTab_Commands = function(zombie) {
                     html: "At your left you have all the BeEF command modules organized in a category tree.<br/><br/> " +
                           "Most command modules consist of Javascript code that is executed against the selected " +
                           "Hooked Browser. Command modules are able to perform any actions that can be achieved " +
-                          "trough Javascript: for example they may gather information about the Hooked Browser, manipulate the DOM " +
+                          "through Javascript: for example they may gather information about the Hooked Browser, manipulate the DOM " +
                           "or perform other activities such as exploiting vulnerabilities within the local network " +
                           "of the Hooked Browser.<br/><br/>To learn more about writing your own modules please review " +
                           "the wiki:<br /><a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>" +

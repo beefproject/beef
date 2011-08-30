@@ -17,7 +17,7 @@ beef:
     module:
         browser_fingerprinting:
             enable: true
-            category: "Browser"
+            category: "Recon"
             name: "Browser Fingerprinting"
             description: "This module attempts to fingerprint the browser type and version using URI handlers unique to Internet Explorer and Mozilla Firefox. This method does not rely on JavaScript objects which may have been modified by the user or browser compatibility mode."
             authors: ["bcoles"]
