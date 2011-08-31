@@ -276,6 +276,13 @@ beef.net.xssrays = {
     run: function(url, method, vector, params, urlencode) {
         this.stack.push(function() {
 
+            //check if the URL end with / . In this case remove the last /, as it will be added later.
+            // this check is needed only when checking for URI path injections
+            if(url[url.length - 1] == "/" && params == null){
+               url = url.substring(0, url.length - 2);
+               beef.net.xssrays.printDebug("Remove last / from url. New url [" + url + "]");
+            }
+
             beef.net.xssrays.uniqueID++;
             beef.net.xssrays.printDebug('Processing vector [' + vector.name + "], URL [" + url + "]");
             var poc = '';
