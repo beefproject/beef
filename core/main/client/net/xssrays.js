@@ -33,9 +33,8 @@
  * Other aspects of the original code have been simplified and improved.
  */
 beef.net.xssrays = {
-
+    // handler is needed when using beef.net.send
     handler: "xssrays",
-
     completed:0,
     totalConnections:0,
 
@@ -99,7 +98,6 @@ beef.net.xssrays = {
             + "] - beef.net.xssrays.totalConnections [" + beef.net.xssrays.totalConnections + "]");
         if (beef.net.xssrays.completed == beef.net.xssrays.totalConnections) {
             beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
-            //TODO: understand why this is never called
             beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "");
         } else {
             this.getNextJob();
@@ -116,8 +114,7 @@ beef.net.xssrays = {
             }
         }else{ //nothing to scan
            beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
-            //TODO: understand why this is never called
-           beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "something");
+           beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "");
         }
     },
     scan:function() {
