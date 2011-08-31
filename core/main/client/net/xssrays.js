@@ -168,12 +168,12 @@ beef.net.xssrays = {
                     for (var i = 0; i < this.vectors.length; i++) {
 
                         //TODO: remove browser checks: add the BeEF ones
-                        if (this.vectors[i].browser == 'IE' && !this.isIE()) {
-                            continue;
-                        }
-                        if (this.vectors[i].browser == 'FF' && this.isIE()) {
-                            continue;
-                        }
+//                        if (this.vectors[i].browser == 'IE' && !this.isIE()) {
+//                            continue;
+//                        }
+//                        if (this.vectors[i].browser == 'FF' && this.isIE()) {
+//                            continue;
+//                        }
 
                         if (!this.vectors[i].url) {
                             continue;
@@ -215,16 +215,16 @@ beef.net.xssrays = {
                     for (var k = 0; k < this.vectors.length; k++) {
 
                         //TODO: remove browser checks: add the BeEF ones
-                        if (this.vectors[k].browser == 'IE' && !this.isIE()) {
-                            continue;
-                        }
-                        if (this.vectors[k].browser == 'FF' && this.isIE()) {
-                            continue;
-                        }
+//                        if (this.vectors[k].browser == 'IE' && !this.isIE()) {
+//                            continue;
+//                        }
+//                        if (this.vectors[k].browser == 'FF' && this.isIE()) {
+//                            continue;
+//                        }
                         if (!this.vectors[k].form) {
                             continue;
                         }
-                        if (!this.sameDomain && (this.host(action).toString() != this.host(location.toString()))) {
+                        if (!this.crossDomain && (this.host(action).toString() != this.host(location.toString()))) {
                             if (this.debug) {
                                 beef.net.xssrays.printDebug('Scan is not Cross-domain. FormPost\naction :' + this.host(action).toString());
                                 beef.net.xssrays.printDebug('location :' + this.host(location));
