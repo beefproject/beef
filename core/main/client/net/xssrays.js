@@ -34,6 +34,7 @@
  */
 beef.net.xssrays = {
 
+    handler: "xssrays",
 
     completed:0,
     totalConnections:0,
@@ -99,7 +100,7 @@ beef.net.xssrays = {
         if (beef.net.xssrays.completed == beef.net.xssrays.totalConnections) {
             beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
             //TODO: understand why this is never called
-            beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "something");
+            beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "");
         } else {
             this.getNextJob();
         }
