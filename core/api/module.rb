@@ -25,7 +25,8 @@ module API
         'pre_soft_load' => :pre_soft_load,
         'post_soft_load' => :post_soft_load,
         'pre_hard_load' => :pre_hard_load,
-        'post_hard_load' => :post_hard_load
+        'post_hard_load' => :post_hard_load,
+        'get_options' => :get_options
     }
     
     def pre_soft_load(mod); end
@@ -35,6 +36,8 @@ module API
     def pre_hard_load(mod); end
 
     def post_hard_load(mod); end
+
+    def get_options; end
 
   end
   

@@ -38,14 +38,25 @@ module Module
 
     # Gets all module options
     def self.get_options(mod)
+        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'get_options', [mod])
+            options = BeEF::API::Registra.instance.fire(BeEF::API::Module, 'get_options', mod)
+            mo = []
+            options.each{|o|
+                if o[:data].kind_of?(Array)
+                    mo += o[:data]    
+                else
+                    print_debug "API Warning: return result for BeEF::Module.get_options() was not an array."
+                end
+            }
+            return mo 
+        end
         if self.check_hard_load(mod)
             class_name = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class")
             class_symbol = BeEF::Core::Command.const_get(class_name)
             if class_symbol and class_symbol.respond_to?(:options)
               return class_symbol.options
             else
-                #makes too much noise as many modules dont have options defined
-                #print_debug "Module '#{mod}', no options method defined"
+                print_debug "Module '#{mod}', no options method defined"
             end
         end
         return []

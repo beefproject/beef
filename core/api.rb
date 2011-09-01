@@ -59,6 +59,16 @@ module API
             return false
         end
 
+        # match is used to determine if a fire() method should continue, matchs a registered API hook without the owner
+        def matched?(c, method, params = [])
+            @registry.each{|r|
+                if r['class'] == c and r['method'] == method and params == r['params']
+                    return true
+                end
+            }
+            return false
+        end
+
         # unregister API call from owner, class and method
         def unregister(id)
             @registry.delete_if{|r|
@@ -72,7 +82,7 @@ module API
             @registry.each{|r|
                 if r['class'] == c and r['method'] == method
                     if r['params'].length == 0 or r['params'] == params
-                        owners << r['owner'] 
+                        owners << { :owner => r['owner'], :id => r['id']}
                     end
                 end
             }
@@ -95,13 +105,17 @@ module API
         def fire(c, m, *args)
             mods = self.get_owners(c, m, args)
             if mods.length > 0
+                data = []
                 if self.verify_api_path(c, m) and c.ancestors[0].to_s > "BeEF::API"
                     method = self.get_api_path(c, m)
                     mods.each do |mod|
                       begin
                         #Only used for API Development
                         #print_info "API: #{mod} fired #{method}"
-                        mod.send method, *args
+                        result = mod[:owner].method(method).call(*args)
+                        if not result == nil
+                            data << {:api_id => mod[:id], :data => result}
+                        end
                       rescue Exception => e
                         print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
                       end
@@ -109,7 +123,9 @@ module API
                 else
                     print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
                 end
+                return data
             end
+            return nil
         end
 
     end
