@@ -98,9 +98,9 @@ beef.net.xssrays = {
         return result;
     },
 
-    // util function. Print string to the console only if the debug flag is on.
+    // util function. Print string to the console only if the debug flag is on and the browser is not IE.
     printDebug:function(log) {
-        if (this.debug) {
+        if (this.debug && !beef.browser.isIE()) {
             console.log("[XssRays] " + log);
         }
     },
