@@ -39,8 +39,7 @@ module Models
     property :is_started, Boolean, :lazy => false, :default => false
     property :is_finished, Boolean, :lazy => false, :default => false
 
-    #TODO: make this table related One-to-Many with XssRaysDetails
-    #has n, :extension_xssrays_details, 'Xssraysdetail'
+    has n, :extension_xssrays_details, 'Xssraysdetail'
 
   end
 

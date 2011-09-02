@@ -121,8 +121,8 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
           :hooked_browser_id => hooked_browser.id,
           :scan_start => Time.now,
           :domain => hooked_browser.domain,
-          :cross_domain => cross_domain, #check also cross-domain URIs found by the spider
-          :clean_timeout => clean_timeout #check also cross-domain URIs found by the spider
+          :cross_domain => cross_domain, #check also cross-domain URIs found by the crawler
+          :clean_timeout => clean_timeout #how long to wait before removing the iFrames from the DOM (5000ms default)
       )
       xssrays_scan.save
 
@@ -147,7 +147,7 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
              :vector_name => @params['name'],
              :vector_method => @params['method'],
              :vector_poc => @params['poc'],
-             :scan_id => xssrays_scan.id
+             :xssraysscan_id => xssrays_scan.id
            )
           xssrays_detail.save
         end

@@ -39,8 +39,7 @@ module Models
     # The XssRays Proof of Concept for the vulnerability
     property :vector_poc, Text, :lazy => true
 
-    property :scan_id, Text, :lazy => false
-
+    belongs_to :xssraysscan
   end
   
 end
