@@ -81,6 +81,14 @@ beef.os = {
 		return (this.ua.indexOf('iPad') != -1) ? true : false;
 	},
 
+	isNokia: function() {
+		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
+	},
+
+	isBlackBerry: function() {
+		return (this.ua.indexOf('BlackBerry')) ? true : false;
+	},
+
 	isQNX: function() {
 		return (this.ua.indexOf('QNX')) ? true : false;
 	},
@@ -102,7 +110,20 @@ beef.os = {
 		if(this.isWinServer2003()) return 'Windows Server 2003';
 		if(this.isWinVista()) return 'Windows Vista';
 		if(this.isWin7()) return 'Windows 7';
-		
+
+		//Nokia
+		if(this.isNokia()) {
+
+			if (this.ua.indexOf('Maemo Browser') != -1) return 'Maemo';
+			if (this.ua.match('(SymbianOS)|(Symbian OS)')) return 'SymbianOS';
+			if (this.ua.indexOf('Symbian') != -1) return 'Symbian';
+
+			//return 'Nokia';
+		}
+
+		// BlackBerry
+		if(this.isBlackBerry()) return 'BlackBerry OS';
+
 		//linux
 		if(this.isLinux()) return 'Linux';
 		if(this.isSunOS()) return 'Sun OS';

@@ -29,6 +29,8 @@ module Constants
   	OS_MAC_IMG            = 'mac.png'
 	OS_IPHONE_UA_STR      = 'iPhone'
  	OS_IPHONE_IMG         = 'iphone.png'
+	OS_BLACKBERRY_UA_STR  = 'BlackBerry'
+	OS_BLACKBERRY_IMG     = 'blackberry.png'
     OS_ALL_UA_STR         = 'All'
 
 		def self.match_os(name)
@@ -41,6 +43,8 @@ module Constants
 					OS_MAC_UA_STR
 				when /iphone/
 					OS_IPHONE_UA_STR
+				when /blackberry/
+					OS_BLACKBERRY_UA_STR
 				else
 					'ALL'
 				end
