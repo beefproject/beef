@@ -357,6 +357,11 @@ module Module
             print_error "Module not found '#{mod}'. Failed to execute module."
             return false
         end
+        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil])
+            BeEF::API::Registra.instance.fire(BeEF::API::Module, 'override_execute', mod, opts)
+            #We return true by default as we cannot determine the correct status if multiple API hooks have been called
+            return true
+        end
         hb = BeEF::HBManager.get_by_session(hbsession)        
         if not hb
             print_error "Could not find hooked browser when attempting to execute module '#{mod}'"

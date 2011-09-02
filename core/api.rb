@@ -26,7 +26,7 @@ module API
             @registry = []
             @count = 1
         end
-        
+
         # Register owner, c, method and matching params
         def register(owner, c, method, params = [])
             if self.verify_api_path(c, method)
@@ -62,7 +62,7 @@ module API
         # match is used to determine if a fire() method should continue, matchs a registered API hook without the owner
         def matched?(c, method, params = [])
             @registry.each{|r|
-                if r['class'] == c and r['method'] == method and params == r['params']
+                if r['class'] == c and r['method'] == method and self.is_matched_params?(r, params)
                     return true
                 end
             }
@@ -81,7 +81,7 @@ module API
             owners = []
             @registry.each{|r|
                 if r['class'] == c and r['method'] == method
-                    if r['params'].length == 0 or r['params'] == params
+                    if self.is_matched_params?(r, params)
                         owners << { :owner => r['owner'], :id => r['id']}
                     end
                 end
@@ -97,6 +97,24 @@ module API
         # Gets the sym set to the api_path
         def get_api_path(c, m)
             return (self.verify_api_path(c, m)) ? c.const_get('API_PATHS')[m] : nil;
+        end
+
+        # Match stored API parameters to params, if array item is nil then skip this item
+        def is_matched_params?(reg, params)
+           stored = reg['params']
+           if stored.length == params.length
+                matched = true
+                stored.each_index{|i|
+                    next if stored[i] == nil
+                    if not stored[i] == params[i]
+                        matched = false
+                    end
+                }
+                return false if not matched
+           end
+            # We return a match because the fire() method did not indicate any, or 
+            # we return a match because there were no params defined for this register
+            return true
         end
 
         #
