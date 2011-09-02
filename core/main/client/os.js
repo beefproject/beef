@@ -85,6 +85,10 @@ beef.os = {
 		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
 	},
 
+	isAndroid: function() {
+		return (this.ua.indexOf('Android')) ? true : false;
+	},
+
 	isBlackBerry: function() {
 		return (this.ua.indexOf('BlackBerry')) ? true : false;
 	},
@@ -123,6 +127,9 @@ beef.os = {
 
 		// BlackBerry
 		if(this.isBlackBerry()) return 'BlackBerry OS';
+
+		// Android
+		if(this.isAndroid()) return 'Android';
 
 		//linux
 		if(this.isLinux()) return 'Linux';

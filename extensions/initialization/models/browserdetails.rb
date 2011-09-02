@@ -105,6 +105,7 @@ module Models
       return BeEF::Core::Constants::Os::OS_IPHONE_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPHONE_UA_STR
       return BeEF::Core::Constants::Os::OS_MAC_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_MAC_UA_STR
       return BeEF::Core::Constants::Os::OS_BLACKBERRY_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BLACKBERRY_UA_STR
+      return BeEF::Core::Constants::Os::OS_ANDROID_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_ANDROID_UA_STR
     
       BeEF::Core::Constants::Os::OS_UNKNOWN_IMG
     end
