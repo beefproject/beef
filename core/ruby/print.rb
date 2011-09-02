@@ -67,3 +67,11 @@ def print_more(s)
     end
   end 
 end
+
+#
+# Function used to print over the current line
+#
+def print_over(s)
+  time = Time.now.localtime.strftime("[%k:%M:%S]")
+  print "\r#{time}"+"[*]".blue+" #{s}"
+end
