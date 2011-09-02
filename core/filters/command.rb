@@ -64,7 +64,7 @@ module Filters
     return false if str.nil?
     return false if not str.is_a? String
     return false if str.empty?
-    return false if not (str =~ /[^\w_]/).nil?
+    return false if not (str =~ /[^\w_\:]/).nil?
     true
   end
 
