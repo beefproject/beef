@@ -47,13 +47,14 @@ beef.net.xssrays = {
     debug:false,
     cleanUpTimeout:5000,
 
+    //browser-specific attack vectors available strings: ALL, FF, IE, S, C, O
     vectors: [
 
 //				  {input:"',XSS,'", name: 'Standard DOM based injection single', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:'",XSS,"', name: 'Standard DOM based injection double', browser: 'ALL',url:true,form:true,path:true},
 //        {input: '\'><script>XSS<\/script>', name: 'Standard script injection single', browser: 'ALL',url:true,form:true,path:true},
-        {input: '"><script>XSS<\/script>', name: 'Standard script injection double', browser: 'ALL',url:true,form:true,path:true} //,
-//				  {input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true},
+        {input: '"><script>XSS<\/script>', name: 'Standard script injection double', browser: 'ALL',url:true,form:true,path:true}, //,
+		{input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
 //				  {input:'" type=image src=null onerror=XSS " \' type=image src=null onerror=XSS \'', name: 'Image input overwrite based injection', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:"' onload='XSS' \" onload=\"XSS\"/onload=\"XSS\"/onload='XSS'/", name: 'onload event injection', browser: 'ALL',url:true,form:true,path:true},
 //        {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true}
@@ -67,6 +68,35 @@ beef.net.xssrays = {
     uniqueID: 0,
     rays: [],
     stack: [],
+
+    // return true is the attack vector can be launched to the current browser type.
+    checkBrowser:function(vector_array_index){
+        var result = false;
+        var browser_id = this.vectors[vector_array_index].browser;
+        switch (browser_id){
+        case "ALL":
+            result = true;
+            break;
+        case "FF":
+            if(beef.browser.isFF())result=true;
+            break;
+        case "IE":
+            if(beef.browser.isIE())result=true;
+            break;
+        case "C":
+            if(beef.browser.isC())result=true;
+            break;
+        case "S":
+            if(beef.browser.isS())result=true;
+            break;
+        case "O":
+            if(beef.browser.isO())result=true;
+            break;
+        default : result = false;
+        }
+        beef.net.xssrays.printDebug("==== browser_id ==== [" + browser_id + "], result [" + result + "]");
+        return result;
+    },
 
     // util function. Print string to the console only if the debug flag is on.
     printDebug:function(log) {
@@ -88,10 +118,6 @@ beef.net.xssrays = {
         this.scan();
         beef.net.xssrays.printDebug("Starting scan");
         this.runJobs();
-    },
-
-    isIE:function() {
-        return '\v' === 'v';
     },
     complete:function() {
         beef.net.xssrays.printDebug("complete beef.net.xssrays.completed [" + beef.net.xssrays.completed
@@ -164,19 +190,14 @@ beef.net.xssrays = {
                         params[target.search[i][0]] = target.search[i][1];
                     }
                     for (var i = 0; i < this.vectors.length; i++) {
-
-                        //TODO: remove browser checks: add the BeEF ones
-//                        if (this.vectors[i].browser == 'IE' && !this.isIE()) {
-//                            continue;
-//                        }
-//                        if (this.vectors[i].browser == 'FF' && this.isIE()) {
-//                            continue;
-//                        }
-
+                        // skip the current vector if it's not compatible with the hooked browser
+                        if (!this.checkBrowser(i)){
+                            beef.net.xssrays.printDebug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
+                            continue;
+                        }
                         if (!this.vectors[i].url) {
                             continue;
                         }
-
                         if (this.vectors[i].url) {
                             if (target.port == null || target.port == "") {
                                 beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
@@ -212,13 +233,11 @@ beef.net.xssrays = {
                     }
                     for (var k = 0; k < this.vectors.length; k++) {
 
-                        //TODO: remove browser checks: add the BeEF ones
-//                        if (this.vectors[k].browser == 'IE' && !this.isIE()) {
-//                            continue;
-//                        }
-//                        if (this.vectors[k].browser == 'FF' && this.isIE()) {
-//                            continue;
-//                        }
+                        // skip the current vector if it's not compatible with the hooked browser
+                        if (!this.checkBrowser(i)){
+                            beef.net.xssrays.printDebug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
+                            continue;
+                        }
                         if (!this.vectors[k].form) {
                             continue;
                         }
@@ -229,7 +248,6 @@ beef.net.xssrays = {
                             }
                             continue;
                         }
-
                         if (this.vectors[k].form) {
                             if (method === 'GET') {
                                 beef.net.xssrays.printDebug("Starting XSS on FORM action params, GET method of [" + action + "], params [" + paramsstring + "]");
