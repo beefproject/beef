@@ -1,0 +1,33 @@
+#
+#   Copyright 2011 Wade Alcorn wade@bindshell.net
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+# Enable MSF by changing extension:metasploit:enable to true
+# Then set msf_callback_host to be the public IP of your MSF server
+#
+# Ensure you load the xmlrpc interface in Metasploit
+# msf > load xmlrpc ServerHost=10.211.55.2 Pass=abc123 ServerType=Web
+# Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
+beef:
+    extension:
+        metasploit:
+            name: 'Metasploit'
+            enable: true
+            host: "127.0.0.1"
+            url-path: "/RPC2"
+            port: 55553
+            user: "msf"
+            pass: "abc123"
+            callback_host: "192.168.84.1"
+            autopwn_url: "autopwn"
