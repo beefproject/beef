@@ -340,6 +340,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					labelWidth: 75,
 					defaultType: 'textfield',
 					title: module.Name,
+					autoScroll: true,
 					bodyStyle: 'padding: 5px;',
 					
 					items: [

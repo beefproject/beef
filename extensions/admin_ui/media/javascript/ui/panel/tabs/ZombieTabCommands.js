@@ -207,7 +207,7 @@ ZombieTab_Commands = function(zombie) {
 		title:'Commands',
 		layout: 'fit',
 		region: 'center',
-		autScroll: true,
+		autoScroll: true,
 		items: {
 			layout: 'border',
 			border: false,
