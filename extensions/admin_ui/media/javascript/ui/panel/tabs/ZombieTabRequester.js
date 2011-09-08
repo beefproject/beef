@@ -137,8 +137,8 @@ ZombieTab_Requester = function(zombie) {
 			{header: 'Method', width: 30, sortable: true, dataIndex: 'method'},
 			{header: 'Path', sortable: true, dataIndex: 'path'},
 			{header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
-			{header: 'Res TextCode', width: 35, sortable: true, dataIndex: 'response_status_text'},
-			{header: 'Port Status', width: 35, sortable: true, dataIndex: 'response_port_status'},
+			{header: 'Res Text', width: 40, sortable: true, dataIndex: 'response_status_text'},
+			{header: 'Port Status', width: 40, sortable: true, dataIndex: 'response_port_status'},
 			{header: 'Processed', width: 30, sortable: true, dataIndex: 'has_ran'},
 			{header: 'Req Date', width: 50, sortable: true, dataIndex: 'request_date'},
 			{header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date'}
