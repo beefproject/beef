@@ -86,19 +86,19 @@ beef.os = {
 	},
 
 	isAndroid: function() {
-		return (this.ua.indexOf('Android')) ? true : false;
+		return (this.ua.match('Android')) ? true : false;
 	},
 
 	isBlackBerry: function() {
-		return (this.ua.indexOf('BlackBerry')) ? true : false;
+		return (this.ua.match('BlackBerry')) ? true : false;
 	},
 
 	isQNX: function() {
-		return (this.ua.indexOf('QNX')) ? true : false;
+		return (this.ua.match('QNX')) ? true : false;
 	},
 	
 	isBeOS: function() {
-		return (this.ua.indexOf('BeOS')) ? true : false;
+		return (this.ua.match('BeOS')) ? true : false;
 	},
 	
 	getName: function() {
