@@ -29,9 +29,6 @@ end
 
 puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
 
-
-puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
-
 # array of required gems - add to as needed (specify a version if needed eg "gem_name, =x.x.x")
 $gems_required = ["ansi", "term-ansicolor", "dm-core", "json", "data_objects", "do_sqlite3", "sqlite3", "dm-sqlite-adapter", 
                   "parseconfig", "erubis", "dm-migrations", "librex"]
