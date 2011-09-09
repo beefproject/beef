@@ -170,7 +170,7 @@ ZombieTab_Requester = function(zombie) {
 					Ext.DomHelper.append('header', {tag: 'div', id: 'requesterWelcomeWinShown'});
 				}
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
-			},
+			}
 
             //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
 //            ,rowcontextmenu: function(grid, rowIndex, event){
