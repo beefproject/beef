@@ -24,7 +24,6 @@ ZombieTab_Commands = function(zombie) {
 		region: 'center',
 		border: true,
 		layout: 'fit',
-        autoScroll: true
     });
 
     var welcomeWindow = new Ext.Window({
@@ -207,7 +206,6 @@ ZombieTab_Commands = function(zombie) {
 		title:'Commands',
 		layout: 'fit',
 		region: 'center',
-		autoScroll: true,
 		items: {
 			layout: 'border',
 			border: false,
