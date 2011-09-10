@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+require 'pp'
 module BeEF
 module Extension
 module Metasploit
@@ -23,9 +24,14 @@ module Metasploit
   def self.translate_options(msf_options)
     options = []
     msf_options.each{|k,v|
+	next if v['advanced'] == true || v['evasion'] == true
+	v['allowBlank'] = 'true' if v['required'] == false
         case v['type']
             when "string", "address", "port", "integer"
                 v['type'] = 'text'
+		v['value'] = rand(3**20).to_s(16) if k == 'URIPATH'
+		v['value'] = v['default'] if k != "URIPATH"
+		
             when "bool"
                 v['type'] = 'checkbox'
             when "enum"
@@ -33,6 +39,7 @@ module Metasploit
                 v['store_type'] = 'arraystore',
                 v['store_fields'] = ['enum'],
                 v['store_data'] = self.translate_enums(v['enums']),
+		v['value'] = v['default']
                 v['valueField'] = 'enum',
                 v['displayField'] = 'enum',
                 v['autoWidth'] = true,
@@ -49,9 +56,13 @@ module Metasploit
   def self.translate_payload(payloads)
     if payloads.has_key?('payloads')
        values = self.translate_enums(payloads['payloads'])
+
+       defaultPayload = values[0]
+       defaultPayload = 'generic/shell_bind_tcp' if values.include? 'generic/shell_bind_tcp'
+
        if values.length > 0
            return { 
-                'name' => 'payload', 
+                'name' => 'PAYLOAD', 
                 'type' => 'combobox', 
                 'ui_label' => 'Payload', 
                 'store_type' => 'arraystore',

