@@ -424,8 +424,13 @@ beef.browser = {
                 for (var i=0; i < length; i++)
                 {
                     if (i != 0)
-                        results += ', ';
-                    results += navigator.plugins[i].name;
+                        results += '\n';
+                    if(beef.browser.isFF()){ //FF returns exact plugin versions
+                        results += navigator.plugins[i].name + '-v.' + navigator.plugins[i].version;
+                    }else{ // Webkit and Presto (Opera) doesn't support the version attribute, and
+                           // sometimes they store plugin version in description (Real, Adobe)
+                        results += navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
+                    }
                 }
             } else {
                 results = 'navigator.plugins is not supported in this browser!';
