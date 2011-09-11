@@ -14,31 +14,21 @@
 #   limitations under the License.
 #
 module BeEF
-  #
-  # Use this module to check the current settings of BeEF.
-  #
-  #  Examples:
-  #
-  #     BeEF::Settings.console? # => returns true if the console extension exists and is loaded.
-  #
   module Settings
     
-    #
     # Checks if an extension exists in the framework.
-    # Returns true if the extension exists, false if not.
-    #
-    #  Example:
-    #
-    #     extension_exists?('Console') # => true
-    #     extension_exists?('abcdegh') # => false
-    #
+    # @param [String] beef_extension extension class
+    # @return [Boolean] if the extension exists
+    # @deprecated Use #{BeEF::Extension.is_present()} instead of this method.
+    #   This method bypasses the configuration system.
     def self.extension_exists?(beef_extension)
       BeEF::Extension.const_defined?(beef_extension)
     end
     
-    #
-    # Returns true of the extension Console has been loaded
-    #
+    # Checks to see if the console extensions has been loaded
+    # @return [Boolean] if the console extension has been loaded
+    # @deprecated Use #{BeEF::Extension.is_loaded()} instead of this method.
+    #   This method bypasses the configuration system.
     def self.console?
       self.extension_exists?('Console')
     end

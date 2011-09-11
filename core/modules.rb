@@ -17,16 +17,19 @@ module BeEF
 module Modules
 
     # Return configuration hashes of all modules that are enabled
+    # @return [Array] configuration hashes of all enabled modules
     def self.get_enabled
         return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }
     end
 
     # Return configuration hashes of all modules that are loaded
+    # @return [Array] configuration hashes of all loaded modules
     def self.get_loaded
         return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['loaded'] == true }
     end
 
     # Return an array of categories specified in module configuration files
+    # @return [Array] all available module categories sorted alphabetically
     def self.get_categories
         categories = []
         BeEF::Core::Configuration.instance.get('beef.module').each {|k,v|
@@ -37,11 +40,14 @@ module Modules
         return categories.sort
     end
 
+    # Get all modules currently stored in the database
+    # @return [Array] DataMapper array of all BeEF::Core::Models::CommandModule's in the database
     def self.get_stored_in_db
       return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
     end
     
-    # Loads modules 
+    # Loads all enabled modules 
+    # @note API Fire: post_soft_load
     def self.load
         BeEF::Core::Configuration.instance.load_modules_config
         self.get_enabled.each { |k,v|

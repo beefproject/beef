@@ -12,10 +12,8 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-#
-#
-# Include here all the gems we are using
-#
+
+# @note Include here all the gems we are using
 require 'rubygems'
 require 'webrick'
 require 'webrick/httpproxy'
@@ -36,22 +34,22 @@ require 'term/ansicolor'
 require 'rex'
 require 'rex/ui'
 
-# Include the filters
+# @note Include the filters
 require 'core/filters'
 
-# Include our patches for ruby and gems
+# @note Include our patches for ruby and gems
 require 'core/ruby'
 
-# Include the API
+# @note Include the API
 require 'core/api'
 
-# Include the settings
+# @note Include the settings
 require 'core/settings'
 
-# Include the core of BeEF
+# @note Include the core of BeEF
 require 'core/core'
 
-# Include helpers
+# @note Include helpers
 require 'core/module'
 require 'core/modules'
 require 'core/extension'

@@ -16,27 +16,38 @@
 module BeEF
 module Module 
 
-    # Checks to see if module is in configuration
+    # Checks to see if module key is in configuration
+    # @param [String] mod module key
+    # @return [Boolean] if the module key exists in BeEF's configuration
     def self.is_present(mod)
         return BeEF::Core::Configuration.instance.get('beef.module').has_key?(mod.to_s)
     end
 
     # Checks to see if module is enabled in configuration
+    # @param [String] mod module key
+    # @return [Boolean] if the module key is enabled in BeEF's configuration
     def self.is_enabled(mod)
         return (self.is_present(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.enable') == true)
     end
 
     # Checks to see if the module reports that it has loaded through the configuration
+    # @param [String] mod module key
+    # @return [Boolean] if the module key is loaded in BeEF's configuration
     def self.is_loaded(mod)
         return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.loaded') == true)
     end
 
     # Returns module class definition
+    # @param [String] mod module key
+    # @return [Class] the module class
     def self.get_definition(mod)
         return BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{mod.to_s}.class"))
     end
 
     # Gets all module options
+    # @param [String] mod module key
+    # @return [Hash] a hash of all the module options
+    # @note API Fire: get_options 
     def self.get_options(mod)
         if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'get_options', [mod])
             options = BeEF::API::Registra.instance.fire(BeEF::API::Module, 'get_options', mod)
@@ -62,7 +73,12 @@ module Module
         return []
     end
     
-    # Soft Load, loads the module without requiring the module.rb file
+    # Soft loads a module
+    # @note A soft load consists of only loading the modules configuration (ie not the module.rb)
+    # @param [String] mod module key
+    # @return [Boolean] whether or not the soft load process was successful
+    # @note API Fire: pre_soft_load
+    # @note API Fire: post_soft_load
     def self.soft_load(mod)
         # API call for pre-soft-load module
         BeEF::API::Registra.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
@@ -83,7 +99,12 @@ module Module
         return false
     end
 
-    # Hard Load, loads a pre-soft-loaded module by requiring the module.rb
+    # Hard loads a module
+    # @note A hard load consists of loading a pre-soft-loaded module by requiring the module.rb
+    # @param [String] mod module key
+    # @return [Boolean] whether or not the hard load was successful
+    # @note API Fire: pre_hard_load
+    # @note API Fire: post_hard_load
     def self.hard_load(mod)
         # API call for pre-hard-load module
         BeEF::API::Registra.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
@@ -114,7 +135,9 @@ module Module
         return false
     end
 
-    # Utility function to check if hard load has occured, if not attempt hard load
+    # Checks to see if a module has been hard loaded, if not a hard load is attempted
+    # @param [String] mod module key
+    # @return [Boolean] if already hard loaded then true otherwise (see #hard_load)
     def self.check_hard_load(mod)
         if not self.is_loaded(mod)
             return self.hard_load(mod)
@@ -122,19 +145,25 @@ module Module
         return true
     end
     
-    # Return module key by database id
+    # Get module key by database ID
+    # @param [Integer] id module database ID
+    # @return [String] module key
     def self.get_key_by_database_id(id)
         ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('db') and v['db']['id'].to_i == id.to_i }
         return (ret.kind_of?(Array)) ? ret.first.first : ret.keys.first
     end
 
-    # Return module key by database id
+    # Get module key by module class
+    # @param [Class] c module class
+    # @return [String] module key
     def self.get_key_by_class(c)
         ret = BeEF::Core::Configuration.instance.get('beef.module').select {|k, v| v.has_key?('class') and v['class'].to_s == c.to_s }
         return (ret.kind_of?(Array)) ? ret.first.first : ret.keys.first
     end
 
-    #checks to see if module class exists
+    # Checks to see if module class exists
+    # @param [String] mod module key
+    # @return [Boolean] returns whether or not the class exists 
     def self.exists?(mod)
         begin
             kclass = BeEF::Core::Command.const_get(mod.capitalize)
@@ -145,12 +174,15 @@ module Module
     end
 
     # Checks target configuration to see if browser / version / operating system is supported
-    # Support uses a rating system to provide the most accurate results.
-    # 1 = All match. ie: All was defined.
-    # 2 = String match. ie: Firefox was defined as working.
-    # 3 = Hash match. ie: Firefox defined with 1 additional parameter (eg max_ver).
-    # 4+ = As above but with extra parameters.
-    # Please note this rating system has no correlation to the return constant value BeEF::Core::Constants::CommandModule::*
+    # @param [String] mod module key
+    # @param [Hash] opts hash of module support information
+    # @return [Constant, nil] returns a resulting defined constant BeEF::Core::Constants::CommandModule::*
+    # @note Support uses a rating system to provide the most accurate results.
+    #   1 = All match. ie: All was defined.
+    #   2 = String match. ie: Firefox was defined as working.
+    #   3 = Hash match. ie: Firefox defined with 1 additional parameter (eg max_ver).
+    #   4+ = As above but with extra parameters.
+    #   Please note this rating system has no correlation to the return constant value BeEF::Core::Constants::CommandModule::*
     def self.support(mod, opts)
         target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
         if target_config and opts.kind_of? Hash
@@ -233,6 +265,8 @@ module Module
     end
 
     # Translates module target configuration
+    # @note Takes the user defined target configuration and replaces it with equivalent a constant based generated version
+    # @param [String] mod module key
     def self.parse_targets(mod)
         target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
         if target_config
@@ -285,6 +319,9 @@ module Module
     end
 
     # Translates simple browser target configuration
+    # @note Takes a user defined browser type and translates it into a BeEF constant
+    # @param [String] v user defined browser
+    # @return [Constant] a BeEF browser constant
     def self.match_target_browser(v)
         browser = false
         if v.class == String
@@ -302,6 +339,9 @@ module Module
     end
 
     # Translates complex browser target configuration
+    # @note Takes a complex user defined browser hash and converts it to applicable BeEF constants
+    # @param [Hash] v user defined browser hash    
+    # @return [Hash] BeEF constants hash
     def self.match_target_browser_spec(v)
         browser = {}
         if v.class == Hash
@@ -335,6 +375,9 @@ module Module
     end
 
     # Translates simple OS target configuration
+    # @note Takes user defined OS specification and translates it into BeEF constants
+    # @param [String] v user defined OS string
+    # @return [Constant] BeEF OS Constant
     def self.match_target_os(v)
         os = false
         if v.class == String
@@ -351,7 +394,12 @@ module Module
         return os
     end
 
-    # Executes module 
+    # Executes a module 
+    # @param [String] mod module key
+    # @param [String] hbsession hooked browser session
+    # @param [Array] opts array of module execute options (see #get_options)
+    # @return [Boolean] whether or not the BeEF system executed the module
+    # @note The return value of this function does not specify if the module was successful, only that it was executed within the framework
     def self.execute(mod, hbsession, opts=[])
         if not (self.is_present(mod) and self.is_enabled(mod))
             print_error "Module not found '#{mod}'. Failed to execute module."
@@ -359,7 +407,7 @@ module Module
         end
         if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil])
             BeEF::API::Registra.instance.fire(BeEF::API::Module, 'override_execute', mod, opts)
-            #We return true by default as we cannot determine the correct status if multiple API hooks have been called
+            # @note We return true by default as we cannot determine the correct status if multiple API hooks have been called
             return true
         end
         hb = BeEF::HBManager.get_by_session(hbsession)        
@@ -382,6 +430,9 @@ module Module
     end
 
     # Merges default module options with array of custom options
+    # @param [String] mod module key
+    # @param [Hash] h module options customised by user input
+    # @return [Hash, nil] returns merged options
     def self.merge_options(mod, h)
         if self.is_present(mod)
             self.check_hard_load(mod)

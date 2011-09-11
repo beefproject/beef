@@ -16,7 +16,7 @@
 #   limitations under the License.
 #
 
-# check version supported
+# @note Version check to ensure BeEF is running Ruby 1.9 >
 if  RUBY_VERSION < '1.9'
   puts "\n"
   puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
@@ -25,41 +25,38 @@ if  RUBY_VERSION < '1.9'
 end
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
-
 $root_dir = File.expand_path('..', __FILE__)
 
-# prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
+# @note Prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
 if RUBY_VERSION =~ /1.9/
     Encoding.default_external = Encoding::UTF_8
     Encoding.default_internal = Encoding::UTF_8
 end
 
+# @note Require core loader's
 require 'core/loader'
 
-# load config
+# @note Starts configuration system
 config = BeEF::Core::Configuration.instance
 
-# Loads extensions
+# @note Loads enabled extensions
 BeEF::Extensions.load
 
-# prints welcome message
+# @note Prints BeEF welcome message
 #BeEF::Extension::Console::Banners.print_ascii_art
 BeEF::Extension::Console::Banners.print_welcome_msg
 
-# Loads modules
+# @note Loads enabled modules
 BeEF::Modules.load
 
-# disable reverse dns
+# @note Disable reverse dns
 Socket.do_not_reverse_lookup = true 
 
-# setup database
+# @note Database setup - use DataMapper::Logger.new($stdout, :debug) for development debugging
 case config.get("beef.database.driver")
   when "sqlite"
     DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
   when "mysql","postgres"
-    # === Remove comment of next line for logging queries (very verbose) ===
-    # DataMapper::Logger.new($stdout, :debug)
-    #
     DataMapper.setup(:default,
       :adapter => config.get("beef.database.driver"),
       :host => config.get("beef.database.db_host"),
@@ -72,6 +69,8 @@ case config.get("beef.database.driver")
     print_error 'No default database selected. Please add one in config.yaml'
 end
 
+# @note Resets the database if the -x flag was passed
+# @todo Change reference from Extension::Console to Core::Console once the console extension is merged with the core
 if BeEF::Extension::Console.resetdb?
   print_info 'Resetting the database for BeEF.'
   DataMapper.auto_migrate!
@@ -79,27 +78,26 @@ else
   DataMapper.auto_upgrade!
 end
 
-# if metasploit is unreachable it can take 10/15 seconds to load
+# @note Extensions may take a moment to load, thus we print out a please wait message
 print_info 'BeEF is loading. Wait a few seconds...'
 
-# check for new command modules
+# @note Execute migration procedure, checks for new modules
 BeEF::Core::Migration.instance.update_db!
 
-# prepare the web server to run
+# @note Create HTTP Server and prepare it to run
 http_hook_server = BeEF::Core::Server.instance
 http_hook_server.prepare
 
-# prints information back to the user before running the server
-
+# @note Prints information back to the user before running the server
 BeEF::Extension::Console::Banners.print_loaded_extensions
 BeEF::Extension::Console::Banners.print_loaded_modules
 BeEF::Extension::Console::Banners.print_network_interfaces_count
 BeEF::Extension::Console::Banners.print_network_interfaces_routes
 
-# We dynamically get the list of all browser hook handler using the API and register them
+# @note Call the API method 'pre_http_start'
 BeEF::API::Registra.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
-# We check now for whether we load the Console Shell or not
+# @note Start the HTTP Server, we addtionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
   puts ""
   begin
@@ -109,6 +107,5 @@ if config.get("beef.extension.console.shell.enable") == true
   rescue Interrupt
   end
 else
-  # starts the web server
   http_hook_server.start
 end
