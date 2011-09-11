@@ -633,10 +633,10 @@ beef.browser = {
 	/**
 	 * Checks if the zombie has Web Sockets enabled.
 	 * @return: {Boolean} true or false.
-	 *
+	 * In FF6+ the websocket object has been prefixed with Moz, so now it's called MozWebSocket
 	 * */
 	hasWebSocket: function() {
-		if (!!window.WebSocket) return true; else return false;
+		if (!!window.WebSocket || !!window.MozWebSocket) return true; else return false;
 	},
 
 	/**
