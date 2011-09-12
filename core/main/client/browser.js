@@ -136,12 +136,20 @@ beef.browser = {
 	
 	/**
 	 * Returns true if Safari.
+	 * @example: beef.browser.isS51()
+	 */
+	isS51: function() {
+		return (window.navigator.userAgent.match(/Version\/5\.1/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+	},
+	
+	/**
+	 * Returns true if Safari.
 	 * @example: beef.browser.isS()
 	 */
 	isS: function() {
-		return !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome;
+		return this.isS51() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
 	},
-	
+
 	/**
 	 * Returns true if Chrome 5.
 	 * @example: beef.browser.isC5()
@@ -294,11 +302,12 @@ beef.browser = {
 			IE8:	this.isIE8(),	// Internet Explorer 8
 			IE7:	this.isIE7(),	// Internet Explorer 7
 			IE:		this.isIE(),	// Internet Explorer any version
-            O952:   this.isO952(),  // Opera 9.50 trough 9.52
-            O960:   this.isO960(),  // Opera 9.60 trough 9.64
-            O10:    this.isO10(),  	// Opera 10.xx
-            O11:    this.isO11(),  	// Opera 11.xx
+			O952:   this.isO952(),  // Opera 9.50 trough 9.52
+			O960:   this.isO960(),  // Opera 9.60 trough 9.64
+			O10:    this.isO10(),  	// Opera 10.xx
+			O11:    this.isO11(),  	// Opera 11.xx
 			O:      this.isO(), 	// Opera any version
+			S51:	this.isS51(),	// Safari 5.1
 			S:		this.isS()		// Safari any version
 		}
 	},
@@ -331,6 +340,7 @@ beef.browser = {
 		if (this.isIE9())	{ return '9'  };	// Internet Explorer 9
 		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
+		if (this.isS51())	{ return '5.1'  };	// Safari 5.1
         if (this.isO952())	{ return '9.5'};	// Opera 9.5x
         if (this.isO960())	{ return '9.6'};	// Opera 9.6
         if (this.isO10())	{ return '10' };	// Opera 10.xx
