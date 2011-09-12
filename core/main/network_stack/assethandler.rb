@@ -41,7 +41,7 @@ module Handlers
         url = buildURL(path, extension) 
         @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
         @http_server.mount(url, true, WEBrick::HTTPServlet::FileHandler, @allocations[url]['file'])
-        print_info "File [" + "#{root_dir}"+file + "] binded to url [" + url + "]"
+        print_info "File [" + "#{root_dir}"+file + "] bound to url [" + url + "]"
         return url
     end
     
