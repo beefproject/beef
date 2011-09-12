@@ -81,6 +81,10 @@ beef.os = {
 		return (this.ua.indexOf('iPad') != -1) ? true : false;
 	},
 
+	isIpod: function() {
+		return (this.ua.indexOf('iPod') != -1) ? true : false;
+	},
+
 	isNokia: function() {
 		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
 	},
@@ -106,7 +110,6 @@ beef.os = {
 		if(this.isWin311()) return 'Windows 3.11';
 		if(this.isWinNT4()) return 'Windows NT 4';
 		if(this.isWin95()) return 'Windows 95';
-		if(this.isWin95()) return 'Windows 98';
 		if(this.isWin98()) return 'Windows 98';
 		if(this.isWinME()) return 'Windows Millenium';
 		if(this.isWin2000()) return 'Windows 2000';
@@ -139,6 +142,8 @@ beef.os = {
 		if (this.isIphone()) return 'iPhone';
 		//iPad
 		if (this.isIpad()) return 'iPad';
+		//iPod
+		if (this.isIpod()) return 'iPod';
 		
 		//macintosh
 		if(this.isMacintosh()) {

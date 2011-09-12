@@ -102,7 +102,13 @@ module Models
       return BeEF::Core::Constants::Os::OS_UNKNOWN_IMG if ua_string.nil?
       return BeEF::Core::Constants::Os::OS_WINDOWS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_WINDOWS_UA_STR
       return BeEF::Core::Constants::Os::OS_LINUX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_LINUX_UA_STR
+      return BeEF::Core::Constants::Os::OS_QNX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_QNX_UA_STR
+      return BeEF::Core::Constants::Os::OS_BEOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BEOS_UA_STR
+      return BeEF::Core::Constants::Os::OS_OPENBSD_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_OPENBSD_UA_STR
       return BeEF::Core::Constants::Os::OS_IPHONE_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPHONE_UA_STR
+      return BeEF::Core::Constants::Os::OS_IPAD_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPAD_UA_STR
+      return BeEF::Core::Constants::Os::OS_IPOD_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPOD_UA_STR
+      return BeEF::Core::Constants::Os::OS_MAEMO_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_MAEMO_UA_STR
       return BeEF::Core::Constants::Os::OS_MAC_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_MAC_UA_STR
       return BeEF::Core::Constants::Os::OS_BLACKBERRY_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BLACKBERRY_UA_STR
       return BeEF::Core::Constants::Os::OS_ANDROID_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_ANDROID_UA_STR
