@@ -16,7 +16,9 @@
 module BeEF  
 module Filters
   
-  # verify the hostname string is valid
+  # Verify the hostname string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string is a valid hostname
   def self.is_valid_hostname?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)

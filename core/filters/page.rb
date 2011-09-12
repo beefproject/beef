@@ -16,7 +16,9 @@
 module BeEF
 module Filters
   
-  # verify the page title string is valid
+  # Verify the page title string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string is a valid page title
   def self.is_valid_pagetitle?(str)
     return false if not str.is_a? String
     return false if has_non_printable_char?(str)

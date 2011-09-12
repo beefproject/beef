@@ -16,7 +16,9 @@
 module BeEF
 module Filters
 
-  # check the browser type value - for example, 'FF'
+  # Check the browser type value - for example, 'FF'
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid browser name characters
   def self.is_valid_browsername?(str)
     return false if not is_non_empty_string?(str)
     return false if str.length > 2
@@ -24,7 +26,9 @@ module Filters
     true
   end
 
-  # check the browser type value - for example, {"FF5":true,"FF":true} & {"S":true}
+  # Check the browser type value - for example, {"FF5":true,"FF":true} & {"S":true}
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid browser type characters
   def self.is_valid_browsertype?(str)
     return false if not is_non_empty_string?(str)
     return false if str.length < 10
@@ -33,7 +37,9 @@ module Filters
     true
   end
 
-  # check the os name value - for example, 'Windows XP'
+  # Check the Operating System name value - for example, 'Windows XP'
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid Operating System name characters
   def self.is_valid_osname?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str) 
@@ -41,7 +47,9 @@ module Filters
     true
   end
 
-  # verify the browser version string is valid
+  # Verify the browser version string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid browser version characters
   def self.is_valid_browserversion?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)  
@@ -51,7 +59,9 @@ module Filters
     true
   end
 
-  # verify the browser/UA string is valid
+  # Verify the browser/UA string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid browser / ua string characters
   def self.is_valid_browserstring?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)    
@@ -59,28 +69,37 @@ module Filters
     true
   end
   
-  # verify the cookies are valid
+  # Verify the cookies are valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid cookie characters
   def self.is_valid_cookies?(str)
     return false if has_non_printable_char?(str)    
     return false if str.length > 2000
     true
   end
 
-  # verify the screen params are valid
+  # Verify the screen params are valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid screen param characters
   def self.is_valid_screen_params?(str)
     return false if has_non_printable_char?(str)    
     return false if str.length > 200
     true
   end
 
-  # verify the window size is valid
+  # Verify the window size is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid window size characters
   def self.is_valid_window_size?(str)
     return false if has_non_printable_char?(str)    
     return false if str.length > 200
     true
   end
 
-  # verify the yes and no is valid
+  # Verify the yes and no is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string is either 'yes' or 'no'
+  # @todo Confirm this is case insensitive
   def self.is_valid_yes_no?(str)
     return false if has_non_printable_char?(str)
     return false if str !~ /^(Yes|No)$/
@@ -88,10 +107,12 @@ module Filters
     true
   end
 
-  # verify the browser_plugins string is valid
+  # Verify the browser_plugins string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid browser plugin characters
+  # @note This string can be empty if there are no browser plugins
+  # @todo Verify if the ruby version statement is still necessary
   def self.is_valid_browser_plugins?(str)
-    # this string can be empty if there are no browser plugins
-    #print_debug(str)
     return true if not is_non_empty_string?(str)
     return false if str.length > 1000
     if RUBY_VERSION >= "1.9" && str.encoding === Encoding.find('UTF-8')
