@@ -115,7 +115,8 @@ beef.browser = {
 	 * @example: beef.browser.isFF5()
 	 */
 	isFF5: function() {
-		return !!window.globalStorage && !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==5)?true:false);
+		//abraham.aranguren: !!window.globalStorage returns false on some Firefox 5 browsers such as mine
+		return !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==5)?true:false);
 	},
 
 	/**
@@ -123,7 +124,8 @@ beef.browser = {
 	 * @example: beef.browser.isFF6()
 	 */
 	isFF6: function() {
-		return !!window.globalStorage && !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==6)?true:false);
+		//abraham.aranguren: !!window.globalStorage returns false on some Firefox 6 browsers such as mine
+		return !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==6)?true:false);
 	},
 	
 	/**
@@ -131,7 +133,9 @@ beef.browser = {
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6();
+		result=this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6();
+		//alert('result='+result);
+		return result;
 	},
 	
 	/**
