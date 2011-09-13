@@ -23,4 +23,4 @@ beef:
             authors: ["saafan"]
             target:
                 working: ["All"]
-                user_notify: ["FF"]
+                user_notify: ["FF", "C"]
