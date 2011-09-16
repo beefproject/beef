@@ -21,7 +21,7 @@ class Inter_protocol_irc < BeEF::Core::Command
 	{'name' => 'port', 'ui_label' => 'Port', 'value' => '6667'},
         {'name' => 'nick', 'ui_label' => 'Username', 'value' => 'user1234__'},
         {'name' => 'channel', 'ui_label' => 'Channel', 'value' => '#channel1'},
-        {'name' => 'message', 'ui_label' => 'Message', 'value' => 'hi all! yay!'}
+        {'name' => 'message', 'ui_label' => 'Message', 'value' => 'Message sent from the Browser Exploitation Framework!'}
     ]
   end
 
