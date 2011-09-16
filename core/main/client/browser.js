@@ -107,7 +107,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF4()
 	 */
 	isFF4: function() {
-		return !!window.globalStorage && !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==4)?true:false);
+		return !!window.globalStorage && !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/4/) != null;
 	},
 	
 	/**
@@ -115,8 +115,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF5()
 	 */
 	isFF5: function() {
-		//abraham.aranguren: !!window.globalStorage returns false on some Firefox 5 browsers such as mine
-		return !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==5)?true:false);
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/5/) != null;
 	},
 
 	/**
@@ -124,8 +123,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF6()
 	 */
 	isFF6: function() {
-		//abraham.aranguren: !!window.globalStorage returns false on some Firefox 6 browsers such as mine
-		return !!window.history.replaceState && ((parseInt(window.navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 11)==6)?true:false);
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/6/) != null;
 	},
 	
 	/**
@@ -133,11 +131,9 @@ beef.browser = {
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		result=this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6();
-		//alert('result='+result);
-		return result;
+		return this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6();
 	},
-	
+
 	/**
 	 * Returns true if Safari 4.xx
 	 * @example: beef.browser.isS4()
