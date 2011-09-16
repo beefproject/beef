@@ -28,7 +28,7 @@ class Hook_ie < BeEF::Core::Command
 		
 		# The original pdf file contains a token that will get replaced during the initialization with
 		# the actual hook URI of beef. Note that the hook URI is accessed via the DNS name.		
-		File.open('./modules/browser/hook_default/bounce_to_ie.pdf',"r") { |original_hook_file|
+		File.open('./modules/browser/hook_default/bounce_to_ie_configured.pdf',"r") { |original_hook_file|
 			original_hook_file.each_line { |line|				
 				# If the line includes the hook token, then replace it with the actual hook URI
 				if(line.include? '<hookURI>')
