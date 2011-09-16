@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        rickroll:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Browser"
+            name: "Redirect Browser (Rickroll)"
+            description: "Overwrite the body of the page the victim is on with a full screen Rickroll."
+            authors: ["Yori Kvitchko"]
             target:
                 user_notify: ['ALL']

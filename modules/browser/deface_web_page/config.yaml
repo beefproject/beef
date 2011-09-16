@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        deface_web_page:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
+            category: "Browser"
+            name: "Replace Content (Deface)"
+            description: "Overwrite the body of the page the hooked browser is on with the 'Deface Content' string."
             authors: ["antisnatchor"]
             target:
                 user_notify: ['ALL']

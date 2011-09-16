@@ -15,11 +15,12 @@
 #
 beef:
     module:
-        physical_location:
+        hook_ie:
             enable: true
             category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            name: "Hook Default Browser"
+            description: "This module will use a PDF to attempt to hook the default browser (assuming it isn't currently hooked). <br><br>Normally, this will be IE but it will also work when Chrome is set to the default. When executed, the hooked browser will load a PDF and use that to start the default browser. If successful another browser will appear in the browser tree."
+            authors: ["saafan"]
             target:
-                user_notify: ['ALL']
+                working: ["All"]
+                user_notify: ["FF", "C"]

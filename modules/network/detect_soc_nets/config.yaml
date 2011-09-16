@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        detect_soc_nets:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Network"
+            name: "Detect Social Networks"
+            description: "This module will detect if the Hooked Browser is currently authenticated to GMail, Facebook and Twitter."
+            authors: ["xntrik", "Mike Cardwell"]
             target:
-                user_notify: ['ALL']
+                working: ["ALL"]

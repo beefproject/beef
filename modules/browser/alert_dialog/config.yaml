@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        alert_dialog:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Browser"
+            name: "Create Alert Dialog"
+            description: "Sends an alert dialog to the hooked browser."
+            authors: ["wade", "bm"]
             target:
-                user_notify: ['ALL']
+                user_notify: ["All"]

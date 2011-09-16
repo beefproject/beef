@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        extract_local_storage:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Browser"
+            name: "Get Local Storage"
+            description: "Extracts data from the HTML5 localStorage object."
+            authors: ["bcoles"]
             target:
-                user_notify: ['ALL']
+                working: ["FF", "S", "C"]

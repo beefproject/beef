@@ -15,11 +15,12 @@
 #
 beef:
     module:
-        physical_location:
+        ping_sweep:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Network"
+            name: "Ping Sweep"
+            description: "Discover active hosts in the internal network of the hooked browser. It works calling a Java method from JavaScript and do not require user interaction."
+            authors: ["jgaliana"]
             target:
-                user_notify: ['ALL']
+                working: ["FF"]
+                not_working: ["C", "S", "O", "IE"]

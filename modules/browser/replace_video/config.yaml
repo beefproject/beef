@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        replace_video:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Browser"
+            name: "Replace Videos"
+            description: "Replaces an object selected with jQuery (all embed tags by default) with an embed tag containing the youtube video of your choice (rickroll by default)."
+            authors: ["Yori Kvitchko", "antisnatchor"]
             target:
                 user_notify: ['ALL']

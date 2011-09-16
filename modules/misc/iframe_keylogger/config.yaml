@@ -15,11 +15,12 @@
 #
 beef:
     module:
-        physical_location:
+        iframe_keylogger:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
+            category: "Misc"
+            name: "iFrame Event Logger"
+            description: "Creates a 100% by 100% iFrame overlay with event logging. The content of the overlay is set in the 'iFrame Src' option."
             authors: ["antisnatchor"]
             target:
-                user_notify: ['ALL']
+                working: "All"
+                not_working: "O"

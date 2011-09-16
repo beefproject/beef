@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        detect_tor:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Network"
+            name: "Detect Tor" 
+            description: "This module will detect if the zombie is currently using Tor (https://www.torproject.org/)."
+            authors: ["wade", "pdp", "bm", "xntrik"]
             target:
-                user_notify: ['ALL']
+                working: ["ALL"]

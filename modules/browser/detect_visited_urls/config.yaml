@@ -18,7 +18,7 @@ beef:
         detect_visited_urls:
             enable: true
             category: "Browser"
-            name: "Detect Visited URLs"
+            name: "Get Visited URLs"
             description: "This module will detect whether or not the hooked browser has visited the specified URL(s)"
             authors: ["passbe"]
             target:

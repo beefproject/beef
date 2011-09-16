@@ -15,11 +15,13 @@
 #
 beef:
     module:
-        physical_location:
+        detect_local_settings:
             enable: true
             category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            name: "Get Network Settings"
+            description: "Grab the local network settings (ie internal ip address)."
+            authors: ["pdp", "wade", "bm", "xntrik"]
             target:
-                user_notify: ['ALL']
+                working: ["FF", "IE"]
+                user_notify: "C"
+                not_working: "S"

@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        physical_location:
+        collect_links:
             enable: true
-            category: "Host"
-            name: "Get Geolocation"
-            description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
-            authors: ["antisnatchor"]
+            category: "Browser"
+            name: "Get Page HREFs"
+            description: "This module will retrieve HREFs from the target page."
+            authors: ["vo"]
             target:
-                user_notify: ['ALL']
+                working: ["ALL"]
