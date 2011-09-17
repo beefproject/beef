@@ -107,5 +107,6 @@ if config.get("beef.extension.console.shell.enable") == true
   rescue Interrupt
   end
 else
+  print_info 'BeEF server started (press control+c to stop)'
   http_hook_server.start
 end

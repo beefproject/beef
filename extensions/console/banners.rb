@@ -38,9 +38,13 @@ module Banners
     # Prints BeEF's welcome message
     #
     def print_welcome_msg
-	config = BeEF::Core::Configuration.instance
-	version = config.get('beef.version')
-        print_info "Version: #{version} - Run 'svn update' to update to the latest version."
+        config = BeEF::Core::Configuration.instance
+        version = config.get('beef.version')
+        print_info "Browser Exploitation Framework (BeEF)"
+        print_more "Version #{version}"
+        print_more "Site http://beefproject.com"
+        print_more "Run 'svn update' to update to the latest revision."
+        print_info "BeEF server starting..."
     end
 
     #
