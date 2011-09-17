@@ -150,10 +150,17 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     http_db = H.first(:id => http_id) || nil
     raise WEBrick::HTTPStatus::BadRequest, "http object could not be found in the database" if http_db.nil?
     
+    if http_db.response_data.length > (1024 * 100) #more thank 100K
+      response_data = http_db.response_data[0..(1024*100)]
+      response_data += "\n<---------- Response Data Truncated---------->"
+    else
+      response_data = http_db.response_data
+    end
+    
     res = {
       'id'        => http_db.id,
       'request'   => http_db.request,
-      'response'  => http_db.response_data,
+      'response'  => response_data,
       'response_headers' => http_db.response_headers,
       'domain'    => http_db.domain,
       'port'      => http_db.port,
