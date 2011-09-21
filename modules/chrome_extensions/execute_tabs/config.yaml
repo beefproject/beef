@@ -22,4 +22,5 @@ beef:
             description: "Open a new tab and execute the Javascript code on it. The Chrome Extension need to have the 'tabs' permission, as well as access to the domain."
             authors: ["Kos", "antisnatchor"]
             target:
-                user_notify: ["ALL"]
+                working: ["C"]
+                user_notify: ["C"]
