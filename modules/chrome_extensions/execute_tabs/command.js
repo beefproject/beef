@@ -21,7 +21,7 @@ beef.execute(function() {
             });
 		});
 	} catch(error){
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'name=Not inside of a Chrome Extension');
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Not inside of a Chrome Extension');
 	}
 });
 
