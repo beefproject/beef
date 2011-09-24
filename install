@@ -104,6 +104,7 @@ def install_command
   end
   cmd = cmd.delete "," "'"
   cmd = cmd.gsub("=", "-v")
+  cmd += " --no-rdoc --no-ri"
   return cmd
 end
 
