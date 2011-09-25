@@ -1,0 +1,10 @@
+beef:
+    module:
+        send_gvoice_sms:
+            enable: true
+            category: "Chrome Extensions"
+            name: "Send Gvoice SMS"
+            description: "Send a text message (SMS) through the Google Voice account of the victim, is she's logged in Google."
+            authors: ["Kos", "antisnatchor"]
+            target:
+                user_notify: ["ALL"]
