@@ -1,0 +1,10 @@
+beef:
+    module:
+        inject_beef:
+            enable: true
+            category: "Chrome Extensions"
+            name: "Inject BeEF"
+            description: "Attempt to inject the BeEF hook on all the available tabs."
+            authors: ["Kos", "antisnatchor"]
+            target:
+                working: ["C"]
