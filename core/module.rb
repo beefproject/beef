@@ -72,6 +72,18 @@ module Module
         end
         return []
     end
+
+    # Gets all module payload options
+    # @param [String] mod module key
+    # @return [Hash] a hash of all the module options
+    # @note API Fire: get_options 
+    def self.get_payload_options(mod,payload)
+        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'get_payload_options', [mod,nil])
+            options = BeEF::API::Registra.instance.fire(BeEF::API::Module, 'get_payload_options', mod,payload)
+            return options 
+        end
+        return []
+    end
     
     # Soft loads a module
     # @note A soft load consists of only loading the modules configuration (ie not the module.rb)

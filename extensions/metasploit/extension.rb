@@ -13,7 +13,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-require 'pp'
 module BeEF
 module Extension
 module Metasploit
@@ -31,6 +30,8 @@ module Metasploit
                 v['type'] = 'text'
 		v['value'] = rand(3**20).to_s(16) if k == 'URIPATH'
 		v['value'] = v['default'] if k != "URIPATH"
+        	v['value']  =  BeEF::Core::Configuration.instance.get('beef.extension.metasploit.callback_host') if k == "LHOST"
+
 		
             when "bool"
                 v['type'] = 'checkbox'
@@ -71,7 +72,9 @@ module Metasploit
                 'valueField' => 'payload', 
                 'displayField' => 'payload', 
                 'mode' => 'local', 
-                'autoWidth' => true
+                'autoWidth' => true,
+		'defaultPayload' => defaultPayload,
+		'reloadOnChange' => true
           }
       end
     end

@@ -39,6 +39,7 @@ module API
                 count = 1
                 msf_module_config.each{|k,v|
                     BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [k])
+                    BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [k,nil])
                     BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [k, nil])
                     print_over "Loaded #{count} Metasploit exploits."
                     count += 1
@@ -69,6 +70,7 @@ module API
                             'class'=> 'Msf_module'
                         }
                         BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [key])
+                        BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [key,nil])
                         BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [key, nil])
                         print_over "Loaded #{count} Metasploit exploits."
                         count += 1
@@ -90,8 +92,10 @@ module API
         msf = BeEF::Extension::Metasploit::RpcClient.instance                
         if msf_key != nil and msf.login
             msf_module_options = msf.call('module.options', 'exploit', msf_key)
+	    com = BeEF::Core::Models::CommandModule.first(:name => mod )
             if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
+		options << { 'name' => 'mod_id', 'id' => 'mod_id' , 'type' => 'hidden', 'value' => com.id}
                 msf_payload_options = msf.call('module.compatible_payloads', msf_key)
                 if msf_payload_options
                     options << BeEF::Extension::Metasploit.translate_payload(msf_payload_options)
@@ -115,9 +119,6 @@ module API
 		next if ['e','ie_session','and_module_id'].include? opt['name']
 		msf_opts[opt["name"]] = opt["value"]
 	}
-	msf_opts["LPORT"] = rand(50000) + 1024
-	msf_opts['LHOST']  =  BeEF::Core::Configuration.instance.get('beef.extension.metasploit.callback_host') 
-
 
         if msf_key != nil and msf.login
             # Are the options correctly formatted for msf?
@@ -129,10 +130,24 @@ module API
         return true
     end
 
+    # Get module options + payloads when the beef framework requests this information
+    def self.get_payload_options(mod,payload)
+        msf_key = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.msf_key")
+
+        msf = BeEF::Extension::Metasploit::RpcClient.instance                
+        if msf_key != nil and msf.login
+            msf_module_options = msf.call('module.options', 'payload', payload)
+	     
+	    com = BeEF::Core::Models::CommandModule.first(:name => mod )
+            if msf_module_options
+                options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
+                return options
+            else
+                print_error "Unable to retrieve metasploit payload options for exploit: #{msf_key}"
+            end
+        end
+     end
   end
-
-
-
 end
 end
 end

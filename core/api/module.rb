@@ -28,6 +28,7 @@ module API
         'pre_hard_load' => :pre_hard_load,
         'post_hard_load' => :post_hard_load,
         'get_options' => :get_options,
+        'get_payload_options' => :get_payload_options,
         'override_execute' => :override_execute
     }
     
@@ -57,6 +58,11 @@ module API
     # @param [Hash] opts a Hash of options   
     # @note Hooking this API method stops the default flow of the Module.execute() method.
     def override_execute(mod, opts); end
+
+    # Fired when retreiving dynamic payload
+    # @return [Hash] a hash of options
+    # @note the option hash is merged with all other API hook's returned hash. Hooking this API method prevents the default options being returned.
+    def get_payload_options; end
 
   end
   
