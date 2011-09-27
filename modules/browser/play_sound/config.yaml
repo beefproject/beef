@@ -13,23 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-
-
-# @note Patching Ruby
-require 'core/ruby/module'
-require 'core/ruby/object'
-require 'core/ruby/string'
-require 'core/ruby/print'
-require 'core/ruby/hash'
-
-# @note Patching WebRick
-require 'core/ruby/patches/webrick/httprequest'
-require 'core/ruby/patches/webrick/cookie'
-require 'core/ruby/patches/webrick/genericserver'
-require 'core/ruby/patches/webrick/httpresponse'
-require 'core/ruby/patches/webrick/httpservlet/filehandler.rb'
-require 'core/ruby/patches/webrick/httputils.rb'
-
-# @note Patching DataMapper Data Objects Adapter (dm-do-adapter)
-require 'core/ruby/patches/dm-do-adapter/adapter.rb'
-
+beef:
+    module:
+        Play_sound:
+            enable: true
+            category: "Browser"
+            name: "Play Sound"
+            description: "Play a sound on the hooked browser."
+            authors: ["Saafan"]
+            target:
+                working: ["All"]
