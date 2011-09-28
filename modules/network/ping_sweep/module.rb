@@ -24,7 +24,7 @@ class Ping_sweep < BeEF::Core::Command
   def self.options
     return [
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class or IP)', 'value' => '192.168.0.1-192.168.0.254'},
-        {'name' => 'timeout', 'ui_label' => 'Timeout (ms)', 'value' => '1000'},
+        {'name' => 'timeout', 'ui_label' => 'Timeout (ms)', 'value' => '2000'},
         {'name' => 'delay', 'ui_label' => 'Delay between requests (ms)', 'value' => '100'}
     ]
   end
