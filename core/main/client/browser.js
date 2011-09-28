@@ -125,13 +125,21 @@ beef.browser = {
 	isFF6: function() {
 		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/6/) != null;
 	},
+
+	/**
+	 * Returns true if FF7.
+	 * @example: beef.browser.isFF7()
+	 */
+	isFF7: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/7/) != null;
+	},
 	
 	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6();
+		return this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7();
 	},
 
 	/**
@@ -304,7 +312,7 @@ beef.browser = {
 			C11:	this.isC11(), 	// Chrome 11
 			C12:	this.isC12(), 	// Chrome 12
 			C13:	this.isC13(),	// Chrome 13
-            C14:	this.isC14(),	// Chrome 14
+			C14:	this.isC14(),	// Chrome 14
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -314,12 +322,13 @@ beef.browser = {
 			FF4:	this.isFF4(),   // Firefox 4
 			FF5:	this.isFF5(),	// Firefox 5
 			FF6:	this.isFF6(),	// Firefox 6
+			FF7:	this.isFF7(),	// Firefox 7
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
-			IE9:	this.isIE9(),	// Internet Explorer 9
-			IE8:	this.isIE8(),	// Internet Explorer 8
 			IE7:	this.isIE7(),	// Internet Explorer 7
+			IE8:	this.isIE8(),	// Internet Explorer 8
+			IE9:	this.isIE9(),	// Internet Explorer 9
 			IE:	this.isIE(),	// Internet Explorer any version
 
 			O952:   this.isO952(),  // Opera 9.50 through 9.52
@@ -351,7 +360,8 @@ beef.browser = {
 		if (this.isC11())	{ return '11' }; 	// Chrome 11
 		if (this.isC12())	{ return '12' }; 	// Chrome 12
 		if (this.isC13())	{ return '13' }; 	// Chrome 13
-        if (this.isC14())	{ return '14' }; 	// Chrome 14
+		if (this.isC14())	{ return '14' }; 	// Chrome 14
+
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF35())	{ return '3.5'};	// Firefox 3.5
@@ -359,17 +369,23 @@ beef.browser = {
 		if (this.isFF4())	{ return '4'  };	// Firefox 4
 		if (this.isFF5())	{ return '5'  };	// Firefox 5
 		if (this.isFF6())	{ return '6'  };	// Firefox 6
+		if (this.isFF7())	{ return '7'  };        // Firefox 7
+
+
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE9())	{ return '9'  };	// Internet Explorer 9
 		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
+
 		if (this.isS4())	{ return '4'  };	// Safari 4
 		if (this.isS5())	{ return '5'  };	// Safari 5
+
 		if (this.isO952())	{ return '9.5'};	// Opera 9.5x
 		if (this.isO960())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx
-		return 'UNKNOWN';						// Unknown UA
+
+		return 'UNKNOWN';				// Unknown UA
 	},
 	
 	/**
