@@ -20,7 +20,9 @@ module HTTPServlet
 
   class FileHandler
     
-    # prevent directory traversal attacks
+    # Prevent directory traversal attacks
+    # @param [Object] req Request object
+    # @param [Object] res Response object
     def prevent_directory_traversal(req, res)
       raise WEBrick::HTTPStatus::BadRequest, "null character in path" if has_null?(req.path_info)
 
@@ -33,7 +35,9 @@ module HTTPServlet
       req.path_info = expanded
     end
     
-    # checks if a string contains null characters
+    # Checks if a string contains null characters
+    # @param [String] str String to test for null characters
+    # @param [Boolean] Whether the string has null characters
     def has_null? (str)
       str.split(//).each {|c| 
         return true if c.eql?("\000")

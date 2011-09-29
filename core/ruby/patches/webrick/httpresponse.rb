@@ -13,21 +13,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# The following file contains patches for WEBrick.
 module WEBrick
   
   class HTTPResponse
 
-    #
     # Add/Update HTTP response headers with those contained in original_headers Hash
-    #
+    # @param [Hash] original_headers Hash of headers
     def override_headers(original_headers)
       original_headers.each{ |key, value| @header[key.downcase] = value }
     end
 
-    #
-    # set caching headers none
-    #
+    # Set caching headers none
     def set_no_cache()
       @header['ETag'] = nil
       @header['Last-Modified'] = Time.now + 100**4
@@ -36,12 +32,14 @@ module WEBrick
       @header['Pragma'] = 'no-cache'      
     end
     
-    #
-    # set the cookie in the response
-    # Limit: only one set-cookie will be within the response
-    #
+    # Set the cookie in the response
+    # @param [String] name Name of the cookie
+    # @param [String] value Value of the cookie
+    # @param [String] path Path of the cookie
+    # @param [Boolean] httponly If the cookie is HTTP only
+    # @param [Boolean] secure If the cookie is secure only
+    # @note Limit: only one set-cookie will be within the response
     def set_cookie(name, value, path = '/', httponly = true, secure = true)
-      
       cookie = WEBrick::Cookie.new(name, value)
       cookie.path = path
       cookie.httponly = httponly
@@ -51,10 +49,7 @@ module WEBrick
       @header['Set-Cookie'] = cookie.to_s
     end
 
-    #
-    # This patch should prevent leakage of directory listing, access
-    # auth errors, etc.
-    #   
+    # @note This patch should prevent leakage of directory listing, access auth errors, etc.
     def set_error(ex, backtrace=false)
 
       # set repsonse headers

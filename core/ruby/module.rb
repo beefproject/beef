@@ -14,25 +14,9 @@
 #   limitations under the License.
 #
 class Module
-  # Returns the classes in the current ObjectSpace where this module has been
-  # mixed in according to Module#included_modules.
-  #
-  #   module M
-  #   end
-  #   
-  #   module N
-  #     include M
-  #   end
-  #   
-  #   class C
-  #     include M
-  #   end
-  #   
-  #   class D < C
-  #   end
-  #
-  #   p M.included_in_classes # => [C, D]
-  #
+
+  # Returns the classes in the current ObjectSpace where this module has been mixed in according to Module#included_modules.
+  # @return [Array] An array of classes
   def included_in_classes
     classes = []
     ObjectSpace.each_object(Class) { |k| classes << k if k.included_modules.include?(self) }
@@ -42,19 +26,9 @@ class Module
       unique_classes
     end
   end
-  
-  # Returns the modules in the current ObjectSpace where this module has been
-  # mixed in according to Module#included_modules.
-  #
-  #   module M
-  #   end
-  #
-  #   module N
-  #     include M
-  #   end
-  #
-  #   p M.included_in_modules # => [N]
-  #
+
+  # Returns the modules in the current ObjectSpace where this module has been mixed in according to Module#included_modules.
+  # @return [Array] An array of modules
   def included_in_modules
     modules = []
     ObjectSpace.each_object(Module) { |k| modules << k if k.included_modules.include?(self) }
@@ -65,30 +39,14 @@ class Module
     end
   end
   
-  #
-  #   module M
-  #   end
-  #
-  #   module N
-  #     extend M
-  #   end
-  #
-  #  p N.extended_modules # => [M]
-  #
+  # Returns the modules extended inside the target module
+  # @return [Array] Array of modules
   def extended_modules
     (class << self; self end).included_modules
   end
   
-  #
-  #   module M
-  #   end
-  #
-  #   module N
-  #     extend M
-  #   end
-  #
-  #  p M.extended_in_modules # => [N]
-  #
+  # Returns the modules extending the target module
+  # @return [Array] Array of modules
   def extended_in_modules
     modules = []
     ObjectSpace.each_object(Module) { |k| modules << k if k.extended_modules.include?(self) }

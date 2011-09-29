@@ -13,13 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# The following file contains patches for DataMapper Data Objects Adapter (dm-do-adapter)
 
-# This patch fixes the following error:
-# DataObjects::URI.new with arguments is deprecated, use a Hash of URI components (/home/username/.rvm/gems/ruby-1.9.2-p290/gems/dm-do-adapter-1.1.0/lib/dm-do-adapter/adapter.rb:231:in `new')
 
-# The error is patched in dm-do-adapter 1.1.1 however it has yet to be released.
-# Patch: https://github.com/datamapper/dm-do-adapter/commit/7f0b53d1ada8735910e04ff37d60c6ff037ce288
+# @note The following file contains patches for DataMapper Data Objects Adapter (dm-do-adapter)
+#   This patch fixes the following error:
+#   DataObjects::URI.new with arguments is deprecated, use a Hash of URI components (/home/username/.rvm/gems/ruby-1.9.2-p290/gems/dm-do-adapter-1.1.0/lib/dm-do-adapter/adapter.rb:231:in `new')
+#   The error is patched in dm-do-adapter 1.1.1 however it has yet to be released.
+#   Patch: https://github.com/datamapper/dm-do-adapter/commit/7f0b53d1ada8735910e04ff37d60c6ff037ce288
 
 =begin
 Deleted:
@@ -53,7 +53,6 @@ module DataMapper
   module Adapters
     class DataObjectsAdapter < AbstractAdapter
 
-      # @api private
       def normalized_uri
         @normalized_uri ||=
           begin

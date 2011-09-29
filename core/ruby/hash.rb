@@ -15,7 +15,11 @@
 #
 class Hash
 
-    # http://snippets.dzone.com/posts/show/4706
+    # Recursively deep merge two hashes together
+    # @param [Hash] hash Hash to be merged
+    # @return [Hash] Combined hash
+    # @note Duplicate keys are overwritten by the value defined in the hash calling deep_merge (not the parameter hash)
+    # @note http://snippets.dzone.com/posts/show/4706
     def deep_merge(hash)
         target = dup
         hash.keys.each do |key|

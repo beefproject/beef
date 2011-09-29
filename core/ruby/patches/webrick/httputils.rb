@@ -13,12 +13,14 @@ module WEBrick
 
   module HTTPUtils
 
-		# Add support for additional mime types
+	# Add support for additional mime types
+    # @param [String] filename Filename
+    # @param [Hash] mime_tab Mime Type Hash
     def mime_type(filename, mime_tab)
       suffix1 = (/\.(\w+)$/ =~ filename && $1.downcase)
       suffix2 = (/\.(\w+)\.[\w\-]+$/ =~ filename && $1.downcase)
 			
-			# Add support for additional mime types
+			# @todo Add support for additional mime types
 			supported_mime_types = {
 					'wav' => 'audio/x-wav'					
 					}

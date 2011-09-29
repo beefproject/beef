@@ -13,23 +13,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-#
+
 # Function used to print errors to the console
-#
+# @param [String] s String to be printed
 def print_error(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.red+' '+s
 end
 
-#
 # Function used to print information to the console
-#
+# @param [String] s String to be printed
 def print_info(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'.blue+' '+s
 end
 
-#
 # Function used to print debug information
-#
+# @param [String] s String to be printed
+# @note This function will only print messages if the debug flag is set to true
+# @todo Once the console extension has been merged into the core, remove the extension checks. 
 def print_debug(s)
     config = BeEF::Core::Configuration.instance
     if config.get('beef.debug') || (BeEF::Extension.is_loaded('console') && BeEF::Extension::Console.verbose?)
@@ -37,24 +37,15 @@ def print_debug(s)
     end
 end
 
-#
 # Function used to print successes to the console
-#
+# @param [String] s String to be printed
 def print_success(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'.green+' '+s
 end
 
-#
-# Produces something that looks like that:
-#
-# [12:16:32]    |   Hook URL: http://127.0.0.1:3000/hook.js
-# [12:16:32]    |   UI URL:   http://127.0.0.1:3000/ui/panel
-# [12:16:32]    |_  Demo URL: http://127.0.0.1:3000/demos/basic.html
-#
-# The Template is like this:
-#
-# [date]   |   content
-#
+# Print multiple lines with decoration split by the return character
+# @param [String] s String to be printed
+# @note The string passed needs to be separated by the "\n" for multiple lines to be printed
 def print_more(s)
   time = Time.now.localtime.strftime("[%k:%M:%S]")
   lines = s.split("\n")
@@ -68,9 +59,9 @@ def print_more(s)
   end 
 end
 
-#
 # Function used to print over the current line
-#
+# @param [String] s String to print over current line
+# @note To terminate the print_over functionality your last print_over line must include a "\n" return
 def print_over(s)
   time = Time.now.localtime.strftime("[%k:%M:%S]")
   print "\r#{time}"+"[*]".blue+" #{s}"

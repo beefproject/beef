@@ -13,12 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# The following file contains patches for WEBrick.
 module WEBrick
   
   class Cookie
     attr_accessor :httponly
         
+    # Convert cookie object to a string representation
+    # @return [String] ret String of information about cookie
     def to_s
       ret = ""
       ret << @name << "=" << @value

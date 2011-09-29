@@ -14,13 +14,9 @@
 #   limitations under the License.
 #
 class String
-  #
-  # Use a gem to colorize the console.
-  #
-  # See: http://flori.github.com/term-ansicolor/
-  #
-  # Example: print "red bold".red.bold, "\n"
-  #
+
+  # @note Use a gem to colorize the console.
+  # @note http://flori.github.com/term-ansicolor/ 
   include Term::ANSIColor
   
 end
