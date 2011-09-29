@@ -165,6 +165,31 @@ beef.dom = {
 		}).length;
 	},
 
+	/**
+	 * @param: {String} old_protocol: the old link protocol to be rewritten
+	 * @param: {String} new_protocol: the new link protocol to be written
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteLinksProtocol: function(old_protocol, new_protocol, selector) {
+
+		var count = 0;
+		var re = new RegExp(old_protocol+"://", "gi");
+		var sel = (selector == null) ? 'a' : selector;
+
+		$j(sel).each(function() {
+			if ($j(this).attr('href') != null) {
+				var url = $j(this).attr('href');
+				if (url.match(re)) {
+					$j(this).attr('href', url.replace(re, new_protocol+"://")).click(function() { return true; });
+					count++;
+				}
+			}
+		});
+
+		return count;
+	},
+
     /**
      * @params: {String} id: reference identifier to the applet.
      * @params: {String} code: name of the class to be loaded. For example, beef.class.
