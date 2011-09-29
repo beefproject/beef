@@ -1,0 +1,6 @@
+desc "Run unit tests"
+task :unit_tests do
+  sh "cd test/unit/;ruby ts_beef.rb"
+end
+
+task :default => ["unit_tests"]
