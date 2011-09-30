@@ -9,11 +9,13 @@ end
 
 require './core/filter/tc_base'
 require './core/filter/tc_command'
+require './core/tc_loader'
 
 class TS_BeefTests
   def self.suite
     suite = Test::Unit::TestSuite.new(name="BeEF TestSuite")
     suite << TC_Filter.suite
+    suite << TC_Loader.suite
     return suite
   end
 end
