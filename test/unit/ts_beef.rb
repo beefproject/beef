@@ -7,8 +7,8 @@ rescue LoadError
   exit
 end
 
-require './filter/tc_base'
-require './filter/tc_command'
+require './core/filter/tc_base'
+require './core/filter/tc_command'
 
 class TS_BeefTests
   def self.suite
