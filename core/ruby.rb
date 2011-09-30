@@ -14,6 +14,8 @@
 #   limitations under the License.
 #
 
+# @note Patching Ruby Security
+require 'core/ruby/security'
 
 # @note Patching Ruby
 require 'core/ruby/module'
