@@ -1,0 +1,27 @@
+#
+#   Copyright 2011 Wade Alcorn wade@bindshell.net
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+beef:
+    module:
+        detect_protocol_handlers:
+            enable: true
+            category: "Host"
+            name: "Detect Protocol Handlers"
+            description: "This module attempts to identify protocol handlers present on the zombie host.<br /><br />Only Internet Explorer and Firefox are supported.<br /><br />Firefox users are prompted to launch the application for which the protocol handler is responsible.<br /><br />Firefox users are warned when there is no application assigned to a protocol handler.<br /><br />The possible return values are: unknown, exists, does not exist"
+            authors: ["bcoles"]
+            target:
+                working: ["IE"]
+                user_notify: ["FF"]
+                not_working: ["ALL"]
