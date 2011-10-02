@@ -24,39 +24,8 @@ ZombieTab_Commands = function(zombie) {
 		region: 'center',
 		border: true,
 		layout: 'fit',
-    });
+	});
 
-    var welcomeWindow = new Ext.Window({
-				title: 'Welcome to the BeEF Command Modules',
-				id: 'welcome-window',
-				closable:true,
-				width:450,
-				height:300,
-				plain:true,
-				layout: 'border',
-				shadow: true,
-				items: [
-                    new Ext.Panel({
-                    region: 'center',
-                    padding: '3 3 3 3',
-                    html: "At your left you have all the BeEF command modules organized in a category tree.<br/><br/> " +
-                          "Most command modules consist of Javascript code that is executed against the selected " +
-                          "Hooked Browser. Command modules are able to perform any actions that can be achieved " +
-                          "through Javascript: for example they may gather information about the Hooked Browser, manipulate the DOM " +
-                          "or perform other activities such as exploiting vulnerabilities within the local network " +
-                          "of the Hooked Browser.<br/><br/>To learn more about writing your own modules please review " +
-                          "the wiki:<br /><a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>" +
-                            "https://code.google.com/p/beef/wiki/CommandModuleAPI</a><br/><br/>" +
-                            "Each command module has a traffic light icon, which is used to indicate the following:<ul>" +
-                            "<li><img alt='' src='media/images/icons/green.png'  unselectable='on'> - The command works against the target and should be invisible to the user</li>" +
-                            "<li><img alt='' src='media/images/icons/orange.png'  unselectable='on'> - The command works against the target, but may be visible to the user</li>" +
-                            "<li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> - It is unknown if this command works against this target</li>" +
-                            "<li><img alt='' src='media/images/icons/red.png'  unselectable='on'> - Command does not work against this target</li></ul>"
-
-                })
-               ]
-    });
-	
 	var command_module_grid = new Ext.grid.GridPanel({
 		store: new Ext.data.JsonStore({
 				url: '/ui/modules/commandmodule/commands.json',
@@ -117,13 +86,9 @@ ZombieTab_Commands = function(zombie) {
 		} else if (!node.leaf && keyclick) {
 			return;
 		} else {
-            // if the user don't close the welcome window, let hide it automatically
-            welcomeWindow.hide();
-
 			command_module_config.configLoadMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait, module config is loading..."});
 			command_module_config.configLoadMask.show();
-
-            command_module_grid.i = 0;
+			command_module_grid.i = 0;
 			command_module_grid.store.baseParams = {command_module_id: node.attributes.id, zombie_session: zombie.session};
 			command_module_grid.store.reload({  //reload the command module grid
 				params: {  // insert the nonce with the request to reload the grid
@@ -163,12 +128,6 @@ ZombieTab_Commands = function(zombie) {
              load: function(treeloader, node, response) {
                        // Hide loading mask after tree is fully loaded
                        treeloader.treeLoadingMask.hide();
-                       if(Ext.get('welcomeWinShown') == null){
-                         welcomeWindow.show();
-                         // add a div in the header section, to prevent displaying the Welcome Window every time
-                         // the module_tree_panel is loaded
-                         Ext.DomHelper.append('header', {tag: 'div', id: 'welcomeWinShown'});
-                       }
                        return true;
              }
           }
