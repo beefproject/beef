@@ -44,7 +44,7 @@ WelcomeTab = function() {
               <ul style=\"margin-left:15px;\">\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Tunneling Proxy:</span> The Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". \
               Each request sent through the Proxy is recorded in the History panel in the Requester tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li>\
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> XssRays allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS.</li></ul><br /> \
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> XssRays allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS. To customize default settings of an XssRays scan, please use the XssRays tab.</li></ul><br /> \
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Learn More</span></p><br />\
               <p>To learn more about how BeEF works please review the wiki:</p><br />\
               <ul style=\"margin-left:15px;\">\
