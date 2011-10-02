@@ -22,9 +22,10 @@ WelcomeTab = function() {
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Getting Started</span></p><br />\
               <p>Welcome to BeEF!</p><br /> \
               <p>Before being able to fully explore the framework you will have to 'hook' a browser. To begin with you can point a browser towards the basic demo page <a href='/demos/basic.html' target='_blank'>here</a>, or the advanced version <a href='/demos/butcher/index.html' target='_blank'>here</a>.</p><br /> \
-              <p>After a browser is hooked into the framework they will appear in the 'Hooked Browsers' panel on the left. Hooked browsers will appear in either an online or offline state, depending on how recently they have polled the framework. To interact with a hooked browser simply left-click it, a new tab will appear. You can also right-click it to open a context-menu with additional functionality, like Proxy and XssRays.</p><br /> \
+              <p>After a browser is hooked into the framework they will appear in the 'Hooked Browsers' panel on the left. Hooked browsers will appear in either an online or offline state, depending on how recently they have polled the framework.</p><br /> \
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Hooked Browsers</span></p><br />\
-              <p>Each hooked browser tab has a number of sub-tabs, described below:</p><br /> \
+              <p>To interact with a hooked browser simply left-click it, a new tab will appear. \
+              Each hooked browser tab has a number of sub-tabs, described below:</p><br /> \
               <ul style=\"margin-left:15px;\"><li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Main:</span> Display information about the hooked browser after you've run some command modules.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Logs:</span> Displays recent log entries related to this particular hooked browser.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Commands:</span> This tab is where modules can be executed against the hooked browser. This is where most of the BeEF functionality resides. \
@@ -37,15 +38,19 @@ WelcomeTab = function() {
               <li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> - It is unknown if this command works against this target</li>\
               <li><img alt='' src='media/images/icons/red.png'  unselectable='on'> - Command does not work against this target</li></ul><br />\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS.</li> \
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Requester:</span> The Requester tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser.\
-              The proxy allows you to use a browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\".<br />\
-              Each request sent by the Requester or Proxy is recorded in the History panel. Click a history item for the HTTP headers and HTML source of the request.</li></ul><br /><br />\
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Requester:</span> The Requester tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser. \
+              Each request sent by the Requester is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li></ul><br />\
+              <p>You can also right-click a hooked browser to open a context-menu with additional functionality:</p><br /> \
+              <ul style=\"margin-left:15px;\">\
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Tunneling Proxy:</span> The Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". \
+              Each request sent through the Proxy is recorded in the History panel in the Requester tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li>\
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> XssRays allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS.</li></ul><br /> \
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Learn More</span></p><br />\
               <p>To learn more about how BeEF works please review the wiki:</p><br />\
               <ul style=\"margin-left:15px;\">\
               <li>Architecture of the BeEF System: <a href=\"https://code.google.com/p/beef/wiki/Architecture\">https://code.google.com/p/beef/wiki/Architecture</a></li>\
-              <li>Writing your own modules: <a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>https://code.google.com/p/beef/wiki/CommandModuleAPI</a></li>\
-              <li>Requester and Proxy: <a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a></li></ul>\
+              <li>Tunneling Proxy: <a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a></li>\
+              <li>Writing your own modules: <a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>https://code.google.com/p/beef/wiki/CommandModuleAPI</a></li></ul>\
               </div>\
               ";
 
