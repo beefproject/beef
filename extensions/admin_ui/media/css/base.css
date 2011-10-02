@@ -27,7 +27,7 @@
 	text-decoration:underline;
 }
 
-.x-grid3-cell-inner, .x-grid3-hd-inner {
+.x-grid3-cell-inner {
   white-space: normal; /* changed from nowrap */
 }
 
