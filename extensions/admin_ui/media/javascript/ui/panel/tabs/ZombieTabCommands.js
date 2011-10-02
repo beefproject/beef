@@ -23,7 +23,7 @@ ZombieTab_Commands = function(zombie) {
 		id: 'zombie-command-module-config-'+zombie.session,
 		region: 'center',
 		border: true,
-		layout: 'fit',
+		layout: 'fit'
 	});
 
 	var command_module_grid = new Ext.grid.GridPanel({
