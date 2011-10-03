@@ -33,18 +33,18 @@ WelcomeTab = function() {
               Hooked Browser. Command modules are able to perform any actions that can be achieved\
               through Javascript: for example they may gather information about the Hooked Browser, manipulate the DOM or perform other activities such as exploiting vulnerabilities within the local network of the Hooked Browser.<br /><br />\
               Each command module has a traffic light icon, which is used to indicate the following:<ul>\
-              <li><img alt='' src='media/images/icons/green.png'  unselectable='on'> - The command works against the target and should be invisible to the user</li>\
-              <li><img alt='' src='media/images/icons/orange.png'  unselectable='on'> - The command works against the target, but may be visible to the user</li>\
-              <li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> - It is unknown if this command works against this target</li>\
-              <li><img alt='' src='media/images/icons/red.png'  unselectable='on'> - Command does not work against this target</li></ul><br />\
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS.</li> \
+              <li><img alt='' src='media/images/icons/green.png'  unselectable='on'> The command module works against the target and should be invisible to the user</li>\
+              <li><img alt='' src='media/images/icons/orange.png'  unselectable='on'> The command module works against the target, but may be visible to the user</li>\
+              <li><img alt='' src='media/images/icons/grey.png'  unselectable='on'> The command module is yet to be verified against this target</li>\
+              <li><img alt='' src='media/images/icons/red.png'  unselectable='on'> The command module does not work against this target</li></ul><br />\
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows the user to check if links, forms and URI path of the page (where the browser is hooked) is vulnerable to XSS.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Requester:</span> The Requester tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser. \
               Each request sent by the Requester is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li></ul><br />\
               <p>You can also right-click a hooked browser to open a context-menu with additional functionality:</p><br /> \
               <ul style=\"margin-left:15px;\">\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Tunneling Proxy:</span> The Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". \
               Each request sent through the Proxy is recorded in the History panel in the Requester tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li>\
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> XssRays allows you to check if links, forms and URI path of the page where the browser is hooked are vulnerable to XSS. To customize default settings of an XssRays scan, please use the XssRays tab.</li></ul><br /> \
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> XssRays allows the user to check if links, forms and URI path of the page (where the browser is hooked) is vulnerable to XSS. To customize default settings of an XssRays scan, please use the XssRays tab.</li></ul><br /> \
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Learn More</span></p><br />\
               <p>To learn more about how BeEF works please review the wiki:</p><br />\
               <ul style=\"margin-left:15px;\">\
