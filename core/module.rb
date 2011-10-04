@@ -417,8 +417,8 @@ module Module
             print_error "Module not found '#{mod}'. Failed to execute module."
             return false
         end
-        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil])
-            BeEF::API::Registra.instance.fire(BeEF::API::Module, 'override_execute', mod, opts)
+        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
+            BeEF::API::Registra.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
             # @note We return true by default as we cannot determine the correct status if multiple API hooks have been called
             return true
         end

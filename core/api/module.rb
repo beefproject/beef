@@ -55,9 +55,10 @@ module API
 
     # Fired just before a module is executed
     # @param [String] mod module key
+    # @param [String] hbsession hooked browser session id
     # @param [Hash] opts a Hash of options   
     # @note Hooking this API method stops the default flow of the Module.execute() method.
-    def override_execute(mod, opts); end
+    def override_execute(mod, hbsession, opts); end
 
     # Fired when retreiving dynamic payload
     # @return [Hash] a hash of options
