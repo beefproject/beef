@@ -26,6 +26,7 @@ require './core/filter/tc_command'
 require './core/tc_loader'
 require './core/tc_core'
 require './core/tc_api'
+require './tc_filesystem'
 
 class TS_BeefTests
   def self.suite
@@ -34,6 +35,7 @@ class TS_BeefTests
     suite << TC_Loader.suite
     suite << TC_Core.suite
     suite << TC_Api.suite
+    suite << TC_Filesystem.suite
     return suite
   end
 end
