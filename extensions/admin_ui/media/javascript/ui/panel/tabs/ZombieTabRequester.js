@@ -101,16 +101,16 @@ ZombieTab_Requester = function(zombie) {
 		
 		columns: [
 			{header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
-			{header: 'Domain', sortable: true, dataIndex: 'domain'},
-			{header: 'Port', width: 30, sortable: true, dataIndex: 'port'},
-			{header: 'Method', width: 30, sortable: true, dataIndex: 'method'},
-			{header: 'Path', sortable: true, dataIndex: 'path'},
-			{header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code'},
-			{header: 'Res Text', width: 50, sortable: true, dataIndex: 'response_status_text'},
-			{header: 'Port Status', width: 40, sortable: true, dataIndex: 'response_port_status'},
-			{header: 'Processed', width: 50, sortable: true, dataIndex: 'has_ran'},
-			{header: 'Req Date', width: 50, sortable: true, dataIndex: 'request_date'},
-			{header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date'}
+			{header: 'Domain', sortable: true, dataIndex: 'domain', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Port', width: 30, sortable: true, dataIndex: 'port', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Method', width: 30, sortable: true, dataIndex: 'method', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Path', sortable: true, dataIndex: 'path', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Res Code', width: 35, sortable: true, dataIndex: 'response_status_code', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Res Text', width: 50, sortable: true, dataIndex: 'response_status_text', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Port Status', width: 40, sortable: true, dataIndex: 'response_port_status', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Processed', width: 50, sortable: true, dataIndex: 'has_ran', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Req Date', width: 50, sortable: true, dataIndex: 'request_date', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
 
 		],
 		
@@ -274,7 +274,7 @@ ZombieTab_Requester = function(zombie) {
 		
 				var tab_result_accordion = new Ext.Panel({
 					id: 'requester-response-'+request.id,
-					title: request.path,
+					title: $jEncoder.encoder.encodeForHTML(request.path),
 					split: true,
 					border: false,
 					layout:'accordion',

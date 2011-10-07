@@ -74,9 +74,9 @@ ZombieTab_XssRaysTab = function(zombie) {
 
         columns: [
             {header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
-            {header: 'Vector Method', width: 30, sortable: true, dataIndex: 'vector_method'},
-            {header: 'Vector Name', width: 40, sortable: true, dataIndex: 'vector_name'},
-            {header: 'Vector PoC', sortable: true, dataIndex: 'vector_poc'}
+            {header: 'Vector Method', width: 30, sortable: true, dataIndex: 'vector_method', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+            {header: 'Vector Name', width: 40, sortable: true, dataIndex: 'vector_name', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+            {header: 'Vector PoC', sortable: true, dataIndex: 'vector_poc', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
         ],
 
         listeners: {

@@ -64,7 +64,7 @@ ZombieTab_Commands = function(zombie) {
 			{header: 'date', width: 100, sortable: true, dataIndex: 'creationdate'},
 			{header: 'label', sortable: true, dataIndex: 'label', renderer: 
 				function(value, metaData, record, rowIndex, colIndex, store) {
-					return 'command '+(record.get("id")+1);
+					return 'command '+($jEncoder.encoder.encodeForHTML(record.get("id")+1));
 				}
 			},
 			{header: 'object_id', sortable: true, dataIndex: 'object_id', hidden: true, menuDisabled: true}

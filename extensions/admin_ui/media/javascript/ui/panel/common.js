@@ -257,12 +257,11 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 						renderer: function(value, p, record) {
 							html = String.format("<div style='color:#385F95;text-align:right;'>{0}</div>", value);
 							html += '<p>';
-							
 							for(index in record.data.data) {
 								result = record.data.data[index];
 								index = index.toString().replace('_', ' ');
 								
-								html += String.format('<b>{0}</b>: {1}<br>', index, result);
+								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result));
 							}
 							
 							html += '</p>';

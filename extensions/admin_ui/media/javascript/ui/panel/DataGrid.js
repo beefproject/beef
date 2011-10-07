@@ -54,7 +54,7 @@ DataGrid = function(url, page, base) {
 			sortable: true,
 			width: 60,
 			renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-				return "<b>" + value + "</b>";
+				return "<b>" + $jEncoder.encoder.encodeForHTML(value) + "</b>";
 			}
 		}, {
 			id: 'log-event',
@@ -62,13 +62,13 @@ DataGrid = function(url, page, base) {
 			dataIndex: 'event',
 			sortable:true,
 			width: 420,
-			renderer: this.formatTitle
+			renderer: $jEncoder.encoder.encodeForHTML(this.formatTitle)
 		}, {
 			id: 'log-date',
 			header: "Date",
 			dataIndex: 'date',
 			width: 80,
-			renderer:  this.formatDate,
+			renderer:  $jEncoder.encoder.encodeForHTML(this.formatDate),
 			sortable:true
     }];
 

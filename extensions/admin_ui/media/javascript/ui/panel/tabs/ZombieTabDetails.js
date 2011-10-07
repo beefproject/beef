@@ -58,21 +58,21 @@ ZombieTab_DetailsTab = function(zombie) {
 						header: 'information',
 						dataIndex: 'data',
 						renderer: function(value, p, record) {
-							html = ''
+							html = '';
 							
 							for(index in value) {
 								result = value[index];
 								index = index.toString().replace('_', ' ');
 								
-								html += String.format('<b>{0}</b>: {1}<br>', index, result);
+								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result));
 							}
 							
 							return html;
 						}
 					},
 					
-					{header: 'command_module', dataIndex:'from', width: 25, renderer: function(value){return value;}},
-					{header: 'Category', dataIndex:'category', hidden: true, renderer: function(value){return value;}}
+					{header: 'command_module', dataIndex:'from', width: 25, renderer: function(value){return $jEncoder.encoder.encodeForHTML(value);}},
+					{header: 'Category', dataIndex:'category', hidden: true, renderer: function(value){return $jEncoder.encoder.encodeForHTML(value);}}
 				]
 		});
 	
