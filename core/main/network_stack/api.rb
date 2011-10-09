@@ -29,7 +29,7 @@ module NetworkStack
   end
   
     # Register core API calls
-    BeEF::API::Registra.instance.register(BeEF::Core::NetworkStack::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+    BeEF::API::Registrar.instance.register(BeEF::Core::NetworkStack::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
 end
 end

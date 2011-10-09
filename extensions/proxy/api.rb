@@ -20,8 +20,8 @@ module API
 
   module RegisterHttpHandler
 
-    BeEF::API::Registra.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'pre_http_start')
-    BeEF::API::Registra.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'pre_http_start')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     def self.pre_http_start(http_hook_server)
         proxy = BeEF::Extension::Proxy::HttpProxyZombie.instance

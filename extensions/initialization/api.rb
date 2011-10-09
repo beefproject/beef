@@ -20,7 +20,7 @@ module Initialization
   module RegisterHttpHandler
 
     # Register API calls
-    BeEF::API::Registra.instance.register(BeEF::Extension::Initialization::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Initialization::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     #
     # Register the http handler for the initialization script that retrieves

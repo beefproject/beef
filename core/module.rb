@@ -49,8 +49,8 @@ module Module
     # @return [Hash] a hash of all the module options
     # @note API Fire: get_options 
     def self.get_options(mod)
-        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'get_options', [mod])
-            options = BeEF::API::Registra.instance.fire(BeEF::API::Module, 'get_options', mod)
+        if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_options', [mod])
+            options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_options', mod)
             mo = []
             options.each{|o|
                 if o[:data].kind_of?(Array)
@@ -78,8 +78,8 @@ module Module
     # @return [Hash] a hash of all the module options
     # @note API Fire: get_options 
     def self.get_payload_options(mod,payload)
-        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'get_payload_options', [mod,nil])
-            options = BeEF::API::Registra.instance.fire(BeEF::API::Module, 'get_payload_options', mod,payload)
+        if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_payload_options', [mod,nil])
+            options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_payload_options', mod,payload)
             return options 
         end
         return []
@@ -93,7 +93,7 @@ module Module
     # @note API Fire: post_soft_load
     def self.soft_load(mod)
         # API call for pre-soft-load module
-        BeEF::API::Registra.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
+        BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
         config = BeEF::Core::Configuration.instance
         if not config.get("beef.module.#{mod}.loaded")
             if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
@@ -101,7 +101,7 @@ module Module
                 self.parse_targets(mod)
                 print_debug "Soft Load module: '#{mod}'"
                 # API call for post-soft-load module
-                BeEF::API::Registra.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
+                BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
                 return true
             else
                 print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
@@ -119,7 +119,7 @@ module Module
     # @note API Fire: post_hard_load
     def self.hard_load(mod)
         # API call for pre-hard-load module
-        BeEF::API::Registra.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
+        BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
         config = BeEF::Core::Configuration.instance
         if self.is_enabled(mod)
             begin
@@ -131,7 +131,7 @@ module Module
                     BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
                     print_debug "Hard Load module: '#{mod.to_s}'"
                     # API call for post-hard-load module
-                    BeEF::API::Registra.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
+                    BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
                     return true
                 else
                     print_error "Hard loaded module '#{mod.to_s}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"
@@ -417,8 +417,8 @@ module Module
             print_error "Module not found '#{mod}'. Failed to execute module."
             return false
         end
-        if BeEF::API::Registra.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
-            BeEF::API::Registra.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
+        if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
+            BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
             # @note We return true by default as we cannot determine the correct status if multiple API hooks have been called
             return true
         end

@@ -18,7 +18,7 @@ module BeEF
 module API
 
     # Registrar class to handle all registered timed API calls
-    class Registra
+    class Registrar
 
         include Singleton
         
@@ -47,10 +47,10 @@ module API
                     @count += 1
                     return id
                 else
-                    print_debug "API Registra: Attempting to re-register API call #{c.to_s} :#{method.to_s}"
+                    print_debug "API Registrar: Attempting to re-register API call #{c.to_s} :#{method.to_s}"
                 end
             else
-                print_error "API Registra: Attempted to register non-existant API method #{c.to_s} :#{method.to_s}"
+                print_error "API Registrar: Attempted to register non-existant API method #{c.to_s} :#{method.to_s}"
             end
         end
         

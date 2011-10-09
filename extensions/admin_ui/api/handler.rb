@@ -23,7 +23,7 @@ module API
   #
   module Handler
     
-    BeEF::API::Registra.instance.register(BeEF::Extension::AdminUI::API::Handler, BeEF::API::Server, 'mount_handler')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::AdminUI::API::Handler, BeEF::API::Server, 'mount_handler')
     
     #
     # This function gets called automatically by the server.

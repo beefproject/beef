@@ -53,7 +53,7 @@ module Modules
         self.get_enabled.each { |k,v|
             BeEF::Module.soft_load(k)
         }
-        BeEF::API::Registra.instance.fire(BeEF::API::Modules, 'post_soft_load')
+        BeEF::API::Registrar.instance.fire(BeEF::API::Modules, 'post_soft_load')
     end
 end
 end

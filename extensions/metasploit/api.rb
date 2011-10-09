@@ -20,7 +20,7 @@ module API
 
   module MetasploitHooks
     
-    BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Modules, 'post_soft_load')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Modules, 'post_soft_load')
     
     # Load modules from metasploit just after all other module config is loaded
     def self.post_soft_load
@@ -38,9 +38,9 @@ module API
                 end
                 count = 1
                 msf_module_config.each{|k,v|
-                    BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [k])
-                    BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [k,nil])
-                    BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [k, nil, nil])
+                    BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [k])
+                    BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [k,nil])
+                    BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [k, nil, nil])
                     print_over "Loaded #{count} Metasploit exploits."
                     count += 1
                 }
@@ -69,9 +69,9 @@ module API
                             'path'=> path,
                             'class'=> 'Msf_module'
                         }
-                        BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [key])
-                        BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [key,nil])
-                        BeEF::API::Registra.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [key, nil, nil])
+                        BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [key])
+                        BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [key,nil])
+                        BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [key, nil, nil])
                         print_over "Loaded #{count} Metasploit exploits."
                         count += 1
                     end

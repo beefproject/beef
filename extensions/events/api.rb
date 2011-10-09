@@ -20,7 +20,7 @@ module Events
   module RegisterHttpHandler
 
     # Register API calls
-    BeEF::API::Registra.instance.register(BeEF::Extension::Events::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Events::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
     
     #
     # Mounts the http handlers for the events extension. We use that to retrieve stuff

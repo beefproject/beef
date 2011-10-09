@@ -84,7 +84,7 @@ module Handlers
         #
         # We dynamically get the list of all browser hook handler using the API and register them
         #
-        BeEF::API::Registra.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, @request, @response)
+        BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, @request, @response)
       end
 
       # set response headers and body
