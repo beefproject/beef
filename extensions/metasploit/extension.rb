@@ -97,3 +97,4 @@ end
 
 require 'extensions/metasploit/rpcclient'
 require 'extensions/metasploit/api'
+require 'extensions/metasploit/module'
