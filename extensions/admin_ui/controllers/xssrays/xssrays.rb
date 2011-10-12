@@ -33,7 +33,6 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
       'paths' => {
         '/set_scan_target' => method(:set_scan_target),
         '/zombie.json'  => method(:get_xssrays_logs),
-        '/rays' => method(:parse_rays),
         '/createNewScan' => method(:create_new_scan)
       }
     })
@@ -60,20 +59,11 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
         'id'      => log.id,
         'vector_method'  => log.vector_method,
         'vector_name'    => log.vector_name,
-        'vector_poc' => escape_for_html(log.vector_poc)
+        'vector_poc' => log.vector_poc
       }
     }
 
     @body = {'success' => 'true', 'logs' => logs}.to_json
-  end
-
-  def escape_for_html(str)
-        str.gsub!(/</, '&lt;')
-        str.gsub!(/>/, '&gt;')
-        str.gsub!(/\u0022/, '&quot;')
-        str.gsub!(/\u0027/, '&#39;')
-        str.gsub!(/\\/, '&#92;')
-    str
   end
 
    # called by the UI. needed to pass the hooked browser ID/session and store a new scan in the DB.
@@ -128,32 +118,6 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
 
       print_info("[XSSRAYS] Starting XSSRays on HB with ip [#{hooked_browser.ip.to_s}], hooked on domain [#{hooked_browser.domain.to_s}]")
     end
-
-   end
-
-   # parse incoming rays: rays are veryfied XSS, as the attack vector is calling back BeEF when executed.
-   def parse_rays
-      print_debug("[XSSRAYS] Received ray: \n #{@params.to_s}")
-
-      hooked_browser = HB.first(:session => @params['hbsess'].to_s)
-
-      if(hooked_browser != nil)
-
-        xssrays_scan = XS.first(:id => @params['raysscanid'])
-
-        if(xssrays_scan != nil)
-           xssrays_detail = XD.new(
-             :hooked_browser_id => hooked_browser.id,
-             :vector_name => @params['name'],
-             :vector_method => @params['method'],
-             :vector_poc => @params['poc'],
-             :xssraysscan_id => xssrays_scan.id
-           )
-          xssrays_detail.save
-        end
-
-        print_info("[XSSRAYS] Received ray from HB with ip [#{hooked_browser.ip.to_s}], hooked on domain [#{hooked_browser.domain.to_s}]")
-      end
    end
 end
 

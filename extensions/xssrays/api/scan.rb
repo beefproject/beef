@@ -23,11 +23,10 @@ module BeEF
           include BeEF::Core::Handlers::Modules::BeEFJS
 
           #
-          # Add the xssrays mian JS file to the victim DOM if there is a not started scan entry in the db.
+          # Add the xssrays main JS file to the victim DOM if there is a not-yet-started scan entry in the db.
           #
           def start_scan(hb, body)
             @body = body
-
 
             hb = BeEF::Core::Models::HookedBrowser.first(:id => hb.id)
             #TODO: we should get the xssrays_scan table with more accuracy, if for some reasons we requested
@@ -43,8 +42,8 @@ module BeEF
             # build the beefjs xssrays component
             build_missing_beefjs_components 'beef.net.xssrays'
 
-            # the URI of the HTTP controller where rays should come back if the vulnerability is verified
-            beefurl = "#{BeEF::Core::Server.instance.url}/ui/xssrays/rays"
+            # the URI of the XssRays handler where rays should come back if the vulnerability is verified
+            beefurl = BeEF::Core::Server.instance.url
             cross_domain = xs.cross_domain
             timeout = xs.clean_timeout
             debug = BeEF::Core::Configuration.instance.get("beef.extension.xssrays.js_console_logs")
