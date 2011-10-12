@@ -54,6 +54,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
    4. Prerequisites (Mac OSX)
    
       Make sure you have XCode installed - which provided the sqlite support Beef needs
+      Sqlite support is native in MacOS 10.6+
       
 
    5. Install instructions
