@@ -16,11 +16,7 @@
 module BeEF
 module Core
 module Models
-  #
-  # This table stores the logs from the framework.
-  #
-  # See BeEF::Core::Logger for how to log events.
-  #
+
   class Log
   
     include DataMapper::Resource

@@ -20,9 +20,9 @@ module Modules
 
   module Command
 
-    #
     # Adds the command module instructions to a hooked browser's http response. 
-    #
+    # @param [Object] command Command object
+    # @param [Object] hooked_browser Hooked Browser object
     def add_command_instructions(command, hooked_browser)
 
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser is nil" if hooked_browser.nil?
@@ -30,7 +30,7 @@ module Modules
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser is nil" if command.nil?
       raise WEBrick::HTTPStatus::BadRequest, "hooked_browser.command_module_id is nil" if command.command_module_id.nil?
 
-      # get the command module
+      # @note get the command module
       command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)      
       raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
       raise WEBrick::HTTPStatus::BadRequest, "command_module.path is nil" if command_module.path.nil?
@@ -51,13 +51,13 @@ module Modules
 
       @body << command_module.output + "\n\n"
       
-      # prints the event to the console
+      # @note prints the event to the console
       if BeEF::Settings.console?
       name = command_module.friendlyname || kclass
       print_info "Hooked browser #{hooked_browser.ip} has been sent instructions from command module '#{name}'"
       end
 
-      # flag that the command has been sent to the hooked browser
+      # @note flag that the command has been sent to the hooked browser
       command.instructions_sent = true 
       command.save
     end

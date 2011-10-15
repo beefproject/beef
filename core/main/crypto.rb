@@ -13,21 +13,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
-  #
-  # This module provides crypto functionality
-  #
+
   module Crypto
     
-    # the minimum length of the security token
+    # @note the minimum length of the security token
     TOKEN_MINIMUM_LENGTH = 15
     
-    #
     # Generate a secure random token
-    #
-    # @param: {Integer} the length of the secure token
-    #
+    # @param [Integer] len The length of the secure token
+    # @return [String] Security token
     def self.secure_token(len = nil)
       # get default length from config
       config = BeEF::Core::Configuration.instance

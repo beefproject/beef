@@ -16,9 +16,7 @@
 module BeEF
 module Core
 module Models
-  #
-  # Table stores the results from commands.
-  #
+
   class Result
   
     include DataMapper::Resource

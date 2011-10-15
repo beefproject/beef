@@ -18,17 +18,16 @@ module Core
 module NetworkStack
   
   module RegisterHttpHandler
-    #
+
     # Register the http handler for the network stack
-    #
+    # @param [Object] server HTTP server instance
     def self.mount_handler(server)
-      #dynamic handler
+      # @note this mounts the dynamic handler
       server.mount('/dh', true, BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
     end
     
   end
   
-    # Register core API calls
     BeEF::API::Registrar.instance.register(BeEF::Core::NetworkStack::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
 end

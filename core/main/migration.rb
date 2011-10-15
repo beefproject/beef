@@ -13,27 +13,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
-  #
-  # This class migrates and updates values in the database each time you restart BeEF.
-  # So for example, when you want to add a new command module, you stop BeEF, copy your command module into the framework
-  # and then restart BeEF. That class will take care of installing automatically the new command module in the db.
-  #
+
+  # @note This class migrates and updates values in the database each time you restart BeEF.
+  #   So for example, when you want to add a new command module, you stop BeEF, copy your command module into the framework
+  #   and then restart BeEF. That class will take care of installing automatically the new command module in the db.
   class Migration
   
     include Singleton
   
-    #
     # Updates the database.
-    #
     def update_db!
       update_commands!
     end
   
-    #
     # Checks for new command modules and updates the database.
-    #
     def update_commands!
       config = BeEF::Core::Configuration.instance
 

@@ -13,13 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 module DistributedEngine
 module Models
-  #
-  # Table stores the rules for the Distributed Engine.
-  #
+
+  # @note Table stores the rules for the Distributed Engine.
   class Rules
   
     include DataMapper::Resource

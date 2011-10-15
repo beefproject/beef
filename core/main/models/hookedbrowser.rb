@@ -31,27 +31,25 @@ module Models
     property :firstseen, String, :length => 15
     property :lastseen, String, :length => 15
     property :httpheaders, Text, :lazy => false
-    property :domain, Text, :lazy => false # the domain originating the hook request
+    # @note the domain originating the hook request
+    property :domain, Text, :lazy => false
     property :count, Integer, :lazy => false
     property :has_init, Boolean, :default => false
-    property :is_proxy, Boolean, :default => false # if true the HB is used as a tunneling proxy
-    
+    property :is_proxy, Boolean, :default => false     
+    # @note if true the HB is used as a tunneling proxy
+
     has n, :commands
     has n, :results
     has n, :logs
     #has n, :https
   
-    #
     # Increases the count of a zombie
-    #
     def count!
       if not self.count.nil? then self.count += 1; else self.count = 1; end
     end
   
-    #
-    # Returns the icon representing the browser type the
-    # zombie is using (i.e. Firefox, Internet Explorer)
-    #
+    # Returns the icon representing the browser type the hooked browser is using (i.e. Firefox, Internet Explorer)
+    # @return [String] String constant containing browser icon path
     def browser_icon
       agent = JSON.parse(self.httpheaders)['user-agent'].to_s || nil
     
@@ -67,10 +65,8 @@ module Models
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
     end
   
-    #
-    # Returns the icon representing the os type the
-    # hooked browser is running (i.e. Windows, Linux)
-    #
+    # Returns the icon representing the os type the hooked browser is running (i.e. Windows, Linux)
+    # @return [String] String constant containing operating system icon path
     def os_icon
       agent = JSON.parse(self.httpheaders)['user-agent'].to_s || nil
     

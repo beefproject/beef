@@ -13,11 +13,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 module Constants
   
-  # The OS'es strings for os detection.
+  # @note The OS'es strings for os detection.
   module Os
   
     OS_UNKNOWN_IMG        = 'unknown.png'
@@ -47,6 +48,9 @@ module Constants
 	OS_ANDROID_IMG        = 'android.png'
     OS_ALL_UA_STR         = 'All'
 
+        # Attempt to match operating system string to constant
+        # @param [String] name Name of operating system
+        # @return [String] Constant name of matched operating system, returns 'ALL'  if nothing are matched
 		def self.match_os(name)
 			case name.downcase
 				when /win/

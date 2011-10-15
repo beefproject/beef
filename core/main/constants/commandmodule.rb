@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 module Constants
@@ -20,6 +21,7 @@ module Constants
   module CommandModule
 
 
+    # @note Constants to define the execution probability of a command module (this is browser dependant)
     VERIFIED_WORKING =      0
     VERIFIED_UNKNOWN =      1
     VERIFIED_USER_NOTIFY =  2

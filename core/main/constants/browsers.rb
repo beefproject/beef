@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 module Constants
@@ -38,6 +39,9 @@ module Constants
     FRIENDLY_O_NAME   = 'Opera'
    	FRIENDLY_UN_NAME  = "UNKNOWN"
  
+    # Attempt to retrieve a browsers friendly name
+    # @param [String] browser_name Short browser name
+    # @return [String] Friendly browser name
    	def self.friendly_name(browser_name)
 	  
    	  case browser_name
@@ -53,6 +57,10 @@ module Constants
 	    
   	end
 
+    # Attempt to match the browserstring to a browser constant
+    # @param [String] browserstring Browser UA string
+    # @return [Array] An array of matching browser constants
+    # @todo Confirm this function returns an array if multiple constants are matched
   	def self.match_browser(browserstring)
   		matches = []
 			browserstring.split(" ").each do |chunk|

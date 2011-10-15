@@ -18,19 +18,20 @@ module Core
 module NetworkStack
 module Handlers
   
-  #DynamicHanlder is used reconstruct segmented traffic from the zombies
-
+  # @note DynamicHanlder is used reconstruct segmented traffic from the hooked browser
   class DynamicReconstruction < WEBrick::HTTPServlet::AbstractServlet
     
     attr_reader :guard
 
-    #holds packet queue
+    # @note holds packet queue
     PQ = Array.new() 
    
-    #obtain dynamic mount points from HttpHookServer
+    # @note obtain dynamic mount points from HttpHookServer
     MOUNTS = BeEF::Core::Server.instance.mounts
 
-    #Combines packet information and pushes to PQ, then checks packets
+    # Combines packet information and pushes to PQ, then checks packets
+    # @param [Object] request Request object
+    # @param [Object] response Response object
     def do_POST(request, response)
         @request = request
         response.set_no_cache
@@ -48,9 +49,10 @@ module Handlers
         check_packets()
     end
     
+    # @note Alias do_GET function to do_POST
     alias do_GET do_POST
 
-    #check packets goes through the PQ array and attempts to reconstruct the stream from multiple packets
+    # Check packets goes through the PQ array and attempts to reconstruct the stream from multiple packets
     def check_packets()
         checked = Array.new()
         PQ.each do |packet| 
@@ -88,14 +90,17 @@ module Handlers
        end
     end
 
-    #delete packets that have been reconstructed, return deleted packets
+    # Delete packets that have been reconstructed, return deleted packets
+    # @param [String] beefhook Beefhook of hooked browser
+    # @param [Integer] stream_id The stream ID
     def expunge(beefhook, stream_id)
         packets = PQ.select{ |p| p[:beefhook] == beefhook and p[:stream_id] == stream_id }
         PQ.delete_if { |p| p[:beefhook] == beefhook and p[:stream_id] == stream_id }
         return packets.sort_by { |p| p[:packet_id] }
     end
 
-    #execute is called once a stream has been rebuilt. it searches the mounts and passes the data to the correct handler
+    # Execute is called once a stream has been rebuilt. it searches the mounts and passes the data to the correct handler
+    # @param [Hash] data Hash of data that has been rebuilt by the dynamic reconstruction
     def execute(data)
         handler = get_param(data, 'handler')
         if (MOUNTS.has_key?(handler))
@@ -107,7 +112,10 @@ module Handlers
         end
     end
     
-    #assist function for getting parameter from hash
+    # Assist function for getting parameter from hash
+    # @param [Hash] query Hash to pull key from
+    # @param [String] key The key association to return from `query`
+    # @return Value associated with `key`
     def get_param(query, key)
       return nil if query[key].nil?
       query[key]

@@ -13,42 +13,38 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 
-
-  #
-  # This module contains a list of utils functions to use
-  # when writing commands.
-  #
+  # @note This module contains a list of utils functions to use when writing commands
   module CommandUtils
     
     # Format a string to support multiline in javascript.
+    # @param [String] text String to convert
+    # @return [String] Formatted string
     def format_multiline(text); text.gsub(/\n/, '\n'); end
     
   end
 
 
   
-  #
-  # The Command Module Context is being used when evaluating code in eruby.
-  # In other words, we use that code to add funky functions to the
-  # javascript templates of our commands.
-  #
+  # @note The Command Module Context is being used when evaluating code in eruby.
+  #   In other words, we use that code to add funky functions to the
+  #   javascript templates of our commands.
   class CommandContext < Erubis::Context
     include BeEF::Core::CommandUtils
     
+    # Constructor
+    # @param [Hash] hash
     def initialize(hash=nil); 
       super(hash); 
     end
     
   end
   
-  #
-  # This class is the base class for all command modules in the framework.
-  #
-  # Two instances of this object are created during the execution of command module.
-  #
+  # @note This class is the base class for all command modules in the framework.
+  #   Two instances of this object are created during the execution of command module.
   class Command
   
     attr_reader :datastore, :path, :default_command_url, :beefjs_components, :friendlyname
@@ -59,6 +55,7 @@ module Core
     include BeEF::Core::Constants::CommandModule
 
     # Super class controller
+    # @param [String] key command module key
     def initialize(key)
       get_extensions
       config = BeEF::Core::Configuration.instance
@@ -75,42 +72,32 @@ module Core
       @beefjs_components = {}
     end
     
-    #
-    # Uses the API to include all the code from extensions that need to add
-    # methods, constants etc to that class.
-    #
-    # See BeEF::API::Command for examples.
-    #
+    # Uses the API to include all the code from extensions that need to add methods, constants etc to that class.
+    # @todo Determine if this method is deprecated
     def get_extensions
       BeEF::API::Command.extended_in_modules.each do |mod|
         self.class.send(:include, mod)
       end
     end
     
-    #
-    # This function is called just before the intructions are sent to hooked browser.
-    # The derived class can use this function to update params used in the command module.
-    #
+    # This function is called just before the instructions are sent to hooked browser.
     def pre_send; end
     
-    #
     # Callback method. This function is called when the hooked browser sends results back.
-    #
     def callback; end
     
-    #
     # If the command requires some data to be sent back, this function will process them.
-    #
+    # @param [] head
+    # @param [Hash] params Hash of parameters
+    # @todo Determine argument "head" type
     def process_zombie_response(head, params); end
     
-    #
     # Returns true if the command needs configurations to work. False if not.
-    #
+    # @deprecated This command should not be used since the implementation of the new configuration system
     def needs_configuration?; !@datastore.nil?; end
     
-    #
     # Returns information about the command in a JSON format.
-    #
+    # @return [String] JSON formatted string
     def to_json
        {
         'Name'          => @friendlyname,
@@ -120,18 +107,16 @@ module Core
       }.to_json
     end
     
-    #
     # Builds the 'datastore' attribute of the command which is used to generate javascript code.
-    #
+    # @param [Hash] data Data to be inserted into the datastore
+    # @todo Confirm argument "data" type
     def build_datastore(data); 
       @datastore = JSON.parse(data)
     end
     
-    #
     # Sets the datastore for the callback function. This function is meant to be called by the CommandHandler
-    #
-    #  build_callback_datastore(http_params, http_header)
-    #
+    # @param [Hash] http_params HTTP parameters
+    # @param [Hash] http_header HTTP headers
     def build_callback_datastore(http_params, http_header)
       @datastore = {'http_headers' => {}} # init the datastore
       
@@ -152,9 +137,8 @@ module Core
       } 
     end
     
-    #
     # Returns the output of the command. These are the actual instructions sent to the browser.
-    #
+    # @return [String] The command output
     def output
         f = @path+'command.js'
         raise WEBrick::HTTPStatus::BadRequest, "#{f} file does not exist" if not File.exists? f
@@ -178,28 +162,25 @@ module Core
       @output
     end
     
-    #
-    # Saves the results received from the zombie.
-    #
+    # Saves the results received from the hooked browser
+    # @param [Hash] results Results from hooked browser
     def save(results); 
       @results = results; 
     end
 
-    # If nothing else than the file is specified, the function will map the file to a random path
-    # without any extension.
+    # If nothing else than the file is specified, the function will map the file to a random path without any extension.
+    # @param [String] file File to be mounted
+    # @param [String] path URL path to mounted file
+    # @param [String] extension URL extension
+    # @param [Integer] count The amount of times this file can be accessed before being automatically unmounted
+    # @deprecated This function is possibly deprecated in place of the API
     def map_file_to_url(file, path=nil, extension=nil, count=1)
            return  BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(file, path, extension, count)
     end
     
-    #
-    # Tells the framework to load a specific module of the BeEFJS library that
-    # the command will be using.
-    #
-    #  Example:
-    #
-    #   use 'beef.net.local'
-    #   use 'beef.encode.base64'
-    #
+    # Tells the framework to load a specific module of the BeEFJS library that the command will be using.
+    # @param [String] component String of BeEFJS component to load
+    # @note Example: use 'beef.net.local'
     def use(component)
       return if @beefjs_components.include? component
       
@@ -213,12 +194,14 @@ module Core
       @beefjs_components[component] = component_path
     end
 
+    # @todo Document
     def oc_value(name)
         option =  BeEF::Core::Models::OptionCache.first(:name => name)
 		return nil if not option
       	return option.value
 	end
 
+    # @todo Document
 	def apply_defaults()
 	    @datastore.each { |opt|
 		    opt["value"] = oc_value(opt["name"]) || opt["value"]

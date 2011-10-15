@@ -13,23 +13,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
-  #
-  # Parses the user configuration file for beef.
-  #
-  # Example:
-  #
-  #   configuration = BeEF::Core::Configuration.instance
-  #   p configuration.get('beef.http.host) # => "0.0.0.0"
-  #
+
   class Configuration
     
     include Singleton
   
-    #
-    # Constructor
-    #
+    # Loads the default configuration system
+    # @param [String] configuration_file Configuration file to be loaded, by default loads $root_dir/config.yaml
     def initialize(configuration_file="#{$root_dir}/config.yaml")
       # argument type checking
       raise Exception::TypeError, '"configuration_file" needs to be a string' if not configuration_file.string?
@@ -41,18 +34,18 @@ module Core
       @config.default = nil
     end
 
-    #
     # Loads yaml file
-    #
+    # @param [String] file YAML file to be loaded
+    # @return [Hash] YAML formatted hash
     def load(file)
         return nil if not File.exists?(file)
         raw = File.read(file)
         return YAML.load(raw)
     end
 
-    #
     # Returns the value of a selected key in the configuration file.
-    #
+    # @param [String] key Key of configuration item
+    # @return [Hash|String] The resulting value stored against the 'key'
     def get(key)
         subkeys = key.split('.')
         lastkey = subkeys.pop
@@ -62,9 +55,10 @@ module Core
         return (subhash != nil and subhash.has_key?(lastkey)) ? subhash[lastkey] : nil 
     end
 
-    #
     # Sets the give key value pair to the config instance
-    #
+    # @param [String] key The configuration key
+    # @param value The value to be stored against the 'key'
+    # @return [Boolean] If the store procedure was successful
     def set(key, value)
         subkeys = key.split('.').reverse
         return false if subkeys.length == 0
@@ -76,9 +70,9 @@ module Core
         return true
     end
 
-    #
     # Clears the given key hash
-    #
+    # @param [String] key Configuration key to be cleared
+    # @return [Boolean] If the configuration key was cleared
     def clear(key)
         subkeys = key.split('.')
         return false if subkeys.length == 0
@@ -90,9 +84,7 @@ module Core
         return (hash.delete(lastkey) == nil) ? false : true    
     end
 
-    #
-    # load extensions configurations
-    #
+    # Load extensions configurations
     def load_extensions_config
         self.set('beef.extension', {})
         Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
@@ -104,9 +96,7 @@ module Core
         end
     end
 
-    #
     # Load module configurations
-    #
     def load_modules_config
         self.set('beef.module', {})
         Dir.glob("#{$root_dir}/modules/**/*/config.yaml") do | cf |

@@ -13,11 +13,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
 module Constants
   
-  # The distributed engine codes
+  # @note The distributed engine codes
   module DistributedEngine
   
     REQUESTER     = 1

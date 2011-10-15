@@ -18,50 +18,45 @@ module Core
 module Handlers
 module Modules
   
-  #
-  # Purpose: avoid rewriting several times the same code.
-  #
+  # @note Purpose: avoid rewriting several times the same code.
   module BeEFJS
     
-    #
     # Builds the default beefjs library (all default components of the library).
-    #
-    # @param: {Object} the hook session id
-    # @param: {Boolean} if the framework is already loaded in the hooked browser
-    #
+    # @param [Object] req_host The request object
     def build_beefjs!(req_host)
 
-      # set up values required to construct beefjs
-      beefjs = '' #  init the beefjs string (to be sent as the beefjs file)
-      beefjs_path = "#{$root_dir}/core/main/client/" # location of sub files      
+      # @note set up values required to construct beefjs
+      beefjs = '' 
+      # @note location of sub files      
+      beefjs_path = "#{$root_dir}/core/main/client/"
       js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js)
 
-      # construct the beefjs string from file(s)
+      # @note construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|
-        js_sub_file_abs_path = beefjs_path + js_sub_file_name # construct absolute path
-        beefjs << (File.read(js_sub_file_abs_path) + "\n\n") # concat each js sub file
+        js_sub_file_abs_path = beefjs_path + js_sub_file_name 
+        beefjs << (File.read(js_sub_file_abs_path) + "\n\n") 
       }
       
-      # create the config for the hooked browser session
+      # @note create the config for the hooked browser session
       config = BeEF::Core::Configuration.instance
       hook_session_name = config.get('beef.http.hook_session_name')
       hook_session_config = BeEF::Core::Server.instance.to_h
 
-      # if http_host="0.0.0.0" in config ini, use the host requested by client
+      # @note if http_host="0.0.0.0" in config ini, use the host requested by client
       if hook_session_config['beef_host'].eql? "0.0.0.0" 
         hook_session_config['beef_host'] = req_host 
         hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)  
       end
       
-      # populate place holders in the beefjs string and set the response body
+      # @note populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)
       @body << eruby.evaluate(hook_session_config)
   
     end
     
-    #
     # Finds the path to js components
-    #
+    # @param [String] component Name of component
+    # @return [String|Boolean] Returns false if path was not found, otherwise returns component path
     def find_beefjs_component_path(component)
       component_path = component
       component_path.gsub!(/beef./, '')
@@ -73,13 +68,10 @@ module Modules
       component_path
     end
     
-    #
     # Builds missing beefjs components.
-    #
-    # Ex: build_missing_beefjs_components(['beef.net.local', 'beef.net.requester'])
-    #
+    # @param [Array] beefjs_components An array of component names
     def build_missing_beefjs_components(beefjs_components)
-      # verifies that @beef_js_cmps is not nil to avoid bugs
+      # @note verifies that @beef_js_cmps is not nil to avoid bugs
       @beef_js_cmps = '' if @beef_js_cmps.nil?
       
       if beefjs_components.is_a? String
@@ -91,14 +83,13 @@ module Modules
       beefjs_components.keys.each {|k|
         next if @beef_js_cmps.include? beefjs_components[k]
         
-        # path to the component
+        # @note path to the component
         component_path = beefjs_components[k]
         
-        # we output the component to the hooked browser
+        # @note we output the component to the hooked browser
         @body << File.read(component_path)+"\n\n"
         
-        # finally we add the component to the list of components already generated so it does not
-        # get generated numerous times.
+        # @note finally we add the component to the list of components already generated so it does not get generated numerous times.
         if @beef_js_cmps.eql? ''
           @beef_js_cmps = component_path
         else

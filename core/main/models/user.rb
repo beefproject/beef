@@ -16,11 +16,8 @@
 module BeEF
 module Core
 module Models
-  #
-  # Table stores the list of users that have authenticated into beef.
-  #
-  # TODO: move this table into the AdminUI extension folder.
-  #
+
+  # @todo move this table into the AdminUI extension folder.
   class User
   
     include DataMapper::Resource
@@ -31,9 +28,8 @@ module Models
     property :session_id, String, :length => 255
     property :ip, Text
   
-    #
     # Checks if the user has been authenticated
-    #
+    # @return [Boolean] If the user is authenticated
     def authenticated?
       true || false if not @ip.nil?
     end

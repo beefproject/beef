@@ -17,9 +17,7 @@ module BeEF
 module Core
 module Handlers
   
-  #
-  # This class handles connections from zombies to the framework.
-  #
+  # @note This class handles connections from hooked browsers to the framework.
   class HookedBrowsers < WEBrick::HTTPServlet::AbstractServlet
     
     include BeEF::Core::Handlers::Modules::BeEFJS
@@ -31,11 +29,10 @@ module Handlers
       @guard = Mutex.new
     end
     
-    #
-    # This method processes the http requests sent by a zombie to the framework.
-    # It will update the database to add or update the current zombie and deploy
-    # some command modules or plugins.
-    #
+    # This method processes the http requests sent by a hooked browser to the framework. It will update the database to add or update the current zombie and deploy some command modules or plugins.
+    # @param [Hash] request HTTP request object
+    # @param [Hash] response HTTP response object
+    # @todo Confirm return type of this function
     def do_GET(request, response)
       @body = ''
       @params = request.query
@@ -43,7 +40,7 @@ module Handlers
       @response = response
       config = BeEF::Core::Configuration.instance
       
-      # check source ip address of browser
+      # @note check source ip address of browser
       permitted_hooking_subnet = config.get('beef.restrictions.permitted_hooking_subnet')
       target_network = IPAddr.new(permitted_hooking_subnet)
       if not target_network.include?(request.peeraddr[3].to_s)
@@ -52,23 +49,24 @@ module Handlers
         return
       end
 
-      # get zombie if already hooked the framework
+      # @note get zombie if already hooked the framework
       hook_session_id = request.get_hook_session_id()
       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) if not hook_session_id.nil?
-      
-      if not hooked_browser # is a new browser so return instructions to set up the hook
+
+      # @note is a new browser so return instructions to set up the hook
+      if not hooked_browser 
         
-        # generate the instructions to hook the browser
-        host_name = @request.host # get the host from the HOST attribute in the HTTP header
+        # @note generate the instructions to hook the browser
+        host_name = @request.host 
         raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not BeEF::Filters.is_valid_hostname?(host_name)
         build_beefjs!(host_name)
-      
-      else # is a known browseer so send instructions 
-      
-        # record the last poll from the browser
+
+      # @note is a known browser so send instructions 
+      else       
+        # @note record the last poll from the browser
         hooked_browser.lastseen = Time.new.to_i
         
-        # Check for a change in zombie IP and log an event
+        # @note Check for a change in zombie IP and log an event
         if hooked_browser.ip != @request.peeraddr[3].to_s
           BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{@request.peeraddr[3].to_s}","#{hooked_browser.id}")
           hooked_browser.ip = @request.peeraddr[3].to_s
@@ -77,17 +75,15 @@ module Handlers
         hooked_browser.count!
         hooked_browser.save
         
-        # add all availible command module instructions to the response
+        # @note add all available command module instructions to the response
         zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
         zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
 
-        #
-        # We dynamically get the list of all browser hook handler using the API and register them
-        #
+        # @note We dynamically get the list of all browser hook handler using the API and register them
         BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, @request, @response)
       end
 
-      # set response headers and body
+      # @note set response headers and body
       response.set_no_cache
       response.header['Content-Type'] = 'text/javascript' 
       response.header['Access-Control-Allow-Origin'] = '*'
@@ -96,17 +92,19 @@ module Handlers
       
     end
       
+    # @note alias do_POST function to do_GET
     alias do_POST do_GET
     
     private
     
-    # Object representing the HTTP request
+    # @note Object representing the HTTP request
     @request
     
-    # Object representing the HTTP response
+    # @note Object representing the HTTP response
     @response
     
-    # A string containing the list of BeEF components active in the hooked browser
+    # @note A string containing the list of BeEF components active in the hooked browser
+    # @todo Confirm this variable is still used
     @beef_js_cmps
     
   end

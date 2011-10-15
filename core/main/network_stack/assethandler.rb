@@ -18,25 +18,28 @@ module Core
 module NetworkStack
 module Handlers
     
-  #
-  # Class defining BeEF assets 
-  #
+  # @note Class defining BeEF assets 
   class AssetHandler 
     
-    # call BeEF::Core::NetworkStack::Handlers::AssetHandler.instance
+    # @note call BeEF::Core::NetworkStack::Handlers::AssetHandler.instance
     include Singleton
     
     attr_reader :allocations, :root_dir
     
+    # Starts the AssetHandler instance
     def initialize
       @allocations = {}
       @http_server = BeEF::Core::Server.instance
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
 
-    #
     # Binds a file to a mount point
-    #
+    # @param [String] file File path to asset
+    # @param [String] path URL path to mount the asset to (can be nil for random path)
+    # @param [String] extension Extension to append to the URL path (can be nil for none)
+    # @param [Integer] count The amount of times the asset can be accessed before being automatically unbinded (-1 = unlimited)
+    # @return [String] URL Path of mounted asset
+    # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind(file, path=nil, extension=nil, count=-1)
         url = buildURL(path, extension) 
         @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
@@ -45,26 +48,27 @@ module Handlers
         return url
     end
     
-    #
     # Unbinds a file from a mount point
-    #
+    # @param [String] url URL path of asset to be unbinded
     def unbind(url)
         @allocations.delete(url)
         @http_server.unmount(url, true)
     end
 
-    #
-    # Builds a URL based on the path and extention, if neither are passed a random URL will be generated
-    #
+    # Builds a URL based on the path and extension, if neither are passed a random URL will be generated
+    # @param [String] path URL Path defined by bind()
+    # @param [String] extension Extension defined by bind()
+    # @param [Integer] length The amount of characters to be used when generating a random URL
+    # @return [String] Generated URL
     def buildURL(path, extension, length=20)
         url = (path == nil) ? '/'+rand(36**length).to_s(36) : path;
         url += (extension == nil) ? '' : '.'+extension;
         return url
     end
 
-    #
     # Checks if the file is allocated, if the file isn't return true to pass onto FileHandler.
-    #
+    # @param [String] url URL Path of mounted file
+    # @return [Boolean] Returns true if the file is mounted
     def check(url)
         if @allocations.has_key?(url)
             count = @allocations[url]['count']

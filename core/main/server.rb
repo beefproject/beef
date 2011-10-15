@@ -13,30 +13,20 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 module BeEF
 module Core
-  #
-  # Class defining the BeEF http server.
-  #
-  #   Example:
-  #
-  #     server = BeEF::Core::Server.instance
-  #     server.prepare
-  #     server.start
-  #     ...
-  #     server.stop
-  #
+
   class Server
 
     include Singleton
     
-    # Grabs the version of beef the framework is deployed on
+    # @note Grabs the version of beef the framework is deployed on
     VERSION = BeEF::Core::Configuration.instance.get('beef.version')
 
     attr_reader :root_dir, :url, :configuration, :command_urls, :mounts
-    #
-    # Constructor
-    #
+     
+    # Constructor starts the BeEF server including the configuration system
     def initialize
       @configuration = BeEF::Core::Configuration.instance
       beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
@@ -46,10 +36,8 @@ module Core
       @mounts = {}
     end
     
-    #
-    # Returns all server variables in a hash. Useful for Erubis when
-    # generating the javascript for the command modules and hooking.
-    #
+    # Returns all server variables in a hash. Useful for Erubis when generating the javascript for the command modules and hooking.
+    # @return [Hash] BeEF info hash
     def to_h
       {
         'beef_version' => VERSION,
@@ -62,9 +50,11 @@ module Core
       }
     end
     
-    #
-    #
-    #
+    # Returns command URL
+    # @param [String] command_path Command path
+    # @return [String] URL of command
+    # @todo Unsure how @command_urls is populated, this command is possibly deprecated
+    # @deprecated See note
     def get_command_url(command_path)
       # argument type checking
       raise Exception::TypeError, '"command_path" needs to be a string' if not command_path.string?
@@ -76,9 +66,7 @@ module Core
       end
     end
     
-    #
     # Starts the BeEF http server.
-    #
     def prepare
       if not @http_server
         config = {}
@@ -93,16 +81,12 @@ module Core
         # Create http handler for the javascript hook file
         mount("#{@configuration.get("beef.http.hook_file")}", true, BeEF::Core::Handlers::HookedBrowsers)
         
-        #
         # We dynamically get the list of all http handler using the API and register them
-        #
         BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'mount_handler', self)
       end
     end
     
-    #
     # Starts the BeEF http server
-    #
     def start
       # we trap CTRL+C in the console and kill the server
       trap("INT") { BeEF::Core::Server.instance.stop }
@@ -111,9 +95,7 @@ module Core
       @http_server.start
     end
     
-    #
     # Stops the BeEF http server.
-    #
     def stop
       if @http_server
         # shuts down the server
@@ -125,19 +107,14 @@ module Core
       end
     end
     
-    #
     # Restarts the BeEF http server.
-    #
     def restart; stop; start; end
    
-    # 
     # Mounts a handler, can either be a hard or soft mount
-    #
-    # @param: {String} the url to mount
-    # @param: {Boolean} set to true for a hard mount, false for a soft mount.
-    # @param: {Class} class to call once mount is triggered
-    # @param: {Various} arguments to pass to the http handler class
-    #
+    # @param [String] url The url to mount
+    # @param [Boolean] hard Set to true for a hard mount, false for a soft mount.
+    # @param [Class] http_handler_class Class to call once mount is triggered
+    # @param args Arguments to pass to the http handler class
     def mount(url, hard, http_handler_class, args = nil)
       # argument type checking
       raise Exception::TypeError, '"url" needs to be a string' if not url.string?
@@ -161,12 +138,9 @@ module Core
       end
     end
     
-    #
     # Unmounts handler
-    #
-    # @param: {String} url to mount.
-    # @param: {Boolean} set to true for a hard mount, false for a soft mount.
-    #
+    # @param [String] url URL to unmount.
+    # @param [Boolean] hard Set to true for a hard mount, false for a soft mount.
     def unmount(url, hard)
       # argument type checking
       raise Exception::TypeError, '"url" needs to be a string' if not url.string?
