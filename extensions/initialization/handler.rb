@@ -45,21 +45,30 @@ module Initialization
       zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].peeraddr[3], :session => session_id)
       zombie.firstseen = Time.new.to_i
 
-      # set the zombie hooked domain. Uses the origin header, or the host header if the origin is not present (same-domain)
-      if @data['request'].header['origin'].nil? or @data['request'].header['origin'].empty?
-        log_zombie_domain = @data['request'].header['host'].first
+      if not @data['results']['HostName'].nil? then
+          log_zombie_domain=@data['results']['HostName']
+      elsif (not @data['request'].header['referer'].nil?) and (not @data['request'].header['referer'].empty?)
+          log_zombie_domain=@data['request'].header['referer'][0].gsub('http://','').gsub('https://','').split('/')[0]
       else
-        log_zombie_domain =  @data['request'].header['origin'].first
+          log_zombie_domain="unknown" # Probably local file open
       end
-      log_zombie_domain.gsub!('http://', '')
-      log_zombie_domain.gsub!('https://', '')
+
+      log_zombie_domain_parts=log_zombie_domain.split(':')
+      
+      log_zombie_domain=log_zombie_domain_parts[0]
+      log_zombie_port=80
+      if log_zombie_domain_parts.length > 1 then
+          log_zombie_port=log_zombie_domain_parts[1].to_i
+      end
+
       zombie.domain = log_zombie_domain
+      zombie.port = log_zombie_port
       zombie.httpheaders = @data['request'].header.to_json
 
       zombie.save # the save needs to be conducted before any hooked browser specific logging
       
       # add a log entry for the newly hooked browser
-      BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}", "#{zombie.id}") 
+      BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port.to_s}", "#{zombie.id}") 
 
       # get and store browser name
       begin

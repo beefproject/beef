@@ -213,7 +213,7 @@ ZombieTab_Requester = function(zombie) {
 		if(!value) {
 			if (zombie.domain) {
 				value = "GET /demos/secret_page.html HTTP/1.1\n";
-				value += "Host: "+zombie.domain+":3000\n";
+				value += "Host: "+zombie.domain+":"+zombie.port+"\n";
 			} else value = "GET / HTTP/1.1\nHost: \n";
 		}
 

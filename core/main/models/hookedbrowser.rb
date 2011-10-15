@@ -33,6 +33,7 @@ module Models
     property :httpheaders, Text, :lazy => false
     # @note the domain originating the hook request
     property :domain, Text, :lazy => false
+    property :port, Integer, :default => 80
     property :count, Integer, :lazy => false
     property :has_init, Boolean, :default => false
     property :is_proxy, Boolean, :default => false     
