@@ -478,13 +478,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # sort the parent array nodes 
     tree.sort! {|a,b| a['text'] <=> b['text']}
     
-    # sort the children nodes by status
+    # sort the children nodes by status and name
     tree.each {|x| x['children'] =
-      x['children'].sort_by {|a| a['status']}
+      x['children'].sort_by {|a| [a['status'],a['text']]}
     }
-
-
-      
+    
     # append the number of command modules so the branch name results in: "<category name> (num)"
     tree.each {|command_module_branch|
       num_of_command_modules = command_module_branch['children'].length
