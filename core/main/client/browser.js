@@ -611,6 +611,7 @@ beef.browser = {
 		var hostport = (document.location.port)? document.location.port : "80";
 		var browser_plugins = beef.browser.getPlugins();
 		var os_name = beef.os.getName();
+		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var internal_ip = beef.net.local.getLocalAddress();
 		var internal_hostname = beef.net.local.getLocalHostname();
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
@@ -621,6 +622,7 @@ beef.browser = {
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
 		var has_web_socket=(beef.browser.hasWebSocket())? "Yes":"No";
+		var has_activex = (typeof(window.ActiveXObject) != "undefined") ? "Yes":"No";
 		var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie"))? "Yes":"No";
 		var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie"))? "Yes":"No";
 
@@ -633,6 +635,7 @@ beef.browser = {
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
+		if(system_platform) details['SystemPlatform'] = system_platform;
 		if(internal_ip) details['InternalIP'] = internal_ip;
 		if(internal_hostname) details['InternalHostname'] = internal_hostname;
 		if(browser_type) details['BrowserType'] = browser_type;
@@ -643,6 +646,7 @@ beef.browser = {
 		if(has_flash) details['HasFlash'] = has_flash
 		if(has_web_socket) details['HasWebSocket'] = has_web_socket
 		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
+		if(has_activex) details['HasActiveX'] = has_activex;
 		if(has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
 		if(has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 

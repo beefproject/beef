@@ -146,6 +146,15 @@ module Initialization
         print_error "Invalid browser plugins returned from the hook browser's initial connection."
       end
 
+      # get and store the system platform
+      begin
+        system_platform = get_param(@data['results'], 'SystemPlatform')
+        raise WEBrick::HTTPStatus::BadRequest, "Invalid system platform" if not BeEF::Filters.is_valid_system_platform?(system_platform)
+        BD.set(session_id, 'SystemPlatform', system_platform)
+      rescue
+        print_error "Invalid system platform returned from the hook browser's initial connection."
+      end
+
       # get and store the internal ip address
       begin
         internal_ip = get_param(@data['results'], 'InternalIP')
@@ -250,6 +259,17 @@ module Initialization
         end
       rescue
         print_error "Invalid value for HasWebSocket returned from the hook browser's initial connection."
+      end
+
+      # get and store the yes|no value for HasActiveX
+      begin
+        has_activex = get_param(@data['results'], 'HasActiveX')
+        if not has_activex.nil?
+          raise WEBrick::HTTPStatus::BadRequest, "Invalid value for HasActiveX" if not BeEF::Filters.is_valid_yes_no?(has_activex)
+          BD.set(session_id, 'HasActiveX', has_activex)
+        end
+      rescue
+        print_error "Invalid value for HasActiveX returned from the hook browser's initial connection."
       end
 
       # get and store whether the browser has session cookies enabled

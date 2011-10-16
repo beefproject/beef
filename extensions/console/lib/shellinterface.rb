@@ -398,10 +398,25 @@ class ShellInterface
         'data' => encoded_internal_ip_hash,
         'from' => 'Initialisation'
       }
-      
+
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
-    
+
+    # set and add the System Platform
+    system_platform = BD.get(zombie_session, 'SystemPlatform')
+    if not system_platform.nil?
+      encoded_system_platform = CGI.escapeHTML(system_platform)
+      encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_system_platform_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the internal hostname
     internal_hostname = BD.get(self.targetsession, 'InternalHostname')
     if not internal_hostname.nil?
@@ -534,6 +549,21 @@ class ShellInterface
       page_name_row = {
         'category' => 'Browser Hook Initialisation',
         'data' => encoded_has_web_socket_hash,
+        'from' => 'Initialisation'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for HasActiveX
+    has_activex = BD.get(self.targetsession, 'HasActiveX')
+    if not has_activex.nil?
+      encoded_has_activex = CGI.escapeHTML(has_activex)
+      encoded_has_activex_hash = { 'Has ActiveX' => encoded_has_activex }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialisation',
+        'data' => encoded_has_activex_hash,
         'from' => 'Initialisation'
       }
 

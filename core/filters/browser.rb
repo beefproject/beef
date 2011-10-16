@@ -96,13 +96,11 @@ module Filters
     true
   end
 
-  # Verify the yes and no is valid
+  # Verify the system platform is valid
   # @param [String] str String for testing
-  # @return [Boolean] If the string is either 'yes' or 'no'
-  # @todo Confirm this is case insensitive
-  def self.is_valid_yes_no?(str)
+  # @return [Boolean] If the string has valid system platform characters
+  def self.is_valid_system_platform?(str)
     return false if has_non_printable_char?(str)
-    return false if str !~ /^(Yes|No)$/
     return false if str.length > 200
     true
   end
