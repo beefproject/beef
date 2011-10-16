@@ -45,6 +45,7 @@ module Initialization
       zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].peeraddr[3], :session => session_id)
       zombie.firstseen = Time.new.to_i
 
+      # hostname
       if not @data['results']['HostName'].nil? then
           log_zombie_domain=@data['results']['HostName']
       elsif (not @data['request'].header['referer'].nil?) and (not @data['request'].header['referer'].empty?)
@@ -53,12 +54,15 @@ module Initialization
           log_zombie_domain="unknown" # Probably local file open
       end
 
-      log_zombie_domain_parts=log_zombie_domain.split(':')
-      
-      log_zombie_domain=log_zombie_domain_parts[0]
-      log_zombie_port=80
-      if log_zombie_domain_parts.length > 1 then
-          log_zombie_port=log_zombie_domain_parts[1].to_i
+      # port
+      if not @data['results']['HostPort'].nil? then
+            log_zombie_port=@data['results']['HostPort']
+      else
+            log_zombie_domain_parts=log_zombie_domain.split(':')
+            log_zombie_port=80
+            if log_zombie_domain_parts.length > 1 then
+                  log_zombie_port=log_zombie_domain_parts[1].to_i
+            end
       end
 
       zombie.domain = log_zombie_domain
