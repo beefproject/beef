@@ -93,7 +93,7 @@ class Panel < BeEF::Extension::AdminUI::HttpController
       'session' => hooked_browser.session,
       'ip' => hooked_browser.ip,
       'domain' => domain,
-      'port' => hooked_browser.port,
+      'port' => hooked_browser.port.to_s,
       'browser_icon' => browser_icon,
       'os_icon' => os_icon
     }

@@ -325,6 +325,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 						if (new_zombie.session == known_hooked_browser.session && new_zombie.ip != known_hooked_browser.ip) {
 							known_hooked_browser.ip = new_zombie.ip;
 							known_hooked_browser.domain = new_zombie.ip;
+                            known_hooked_browser.port=new_zombie.port;
 							known_hooked_browser.text = known_hooked_browser.text.replace(/\d*\.\d*\.\d*\.\d*/gi, new_zombie.ip);
 							has_changed = true;
 						}

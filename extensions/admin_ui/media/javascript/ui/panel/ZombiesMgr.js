@@ -30,7 +30,8 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			'session' : zombie_array[index]["session"],
 			'text': text,
 			'check' : false,
-			'domain' : zombie_array[index]["domain"]
+			'domain' : zombie_array[index]["domain"],
+            'port' : zombie_array[index]["port"]
 		};
 		
 		return new_zombie;
