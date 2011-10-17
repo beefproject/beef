@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Chrome Extensions"
             name: "Execute on tab"
-            description: "Open a new tab and execute the Javascript code on it. The Chrome Extension need to have the 'tabs' permission, as well as access to the domain."
+            description: "Open a new tab and execute the Javascript code on it. The Chrome Extension needs to have the 'tabs' permission, as well as access to the domain."
             authors: ["Kos", "antisnatchor"]
             target:
                 working: ["C"]
