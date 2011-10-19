@@ -28,6 +28,36 @@ window.onload = function() {
 	beef_init();
 }
 
+window.onpopstate = function(event) {
+	if(beef.onpopstate.length > 0) {
+			event.preventDefault;
+			for(var i=0;i<beef.onpopstate.length;i++){
+				var callback = beef.onpopstate[i];
+				try{
+					callback(event);
+				}catch(e){
+					console.log("window.onpopstate - couldn't execute callback: " + e.message);
+				}
+			return false;
+		}
+	}
+}
+
+window.onclose = function(event) {
+	if(beef.onclose.length > 0) {
+			event.preventDefault;
+			for(var i=0;i<beef.onclose.length;i++){
+				var callback = beef.onclose[i];
+				try{
+					callback(event);
+				}catch(e){
+					console.log("window.onclose - couldn't execute callback: " + e.message);
+				}
+			return false;
+		}
+	}
+}
+
 function beef_init() {
   if (!beef.pageIsLoaded) {
     beef.pageIsLoaded = true;

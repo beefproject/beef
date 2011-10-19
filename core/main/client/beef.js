@@ -31,6 +31,12 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		// This get set to true during window.onload(). It's a useful hack when messing with document.write().
 		pageIsLoaded: false,
 		
+		// An array containing functions to be executed by the window.onpopstate() method.
+		onpopstate: new Array(),
+		
+		// An array containing functions to be executed by the window.onclose() method.
+		onclose: new Array(),
+		
 		// An array containing functions to be executed by Beef.
 		commands: new Array(),
 		
