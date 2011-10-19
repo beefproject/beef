@@ -17,8 +17,7 @@ class Link_rewrite < BeEF::Core::Command
   
   def self.options
     return [
-        { 'ui_label'=>'URL', 'name'=>'url', 'description' => 'Target URL', 'value'=>'http://beefproject.com/', 'width'=>'200px' },
-        { 'ui_label'=>'jQuery Selector', 'name'=>'selector', 'description' => 'Optional link selector other than all a* tags', 'value'=>'a', 'width'=>'200px' }
+        { 'ui_label'=>'URL', 'name'=>'url', 'description' => 'Target URL', 'value'=>'http://beefproject.com/', 'width'=>'200px' }
     ]
   end
 
