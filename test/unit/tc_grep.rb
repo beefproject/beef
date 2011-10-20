@@ -13,22 +13,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+require 'test/unit'
+require 'webrick'
 
-# @note Prevent exec from ever being used
-def exec(args)
-  puts "For security reasons the exec method is not accepted in the Browser Exploitation Framework code base."
-  exit
+class TC_Grep < Test::Unit::TestCase
+
+  def test_grep_eval
+    Dir['../../../**/*.rb'].each do |path|
+      File.open( path ) do |f|
+        next if path.eql?('../../../trunk/test/unit/tc_grep.rb')
+        f.grep( /\Weval\W/im ) do |line|
+          assert(false, "Illegal use of 'eval' in framework: " + path + ':' + line)
+        end
+      end
+    end
+    
+  end
+
 end
-
-# @note Prevent system from ever being used
-def system(args)
-  puts "For security reasons the system method is not accepted in the Browser Exploitation Framework code base."
-  exit
-end
-
-# @note Prevent Kernel.system from ever being used
-def Kernel.system(args)
-  puts "For security reasons the Kernel.system method is not accepted in the Browser Exploitation Framework code base."
-  exit
-end
-
