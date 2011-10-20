@@ -17,9 +17,9 @@ beef:
     module:
         man_in_the_browser:
             enable: true
-            category: "Browser"
+            category: "Persistence"
             name: "Man-In-The-Browser"
-            description: "This module will use a Man-In-The-Browser attack to ensure that the BeEF hook will stay until the user leaves the domain."
+            description: "This module will use a Man-In-The-Browser attack to ensure that the BeEF hook will stay until the user leaves the domain (manually changing it in the URL bar)"
             authors: ["mathias"]
             target:
                 working: ["ALL"]
