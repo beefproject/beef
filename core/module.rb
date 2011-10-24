@@ -221,7 +221,7 @@ module Module
                                             end
                                         end
                                         if subv.key?('max_ver')
-                                            if subv['max_ver'].kind_of? Fixnum and opts['ver'].to_i <= subv['max_ver']
+                                            if (subv['max_ver'].kind_of? Fixnum and opts['ver'].to_i <= subv['max_ver']) or subv['max_ver'] == "latest"
                                                 rating += 1
                                             else
                                                 break
@@ -256,6 +256,8 @@ module Module
                                     end
                                     if rating != 1
                                         results << {'rating' => rating, 'const' => k}
+                                    else
+                                        results << {'rating' => 2, 'const' => k}
                                     end
                                 end
                         end
@@ -357,7 +359,7 @@ module Module
     def self.match_target_browser_spec(v)
         browser = {}
         if v.class == Hash
-            if v.key?('max_ver') and (v['max_ver'].is_a?(Fixnum) or v['max_ver'].is_a?(Float))
+            if v.key?('max_ver') and (v['max_ver'].is_a?(Fixnum) or v['max_ver'].is_a?(Float) or v['max_ver'] == "latest")
                 browser['max_ver'] = v['max_ver']
             end
             if v.key?('min_ver') and (v['min_ver'].is_a?(Fixnum) or v['min_ver'].is_a?(Float))
