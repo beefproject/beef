@@ -256,8 +256,6 @@ module Module
                                     end
                                     if rating != 1
                                         results << {'rating' => rating, 'const' => k}
-                                    else
-                                        results << {'rating' => 2, 'const' => k}
                                     end
                                 end
                         end
