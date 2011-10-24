@@ -24,11 +24,11 @@ beef:
             target:
                 working: 
                     IE:
-                        min_ver: "6"
-                        max_ver: "6"
+                        min_ver: 6
+                        max_ver: 6
                 user_notify:
                     IE:
-                        min_ver: "7"
-                        max_ver: "7"
+                        min_ver: 7
+                        max_ver: 7
                 not_working: ["All"]
 

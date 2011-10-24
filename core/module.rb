@@ -214,14 +214,14 @@ module Module
                                     #version check
                                     if opts.key?('ver')
                                         if subv.key?('min_ver')
-                                            if subv['min_ver'].kind_of? Fixnum and opts['ver'] >= subv['min_ver']
+                                            if subv['min_ver'].kind_of? Fixnum and opts['ver'].to_i >= subv['min_ver']
                                                 rating += 1
                                             else
                                                 break
                                             end
                                         end
                                         if subv.key?('max_ver')
-                                            if subv['max_ver'].kind_of? Fixnum and opts['ver'] <= subv['max_ver']
+                                            if subv['max_ver'].kind_of? Fixnum and opts['ver'].to_i <= subv['max_ver']
                                                 rating += 1
                                             else
                                                 break
