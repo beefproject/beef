@@ -28,19 +28,29 @@ module Core
       raise Exception::TypeError, '"configuration_file" needs to be a string' if not configuration_file.string?
       # test to make sure file exists
       raise Exception::TypeError, 'Configuration yaml cannot be found' if not File.exist?(configuration_file)
-      #open base config
-      @config = self.load(configuration_file)
-      # set default value if key? does not exist
-      @config.default = nil
+      begin
+         #open base config
+         @config = self.load(configuration_file)
+         # set default value if key? does not exist
+         @config.default = nil
+      rescue Exception => e
+         print_error "Fatal Error: cannot load configuration file"
+         print_debug e
+      end
     end
 
     # Loads yaml file
     # @param [String] file YAML file to be loaded
     # @return [Hash] YAML formatted hash
     def load(file)
-        return nil if not File.exists?(file)
-        raw = File.read(file)
-        return YAML.load(raw)
+      begin
+         return nil if not File.exists?(file)
+         raw = File.read(file)
+         return YAML.load(raw)
+      rescue Exception => e
+         print_debug "Unable to load '#{file}' #{e}"
+         return nil
+      end
     end
 
     # Returns the value of a selected key in the configuration file.
@@ -92,6 +102,8 @@ module Core
             if y != nil
                 y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
                 @config = y.deep_merge(@config)
+            else
+               print_error "Unable to load extension configuration '#{cf}'"
             end
         end
     end
@@ -106,6 +118,8 @@ module Core
                 @config = y.deep_merge(@config)
                 # API call for post module config load
                 BeEF::API::Registrar.instance.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
+            else
+               print_error "Unable to load module configuration '#{cf}'"
             end
         end
     end
