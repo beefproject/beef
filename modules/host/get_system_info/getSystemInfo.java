@@ -105,12 +105,21 @@ public class getSystemInfo extends Applet {
 			// System.out.println("Host Address: " + InetAddress.getLocalHost().getHostAddress());
 			result += "Host Address: " + java.net.InetAddress.getLocalHost().getHostAddress()+"\n";
 			// System.out.println("Network Interfaces:");
-			result += "Network Interfaces:\n";
+			result += "Network Interfaces (interface, name, IP):\n";
 			Enumeration networkInterfaces = NetworkInterface.getNetworkInterfaces();
 			while (networkInterfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = (NetworkInterface) networkInterfaces.nextElement();
-				//System.out.println("\t"+networkInterface.toString());
-				result += "\t"+networkInterface.toString()+"\n";
+				result += networkInterface.getName() + ", ";
+                result += networkInterface.getDisplayName()+ ", ";
+                Enumeration inetAddresses = (networkInterface.getInetAddresses());
+                if(inetAddresses.hasMoreElements()){
+                   while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = (InetAddress)inetAddresses.nextElement();
+                    result +=inetAddress.getHostAddress() + "\n";
+                   }
+                }else{
+                   result += "\n"; // in case we can't retrieve the address of some network interfaces
+                }
 			}
 		}
 		catch (Exception exception) {

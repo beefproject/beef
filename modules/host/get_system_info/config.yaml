@@ -19,8 +19,8 @@ beef:
             enable: true
             category: "Host"
             name: "Get System Info (Java)"
-            description: "Retrieves basic information about the host system (such as the number of processors, amount of memory, screen display modes, operating system details, Java installation details and network interface names) using an unsigned Java applet.<br /><br />Chrome users will be prompted to run the applet."
-            authors: ["bcoles"]
+            description: "Retrieves basic information about the host system, using an unsigned Java Applet:<br/> <ul><li> - Operating system details</li><li> - Java VM details</li><li> - NIC names and IP</li><li> - Number of processors</li><li> - Amount of memory</li><li> - Screen display modes</li></ul>"
+            authors: ["bcoles", "antisnatchor"]
             target:
                 working: ["O", "FF", "S", "IE"]
                 user_notify: ["C"]

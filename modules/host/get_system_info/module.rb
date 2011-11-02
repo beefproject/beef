@@ -24,7 +24,7 @@ class Get_system_info < BeEF::Core::Command
 		content['result'] = @datastore['system_info'] if not @datastore['system_info'].nil?
 		content['fail'] = 'No data was returned.' if content.empty?
 		save content
-		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/getSystemInfo.class');
+		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/getSystemInfo.class')
 	end
   
 end
