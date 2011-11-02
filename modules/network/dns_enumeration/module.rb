@@ -20,7 +20,7 @@ class Dns_enumeration < BeEF::Core::Command
   
   def self.options
     return [
-        {'name' => 'dns_list', 'ui_label' => 'DNS (coma separated)', 'value' => '%default%'},
+        {'name' => 'dns_list', 'ui_label' => 'DNS (comma separated)', 'value' => '%default%'},
         {'name' => 'timeout', 'ui_label' => 'Timeout (ms)', 'value' => '4000'}
     ]
   end

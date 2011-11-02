@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Network"
             name: "DNS Enumeration"
-            description: "Discover DNS hostnames within the vicitim's network using dictionary and timming attacks."
+            description: "Discover DNS hostnames within the victim's network using dictionary and timing attacks."
             authors: ["jgaliana"]
             target:
                 working: ["FF", "C"]
