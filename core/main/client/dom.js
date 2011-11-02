@@ -87,12 +87,14 @@ beef.dom = {
 	},
 	
 	/**
-	 * @param: {String} type: can be one of the following: hidden, fullscreen, custom
-	 * @param: {String} method: can be 'get' or 'post'. defaults to get
+     * Create and iFrame element. In case it's create with POST method, the iFrame is automatically added to the DOM and submitted.
+     * example usage in the code: beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+	 * @param: {String} type: can be 'hidden' or 'fullScreen'. defaults to normal
+	 * @param: {String} method: can be 'GET' or 'POST'. defaults to GET
 	 * @param: {Hash} params: list of params that will be sent in request.
 	 * @param: {Hash} styles: css styling attributes, these are merged with the defaults specified in the type parameter
-	 * @param: {Function} a callback function to fire once the iframe has loaded
-	 * @return: {Object} the inserted iframe
+	 * @param: {Function} a callback function to fire once the iFrame has loaded
+	 * @return: {Object} the inserted iFrame
 	 */
 	createIframe: function(type, method, params, styles, onload) {
 		var css = {};
@@ -117,6 +119,7 @@ beef.dom = {
 	},
 	
 	/**
+     * Create a form element with the specified parameters, appending it to the DOM if append == true
 	 * @param: {Hash} params: params to be applied to the form element
 	 * @param: {Boolean} append: automatically append the form to the body
 	 * @return: {Object} a form object
@@ -166,6 +169,7 @@ beef.dom = {
 	},
 
 	/**
+     * Parse all links in the page matched by the selector, replacing old_protocol with new_protocol (ex.:https with http)
 	 * @param: {String} old_protocol: the old link protocol to be rewritten
 	 * @param: {String} new_protocol: the new link protocol to be written
 	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
@@ -208,15 +212,15 @@ beef.dom = {
 
     /**
      * Attach an applet to the DOM, using the best approach for differet browsers (object/applet/embed).
+     * example usage in the code, using a JAR archive (recommended and faster):
+     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D.class', null, 'http://127.0.0.1:3000/ui/media/images/target.jar', [{'param1':'1', 'param2':'2'}]);
+     * example usage in the code, using codebase:
+     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D', 'http://127.0.0.1:3000/', null, null);
      * @params: {String} id: reference identifier to the applet.
      * @params: {String} code: name of the class to be loaded. For example, beef.class.
      * @params: {String} codebase: the URL of the codebase (usually used when loading a single class for an unsigned applet).
      * @params: {String} archive: the jar that contains the code.
      * @params: {String} params: an array of additional params that the applet except.
-     * example usage in code, using a JAR archive (recommended and faster):
-     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D.class', null, 'http://127.0.0.1:3000/ui/media/images/target.jar', [{'param1':'1', 'param2':'2'}]);
-     * example usage in code, using codebase:
-     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D', 'http://127.0.0.1:3000/', null, null);
      */
     attachApplet: function(id, name, code, codebase, archive, params) {
         var content = null;
