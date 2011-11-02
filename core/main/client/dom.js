@@ -210,30 +210,45 @@ beef.dom = {
      * Attach an applet to the DOM, using the best approach for differet browsers (object/applet/embed).
      * @params: {String} id: reference identifier to the applet.
      * @params: {String} code: name of the class to be loaded. For example, beef.class.
+     * @params: {String} codebase: the URL of the codebase (usually used when loading a single class for an unsigned applet).
      * @params: {String} archive: the jar that contains the code.
      * @params: {String} params: an array of additional params that the applet except.
-     * example usage in code:
-     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D.class', 'http://127.0.0.1:3000/ui/media/images/target.jar', [{'param1':'1', 'param2':'2'}]);
+     * example usage in code, using a JAR archive (recommended and faster):
+     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D.class', null, 'http://127.0.0.1:3000/ui/media/images/target.jar', [{'param1':'1', 'param2':'2'}]);
+     * example usage in code, using codebase:
+     * beef.dom.attachApplet('appletId', 'appletName', 'SuperMario3D', 'http://127.0.0.1:3000/', null, null);
      */
-    attachApplet: function(id, name, code, archive, params) {
+    attachApplet: function(id, name, code, codebase, archive, params) {
         var content = null;
         if (beef.browser.isIE()) {
             content = "" + // the classid means 'use the latest JRE available to launch the applet'
                 "<object id='" + id + "'classid='clsid:8AD9C840-044E-11D1-B3E9-00805F499D93' " +
                 "height='0' width='0' name='" + name + "'> " +
-                "<param name='code' value='" + code + "' />" +
-                "<param name='archive' value='" + archive + "' />";
+                "<param name='code' value='" + code + "' />";
 
+            if (codebase != null) {
+                content += "<param name='codebase' value='" + codebase + "' />"
+            }else{
+                content += "<param name='archive' value='" + archive + "' />";
+            }
             if (params != null) {
                 content += beef.dom.parseAppletParams(params);
             }
             content += "</object>";
         }
         if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO()) {
-            content = "" +
-                "<applet id='" + id + "' code='" + code + "' " +
-                "archive='" + archive + "' " +
-                "height='0' width='0' name='" + name + "'>";
+
+            if (codebase != null) {
+                content = "" +
+                    "<applet id='" + id + "' code='" + code + "' " +
+                    "codebase='" + codebase + "' " +
+                    "height='0' width='0' name='" + name + "'>";
+            } else {
+                content = "" +
+                    "<applet id='" + id + "' code='" + code + "' " +
+                    "archive='" + archive + "' " +
+                    "height='0' width='0' name='" + name + "'>";
+            }
 
             if (params != null) {
                 content += beef.dom.parseAppletParams(params);
@@ -241,10 +256,17 @@ beef.dom = {
             content += "</applet>";
         }
         if (beef.browser.isFF()) {
-            content = "" +
-                "<embed id='" + id + "' code='" + code + "' " +
-                "type='application/x-java-applet' archive='" + archive + "' " +
-                "height='0' width='0' name='" + name + "'>";
+            if (codebase != null) {
+                content = "" +
+                    "<embed id='" + id + "' code='" + code + "' " +
+                    "type='application/x-java-applet' codebase='" + codebase + "' " +
+                    "height='0' width='0' name='" + name + "'>";
+            } else {
+                content = "" +
+                    "<embed id='" + id + "' code='" + code + "' " +
+                    "type='application/x-java-applet' archive='" + archive + "' " +
+                    "height='0' width='0' name='" + name + "'>";
+            }
 
             if (params != null) {
                 content += beef.dom.parseAppletParams(params);
@@ -258,8 +280,8 @@ beef.dom = {
      * Given an id, remove the applet from the DOM.
      * @params: {String} id: reference identifier to the applet.
      */
-    detachApplet: function(id){
-       $j('#' + id + '').detach();
+    detachApplet: function(id) {
+        $j('#' + id + '').detach();
     }
 
 
