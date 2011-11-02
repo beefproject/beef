@@ -260,8 +260,8 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
 							for(index in record.data.data) {
 								result = record.data.data[index];
 								index = index.toString().replace('_', ' ');
-								
-								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result));
+                                //output escape everything, but allow the <br> tag for better rendering.
+								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
 							}
 							
 							html += '</p>';
