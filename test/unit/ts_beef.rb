@@ -30,6 +30,14 @@ rescue LoadError
   exit
 end
 
+begin
+  require 'curb'
+rescue LoadError
+  puts "The following instruction failed: require 'curb'"
+  puts "Please run: sudo gem install curb"
+  exit
+end
+
 require './core/main/network_stack/handlers/dynamicreconstruction.rb'
 require './core/filter/tc_base'
 require './core/filter/tc_command'
