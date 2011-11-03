@@ -1,0 +1,123 @@
+#
+#   Copyright 2011 Wade Alcorn wade@bindshell.net
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+require 'test/unit'
+require 'webrick'
+require 'rubygems'
+require 'curb'
+# require "benchmark"
+
+# keep webrick quiet
+class ::WEBrick::HTTPServer
+  def access_log(config, req, res)
+    # nop
+  end
+end
+
+class ::WEBrick::BasicLog
+  def log(level, data)
+    # nop
+  end
+end
+
+class TC_DynamicReconstruction < Test::Unit::TestCase
+  
+  @@port = 20000 + rand(10000)
+  
+  def setup
+    $root_dir="../../"
+    $:.unshift File.join( %w{ ../../ } )
+    require 'core/loader'
+    require 'core/main/network_stack/handlers/dynamicreconstruction.rb'
+    
+    @@port += 1 # cycle through ports because the tcp teardown process is too slow
+    @port = @@port
+
+    config = {}
+    config[:BindAddress] = '127.0.0.1'
+    config[:Port] = @port.to_s
+    @server = WEBrick::HTTPServer.new( config )
+    @server.mount('/test', BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
+    trap("INT") { @server.shutdown }
+    trap("TERM") { @server.shutdown }
+
+    @pid = fork do
+      @server.start
+    end
+  end
+  
+  def teardown
+    Process.kill("INT",@pid)
+  end
+
+  # the server doesn't offer a mutex or callback
+  def wait_for_server
+    max_waits = 3
+    sleep_length = 0.00001
+    
+    count = 0
+    while (count < max_waits)
+      break if @server.status == :Running
+      count += 1
+      sleep sleep_length
+    end
+  end
+
+  def test_delete
+    wait_for_server
+    response = Curl::Easy.http_delete("http://127.0.0.1:" + @port.to_s + "/test")
+    assert_equal 404, response.response_code    
+  end
+  
+  def test_put
+    wait_for_server
+    response = Curl::Easy.http_put("http://127.0.0.1:" + @port.to_s + "/test", nil)
+    assert_equal 404, response.response_code    
+  end
+  
+  def test_head
+    wait_for_server
+    response = Curl::Easy.http_head("http://127.0.0.1:" + @port.to_s + "/test")
+    assert_equal 404, response.response_code    
+  end
+  
+  def test_no_params
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test")
+    assert_equal 404, response.response_code
+  end
+  
+  def test_zero_values
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test?bh=0&sid=0&pid=0&pc=0&d=0")
+    assert_equal 200, response.response_code
+    assert_equal "", response.body_str
+  end  
+  
+  def test_one_values
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test?bh=1&sid=1&pid=1&pc=1&d=1")
+    assert_equal 200, response.response_code
+    assert_equal "", response.body_str
+  end  
+  
+  def test_neg_one_values
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test?bh=-1&sid=-1&pid=-1&pc=-1&d=-1")
+    assert_equal 200, response.response_code
+    assert_equal "", response.body_str
+  end  
+    
+end

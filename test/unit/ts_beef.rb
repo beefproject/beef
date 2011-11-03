@@ -21,6 +21,7 @@ rescue LoadError
   exit
 end
 
+require './core/main/network_stack/handlers/dynamicreconstruction.rb'
 require './core/filter/tc_base'
 require './core/filter/tc_command'
 require './core/tc_loader'
@@ -38,6 +39,7 @@ class TS_BeefTests
     suite << TC_Api.suite
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
+    suite << TC_DynamicReconstruction.suite
     return suite
   end
 end
