@@ -13,6 +13,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
+# @note Version check to ensure BeEF is running Ruby 1.9 >
+if  RUBY_VERSION < '1.9'
+  puts "\n"
+  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
+  puts "\n"
+  exit
+end
+
 begin
   require 'test/unit/ui/console/testrunner'
 rescue LoadError
