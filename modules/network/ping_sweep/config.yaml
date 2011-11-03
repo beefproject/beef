@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Network"
             name: "Ping Sweep"
-            description: "Discover active hosts in the internal network of the hooked browser. It works by calling a Java method from JavaScript and does not require user interaction."
+            description: "Discover active hosts in the internal network of the hooked browser. It works by calling a Java method from JavaScript and does not require user interaction.<br> For browsers other than Firefox, use the PingSweep Java module."
             authors: ["jgaliana"]
             target:
                 working: ["FF"]
