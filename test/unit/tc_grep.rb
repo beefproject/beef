@@ -21,7 +21,7 @@ class TC_Grep < Test::Unit::TestCase
   def test_grep_eval
     Dir['../../../**/*.rb'].each do |path|
       File.open( path ) do |f|
-        next if path.eql?('../../../trunk/test/unit/tc_grep.rb')
+        next if /tc_grep.rb/.match(path) # skip this file
         f.grep( /\Weval\W/im ) do |line|
           assert(false, "Illegal use of 'eval' in framework: " + path + ':' + line)
         end
