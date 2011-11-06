@@ -21,7 +21,7 @@ class Detect_protocol_handlers < BeEF::Core::Command
   def self.options
     return [
 	{ 'ui_label'=>'Link Protocol(s)', 'name'=>'handler_protocol', 'description' => 'Comma separated list of protocol handlers', 'value'=>'http, https, ftp, file, mailto, news, feed, ldap', 'width'=>'200px' },
-        { 'ui_label'=>'Link Address', 'name'=>'handler_addr', 'description' => 'Handler Address - usually an IP address or domain name. The user will see this.', 'value'=>'Hello-From-BeEF', 'width'=>'200px' },
+        { 'ui_label'=>'Link Address', 'name'=>'handler_addr', 'description' => 'Handler Address - usually an IP address or domain name. The user will see this.', 'value'=>'BeEF', 'width'=>'200px' },
     ]
   end
 
