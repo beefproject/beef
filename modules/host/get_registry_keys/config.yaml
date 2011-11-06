@@ -18,8 +18,8 @@ beef:
         get_registry_keys:
             enable: true
             category: "Host"
-            name: "Get Registry Keys (ActiveX)"
-            description: "Retrieves the values of Windows Registry keys using an (unsafe) ActiveX control.<br /><br />Internet Explorer does not allow scripting of unsafe ActiveX controls in the Internet zone by default.<br /><br />Note: each registry key must be placed on a new line."
+            name: "Get Registry Keys"
+            description: "Retrieves the values of Windows Registry keys using an (unsafe) ActiveX control. Internet Explorer does NOT allow scripting of unsafe ActiveX controls in the Internet zone by default.<br /><br />Note: Each registry key must be placed on a new line."
             authors: ["bcoles"]
             target:
                 user_notify: ["IE"]

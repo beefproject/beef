@@ -17,7 +17,7 @@ class Get_registry_keys < BeEF::Core::Command
 
 	def self.options
 		return [
-			{ 'name'=>'key_paths', 'ui_label' => 'Key(s)', 'description' => 'Enter registry keys. Note: each key requires its own line', 'type'=>'textarea', 'value'=>'HKLM\\SYSTEM\\CurrentControlSet\\Control\\SystemInformation\\SystemProductName
+			{ 'name'=>'key_paths', 'ui_label' => 'Key(s)', 'description' => 'Enter registry keys. Note: each key requires its own line', 'type'=>'textarea', 'width' => '500px', 'height' => '350px', 'value'=>'HKLM\\SYSTEM\\CurrentControlSet\\Control\\SystemInformation\\SystemProductName
 HKLM\\SYSTEM\\CurrentControlSet\\Control\\SystemInformation\\SystemManufacturer
 HKLM\\SYSTEM\\CurrentControlSet\\Control\\SystemInformation\\BIOSVersion
 HKLM\\SYSTEM\\CurrentControlSet\\Control\\SystemInformation\\BIOSReleaseDate
