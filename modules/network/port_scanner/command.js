@@ -28,7 +28,7 @@ beef.execute(function() {
 	var opentimeout = '<%= @opentimeout %>';
 	var delay = '<%= @delay %>';
 	var ports = '<%= @ports %>';
-    var debug = '<%= @debug %>';
+    	var debug = '<%= @debug %>';
 	var protocol = 'ftp://';
 
 	var start_time_ws = undefined;
@@ -55,7 +55,6 @@ beef.execute(function() {
 	var process_port_ws = false;
 	var process_port_cors = false;
 	var count = 0;
-	var processed_ports = 0;
 
 	var img_scan = undefined;
 	var ws_scan = undefined;
@@ -63,9 +62,25 @@ beef.execute(function() {
 	var s = undefined;
 
 	var debug_value = false; // It will show what status is the port for each method
-    if(debug == 'true'){
-       debug_value = true;
-    }
+    	if (debug == 'true')
+	{
+       		debug_value = true;
+    	}
+
+	function check_blocked(port_to_check)
+	{
+		var res = false;
+
+		for (var i=0; i<blocked_ports.length; i++)
+		{
+			if (port_to_check == blocked_ports[i])
+			{
+				res = true;
+			}
+		}
+	
+		return res;
+	}
 
 	function prepare_ports()
 	{
@@ -96,13 +111,15 @@ beef.execute(function() {
 
 	function cors_scan(hostname, port_)
 	{
-		if (port_ in blocked_ports)
+		if (check_blocked(parseInt(port_)))
 		{
 			process_port_cors = true;
 			port_status_cors = 4; // blocked
 			if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=CORS: Port ' + port_ + ' is BLOCKED');}
 			return;
 		}
+
+		//var interval = (new Date).getTime() - start_time_cors;
 
 		cs_scan = new XMLHttpRequest();
 
@@ -113,6 +130,11 @@ beef.execute(function() {
 		function ()
 		{
 			var interval = (new Date).getTime() - start_time_cors;
+			if (process_port_cors) 
+			{
+				return;
+			}
+
 			if (cs_scan.readyState === 1) // CONNECTING
 			{
 			}
@@ -145,7 +167,7 @@ beef.execute(function() {
 				}
 			}
 
-			if (interval > opentimeout)
+			if (interval >= opentimeout)
 			{
 				clearInterval(intID_cors);
 				process_port_cors = true;
@@ -159,7 +181,7 @@ beef.execute(function() {
 
 	function websocket_scan(hostname, port_)
 	{
-		if (port_ in blocked_ports)
+		if (check_blocked(parseInt(port_)))
 		{
 			process_port_ws = true;
 			port_status_ws = 4; // blocked
@@ -176,10 +198,19 @@ beef.execute(function() {
 			ws_scan = new MozWebSocket("ws://" + hostname + ":" + port_);
 		}
 
+		//var interval = (new Date).getTime() - start_time_ws;
+
 		intID_ws = setInterval(
 		function ()
 		{
 			var interval = (new Date).getTime() - start_time_ws;
+
+			if (process_port_ws) 
+			{
+				clearInterval(intID_ws);
+				return;
+			}
+
 			if (ws_scan.readyState === 0) // CONNECTING
 			{
 			}
@@ -214,7 +245,7 @@ beef.execute(function() {
 				ws_scan.close();
 			}
 
-			if (interval > opentimeout)
+			if (interval >= opentimeout)
 			{
 				clearInterval(intID_ws);
 				process_port_ws = true;
@@ -229,6 +260,8 @@ beef.execute(function() {
 
 	function http_scan(protocol_, hostname, port_)
 	{
+		//process_port_http = false;
+
 		img_scan = new Image();
 
 		img_scan.onerror = function(evt) 
@@ -237,7 +270,7 @@ beef.execute(function() {
 		
 			if (interval < closetimeout)
 			{
-				if (process_port_http === false)
+				if (process_port_http == false)
 				{
 					port_status_http = 1; // closed
 					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=HTTP: Port ' + port_ + ' is CLOSED');}
@@ -250,18 +283,19 @@ beef.execute(function() {
 		img_scan.onload = img_scan.onerror;
 
 		img_scan.src = protocol_ + hostname + ":" + port_;
+		
 		intID_http = setInterval(
 		function ()
 		{
 			var interval = (new Date).getTime() - start_time_http;
 	
-			if (interval > opentimeout)
+			if (interval >= opentimeout)
 			{
 				if (!img_scan) return;
 				//img_scan.src = "";
 				img_scan = undefined;
 
-				if (process_port_http === false)
+				if (process_port_http == false)
 				{
 					port_status_http = 2; // open
 					process_port_http = true;
@@ -290,7 +324,6 @@ beef.execute(function() {
 	}
 	
 	count = 0;
-	processed_ports = 0;
 	start_scan = (new Date).getTime();
 
 	s =  setInterval(
@@ -306,20 +339,21 @@ beef.execute(function() {
 			start_time_http = (new Date).getTime();
 			http_scan(protocol, host, ports_list[count]);
     		}
-
+		
     		count++;
-    		if(count >= ports_list.length) 
-		{ 
-			clearInterval(s);
-			var interval = (new Date).getTime() - start_scan;
-			setTimeout(function() { beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Scan Finished in ' + interval + ' ms'); }, opentimeout*2);
-		}
 		port_status_http = 0; // unknown
 		process_port_http = false;
 		port_status_ws = 0; // unknown
 		process_port_ws = false;
 		port_status_cors = 0; // unknown
 		process_port_cors = false;
+
+    		if(count >= ports_list.length) 
+		{ 
+			clearInterval(s);
+			var interval = (new Date).getTime() - start_scan;
+			setTimeout(function() { beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Scan Finished in ' + interval + ' ms'); }, opentimeout*2);
+		}
 	}
 	,timeval);
 
