@@ -27,7 +27,7 @@ class Port_scanner < BeEF::Core::Command
         {'name' => 'ports' , 'ui_label' => 'Specific port(s) to scan', 'value' => 'default'},
 	      {'name' => 'closetimeout' , 'ui_label' => 'Closed port timeout (ms)', 'value' => '1100'},
         {'name' => 'opentimeout', 'ui_label' => 'Open port timeout (ms)', 'value' => '2500'},
-        {'name' => 'delay', 'ui_label' => 'Delay between requests (ms)', 'value' => '200'},
+        {'name' => 'delay', 'ui_label' => 'Delay between requests (ms)', 'value' => '600'},
         {'name' => 'debug', 'ui_label' => 'Debug', 'value' => 'false'}
     ]
   end
