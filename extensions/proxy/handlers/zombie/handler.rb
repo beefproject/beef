@@ -96,17 +96,24 @@ module Zombie
       if(res.status != -1 && res.status != 0)
          headers.each_line do |line|
            # stripping the Encoding, Cache and other headers
-           if line.split(': ')[0] != "Content-Encoding" &&
-               line.split(': ')[0] != "Content-Length" &&
-               line.split(': ')[0] != "Keep-Alive" &&
-               line.split(': ')[0] != "Cache-Control" &&
-               line.split(': ')[0] != "Vary" &&
-               line.split(': ')[0] != "Pragma" &&
-               line.split(': ')[0] != "Connection" &&
-               line.split(': ')[0] != "Expires" &&
-               line.split(': ')[0] != "Accept-Ranges" &&
-               line.split(': ')[0] != "Date"
-             headers_hash[line.split(': ')[0]] = line.split(': ')[1].gsub!(/[\n]+/,"")
+           header_key = line.split(': ')[0]
+           header_value = line.split(': ')[1]
+           if !header_key.nil? &&
+               header_key != "Content-Encoding" &&
+               header_key != "Content-Length" &&
+               header_key != "Keep-Alive" &&
+               header_key != "Cache-Control" &&
+               header_key != "Vary" &&
+               header_key != "Pragma" &&
+               header_key != "Connection" &&
+               header_key != "Expires" &&
+               header_key != "Accept-Ranges" &&
+               header_key != "Date"
+                 if header_value.nil?
+                   #headers_hash[header_key] = ""
+                 else
+                   headers_hash[header_key] = header_value.gsub!(/[\n]+/,"")
+                 end
            end
          end
 
