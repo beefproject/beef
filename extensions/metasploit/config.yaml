@@ -19,12 +19,13 @@
 # Ensure you load the xmlrpc interface in Metasploit
 # msf > load xmlrpc ServerHost=10.211.55.2 Pass=abc123 ServerType=Web
 # Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
+# Also don't use the loopback address (127.0.0.1) for host, always use the IP of your machine where MSF is listening.
 beef:
     extension:
         metasploit:
             name: 'Metasploit'
             enable: true
-            host: "127.0.0.1"
+            host: "192.168.84.1"
             url-path: "/RPC2"
             port: 55553
             user: "msf"
