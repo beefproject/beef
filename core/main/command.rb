@@ -122,17 +122,17 @@ module Core
       
       # get, check and add the http_params to the datastore
       http_params.keys.each { |http_params_key|
-        raise WEBrick::HTTPStatus::BadRequest, "http_params_key is invalid" if not BeEF::Filters.is_valid_command_module_datastore_key?(http_params_key)
+        (print_error 'http_params_key is invalid';return) if not BeEF::Filters.is_valid_command_module_datastore_key?(http_params_key)
         http_params_value = Erubis::XmlHelper.escape_xml(http_params[http_params_key])
-        raise WEBrick::HTTPStatus::BadRequest, "http_params_value is invalid" if not BeEF::Filters.is_valid_command_module_datastore_param?(http_params_value)
+        (print_error 'http_params_value is invalid';return) if not BeEF::Filters.is_valid_command_module_datastore_param?(http_params_value)
         @datastore[http_params_key] = http_params_value # add the checked key and value to the datastore
       }
 
       # get, check and add the http_headers to the datastore
       http_headers.keys.each { |http_header_key|
-        raise WEBrick::HTTPStatus::BadRequest, "http_header_key is invalid" if not BeEF::Filters.is_valid_command_module_datastore_key?(http_header_key)
+        (print_error 'http_header_key is invalid';return) if not BeEF::Filters.is_valid_command_module_datastore_key?(http_header_key)
         http_header_value = Erubis::XmlHelper.escape_xml(http_headers[http_header_key][0])
-        raise WEBrick::HTTPStatus::BadRequest, "http_header_value is invalid" if not BeEF::Filters.is_valid_command_module_datastore_param?(http_header_value)
+        (print_error 'http_header_value is invalid';return) if not BeEF::Filters.is_valid_command_module_datastore_param?(http_header_value)
         @datastore['http_headers'][http_header_key] = http_header_value # add the checked key and value to the datastore
       } 
     end
@@ -141,7 +141,7 @@ module Core
     # @return [String] The command output
     def output
         f = @path+'command.js'
-        raise WEBrick::HTTPStatus::BadRequest, "#{f} file does not exist" if not File.exists? f
+        (print_error "#{f} file does not exist";return) if not File.exists? f
 
         command = BeEF::Core::Models::Command.first(:id => @command_id)
         
@@ -164,8 +164,8 @@ module Core
     
     # Saves the results received from the hooked browser
     # @param [Hash] results Results from hooked browser
-    def save(results); 
-      @results = results; 
+    def save(results)
+      @results = results
     end
 
     # If nothing else than the file is specified, the function will map the file to a random path without any extension.

@@ -98,8 +98,8 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
   def logout
     
     # test if session is unauth'd
-    raise WEBrick::HTTPStatus::BadRequest, "invalid nonce" if not @session.valid_nonce?(@request)
-    raise WEBrick::HTTPStatus::BadRequest, "invalid session" if not @session.valid_session?(@request)    
+    (print_error "invalid nonce";return @body = "{ success : true }") if not @session.valid_nonce?(@request)
+    (print_error "invalid session";return @body = "{ success : true }") if not @session.valid_session?(@request)
     
     @headers['Content-Type']='application/json; charset=UTF-8'
     

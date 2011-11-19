@@ -29,11 +29,10 @@ module BeEF
           # verify if the request contains the hook token
           # raise an exception if it's null or not found in the DB
           beef_hook = @request['hbsess'] || nil
-          raise WEBrick::HTTPStatus::BadRequest,
-                "[XSSRAYS] Invalid beefhook id: the hooked browser cannot be found in the database" if beef_hook.nil? || HB.first(:session => beef_hook) == nil
+          (print_error "[XSSRAYS] Invalid beefhook id: the hooked browser cannot be found in the database";return) if beef_hook.nil? || HB.first(:session => beef_hook) == nil
 
           rays_scan_id = @request['raysid'] || nil
-          raise WEBrick::HTTPStatus::BadRequest, "[XSSRAYS] Raysid is null" if rays_scan_id.nil?
+          (print_error "[XSSRAYS] Raysid is null";return) if rays_scan_id.nil?
 
           if @request['action'] == 'ray'
             # we received a ray
@@ -44,7 +43,7 @@ module BeEF
               finalize_scan(rays_scan_id)
             else
               #invalid action
-              raise WEBrick::HTTPStatus::BadRequest, "[XSSRAYS] Invalid action"
+              print_error "[XSSRAYS] Invalid action";return
             end
           end
 

@@ -25,6 +25,7 @@ module BeEF
     def self.is_valid_url?(uri)
       # OPTIONS * is not yet supported
       # return true if uri.eql? "*"
+      #TODO : CHECK THE normalize_path method and include it somewhere (maybe here)
       return true if uri.eql? WEBrick::HTTPUtils.normalize_path(uri)
       false
     end

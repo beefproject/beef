@@ -22,7 +22,6 @@ module Handlers
     include BeEF::Core::Handlers::Modules::BeEFJS
     include BeEF::Core::Handlers::Modules::Command
     
-    attr_reader :guard
     @data = {}
     
     # Handles command data
@@ -30,7 +29,6 @@ module Handlers
     # @param [Class] kclass Class of command
     # @todo Confirm argument data variable type.
     def initialize(data, kclass)
-      @guard = Mutex.new
       @kclass = BeEF::Core::Command.const_get(kclass.capitalize)
       @data = data
       setup()
@@ -38,22 +36,24 @@ module Handlers
     
     # Initial setup function, creates the command module and saves details to datastore
     def setup()
-     @http_params = @data['request'].params
-     @http_header = Hash.new
-     http_header = @data['request'].env.select {|k,v| k.to_s.start_with? 'HTTP_'}
+
+
+      @http_params = @data['request'].params
+      @http_header = Hash.new
+      http_header = @data['request'].env.select {|k,v| k.to_s.start_with? 'HTTP_'}
                       .each {|key,value|
                             @http_header[key.sub(/^HTTP_/, '')] = value
                       }
-      
+
       # @note get and check command id from the request
       command_id  = get_param(@data, 'cid')
       # @todo ruby filter needs to be updated to detect fixnums not strings
       command_id = command_id.to_s()
-      raise WEBrick::HTTPStatus::BadRequest, "command_id is invalid" if not BeEF::Filters.is_valid_command_id?(command_id.to_s())   
+      (print_error "command_id is invalid";return) if not BeEF::Filters.is_valid_command_id?(command_id.to_s())
 
       # @note get and check session id from the request
       beefhook = get_param(@data, 'beefhook')
-      raise WEBrick::HTTPStatus::BadRequest, "beefhook is invalid" if not BeEF::Filters.is_valid_hook_session_id?(beefhook)   
+      (print_error "BeEFhook is invalid";return) if not BeEF::Filters.is_valid_hook_session_id?(beefhook)
 
       # @note create the command module to handle the response
       command = @kclass.new(BeEF::Module.get_key_by_class(@kclass))  
@@ -65,9 +65,9 @@ module Handlers
 
       # @note get/set details for datastore and log entry
       command_friendly_name = command.friendlyname
-      raise WEBrick::HTTPStatus::BadRequest, "command friendly name empty" if command_friendly_name.empty?
+      (print_error "command friendly name is empty";return) if command_friendly_name.empty?
       command_results = get_param(@data, 'results')
-      raise WEBrick::HTTPStatus::BadRequest, "command results empty" if command_results.empty?
+      (print_error "command results are empty";return) if command_results.empty?
       # @note save the command module results to the datastore and create a log entry
       command_results = {'data' => command_results}
       BeEF::Core::Models::Command.save_result(beefhook, command_id, command_friendly_name, command_results) 

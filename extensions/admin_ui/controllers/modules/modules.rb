@@ -49,9 +49,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # get the zombie 
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie session is nil" if zombie_session.nil?
+    (print_error "Zombie session is nil";return) if zombie_session.nil?
     zombie = BeEF::Core::Models::HookedBrowser.first(:session => zombie_session)
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
+    (print_error "Zombie is nil";return) if zombie.nil?
 
     # init the summary grid
     summary_grid_hash = {
@@ -66,9 +66,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_page_hash = { 'Page Title' => encoded_page_title }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_page_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -81,9 +81,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_host_name_hash = { 'Hostname/IP' => encoded_host_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_host_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -96,9 +96,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_os_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -111,9 +111,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       browser_name_hash = { 'Browser Name' => friendly_browser_name }
 
       browser_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => browser_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_name_row) # add the row
@@ -126,9 +126,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
       browser_version_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
          'data' => browser_version_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_version_row) # add the row
@@ -140,9 +140,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       browser_uastring_hash = { 'Browser UA String' => browser_uastring }
 
       browser_uastring_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
          'data' => browser_uastring_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_uastring_row) # add the row
@@ -155,9 +155,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_cookies_hash = { 'Cookies' => encoded_cookies }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -170,9 +170,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_browser_plugins_hash = { 'Browser Plugins' => encoded_browser_plugins }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_browser_plugins_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -185,9 +185,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_internal_ip_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -200,9 +200,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_internal_hostname_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -215,9 +215,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_system_platform_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -229,20 +229,20 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       
       screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = screen_params_hash['width']
-      raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
+      (print_error "width is wrong type";return) if not width.is_a?(Fixnum)
       height = screen_params_hash['height']
-      raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
+      (print_error "height is wrong type";return) if not height.is_a?(Fixnum)
       colordepth = screen_params_hash['colordepth']
-      raise WEBrick::HTTPStatus::BadRequest, "colordepth is wrong type" if not colordepth.is_a?(Fixnum)
+      (print_error "colordepth is wrong type";return) if not colordepth.is_a?(Fixnum)
       
       # construct the string to be displayed in the details tab
       encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
       encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_screen_params_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -254,18 +254,18 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
       window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = window_size_hash['width']
-      raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
+      (print_error "width is wrong type";return) if not width.is_a?(Fixnum)
       height = window_size_hash['height']
-      raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
+      (print_error "height is wrong type";return) if not height.is_a?(Fixnum)
 
       # construct the string to be displayed in the details tab
       encoded_window_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s)
       encoded_window_size_hash = { 'Window Size' => encoded_window_size }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_window_size_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -278,9 +278,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_java_enabled_hash = { 'Java Enabled' => encoded_java_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_java_enabled_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -293,9 +293,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_vbscript_enabled_hash = { 'VBScript Enabled' => encoded_vbscript_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_vbscript_enabled_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -308,9 +308,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_flash_hash = { 'Has Flash' => encoded_has_flash }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_flash_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -323,9 +323,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_googlegears_hash = { 'Has GoogleGears' => encoded_has_googlegears }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_googlegears_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -338,9 +338,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_web_socket_hash = { 'Has WebSockets' => encoded_has_web_socket }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_web_socket_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -353,9 +353,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_activex_hash = { 'Has ActiveX' => encoded_has_activex }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_activex_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -368,9 +368,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_session_cookies_hash = { 'Session Cookies' => encoded_has_session_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_session_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -383,9 +383,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       encoded_has_persistent_cookies_hash = { 'Persistent Cookies' => encoded_has_persistent_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_persistent_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -461,7 +461,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     BeEF::Modules.get_enabled.each{|k, mod|
       # get the hooked browser session id and set it in the command module
       hook_session_id = @params['zombie_session'] || nil
-      raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
+      (print_error "hook_session_id is nil";return) if hook_session_id.nil?
 
       # create url path and file for the command module icon
       command_module_status = set_command_module_status(k)
@@ -480,7 +480,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
          next if !dyn_mod.path.split('/').first.match(/^Dynamic/)
 
          hook_session_id = @params['zombie_session'] || nil
-         raise WEBrick::HTTPStatus::BadRequest, "hook_session_id is nil" if hook_session_id.nil?
+         (print_error "hook_session_id is nil";return) if hook_session_id.nil?
 
           dyn_mod_name = dyn_mod.path.split('/').last
           dyn_mod_category = nil
@@ -526,7 +526,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   # Returns the inputs definition of an command_module.
   def select_command_module
     command_module_id = @params['command_module_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "command_module_id is nil" if command_module_id.nil?
+    (print_error "command_module_id is nil";return) if command_module_id.nil?
     command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
     key = BeEF::Module.get_key_by_database_id(command_module_id)
 
@@ -545,19 +545,19 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # get params
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie session is nil" if zombie_session.nil?
+    (print_error "Zombie session is nil";return) if zombie_session.nil?
     command_module_id = @params['command_module_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "command_module id is nil" if command_module_id.nil?
+    (print_error "command_module id is nil";return) if command_module_id.nil?
     # validate nonce
     nonce = @params['nonce'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    (print_error "nonce is nil";return) if nonce.nil?
+    (print_error "nonce incorrect";return) if @session.get_nonce != nonce
     
     # get the browser id
     zombie = Z.first(:session => zombie_session)
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
+    (print_error "Zombie is nil";return) if zombie.nil?
     zombie_id = zombie.id
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
+    (print_error "Zombie id is nil";return) if zombie_id.nil?
       
     C.all(:command_module_id => command_module_id, :hooked_browser_id => zombie_id).each do |command|
       commands.push({
@@ -582,17 +582,17 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # get params
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_session.nil?
+    (print_error "Zombie id is nil";return) if zombie_session.nil?
     command_module_id = @params['command_module_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "command_module id is nil" if command_module_id.nil?
+    (print_error "command_module id is nil";return) if command_module_id.nil?
     # validate nonce
     nonce = @params['nonce'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    (print_error "nonce is nil";return) if nonce.nil?
+    (print_error "nonce incorrect";return) if @session.get_nonce != nonce
     
     @params.keys.each {|param| 
-      raise WEBrick::HTTPStatus::BadRequest, "invalid key param string" if not BeEF::Filters.has_valid_param_chars?(param)
-      raise WEBrick::HTTPStatus::BadRequest, "first char is num" if BeEF::Filters.first_char_is_num?(param)
+      (print_error "invalid key param string";return) if not BeEF::Filters.has_valid_param_chars?(param)
+      (print_error "first char is num";return) if BeEF::Filters.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
       oc = BeEF::Core::Models::OptionCache.first_or_create(:name => param[4..-1])
       oc.value = params[param]
@@ -614,13 +614,13 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     # get params
     command_id = @params['command_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command id is nil" if command_id.nil?
+    (print_error "Command id is nil";return) if command_id.nil?
     command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command is nil" if command.nil?
+    (print_error "Command is nil";return) if command.nil?
     # validate nonce
     nonce = @params['nonce'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    (print_error "nonce is nil";return) if nonce.nil?
+    (print_error "nonce incorrect";return) if @session.get_nonce != nonce
     
     command.instructions_sent = false
     command.save
@@ -634,17 +634,17 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # get params
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_session.nil?
+    (print_error "Zombie id is nil";return) if zombie_session.nil?
     command_module_id = @params['command_module_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "command_module id is nil" if command_module_id.nil?
+    (print_error "command_module id is nil";return) if command_module_id.nil?
     # validate nonce
     nonce = @params['nonce'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    (print_error "nonce is nil";return) if nonce.nil?
+    (print_error "nonce incorrect";return) if @session.get_nonce != nonce
     
     @params.keys.each {|param| 
-      raise WEBrick::HTTPStatus::BadRequest, "invalid key param string" if not BeEF::Filters.has_valid_param_chars?(param)
-      raise WEBrick::HTTPStatus::BadRequest, "first char is num" if BeEF::Filters.first_char_is_num?(param)
+      (print_error "invalid key param string";return) if not BeEF::Filters.has_valid_param_chars?(param)
+      (print_error "first char is num";return) if BeEF::Filters.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
       oc = BeEF::Core::Models::OptionCache.first_or_create(:name => param[4..-1])
       oc.value = params[param]
@@ -652,9 +652,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     }
 
     zombie = Z.first(:session => zombie_session)
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie is nil" if zombie.nil?
+    (print_error "Zombie is nil";return) if zombie.nil?
     zombie_id = zombie.id
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie id is nil" if zombie_id.nil?
+    (print_error "Zombie id is nil";return) if zombie_id.nil?
     command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
 
     if(command_module != nil && command_module.path.match(/^Dynamic/))
@@ -691,16 +691,16 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     # get params
     command_id = @params['command_id']|| nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command id is nil" if command_id.nil?
+    (print_error "Command id is nil";return) if command_id.nil?
     command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command is nil" if command.nil?
+    (print_error "Command is nil";return) if command.nil?
 
     # get command_module
     command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
-    raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
+    (print_error "command_module is nil";return) if command_module.nil?
     
     resultsdb = BeEF::Core::Models::Result.all(:command_id => command_id)
-    raise WEBrick::HTTPStatus::BadRequest, "Command id result is nil" if resultsdb.nil?
+    (print_error "Command id result is nil";return) if resultsdb.nil?
     
     resultsdb.each{ |result| results.push({'date' => result.date, 'data' => JSON.parse(result.data)}) }
     
@@ -718,12 +718,12 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     
     # get params
     command_id = @params['command_id'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command id is nil" if command_id.nil?
+    (print_error "Command id is nil";return) if command_id.nil?
     command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Command is nil" if command.nil?
+    (print_error "Command is nil";return) if command.nil?
 
     command_module = BeEF::Core::Models::CommandModule.get(command.command_module_id)
-    raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
+    (print_error "command_module is nil";return) if command_module.nil?
 
     if(command_module.path.split('/').first.match(/^Dynamic/))
       dyn_mod_name = command_module.path.split('/').last
@@ -795,7 +795,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     command_modules_json = {}
 
     command_module = BeEF::Core::Models::CommandModule.get(id)
-    raise WEBrick::HTTPStatus::BadRequest, "Module does not exists" if command_module.nil?
+    (print_error "Module does not exists";return 'success' => 'false') if command_module.nil?
 
     payload_options = BeEF::Module.get_payload_options(command_module.name,payload_name)
     # get payload options in JSON
@@ -803,8 +803,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     payload_options_json = []
     payload_options_json[1] = payload_options
     #payload_options_json[1] = e.get_payload_options(payload_name)
-    #raise WEBrick::HTTPStatus::BadRequest, "Payload JSON generation error" if payload_options_json.empty?
-    
     return {'success' => 'true', 'command_modules' => payload_options_json}.to_json
 
   end

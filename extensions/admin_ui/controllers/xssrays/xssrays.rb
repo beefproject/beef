@@ -42,16 +42,16 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
   def get_xssrays_logs
     # validate nonce
     nonce = @params['nonce'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "nonce is nil" if nonce.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "nonce incorrect" if @session.get_nonce != nonce
+    (print_error "nonce is nil";return @body = {'success' => 'false'}.to_json) if nonce.nil?
+    (print_error "nonce incorrect";return @body = {'success' => 'false'}.to_json) if @session.get_nonce != nonce
 
     # validate that the hooked browser's session has been sent
     zombie_session = @params['zombie_session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Zombie session is nil" if zombie_session.nil?
+    (print_error "Zombie session is nil";return @body = {'success' => 'false'}.to_json) if zombie_session.nil?
 
     # validate that the hooked browser exists in the db
     zombie = Z.first(:session => zombie_session) || nil
-    raise WEBrick::HTTPStatus::BadRequest, "Invalid hooked browser session" if zombie.nil?
+    (print_error "Invalid hooked browser session";return @body = {'success' => 'false'}.to_json) if zombie.nil?
 
     logs = []
     BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => zombie.id).each{|log|

@@ -20,18 +20,11 @@ module Events
   #
   # The http handler that manages the Events.
   #
-  class Handler < WEBrick::HTTPServlet::AbstractServlet
-    
-    attr_reader :guard
-    
+  class Handler
+
     Z = BeEF::Core::Models::HookedBrowser
-    
-    #
-    # Class constructor
-    #
+
     def initialize(data)
-      # we set up a mutex
-      @guard = Mutex.new
       @data = data
       setup()
     end
@@ -43,11 +36,17 @@ module Events
       
       # validates the hook token
       beef_hook = @data['beefhook'] || nil 
-      raise WEBrick::HTTPStatus::BadRequest, "beef_hook is null" if beef_hook.nil?
+      if beef_hook.nil?
+        print_error "[EVENTS] beef_hook is null"
+        return
+      end
 
       # validates that a hooked browser with the beef_hook token exists in the db
       zombie = Z.first(:session => beef_hook) || nil
-      raise WEBrick::HTTPStatus::BadRequest, "Invalid beef hook id: the hooked browser cannot be found in the database" if zombie.nil?
+      if zombie.nil?
+        print_error "[EVENTS] Invalid beef hook id: the hooked browser cannot be found in the database"
+        return
+      end
      
       events = @data['results']
 
@@ -72,7 +71,7 @@ module Events
             when 'keys'
                 return event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
         end
-        print_debug 'Event handler has recieved an unknown event'
+        print_debug '[EVENTS] Event handler has received an unknown event'
         return 'Unknown event'
     end
     

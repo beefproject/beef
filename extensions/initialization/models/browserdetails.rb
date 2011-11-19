@@ -28,15 +28,12 @@ module Models
     
     storage_names[:default] = 'extension_initialization_browserdetails'
     
-    attr_reader :guard
-  
+
     #
     # Class constructor
     #
     def initialize(config)
-      # we set up a mutex
       super(config)
-      @@guard = Mutex.new
     end
   
     property :session_id, String, :length => 255, :key => true
@@ -69,7 +66,9 @@ module Models
 
       result = browserdetails.save
       # if the attempt to save the browser details fails return a bad request
-      raise WEBrick::HTTPStatus::BadRequest, "Failed to save browser details" if result.nil?    
+      if result.nil?
+        print_error  "Failed to save browser details"
+      end
     
       browserdetails
     end

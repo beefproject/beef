@@ -30,7 +30,7 @@ module API
     #
     def get_browser_detail(key)
       bd = BeEF::Extension::Initialization::Models::BrowserDetails
-      raise WEBrick::HTTPStatus::BadRequest, "@session_id is invalid" if not BeEF::Filters.is_valid_hook_session_id?(@session_id)
+      (print_error "@session_id is invalid";return) if not BeEF::Filters.is_valid_hook_session_id?(@session_id)
       bd.get(@session_id, key)
     end
   end

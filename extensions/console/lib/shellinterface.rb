@@ -275,9 +275,9 @@ class ShellInterface
       encoded_page_hash = { 'Page Title' => encoded_page_title }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_page_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -290,9 +290,9 @@ class ShellInterface
       encoded_host_name_hash = { 'Hostname/IP' => encoded_host_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_host_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -305,9 +305,9 @@ class ShellInterface
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_os_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -320,9 +320,9 @@ class ShellInterface
       browser_name_hash = { 'Browser Name' => friendly_browser_name }
 
       browser_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => browser_name_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_name_row) # add the row
@@ -335,9 +335,9 @@ class ShellInterface
       browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
       browser_version_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
          'data' => browser_version_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_version_row) # add the row
@@ -349,9 +349,9 @@ class ShellInterface
       browser_uastring_hash = { 'Browser UA String' => browser_uastring }
 
       browser_uastring_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
          'data' => browser_uastring_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
     
       summary_grid_hash['results'].push(browser_uastring_row) # add the row
@@ -364,9 +364,9 @@ class ShellInterface
       encoded_cookies_hash = { 'Cookies' => encoded_cookies }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -379,9 +379,9 @@ class ShellInterface
       encoded_browser_plugins_hash = { 'Browser Plugins' => encoded_browser_plugins }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_browser_plugins_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -394,9 +394,9 @@ class ShellInterface
       encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_internal_ip_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -409,9 +409,9 @@ class ShellInterface
       encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_system_platform_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -424,9 +424,9 @@ class ShellInterface
       encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_internal_hostname_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
       
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -438,20 +438,17 @@ class ShellInterface
       
       screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = screen_params_hash['width']
-      #raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
       height = screen_params_hash['height']
-      #raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
       colordepth = screen_params_hash['colordepth']
-      #raise WEBrick::HTTPStatus::BadRequest, "colordepth is wrong type" if not colordepth.is_a?(Fixnum)
-      
+
       # construct the string to be displayed in the details tab
       encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
       encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_screen_params_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -463,18 +460,16 @@ class ShellInterface
 
       window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
       width = window_size_hash['width']
-      #raise WEBrick::HTTPStatus::BadRequest, "width is wrong type" if not width.is_a?(Fixnum)
       height = window_size_hash['height']
-      #raise WEBrick::HTTPStatus::BadRequest, "height is wrong type" if not height.is_a?(Fixnum)
 
       # construct the string to be displayed in the details tab
       encoded_window_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s)
       encoded_window_size_hash = { 'Window Size' => encoded_window_size }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_window_size_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -487,9 +482,9 @@ class ShellInterface
       encoded_java_enabled_hash = { 'Java Enabled' => encoded_java_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_java_enabled_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -502,9 +497,9 @@ class ShellInterface
       encoded_vbscript_enabled_hash = { 'VBScript Enabled' => encoded_vbscript_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_vbscript_enabled_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -517,9 +512,9 @@ class ShellInterface
       encoded_has_flash_hash = { 'Has Flash' => encoded_has_flash }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_flash_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -532,9 +527,9 @@ class ShellInterface
       encoded_has_googlegears_hash = { 'Has GoogleGears' => encoded_has_googlegears }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_googlegears_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -547,9 +542,9 @@ class ShellInterface
       encoded_has_web_socket_hash = { 'Has GoogleGears' => encoded_has_web_socket }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_web_socket_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -562,9 +557,9 @@ class ShellInterface
       encoded_has_activex_hash = { 'Has ActiveX' => encoded_has_activex }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_activex_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -577,9 +572,9 @@ class ShellInterface
       encoded_has_session_cookies_hash = { 'Session Cookies' => encoded_has_session_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_session_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row
@@ -592,9 +587,9 @@ class ShellInterface
       encoded_has_persistent_cookies_hash = { 'Persistent Cookies' => encoded_has_persistent_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialisation',
+        'category' => 'Browser Hook Initialization',
         'data' => encoded_has_persistent_cookies_hash,
-        'from' => 'Initialisation'
+        'from' => 'Initialization'
       }
 
       summary_grid_hash['results'].push(page_name_row) # add the row

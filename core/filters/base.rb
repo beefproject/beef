@@ -114,6 +114,7 @@ module Filters
   # @return [Boolean] If the string is a valid IP address
   # @note only IPv4 compliant
   def self.is_valid_ip?(ip)
+    return false if not is_non_empty_string?(ip)
     return true if ip =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
     false
   end

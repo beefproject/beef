@@ -16,6 +16,7 @@ module WEBrick
 	# Add support for additional mime types
     # @param [String] filename Filename
     # @param [Hash] mime_tab Mime Type Hash
+    #TODO: FIND A WAY TO DO THE SAME IN RACK (modify the default content type returned when requesting audio files - WAV)
     def mime_type(filename, mime_tab)
       suffix1 = (/\.(\w+)$/ =~ filename && $1.downcase)
       suffix2 = (/\.(\w+)\.[\w\-]+$/ =~ filename && $1.downcase)

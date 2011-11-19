@@ -56,6 +56,8 @@ module BeEF
           def requester_parse_db_request(http_db_object)
 
             # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
+
+            #TODO PARSE THE REQUEST MANUALLY, WITH PROPER ERROR CHECKING. SAME THING WE DO IN THE requester admin_ui controller
             tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
             req = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
             params = nil

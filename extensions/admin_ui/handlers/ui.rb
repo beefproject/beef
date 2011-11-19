@@ -24,23 +24,17 @@ module Handlers
   
   class UI
 
-    
-    attr_reader :guard
-    
     #
     # Constructor
     #
     def initialize(klass)
       super
-      @guard = Mutex.new
       @klass = BeEF::Extension::AdminUI::Controllers.const_get(klass.to_s.capitalize)
     end
 
     def call(env)
       @request = Rack::Request.new(env)
       @response = Rack::Response.new(env)
-
-      controller = nil
 
       controller = @klass.new
       controller.run(@request, @response)

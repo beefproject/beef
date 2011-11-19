@@ -63,9 +63,9 @@ module AdminUI
       
       # get the mapped function (if it exists) from the derived class
       path = request.path_info
-      raise WEBrick::HTTPStatus::BadRequest, "path is invalid" if not BeEF::Filters.is_valid_path_info?(path)
+      (print_error "path is invalid";return) if not BeEF::Filters.is_valid_path_info?(path)
       function = @paths[path] || @paths[path + '/'] # check hash for '<path>' and '<path>/'
-      raise WEBrick::HTTPStatus::BadRequest, "path does not exist" if function.nil?
+      (print_error "path does not exist";return) if function.nil?
       
       # call the relevant mapped function
       function.call

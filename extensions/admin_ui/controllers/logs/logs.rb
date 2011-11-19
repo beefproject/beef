@@ -33,7 +33,7 @@ class Logs < BeEF::Extension::AdminUI::HttpController
   def select_all_logs
 
     log = BeEF::Core::Models::Log.all()
-    raise WEBrick::HTTPStatus::BadRequest, "log is nil" if log.nil?
+    (print_error "log is nil";return) if log.nil?
     
     # format log
     @body = logs2json(log)
@@ -45,16 +45,16 @@ class Logs < BeEF::Extension::AdminUI::HttpController
     
     # get params
     session = @params['session'] || nil
-    raise WEBrick::HTTPStatus::BadRequest, "session is nil" if session.nil?
+    (print_error "session is nil";return) if session.nil?
 
     zombie = BeEF::Core::Models::HookedBrowser.first(:session => session)
-    raise WEBrick::HTTPStatus::BadRequest, "zombie is nil" if zombie.nil?
-    raise WEBrick::HTTPStatus::BadRequest, "zombie.id is nil" if zombie.id.nil?
+    (print_error "zombie is nil";return) if zombie.nil?
+    (print_error "zombie.id is nil";return)  if zombie.id.nil?
     zombie_id = zombie.id
 
     # get log
     log = BeEF::Core::Models::Log.all(:hooked_browser_id => zombie_id)
-    raise WEBrick::HTTPStatus::BadRequest, "log is nil" if log.nil?
+    (print_error "log is nil";return)  if log.nil?
     
     # format log
     @body = logs2json(log)

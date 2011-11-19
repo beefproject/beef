@@ -25,15 +25,15 @@ module Modules
     # @param [Object] hooked_browser Hooked Browser object
     def add_command_instructions(command, hooked_browser)
 
-      raise WEBrick::HTTPStatus::BadRequest, "hooked_browser is nil" if hooked_browser.nil?
-      raise WEBrick::HTTPStatus::BadRequest, "hooked_browser.session is nil" if hooked_browser.session.nil?
-      raise WEBrick::HTTPStatus::BadRequest, "hooked_browser is nil" if command.nil?
-      raise WEBrick::HTTPStatus::BadRequest, "hooked_browser.command_module_id is nil" if command.command_module_id.nil?
+      (print_error "hooked_browser is nil";return) if hooked_browser.nil?
+      (print_error "hooked_browser.session is nil";return) if hooked_browser.session.nil?
+      (print_error "hooked_browser is nil";return) if command.nil?
+      (print_error "hooked_browser.command_module_id is nil";return) if command.command_module_id.nil?
 
       # @note get the command module
       command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)      
-      raise WEBrick::HTTPStatus::BadRequest, "command_module is nil" if command_module.nil?
-      raise WEBrick::HTTPStatus::BadRequest, "command_module.path is nil" if command_module.path.nil?
+      (print_error "command_module is nil";return) if command_module.nil?
+      (print_error "command_module.path is nil";return) if command_module.path.nil?
 
       if(command_module.path.match(/^Dynamic/))
          command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new

@@ -54,7 +54,7 @@ module Handlers
         
         # @note generate the instructions to hook the browser
         host_name = @request.host 
-        raise WEBrick::HTTPStatus::BadRequest, "Invalid host name" if not BeEF::Filters.is_valid_hostname?(host_name)
+        (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
         build_beefjs!(host_name)
 
       # @note is a known browser so send instructions 

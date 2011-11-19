@@ -90,8 +90,8 @@ module BeEF
         @rack_app = Rack::URLMap.new(@mounts)
 
         if not @http_server
-          if @configuration.get('beef.debug') == true
-#              Thin::Logging.debug = true
+          if @configuration.get('beef.http.debug') == true
+              Thin::Logging.debug = true
           end
           @http_server = Thin::Server.new(
               @configuration.get('beef.http.host'),
@@ -103,30 +103,10 @@ module BeEF
 
       # Starts the BeEF http server
       def start
-        # we trap CTRL+C in the console and kill the server
-        trap("INT") { BeEF::Core::Server.instance.stop }
-
         # starts the web server
         @http_server.start
       end
 
-      # Stops the BeEF http server.
-      def stop
-        if @http_server
-          # shuts down the server
-          @http_server.stop
-          trap("INT") { BeEF::Core::Server.instance.stop }
-          # print goodbye message
-          puts
-          print_info 'BeEF server stopped'
-        end
-      end
-
-      # Restarts the BeEF http server.
-      def restart
-        stop
-        start
-      end
     end
   end
 end
