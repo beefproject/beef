@@ -30,6 +30,21 @@ module Handlers
     # Combines packet information and pushes to PQ (packet queue), then checks packets
     def call(env)
         @request = Rack::Request.new(env)
+
+        # skip packet checking if the request method is HEAD, PUT, DELETE or if parameters == null
+        if not self.is_valid_req(@request)
+            response = Rack::Response.new(
+                   body = [],
+                   status = 404,
+                   header = {
+                     'Pragma' => 'no-cache',
+                     'Cache-Control' => 'no-cache',
+                     'Expires' => '0'
+                   }
+               )
+            return response
+        end
+
         response = Rack::Response.new(
             body = [],
             status = 200,
@@ -112,6 +127,17 @@ module Handlers
                 MOUNTS[handler].new(data)
             end
         end
+    end
+
+    # 1. check methods HEAD, PUT, DELETE. return 404 if these methods are called
+    # 2. check for parameters = null (no parameters). return 404 in this case
+    # @param [Hash] request the Rack HTTP Request.
+    def is_valid_req(request)
+      is_valid = true
+      if request.put? or request.delete? or request.head? or request.params.empty?
+         is_valid = false
+      end
+      is_valid
     end
     
     # Assist function for getting parameter from hash

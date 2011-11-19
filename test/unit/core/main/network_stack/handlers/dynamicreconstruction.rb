@@ -17,20 +17,6 @@ require 'test/unit'
 require 'webrick'
 require 'rubygems'
 require 'curb'
-# require "benchmark"
-
-# keep webrick quiet
-class ::WEBrick::HTTPServer
-  def access_log(config, req, res)
-    # nop
-  end
-end
-
-class ::WEBrick::BasicLog
-  def log(level, data)
-    # nop
-  end
-end
 
 class TC_DynamicReconstruction < Test::Unit::TestCase
   
@@ -48,13 +34,16 @@ class TC_DynamicReconstruction < Test::Unit::TestCase
     config = {}
     config[:BindAddress] = '127.0.0.1'
     config[:Port] = @port.to_s
-    @server = WEBrick::HTTPServer.new( config )
-    @server.mount('/test', BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
-    trap("INT") { @server.shutdown }
-    trap("TERM") { @server.shutdown }
+    @mounts = {}
+    @mounts['/test'] = BeEF::Core::NetworkStack::Handlers::DynamicReconstruction.new
+    @rackApp = Rack::URLMap.new(@mounts)
+    Thin::Logging.silent = true
+    @server = Thin::Server.new('127.0.0.1', @port.to_s, @rackApp)
+    trap("INT") { @server.stop }
+    trap("TERM") { @server.stop }
 
     @pid = fork do
-      @server.start
+      @server.start!
     end
   end
   
@@ -66,10 +55,10 @@ class TC_DynamicReconstruction < Test::Unit::TestCase
   def wait_for_server
     max_waits = 3
     sleep_length = 0.00001
-    
+
     count = 0
     while (count < max_waits)
-      break if @server.status == :Running
+      break if @server.running?
       count += 1
       sleep sleep_length
     end
