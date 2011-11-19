@@ -27,7 +27,7 @@ module Initialization
     # all the information about hooked browsers.
     #
     def self.mount_handler(beef_server)
-      beef_server.mount('/init', false, BeEF::Extension::Initialization::Handler)
+      beef_server.mount('/init', BeEF::Extension::Initialization::Handler)
     end
     
   end

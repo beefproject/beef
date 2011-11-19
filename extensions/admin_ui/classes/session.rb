@@ -29,14 +29,14 @@ class Session
   def initialize
     set_logged_out
     @auth_timestamp = Time.new
+    @id = BeEF::Core::Crypto::secure_token
+    @nonce = BeEF::Core::Crypto::secure_token
   end
 
   #
   # set the session logged in
   #
   def set_logged_in(ip)
-    @id = BeEF::Core::Crypto::secure_token
-    @nonce = BeEF::Core::Crypto::secure_token
     @ip = ip
   end
   
@@ -85,10 +85,10 @@ class Session
     # check if a valid session
     return false if not valid_session?(request)
     return false if @nonce.nil?
-    return false if not request.request_method.eql? "POST"
+    return false if not request.post?
 
     # get nonce from request
-    request_nonce = request.query['nonce']
+    request_nonce = request['nonce']
     return false if request_nonce.nil?
     
     # verify nonce
@@ -106,17 +106,16 @@ class Session
     return false if @ip.nil?
 
     # check ip address matches
-    return false if not @ip.to_s.eql? request.peeraddr[3]
+    return false if not @ip.to_s.eql? request.ip
 
     # get session cookie name from config
-    config = BeEF::Core::Configuration.instance
-    session_cookie_name = config.get('beef.http.session_cookie_name')
-    
+    session_cookie_name = BeEF::Core::Configuration.instance.get('beef.http.session_cookie_name')
+
     # check session id matches
     request.cookies.each{|cookie|
-      c = WEBrick::Cookie.parse_set_cookie(cookie.to_s)
-      return true if (c.name.to_s.eql? session_cookie_name) and (c.value.eql? @id) 
+      return true if (cookie[0].to_s.eql? session_cookie_name) and (cookie[1].eql? @id)
     }
+    request
     
     # not a valid session 
     false 

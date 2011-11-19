@@ -27,11 +27,9 @@ module Events
     # like keystroke, mouse clicks and form submission.
     #
     def self.mount_handler(beef_server)
-      beef_server.mount('/event', false, BeEF::Extension::Events::Handler)
+      beef_server.mount('/event', BeEF::Extension::Events::Handler)
     end
-    
   end
-  
 end
 end
 end

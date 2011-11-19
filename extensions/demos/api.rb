@@ -24,13 +24,9 @@ module Demos
     def self.mount_handler(beef_server)
       # mount the handler to support the demos
       dir = File.dirname(__FILE__)+'/html/'
-      
-      beef_server.mount('/demos/', true, WEBrick::HTTPServlet::FileHandler, dir)
+      beef_server.mount('/demos/', Rack::File.new(dir))
     end
-    
   end
-  
-
 end
 end
 end

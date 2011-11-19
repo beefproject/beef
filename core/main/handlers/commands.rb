@@ -38,9 +38,12 @@ module Handlers
     
     # Initial setup function, creates the command module and saves details to datastore
     def setup()
-      @http_params = @data['request'].query  
-      @http_header = @data['request'].header
-      @http_header['referer'] ||= '' 
+     @http_params = @data['request'].params
+     @http_header = Hash.new
+     http_header = @data['request'].env.select {|k,v| k.to_s.start_with? 'HTTP_'}
+                      .each {|key,value|
+                            @http_header[key.sub(/^HTTP_/, '')] = value
+                      }
       
       # @note get and check command id from the request
       command_id  = get_param(@data, 'cid')

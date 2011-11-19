@@ -22,41 +22,42 @@ module Extension
 module AdminUI
 module Handlers
   
-  class UI < WEBrick::HTTPServlet::AbstractServlet
+  class UI
+
     
     attr_reader :guard
     
     #
     # Constructor
     #
-    def initialize(config, klass)
+    def initialize(klass)
       super
       @guard = Mutex.new
       @klass = BeEF::Extension::AdminUI::Controllers.const_get(klass.to_s.capitalize)
     end
-    
-    #
-    # Retrieves the request and forwards it to the controller
-    #
-    def do_GET(request, response)
-      @request = request
-      @response = response
-      
+
+    def call(env)
+      @request = Rack::Request.new(env)
+      @response = Rack::Response.new(env)
+
       controller = nil
 
       controller = @klass.new
       controller.run(@request, @response)
-      
-      response.header.replace(controller.headers)
-      response.body = controller.body.to_s
+
+      @response = Rack::Response.new(
+           body = [controller.body],
+            status = controller.status,
+            header = controller.headers
+          )
+
     end
     
     private
-    
+
     @request
     @response
-    
-    alias do_POST do_GET
+
   end
   
 end

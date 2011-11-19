@@ -33,20 +33,18 @@ module Server
     
     # Mounts a handler
     # @param [String] url URL to be mounted
-    # @param [Boolean] hard whether or not it is a hard mount
     # @param [Class] http_handler_class the handler Class
     # @param [Array] args an array of arguments
     # @note This is a direct API call and does not have to be registered to be used
-    def self.mount(url, hard, http_handler_class, args = nil)
-      BeEF::Core::Server.instance.mount(url, hard, http_handler_class, *args)
+    def self.mount(url, http_handler_class, args = nil)
+      BeEF::Core::Server.instance.mount(url, http_handler_class, *args)
     end
 
     # Unmounts a handler
     # @param [String] url URL to be unmounted
-    # @param [Boolean] hard whether or not it is a hard mount
     # @note This is a direct API call and does not have to be registered to be used
-    def self.unmount(url, hard)
-        BeEF::Core::Server.instance.unmount(url, hard)
+    def self.unmount(url)
+        BeEF::Core::Server.instance.unmount(url)
     end
 
   

@@ -17,40 +17,36 @@ module BeEF
 module Core
 module Handlers
   
-  # @note This class handles connections from hooked browsers to the framework.
-  class HookedBrowsers < WEBrick::HTTPServlet::AbstractServlet
+   # @note This class handles connections from hooked browsers to the framework.
+    class HookedBrowsers
+
     
     include BeEF::Core::Handlers::Modules::BeEFJS
     include BeEF::Core::Handlers::Modules::Command
+
     
-    attr_reader :guard
-    
-    def initialize(config)
-      @guard = Mutex.new
-    end
-    
-    # This method processes the http requests sent by a hooked browser to the framework. It will update the database to add or update the current zombie and deploy some command modules or plugins.
-    # @param [Hash] request HTTP request object
-    # @param [Hash] response HTTP response object
-    # @todo Confirm return type of this function
-    def do_GET(request, response)
+    # Process HTTP requests sent by a hooked browser to the framework.
+    # It will update the database to add or update the current hooked browser
+    # and deploy some command modules or extensions to the hooked browser.
+    def call(env)
       @body = ''
-      @params = request.query
-      @request = request
-      @response = response
+      @request = Rack::Request.new(env)
+      @params = @request.query_string
+      @response = Rack::Response.new(body=[], 200, header={})
       config = BeEF::Core::Configuration.instance
       
       # @note check source ip address of browser
       permitted_hooking_subnet = config.get('beef.restrictions.permitted_hooking_subnet')
       target_network = IPAddr.new(permitted_hooking_subnet)
-      if not target_network.include?(request.peeraddr[3].to_s)
-        BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from out of target range browser (#{request.peeraddr[3]}) rejected.")
-        @response.set_error(nil)
+      if not target_network.include?(@request.ip)
+        BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from out of target range browser (#{@request.ip}) rejected.")
+        @response = Rack::Response.new(body=[], 500, header={})
         return
       end
 
       # @note get zombie if already hooked the framework
-      hook_session_id = request.get_hook_session_id()
+      hook_session_name = config.get('beef.http.hook_session_name')
+      hook_session_id = @request[hook_session_name]
       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) if not hook_session_id.nil?
 
       # @note is a new browser so return instructions to set up the hook
@@ -67,9 +63,9 @@ module Handlers
         hooked_browser.lastseen = Time.new.to_i
         
         # @note Check for a change in zombie IP and log an event
-        if hooked_browser.ip != @request.peeraddr[3].to_s
-          BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{@request.peeraddr[3].to_s}","#{hooked_browser.id}")
-          hooked_browser.ip = @request.peeraddr[3].to_s
+        if hooked_browser.ip != @request.ip
+          BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{@request.ip}","#{hooked_browser.id}")
+          hooked_browser.ip = @request.ip
         end
       
         hooked_browser.count!
@@ -84,17 +80,21 @@ module Handlers
       end
 
       # @note set response headers and body
-      response.set_no_cache
-      response.header['Content-Type'] = 'text/javascript' 
-      response.header['Access-Control-Allow-Origin'] = '*'
-      response.header['Access-Control-Allow-Methods'] = 'POST, GET'
-      response.body = @body
+      @response = Rack::Response.new(
+            body = [@body],
+            status = 200,
+            header = {
+              'Pragma' => 'no-cache',
+              'Cache-Control' => 'no-cache',
+              'Expires' => '0',
+              'Content-Type' => 'text/javascript',
+              'Access-Control-Allow-Origin' => '*',
+              'Access-Control-Allow-Methods' => 'POST, GET'
+            }
+        )
       
     end
-      
-    # @note alias do_POST function to do_GET
-    alias do_POST do_GET
-    
+
     private
     
     # @note Object representing the HTTP request

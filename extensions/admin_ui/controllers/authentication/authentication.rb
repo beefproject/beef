@@ -52,12 +52,12 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     password = @params['password-cfrm'] || ''
     config = BeEF::Core::Configuration.instance
     @headers['Content-Type']='application/json; charset=UTF-8'
-    ua_ip = @request.peeraddr[3] # get client ip address
+    ua_ip = @request.ip # get client ip address
     @body = '{ success : false }' # attempt to fail closed
           
     # check if source IP address is permited to authenticate
     if not permited_source?(ua_ip)
-      BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{@request.peeraddr[3]}) attempted to authenticate but is not within permitted subnet.")
+      BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{@request.ip}) attempted to authenticate but is not within permitted subnet.")
       return
     end
 
@@ -70,7 +70,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     
     # check username and password
     if not (username.eql? config.get('beef.extension.admin_ui.username') and password.eql? config.get('beef.extension.admin_ui.password') )
-      BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.peeraddr[3]} has failed to authenticate in the application.")
+      BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has failed to authenticate in the application.")
       return
     end
     
@@ -88,7 +88,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     # add session cookie to response header
     @headers['Set-Cookie'] = session_cookie.to_s
       
-    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.peeraddr[3]} has successfuly authenticated in the application.")
+    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfuly authenticated in the application.")
     @body = "{ success : true }"
   end
   

@@ -24,7 +24,7 @@ module Requester
     # We register the http handler for the requester.
     # This http handler will retrieve the http responses for all requests
     def self.mount_handler(beef_server)
-      beef_server.mount('/requester', false, BeEF::Extension::Requester::Handler)
+      beef_server.mount('/requester', BeEF::Extension::Requester::Handler)
     end
     
   end

@@ -66,8 +66,6 @@ module Module
             class_symbol = BeEF::Core::Command.const_get(class_name)
             if class_symbol and class_symbol.respond_to?(:options)
               return class_symbol.options
-            else
-                print_debug "Module '#{mod}', no options method defined"
             end
         end
         return []
@@ -126,7 +124,7 @@ module Module
                 require config.get("beef.module.#{mod}.path")+'module.rb'
                 if self.exists?(config.get("beef.module.#{mod}.class"))
                     # start server mount point
-                    BeEF::Core::Server.instance.mount("/command/#{mod}.js", false, BeEF::Core::Handlers::Commands, mod)
+                    BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
                     BeEF::Core::Configuration.instance.set("beef.module.#{mod}.mount", "/command/#{mod}.js")
                     BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
                     print_debug "Hard Load module: '#{mod.to_s}'"

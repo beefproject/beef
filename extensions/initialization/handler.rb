@@ -42,14 +42,14 @@ module Initialization
       return if not hooked_browser.nil? # browser is already registered with framework
 
       # create the structure representing the hooked browser
-      zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].peeraddr[3], :session => session_id)
+      zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].ip, :session => session_id)
       zombie.firstseen = Time.new.to_i
 
       # hostname
       if not @data['results']['HostName'].nil? then
           log_zombie_domain=@data['results']['HostName']
-      elsif (not @data['request'].header['referer'].nil?) and (not @data['request'].header['referer'].empty?)
-          log_zombie_domain=@data['request'].header['referer'][0].gsub('http://','').gsub('https://','').split('/')[0]
+      elsif (not @data['request'].referer.nil?) and (not @data['request'].referer.empty?)
+          log_zombie_domain=@data['request'].referer.gsub('http://','').gsub('https://','').split('/')[0]
       else
           log_zombie_domain="unknown" # Probably local file open
       end
@@ -67,7 +67,11 @@ module Initialization
 
       zombie.domain = log_zombie_domain
       zombie.port = log_zombie_port
-      zombie.httpheaders = @data['request'].header.to_json
+
+      #TODO: find a way to do this
+      #zombie.httpheaders = @data['request'].header.to_json
+      zombie.httpheaders = 'temp headers'
+
 
       zombie.save # the save needs to be conducted before any hooked browser specific logging
       
@@ -295,20 +299,21 @@ module Initialization
       end
 
       # Call autorun modules, this will be moved to core along with the Initialization extension
-      autorun = []
-      BeEF::Core::Configuration.instance.get('beef.module').each{|k,v|
-        if v.has_key?('autorun') and v['autorun'] == true
-            if BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name}) == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-                BeEF::Module.execute(k, session_id)
-                autorun.push(k)
-            else
-                print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser #{zombie.ip}"
-            end
-        end
-      }
-      if autorun.length > 0
-          print_info "Autorun executed: #{autorun.join(', ')} against Hooked browser #{zombie.ip}"
-      end
+      #TODO: re-enable it
+#      autorun = []
+#      BeEF::Core::Configuration.instance.get('beef.module').each{|k,v|
+#        if v.has_key?('autorun') and v['autorun'] == true
+#            if BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name}) == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+#                BeEF::Module.execute(k, session_id)
+#                autorun.push(k)
+#            else
+#                print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser #{zombie.ip}"
+#            end
+#        end
+#      }
+#      if autorun.length > 0
+#          print_info "Autorun executed: #{autorun.join(', ')} against Hooked browser #{zombie.ip}"
+#      end
     end
    
     def get_param(query, key)

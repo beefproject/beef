@@ -36,15 +36,16 @@ module API
       Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each { |http_module|
         require http_module
         mod_name = File.basename http_module, '.rb'
-        beef_server.mount("/ui/#{mod_name}", true, BeEF::Extension::AdminUI::Handlers::UI, mod_name)
+        beef_server.mount("/ui/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
       }
       
       # mount the folder were we store static files (javascript, css, images) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
-      beef_server.mount('/ui/media', true, BeEF::Extension::AdminUI::Handlers::MediaHandler, media_dir)
+      beef_server.mount('/ui/media', Rack::File.new(media_dir))
+
       
       # mount the favicon file
-      beef_server.mount('/favicon.ico', true, WEBrick::HTTPServlet::FileHandler, "#{media_dir}#{configuration.get("beef.extension.admin_ui.favicon_dir")}/#{configuration.get("beef.extension.admin_ui.favicon_file_name")}")
+       beef_server.mount('/favicon.ico', Rack::File.new("#{media_dir}#{configuration.get("beef.extension.admin_ui.favicon_dir")}/#{configuration.get("beef.extension.admin_ui.favicon_file_name")}"))
     end
     
   end

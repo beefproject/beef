@@ -49,13 +49,15 @@ module AdminUI
     #
     def run(request, response)
       @request = request
-      @params = request.query
+      @params = request.params
       @session = BeEF::Extension::AdminUI::Session.instance      
       auth_url = '/ui/authentication'
       
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
-        response.set_redirect(WEBrick::HTTPStatus::Found, auth_url)
+        @body = ''
+        @status = 302
+        @headers = {'Location' => auth_url}
         return
       end
       

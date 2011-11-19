@@ -23,7 +23,7 @@ module NetworkStack
     # @param [Object] server HTTP server instance
     def self.mount_handler(server)
       # @note this mounts the dynamic handler
-      server.mount('/dh', true, BeEF::Core::NetworkStack::Handlers::DynamicReconstruction)
+      server.mount('/dh', BeEF::Core::NetworkStack::Handlers::DynamicReconstruction.new)
     end
     
   end

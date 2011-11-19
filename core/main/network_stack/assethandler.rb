@@ -41,18 +41,21 @@ module Handlers
     # @return [String] URL Path of mounted asset
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind(file, path=nil, extension=nil, count=-1)
-        url = buildURL(path, extension) 
+        url = build_url(path, extension)
         @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
-        @http_server.mount(url, true, WEBrick::HTTPServlet::FileHandler, @allocations[url]['file'])
+        @http_server.mount(url, Rack::File.new(@allocations[url]['file']))
+        @http_server.remap
         print_info "File [" + "#{root_dir}"+file + "] bound to url [" + url + "]"
-        return url
+        url
     end
     
     # Unbinds a file from a mount point
     # @param [String] url URL path of asset to be unbinded
+    #TODO: check why is throwing exception
     def unbind(url)
         @allocations.delete(url)
-        @http_server.unmount(url, true)
+        @http_server.unmount(url)
+        @http_server.remap
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated
@@ -60,10 +63,10 @@ module Handlers
     # @param [String] extension Extension defined by bind()
     # @param [Integer] length The amount of characters to be used when generating a random URL
     # @return [String] Generated URL
-    def buildURL(path, extension, length=20)
-        url = (path == nil) ? '/'+rand(36**length).to_s(36) : path;
-        url += (extension == nil) ? '' : '.'+extension;
-        return url
+    def build_url(path, extension, length=20)
+        url = (path == nil) ? '/'+rand(36**length).to_s(36) : path
+        url += (extension == nil) ? '' : '.'+extension
+        url
     end
 
     # Checks if the file is allocated, if the file isn't return true to pass onto FileHandler.
@@ -84,7 +87,7 @@ module Handlers
                 return true
             end
         end
-        return false
+        false
     end
    
    private

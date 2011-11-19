@@ -18,10 +18,8 @@ module Core
 module NetworkStack
 module Handlers
   
-  # @note DynamicHanlder is used reconstruct segmented traffic from the hooked browser
-  class DynamicReconstruction < WEBrick::HTTPServlet::AbstractServlet
-    
-    attr_reader :guard
+  # @note DynamicHandler is used reconstruct segmented traffic from the hooked browser
+  class DynamicReconstruction
 
     # @note holds packet queue
     PQ = Array.new() 
@@ -29,28 +27,32 @@ module Handlers
     # @note obtain dynamic mount points from HttpHookServer
     MOUNTS = BeEF::Core::Server.instance.mounts
 
-    # Combines packet information and pushes to PQ, then checks packets
-    # @param [Object] request Request object
-    # @param [Object] response Response object
-    def do_POST(request, response)
-        @request = request
-        response.set_no_cache
-        response.header['Content-Type'] = 'text/javascript' 
-        response.header['Access-Control-Allow-Origin'] = '*'
-        response.header['Access-Control-Allow-Methods'] = 'POST'
-        response.body = ''
+    # Combines packet information and pushes to PQ (packet queue), then checks packets
+    def call(env)
+        @request = Rack::Request.new(env)
+        response = Rack::Response.new(
+            body = [],
+            status = 200,
+            header = {
+              'Pragma' => 'no-cache',
+              'Cache-Control' => 'no-cache',
+              'Expires' => '0',
+              'Content-Type' => 'text/javascript',
+              'Access-Control-Allow-Origin' => '*',
+              'Access-Control-Allow-Methods' => 'POST'
+            }
+        )
+
         PQ << {
-            :beefhook =>  get_param(@request.query, 'bh'),
-            :stream_id => Integer(get_param(@request.query, 'sid')),
-            :packet_id => Integer(get_param(@request.query, 'pid')),
-            :packet_count => Integer(get_param(@request.query, 'pc')),
-            :data => get_param(@request.query, 'd')
+            :beefhook =>  @request['bh'],
+            :stream_id => Integer(@request['sid']),
+            :packet_id => Integer(@request['pid']),
+            :packet_count => Integer(@request['pc']),
+            :data => @request['d']
         }
         check_packets()
+        response
     end
-    
-    # @note Alias do_GET function to do_POST
-    alias do_GET do_POST
 
     # Check packets goes through the PQ array and attempts to reconstruct the stream from multiple packets
     def check_packets()
@@ -79,7 +81,7 @@ module Handlers
                     res = JSON.parse(b64).first
                     res['beefhook'] = packet[:beefhook]
                     res['request'] = @request
-                    res['beefsession'] = @request.get_hook_session_id()
+                    res['beefsession'] = @request[BeEF::Core::Configuration.instance.get('beef.http.hook_session_name')]
                     execute(res)
                 rescue JSON::ParserError => e
                     print_debug 'Network stack could not decode packet stream.'
@@ -96,7 +98,7 @@ module Handlers
     def expunge(beefhook, stream_id)
         packets = PQ.select{ |p| p[:beefhook] == beefhook and p[:stream_id] == stream_id }
         PQ.delete_if { |p| p[:beefhook] == beefhook and p[:stream_id] == stream_id }
-        return packets.sort_by { |p| p[:packet_id] }
+        packets.sort_by { |p| p[:packet_id] }
     end
 
     # Execute is called once a stream has been rebuilt. it searches the mounts and passes the data to the correct handler
