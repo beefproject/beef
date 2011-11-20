@@ -29,14 +29,14 @@ class Session
   def initialize
     set_logged_out
     @auth_timestamp = Time.new
-    @id = BeEF::Core::Crypto::secure_token
-    @nonce = BeEF::Core::Crypto::secure_token
   end
 
   #
   # set the session logged in
   #
   def set_logged_in(ip)
+    @id = BeEF::Core::Crypto::secure_token
+    @nonce = BeEF::Core::Crypto::secure_token
     @ip = ip
   end
   

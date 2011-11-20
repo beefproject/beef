@@ -81,12 +81,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
       
     # create session cookie 
     session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
-    session_cookie = WEBrick::Cookie.new(session_cookie_name, @session.get_id)
-    session_cookie.path = '/'
-    session_cookie.httponly = true
-      
-    # add session cookie to response header
-    @headers['Set-Cookie'] = session_cookie.to_s
+    Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => @session.get_id, :path => "/", :httponly => true})
       
     BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfuly authenticated in the application.")
     @body = "{ success : true }"
@@ -109,15 +104,9 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     # clean up UA and expire the session cookie
     config = BeEF::Core::Configuration.instance
     session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
-    session_cookie = WEBrick::Cookie.new(session_cookie_name, "")
-    session_cookie.path = '/'
-    session_cookie.expires = Time.now
-    session_cookie.httponly = true
-      
-    # add (expired) session cookie to response header
-    @headers['Set-Cookie'] = session_cookie.to_s
-      
-    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.addr} has successfuly logged out.")
+    Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => "", :path => "/", :httponly => true, expires: Time.now})
+
+    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfuly logged out.")
     @body = "{ success : true }"
     
   end
