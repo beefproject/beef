@@ -69,7 +69,6 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     version = req_parts[2]
 
     (self.err_msg 'Invalid HTTP version';return @body = '{success : false}') if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
-#    if BeEF::Filters.is_valid_http_version?(version) then print_error 'Invalid HTTP version'
 
     host_str = req_parts[3]
     (self.err_msg 'Invalid HTTP Host Header';return @body = '{success : false}') if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
@@ -82,25 +81,23 @@ class Requester < BeEF::Extension::AdminUI::HttpController
         (self.err_msg 'Invalid HTTP HostPort';return @body = '{success : false}') if not BeEF::Filters.nums_only?(hostport) #check the target hostport
     end
 
-    # (re)build the request
-    #TODO create the request by hand, with proper error-checking
-    green_request = StringIO.new(verb + " " + uri + " " +  version + "\n" + host_str + " " + host)
-    request = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
-    request.parse(green_request)
-        
     # Saves the new HTTP request.
     http = H.new(
       :request => raw_request,
-      :method => request.request_method,
-      :domain => request.host,
-      :port => request.port,
-      :path => request.unparsed_uri,
+      :method => verb,
+      :domain => hostname,
+      :port => hostport,
+      :path => uri,
       :request_date => Time.now,
       :hooked_browser_id => zombie.id
     )
     
-    if request.request_method.eql? 'POST'
-      http.content_length = request.content_length
+    if verb.eql? 'POST'
+      req_parts.each_with_index do |value, index|
+         if value.match(/^Content-Length/)
+           http.content_length = req_parts[index+1]
+         end
+      end
     end
     
     http.save
