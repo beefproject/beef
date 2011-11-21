@@ -90,16 +90,21 @@ module BeEF
         @rack_app = Rack::URLMap.new(@mounts)
 
         if not @http_server
+          
+          # Set the logging level of Thin to match the config 
+          Thin::Logging.silent = true
           if @configuration.get('beef.http.debug') == true
-              Thin::Logging.debug = true
+            Thin::Logging.silent = false
+            Thin::Logging.debug = true
           end
+          
+          # Create the BeEF http server
           @http_server = Thin::Server.new(
-              @configuration.get('beef.http.host'),
-              @configuration.get('beef.http.port'),
-              @rack_app)
+            @configuration.get('beef.http.host'),
+            @configuration.get('beef.http.port'),
+            @rack_app)
         end
       end
-
 
       # Starts the BeEF http server
       def start
