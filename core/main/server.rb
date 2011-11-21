@@ -56,7 +56,6 @@ module BeEF
       def mount(url, http_handler_class, args = nil)
         # argument type checking
         raise Exception::TypeError, '"url" needs to be a string' if not url.string?
-#      raise Exception::TypeError, '"http_handler_class" needs to be a boolean' if not http_handler_class.class?
 
         if args == nil
           mounts[url] = http_handler_class
