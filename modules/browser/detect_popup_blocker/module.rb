@@ -13,21 +13,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Detect_visited_urls < BeEF::Core::Command
-  
-  def self.options
-    return [
-        { 'ui_label'=>'URL(s)', 
-          'name'=>'urls', 
-          'description' => 'Enter target URL(s)', 
-          'type'=>'textarea', 
-          'value'=>'http://beefproject.com/', 
-          'width'=>'200px' }
-    ]
-  end
+class Detect_popup_blocker < BeEF::Core::Command
 
   def post_execute
-    save({'result' => @datastore['result']})
+    content = {}
+    content['popup_blocker_enabled'] = @datastore['popup_blocker_enabled']
+    save content
   end
   
 end
