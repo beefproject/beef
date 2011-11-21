@@ -171,7 +171,7 @@ module API
                       end
                     end
                 else
-                    print_error "API Path not defined for Class: "+c.to_s+" Method: "+m.to_s
+                    print_error "API Path not defined for Class: #{c.to_s} method:#{method.to_s}"
                 end
                 return data
             end
