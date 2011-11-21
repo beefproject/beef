@@ -24,7 +24,7 @@ module BeEF
       # @note Grabs the version of beef the framework is deployed on
       VERSION = BeEF::Core::Configuration.instance.get('beef.version')
 
-      attr_reader :root_dir, :url, :configuration, :command_urls, :mounts
+      attr_reader :root_dir, :url, :configuration, :command_urls, :mounts, :semaphore
 
       def initialize
         @configuration = BeEF::Core::Configuration.instance
@@ -34,7 +34,7 @@ module BeEF
         @command_urls = {}
         @mounts = {}
         @rack_app
-        # @semaphore = Mutex.new
+        @semaphore = Mutex.new
       end
 
       def to_h
