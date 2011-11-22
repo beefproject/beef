@@ -55,21 +55,17 @@ module BeEF
           # and finally sent to and executed by the hooked browser.
           def requester_parse_db_request(http_db_object)
 
-            # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
-            tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
-            post_data = nil
-            post_data_index = nil
-            content_length = nil
             req_parts = http_db_object.request.split(/ |\n/)
             verb = req_parts[0]
             uri = req_parts[1]
             headers = {}
+
             req_parts = http_db_object.request.split(/  |\n/)
 
             #@note: retrieve HTTP headers values needed later, and the \r\n that indicates the start of the post-data (if any)
             req_parts.each_with_index do |value, index|
               if value.match(/^Content-Length/)
-                 content_length = Integer(req_parts[index].split(/: /)[1])
+                 @content_length = Integer(req_parts[index].split(/: /)[1])
               end
 
               if value.match(/^Host/)
@@ -78,14 +74,14 @@ module BeEF
               end
 
               if value.eql?("")# this will be \r\n, like post-data
-                post_data_index = index
+                @post_data_index = index
               end
             end
 
             #@note: add HTTP request headers to an Hash
             req_parts.each_with_index do |value, index|
               if verb.eql?("POST")
-                if index > 0 and index < post_data_index #only add HTTP headers, not the verb/uri/version or post-data
+                if index > 0 and index < @post_data_index #only add HTTP headers, not the verb/uri/version or post-data
                    header_key = req_parts[index].split(/: /)[0]
                    header_value = req_parts[index].split(/: /)[1]
                    headers[header_key] = header_value
@@ -100,15 +96,15 @@ module BeEF
             end
 
             #POST request
-            if not content_length.nil? and content_length > 0
-              post_data_scliced = req_parts.slice(post_data_index + 1, req_parts.length)
-              post_data = post_data_scliced.join
+            if not @content_length.nil? and @content_length > 0
+              post_data_scliced = req_parts.slice(@post_data_index + 1, req_parts.length)
+              @post_data = post_data_scliced.join
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
                   'host' => @host,
                   'port' => @port,
-                  'data' => post_data,
+                  'data' => @post_data,
                   'uri' => uri,
                   'headers' => headers
               }

@@ -18,6 +18,4 @@ beef:
         requester:
             name: 'Requester'
             enable: true
-            # used to overwrite the Uri parser regex when sending attack vectors. This prevents Bad URI errors.
-            uri_unreserved_chars: "-_.!~*'()a-zA-Z\\d><|\"\\[\\]\\\'`"
             authors: ["antisnatchor", "scotty"]
