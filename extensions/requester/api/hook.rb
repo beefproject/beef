@@ -56,66 +56,76 @@ module BeEF
           def requester_parse_db_request(http_db_object)
 
             # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
-
-            #TODO PARSE THE REQUEST MANUALLY, WITH PROPER ERROR CHECKING. SAME THING WE DO IN THE requester admin_ui controller
             tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
-            req = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
-            params = nil
+            post_data = nil
+            post_data_index = nil
+            content_length = nil
+            req_parts = http_db_object.request.split(/ |\n/)
+            verb = req_parts[0]
+            uri = req_parts[1]
+            headers = {}
+            req_parts = http_db_object.request.split(/  |\n/)
 
-            begin
-              s = StringIO.new http_db_object.request
-              req.parse(s)
-            rescue Exception => e
-              puts e.message
-              puts e.backtrace
-              return
+            #@note: retrieve HTTP headers values needed later, and the \r\n that indicates the start of the post-data (if any)
+            req_parts.each_with_index do |value, index|
+              if value.match(/^Content-Length/)
+                 content_length = Integer(req_parts[index].split(/: /)[1])
+              end
+
+              if value.match(/^Host/)
+                 @host = req_parts[index].split(/: /)[1].split(/:/)[0]
+                 @port = req_parts[index].split(/: /)[1].split(/:/)[1]
+              end
+
+              if value.eql?("")# this will be \r\n, like post-data
+                post_data_index = index
+              end
             end
 
-            http_request_object = nil
-            uri = req.unparsed_uri
-            if not req['content-length'].nil? and req.content_length > 0
-              # POST request
-              params = []
-              # if the content length is invalid, webrick crashes. Hence we try to catch any exception
-              # here and continue execution.
-              begin
-                req.query.keys.each { |k| params << "#{k}=#{req.query[k]}" }
-                params = params.join '&'
-              rescue Exception => e
-                puts e.message
-                puts e.backtrace
-                return
+            #@note: add HTTP request headers to an Hash
+            req_parts.each_with_index do |value, index|
+              if verb.eql?("POST")
+                if index > 0 and index < post_data_index #only add HTTP headers, not the verb/uri/version or post-data
+                   header_key = req_parts[index].split(/: /)[0]
+                   header_value = req_parts[index].split(/: /)[1]
+                   headers[header_key] = header_value
+                end
+              else
+                if index > 0  #only add HTTP headers, not the verb/uri/version
+                   header_key = req_parts[index].split(/: /)[0]
+                   header_value = req_parts[index].split(/: /)[1]
+                   headers[header_key] = header_value
+                end
               end
-              # creating the request object
+            end
+
+            #POST request
+            if not content_length.nil? and content_length > 0
+              post_data_scliced = req_parts.slice(post_data_index + 1, req_parts.length)
+              post_data = post_data_scliced.join
               http_request_object = {
                   'id' => http_db_object.id,
-                  'method' => req.request_method,
-                  'host' => req.host,
-                  'port' => req.port,
-                  'params' => params,
-                  'uri' => tolerant_parser.parse(uri).path,
-                  'headers' => {}
+                  'method' => verb,
+                  'host' => @host,
+                  'port' => @port,
+                  'data' => post_data,
+                  'uri' => uri,
+                  'headers' => headers
               }
             else
-              #non-POST request (ex. GET): query parameters in URL need to be parsed and added to the URI
-              query_params = tolerant_parser.split(uri)[7]
-              if not query_params.nil?
-                req_uri = tolerant_parser.parse(uri).path + "?" + query_params
-              else
-                req_uri = tolerant_parser.parse(uri).path
-              end
-              # creating the request object
+              #non-POST request (ex. GET)
               http_request_object = {
                   'id' => http_db_object.id,
-                  'method' => req.request_method,
-                  'host' => req.host,
-                  'port' => req.port,
-                  'params' => params,
-                  'uri' => req_uri,
-                  'headers' => {}
+                  'method' => verb,
+                  'host' => @host,
+                  'port' => @port,
+                  'uri' => uri,
+                  'headers' => headers
               }
             end
-            req.header.keys.each { |key| http_request_object['headers'][key] = req.header[key] }
+
+            #@note: parse HTTP headers Hash, adding them to the object that will be used by beef.net.requester.send
+            headers.keys.each { |key| http_request_object['headers'][key] = headers[key] }
 
             http_request_object
           end
