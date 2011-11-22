@@ -24,14 +24,6 @@ require 'core/ruby/string'
 require 'core/ruby/print'
 require 'core/ruby/hash'
 
-# @note Patching WebRick
-require 'core/ruby/patches/webrick/httprequest'
-require 'core/ruby/patches/webrick/cookie'
-require 'core/ruby/patches/webrick/genericserver'
-require 'core/ruby/patches/webrick/httpresponse'
-require 'core/ruby/patches/webrick/httpservlet/filehandler.rb'
-require 'core/ruby/patches/webrick/httputils.rb'
-
 # @note Patching DataMapper Data Objects Adapter (dm-do-adapter)
 require 'core/ruby/patches/dm-do-adapter/adapter.rb'
 

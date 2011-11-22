@@ -38,7 +38,6 @@ require 'extensions/admin_ui/classes/httpcontroller'
 require 'extensions/admin_ui/classes/session'
 
 # Handlers
-require 'extensions/admin_ui/handlers/media'
 require 'extensions/admin_ui/handlers/ui'
 
 # API Hooking

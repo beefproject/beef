@@ -14,7 +14,6 @@
 #   limitations under the License.
 #
 require 'test/unit'
-require 'webrick'
 
 require '../../core/filters/base'
 require '../../core/filters/command'

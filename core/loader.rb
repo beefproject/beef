@@ -15,7 +15,6 @@
 
 # @note Include here all the gems we are using
 require 'rubygems'
-require 'webrick'
 require 'thin'
 require 'dm-core'
 require 'dm-migrations'

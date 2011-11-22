@@ -14,7 +14,6 @@
 #   limitations under the License.
 #
 require 'test/unit'
-require 'webrick'
 
 class TC_Filesystem < Test::Unit::TestCase
 
