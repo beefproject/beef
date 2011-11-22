@@ -95,6 +95,15 @@ module BeEF
               end
             end
 
+            if @port.nil?
+              if uri.match(/^https:/)
+                 @port = 443
+              else
+                 @port = 80
+              end
+            end
+            print_debug "Uri [#{uri}] - Host: [#{@host}] - Port [#{@port}]"
+
             #POST request
             if not @content_length.nil? and @content_length > 0
               post_data_scliced = req_parts.slice(@post_data_index + 1, req_parts.length)
@@ -102,7 +111,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
-                  'host' => @host,
+                  'host' => @host.strip,
                   'port' => @port,
                   'data' => @post_data,
                   'uri' => uri,
@@ -113,7 +122,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
-                  'host' => @host,
+                  'host' => @host.strip,
                   'port' => @port,
                   'uri' => uri,
                   'headers' => headers

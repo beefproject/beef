@@ -145,13 +145,24 @@ beef.net = {
      */
     request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
-        cross_domain = !((document.domain == domain) && ((document.location.port == port) || (document.location.port == "" && port == "80")));
+        if (document.domain == domain){
+           if(document.location.port == "" || document.location.port == null){
+              cross_domain = !(port == "80" || port == "443");
+           }
+        }else{
+           cross_domain = true;
+        }
 
-        //build the url
-        var url = scheme + "://" + domain;
-        url = (port != null) ? url + ":" + port : url;
-        url = (path != null) ? url + path : url;
-        url = (anchor != null) ? url + "#" + anchor : url;
+         //build the url
+        var url = "";
+        if(path.indexOf("http://") != -1 || path.indexOf("http://") != -1){
+           url = path;
+        }else{
+            url = scheme + "://" + domain;
+            url = (port != null) ? url + ":" + port : url;
+            url = (path != null) ? url + path : url;
+            url = (anchor != null) ? url + "#" + anchor : url;
+        }
 
         //define response object
         var response = new this.response;
@@ -205,14 +216,26 @@ beef.net = {
      *                        Firefox and Chrome automatically requests /safebrowsing/downloads (XHR)
      */
     proxyrequest: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, requestid, callback) {
+
         //check if same domain or cross domain
-        cross_domain = !((document.domain == domain) && ((document.location.port == port) || (document.location.port == "" && port == "80")));
+        if (document.domain == domain){
+           if(document.location.port == "" || document.location.port == null){
+              cross_domain = !(port == "80" || port == "443");
+           }
+        }else{
+           cross_domain = true;
+        }
 
         //build the url
-        var url = scheme + "://" + domain;
-        url = (port != null) ? url + ":" + port : url;
-        url = (path != null) ? url + path : url;
-        url = (anchor != null) ? url + "#" + anchor : url;
+        var url = "";
+        if(path.indexOf("http://") != -1 || path.indexOf("http://") != -1){
+           url = path;
+        }else{
+            url = scheme + "://" + domain;
+            url = (port != null) ? url + ":" + port : url;
+            url = (path != null) ? url + path : url;
+            url = (anchor != null) ? url + "#" + anchor : url;
+        }
 
         //define response object
         var response = new this.response;
