@@ -145,12 +145,11 @@ beef.net = {
      */
     request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
+		var cross_domain = true;
         if (document.domain == domain){
            if(document.location.port == "" || document.location.port == null){
               cross_domain = !(port == "80" || port == "443");
            }
-        }else{
-           cross_domain = true;
         }
 
          //build the url
@@ -218,12 +217,11 @@ beef.net = {
     proxyrequest: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, requestid, callback) {
 
         //check if same domain or cross domain
+		var cross_domain = true;
         if (document.domain == domain){
            if(document.location.port == "" || document.location.port == null){
               cross_domain = !(port == "80" || port == "443");
            }
-        }else{
-           cross_domain = true;
         }
 
         //build the url
