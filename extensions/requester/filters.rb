@@ -26,7 +26,7 @@ module BeEF
       # OPTIONS * is not yet supported
       # return true if uri.eql? "*"
       #TODO : CHECK THE normalize_path method and include it somewhere (maybe here)
-      return true if uri.eql? WEBrick::HTTPUtils.normalize_path(uri)
+      return true if uri.eql? self.normalize_path(uri)
       false
     end
 
@@ -42,6 +42,18 @@ module BeEF
       host_str.gsub!(/[\r]+/,"")
       return true if "Host:".eql?(host_str)
       false
+    end
+
+    def normalize_path(path)
+      print_error "abnormal path `#{path}'" if path[0] != ?/
+      ret = path.dup
+
+      ret.gsub!(%r{/+}o, '/')                    # //      => /
+      while ret.sub!(%r'/\.(?:/|\Z)', '/'); end  # /.      => /
+      while ret.sub!(%r'/(?!\.\./)[^/]+/\.\.(?:/|\Z)', '/'); end # /foo/.. => /foo
+
+      print_error "abnormal path `#{path}'" if %r{/\.\.(/|\Z)} =~ ret
+      ret
     end
 
   end

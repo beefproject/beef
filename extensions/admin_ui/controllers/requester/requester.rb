@@ -65,7 +65,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     verb = req_parts[0]
     self.err_msg 'Only HEAD, GET, POST, OPTIONS, PUT or DELETE requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
     uri = req_parts[1]
-    self.err_msg 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
+    #self.err_msg 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
     version = req_parts[2]
 
     (self.err_msg 'Invalid HTTP version';return @body = '{success : false}') if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
