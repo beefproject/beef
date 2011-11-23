@@ -31,12 +31,12 @@ beef.net.requester = {
         for (i in requests_array) {
             request = requests_array[i];
             beef.net.proxyrequest('http', request.method, request.host, request.port,
-                                    request.uri, null, null, 10, null, request.id,
+                                    request.uri, null, request.headers, request.data, 10, null, request.id,
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data:res.response_body,
                                            response_status_code: res.status_code,
                                            response_status_text: res.status_text,
-					   response_port_status: res.port_status,
+					                       response_port_status: res.port_status,
                                            response_headers: res.headers});
                                        }
                                  );

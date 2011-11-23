@@ -214,8 +214,7 @@ beef.net = {
      *                        they will always throw error for SoP. This can happen when tunneling a browser: for example
      *                        Firefox and Chrome automatically requests /safebrowsing/downloads (XHR)
      */
-    proxyrequest: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, requestid, callback) {
-
+    proxyrequest: function(scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, requestid, callback) {
         //check if same domain or cross domain
 		var cross_domain = true;
         if (document.domain == domain){
@@ -250,12 +249,26 @@ beef.net = {
 
         var start_time = new Date().getTime();
 
+        if(method == "POST"){
+          $j.ajaxSetup({
+              data: data
+          });
+        }
+
         //build and execute the request
         $j.ajax({type: method,
             dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
             url: url,
-            data: data,
+            headers: headers,
             timeout: (timeout * 1000),
+
+            //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
+            beforeSend: function(xhr) {
+                if(method == "POST"){
+                   xhr.setRequestHeader("Content-type",
+                                 "application/x-www-form-urlencoded; charset=utf-8");
+                }
+            },
 
             success: function(data, textStatus, xhr) {
                 var end_time = new Date().getTime();

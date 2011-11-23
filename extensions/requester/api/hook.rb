@@ -73,7 +73,7 @@ module BeEF
                  @port = req_parts[index].split(/: /)[1].split(/:/)[1]
               end
 
-              if value.eql?("")# this will be \r\n, like post-data
+              if value.eql?("") or value.strip.empty?# this will be the CRLF (before HTTP request body)
                 @post_data_index = index
               end
             end
@@ -102,7 +102,6 @@ module BeEF
                  @port = 80
               end
             end
-            print_debug "Uri [#{uri}] - Host: [#{@host}] - Port [#{@port}]"
 
             #POST request
             if not @content_length.nil? and @content_length > 0
