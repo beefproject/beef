@@ -30,8 +30,6 @@ require 'xmlrpc/client'
 require 'erubis'
 require 'openssl'
 require 'term/ansicolor'
-require 'rex'
-require 'rex/ui'
 
 # @note Include the filters
 require 'core/filters'

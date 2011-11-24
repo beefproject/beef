@@ -101,6 +101,7 @@ BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hoo
 
 # @note Start the HTTP Server, we addtionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
+  require 'extensions/console/shell'
   puts ""
   begin
     FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
