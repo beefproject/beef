@@ -18,8 +18,8 @@ beef:
         iphone_tel:
             enable: true
             category: "Host"
-            name: "Make Skype Call (Tel)"
-            description: "This module will force the browser to attempt a skype call. It will exploit the insecure handling of URL schemes in iOS.<br><br>The protocol handler used will be: tel"
+            name: "Make Telephone Call"
+            description: "This module will force the browser to attempt a telephone call in iOS. It will exploit the insecure handling of URL schemes in iOS.<br><br>The protocol handler used will be: tel"
             authors: ["xntrik", "Nitesh Dhanjani"]
             target:
-                working: ['S']
+                user_notify: ['S']
