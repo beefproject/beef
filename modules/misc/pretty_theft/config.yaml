@@ -20,6 +20,6 @@ beef:
             category: "Misc"
             name: "Pretty Theft"
             description: "Asks the user for their username and password using a tidy floating div."
-            authors: ["vt [nick.freeman@security-assessment.com]"]
+            authors: ["vt [nick.freeman@security-assessment.com]", "xntrik"]
             target:
                 user_notify: ['ALL']

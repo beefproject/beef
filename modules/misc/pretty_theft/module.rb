@@ -26,9 +26,6 @@ class Pretty_theft < BeEF::Core::Command
   # data back to the framework.
   #
   def post_execute
-    
-#    return if @datastore['answer']==''
-
     save({'answer' => @datastore['answer']})
   end
   

