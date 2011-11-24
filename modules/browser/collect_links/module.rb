@@ -14,11 +14,11 @@
 #   limitations under the License.
 #
 class Collect_links < BeEF::Core::Command
-  
+
   def post_execute
     content = {}
-    content['Links'] = @datastore['links']
-    
+    content['links'] = @datastore['links']
+
     save content
   end
 
