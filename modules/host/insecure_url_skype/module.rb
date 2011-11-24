@@ -16,7 +16,13 @@
 class Insecure_url_skype < BeEF::Core::Command
 
   def self.options
-        { 'name' => 'tel_num', 'description' => 'The telephone number to dial', 'ui_label'=>'Number', 'value' =>'5551234', 'width' => '200px' }
+    return [{
+      'name' => 'tel_num',
+      'description' => 'The telephone number to dial',
+      'ui_label'=>'Number',
+      'value' =>'5551234',
+      'width' => '200px'
+      }]
   end
 
   def post_execute
