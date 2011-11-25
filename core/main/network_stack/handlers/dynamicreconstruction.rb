@@ -23,7 +23,7 @@ module Handlers
 
     # @note holds packet queue
     PQ = Array.new() 
-   
+
     # @note obtain dynamic mount points from HttpHookServer
     MOUNTS = BeEF::Core::Server.instance.mounts
 
@@ -65,7 +65,11 @@ module Handlers
             :packet_count => Integer(@request['pc']),
             :data => @request['d']
         }
-        check_packets()
+
+        # @todo Test under high load, possibly limit the amount of threads being created
+        Thread.new {
+           check_packets()
+        }
         response
     end
 
