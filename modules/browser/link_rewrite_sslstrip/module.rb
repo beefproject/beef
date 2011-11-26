@@ -15,12 +15,6 @@
 #
 class Link_rewrite_sslstrip < BeEF::Core::Command
   
-  def self.options
-    return [
-        { 'ui_label'=>'jQuery Selector', 'name'=>'selector', 'description' => 'Optional link selector other than all a* tags', 'value'=>'a', 'width'=>'200px' }
-    ]
-  end
-
   def post_execute
     save({'result' => @datastore['result']})
   end

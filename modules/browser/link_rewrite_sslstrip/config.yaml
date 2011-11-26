@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Replace HREFs (HTTPS)"
-            description: "This module will rewrite all the href attributes of HTTPS links to use HTTP instead of HTTPS. Links relative to the web root are not rewritten.<br /><br />The jQuery selector field can be used to limit the selection of links. eg: a[href=\"http://beefproject.com\"]. For more information please see: http://api.jquery.com/category/selectors/"
+            description: "This module will rewrite all the href attributes of HTTPS links to use HTTP instead of HTTPS. Links relative to the web root are not rewritten."
             authors: ["bcoles"]
             target:
                 working: ["ALL"]
