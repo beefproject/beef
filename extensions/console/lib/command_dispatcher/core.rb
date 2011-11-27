@@ -67,7 +67,7 @@ class Core
     print_status("Move back one step")
   end
   
-  def cmd_exit
+  def cmd_exit(* args)
     driver.stop
   end
   
@@ -92,10 +92,12 @@ class Core
             print_error("no such job")
           else
             #This is a special job, that has to be terminated different prior to cleanup
-            driver.http_hook_server.stop if driver.jobs[val].name == "http_hook_server"
-            
-            print_line("Stopping job: #{val}...")
-            driver.jobs.stop_job(val)
+            if driver.jobs[val].name == "http_hook_server"
+              print_line("Nah uh uh - can't stop this job ya BeEF head!")
+            else
+              print_line("Stopping job: #{val}...")
+              driver.jobs.stop_job(val)
+            end
           end
         when "-l"
           cmd_jobs_list
@@ -206,6 +208,16 @@ class Core
       return
     end
     
+    onlinezombies = []
+    BeEF::Core::Models::HookedBrowser.all(:lastseen.gt => (Time.new.to_i - 30)).each do |zombie|
+      onlinezombies << zombie.id
+    end
+    
+    if not onlinezombies.include?(args[0].to_i)
+      print_status("Browser does not appear to be online..")
+      return false
+    end
+    
     if not driver.interface.settarget(args[0]).nil?
     
       if (driver.dispatcher_stack.size > 1 and
@@ -237,6 +249,16 @@ class Core
     if args[0] == nil
       cmd_review_help
       return
+    end
+    
+    offlinezombies = []
+    BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
+      offlinezombies << zombie.id
+    end
+    
+    if not offlinezombies.include?(args[0].to_i)
+      print_status("Browser does not appear to be offline..")
+      return false
     end
     
     if not driver.interface.setofflinetarget(args[0]).nil?

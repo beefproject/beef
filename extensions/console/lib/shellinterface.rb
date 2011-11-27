@@ -403,7 +403,7 @@ class ShellInterface
     end
 
     # set and add the System Platform
-    system_platform = BD.get(zombie_session, 'SystemPlatform')
+    system_platform = BD.get(self.targetsession, 'SystemPlatform')
     if not system_platform.nil?
       encoded_system_platform = CGI.escapeHTML(system_platform)
       encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
