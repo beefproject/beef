@@ -33,7 +33,11 @@ module Core
     def update_commands!
       config = BeEF::Core::Configuration.instance
 
-      db_modules = BeEF::Core::Models::CommandModule.all
+      db_modules = []
+      BeEF::Core::Models::CommandModule.all.each do |mod|
+        db_modules << mod.name
+      end
+      
 
       config.get('beef.module').each{|k,v|
         BeEF::Core::Models::CommandModule.new(:name => k, :path => "#{v['path']}module.rb").save if not db_modules.include? k
