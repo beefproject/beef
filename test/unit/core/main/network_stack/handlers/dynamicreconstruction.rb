@@ -53,7 +53,7 @@ class TC_DynamicReconstruction < Test::Unit::TestCase
   # the server doesn't offer a mutex or callback
   def wait_for_server
     max_waits = 3
-    sleep_length = 0.00001
+    sleep_length = 0.1
 
     count = 0
     while (count < max_waits)
