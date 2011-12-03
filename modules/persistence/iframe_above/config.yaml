@@ -18,7 +18,7 @@ beef:
         iframe_above:
             enable: true
             category: "Persistence"
-            name: "Create Forground iFrame"
+            name: "Create Foreground iFrame"
             description: "Rewrites all links on the webpage to spawn a 100% by 100% iFrame with a source relative to the selected link."
             authors: ["passbe"]
             target:
