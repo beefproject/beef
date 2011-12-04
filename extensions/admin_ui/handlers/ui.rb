@@ -28,7 +28,8 @@ module Handlers
     # Constructor
     #
     def initialize(klass)
-      super
+      # @todo Determine why this class is calling super?
+      #super
       @klass = BeEF::Extension::AdminUI::Controllers.const_get(klass.to_s.capitalize)
     end
 
