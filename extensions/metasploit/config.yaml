@@ -25,10 +25,12 @@ beef:
         metasploit:
             name: 'Metasploit'
             enable: true
-            host: "192.168.84.1"
-            url-path: "/RPC2"
-            port: 55553
+            host: "127.0.0.1"
+            port: 55552
             user: "msf"
             pass: "abc123"
+            uri: '/api'
+            ssl: false
+            ssl_version: 'SSLv3'
             callback_host: "192.168.84.1"
             autopwn_url: "autopwn"

@@ -50,7 +50,7 @@ module API
                 count = 1
                 msf_modules['modules'].each{|m|
                     next if not m.include? "/browser/"
-                    m_details = msf.call('module.info', 'exploits', m)
+                    m_details = msf.call('module.info', 'exploit', m)
                     if m_details
                         key = 'msf_'+m.split('/').last
                         # system currently doesn't support multilevel categories

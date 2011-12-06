@@ -17,14 +17,14 @@ module BeEF
 module Extension
 module Metasploit
   
-	class RpcClient < ::XMLRPC::Client
+	class RpcClient < ::Msf::RPC::Client
 		
 		include Singleton
 
         def initialize
 			@config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
 
-            if not (@config.key?('host') or @config.key?('url-path') or @config.key?('port') or @config.key?('user') or @config.key?('pass'))
+            if not (@config.key?('host') or @config.key?('uri') or @config.key?('port') or @config.key?('user') or @config.key?('pass'))
 				print_error 'There is not enough information to initalize Metasploit connectivity at this time'
 				print_error 'Please check your options in config.yaml to verify that all information is present'
                 BeEF::Core::Configuration.instance.set('beef.extension.metasploit.enabled', false)
@@ -32,11 +32,17 @@ module Metasploit
                 return nil
             end
 		  
-            @lock = false
-			@token = nil
+            		@lock = false
 			@lastauth = nil
-
-			super(@config['host'],@config['url-path'],@config['port'])
+			opts = {
+				 :host => @config['host'] || '127.0.0.1',
+				 :port => @config['port'] || 55552,
+				 :uri => @config['uri'] || '/api/',
+				 :ssl => @config['ssl'] ,
+				 :ssl_version => @config['ssl_version'] ,
+				 :context => {}
+ 			}
+			super(opts)
 	    end
     
         def get_lock()
@@ -47,61 +53,38 @@ module Metasploit
         def release_lock()
             @lock = false
         end
+	def call(meth, *args)
+		ret = nil
+		begin
+			ret = super(meth,*args)
+		rescue Exception => e
+			return nil
+		end
+		ret
+	end
     
         # login into metasploit
 		def login
-            get_lock()
-			res = self.call("auth.login", @config['user'] , @config['pass'])
+            		get_lock()
+			res = super(@config['user'] , @config['pass'])
 			
-		 	if(not (res and res['result'] == "success")) 
-                release_lock()
-                print_error 'Could not authenticate to Metasploit xmlrpc.'
+		 	if not res
+                		release_lock()
+                		print_error 'Could not authenticate to Metasploit xmlrpc.'
 				return false
 			end
 			
 			print_info 'Successful connection with Metasploit.' if not @lastauth
 			
-			@token = res['token']
 			@lastauth = Time.now
       
-            release_lock()
+            		release_lock()
 			true
 		end
     
-        # sends commands to the metasploit xml rpc server
-		def call(meth, *args)
-			if(meth != "auth.login")
-				self.login() if not @token
-				args.unshift(@token)
-			end
-			
-			begin
-				super(meth, *args)
-			rescue Errno::ECONNREFUSED
-				print_error "Connection to Metasploit backend failed."
-				return false
-			rescue XMLRPC::FaultException => e
-				if e.faultCode == 401 and meth == "auth.login"
-					print_error "Your username and password combination was rejected by the Metasploit backend server"
-				elsif e.faultCode == 401
-					res = self.login()
-				else
-					print_error "An unknown exception has occured while talking to the Metasploit backend."
-					print_error "The Exception text is (#{e.faultCode} : #{e.faultString}."
-					print_error "Please check the Metasploit logs for more details."
-				end
-				return false
-			rescue Exception => e
-					print_error "An unknown exception (#{e}) has occured while talking to the Metasploit backend."
-					print_error "Please check the Metasploit logs for more details."
-					return false
-			end
-		end
-    
-
 		def browser_exploits()
                 
-      get_lock()
+      			get_lock()
 			res = self.call('module.exploits')
 			return [] if not res or not res['modules']
 
@@ -112,64 +95,64 @@ module Metasploit
 				ret << m if(m.include? '/browser/')
 			end
 			
-      release_lock()
+      			release_lock()
 			ret.sort
 	  end
 
 		def get_exploit_info(name)
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			res = self.call('module.info','exploit',name)
-      release_lock()
+      			release_lock()
 			res || {}
 		end
 		
 		def get_payloads(name)
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			res = self.call('module.compatible_payloads',name)
-      release_lock()
+      			release_lock()
 			res || {}
 		end
 		
 		def get_options(name)
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			res = self.call('module.options','exploit',name)
-      release_lock()
+      			release_lock()
 			res || {}
 		end
 		
 		def payloads()
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			res = self.call('module.payloads')
-      release_lock()
+      			release_lock()
 			return {} if not res or not res['modules']
 			res['modules']
 		end
 		
 		def payload_options(name)
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			res = self.call('module.options','payload',name)
-      release_lock
+      			release_lock
 			return {} if not res
 			res
 		end
 		
 		def launch_exploit(exploit,opts)
 			return if not @enabled
-      get_lock()
+      			get_lock()
 			begin
 				res = self.call('module.execute','exploit',exploit,opts)
 			rescue Exception => e
 				print_error "Exploit failed for #{exploit} \n"
-        release_lock()
+        			release_lock()
 				return false
 			end
       
-      release_lock()
+      			release_lock()
 
 			uri = ""
 			if opts['SSL'] 
