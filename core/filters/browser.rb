@@ -65,7 +65,7 @@ module Filters
   def self.is_valid_browserstring?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)    
-    return false if str.length > 200      
+    return false if str.length > 300      
     true
   end
   
