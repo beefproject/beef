@@ -22,4 +22,21 @@ beef:
             description: "Extracts data from the HTML5 localStorage object."
             authors: ["bcoles"]
             target:
-                working: ["FF", "S", "C"]
+                working:
+                    IE:
+                        min_ver: 8
+                        max_ver: latest
+                    FF:
+                        # It's actually 3.5 but min_ver only supports integers
+                        min_ver: 4
+                        max_ver: latest
+                    O:
+                        min_ver: 11
+                        max_ver: latest
+                    C:
+                        min_ver: 4
+                        max_ver: latest
+                    S:
+                        min_ver: 4
+                        max_ver: latest
+
