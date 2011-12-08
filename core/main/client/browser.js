@@ -41,7 +41,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE7()
 	 */
 	isIE7: function() {						
-		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !window.globalStorage;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !window.globalStorage && !document.documentMode;
 	},
 	
 	/**
@@ -262,7 +262,7 @@ beef.browser = {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==13)?true:false);
 	},
 
-    /**
+	/**
 	 * Returns true if Chrome 14.
 	 * @example: beef.browser.isC14()
 	 */
@@ -270,7 +270,7 @@ beef.browser = {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==14)?true:false);
 	},
 
-    /**
+	/**
 	 * Returns true if Chrome 15.
 	 * @example: beef.browser.isC15()
 	 */
@@ -286,7 +286,7 @@ beef.browser = {
 		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15();
 	},
 
-    /**
+	/**
         * Returns true if Opera 9.50 through 9.52.
         * @example: beef.browser.isO952()
         */
@@ -345,7 +345,7 @@ beef.browser = {
 			C12:	this.isC12(), 	// Chrome 12
 			C13:	this.isC13(),	// Chrome 13
 			C14:	this.isC14(),	// Chrome 14
-            C15:    this.isC15(),   //Chrome 15
+			C15:    this.isC15(),   //Chrome 15
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
