@@ -59,7 +59,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
    5. Install instructions
    
-      Obtain application code either by downloading an archive from http://code.google.com/p/beef/downloads/list or checking out the source from http://code.google.com/p/beef/source/checkout
+      Obtain application code either by downloading an archive from http://code.google.com/p/beef/downloads/list or checking out the source from https://github.com/beefproject/beef/downloads/
 
 	  Navigate to the ruby source directory and run:
 
