@@ -87,18 +87,18 @@ beef.browser = {
 	},
 	
 	/**
-	 * Returns true if FF35.
-	 * @example: beef.browser.isFF35()
+	 * Returns true if FF3.5.
+	 * @example: beef.browser.isFF3_5()
 	 */
-	isFF35: function() {
+	isFF3_5: function() {
 		return !!window.globalStorage && !!JSON.parse && !window.FileReader;
 	},
 	
 	/**
-	 * Returns true if FF36.
-	 * @example: beef.browser.isFF36()
+	 * Returns true if FF3.6.
+	 * @example: beef.browser.isFF3_6()
 	 */
-	isFF36: function() {
+	isFF3_6: function() {
 		return !!window.globalStorage && !!window.FileReader && !window.multitouchData && !window.history.replaceState;
 	},
 
@@ -163,7 +163,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF35() || this.isFF36() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10();
 	},
 
 	/**
@@ -288,17 +288,17 @@ beef.browser = {
 
 	/**
         * Returns true if Opera 9.50 through 9.52.
-        * @example: beef.browser.isO952()
+        * @example: beef.browser.isO9_52()
         */
-       isO952: function() {
+       isO9_52: function() {
            return (!!window.opera  && (window.navigator.userAgent.match(/Opera\/9\.5/) != null));
        },
 
        /**
         * Returns true if Opera 9.60 through 9.64.
-        * @example: beef.browser.isO960()
+        * @example: beef.browser.isO9_60()
         */
-       isO960: function() {
+       isO9_60: function() {
            return (!!window.opera  && (window.navigator.userAgent.match(/Opera\/9\.6/) != null));
        },
 
@@ -323,7 +323,7 @@ beef.browser = {
 	 * @example: beef.browser.isO()
 	 */
 	isO: function() {
-		return this.isO952() || this.isO960() || this.isO10() || this.isO11();
+		return this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11();
 	},
 		
 	/**
@@ -345,13 +345,13 @@ beef.browser = {
 			C12:	this.isC12(), 	// Chrome 12
 			C13:	this.isC13(),	// Chrome 13
 			C14:	this.isC14(),	// Chrome 14
-			C15:    this.isC15(),   //Chrome 15
+			C15:    this.isC15(),   // Chrome 15
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
 			FF3:	this.isFF3(),	// Firefox 3
-			FF35:	this.isFF35(),	// Firefox 3.5
-			FF36:	this.isFF36(),	// Firefox 3.6
+			FF3_5:	this.isFF3_5(),	// Firefox 3.5
+			FF3_6:	this.isFF3_6(),	// Firefox 3.6
 			FF4:	this.isFF4(),   // Firefox 4
 			FF5:	this.isFF5(),	// Firefox 5
 			FF6:	this.isFF6(),	// Firefox 6
@@ -367,8 +367,8 @@ beef.browser = {
 			IE9:	this.isIE9(),	// Internet Explorer 9
 			IE:	this.isIE(),	// Internet Explorer any version
 
-			O952:   this.isO952(),  // Opera 9.50 through 9.52
-			O960:   this.isO960(),  // Opera 9.60 through 9.64
+			O9_52:  this.isO9_52(), // Opera 9.50 through 9.52
+			O9_60:  this.isO9_60(), // Opera 9.60 through 9.64
 			O10:    this.isO10(),  	// Opera 10.xx
 			O11:    this.isO11(),  	// Opera 11.xx
 			O:      this.isO(), 	// Opera any version
@@ -397,13 +397,13 @@ beef.browser = {
 		if (this.isC12())	{ return '12' }; 	// Chrome 12
 		if (this.isC13())	{ return '13' }; 	// Chrome 13
 		if (this.isC14())	{ return '14' }; 	// Chrome 14
-        if (this.isC15())	{ return '15' }; 	// Chrome 15
+		if (this.isC15())	{ return '15' }; 	// Chrome 15
 
 
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
-		if (this.isFF35())	{ return '3.5'};	// Firefox 3.5
-		if (this.isFF36())	{ return '3.6'};	// Firefox 3.6
+		if (this.isFF3_5())	{ return '3.5'};	// Firefox 3.5
+		if (this.isFF3_6())	{ return '3.6'};	// Firefox 3.6
 		if (this.isFF4())	{ return '4'  };	// Firefox 4
 		if (this.isFF5())	{ return '5'  };	// Firefox 5
 		if (this.isFF6())	{ return '6'  };	// Firefox 6
@@ -421,8 +421,8 @@ beef.browser = {
 		if (this.isS4())	{ return '4'  };	// Safari 4
 		if (this.isS5())	{ return '5'  };	// Safari 5
 
-		if (this.isO952())	{ return '9.5'};	// Opera 9.5x
-		if (this.isO960())	{ return '9.6'};	// Opera 9.6
+		if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
+		if (this.isO9_60())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx
 
@@ -455,7 +455,7 @@ beef.browser = {
 		if (!this.type().IE) {
 			return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]); 
 		} else {
-			flash_versions = 10;
+			flash_versions = 11;
 			flash_installed = false;
 
 			if (window.ActiveXObject) {
