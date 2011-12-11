@@ -1,33 +1,33 @@
 <html>
 <head>
-	
+
 	<title>BeEF Control Panel</title>
-	
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	
+
 	<%= script_tag 'ext-base.js' %>
 	<%= script_tag 'ext-all.js' %>
 	<%= script_tag 'ext-beef.js' %>
-    <!-- jQuery encoder (ESAPI way) -->
-     <%= script_tag 'esapi/jquery-1.6.4.min.js' %>
-     <%= script_tag 'esapi/Class.create.js' %>
-     <%= script_tag 'esapi/jquery-encoder-0.1.0.js' %>
-     <script type="text/javascript" language="JavaScript">var $jEncoder = jQuery.noConflict();</script>
-     <!--/ jQuery encoder (ESAPI way) -->
+	<!-- jQuery encoder (ESAPI way) -->
+	<%= script_tag 'esapi/jquery-1.6.4.min.js' %>
+	<%= script_tag 'esapi/Class.create.js' %>
+	<%= script_tag 'esapi/jquery-encoder-0.1.0.js' %>
+	<script type="text/javascript" language="JavaScript">var $jEncoder = jQuery.noConflict();</script>
+	<!--/ jQuery encoder (ESAPI way) -->
 	<%= script_tag 'ux/TabCloseMenu.js' %>
 	<%= script_tag 'ux/StatusBar.js' %>
 	<%= script_tag 'ux/PagingStore.js' %>
-	
+
 	<%= script_tag 'ui/panel/common.js' %>
 	<%= script_tag 'ui/panel/DistributedEngine.js' %>
 	<%= script_tag 'ui/panel/PanelStatusBar.js' %>
-	
+
 	<%= script_tag 'ui/panel/tabs/ZombieTabDetails.js' %>
 	<%= script_tag 'ui/panel/tabs/ZombieTabLogs.js' %>
 	<%= script_tag 'ui/panel/tabs/ZombieTabCommands.js' %>
 	<%= script_tag 'ui/panel/tabs/ZombieTabRequester.js' %>
-    <%= script_tag 'ui/panel/tabs/ZombieTabXssRays.js' %>
-	
+	<%= script_tag 'ui/panel/tabs/ZombieTabXssRays.js' %>
+
 	<%= script_tag 'ui/panel/PanelViewer.js' %>
 	<%= script_tag 'ui/panel/DataGrid.js' %>
 	<%= script_tag 'ui/panel/MainPanel.js' %>
@@ -38,7 +38,7 @@
 	
 	<%= script_tag 'ui/panel/Logout.js' %>
 	<%= script_tag 'ui/panel/WelcomeTab.js' %>
-	
+
 	<%= stylesheet_tag 'ext-all.css' %>
 	<%= stylesheet_tag 'base.css' %>
 </head>
@@ -47,7 +47,8 @@
 	<%= nonce_tag %>	
 	<div id="header">
 		<div class="right-menu">
-			<a id='do-submit-bug-menu' href='https://code.google.com/p/beef/issues/entry' target='_blank'>Submit Bug</a> | 
+			BeEF <%= BeEF::Core::Configuration.instance.get('beef.version') %> | 
+			<a id='do-submit-bug-menu' href='https://github.com/beefproject/beef/issues/new' target='_blank'>Submit Bug</a> | 
 			<a id='do-logout-menu' href='#'>Logout</a>
 		</div>
 	</div>

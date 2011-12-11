@@ -65,7 +65,7 @@ module BeEF
           http_db.has_ran = "complete"
 
           # Store images as binary
-          # see issue http://code.google.com/p/beef/issues/detail?id=368
+          # see issue https://github.com/beefproject/beef/issues/449
           if http_db.response_headers =~ /Content-Type: image/
             http_db.response_data = http_db.response_data.unpack('a*')
           end
