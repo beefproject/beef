@@ -2165,17 +2165,17 @@ div.x-toolbar-no-items {
 .x-grid3-row td, .x-grid3-summary-row td {
     line-height:13px;
     vertical-align: top;
-	padding-left:1px;
+    padding-left:1px;
     padding-right:1px;
-    -moz-user-select: none;
-    -khtml-user-select:none;
-    -webkit-user-select:ignore;
+    -moz-user-select: auto;
+    -khtml-user-select: auto;
+    -webkit-user-select: auto;
 }
 
 .x-grid3-cell{
-    -moz-user-select: none;
-    -khtml-user-select:none;
-    -webkit-user-select:ignore;
+    -moz-user-select: auto;
+    -khtml-user-select: auto;
+    -webkit-user-select: auto;
 }
 
 .x-grid3-hd-row td {
