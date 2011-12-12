@@ -48,9 +48,9 @@ WelcomeTab = function() {
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Learn More</span></p><br />\
               <p>To learn more about how BeEF works please review the wiki:</p><br />\
               <ul style=\"margin-left:15px;\">\
-              <li>Architecture of the BeEF System: <a href=\"https://code.google.com/p/beef/wiki/Architecture\">https://code.google.com/p/beef/wiki/Architecture</a></li>\
-              <li>Tunneling Proxy: <a href=\"https://code.google.com/p/beef/wiki/TunnelingProxy\">https://code.google.com/p/beef/wiki/TunnelingProxy</a></li>\
-              <li>Writing your own modules: <a href='https://code.google.com/p/beef/wiki/CommandModuleAPI'>https://code.google.com/p/beef/wiki/CommandModuleAPI</a></li></ul>\
+              <li>Architecture of the BeEF System: <a href='https://github.com/beefproject/beef/wiki/Architecture'>https://github.com/beefproject/beef/wiki/Architecture</a></li>\
+              <li>Tunneling Proxy: <a href='https://github.com/beefproject/beef/wiki/Tunneling-Proxy'>https://github.com/beefproject/beef/wiki/Tunneling-Proxy</a></li>\
+              <li>Writing your own modules: <a href='https://github.com/beefproject/beef/wiki/Command-Module-API'>https://github.com/beefproject/beef/wiki/Command-Module-API</a></li></ul>\
               </div>\
               ";
 
