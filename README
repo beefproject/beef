@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Most of the contents of this file will eventually be added to /install.rb. In the meantime tips, hints and guides for installing beef should be kept here.  
+Most of the contents of this file will eventually be added to /install.rb. In the meantime tips, hints and guides for installing BeEF should be kept here.
 
 =============================================
 
@@ -27,7 +27,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
    1. Prerequisites (platform independent)
 
-      Beef requires ruby 1.9
+      BeEF requires ruby 1.9
 
       
    2. Prerequisites (Windows)
@@ -39,7 +39,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
    3. Prerequisites (Linux)
 
-      !!! This must be done PRIOR to running the Beef installer !!!
+      !!! This must be done PRIOR to running the BeEF installer !!!
       
       On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
 
@@ -53,13 +53,13 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 	  
    4. Prerequisites (Mac OSX)
    
-      Make sure you have XCode installed - which provided the sqlite support Beef needs
+      Make sure you have XCode installed - which provided the sqlite support BeEF needs
       Sqlite support is native in MacOS 10.6+
       
 
    5. Install instructions
    
-      Obtain application code either by downloading an archive from http://code.google.com/p/beef/downloads/list or checking out the source from https://github.com/beefproject/beef/downloads/
+      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/zipball/master or cloning the GIT repo git@github.com:beefproject/beef.git
 
 	  Navigate to the ruby source directory and run:
 
