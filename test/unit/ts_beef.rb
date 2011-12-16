@@ -46,6 +46,7 @@ require './core/tc_core'
 require './core/tc_api'
 require './tc_grep'
 require './tc_filesystem'
+require './extensions/tc_metasploit'
 
 class TS_BeefTests
   def self.suite
@@ -57,6 +58,7 @@ class TS_BeefTests
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
     suite << TC_DynamicReconstruction.suite
+    suite << TC_Metasploit.suite
     return suite
   end
 end
