@@ -155,7 +155,7 @@ module Metasploit
 				uri += "http://"
 			end
 
-			uri += @config.get('beef.extension.metasploit.callback_host') + ":" + opts['SRVPORT'] + "/" + opts['URIPATH']
+			uri += @config['callback_host'] + ":#{opts['SRVPORT']}/" + opts['URIPATH']
 
 			res['uri'] = uri
 			res
@@ -163,7 +163,7 @@ module Metasploit
 
 		def launch_autopwn
 			opts = {
-				'LHOST' => @config.get('beef.extension.metasploit.callback_host') ,
+				'LHOST' => @config['callback_host'] ,
 				'URIPATH' => @apurl
 				}
       			get_lock()
@@ -175,6 +175,7 @@ module Metasploit
 				return false
 			end
       			release_lock()
+			return res
 
 		end
 		
