@@ -100,7 +100,6 @@ module Metasploit
 	  end
 
 		def get_exploit_info(name)
-			return if not @enabled
       			get_lock()
 			res = self.call('module.info','exploit',name)
       			release_lock()
@@ -108,7 +107,6 @@ module Metasploit
 		end
 		
 		def get_payloads(name)
-			return if not @enabled
       			get_lock()
 			res = self.call('module.compatible_payloads',name)
       			release_lock()
@@ -116,7 +114,6 @@ module Metasploit
 		end
 		
 		def get_options(name)
-			return if not @enabled
       			get_lock()
 			res = self.call('module.options','exploit',name)
       			release_lock()
@@ -124,7 +121,6 @@ module Metasploit
 		end
 		
 		def payloads()
-			return if not @enabled
       			get_lock()
 			res = self.call('module.payloads')
       			release_lock()
@@ -133,7 +129,6 @@ module Metasploit
 		end
 		
 		def payload_options(name)
-			return if not @enabled
       			get_lock()
 			res = self.call('module.options','payload',name)
       			release_lock
@@ -142,7 +137,6 @@ module Metasploit
 		end
 		
 		def launch_exploit(exploit,opts)
-			return if not @enabled
       			get_lock()
 			begin
 				res = self.call('module.execute','exploit',exploit,opts)
@@ -168,7 +162,6 @@ module Metasploit
 		end
 
 		def launch_autopwn
-			return if not @enabled
 			opts = {
 				'LHOST' => @config.get('beef.extension.metasploit.callback_host') ,
 				'URIPATH' => @apurl
