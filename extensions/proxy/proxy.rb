@@ -93,7 +93,7 @@ module BeEF
           headers = @response['response_headers']
 
           # The following is needed to forward back some of the original HTTP response headers obtained via XHR calls.
-          # Original XHR response headers are stored in extension_requester_http table (response_headers column),
+          # Original XHR response headers are stored in extension_proxy_http table (response_headers column),
           # but we are forwarding back only some of them (Server, X-.. - like X-Powered-By -, Content-Type, ... ).
           # Some of the original response headers need to be removed, like encoding and cache related: for example
           # about encoding, the original response headers says that the content-length is 1000 as the response is gzipped,

@@ -21,12 +21,13 @@ module Proxy
   
   @short_name = 'proxy'
   @full_name = 'proxy'
-  @description = 'The tunneling proxy allow to tunnel HTTP requests to the hooked domain through the victim browser'
+  @description = 'The tunneling proxy allows HTTP requests to the hooked domain to be tunneled through the victim browser'
 
 end
 end
 end
 
 require 'extensions/requester/models/http'
+#require 'extensions/proxy/models/http'
 require 'extensions/proxy/proxy'
 require 'extensions/proxy/api'

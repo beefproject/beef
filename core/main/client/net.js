@@ -154,7 +154,7 @@ beef.net = {
 
          //build the url
         var url = "";
-        if(path.indexOf("http://") != -1 || path.indexOf("http://") != -1){
+        if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
            url = path;
         }else{
             url = scheme + "://" + domain;

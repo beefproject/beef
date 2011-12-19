@@ -28,6 +28,46 @@ module Filters
     return false if not (str =~ /\-\-/).nil?      
     true
   end
-  
+
+  def self.is_valid_verb?(verb)
+    ["HEAD", "GET", "POST", "OPTIONS", "PUT", "DELETE"].each {|v| return true if verb.eql? v }
+    false
+  end
+
+  def self.is_valid_url?(uri)
+    return true if !uri.nil?
+    # OPTIONS * is not yet supported
+    #return true if uri.eql? "*"
+    # TODO : CHECK THE normalize_path method and include it somewhere (maybe here)
+    #return true if uri.eql? self.normalize_path(uri)
+    false
+  end
+
+  def self.is_valid_http_version?(version)
+    # from browsers the http version contains a space at the end ("HTTP/1.0\r")
+    version.gsub!(/[\r]+/,"")
+    ["HTTP/1.0", "HTTP/1.1"].each {|v| return true if version.eql? v }
+    false
+  end
+
+  def self.is_valid_host_str?(host_str)
+    # from browsers the host header contains a space at the end
+    host_str.gsub!(/[\r]+/,"")
+    return true if "Host:".eql?(host_str)
+    false
+  end 
+
+  def normalize_path(path)
+    print_error "abnormal path `#{path}'" if path[0] != ?/
+    ret = path.dup
+
+    ret.gsub!(%r{/+}o, '/')                    # //      => /
+    while ret.sub!(%r'/\.(?:/|\Z)', '/'); end  # /.      => /
+    while ret.sub!(%r'/(?!\.\./)[^/]+/\.\.(?:/|\Z)', '/'); end # /foo/.. => /foo
+
+    print_error "abnormal path `#{path}'" if %r{/\.\.(/|\Z)} =~ ret
+    ret
+  end
+
 end
 end

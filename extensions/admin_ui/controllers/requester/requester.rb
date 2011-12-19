@@ -62,20 +62,24 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     
     # validate that the raw request is correct and can be used
     req_parts = raw_request.split(/ |\n/) # break up the request
+
     verb = req_parts[0]
     self.err_msg 'Only HEAD, GET, POST, OPTIONS, PUT or DELETE requests are supported' if not BeEF::Filters.is_valid_verb?(verb) #check verb
-    uri = req_parts[1]
-    #self.err_msg 'Invalid URI' if not BeEF::Filters.is_valid_url?(uri) #check uri
-    version = req_parts[2]
 
-    (self.err_msg 'Invalid HTTP version';return @body = '{success : false}') if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0
+    uri = req_parts[1]
+    (self.err_msg 'Invalid URI';return @body = '{success : false}') if not BeEF::Filters.is_valid_url?(uri) #check uri
+
+    version = req_parts[2]
+    (self.err_msg 'Invalid HTTP version';return @body = '{success : false}') if not BeEF::Filters.is_valid_http_version?(version) # check http version - HTTP/1.0 or HTTP/1.1
 
     host_str = req_parts[3]
     (self.err_msg 'Invalid HTTP Host Header';return @body = '{success : false}') if not BeEF::Filters.is_valid_host_str?(host_str) # check host string - Host:
+
     host = req_parts[4]
     host_parts = host.split(/:/)
     hostname = host_parts[0]
     (self.err_msg 'Invalid HTTP HostName';return @body = '{success : false}') if not BeEF::Filters.is_valid_hostname?(hostname) #check the target hostname
+
     hostport = host_parts[1] || nil
     if !hostport.nil?
         (self.err_msg 'Invalid HTTP HostPort';return @body = '{success : false}') if not BeEF::Filters.nums_only?(hostport) #check the target hostport
