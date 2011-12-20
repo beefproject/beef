@@ -33,6 +33,34 @@ ZombieTab_Requester = function(zombie) {
 	});
 
 	/*
+	 * The panel used to select hooked browsers as proxy endpoints.
+	 * TODO: Add list of hooked browsers here
+	 ********************************************/
+	var proxy_panel = new Ext.Panel({
+		id: 'requester-proxy-zombie-'+zombie.session,
+		title: 'Proxy',
+		layout: 'fit',
+		padding: '10 10 10 10',
+                html: "<p style='font:11px tahoma,arial,helvetica,sans-serif'>The Tunneling Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". Each request sent through the Proxy is recorded in the History panel in the Rider tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</p>",
+		listeners: {
+			activate: function(proxy_panel) {
+				// to do: refresh list of hooked browsers
+			}
+		}
+
+	});
+
+	/*
+	 * TODO: The panel used to configure the proxy on-the-fly
+	 ********************************************/
+	/*
+	var options_panel = new Ext.Panel({
+		id: 'requester-options-zombie-'+zombie.session,
+		title: 'Proxy',
+		layout: 'fit'
+	});
+	*/
+	/*
 	 * The panel that displays the history of all requests performed.
 	 ********************************************/
 	var history_panel_store = new Ext.ux.data.PagingJsonStore({
@@ -297,14 +325,14 @@ ZombieTab_Requester = function(zombie) {
 
 	ZombieTab_Requester.superclass.constructor.call(this, {
 		id: 'zombie-requester-tab-zombie-'+zombie.session,
-		title: 'Requester',
+		title: 'Rider',
 		activeTab: 0,
 		viewConfig: {
 			forceFit: true,
 			type: 'fit'
 		},
 		
-        items: [history_panel, requests_panel],
+        items: [history_panel, requests_panel, proxy_panel],
 		
 		bbar: commands_statusbar,
 		
