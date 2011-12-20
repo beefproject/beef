@@ -145,17 +145,17 @@ beef.net = {
      */
     request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
-		var cross_domain = true;
+        var cross_domain = true;
         if (document.domain == domain){
-           if(document.location.port == "" || document.location.port == null){
-              cross_domain = !(port == "80" || port == "443");
-           }
+            if(document.location.port == "" || document.location.port == null){
+                cross_domain = !(port == "80" || port == "443");
+            }
         }
 
-         //build the url
+        //build the url
         var url = "";
         if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
-           url = path;
+            url = path;
         }else{
             url = scheme + "://" + domain;
             url = (port != null) ? url + ":" + port : url;
@@ -174,9 +174,18 @@ beef.net = {
             url: url,
             data: data,
             timeout: (timeout * 1000),
+
+            //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
+            beforeSend: function(xhr) {
+                if(method == "POST"){
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+                }
+            },
+
             success: function(data, textStatus, xhr) {
                 var end_time = new Date().getTime();
-                response.status_code = textStatus;
+                response.status_code = xhr.status;
+                response.status_text = textStatus;
                 response.response_body = data;
                 response.port_status = "open";
                 response.was_timedout = false;
@@ -184,26 +193,31 @@ beef.net = {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 var end_time = new Date().getTime();
-                response.status_code = jqXHR.status;
                 response.response_body = jqXHR.responseText;
+                response.status_code = jqXHR.status;
+                response.status_text = textStatus;
                 response.duration = (end_time - start_time);
             },
             complete: function(jqXHR, textStatus) {
                 response.status_code = jqXHR.status;
+                response.status_text = textStatus;
+                response.headers = jqXHR.getAllResponseHeaders();
                 // determine if TCP port is open/closed/not-http
                 if (textStatus == "timeout") {
                     response.was_timedout = true;
+                    response.response_body = "ERROR: Timed out\n";
                     response.port_status = "closed";
-                } else if (textStatus == "parsererror")
-                        response.port_status = "not-http";
-                            else
-                                response.port_status = "open";
+                } else if (textStatus == "parsererror") {
+                    response.port_status = "not-http";
+                } else {
+                    response.port_status = "open";
+                }
             }
         }).done(function() {
-                if (callback != null) {
-                    callback(response);
-                }
-            });
+            if (callback != null) {
+                callback(response);
+            }
+        });
         return response;
     },
 
@@ -216,7 +230,7 @@ beef.net = {
      */
     proxyrequest: function(scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, requestid, callback) {
         //check if same domain or cross domain
-		var cross_domain = true;
+        var cross_domain = true;
         if (document.domain == domain){
            if(document.location.port == "" || document.location.port == null){
               cross_domain = !(port == "80" || port == "443");
@@ -225,8 +239,8 @@ beef.net = {
 
         //build the url
         var url = "";
-        if(path.indexOf("http://") != -1 || path.indexOf("http://") != -1){
-           url = path;
+        if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
+            url = path;
         }else{
             url = scheme + "://" + domain;
             url = (port != null) ? url + ":" + port : url;
@@ -237,6 +251,7 @@ beef.net = {
         //define response object
         var response = new this.response;
         response.was_cross_domain = cross_domain;
+        var start_time = new Date().getTime();
 
         // if the request is crossdomain, don't proceed and return
         if (cross_domain && callback != null) {
@@ -246,8 +261,6 @@ beef.net = {
             callback(response, requestid);
             return response;
         }
-
-        var start_time = new Date().getTime();
 
         if(method == "POST"){
           $j.ajaxSetup({
@@ -265,8 +278,7 @@ beef.net = {
             //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
             beforeSend: function(xhr) {
                 if(method == "POST"){
-                   xhr.setRequestHeader("Content-type",
-                                 "application/x-www-form-urlencoded; charset=utf-8");
+                   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
 
@@ -292,11 +304,13 @@ beef.net = {
                 // determine if TCP port is open/closed/not-http
                 if (textStatus == "timeout") {
                     response.was_timedout = true;
+                    response.response_body = "ERROR: Timed out\n";
                     response.port_status = "closed";
-                } else if (textStatus == "parsererror")
-                        response.port_status = "not-http";
-                            else
-                                response.port_status = "open";
+                } else if (textStatus == "parsererror") {
+                    response.port_status = "not-http";
+                } else {
+                    response.port_status = "open";
+                }
 
                 callback(response, requestid);
             }
