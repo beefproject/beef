@@ -63,14 +63,29 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     page_title = BD.get(zombie_session, 'PageTitle') 
     if not page_title.nil?
       encoded_page_title = CGI.escapeHTML(page_title)
-      encoded_page_hash = { 'Page Title' => encoded_page_title }
+      encoded_page_title_hash = { 'Page Title' => encoded_page_title }
       
       page_name_row = {
         'category' => 'Browser Hook Initialization',
-        'data' => encoded_page_hash,
+        'data' => encoded_page_title_hash,
         'from' => 'Initialization'
       }
       
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the return values for the page referrer
+    page_referrer = BD.get(zombie_session, 'PageReferrer')
+    if not page_referrer.nil?
+      encoded_page_referrer = CGI.escapeHTML(page_referrer)
+      encoded_page_referrer_hash = { 'Page Referrer' => encoded_page_referrer }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialization',
+        'data' => encoded_page_referrer_hash,
+        'from' => 'Initialization'
+      }
+
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 

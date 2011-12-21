@@ -442,7 +442,7 @@ beef.browser = {
 		if (this.isIE())	{ return 'IE'};		// Internet Explorer any version
 		if (this.isO())		{ return 'O' };		// Opera any version
 		if (this.isS())		{ return 'S' };		// Safari any version
-		return 'UN';							// Unknown UA
+		return 'UN';					// Unknown UA
 	},
 	
 	/**
@@ -647,7 +647,8 @@ beef.browser = {
 		var browser_version = beef.browser.getBrowserVersion();
 		var browser_reported_name = beef.browser.getBrowserReportedName();
 		var cookies = document.cookie;
-		var page_title = document.title;
+		var page_title = (document.title) ? document.title : "No Title";
+		var page_referrer = (document.referrer) ? document.referrer : "No Referrer";
 		var hostname = document.location.hostname;
 		var hostport = (document.location.port)? document.location.port : "80";
 		var browser_plugins = beef.browser.getPlugins();
@@ -672,6 +673,7 @@ beef.browser = {
 		if(browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
 		if(cookies) details["Cookies"] = cookies;
 		if(page_title) details["PageTitle"] = page_title;
+		if(page_referrer) details["PageReferrer"] = page_referrer;
 		if(hostname) details["HostName"] = hostname;
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
@@ -749,11 +751,10 @@ beef.browser = {
 	 * */
 	hasGoogleGears: function() {
 
-		if (window.google && google.gears) {
-			return true;
-		}
-
 		var ggfactory = null;
+
+		// Chrome
+		if (window.google && google.gears) return true;
 
 		// Firefox
 		if (typeof GearsFactory != 'undefined') {
@@ -776,44 +777,34 @@ beef.browser = {
 					ggfactory.height = 0;
 					ggfactory.type = "application/x-googlegears";
 					document.documentElement.appendChild(ggfactory);
-					if(ggfactory && (typeof ggfactory.create == 'undefined')) {
-						ggfactory = null;
-					}
+					if(ggfactory && (typeof ggfactory.create == 'undefined')) ggfactory = null;
 				}
 			}
 		}
-		if (!ggfactory) {
-			return false
-		} else {
-			return true
-		}
+		if (!ggfactory) return false; else return true;
 	},
 
 	/**
 	 * Dynamically changes the favicon: works in Firefox, Chrome and Opera
 	 **/
 	changeFavicon: function(favicon_url) {
-        var iframe = null;
-        if (this.isC()) {
-            iframe = document.createElement('iframe');
-            iframe.src = 'about:blank';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-        }
-        var link = document.createElement('link'),
-        oldLink = document.getElementById('dynamic-favicon');
-        link.id = 'dynamic-favicon';
-        link.rel = 'shortcut icon';
-        link.href = favicon_url;
-        if (oldLink) {
-          document.head.removeChild(oldLink);
-        }
-        document.head.appendChild(link);
-        if (this.isC()) {
-          iframe.src += '';
-        }
+		var iframe = null;
+		if (this.isC()) {
+			iframe = document.createElement('iframe');
+			iframe.src = 'about:blank';
+			iframe.style.display = 'none';
+			document.body.appendChild(iframe);
+		}
+		var link = document.createElement('link'),
+		oldLink = document.getElementById('dynamic-favicon');
+		link.id = 'dynamic-favicon';
+		link.rel = 'shortcut icon';
+		link.href = favicon_url;
+		if (oldLink) document.head.removeChild(oldLink);
+		document.head.appendChild(link);
+		if (this.isC()) iframe.src += '';
 	},
-	
+
 	/**
 	 * Changes page title
 	 **/
@@ -821,13 +812,12 @@ beef.browser = {
 		document.title = title;
 	},
 
-
 	/**
-	 *  A function that gets the max number of simaltaneous connections the browser can make
-	 *  per domain, or globally on all domains.
-     *
-     *  This code is based on research from browserspy.dk
-     *
+	 *  A function that gets the max number of simultaneous connections the
+	 *  browser can make per domain, or globally on all domains.
+	 *
+	 *  This code is based on research from browserspy.dk
+	 *
 	 * @parameter {ENUM: 'PER_DOMAIN', 'GLOBAL'=>default}
 	 * @return {Deferred promise} A jQuery deferred object promise, which when resolved passes
 	 *	the number of connections to the callback function as "this"
@@ -840,9 +830,9 @@ beef.browser = {
 	 */
 	getMaxConnections: function(scope) {
 
-		var imagesCount = 30;		// Max number of images to test.
-		var secondsTimeout = 5;		// Image load timeout threashold.
-		var testUrl ="";			// The image testing service URL.
+		var imagesCount = 30;		// Max number of images to test
+		var secondsTimeout = 5;		// Image load timeout threashold
+		var testUrl ="";		// The image testing service URL
 
 		// User broserspy.dk max connections service URL.
 		if(scope=='PER_DOMAIN')
@@ -852,8 +842,8 @@ beef.browser = {
 			testUrl = "http://<token>.browserspy.dk/connections.php?img=1&amp;random=";
 
 
-		var imagesLoaded = 0;				// Number of responding images before timeout.
-		var imagesRequested = 0;			// Number of requested images.
+		var imagesLoaded = 0;			// Number of responding images before timeout.
+		var imagesRequested = 0;		// Number of requested images.
 		var testImages = new Array();		// Array of all images.
 		var deferredObject = $j.Deferred();	// A jquery Deferred object.
 
