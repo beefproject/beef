@@ -1,0 +1,12 @@
+#   phonegap
+#
+beef:
+    module:
+        Stop_record_audio:
+            enable: true
+            category: "Phonegap"
+            name: "Stop record audio"
+            description: "Stop Record audio"
+            authors: ["mh"]
+            target:
+                working: ["All"]

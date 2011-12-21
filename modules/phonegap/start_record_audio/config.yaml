@@ -1,0 +1,12 @@
+#   phonegap
+#
+beef:
+    module:
+        Start_record_audio:
+            enable: true
+            category: "Phonegap"
+            name: "Start record audio"
+            description: "Start Record audio"
+            authors: ["mh"]
+            target:
+                working: ["All"]
