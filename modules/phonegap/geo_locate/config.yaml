@@ -5,8 +5,8 @@ beef:
         Geo_locate:
             enable: true
             category: "Phonegap"
-            name: "Geo locate"
-            description: "Geo locate your victim"
+            name: "Geolocation"
+            description: "Geo locate your victim."
             authors: ["mh"]
             target:
                 working: ["All"]

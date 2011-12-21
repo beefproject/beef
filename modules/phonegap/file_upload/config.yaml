@@ -5,8 +5,8 @@ beef:
         File_upload:
             enable: true
             category: "Phonegap"
-            name: "Upload file"
-            description: "Upload files from device to server of your choice"
+            name: "Upload File"
+            description: "Upload files from device to a server of your choice."
             authors: ["mh"]
             target:
                 working: ["All"]

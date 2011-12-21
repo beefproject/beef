@@ -5,8 +5,8 @@ beef:
         Start_record_audio:
             enable: true
             category: "Phonegap"
-            name: "Start record audio"
-            description: "Start Record audio"
+            name: "Start Recording Audio"
+            description: "Start recording audio."
             authors: ["mh"]
             target:
                 working: ["All"]

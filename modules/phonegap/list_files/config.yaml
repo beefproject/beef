@@ -5,8 +5,8 @@ beef:
         List_files:
             enable: true
             category: "Phonegap"
-            name: "List files"
-            description: "Examine device file system"
+            name: "List Files"
+            description: "Examine device file system."
             authors: ["mh"]
             target:
                 working: ["All"]

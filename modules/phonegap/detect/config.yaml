@@ -5,8 +5,8 @@ beef:
         Detect:
             enable: true
             category: "Phonegap"
-            name: "Detect phonegap"
-            description: "Detects if phonegap api is present"
+            name: "Detect PhoneGap"
+            description: "Detects if the PhoneGap API is present."
             authors: ["mh"]
             target:
                 working: ["All"]

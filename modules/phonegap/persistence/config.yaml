@@ -6,7 +6,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Persistence"
-            description: "Insert the beef hook into phonegap's index.html (iphone only)"
+            description: "Insert the BeEF hook into PhoneGap's index.html (iPhone only)"
             authors: ["mh"]
             target:
                 working: ["All"]
