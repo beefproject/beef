@@ -50,6 +50,7 @@ WelcomeTab = function() {
               <ul style=\"margin-left:15px;\">\
               <li>Architecture of the BeEF System: <a href='https://github.com/beefproject/beef/wiki/Architecture'>https://github.com/beefproject/beef/wiki/Architecture</a></li>\
               <li>Tunneling Proxy: <a href='https://github.com/beefproject/beef/wiki/Tunneling-Proxy'>https://github.com/beefproject/beef/wiki/Tunneling-Proxy</a></li>\
+              <li>XssRays Integration: <a href='https://github.com/beefproject/beef/wiki/XssRays-Integration'>https://github.com/beefproject/beef/wiki/XssRays-Integration</a></li>\
               <li>Writing your own modules: <a href='https://github.com/beefproject/beef/wiki/Command-Module-API'>https://github.com/beefproject/beef/wiki/Command-Module-API</a></li></ul>\
               </div>\
               ";

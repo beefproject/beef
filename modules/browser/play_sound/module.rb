@@ -15,15 +15,16 @@
 #
 class Play_sound < BeEF::Core::Command
   
-	# set and return all options for this module
+  # set and return all options for this module
   def self.options
-		configuration = BeEF::Core::Configuration.instance
-		
-		sound_file_url = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/sound.wav"
-		
+
+    configuration = BeEF::Core::Configuration.instance
+
+    sound_file_url = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/sound.wav"
+
     return [{
       'name' => 'sound_file_uri', 
-      'description' => 'The web accessable uri for the wave sound file',      
+      'description' => 'The web accessible URI for the wave sound file.',
       'ui_label' => 'Sound File Path',
       'value' => sound_file_url,
       'width' => '300px' 

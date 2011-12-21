@@ -7,13 +7,13 @@ class File_upload < BeEF::Core::Command
         return [{
             'name' => 'file_upload_dst', 
             'description' => 'Upload a file from device to your server', 
-            'ui_label'=>'detination', 
+            'ui_label'=>'Destination', 
             'value' => 'http://192.168.9.130/recv-unauth.php',
             'width' => '300px'
             },{
             'name' => 'file_upload_src',    
             'description' => 'path to file on device', 
-            'ui_label'=>'file path', 
+            'ui_label'=>'File Path', 
             'value' => '/sdcard/myrecording.wav',
             'width' => '300px'
             }]

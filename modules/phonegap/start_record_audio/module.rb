@@ -7,7 +7,7 @@ class Start_record_audio < BeEF::Core::Command
     return [
         {'name' => 'file_name', 
          'description' => 'File name for audio recording', 
-         'ui_label' => 'file name',
+         'ui_label' => 'File Name',
          'value' => 'myrecording.wav'
          } 
     ]
