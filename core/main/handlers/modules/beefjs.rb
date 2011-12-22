@@ -29,7 +29,7 @@ module Modules
       beefjs = '' 
       # @note location of sub files      
       beefjs_path = "#{$root_dir}/core/main/client/"
-      js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js)
+      js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js)
 
       # @note construct the beefjs string from file(s)
       js_sub_files.each {|js_sub_file_name|
