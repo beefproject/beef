@@ -222,6 +222,100 @@ beef.net = {
     },
 
     /*
+     * Similar to this.request, with one extra paramater needed when dealing with requester requests:
+     *  - requestid parameter: needed on the callback
+     */
+    forgerequest: function(scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, requestid, callback) {
+        //check if same domain or cross domain
+        var cross_domain = true;
+        if (document.domain == domain){
+           if(document.location.port == "" || document.location.port == null){
+              cross_domain = !(port == "80" || port == "443");
+           }
+        }
+
+        //build the url
+        var url = "";
+
+        if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
+            url = path;
+        }else{
+            url = scheme + "://" + domain;
+            url = (port != null) ? url + ":" + port : url;
+            url = (path != null) ? url + path : url;
+            url = (anchor != null) ? url + "#" + anchor : url;
+        }
+
+        //define response object
+        var response = new this.response;
+        response.was_cross_domain = cross_domain;
+        var start_time = new Date().getTime();
+
+        // if the request is crossdomain, don't proceed and return
+        if (cross_domain && callback != null) {
+            response.status_code = -1;
+            response.status_text = "crossdomain";
+            response.response_body = "ERROR: Cross Domain Request\n";
+            callback(response, requestid);
+            return response;
+        }
+
+        if(method == "POST"){
+          $j.ajaxSetup({
+              data: data
+          });
+        }
+
+        //build and execute the request
+        $j.ajax({type: method,
+            dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
+            url: url,
+            headers: headers,
+            timeout: (timeout * 1000),
+
+            //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
+            beforeSend: function(xhr) {
+                if(method == "POST"){
+                   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+                }
+            },
+            success: function(data, textStatus, xhr) {
+                var end_time = new Date().getTime();
+                response.status_code = xhr.status;
+                response.status_text = textStatus;
+                response.response_body = data;
+                response.was_timedout = false;
+                response.duration = (end_time - start_time);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                var end_time = new Date().getTime();
+                response.response_body = xhr.responseText;
+                response.status_code = xhr.status;
+                response.status_text = textStatus;
+                response.duration = (end_time - start_time);
+            },
+            complete: function(xhr, textStatus) {
+                response.status_code = xhr.status;
+                response.status_text = textStatus;
+                response.headers = xhr.getAllResponseHeaders();
+                // determine if TCP port is open/closed/not-http
+                if (textStatus == "timeout") {
+                    response.was_timedout = true;
+                    response.response_body = "ERROR: Timed out\n";
+                    response.port_status = "closed";
+                } else if (textStatus == "parsererror") {
+                    response.port_status = "not-http";
+                } else {
+                    response.port_status = "open";
+                }
+
+                callback(response, requestid);
+            }
+        });
+        return response;
+    },
+
+    /*
      * Similar to this.request, except from a few things that are needed when dealing with proxy requests:
      *  - requestid parameter: needed on the callback,
      *  - crossdomain checks: if crossdomain requests are tunneled through the proxy, they must be not issued because
@@ -239,6 +333,7 @@ beef.net = {
 
         //build the url
         var url = "";
+
         if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
             url = path;
         }else{
