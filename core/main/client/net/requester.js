@@ -28,10 +28,11 @@ beef.net.requester = {
 	handler: "requester",
 	
 	send: function(requests_array) {
+
         for (i in requests_array) {
             request = requests_array[i];
 
-            beef.net.forgerequest('http', request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.id,
+            beef.net.forge_request('http', request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data: res.response_body,
                                            response_status_code: res.status_code,
