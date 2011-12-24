@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        dns_tunnel:
+        test_network_request:
             enable: true
             category: "Debug"
-            name: "DNS Tunnel"
-            description: "Sends data over DNS to a server which accepts wildcard subdomains."
+            name: "Test Network Request"
+            description: "Test the beef.net.request function by retrieving a URL."
             authors: ["bcoles"]
             target:
-                working: "All"
+                working: ["ALL"]
