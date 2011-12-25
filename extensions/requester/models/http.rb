@@ -33,6 +33,9 @@ module Models
     # The http request to perform. In clear text.
     property :request, Text, :lazy => true
 
+    # Boolean value as string to say whether cross-domain requests are allowed
+    property :allow_cross_domain, Text, :lazy => false, :default => "true"
+
     # The http response body received. In clear text.
     property :response_data, Binary, :lazy => true, :length => 2097152
 

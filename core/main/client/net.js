@@ -254,7 +254,7 @@ beef.net = {
 
         // if cross-domain requests are not allowed and the request is cross-domain
         // don't proceed and return
-        if (!allowCrossDomain && cross_domain && callback != null) {
+        if (allowCrossDomain == "false" && cross_domain && callback != null) {
             response.status_code = -1;
             response.status_text = "crossdomain";
             response.port_status = "crossdomain";

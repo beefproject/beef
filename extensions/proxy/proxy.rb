@@ -75,7 +75,8 @@ module BeEF
               :port => uri.port,
               :path => uri.path,
               :request_date => Time.now,
-              :hooked_browser_id => self.get_tunneling_proxy
+              :hooked_browser_id => self.get_tunneling_proxy,
+              :allow_cross_domain => "false"
           )
           http.save
           print_debug("[PROXY] --> Forwarding request ##{http.id}: domain[#{http.domain}:#{http.port}], method[#{http.method}], path[#{http.path}]")

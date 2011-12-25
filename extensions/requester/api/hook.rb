@@ -55,6 +55,7 @@ module BeEF
           # and finally sent to and executed by the hooked browser.
           def requester_parse_db_request(http_db_object)
 
+            allow_cross_domain = http_db_object.allow_cross_domain.to_s
             req_parts = http_db_object.request.split(/ |\n/)
             verb = req_parts[0]
             uri = req_parts[1]
@@ -114,7 +115,8 @@ module BeEF
                   'port' => @port,
                   'data' => @post_data,
                   'uri' => uri,
-                  'headers' => headers
+                  'headers' => headers,
+                  'allowCrossDomain' => allow_cross_domain
               }
             else
               #non-POST request (ex. GET)
@@ -124,7 +126,8 @@ module BeEF
                   'host' => @host.strip,
                   'port' => @port,
                   'uri' => uri,
-                  'headers' => headers
+                  'headers' => headers,
+                  'allowCrossDomain' => allow_cross_domain
               }
             end
 

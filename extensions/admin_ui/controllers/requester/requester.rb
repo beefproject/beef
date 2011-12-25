@@ -93,7 +93,8 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       :port => hostport,
       :path => uri,
       :request_date => Time.now,
-      :hooked_browser_id => zombie.id
+      :hooked_browser_id => zombie.id,
+      :allow_cross_domain => "true",
     )
     
     if verb.eql? 'POST'

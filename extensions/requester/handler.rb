@@ -48,7 +48,7 @@ module BeEF
           http_db = H.first(:id => request_id.to_i, :hooked_browser_id => zombie_db.id) || nil
           (print_error "Invalid http_db: no such request found in the database";return) if http_db.nil?
 
-          # validates that the http request has not be ran before
+          # validates that the http request has not been run before
           (print_error  "This http request has been saved before";return) if http_db.has_ran.eql? "complete"
 
           # validates the response code
