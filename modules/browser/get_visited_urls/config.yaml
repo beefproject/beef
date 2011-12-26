@@ -15,28 +15,27 @@
 #
 beef:
     module:
-        extract_local_storage:
+        get_visited_urls:
             enable: true
             category: "Browser"
-            name: "Get Local Storage"
-            description: "Extracts data from the HTML5 localStorage object."
-            authors: ["bcoles"]
+            name: "Get Visited URLs"
+            description: "This module will detect whether or not the hooked browser has visited the specified URL(s)"
+            authors: ["passbe"]
             target:
                 working:
                     IE:
-                        min_ver: 8
-                        max_ver: latest
+                        min_ver: 6
+                        max_ver: 7
                     FF:
-                        # It's actually 3.5 but min_ver only supports integers
-                        min_ver: 4
-                        max_ver: latest
-                    O:
-                        min_ver: 11
-                        max_ver: latest
+                        min_ver: 3
+                        max_ver: 3
                     C:
-                        min_ver: 4
-                        max_ver: latest
+                        min_ver: 1
+                        max_ver: 5
                     S:
-                        min_ver: 4
-                        max_ver: latest
-
+                        min_ver: 3
+                        max_ver: 3
+                    O:
+                        min_ver: 1
+                        max_ver: 10
+                not_working: ["All"]

@@ -14,7 +14,7 @@
 #   limitations under the License.
 #
 
-class Hook_ie < BeEF::Core::Command
+class Hook_default_browser < BeEF::Core::Command
 
   def self.options
     configuration = BeEF::Core::Configuration.instance

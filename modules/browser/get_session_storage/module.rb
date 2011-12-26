@@ -13,7 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Extract_local_storage < BeEF::Core::Command
+class Get_session_storage < BeEF::Core::Command
   
   # More info:
   #   http://dev.w3.org/html5/webstorage/
@@ -22,7 +22,7 @@ class Extract_local_storage < BeEF::Core::Command
   
   def post_execute
     content = {}
-    content['localStorage'] = @datastore['localStorage']
+    content['sessionStorage'] = @datastore['sessionStorage']
     save content
   end
   

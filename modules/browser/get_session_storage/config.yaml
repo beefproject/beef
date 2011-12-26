@@ -15,27 +15,27 @@
 #
 beef:
     module:
-        detect_visited_urls:
+        get_session_storage:
             enable: true
             category: "Browser"
-            name: "Get Visited URLs"
-            description: "This module will detect whether or not the hooked browser has visited the specified URL(s)"
-            authors: ["passbe"]
+            name: "Get Session Storage"
+            description: "Extracts data from the HTML5 sessionStorage object."
+            authors: ["bcoles"]
             target:
                 working:
                     IE:
-                        min_ver: 6
-                        max_ver: 7
+                        min_ver: 8
+                        max_ver: latest
                     FF:
-                        min_ver: 3
-                        max_ver: 3
-                    C:
-                        min_ver: 1
-                        max_ver: 5
-                    S:
-                        min_ver: 3
-                        max_ver: 3
+                        # It's actually 3.5 but min_ver only supports integers
+                        min_ver: 4
+                        max_ver: latest
                     O:
-                        min_ver: 1
-                        max_ver: 10
-                not_working: ["All"]
+                        min_ver: 11
+                        max_ver: latest
+                    C:
+                        min_ver: 4
+                        max_ver: latest
+                    S:
+                        min_ver: 4
+                        max_ver: latest

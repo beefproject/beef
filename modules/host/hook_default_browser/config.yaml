@@ -15,11 +15,12 @@
 #
 beef:
     module:
-        collect_links:
+        hook_default_browser:
             enable: true
-            category: "Browser"
-            name: "Get Page HREFs"
-            description: "This module will retrieve HREFs from the target page."
-            authors: ["vo"]
+            category: "Host"
+            name: "Hook Default Browser"
+            description: "This module will use a PDF to attempt to hook the default browser (assuming it isn't currently hooked). <br><br>Normally, this will be IE but it will also work when Chrome is set to the default. When executed, the hooked browser will load a PDF and use that to start the default browser. If successful another browser will appear in the browser tree."
+            authors: ["saafan"]
             target:
-                working: ["ALL"]
+                working: ["All"]
+                user_notify: ["FF", "C"]

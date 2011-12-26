@@ -13,17 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Extract_session_storage < BeEF::Core::Command
-  
-  # More info:
-  #   http://dev.w3.org/html5/webstorage/
-  #   http://diveintohtml5.org/storage.html
-  #
-  
+class Get_page_links < BeEF::Core::Command
+
   def post_execute
     content = {}
-    content['sessionStorage'] = @datastore['sessionStorage']
+    content['links'] = @datastore['links']
+
     save content
   end
-  
+
 end

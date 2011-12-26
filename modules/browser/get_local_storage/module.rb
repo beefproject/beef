@@ -13,21 +13,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Detect_visited_urls < BeEF::Core::Command
+class Get_local_storage < BeEF::Core::Command
   
-  def self.options
-    return [
-        { 'ui_label'=>'URL(s)', 
-          'name'=>'urls', 
-          'description' => 'Enter target URL(s)', 
-          'type'=>'textarea', 
-          'value'=>'http://beefproject.com/', 
-          'width'=>'200px' }
-    ]
-  end
-
+  # More info:
+  #   http://dev.w3.org/html5/webstorage/
+  #   http://diveintohtml5.org/storage.html
+  #
+  
   def post_execute
-    save({'result' => @datastore['result']})
+    content = {}
+    content['localStorage'] = @datastore['localStorage']
+    save content
   end
   
 end

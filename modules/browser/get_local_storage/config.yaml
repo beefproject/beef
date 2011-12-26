@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        extract_session_storage:
+        get_local_storage:
             enable: true
             category: "Browser"
-            name: "Get Session Storage"
-            description: "Extracts data from the HTML5 sessionStorage object."
+            name: "Get Local Storage"
+            description: "Extracts data from the HTML5 localStorage object."
             authors: ["bcoles"]
             target:
                 working:
@@ -39,3 +39,4 @@ beef:
                     S:
                         min_ver: 4
                         max_ver: latest
+

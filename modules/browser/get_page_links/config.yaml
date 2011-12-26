@@ -13,13 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Collect_links < BeEF::Core::Command
-
-  def post_execute
-    content = {}
-    content['links'] = @datastore['links']
-
-    save content
-  end
-
-end
+beef:
+    module:
+        get_page_links:
+            enable: true
+            category: "Browser"
+            name: "Get Page HREFs"
+            description: "This module will retrieve HREFs from the target page."
+            authors: ["vo"]
+            target:
+                working: ["ALL"]
