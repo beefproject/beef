@@ -76,11 +76,14 @@ module AdminUI
       template_ui = "#{$root_dir}/extensions/admin_ui/controllers/#{class_s}/#{function_name}.html"
       @eruby = Erubis::FastEruby.new(File.read(template_ui)) if File.exists? template_ui # load the template file
       @body = @eruby.result(binding()) if not @eruby.nil? # apply template and set the response
-      
+
+      # set appropriate content-type 'application/json' for .json files
+      @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /\.json$/
+
       # set content type
       if @headers['Content-Type'].nil?
         @headers['Content-Type']='text/html; charset=UTF-8' # default content and charset type for all pages
-        @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /.json$/
+        @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /\.json$/
       end
 
     end
