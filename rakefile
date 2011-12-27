@@ -4,8 +4,16 @@ task :quick_unit_tests do
 end
 
 desc "Run all unit tests"
-task :all_unit_tests do
+task :all_unit_tests => ["msf_install"]  do
   sh "cd test/unit/;ruby ts_beef.rb"
+end
+
+task :msf_install do
+ sh "cd test;svn co https://www.metasploit.com/svn/framework3/trunk/ msf"
+end
+
+task :msf_update do
+  sh "cd test/msf;svn update"
 end
 
 task :default => ["all_unit_tests"]
