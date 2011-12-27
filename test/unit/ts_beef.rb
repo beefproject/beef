@@ -49,16 +49,9 @@ require './tc_filesystem'
 require './extensions/tc_metasploit'
 
 begin
-  child = fork do
-	Signal.trap("TERM") do 
-	  puts "Shutting Down"
-	  exit 99
-	end
-      puts "Starting MSF..."
-  	%x{cd ../msf;./msfconsole -r ../unit/BeEF.rc}
-  	exit 99
-  end
-  sleep 25
+  puts "Starting MSF..."
+  p2 = IO.popen("../msf/msfconsole -r ../unit/BeEF.rc", "w+")
+  sleep 30
 end
 
 class TS_BeefTests
@@ -79,8 +72,6 @@ end
 Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
 
 begin
-  puts "\nShutting down MSF ()...\n"
-  Process.kill("TERM", child)
-  Process.wait
-  sleep 240
+  puts "\nShutting down MSF...\n"
+  p2.puts "quit"
 end
