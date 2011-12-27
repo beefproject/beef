@@ -130,6 +130,14 @@ module BeEF
             self.err_msg "Invalid page title returned from the hook browser's initial connection."
           end
 
+          # get and store page uri
+          page_uri = get_param(@data['results'], 'PageURI')
+          if BeEF::Filters.is_valid_url?(page_uri)
+            BD.set(session_id, 'PageURI', page_uri)
+          else
+            self.err_msg "Invalid page URL returned from the hook browser's initial connection."
+          end
+
           # get and store the page referrer
           page_referrer = get_param(@data['results'], 'PageReferrer')
           if BeEF::Filters.is_valid_pagereferrer?(page_referrer)

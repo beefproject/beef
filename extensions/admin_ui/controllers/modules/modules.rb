@@ -74,6 +74,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the return values for the page uri
+    page_uri = BD.get(zombie_session, 'PageURI')
+    if not page_uri.nil?
+      encoded_page_uri = CGI.escapeHTML(page_uri)
+      encoded_page_uri_hash = { 'Page URI' => encoded_page_uri }
+
+      page_name_row = {
+        'category' => 'Browser Hook Initialization',
+        'data' => encoded_page_uri_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for the page referrer
     page_referrer = BD.get(zombie_session, 'PageReferrer')
     if not page_referrer.nil?
