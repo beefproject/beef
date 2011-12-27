@@ -233,6 +233,8 @@ beef.net = {
         if (document.domain == domain) {
            if(document.location.port == "" || document.location.port == null){
               cross_domain = !(port == "80" || port == "443");
+           } else {
+              if (document.location.port == port) cross_domain = false;
            }
         }
 
