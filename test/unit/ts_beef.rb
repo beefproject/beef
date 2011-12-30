@@ -56,7 +56,7 @@ require './core/tc_core'
 require './core/tc_api'
 require './tc_grep'
 require './tc_filesystem'
-require './extensions/tc_metasploit'
+require './extensions/tc_metasploit' unless (ARGV[0] == 'no_msf')
 
 class TS_BeefTests
   def self.suite
