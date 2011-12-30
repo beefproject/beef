@@ -48,12 +48,6 @@ require './tc_grep'
 require './tc_filesystem'
 require './extensions/tc_metasploit'
 
-begin
-  puts "Starting MSF..."
-  p2 = IO.popen("../msf/msfconsole -r ../unit/BeEF.rc", "w+")
-  sleep 30
-end
-
 class TS_BeefTests
   def self.suite
     suite = Test::Unit::TestSuite.new(name="BeEF TestSuite")
@@ -64,14 +58,10 @@ class TS_BeefTests
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
     suite << TC_DynamicReconstruction.suite
-    suite << TC_Metasploit.suite
+    suite << TC_Metasploit.suite unless (ARGV[0] == 'no_msf')
     return suite
   end
 end
 
 Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
 
-begin
-  puts "\nShutting down MSF...\n"
-  p2.puts "quit"
-end

@@ -1,3 +1,6 @@
+
+@msf_process_id = nil;
+
 desc "Run quick unit tests"
 task :quick_unit_tests do
   sh "cd test/unit/;ruby ts_beef.rb"
@@ -5,15 +8,42 @@ end
 
 desc "Run all unit tests"
 task :all_unit_tests => ["msf_install"]  do
+  Rake::Task['msf_update'].invoke
+  Rake::Task['msf_start'].invoke
   sh "cd test/unit/;ruby ts_beef.rb"
+  Rake::Task['msf_stop'].invoke
 end
 
-task :msf_install do
- sh "cd test;svn co https://www.metasploit.com/svn/framework3/trunk/ msf"
+task :no_msf_tests do
+  sh "cd test/unit/;ruby ts_beef.rb no_msf"
 end
 
-task :msf_update do
-  sh "cd test/msf;svn update"
+task :msf_start => 'test/msf-test/msfconsole' do
+  printf "Starting MSF (wait 30 seconds)..."
+  @msf_process_id = IO.popen("test/msf-test/msfconsole -r test/unit/BeEF.rc 2> /dev/null", "w+")
+  (1..7).each do |i| # delay for 30 seconds
+    printf '.'
+    sleep (8-i) # increase the . display rate
+  end
+  puts '.'
+end
+
+task :msf_stop do
+  puts "\nShutting down MSF...\n"
+  @msf_process_id.puts "quit"
+end
+
+task :msf_install => 'test/msf-test/msfconsole' do
+  # sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git msf-test"
+end
+
+task :msf_update  => 'test/msf-test/msfconsole' do
+	sh "cd test/msf-test;git pull"
+end
+
+file 'test/msf-test/msfconsole' do
+  puts "Installing MSF"
+  sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git msf-test"
 end
 
 task :default => ["all_unit_tests"]
