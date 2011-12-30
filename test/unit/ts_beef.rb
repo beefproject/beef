@@ -38,6 +38,16 @@ rescue LoadError
   exit
 end
 
+if (ARGV[0] != 'no_msf')
+  begin
+    require 'msfrpc-client'
+  rescue LoadError
+    puts "The following instruction failed: require 'msfrpc-client'"
+    puts "Please run: sudo gem install msfrpc-client"
+    exit
+  end
+end
+
 require './core/main/network_stack/handlers/dynamicreconstruction.rb'
 require './core/filter/tc_base'
 require './core/filter/tc_command'
