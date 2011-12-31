@@ -8,6 +8,7 @@ end
 
 desc "Run all unit tests"
 task :all_unit_tests => ["msf_install"]  do
+  rm_rf 'test/msf'
   Rake::Task['msf_update'].invoke
   Rake::Task['msf_start'].invoke
   sh "cd test/unit/;ruby ts_beef.rb"
