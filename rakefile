@@ -34,7 +34,7 @@ task :msf_stop do
 end
 
 task :msf_install => 'test/msf-test/msfconsole' do
-  # sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git msf-test"
+  ## sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git msf-test"
 end
 
 task :msf_update  => 'test/msf-test/msfconsole' do
