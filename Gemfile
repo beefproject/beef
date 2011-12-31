@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# BeEF's Gemfile
 
 #
 #   Copyright 2011 Wade Alcorn wade@bindshell.net
@@ -16,23 +16,23 @@
 #   limitations under the License.
 #
 
-puts "\nWelcome to the BeEF installer!"
+gem "thin"
+gem "ansi"
+gem "term-ansicolor", :require => "term/ansicolor"
+gem "dm-core"
+gem "json"
+gem "data_objects"
+gem "dm-sqlite-adapter"
+gem "parseconfig"
+gem "erubis"
+gem "dm-migrations"
 
-if  RUBY_VERSION < '1.9'
-  puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
-  puts ""
-  puts "OSX:"
-  puts "sudo port install ruby19 +nosuffix"
-  puts "\n"
-  exit
-end
+# for the console shell extension
+gem "librex", "0.0.52"
 
-puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
+# for running unit tests
+gem "msfrpc-client"
+gem "curb"
+gem "test-unit"
 
-puts "\nInstall Bundler: gem install bundler"
-
-puts "\nRun bundler in your BeEF folder: bundle install"
-
-puts "\nRun BeEF: ./beef"
-
+source "http://rubygems.org"

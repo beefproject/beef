@@ -22,12 +22,15 @@ Most of the contents of this file will eventually be added to /install.rb. In th
    3. Prerequisites (Linux)
    4. Prerequisites (Mac OSX)
    5. Install instructions
+   6. Run instructions
 
 
 
    1. Prerequisites (platform independent)
 
-      BeEF requires ruby 1.9
+      BeEF requires ruby 1.9 and the "bundler" gem. Bundler can be installed by:
+
+      gem install bundler
 
       
    2. Prerequisites (Windows)
@@ -39,7 +42,7 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
    3. Prerequisites (Linux)
 
-      !!! This must be done PRIOR to running the BeEF installer !!!
+      !!! This must be done PRIOR to running the bundle install command !!!
       
       On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
 
@@ -63,8 +66,12 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 
 	  Navigate to the ruby source directory and run:
 
-	  ruby install
+	  bundle install
 
-      The installer verifies required gems, including any specific version dependencies
+      Bundler installs all the pre-requisite gems.
 
-      The installer offers a choice of auto-installing missing gems or provides the command so you can install gems manually
+   6. Run instructions
+
+      Simply run:
+
+      ./beef

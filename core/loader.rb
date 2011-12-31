@@ -15,21 +15,15 @@
 
 # @note Include here all the gems we are using
 require 'rubygems'
-require 'thin'
-require 'dm-core'
-require 'dm-migrations'
-require 'json'
-require 'ansi'
-require 'optparse'
+require 'bundler/setup'
+Bundler.require(:default)
 require 'cgi'
 require 'yaml'
 require 'singleton'
 require 'ipaddr'
 require 'base64'
 require 'xmlrpc/client'
-require 'erubis'
 require 'openssl'
-require 'term/ansicolor'
 
 # @note Include the filters
 require 'core/filters'
