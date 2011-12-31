@@ -3,7 +3,7 @@
 
 desc "Run quick unit tests"
 task :quick_unit_tests do
-  sh "cd test/unit/;ruby ts_beef.rb"
+  sh "cd test/unit/;ruby ts_beef.rb no_msf"
 end
 
 desc "Run all unit tests"
