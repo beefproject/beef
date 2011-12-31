@@ -7,11 +7,15 @@ task :quick_unit_tests do
 end
 
 desc "Run all unit tests"
-task :all_unit_tests => ["msf_install"]  do
+task :all_unit_tests => ["install", "msf_install"]  do
   Rake::Task['msf_update'].invoke
   Rake::Task['msf_start'].invoke
   sh "cd test/unit/;ruby ts_beef.rb"
   Rake::Task['msf_stop'].invoke
+end
+
+task :install do
+  sh "bundle install"
 end
 
 task :no_msf_tests do
