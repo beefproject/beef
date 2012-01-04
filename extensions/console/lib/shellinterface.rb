@@ -275,7 +275,7 @@ class ShellInterface
       encoded_page_title_hash = { 'Page Title' => encoded_page_title }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Hooked Page',
         'data' => encoded_page_title_hash,
         'from' => 'Initialization'
       }
@@ -290,7 +290,7 @@ class ShellInterface
       encoded_page_uri_hash = { 'Page URI' => encoded_page_uri }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Hooked Page',
         'data' => encoded_page_uri_hash,
         'from' => 'Initialization'
       }
@@ -305,7 +305,7 @@ class ShellInterface
       encoded_page_referrer_hash = { 'Page Referrer' => encoded_page_referrer }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Hooked Page',
         'data' => encoded_page_referrer_hash,
         'from' => 'Initialization'
       }
@@ -320,7 +320,7 @@ class ShellInterface
       encoded_host_name_hash = { 'Hostname/IP' => encoded_host_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Hooked Page',
         'data' => encoded_host_name_hash,
         'from' => 'Initialization'
       }
@@ -335,7 +335,7 @@ class ShellInterface
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
     
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Host',
         'data' => encoded_os_name_hash,
         'from' => 'Initialization'
       }
@@ -350,7 +350,7 @@ class ShellInterface
       browser_name_hash = { 'Browser Name' => friendly_browser_name }
 
       browser_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => browser_name_hash,
         'from' => 'Initialization'
       }
@@ -365,7 +365,7 @@ class ShellInterface
       browser_version_hash = { 'Browser Version' => encoded_browser_version }
 
       browser_version_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
          'data' => browser_version_hash,
         'from' => 'Initialization'
       }
@@ -379,7 +379,7 @@ class ShellInterface
       browser_uastring_hash = { 'Browser UA String' => browser_uastring }
 
       browser_uastring_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
          'data' => browser_uastring_hash,
         'from' => 'Initialization'
       }
@@ -394,7 +394,7 @@ class ShellInterface
       encoded_cookies_hash = { 'Cookies' => encoded_cookies }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Hooked Page',
         'data' => encoded_cookies_hash,
         'from' => 'Initialization'
       }
@@ -409,7 +409,7 @@ class ShellInterface
       encoded_browser_plugins_hash = { 'Browser Plugins' => encoded_browser_plugins }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_browser_plugins_hash,
         'from' => 'Initialization'
       }
@@ -424,7 +424,7 @@ class ShellInterface
       encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Host',
         'data' => encoded_internal_ip_hash,
         'from' => 'Initialization'
       }
@@ -439,7 +439,7 @@ class ShellInterface
       encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Host',
         'data' => encoded_system_platform_hash,
         'from' => 'Initialization'
       }
@@ -454,7 +454,7 @@ class ShellInterface
       encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Host',
         'data' => encoded_internal_hostname_hash,
         'from' => 'Initialization'
       }
@@ -476,7 +476,7 @@ class ShellInterface
       encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
       
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Host',
         'data' => encoded_screen_params_hash,
         'from' => 'Initialization'
       }
@@ -497,7 +497,7 @@ class ShellInterface
       encoded_window_size_hash = { 'Window Size' => encoded_window_size }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_window_size_hash,
         'from' => 'Initialization'
       }
@@ -512,7 +512,7 @@ class ShellInterface
       encoded_java_enabled_hash = { 'Java Enabled' => encoded_java_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_java_enabled_hash,
         'from' => 'Initialization'
       }
@@ -527,7 +527,7 @@ class ShellInterface
       encoded_vbscript_enabled_hash = { 'VBScript Enabled' => encoded_vbscript_enabled }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_vbscript_enabled_hash,
         'from' => 'Initialization'
       }
@@ -542,7 +542,7 @@ class ShellInterface
       encoded_has_flash_hash = { 'Has Flash' => encoded_has_flash }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_flash_hash,
         'from' => 'Initialization'
       }
@@ -557,7 +557,7 @@ class ShellInterface
       encoded_has_googlegears_hash = { 'Has GoogleGears' => encoded_has_googlegears }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_googlegears_hash,
         'from' => 'Initialization'
       }
@@ -572,7 +572,7 @@ class ShellInterface
       encoded_has_web_socket_hash = { 'Has GoogleGears' => encoded_has_web_socket }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_web_socket_hash,
         'from' => 'Initialization'
       }
@@ -587,7 +587,7 @@ class ShellInterface
       encoded_has_activex_hash = { 'Has ActiveX' => encoded_has_activex }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_activex_hash,
         'from' => 'Initialization'
       }
@@ -602,7 +602,7 @@ class ShellInterface
       encoded_has_session_cookies_hash = { 'Session Cookies' => encoded_has_session_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_session_cookies_hash,
         'from' => 'Initialization'
       }
@@ -617,7 +617,7 @@ class ShellInterface
       encoded_has_persistent_cookies_hash = { 'Persistent Cookies' => encoded_has_persistent_cookies }
 
       page_name_row = {
-        'category' => 'Browser Hook Initialization',
+        'category' => 'Browser',
         'data' => encoded_has_persistent_cookies_hash,
         'from' => 'Initialization'
       }
