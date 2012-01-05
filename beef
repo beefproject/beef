@@ -99,7 +99,7 @@ BeEF::Extension::Console::Banners.print_network_interfaces_routes
 # @note Call the API method 'pre_http_start'
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
-# @note Start the HTTP Server, we addtionally check whether we load the Console Shell or not
+# @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
   require 'extensions/console/shell'
   puts ""
