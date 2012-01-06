@@ -67,7 +67,7 @@ class TS_BeefTests
     suite << TC_Api.suite
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
-    suite << TC_DynamicReconstruction.suite
+    #suite << TC_DynamicReconstruction.suite
     suite << TC_Metasploit.suite unless (ARGV[0] == 'no_msf')
     return suite
   end
