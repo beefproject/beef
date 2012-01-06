@@ -23,3 +23,4 @@ beef:
             authors: ["Kos", "antisnatchor"]
             target:
                 working: ["C"]
+                not_working: ["All"]

@@ -20,7 +20,7 @@ class TC_Metasploit < Test::Unit::TestCase
 
   def setup
     $root_dir="../../"
-    $:.unshift File.join( %w{ ../../ } )
+    $:.unshift File.join( %w{ ../../ } )		
   end
 
   #
@@ -45,6 +45,7 @@ class TC_Metasploit < Test::Unit::TestCase
       load_config
       require 'extensions/metasploit/extension.rb'
       @api = BeEF::Extension::Metasploit::RpcClient.instance
+			@api.unit_test_init()
   end
  
   #
@@ -73,7 +74,7 @@ class TC_Metasploit < Test::Unit::TestCase
   # Verify that the login is working
   #
   def test_login
-    new_api
+    new_api		
     assert(@api.login)
   end
 

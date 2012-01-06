@@ -34,6 +34,7 @@ module Metasploit
 		  
             		@lock = false
 			@lastauth = nil
+			@unit_test = false
 			opts = {
 				 :host => @config['host'] || '127.0.0.1',
 				 :port => @config['port'] || 55552,
@@ -63,6 +64,9 @@ module Metasploit
 		ret
 	end
     
+	def unit_test_init
+		@unit_test = true
+	end
         # login into metasploit
 		def login
             		get_lock()
@@ -74,7 +78,7 @@ module Metasploit
 				return false
 			end
 			
-			print_info 'Successful connection with Metasploit.' if not @lastauth
+			print_info 'Successful connection with Metasploit.' if (!@lastauth && !@unit_test)
 			
 			@lastauth = Time.now
       

@@ -41,6 +41,7 @@ MainPanel = function(){
     this.grid = new DataGrid('/ui/logs/all.json',30);
 	this.grid.border = false;
     this.welcome_tab = new WelcomeTab;
+    this.decoder_tab = new DecoderTab;
 
     MainPanel.superclass.constructor.call(this, {
         id:'main-tabs',
@@ -69,6 +70,13 @@ MainPanel = function(){
             hideMode:'offsets',
             items:[
                 this.grid
+            ]},{
+            id:'decoder-view',
+            layout:'border',
+            title:'Decoder',
+            hideMode:'offsets',
+            items:[
+                this.decoder_tab
             ]
         }]
     });
