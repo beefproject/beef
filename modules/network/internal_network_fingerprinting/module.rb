@@ -28,13 +28,12 @@
 # Improve stealth
 # -  Load images with CSS "background:" CSS to avoid http auth login popups
 # Improve speed
-# -  Make IP addresses a user-configurable option rather than a hard-coded list
 # -  Detect local ip range first - using browser history and/or with java
 #    - History theft via CSS history is patched in modern browsers.
 #    - Local IP theft with Java is slow and may fail
 
 
-class Internal_network_fingerprinting < BeEF::Core::Command
+class Fingerprint_network < BeEF::Core::Command
   
   def self.options
     return [
@@ -45,7 +44,7 @@ class Internal_network_fingerprinting < BeEF::Core::Command
   
   def post_execute
     content = {}
-    content['device'] =@datastore['device'] if not @datastore['device'].nil?
+    content['discovered'] = @datastore['discovered'] if not @datastore['discovered'].nil?
     content['url'] = @datastore['url'] if not @datastore['url'].nil?
     if content.empty?
       content['fail'] = 'No devices/applications have been discovered.'
