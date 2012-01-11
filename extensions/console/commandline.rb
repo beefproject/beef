@@ -45,7 +45,6 @@ module BeEF
             end
           end
 
-
           optparse.parse!
           @already_parsed = true
           @options
