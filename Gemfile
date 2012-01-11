@@ -27,6 +27,11 @@ gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
 
+# Gems only required one windows
+if RUBY_PLATFORM.downcase.include?("mswin")
+  gem "win32console"
+end
+
 # for the console shell extension
 gem "librex", "0.0.52"
 
