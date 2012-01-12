@@ -18,8 +18,12 @@ require 'test/unit'
 class TC_Loader < Test::Unit::TestCase
 
   def setup
-    $root_dir="../../"
+    $root_dir = "../../"
     $:.unshift File.join( %w{ ../../ } )
+  end
+
+  def teardown
+    $root_dir = nil
   end
 
   #
