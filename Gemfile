@@ -39,5 +39,8 @@ gem "librex", "0.0.52"
 gem "msfrpc-client"
 gem "curb"
 gem "test-unit"
+gem "selenium"
+gem "selenium-webdriver"
+gem "capybara"
 
 source "http://rubygems.org"
