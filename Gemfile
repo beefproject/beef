@@ -41,6 +41,9 @@ gem "curb"
 gem "test-unit"
 gem "selenium"
 gem "selenium-webdriver"
+# nokogirl is needed by capybara which may require one of the below commands
+# sudo apt-get install libxslt-dev libxml2-dev
+# sudo port install libxml2 libxslt
 gem "capybara"
 
 source "http://rubygems.org"
