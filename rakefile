@@ -22,7 +22,7 @@ task :quick do
 end
 
 desc "Run all unit tests"
-task :all => ["install", "msf_install"]  do
+task :all do
   Rake::Task['integration'].invoke          # run integration tests
   Rake::Task['unit'].invoke                 # run unit tests
   Rake::Task['msf'].invoke                  # run msf tests
