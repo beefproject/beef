@@ -17,7 +17,7 @@
 # Common lib for BeEF tests
 require '../common/ts_common'
 
-require 'capybara/DSL'
+require 'capybara'
 Capybara.run_server = false # we need to run our own BeEF server
 
 require 'selenium/webdriver'

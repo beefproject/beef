@@ -1,12 +1,6 @@
 require 'test/unit'
 
 class TC_login < Test::Unit::TestCase
-  include Capybara::DSL
-
-  def teardown
-    Capybara.reset_sessions!
-    Capybara.use_default_driver
-  end
 
   def test_log_in
     session = Capybara::Session.new(:selenium)
