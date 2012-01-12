@@ -29,7 +29,7 @@ require './tc_login' # Basic log in and log out tests
 class TS_BeefIntegrationTests
   def self.suite
 
-    suite = Test::Unit::TestSuite.new(name="BeEF Integration TestSuite")
+    suite = Test::Unit::TestSuite.new(name="BeEF Integration Test Suite")
     suite << TC_CheckEnvironment.suite
     suite << TC_login.suite
 

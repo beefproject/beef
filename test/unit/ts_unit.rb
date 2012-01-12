@@ -28,7 +28,7 @@ require './tc_filesystem'
 class TS_BeefTests
   def self.suite
 
-    suite = Test::Unit::TestSuite.new(name="BeEF TestSuite")
+    suite = Test::Unit::TestSuite.new(name="BeEF Unit Test Suite")
     suite << TC_Filter.suite
     suite << TC_Loader.suite
     suite << TC_Core.suite
