@@ -14,35 +14,57 @@
 #   limitations under the License.
 #
 
-@msf_process_id = nil;
+task :default => ["quick"]
 
 desc "Run quick unit tests"
 task :quick do
-  sh "cd test/unit/;ruby -W0 ts_beef.rb no_msf"
+  sh "cd test/unit/;ruby -W0 ts_unit.rb"
 end
 
 desc "Run all unit tests"
 task :all => ["install", "msf_install"]  do
+  Rake::Task['integration'].invoke          # run integration tests
+  Rake::Task['unit'].invoke                 # run unit tests
   Rake::Task['msf_update'].invoke
   Rake::Task['msf_start'].invoke
   sh "cd test/unit/;ruby -W0 ts_beef.rb"
   Rake::Task['msf_stop'].invoke
 end
 
+desc "Run integration unit tests"
+task :integration => ["install"] do
+  sh "cd test/integration;ruby -W0 ts_integration.rb"
+end
+
+desc "Run integration unit tests"
+task :unit => ["install"] do
+  sh "cd test/unit;ruby -W0 ts_unit.rb"
+end
+
+desc "Run MSF unit tests"
+task :msf => ["install", "msf_install"]  do
+  Rake::Task['msf_update'].invoke
+  Rake::Task['msf_start'].invoke
+  sh "cd test/thirdparty/msf/unit/;ruby -W0 ts_metasploit.rb"
+  Rake::Task['msf_stop'].invoke
+end
+
 task :install do
-  sh "bundle install"
+  sh "bundle > /dev/null"
 end
 
-task :no_msf_tests do
-  sh "cd test/unit/;ruby -W0 ts_beef.rb no_msf"
-end
+################################
+# MSF environment set up
 
-task :msf_start => 'test/msf-test/msfconsole' do
+@msf_process_id = nil;
+
+task :msf_start => '/tmp/msf-test/msfconsole' do
   printf "Starting MSF (wait 30 seconds)..."
-  @msf_process_id = IO.popen("test/msf-test/msfconsole -r test/unit/BeEF.rc 2> /dev/null", "w+")
-  (1..7).each do |i| # delay for 30 seconds
+  @msf_process_id = IO.popen("/tmp/msf-test/msfconsole -r test/thirdparty/msf/unit/BeEF.rc 2> /dev/null", "w+")
+  delays = [7, 6, 5, 4, 3, 2, 1, 0.7, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
+  delays.each do |i| # delay for 30 seconds
     printf '.'
-    sleep (8-i) # increase the . display rate
+    sleep (i) # increase the . display rate
   end
   puts '.'
 end
@@ -52,17 +74,16 @@ task :msf_stop do
   @msf_process_id.puts "quit"
 end
 
-task :msf_install => 'test/msf-test/msfconsole' do
+task :msf_install => '/tmp/msf-test/msfconsole' do
   # Handled by the 'test/msf-test/msfconsole' task.
 end
 
-task :msf_update  => 'test/msf-test/msfconsole' do
-	sh "cd test/msf-test;git pull"
+task :msf_update  => '/tmp/msf-test/msfconsole' do
+	sh "cd /tmp/msf-test;git pull"
 end
 
-file 'test/msf-test/msfconsole' do
+file '/tmp/msf-test/msfconsole' do
   puts "Installing MSF"
-  sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git msf-test"
+  sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git /tmp/msf-test"
 end
 
-task :default => ["quick"]
