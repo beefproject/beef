@@ -19,8 +19,13 @@ require 'pp'
 class TC_Metasploit < Test::Unit::TestCase
 
   def setup
-    $root_dir="../../"
-    $:.unshift File.join( %w{ ../../ } )		
+    $root_dir="../../../../"
+    $:.unshift File.join( %w{ ../../../../ } )
+    require 'core/loader'
+  end
+
+  def teardown
+    $root_dir = nil
   end
 
   #
@@ -42,12 +47,12 @@ class TC_Metasploit < Test::Unit::TestCase
 
   # Create an api instance
   def new_api
-      load_config
-      require 'extensions/metasploit/extension.rb'
-      @api = BeEF::Extension::Metasploit::RpcClient.instance
-			@api.unit_test_init()
+    load_config
+    require 'extensions/metasploit/extension.rb'
+    @api = BeEF::Extension::Metasploit::RpcClient.instance
+    @api.unit_test_init()
   end
- 
+
   #
   # Verify that the config file has required information
   # 
@@ -74,7 +79,7 @@ class TC_Metasploit < Test::Unit::TestCase
   # Verify that the login is working
   #
   def test_login
-    new_api		
+    new_api
     assert(@api.login)
   end
 
@@ -83,13 +88,13 @@ class TC_Metasploit < Test::Unit::TestCase
     @api.login
     assert(@api.call('core.version'))
   end
-  
+
   def test_browser_exploits
     new_api
     @api.login
     exploits = nil
     assert_nothing_raised do
-    	exploits =  @api.browser_exploits()
+      exploits =  @api.browser_exploits()
     end
     assert(exploits.length > 5)
   end
@@ -99,17 +104,17 @@ class TC_Metasploit < Test::Unit::TestCase
     @api.login
     info = nil
     assert_nothing_raised do
-    	info = @api.get_exploit_info('windows/dcerpc/ms03_026_dcom')
+      info = @api.get_exploit_info('windows/dcerpc/ms03_026_dcom')
     end
     assert( info['name'].nil? != true)
   end
-  
+
   def test_get_options
     new_api
     @api.login
     info = nil
     assert_nothing_raised do
-    	info = @api.get_options('windows/dcerpc/ms03_026_dcom')
+      info = @api.get_options('windows/dcerpc/ms03_026_dcom')
     end
     assert( info['RHOST'].nil? != true)
   end
@@ -119,7 +124,7 @@ class TC_Metasploit < Test::Unit::TestCase
     @api.login
     payloads = nil
     assert_nothing_raised do
-    	payloads = @api.payloads
+      payloads = @api.payloads
     end
     assert( payloads.length > 5 )
   end
@@ -130,7 +135,7 @@ class TC_Metasploit < Test::Unit::TestCase
     opts = { 'PAYLOAD' => 'windows/meterpreter/bind_tcp', 'URIPATH' => '/test1','SRVPORT' => 8080}
     ret = nil
     assert_nothing_raised do
-    	ret = @api.launch_exploit('windows/browser/adobe_utilprintf',opts)
+      ret = @api.launch_exploit('windows/browser/adobe_utilprintf',opts)
     end
     assert(ret['job_id'] != nil )
   end
@@ -140,7 +145,7 @@ class TC_Metasploit < Test::Unit::TestCase
     @api.login
     ret = nil
     assert_nothing_raised do
-    	ret = @api.launch_autopwn
+      ret = @api.launch_autopwn
     end
     assert(ret['job_id'] != nil )
   end
