@@ -30,8 +30,11 @@ end
 
 desc "Run automated tests (for Jenkins)"
 task :automated do
+  Rake::Task['xserver_start'].invoke
+  Rake::Task['integration'].invoke          # run integration tests
   Rake::Task['unit'].invoke                 # run unit tests
   Rake::Task['msf'].invoke                  # run msf tests
+  Rake::Task['xserver_stop'].invoke
 end
 
 desc "Run integration unit tests"
@@ -59,6 +62,28 @@ task :install do
 end
 
 ################################
+# X11 set up
+
+@xserver_process_id = nil;
+
+task :xserver_start do
+  printf "Starting X11 Server (wait 10 seconds)..."
+  @xserver_process_id = IO.popen("/usr/bin/Xvfb :0 -screen 0 1024x768x24 2> /dev/null", "w+")
+  delays = [2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
+  delays.each do |i| # delay for 10 seconds
+    printf '.'
+    sleep (i) # increase the . display rate
+  end
+  puts '.'
+  export DISPLAY=:0
+end
+
+task :xserver_stop do
+  puts "\nShutting down X11 Server...\n"
+  Process.kill 'INT', -Process.getpgrp
+end
+
+################################
 # BeEF environment set up
 
 @beef_process_id = nil;
@@ -69,7 +94,7 @@ task :beef_start => 'beef' do
   delays = [2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 10 seconds
     printf '.'
-    sleep (i) # increase the . display rate
+    sleep (i)
   end
   puts '.'
 end
