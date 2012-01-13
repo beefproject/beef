@@ -99,7 +99,7 @@ module Module
         BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
         config = BeEF::Core::Configuration.instance
         if not config.get("beef.module.#{mod}.loaded")
-            if File.exists?(config.get('beef.module.'+mod+'.path')+'/module.rb')
+            if File.exists?($root_dir+"/"+config.get('beef.module.'+mod+'.path')+'/module.rb')
                 BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
                 self.parse_targets(mod)
                 print_debug "Soft Load module: '#{mod}'"

@@ -54,6 +54,7 @@ require './core/filter/tc_command'
 require './core/tc_loader'
 require './core/tc_core'
 require './core/tc_api'
+require './core/tc_modules'
 require './tc_grep'
 require './tc_filesystem'
 require './extensions/tc_metasploit' unless (ARGV[0] == 'no_msf')
@@ -65,6 +66,7 @@ class TS_BeefTests
     suite << TC_Loader.suite
     suite << TC_Core.suite
     suite << TC_Api.suite
+    suite << TC_Modules.suite
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
     #suite << TC_DynamicReconstruction.suite
