@@ -28,6 +28,12 @@ task :all do
   Rake::Task['msf'].invoke                  # run msf tests
 end
 
+desc "Run automated tests (for Jenkins)"
+task :automated do
+  Rake::Task['unit'].invoke                 # run unit tests
+  Rake::Task['msf'].invoke                  # run msf tests
+end
+
 desc "Run integration unit tests"
 task :integration => ["install"] do
   Rake::Task['beef_start'].invoke
