@@ -15,7 +15,7 @@ class BeefTest
 
   def self.login(session = nil)
     session = Capybara::Session.new(:selenium) if session.nil?
-    session.visit('http://localhost:3000/ui/panel')
+    session.visit(ATTACK_URL)
     session.has_content?('BeEF Authentication')
     session.fill_in 'user', :with => 'beef'
     session.fill_in 'pass', :with => 'beef'

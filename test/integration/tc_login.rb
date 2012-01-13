@@ -6,7 +6,7 @@ class TC_login < Test::Unit::TestCase
 
   def test_log_in
     session = Capybara::Session.new(:selenium)
-    session.visit('http://localhost:3000/ui/panel')
+    session.visit(ATTACK_URL)
     BeefTest.save_screenshot(session)
     session.has_content?('BeEF Authentication')
     session.fill_in 'user', :with => 'beef'
@@ -49,7 +49,29 @@ class TC_login < Test::Unit::TestCase
     session.has_content?('Page')
 
     BeefTest.save_screenshot(session)
-    session = BeefTest.logout(session)
+    BeefTest.logout(session)
+  end
+
+  def test_hooking_browser
+    attacker = BeefTest.login
+    victim = Capybara::Session.new(:selenium)
+    victim.visit(VICTIM_URL)
+    sleep 2.0
+
+    attacker.has_content?(VICTIM_DOMAIN)
+    attacker.has_content?('127.0.0.1')
+    attacker.click_on('127.0.0.1')
+
+    sleep 1.0
+
+    attacker.has_content?('Details')
+    attacker.has_content?('Commands')
+    attacker.has_content?('Rider')
+
+    BeefTest.save_screenshot(attacker)
+    BeefTest.save_screenshot(victim)
+
+    BeefTest.logout(attacker)
   end
 
 end
