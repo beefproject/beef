@@ -38,7 +38,7 @@ end
 desc "Run integration unit tests"
 task :integration => ["install"] do
   Rake::Task['beef_start'].invoke
-  sh "cd test/integration;ruby -W0 ts_integration.rb"
+  sh "export DISPLAY=:0; cd test/integration;ruby -W0 ts_integration.rb"
   Rake::Task['beef_stop'].invoke
 end
 
