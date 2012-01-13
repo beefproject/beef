@@ -37,4 +37,19 @@ class TC_login < Test::Unit::TestCase
     BeefTest.save_screenshot(session)
   end
 
+  def test_logs_tab
+    session = BeefTest.login
+    session.click_on('Logs')
+    session.has_content?('logout')
+    session.has_content?('Hooked Browsers')
+    session.has_content?('Type')
+    session.has_content?('Event')
+    session.has_content?('Date')
+    session.has_content?('No logs to display')
+    session.has_content?('Page')
+
+    BeefTest.save_screenshot(session)
+    session = BeefTest.logout(session)
+  end
+
 end
