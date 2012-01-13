@@ -75,7 +75,6 @@ task :xserver_start do
     sleep (i) # increase the . display rate
   end
   puts '.'
-  export DISPLAY=:0
 end
 
 task :xserver_stop do
