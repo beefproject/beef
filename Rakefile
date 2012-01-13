@@ -79,7 +79,7 @@ end
 
 task :xserver_stop do
   puts "\nShutting down X11 Server...\n"
-  Process.kill 'INT', -Process.getpgrp
+  sh "ps -ef|grep Xvfb |grep -v grep| awk '{print $2}'| xargs kill"
 end
 
 ################################
@@ -100,7 +100,7 @@ end
 
 task :beef_stop do
   puts "\nShutting down BeEF...\n"
-  Process.kill 'INT', -Process.getpgrp
+  sh "ps -ef|grep beef |grep -v grep| awk '{print $2}'| xargs kill"
 end
 
 ################################
