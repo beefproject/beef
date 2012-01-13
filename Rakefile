@@ -16,9 +16,9 @@
 
 task :default => ["quick"]
 
-desc "Run quick unit tests"
+desc "Run quick tests"
 task :quick do
-  Rake::Task['unit'].invoke
+  Rake::Task['unit'].invoke                 # run unit tests
 end
 
 desc "Run all tests"
@@ -31,9 +31,7 @@ end
 desc "Run automated tests (for Jenkins)"
 task :automated do
   Rake::Task['xserver_start'].invoke
-  Rake::Task['integration'].invoke          # run integration tests
-  Rake::Task['unit'].invoke                 # run unit tests
-  Rake::Task['msf'].invoke                  # run msf tests
+  Rake::Task['all'].invoke
   Rake::Task['xserver_stop'].invoke
 end
 
@@ -79,7 +77,7 @@ end
 
 task :xserver_stop do
   puts "\nShutting down X11 Server...\n"
-  sh "ps -ef|grep Xvfb |grep -v grep| awk '{print $2}'| xargs kill"
+  sh "ps -ef|grep Xvfb|grep -v grep|awk '{print $2}'|xargs kill"
 end
 
 ################################
@@ -100,7 +98,7 @@ end
 
 task :beef_stop do
   puts "\nShutting down BeEF...\n"
-  sh "ps -ef|grep beef |grep -v grep| awk '{print $2}'| xargs kill"
+  sh "ps -ef|grep beef|grep -v grep|awk '{print $2}'|xargs kill"
 end
 
 ################################
