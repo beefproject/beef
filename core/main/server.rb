@@ -89,26 +89,35 @@ module BeEF
         @rack_app = Rack::URLMap.new(@mounts)
 
         if not @http_server
-          
+
           # Set the logging level of Thin to match the config 
           Thin::Logging.silent = true
           if @configuration.get('beef.http.debug') == true
             Thin::Logging.silent = false
             Thin::Logging.debug = true
           end
-          
+
           # Create the BeEF http server
           @http_server = Thin::Server.new(
-            @configuration.get('beef.http.host'),
-            @configuration.get('beef.http.port'),
-            @rack_app)
+              @configuration.get('beef.http.host'),
+              @configuration.get('beef.http.port'),
+              @rack_app)
         end
       end
 
       # Starts the BeEF http server
       def start
-        # starts the web server
-        @http_server.start
+        begin
+          @http_server.start # starts the web server
+        rescue RuntimeError => e
+          if e.message =~ /no acceptor/ # the port is in use
+            print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}."
+            print_error "Is BeEF already running? Exiting..."
+            exit 127
+          else
+            raise
+          end
+        end
       end
 
     end

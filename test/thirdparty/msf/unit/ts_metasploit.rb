@@ -13,26 +13,31 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-require 'test/unit'
 
-class TC_Loader < Test::Unit::TestCase
+# Common lib for BeEF tests
+require '../../../common/ts_common'
 
-  def setup
-    $root_dir = "../../"
-    $:.unshift File.join( %w{ ../../ } )
-  end
-
-  def teardown
-    $root_dir = nil
-  end
-
-  #
-  # Test the loader is functional
-  #
-  def test_loader
-    assert_nothing_raised do
-      require 'core/loader'
-    end
-  end
-
+begin
+  require 'msfrpc-client'
+rescue LoadError
+  puts "The following instruction failed: require 'msfrpc-client'"
+  puts "Please run: sudo gem install msfrpc-client"
+  exit
 end
+
+require './check_environment'
+require './tc_metasploit'
+
+class TS_BeefTests
+  def self.suite
+
+    suite = Test::Unit::TestSuite.new(name="BeEF Metasploit Test Suite")
+    suite << TC_CheckEnvironment.suite
+    suite << TC_Metasploit.suite
+
+    return suite
+  end
+end
+
+Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
+

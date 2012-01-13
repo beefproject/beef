@@ -13,26 +13,29 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-require 'test/unit'
 
-class TC_Loader < Test::Unit::TestCase
+# Common lib for BeEF tests
+require '../common/ts_common'
 
-  def setup
-    $root_dir = "../../"
-    $:.unshift File.join( %w{ ../../ } )
+require 'capybara'
+Capybara.run_server = false # we need to run our own BeEF server
+
+require 'selenium/webdriver'
+require "selenium"
+
+require './check_environment' # Basic log in and log out tests
+require './tc_login' # Basic log in and log out tests
+
+class TS_BeefIntegrationTests
+  def self.suite
+
+    suite = Test::Unit::TestSuite.new(name="BeEF Integration Test Suite")
+    suite << TC_CheckEnvironment.suite
+    suite << TC_login.suite
+
+    return suite
   end
-
-  def teardown
-    $root_dir = nil
-  end
-
-  #
-  # Test the loader is functional
-  #
-  def test_loader
-    assert_nothing_raised do
-      require 'core/loader'
-    end
-  end
-
 end
+
+Test::Unit::UI::Console::TestRunner.run(TS_BeefIntegrationTests)
+

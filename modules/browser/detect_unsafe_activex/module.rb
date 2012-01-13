@@ -13,26 +13,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-require 'test/unit'
+class Detect_unsafe_activex < BeEF::Core::Command
 
-class TC_Loader < Test::Unit::TestCase
-
-  def setup
-    $root_dir = "../../"
-    $:.unshift File.join( %w{ ../../ } )
-  end
-
-  def teardown
-    $root_dir = nil
-  end
-
-  #
-  # Test the loader is functional
-  #
-  def test_loader
-    assert_nothing_raised do
-      require 'core/loader'
-    end
-  end
+	def post_execute
+		content = {}
+		content['unsafe_activex'] = @datastore['unsafe_activex']
+		save content
+	end
 
 end

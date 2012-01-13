@@ -14,41 +14,9 @@
 #   limitations under the License.
 #
 
-# @note Version check to ensure BeEF is running Ruby 1.9 >
-if  RUBY_VERSION < '1.9'
-  puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
-  puts "\n"
-  exit
-end
+# Common lib for BeEF tests
+require '../common/ts_common'
 
-begin
-  require 'test/unit/ui/console/testrunner'
-rescue LoadError
-  puts "The following instruction failed: require 'test/unit/ui/console/testrunner'"
-  puts "Please run: sudo gem install test-unit-full"
-  exit
-end
-
-begin
-  require 'curb'
-rescue LoadError
-  puts "The following instruction failed: require 'curb'"
-  puts "Please run: sudo gem install curb"
-  exit
-end
-
-if (ARGV[0] != 'no_msf')
-  begin
-    require 'msfrpc-client'
-  rescue LoadError
-    puts "The following instruction failed: require 'msfrpc-client'"
-    puts "Please run: sudo gem install msfrpc-client"
-    exit
-  end
-end
-
-require './core/main/network_stack/handlers/dynamicreconstruction.rb'
 require './core/filter/tc_base'
 require './core/filter/tc_command'
 require './core/tc_loader'
@@ -57,11 +25,11 @@ require './core/tc_api'
 require './core/tc_modules'
 require './tc_grep'
 require './tc_filesystem'
-require './extensions/tc_metasploit' unless (ARGV[0] == 'no_msf')
 
 class TS_BeefTests
   def self.suite
-    suite = Test::Unit::TestSuite.new(name="BeEF TestSuite")
+
+    suite = Test::Unit::TestSuite.new(name="BeEF Unit Test Suite")
     suite << TC_Filter.suite
     suite << TC_Loader.suite
     suite << TC_Core.suite
@@ -69,8 +37,7 @@ class TS_BeefTests
     suite << TC_Modules.suite
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
-    #suite << TC_DynamicReconstruction.suite
-    suite << TC_Metasploit.suite unless (ARGV[0] == 'no_msf')
+
     return suite
   end
 end

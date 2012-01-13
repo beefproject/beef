@@ -27,6 +27,11 @@ gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
 
+# Gems only required one windows
+if RUBY_PLATFORM.downcase.include?("mswin")
+  gem "win32console"
+end
+
 # for the console shell extension
 gem "librex", "0.0.52"
 
@@ -34,5 +39,11 @@ gem "librex", "0.0.52"
 gem "msfrpc-client"
 gem "curb"
 gem "test-unit"
+gem "selenium"
+gem "selenium-webdriver"
+# nokogirl is needed by capybara which may require one of the below commands
+# sudo apt-get install libxslt-dev libxml2-dev
+# sudo port install libxml2 libxslt
+gem "capybara"
 
 source "http://rubygems.org"
