@@ -76,7 +76,6 @@ end
 
 task :beef_stop do
   puts "\nShutting down BeEF...\n"
-  puts @beef_process_id.pid
   Process.kill 'INT', -Process.getpgrp
 end
 
