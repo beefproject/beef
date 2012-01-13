@@ -21,7 +21,7 @@ task :quick do
   Rake::Task['unit'].invoke
 end
 
-desc "Run all unit tests"
+desc "Run all tests"
 task :all do
   Rake::Task['integration'].invoke          # run integration tests
   Rake::Task['unit'].invoke                 # run unit tests
