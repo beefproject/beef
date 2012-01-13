@@ -53,9 +53,9 @@ class TC_login < Test::Unit::TestCase
   end
 
   def test_hooking_browser
-    attacker = BeefTest.login
-    victim = Capybara::Session.new(:selenium)
-    victim.visit(VICTIM_URL)
+    attacker = BeefTest.new_attacker
+    victim = BeefTest.new_victim
+
     sleep 2.0
 
     attacker.has_content?(VICTIM_DOMAIN)

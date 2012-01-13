@@ -30,4 +30,14 @@ class BeefTest
     session
   end
 
+  def self.new_attacker
+    self.login
+  end
+
+  def self.new_victim
+    victim = Capybara::Session.new(:selenium)
+    victim.visit(VICTIM_URL)
+    victim
+  end
+
 end
