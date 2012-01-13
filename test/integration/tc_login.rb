@@ -15,19 +15,26 @@ class TC_login < Test::Unit::TestCase
     session.click_button('Login')
     session.has_content?('logout')
     BeefTest.save_screenshot(session)
+  end
 
-    session
+  def test_beef_test_login_function
+    session = BeefTest.login
+    session.has_content?('logout')
+    BeefTest.save_screenshot(session)
   end
 
   def test_log_out
-    session = test_log_in
-    session.has_content?('logout')
+    session = BeefTest.login
     session.click_link('Logout')
-    BeefTest.save_screenshot(session)
     session.has_content?('BeEF Authentication')
     BeefTest.save_screenshot(session)
+  end
 
-    session
+  def test_beef_test_logout_function
+    session = BeefTest.login
+    session = BeefTest.logout(session)
+    session.has_content?('BeEF Authentication')
+    BeefTest.save_screenshot(session)
   end
 
 end
