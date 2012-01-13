@@ -1,9 +1,12 @@
 require 'test/unit'
 
+BEEF_TEST_DIR = "/tmp/beef-test/"
+
 class TC_login < Test::Unit::TestCase
 
   def save_screenshot(session)
-    session.driver.browser.save_screenshot("/tmp/" + Time.now.strftime("%Y-%m-%d--%H-%M-%S-%N") + ".png")
+    Dir.mkdir(BEEF_TEST_DIR) if not File.directory?(BEEF_TEST_DIR)
+    session.driver.browser.save_screenshot(BEEF_TEST_DIR + Time.now.strftime("%Y-%m-%d--%H-%M-%S-%N") + ".png")
   end
 
   def test_log_in
@@ -20,7 +23,6 @@ class TC_login < Test::Unit::TestCase
 
     session
   end
-
 
   def test_log_out
     session = test_log_in
