@@ -31,8 +31,8 @@ $root_dir = File.expand_path('..', __FILE__)
 
 # @note Prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
 if RUBY_VERSION =~ /1.9/
-    Encoding.default_external = Encoding::UTF_8
-    Encoding.default_internal = Encoding::UTF_8
+  Encoding.default_external = Encoding::UTF_8
+  Encoding.default_internal = Encoding::UTF_8
 end
 
 # @note Require core loader's
@@ -52,7 +52,7 @@ BeEF::Extension::Console::Banners.print_welcome_msg
 BeEF::Modules.load
 
 # @note Disable reverse dns
-Socket.do_not_reverse_lookup = true 
+Socket.do_not_reverse_lookup = true
 
 # @note Database setup - use DataMapper::Logger.new($stdout, :debug) for development debugging
 case config.get("beef.database.driver")
@@ -60,12 +60,12 @@ case config.get("beef.database.driver")
     DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
   when "mysql","postgres"
     DataMapper.setup(:default,
-      :adapter => config.get("beef.database.driver"),
-      :host => config.get("beef.database.db_host"),
-      :username => config.get("beef.database.db_user"),
-      :password => config.get("beef.database.db_passwd"),
-      :database => config.get("beef.database.db_name"),
-      :encoding => config.get("beef.database.db_encoding")
+                     :adapter => config.get("beef.database.driver"),
+                     :host => config.get("beef.database.db_host"),
+                     :username => config.get("beef.database.db_user"),
+                     :password => config.get("beef.database.db_passwd"),
+                     :database => config.get("beef.database.db_name"),
+                     :encoding => config.get("beef.database.db_encoding")
     )
   else
     print_error 'No default database selected. Please add one in config.yaml'
@@ -76,7 +76,7 @@ end
 if BeEF::Extension::Console.resetdb?
   print_info 'Resetting the database for BeEF.'
   DataMapper.auto_migrate!
-else 
+else
   DataMapper.auto_upgrade!
 end
 
@@ -106,7 +106,7 @@ if config.get("beef.extension.console.shell.enable") == true
   begin
     FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
     BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
-      BeEF::Extension::Console::Shell::DefaultPromptChar,{'config' => config, 'http_hook_server' => http_hook_server}).run
+                                        BeEF::Extension::Console::Shell::DefaultPromptChar,{'config' => config, 'http_hook_server' => http_hook_server}).run
   rescue Interrupt
   end
 else
