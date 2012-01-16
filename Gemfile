@@ -26,6 +26,7 @@ gem "dm-sqlite-adapter"
 gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
+gem "msfrpc-client"
 
 # Gems only required one windows
 if RUBY_PLATFORM.downcase.include?("mswin")
@@ -39,7 +40,6 @@ if ENV['BEEF_TEST']
 # for running unit tests
   gem "test-unit"
   gem "test-unit-full"
-  gem "msfrpc-client"
   gem "curb"
   gem "test-unit"
   gem "selenium"
