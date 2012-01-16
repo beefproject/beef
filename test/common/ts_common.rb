@@ -22,10 +22,11 @@ if  RUBY_VERSION < '1.9'
   exit
 end
 
-begin
-  require 'test/unit/ui/console/testrunner'
-rescue LoadError
-  puts "The following instruction failed: require 'test/unit/ui/console/testrunner'"
-  puts "Please run: sudo gem install test-unit-full"
-  exit
-end
+#begin
+#  require 'test/unit/ui/console/testrunner'
+#rescue LoadError
+#  puts "The following instruction failed: require 'test/unit/ui/console/testrunner'"
+#  puts "Please run: sudo gem install test-unit-full"
+#  exit
+#end
+
