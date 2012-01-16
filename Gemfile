@@ -35,15 +35,19 @@ end
 # for the console shell extension
 gem "librex", "0.0.52"
 
+if ENV['BEEF_TEST']
 # for running unit tests
-gem "msfrpc-client"
-gem "curb"
-gem "test-unit"
-gem "selenium"
-gem "selenium-webdriver"
-# nokogirl is needed by capybara which may require one of the below commands
-# sudo apt-get install libxslt-dev libxml2-dev
-# sudo port install libxml2 libxslt
-gem "capybara"
+  gem "test-unit"
+  gem "test-unit-full"
+  gem "msfrpc-client"
+  gem "curb"
+  gem "test-unit"
+  gem "selenium"
+  gem "selenium-webdriver"
+  # nokogirl is needed by capybara which may require one of the below commands
+  # sudo apt-get install libxslt-dev libxml2-dev
+  # sudo port install libxml2 libxslt
+  gem "capybara"
+end
 
 source "http://rubygems.org"
