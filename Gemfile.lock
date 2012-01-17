@@ -45,7 +45,6 @@ DEPENDENCIES
   dm-sqlite-adapter
   erubis
   json
-  librex (= 0.0.52)
   msfrpc-client
   parseconfig
   term-ansicolor

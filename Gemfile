@@ -33,9 +33,6 @@ if RUBY_PLATFORM.downcase.include?("mswin")
   gem "win32console"
 end
 
-# for the console shell extension
-gem "librex", "0.0.52"
-
 if ENV['BEEF_TEST']
 # for running unit tests
   gem "test-unit"
