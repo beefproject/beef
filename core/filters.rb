@@ -14,9 +14,9 @@
 #   limitations under the License.
 #
 module BeEF
-module Filters
+  module Filters
 
-end
+  end
 end
 
 # @note Include the filters

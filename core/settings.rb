@@ -15,7 +15,7 @@
 #
 module BeEF
   module Settings
-    
+
     # Checks if an extension exists in the framework.
     # @param [String] beef_extension extension class
     # @return [Boolean] if the extension exists
@@ -24,7 +24,7 @@ module BeEF
     def self.extension_exists?(beef_extension)
       BeEF::Extension.const_defined?(beef_extension)
     end
-    
+
     # Checks to see if the console extensions has been loaded
     # @return [Boolean] if the console extension has been loaded
     # @deprecated Use #{BeEF::Extension.is_loaded()} instead of this method.
@@ -32,6 +32,6 @@ module BeEF
     def self.console?
       self.extension_exists?('Console')
     end
-    
+
   end
 end

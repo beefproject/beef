@@ -14,30 +14,30 @@
 #   limitations under the License.
 #
 module BeEF
-module Modules
+  module Modules
 
     # Return configuration hashes of all modules that are enabled
     # @return [Array] configuration hashes of all enabled modules
     def self.get_enabled
-        return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }
+      return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }
     end
 
     # Return configuration hashes of all modules that are loaded
     # @return [Array] configuration hashes of all loaded modules
     def self.get_loaded
-        return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['loaded'] == true }
+      return BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['loaded'] == true }
     end
 
     # Return an array of categories specified in module configuration files
     # @return [Array] all available module categories sorted alphabetically
     def self.get_categories
-        categories = []
-        BeEF::Core::Configuration.instance.get('beef.module').each {|k,v|
-            if not categories.include?(v['category'])
-                categories << v['category']
-            end
-        }
-        return categories.sort
+      categories = []
+      BeEF::Core::Configuration.instance.get('beef.module').each {|k,v|
+        if not categories.include?(v['category'])
+          categories << v['category']
+        end
+      }
+      return categories.sort
     end
 
     # Get all modules currently stored in the database
@@ -45,15 +45,15 @@ module Modules
     def self.get_stored_in_db
       return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
     end
-    
+
     # Loads all enabled modules 
     # @note API Fire: post_soft_load
     def self.load
-        BeEF::Core::Configuration.instance.load_modules_config
-        self.get_enabled.each { |k,v|
-            BeEF::Module.soft_load(k)
-        }
-        BeEF::API::Registrar.instance.fire(BeEF::API::Modules, 'post_soft_load')
+      BeEF::Core::Configuration.instance.load_modules_config
+      self.get_enabled.each { |k,v|
+        BeEF::Module.soft_load(k)
+      }
+      BeEF::API::Registrar.instance.fire(BeEF::API::Modules, 'post_soft_load')
     end
-end
+  end
 end
