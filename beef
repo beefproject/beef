@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -W0
+#!/usr/bin/env ruby
 
 #
 #   Copyright 2012 Wade Alcorn wade@bindshell.net
@@ -15,6 +15,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
+# stop deprecation warning from being displayed
+$VERBOSE = nil
 
 # @note Version check to ensure BeEF is running Ruby 1.9 >
 if  RUBY_VERSION < '1.9'
