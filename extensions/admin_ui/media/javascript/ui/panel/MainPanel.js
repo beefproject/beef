@@ -41,7 +41,7 @@ MainPanel = function(){
     this.grid = new DataGrid('/ui/logs/all.json',30);
 	this.grid.border = false;
     this.welcome_tab = new WelcomeTab;
-    this.hackvertor_tab = new HackVertorTab;
+    //this.hackvertor_tab = new HackVertorTab;
 
     MainPanel.superclass.constructor.call(this, {
         id:'main-tabs',
@@ -70,13 +70,15 @@ MainPanel = function(){
             hideMode:'offsets',
             items:[
                 this.grid
+            /*
             ]},{
             id:'hackvertor-view',
             layout:'border',
             title:'HackVertor',
             hideMode:'offsets',
             items:[
-                this.hackvertor_tab
+                //this.hackvertor_tab
+            */
             ]
         }]
     });
