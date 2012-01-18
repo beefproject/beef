@@ -16,6 +16,14 @@
 #   limitations under the License.
 #
 
+# Gems only required on Windows, or with specific Windows issues
+if RUBY_PLATFORM.downcase.include?("mswin") || RUBY_PLATFORM.downcase.include?("mingw")
+  gem "win32console"
+  gem "eventmachine", "1.0.0.beta.4.1"
+else
+  gem "eventmachine", "0.12.10"
+end
+
 gem "thin"
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
@@ -27,11 +35,6 @@ gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
 gem "msfrpc-client"
-
-# Gems only required one windows
-if RUBY_PLATFORM.downcase.include?("mswin")
-  gem "win32console"
-end
 
 if ENV['BEEF_TEST']
 # for running unit tests
