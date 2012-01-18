@@ -41,7 +41,7 @@ MainPanel = function(){
     this.grid = new DataGrid('/ui/logs/all.json',30);
 	this.grid.border = false;
     this.welcome_tab = new WelcomeTab;
-    this.decoder_tab = new DecoderTab;
+    this.hackvertor_tab = new HackVertorTab;
 
     MainPanel.superclass.constructor.call(this, {
         id:'main-tabs',
@@ -71,12 +71,12 @@ MainPanel = function(){
             items:[
                 this.grid
             ]},{
-            id:'decoder-view',
+            id:'hackvertor-view',
             layout:'border',
-            title:'Decoder',
+            title:'HackVertor',
             hideMode:'offsets',
             items:[
-                this.decoder_tab
+                this.hackvertor_tab
             ]
         }]
     });
