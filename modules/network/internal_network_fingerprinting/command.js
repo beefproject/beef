@@ -83,6 +83,11 @@ beef.execute(function() {
 	new Array("APC InfraStruXure Manager",":80",false,"/images/Xlogo_Layer-1.gif",342,327),
 	new Array("Barracuda Spam/Virus Firewall",":8000",true,"/images/powered_by.gif",211,26),
 	new Array("TwonkyMedia Server",":9000",false,"/images/TwonkyMediaServer_logo.jpg",150,82),
+	new Array("Alt-N MDaemon World Client",":3000",false,"/LookOut/biglogo.gif",342,98),
+	new Array("VLC Media Player",":8080",false,"/images/white_cross_small.png",9,9),
+	new Array("VMware ESXi Server",":80",false,"/background.jpeg",1,1100),
+	new Array("Microsoft Remote Web Workplace",":80",false,"/Remote/images/submit.gif",31,31),
+	new Array("XAMPP",":80",false,"/xampp/img/xampp-logo-new.gif",200,59),
 	new Array("Wordpress",":80",false,"/wp-includes/images/wpmini-blue.png",16,16)
 	);
 
