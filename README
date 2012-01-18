@@ -46,13 +46,10 @@ Most of the contents of this file will eventually be added to /install.rb. In th
       
       On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
 
-	  sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
-	  
-	  
-	  You also need to install the ruby-dev package (required for mkmf)
-	  
-	  sudo apt-get install ruby-dev
-	  
+      3.0. sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
+      3.1. install rvm from rvm.beginrescueend.com, this takes care of the various incompatable and conflicting ruby packages that are required
+      3.2. rvm install 1.9.2
+      3.3. rvm use 1.9.2
 	  
    4. Prerequisites (Mac OSX)
    
