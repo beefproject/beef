@@ -44,6 +44,7 @@ DEPENDENCIES
   dm-migrations
   dm-sqlite-adapter
   erubis
+  eventmachine (= 0.12.10)
   json
   msfrpc-client
   parseconfig
