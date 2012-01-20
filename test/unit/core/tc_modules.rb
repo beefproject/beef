@@ -23,7 +23,7 @@ class TC_Modules < Test::Unit::TestCase
   end
   
   #
-  # Test that modules are loadeing properly
+  # Test that modules are loading properly
   #
   def test_modules
     assert_nothing_raised do
