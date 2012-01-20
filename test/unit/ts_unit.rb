@@ -24,6 +24,7 @@ require './core/tc_core'
 require './core/tc_api'
 require './core/tc_modules'
 require './core/tc_social_engineering'
+require './core/tc_autorun'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -39,6 +40,7 @@ class TS_BeefTests
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
     suite << TC_SocialEngineering.suite
+    suite << TC_Autorun.suite
 
     return suite
   end
