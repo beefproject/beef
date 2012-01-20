@@ -25,6 +25,7 @@ require './core/tc_api'
 require './core/tc_modules'
 require './core/tc_social_engineering'
 require './core/tc_autorun'
+require './core/tc_obfuscation'
 require './extensions/tc_xssrays'
 require './extensions/tc_vnc'
 require './tc_grep'
@@ -45,6 +46,7 @@ class TS_BeefTests
     suite << TC_Autorun.suite
     suite << TC_Xssrays.suite
     suite << TC_Vnc.suite
+    suite << TC_Obfuscation.suite
 
     return suite
   end
