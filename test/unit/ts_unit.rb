@@ -26,6 +26,7 @@ require './core/tc_modules'
 require './core/tc_social_engineering'
 require './core/tc_autorun'
 require './extensions/tc_xssrays'
+require './extensions/tc_vnc'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -43,6 +44,7 @@ class TS_BeefTests
     suite << TC_SocialEngineering.suite
     suite << TC_Autorun.suite
     suite << TC_Xssrays.suite
+    suite << TC_Vnc.suite
 
     return suite
   end
