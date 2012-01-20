@@ -1,0 +1,14 @@
+#  local_file_theft
+#
+#  Shamelessly plagurised from kos.io/xsspwn
+
+beef:
+    module:
+        local_file_theft:
+            enable: true
+            category: "Misc"
+            name: "Local File Theft"
+            description: "Javascript may have filesystem access if we are running from a local resource and using the file:// scheme, this module checks common locations and cheekily snaches anything it finds. Shameless plagurised from kos.io/xsspwn. To test this module save the beefhook page locally and open in safari from the your localfile system"
+            authors: ["mh"]
+            target:
+                working: ["All"]
