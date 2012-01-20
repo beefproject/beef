@@ -26,9 +26,13 @@ require './core/tc_modules'
 require './core/tc_social_engineering'
 require './core/tc_autorun'
 require './core/tc_obfuscation'
+require './core/tc_event_logger'
 require './extensions/tc_xssrays'
 require './extensions/tc_vnc'
 require './extensions/tc_ipec_tunnel'
+require './extensions/tc_hackverter'
+require './extensions/tc_proxy'
+require './extensions/tc_requester'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -49,6 +53,10 @@ class TS_BeefTests
     suite << TC_Vnc.suite
     suite << TC_Obfuscation.suite
     suite << TC_IpecTunnel.suite
+    suite << TC_Requester.suite
+    suite << TC_Proxy.suite
+    suite << TC_Hackverter.suite
+    suite << TC_EventLogger.suite
 
     return suite
   end
