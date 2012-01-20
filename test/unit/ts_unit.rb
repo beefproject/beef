@@ -28,6 +28,7 @@ require './core/tc_autorun'
 require './core/tc_obfuscation'
 require './extensions/tc_xssrays'
 require './extensions/tc_vnc'
+require './extensions/tc_ipec_tunnel'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -47,6 +48,7 @@ class TS_BeefTests
     suite << TC_Xssrays.suite
     suite << TC_Vnc.suite
     suite << TC_Obfuscation.suite
+    suite << TC_IpecTunnel.suite
 
     return suite
   end
