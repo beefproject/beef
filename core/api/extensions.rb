@@ -14,19 +14,19 @@
 #   limitations under the License.
 #
 module BeEF
-module API
-module Extensions
-    
-    # @note Defined API Paths
-    API_PATHS = {
-        'post_load' => :post_load
-    }
-    
-    # API hook fired after all extensions have been loaded
-    def post_load; end
+  module API
+    module Extensions
+
+      # @note Defined API Paths
+      API_PATHS = {
+          'post_load' => :post_load
+      }
+
+      # API hook fired after all extensions have been loaded
+      def post_load; end
 
 
-  
-end
-end
+
+    end
+  end
 end
