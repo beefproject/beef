@@ -23,9 +23,8 @@ module BeEF
       }
 
       # API hook fired after all extensions have been loaded
-      def post_load; end
-
-
+      def post_load;
+      end
 
     end
   end
