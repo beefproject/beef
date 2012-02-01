@@ -88,6 +88,15 @@ beef.execute(function() {
 	new Array("VMware ESXi Server",":80",false,"/background.jpeg",1,1100),
 	new Array("Microsoft Remote Web Workplace",":80",false,"/Remote/images/submit.gif",31,31),
 	new Array("XAMPP",":80",false,"/xampp/img/xampp-logo-new.gif",200,59),
+	new Array("Xerox Printer",":80",false,"/printbut.gif",30,30),
+	new Array("Konica Minolta Printer",":80",false,"/G27_light.gif",206,26),
+	new Array("Epson Printer",":80",false,"/cyandot.gif",1,1),
+	new Array("HP Printer",":80",false,"/hp/device/images/hp_invent_logo.gif",160,52),
+	new Array("Syncrify",":5800",false,"/images/468x60.gif",468,60),
+	new Array("Winamp Web Interface",":80",false,"/img?image=121",30,30),
+	new Array("Zenoss Core",":8080",false,"/zport/dmd/favicon.ico",16,16),
+	new Array("BeEF",":3000",false,"/ui/media/images/beef.png",200,149),
+	new Array("BeEF (PHP)",":80",false,"/beef/images/beef.gif",32,32),
 	new Array("Wordpress",":80",false,"/wp-includes/images/wpmini-blue.png",16,16)
 	);
 
