@@ -57,7 +57,6 @@ module Core
     # Super class controller
     # @param [String] key command module key
     def initialize(key)
-      get_extensions
       config = BeEF::Core::Configuration.instance
 
       @key = key
@@ -70,14 +69,6 @@ module Core
       @auto_update_zombie = false
       @results = {}
       @beefjs_components = {}
-    end
-    
-    # Uses the API to include all the code from extensions that need to add methods, constants etc to that class.
-    # @todo Determine if this method is deprecated
-    def get_extensions
-      BeEF::API::Command.extended_in_modules.each do |mod|
-        self.class.send(:include, mod)
-      end
     end
     
     # This function is called just before the instructions are sent to hooked browser.
