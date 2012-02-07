@@ -21,7 +21,6 @@ require 'capybara'
 Capybara.run_server = false # we need to run our own BeEF server
 
 require 'selenium/webdriver'
-require "selenium"
 
 require './check_environment' # Basic log in and log out tests
 require './tc_login' # Basic log in and log out tests

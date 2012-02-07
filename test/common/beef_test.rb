@@ -4,7 +4,6 @@ require 'capybara'
 Capybara.run_server = false # we need to run our own BeEF server
 
 require 'selenium/webdriver'
-require "selenium"
 
 class BeefTest
 
