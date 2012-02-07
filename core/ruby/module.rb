@@ -38,22 +38,4 @@ class Module
       unique_modules
     end
   end
-  
-  # Returns the modules extended inside the target module
-  # @return [Array] Array of modules
-  def extended_modules
-    (class << self; self end).included_modules
-  end
-  
-  # Returns the modules extending the target module
-  # @return [Array] Array of modules
-  def extended_in_modules
-    modules = []
-    ObjectSpace.each_object(Module) { |k| modules << k if k.extended_modules.include?(self) }
-    
-    modules.reverse.inject([]) do |unique_modules, klass| 
-      unique_modules << klass unless unique_modules.collect { |k| k.to_s }.include?(klass.to_s)
-      unique_modules
-    end
-  end
 end
