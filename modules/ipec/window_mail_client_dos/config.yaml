@@ -19,8 +19,7 @@ beef:
             enable: true
             category: "IPEC"
             name: "Windows Mail Client DoS"
-            description: "This module exploits an unhandled exception in Windows Mail to crash the client remotely.<br /><br />Windows Mail is launched and then crashed if it is not already open. It comes installed by default on Windows Vista (but it's vulnerable also in Win7-sp2)."
-            notes: "The protocol handler used will be: nntp.<br /><br />"
+            description: "This module exploits an unhandled exception in Windows Mail to crash the client remotely.<br /><br />Windows Mail is launched and then crashed if it is not already open. It comes installed by default on Windows Vista (but it's vulnerable also in Windows 7 SP2).<br /><br />The protocol handler used will be: nntp."
             authors: ["bcoles"]
             target:
                 user_notify: ["FF", "S"]

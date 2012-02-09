@@ -19,8 +19,7 @@ beef:
             enable: true
             category: "Host"
             name: "Get Protocol Handlers"
-            description: "This module attempts to identify protocol handlers present on the hooked browser."
-            notes: "Only Internet Explorer and Firefox are supported.<br /><br />Firefox users are prompted to launch the application for which the protocol handler is responsible.<br /><br />Firefox users are warned when there is no application assigned to a protocol handler.<br /><br /><br /><br />The possible return values are: unknown, exists, does not exist"
+            description: "This module attempts to identify protocol handlers present on the hooked browser. Only Internet Explorer and Firefox are supported.<br /><br />Firefox users are prompted to launch the application for which the protocol handler is responsible.<br /><br />Firefox users are warned when there is no application assigned to a protocol handler.<br /><br /><br /><br />The possible return values are: unknown, exists, does not exist."
             authors: ["bcoles"]
             target:
                 working: ["IE"]
