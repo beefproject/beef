@@ -23,7 +23,7 @@ if  RUBY_VERSION < '1.9'
   puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
   puts ""
   puts "OSX:"
-  puts "sudo port install ruby19 +nosuffix"
+  puts "See README"
   puts "\n"
   exit
 end

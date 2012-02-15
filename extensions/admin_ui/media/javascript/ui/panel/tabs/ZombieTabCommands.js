@@ -77,7 +77,7 @@ ZombieTab_Commands = function(zombie) {
 		
 		if(!command_id) return;
 		
-		genExisingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
+		genExistingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
 	});
 	
 	LoadCommandPanelEvent = function(node,keyclick) {
@@ -95,7 +95,7 @@ ZombieTab_Commands = function(zombie) {
 					nonce: Ext.get ("nonce").dom.value
 			}		
 			});
-			
+
 			genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
 			commands_statusbar.showValid('Ready');
 		}
@@ -139,16 +139,12 @@ ZombieTab_Commands = function(zombie) {
 			'afterrender' : function() {
 			},
 			'selectionchange' : function() {
-				console.log("selection changed");
 			},
 			'activate' : function() {
-				console.log("activate");
 			},
 			'select' : function() {
-				console.log("select");
 			},
 			'keyup' : function() {
-				console.log("Key up");
 			},
 			'render' : function(c) {
 				c.getEl().on('keyup', function() {
@@ -189,4 +185,8 @@ ZombieTab_Commands = function(zombie) {
 	var sb = Ext.getCmp('command-module-bbar-zombie-'+zombie.session);
 };
 
-Ext.extend(ZombieTab_Commands, Ext.Panel, {});
+Ext.extend(ZombieTab_Commands, Ext.Panel, {
+    listeners: {
+    		close: function(panel) {}
+    	}
+});

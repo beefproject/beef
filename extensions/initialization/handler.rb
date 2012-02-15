@@ -81,7 +81,6 @@ module BeEF
 
           # add a log entry for the newly hooked browser
           BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port.to_s}", "#{zombie.id}")
-
           # get and store browser name
           browser_name = get_param(@data['results'], 'BrowserName')
           if BeEF::Filters.is_valid_browsername?(browser_name)
@@ -273,6 +272,10 @@ module BeEF
           else
             self.err_msg "Invalid value for hasPersistentCookies returned from the hook browser's initial connection."
           end
+
+          # log a few info of newly hooked zombie in the console
+          print_info "New Hooked Browser [ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
+
 
           # Call autorun modules
           autorun = []
