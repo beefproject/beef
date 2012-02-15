@@ -135,3 +135,20 @@ file '/tmp/msf-test/msfconsole' do
   sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git /tmp/msf-test"
 end
 
+
+################################
+# Create Mac DMG File
+
+task :dmg do
+  puts "\nCreating Working Directory\n";
+  sh "mkdir dmg";
+  sh "mkdir dmg/BeEF";
+  sh "rsync * dmg/BeEF --exclude=dmg -r";
+  sh "ln -s /Applications dmg/";
+  puts "\nCreating DMG File\n"
+  sh "hdiutil create ./BeEF.dmg -srcfolder dmg -volname BeEF -ov";
+  puts "\nCleaning Up\n"
+  sh "rm -r dmg";
+  puts "\nBeEF.dmg created\n"
+end
+
