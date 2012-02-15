@@ -168,9 +168,22 @@ beef.net = {
         response.was_cross_domain = cross_domain;
         var start_time = new Date().getTime();
 
+        /*
+         * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
+         * This will turn POSTs into GETs for remote-domain requests.
+         */
+        if (method == "POST"){
+           $j.ajaxSetup({
+              dataType: dataType
+           });
+        }else{ //GET, HEAD, ...
+           $j.ajaxSetup({
+               dataType: 'script'
+           });
+        }
+
         //build and execute the request
         $j.ajax({type: method,
-            dataType: 'script', // this is required for bugs in IE so data can be transferred back to the server
             url: url,
             data: data,
             timeout: (timeout * 1000),
