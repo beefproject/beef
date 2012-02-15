@@ -53,8 +53,13 @@ Most of the contents of this file will eventually be added to /install.rb. In th
 	  
    4. Prerequisites (Mac OSX)
    
-      Make sure you have XCode installed - which provided the sqlite support BeEF needs
-      Sqlite support is native in MacOS 10.6+
+      - XCode: provides the sqlite support BeEF needs
+      
+      - Ruby 1.9
+      	To install RVM and Ruby 1.9.3 on Mac OS:  
+      	$ bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile 
+      	$ rvm install 1.9.3-p0 --with-gcc=clang
+		$ rvm use 1.9.3
       
 
    5. Install instructions
