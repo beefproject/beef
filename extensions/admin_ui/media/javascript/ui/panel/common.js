@@ -146,8 +146,8 @@ function get_dynamic_payload_details(payload, zombie) {
  * @param: {Object} the targeted Zombie.
  * @param: {Object} the status bar.
  */
-function genExisingExploitPanel(panel, command_id, zombie, sb) {
-    console.log("genExisingExploitPanel========" + zombie.session);
+function genExistingExploitPanel(panel, command_id, zombie, sb) {
+    console.log("genExistingExploitPanel========" + zombie.session);
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
@@ -299,7 +299,7 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
  * @param: {Object} the status bar.
  */
 function genNewExploitPanel(panel, command_module_id, command_module_name, zombie, sb) {
-
+    console.log("genNewExploitPanel========" + zombie.session);
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
@@ -307,7 +307,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 	
 	var xgrid = Ext.getCmp('command-module-grid-zombie-'+zombie.session);
 	var sb = Ext.getCmp('commands-bbar-zombie-'+zombie.session);
-	
+    panel.removeAll();
 	if(command_module_name == 'some special command module') {
 		//HERE we will develop specific panels for the command modules that require it.
 	} else {

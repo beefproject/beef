@@ -77,7 +77,7 @@ ZombieTab_Commands = function(zombie) {
 		
 		if(!command_id) return;
 		
-		genExisingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
+		genExistingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
 	});
 	
 	LoadCommandPanelEvent = function(node,keyclick) {
