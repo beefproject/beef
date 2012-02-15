@@ -133,7 +133,6 @@ function get_dynamic_payload_details(payload, zombie) {
 			});
 			
 			Ext.getCmp("payload-panel").doLayout();
-            console.log("========payloadPanel.doLayout==============");
 		}
 	})
 }
@@ -147,7 +146,6 @@ function get_dynamic_payload_details(payload, zombie) {
  * @param: {Object} the status bar.
  */
 function genExistingExploitPanel(panel, command_id, zombie, sb) {
-    console.log("genExistingExploitPanel========" + zombie.session);
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
@@ -299,7 +297,6 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
  * @param: {Object} the status bar.
  */
 function genNewExploitPanel(panel, command_module_id, command_module_name, zombie, sb) {
-    console.log("genNewExploitPanel========" + zombie.session);
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;

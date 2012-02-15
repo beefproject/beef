@@ -102,8 +102,6 @@ ZombieTab_Requester = function(zombie) {
 //            itemclick: function(item) {
 //                switch (item.id) {
 //                    case 'do-something':
-//                        console.log("history_panel_context_menu.rowIndex: " + history_panel_context_menu.rowIndex);
-//                        console.log("history_panel_context_menu.dbIndex: " + history_panel_context_menu.dbIndex);
 //                        break;
 //                }
 //            }

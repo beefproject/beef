@@ -139,16 +139,12 @@ ZombieTab_Commands = function(zombie) {
 			'afterrender' : function() {
 			},
 			'selectionchange' : function() {
-				console.log("selection changed");
 			},
 			'activate' : function() {
-				console.log("activate");
 			},
 			'select' : function() {
-				console.log("select");
 			},
 			'keyup' : function() {
-				console.log("Key up");
 			},
 			'render' : function(c) {
 				c.getEl().on('keyup', function() {
