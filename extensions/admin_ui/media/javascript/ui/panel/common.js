@@ -132,7 +132,8 @@ function get_dynamic_payload_details(payload, zombie) {
 				generate_form_input_field(Ext.getCmp("payload-panel"), input, null, false, zombie);
 			});
 			
-			Ext.getCmp("payload-panel").doLayout();				
+			Ext.getCmp("payload-panel").doLayout();
+            console.log("========payloadPanel.doLayout==============");
 		}
 	})
 }
@@ -146,6 +147,7 @@ function get_dynamic_payload_details(payload, zombie) {
  * @param: {Object} the status bar.
  */
 function genExisingExploitPanel(panel, command_id, zombie, sb) {
+    console.log("genExisingExploitPanel========" + zombie.session);
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
@@ -297,6 +299,7 @@ function genExisingExploitPanel(panel, command_id, zombie, sb) {
  * @param: {Object} the status bar.
  */
 function genNewExploitPanel(panel, command_module_id, command_module_name, zombie, sb) {
+
 	if(typeof panel != 'object') {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
@@ -327,9 +330,8 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				}
 				
 				module = module.command_modules[1];
-				panel.removeAll();
-				
-				var form = new Ext.form.FormPanel({
+
+                var form = new Ext.form.FormPanel({
 					url: submiturl,
 					
 					id: 'form-command-module-zombie-'+zombie.session,
@@ -394,7 +396,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					bodyBorder: false,
 				    height: 200,  
 					hidden: true,
-				    border: false //we can remove the border of the panel  
+				    border: false //we can remove the border of the panel
 				});
 				
 				Ext.each(module.Data, function(input){
@@ -402,7 +404,6 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				);
 				
 				form.add(payload_panel);
-				
 				panel.add(form);
 				panel.doLayout();
                 // hide the load mask after rendering of the config panel is done

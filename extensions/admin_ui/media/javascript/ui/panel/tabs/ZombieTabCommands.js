@@ -95,7 +95,7 @@ ZombieTab_Commands = function(zombie) {
 					nonce: Ext.get ("nonce").dom.value
 			}		
 			});
-			
+
 			genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
 			commands_statusbar.showValid('Ready');
 		}
@@ -189,4 +189,8 @@ ZombieTab_Commands = function(zombie) {
 	var sb = Ext.getCmp('command-module-bbar-zombie-'+zombie.session);
 };
 
-Ext.extend(ZombieTab_Commands, Ext.Panel, {});
+Ext.extend(ZombieTab_Commands, Ext.Panel, {
+    listeners: {
+    		close: function(panel) {}
+    	}
+});
