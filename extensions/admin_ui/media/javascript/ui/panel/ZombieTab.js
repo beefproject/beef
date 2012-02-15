@@ -21,27 +21,25 @@ ZombieTab = function(zombie) {
 	requester_tab = new ZombieTab_Requester(zombie);
     xssrays_tab =  new ZombieTab_XssRaysTab(zombie);
 	
-	//-------------------------------------------
 	ZombieTab.superclass.constructor.call(this, {
-		id: zombie.session,
+        id:"current-browser",
 		activeTab: 0,
 		loadMask: {msg:'Loading browser...'},
-		title: zombie.ip,
+        title: "Current Browser",
 		autoScroll: true,
-		closable: true,
+		closable: false,
 		viewConfig: {
 			forceFit: true,
 			type: 'fit'
 		},
 		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab]
 	});
-	
 };
 
 Ext.extend(ZombieTab, Ext.TabPanel, {
 	listeners: {
-		close: function(panel) {
-			panel.destroy();
-		}
+        activate: function(panel) {},
+        deactivate: function(panel) {},
+		close: function(panel) {}
 	}
 });

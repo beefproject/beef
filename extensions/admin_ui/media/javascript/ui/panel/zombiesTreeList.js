@@ -113,12 +113,13 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		//creates a new hooked browser tab when a hooked browser is clicked
 		click: function(node, e) {
 			if(!node.leaf) return;
-			
-			if(!mainPanel.get(node.attributes.session)) {
+
+            mainPanel.remove(mainPanel.getComponent('current-browser'));
+			if(!mainPanel.getComponent('current-browser')) {
 				mainPanel.add(new ZombieTab(node.attributes));
 			}
 			
-			mainPanel.activate(node.attributes.session);
+			mainPanel.activate(mainPanel.getComponent('current-browser'));
 		},
         //show the context menu when a HB is right-clicked
         contextmenu: function(node, event){
