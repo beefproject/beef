@@ -1,0 +1,12 @@
+#   detect software
+#
+beef:
+    module:
+        Detect_software:
+            enable: true
+            category: "Browser"
+            name: "Detect Software"
+            description: "Detects software installed on the host (IE only)"
+            authors: ["mh"]
+            target:
+                working: ["IE"]
