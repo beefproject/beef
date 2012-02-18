@@ -208,10 +208,13 @@ module BeEF
               case v
                 when String
                   if opts['browser'] == v
+                    # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+                    #   rating += 1
+                    # end
                     results << {'rating' => 2, 'const' => k}
                   end
                 when Hash
-                  if opts['browser'] == v.keys.first
+                  if opts['browser'] == v.keys.first or v.keys.first == BeEF::Core::Constants::Browsers::ALL
                     subv = v[v.keys.first]
                     rating = 1
                     #version check
@@ -241,13 +244,14 @@ module BeEF
                               rating += 1
                               match = true
                             elsif subv['os'] == BeEF::Core::Constants::Os::OS_ALL_UA_STR
-                              rating += 1
                               match = true
                             end
                           when Array
                             subv['os'].each{|p|
-                              if o == p or p == BeEF::Core::Constants::Os::OS_ALL_UA_STR
+                              if o == p
                                 rating += 1
+                                match = true
+                              elsif p == BeEF::Core::Constants::Os::OS_ALL_UA_STR
                                 match = true
                               end
                             }
@@ -257,18 +261,35 @@ module BeEF
                         break
                       end
                     end
-                    if rating != 1
+                    if rating > 0
+                      # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+                      #   rating += 1
+                      # end
                       results << {'rating' => rating, 'const' => k}
                     end
                   end
               end
               if v == BeEF::Core::Constants::Browsers::ALL
-                results << {'rating' => 1, 'const' => k}
+                rating = 1
+                if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+                  rating = 1
+                end
+                results << {'rating' => rating, 'const' => k}
               end
             }
           }
           if results.count > 0
-            return results.sort_by {|v| v['rating']}.last['const']
+            result = {}
+            results.each {|r|
+              if result == {}
+                result = {'rating' => r['rating'], 'const' => r['const']}
+              else
+                if r['rating'] > result['rating']
+                  result = {'rating' => r['rating'], 'const' => r['const']}
+                end
+              end
+            }
+            return result['const']
           else
             return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
           end
