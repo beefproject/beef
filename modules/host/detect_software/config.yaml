@@ -4,9 +4,10 @@ beef:
     module:
         Detect_software:
             enable: true
-            category: "Browser"
+            category: "Host"
             name: "Detect Software"
-            description: "Detects software installed on the host (IE only)"
+            description: "Detects software installed on the host (Internet Explorer only)"
             authors: ["mh"]
             target:
                 working: ["IE"]
+                not_working: ["All"]
