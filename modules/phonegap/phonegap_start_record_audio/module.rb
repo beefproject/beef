@@ -1,7 +1,7 @@
 # phonegap
 #
 
-class Start_record_audio < BeEF::Core::Command
+class Phonegap_start_record_audio < BeEF::Core::Command
     
   def self.options
     return [

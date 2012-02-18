@@ -2,7 +2,7 @@
 #
 beef:
     module:
-        Persistence:
+        phonegap_persistence:
             enable: true
             category: "Phonegap"
             name: "Persistence"

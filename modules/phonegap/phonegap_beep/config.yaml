@@ -2,11 +2,11 @@
 #
 beef:
     module:
-        Detect:
+        phonegap_beep:
             enable: true
             category: "Phonegap"
-            name: "Detect PhoneGap"
-            description: "Detects if the PhoneGap API is present."
+            name: "Beep"
+            description: "Make the phone beep"
             authors: ["mh"]
             target:
                 working: ["All"]

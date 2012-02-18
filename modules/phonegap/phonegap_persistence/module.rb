@@ -1,7 +1,7 @@
 # phonegap persistenece
 #
 
-class Persistence < BeEF::Core::Command
+class Phonegap_persistence < BeEF::Core::Command
 
   def self.options
 

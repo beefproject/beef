@@ -33,7 +33,7 @@
 #    - Local IP theft with Java is slow and may fail
 
 
-class Fingerprint_network < BeEF::Core::Command
+class Internal_network_fingerprinting < BeEF::Core::Command
   
   def self.options
     return [

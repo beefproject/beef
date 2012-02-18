@@ -2,11 +2,11 @@
 #
 beef:
     module:
-        Geo_locate:
+        phonegap_detect:
             enable: true
             category: "Phonegap"
-            name: "Geolocation"
-            description: "Geo locate your victim."
+            name: "Detect PhoneGap"
+            description: "Detects if the PhoneGap API is present."
             authors: ["mh"]
             target:
                 working: ["All"]

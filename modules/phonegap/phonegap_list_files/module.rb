@@ -1,7 +1,7 @@
 # phonegap
 #
 
-class List_files < BeEF::Core::Command
+class Phonegap_list_files < BeEF::Core::Command
   
     def self.options
         return [{

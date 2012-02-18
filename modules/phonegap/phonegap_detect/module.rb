@@ -1,7 +1,7 @@
 # phonegap
 #
 
-class Detect < BeEF::Core::Command
+class Phonegap_detect < BeEF::Core::Command
   
   def post_execute
     content = {}

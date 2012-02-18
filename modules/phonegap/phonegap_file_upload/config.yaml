@@ -2,11 +2,11 @@
 #
 beef:
     module:
-        Start_record_audio:
+        phonegap_file_upload:
             enable: true
             category: "Phonegap"
-            name: "Start Recording Audio"
-            description: "Start recording audio."
+            name: "Upload File"
+            description: "Upload files from device to a server of your choice."
             authors: ["mh"]
             target:
                 working: ["All"]

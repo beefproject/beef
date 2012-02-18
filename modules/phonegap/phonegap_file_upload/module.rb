@@ -1,7 +1,7 @@
 # phonegap
 #
 
-class File_upload < BeEF::Core::Command
+class Phonegap_file_upload < BeEF::Core::Command
   
     def self.options
         return [{

@@ -2,11 +2,11 @@
 #
 beef:
     module:
-        Beep:
+        phonegap_geo_locate:
             enable: true
             category: "Phonegap"
-            name: "Beep"
-            description: "Make the phone beep"
+            name: "Geolocation"
+            description: "Geo locate your victim."
             authors: ["mh"]
             target:
                 working: ["All"]

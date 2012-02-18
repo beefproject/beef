@@ -2,11 +2,11 @@
 #
 beef:
     module:
-        List_files:
+        phonegap_stop_record_audio:
             enable: true
             category: "Phonegap"
-            name: "List Files"
-            description: "Examine device file system."
+            name: "Stop Recording Audio"
+            description: "Stop recording audio."
             authors: ["mh"]
             target:
                 working: ["All"]

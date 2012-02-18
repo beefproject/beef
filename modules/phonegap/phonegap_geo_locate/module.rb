@@ -1,7 +1,7 @@
 # phonegap
 #
 
-class Beep < BeEF::Core::Command
+class Phonegap_geo_locate < BeEF::Core::Command
 
    def post_execute
     content = {}

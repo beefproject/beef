@@ -15,7 +15,7 @@
 #
 beef:
     module:
-        fingerprint_network:
+        internal_network_fingerprinting:
             enable: true
             category: "Network"
             name: "Fingerprint Network"
