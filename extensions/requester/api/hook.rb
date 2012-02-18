@@ -65,16 +65,16 @@ module BeEF
 
             #@note: retrieve HTTP headers values needed later, and the \r\n that indicates the start of the post-data (if any)
             req_parts.each_with_index do |value, index|
-              if value.match(/^Content-Length/)
-                 @content_length = Integer(req_parts[index].split(/: /)[1])
+              if value.match(/^Content-Length:\s+(\d+)/)
+                 @content_length = Integer(req_parts[index].split(/:\s+/)[1])
               end
 
               if value.match(/^Host/)
-                 @host = req_parts[index].split(/: /)[1].split(/:/)[0]
-                 @port = req_parts[index].split(/: /)[1].split(/:/)[1]
+                 @host = req_parts[index].split(/:\s+/)[1].split(/:/)[0]
+                 @port = req_parts[index].split(/:\s+/)[1].split(/:/)[1]
               end
 
-              if value.eql?("") or value.strip.empty?# this will be the CRLF (before HTTP request body)
+              if value.eql?("") or value.strip.empty? # this will be the CRLF (before HTTP request body)
                 @post_data_index = index
               end
             end
@@ -111,7 +111,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
-                  'host' => @host.strip,
+                  'host' => @host,
                   'port' => @port,
                   'data' => @post_data,
                   'uri' => uri,
@@ -123,7 +123,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
-                  'host' => @host.strip,
+                  'host' => @host,
                   'port' => @port,
                   'uri' => uri,
                   'headers' => headers,

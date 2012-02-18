@@ -37,13 +37,19 @@ module BeEF
         def handle_request socket
           request_line = socket.readline
 
+          # HTTP method # defaults to GET
           method = request_line[/^\w+/]
-          url = request_line[/^\w+\s+(\S+)/, 1]
+
+          # HTTP version # defaults to 1.0
           version = request_line[/HTTP\/(1\.\d)\s*$/, 1]
+          version = "1.0" if version.nil?
+
+          # url # host:port/path
+          url = request_line[/^\w+\s+(\S+)/, 1]
 
           # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
           tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
-          uri = tolerant_parser.parse(url)
+          uri = tolerant_parser.parse(url.to_s)
 
           raw_request = request_line
           content_length = 0
