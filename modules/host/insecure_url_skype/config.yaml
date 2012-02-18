@@ -16,7 +16,7 @@
 beef:
     module:
         insecure_url_skype:
-            enable: true
+            enable: false
             category: "Host"
             name: "Make Skype Call (Skype)"
             description: "This module will force the browser to attempt a skype call. It will exploit the insecure handling of URL schemes<br><br>The protocol handler used will be: skype."

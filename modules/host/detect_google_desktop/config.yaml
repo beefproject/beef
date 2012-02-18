@@ -22,4 +22,7 @@ beef:
             description: "This module attempts to detect Google Desktop running on the default port 4664."
             authors: ["bcoles"]
             target:
+                not_working:
+                    ALL:
+                        os: ["iPhone"]
                 working: ["ALL"]

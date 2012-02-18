@@ -22,5 +22,8 @@ beef:
             description: "This module will retrieve basic information about the host system using an unsigned Java Applet. <br/><br/>The details will include:<br/> <ul><li> - Operating system details</li><li> - Java VM details</li><li> - NIC names and IP</li><li> - Number of processors</li><li> - Amount of memory</li><li> - Screen display modes</li></ul>"
             authors: ["bcoles", "antisnatchor"]
             target:
+                not_working:
+                    ALL:
+                        os: ["iPhone"]
                 working: ["O", "FF", "S", "IE"]
                 user_notify: ["C"]
