@@ -574,8 +574,7 @@ beef.browser = {
             'control':'ShockwaveFlash.ShockwaveFlash',
             'return': function(control) {
                 version = control.getVariable('$version').substring(4);
-                version = version.split(',');
-                return 'Flash Player v'+parseFloat(version[0]+'.'+version[1]);
+                return 'Flash Player v'+version.replace(/,/g, ".");
             }},
             'Quicktime':{
             'control': 'QuickTime.QuickTime',
