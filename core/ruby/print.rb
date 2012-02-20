@@ -31,10 +31,10 @@ end
 # @note This function will only print messages if the debug flag is set to true
 # @todo Once the console extension has been merged into the core, remove the extension checks. 
 def print_debug(s)
-    config = BeEF::Core::Configuration.instance
-    if config.get('beef.debug') || (BeEF::Extension.is_loaded('console') && BeEF::Extension::Console.verbose?)
-        puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s.to_s
-    end
+  config = BeEF::Core::Configuration.instance
+  if config.get('beef.debug') || (BeEF::Extension.is_loaded('console') && BeEF::Extension::Console.verbose?)
+    puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s.to_s
+  end
 end
 
 # Function used to print successes to the console
@@ -49,14 +49,14 @@ end
 def print_more(s)
   time = Time.now.localtime.strftime("[%k:%M:%S]")
   lines = s.split("\n")
-  
-  lines.each_with_index do |line, index| 
+
+  lines.each_with_index do |line, index|
     if ((index+1) == lines.size)
       puts "#{time}    |_  #{line}"
     else
       puts "#{time}    |   #{line}"
     end
-  end 
+  end
 end
 
 # Function used to print over the current line
