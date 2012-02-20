@@ -14,7 +14,7 @@ class TC_login < Test::Unit::TestCase
     session.fill_in 'pass', :with => 'beef'
     BeefTest.save_screenshot(session)
     session.click_button('Login')
-    sleep 2.0
+    sleep 20.0
     session.has_content?('logout')
     BeefTest.save_screenshot(session)
   end
