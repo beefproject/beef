@@ -7,12 +7,14 @@ class TC_login < Test::Unit::TestCase
   def test_log_in
     session = Capybara::Session.new(:selenium)
     session.visit(ATTACK_URL)
+    sleep 2.0
     BeefTest.save_screenshot(session)
     session.has_content?('BeEF Authentication')
     session.fill_in 'user', :with => 'beef'
     session.fill_in 'pass', :with => 'beef'
     BeefTest.save_screenshot(session)
     session.click_button('Login')
+    sleep 2.0
     session.has_content?('logout')
     BeefTest.save_screenshot(session)
   end
