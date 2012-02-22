@@ -15,35 +15,17 @@
 #
 require 'test/unit'
 
-class TC_Requester < Test::Unit::TestCase
+class TC_EventLogger < Test::Unit::TestCase
 
   def setup
     $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
     $root_dir = File.expand_path('../../../../', __FILE__)
   end
 
-  def test_requester
-    assert(true)
-  end
-  def test_delete
-    assert(true)
-  end
-  def test_put
-    assert(true)
-  end
-  def test_head
+  def test_event_logger
     assert(true)
   end
   def test_no_params
-    assert(true)
-  end
-  def test_zero_values
-    assert(true)
-  end
-  def test_one_values
-    assert(true)
-  end
-  def test_neg_one_values
     assert(true)
   end
 

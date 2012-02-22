@@ -25,5 +25,26 @@ class TC_Proxy < Test::Unit::TestCase
   def test_proxy
     assert(true)
   end
+  def test_delete
+    assert(true)
+  end
+  def test_put
+    assert(true)
+  end
+  def test_head
+    assert(true)
+  end
+  def test_no_params
+    assert(true)
+  end
+  def test_zero_values
+    assert(true)
+  end
+  def test_one_values
+    assert(true)
+  end
+  def test_neg_one_values
+    assert(true)
+  end
 
 end
