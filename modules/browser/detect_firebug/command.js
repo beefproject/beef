@@ -14,8 +14,8 @@
 //   limitations under the License.
 //
 beef.execute(function() {
-	var result = "Not Installed";
-	if (window.console && (window.console.firebug || window.console.exception)) result = "Installed";
+	var result = "Disabled or not installed";
+	if (window.console && (window.console.firebug || window.console.exception)) result = "Enabled";
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "firebug="+result);
 });
 

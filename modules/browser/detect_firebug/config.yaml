@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Detect FireBug"
-            description: "This module checks if the Mozilla Firefox Firebug extension is installed."
+            description: "This module checks if the Mozilla Firefox Firebug extension is being use to inspect the current window."
             authors: ["bcoles"]
             target:
                  working: ["FF"]
