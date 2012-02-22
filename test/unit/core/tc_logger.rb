@@ -15,14 +15,14 @@
 #
 require 'test/unit'
 
-class TC_EventLogger < Test::Unit::TestCase
+class TC_Logger < Test::Unit::TestCase
 
   def setup
     $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
     $root_dir = File.expand_path('../../../../', __FILE__)
   end
 
-  def test_event_logger
+  def test_logger
     assert(true)
   end
 
