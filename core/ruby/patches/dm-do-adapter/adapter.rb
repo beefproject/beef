@@ -55,27 +55,27 @@ module DataMapper
 
       def normalized_uri
         @normalized_uri ||=
-          begin
-            keys = [
-              :adapter, :user, :password, :host, :port, :path, :fragment,
-              :scheme, :query, :username, :database ]
-            query = DataMapper::Ext::Hash.except(@options, keys)
-            query = nil if query.empty?
+            begin
+              keys = [
+                  :adapter, :user, :password, :host, :port, :path, :fragment,
+                  :scheme, :query, :username, :database ]
+              query = DataMapper::Ext::Hash.except(@options, keys)
+              query = nil if query.empty?
 
-            # Better error message in case port is no Numeric value
-            port = @options[:port].nil? ? nil : @options[:port].to_int
+              # Better error message in case port is no Numeric value
+              port = @options[:port].nil? ? nil : @options[:port].to_int
 
-            DataObjects::URI.new({
-              :scheme     => @options[:adapter],
-              :user       => @options[:user] || @options[:username],
-              :password   => @options[:password],
-              :host       => @options[:host],
-              :port       => port,
-              :path       => @options[:path] || @options[:database],
-              :query      => query,
-              :fragment   => @options[:fragment]
-            }).freeze
-          end
+              DataObjects::URI.new({
+                                       :scheme     => @options[:adapter],
+                                       :user       => @options[:user] || @options[:username],
+                                       :password   => @options[:password],
+                                       :host       => @options[:host],
+                                       :port       => port,
+                                       :path       => @options[:path] || @options[:database],
+                                       :query      => query,
+                                       :fragment   => @options[:fragment]
+                                   }).freeze
+            end
       end
 
     end
