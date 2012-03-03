@@ -17,7 +17,7 @@ class Linksys_wrt54g_csrf < BeEF::Core::Command
   
   def self.options
     return [
-        {'name' => 'base', 'ui_label' => 'Router web root', 'value' => 'http://arbitrary:admin@192.168.1.1/'}, 
+        {'name' => 'base', 'ui_label' => 'Router web root', 'value' => 'http://192.168.1.1/'}, 
         {'name' => 'port', 'ui_label' => 'Desired port', 'value' => '31337'}, 
         {'name' => 'password', 'ui_label' => 'Desired password', 'value' => '__BeEF__'}
     ]

