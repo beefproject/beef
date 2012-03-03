@@ -56,7 +56,7 @@ task :msf => ["install", "msf_install"]  do
 end
 
 task :install do
-  sh "export BEEF_TEST=true;bundle install > /dev/null"
+  sh "export BEEF_TEST=true;bundle install"
 end
 
 ################################
