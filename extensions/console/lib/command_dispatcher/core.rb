@@ -31,6 +31,7 @@ class Core
       "back"    => "Move back from the current context",
       "exit"    => "Exit the console",
       "help"    => "Help menu",
+      "irb"     => "Drops into an interactive Ruby environment",
       "jobs"    => "Print jobs",
       "online"  => "List online hooked browsers",
       "offline" => "List previously hooked browsers",
@@ -235,6 +236,28 @@ class Core
   def cmd_target_help(*args)
     print_status("Target a particular online, hooked browser")
     print_status("  Usage: target <id>")
+  end
+
+  def cmd_irb(*args)
+    @@bare_opts.parse(args) {|opt, idx, val|
+      case opt
+        when "-h"
+          cmd_irb_help
+          return false
+        end
+      }
+
+    print_status("Starting IRB shell...\n")
+
+    begin
+      Rex::Ui::Text::IrbShell.new(binding).run
+    rescue
+      print_error("Error during IRB: #{$!}\n\n#{$@.join("\n")}")
+    end
+  end
+
+  def cmd_irb_help(*args)
+    print_status("Load the IRB, Interative Ruby Shell")
   end
   
   def cmd_review(*args)
