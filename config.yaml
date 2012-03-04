@@ -16,7 +16,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.4.3.2-alpha'
+    version: '0.4.3.3-alpha'
     debug: false
 
     restrictions:
