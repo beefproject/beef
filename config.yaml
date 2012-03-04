@@ -23,7 +23,7 @@ beef:
         # subnet of browser ip addresses that can hook to the framework 
         permitted_hooking_subnet: "0.0.0.0/0"
         # subnet of browser ip addresses that can connect to the UI 
-        # permitted_ui_subnet = "127.0.0.1/32"
+        # permitted_ui_subnet: "127.0.0.1/32"
         permitted_ui_subnet: "0.0.0.0/0"
     
     http:
