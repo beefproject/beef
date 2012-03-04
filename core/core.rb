@@ -44,20 +44,8 @@ require 'core/main/crypto'
 require 'core/main/logger'
 require 'core/main/migration'
 
-# @note Include http server functions for beef
-require 'core/main/server'
+# @note Include the command line parser and the banner printer
+require 'core/main/console/commandline'
+require 'core/main/console/banners'
 
-require 'core/main/handlers/modules/beefjs'
-require 'core/main/handlers/modules/command'
-
-require 'core/main/handlers/commands'
-require 'core/main/handlers/hookedbrowsers'
-
-# @note Include the network stack
-require 'core/main/network_stack/handlers/dynamicreconstruction'
-require 'core/main/network_stack/assethandler'
-require 'core/main/network_stack/api'
-
-# @note Include the distributed engine
-require 'core/main/distributed_engine/models/rules'
 

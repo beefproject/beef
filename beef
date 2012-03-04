@@ -41,15 +41,26 @@ end
 # @note Require core loader's
 require 'core/loader'
 
-# @note Starts configuration system
-config = BeEF::Core::Configuration.instance
+# @note Initialize the Configuration object. Eventually loads a different config.yaml if -c flag was passed.
+if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
+  config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
+else
+  config = BeEF::Core::Configuration.new("#{$root_dir}/#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+end
+
+# @note After the BeEF core is loaded, bootstrap the rest of the framework internals
+require 'core/bootstrap'
 
 # @note Loads enabled extensions
 BeEF::Extensions.load
 
+# @note Prints the BeEF ascii art if the -a flag was passed
+if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
+  BeEF::Core::Console::Banners.print_ascii_art
+end
+
 # @note Prints BeEF welcome message
-#BeEF::Extension::Console::Banners.print_ascii_art
-BeEF::Extension::Console::Banners.print_welcome_msg
+BeEF::Core::Console::Banners.print_welcome_msg
 
 # @note Loads enabled modules
 BeEF::Modules.load
@@ -75,8 +86,7 @@ case config.get("beef.database.driver")
 end
 
 # @note Resets the database if the -x flag was passed
-# @todo Change reference from Extension::Console to Core::Console once the console extension is merged with the core
-if BeEF::Extension::Console.resetdb?
+if BeEF::Core::Console::CommandLine.parse[:resetdb]
   print_info 'Resetting the database for BeEF.'
   DataMapper.auto_migrate!
 else
@@ -94,10 +104,10 @@ http_hook_server = BeEF::Core::Server.instance
 http_hook_server.prepare
 
 # @note Prints information back to the user before running the server
-BeEF::Extension::Console::Banners.print_loaded_extensions
-BeEF::Extension::Console::Banners.print_loaded_modules
-BeEF::Extension::Console::Banners.print_network_interfaces_count
-BeEF::Extension::Console::Banners.print_network_interfaces_routes
+BeEF::Core::Console::Banners.print_loaded_extensions
+BeEF::Core::Console::Banners.print_loaded_modules
+BeEF::Core::Console::Banners.print_network_interfaces_count
+BeEF::Core::Console::Banners.print_network_interfaces_routes
 
 # @note Call the API method 'pre_http_start'
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)

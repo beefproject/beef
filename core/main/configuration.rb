@@ -19,24 +19,31 @@ module BeEF
 
     class Configuration
 
-      include Singleton
+      attr_accessor :config
+
+      # antisnatchor: still a singleton, but implemented by hand because we want to have only one instance
+      # of the Configuration object while having the possibility to specify a parameter to the constructor.
+      # This is  why we don't use anymore the default Ruby implementation -> include Singleton
+      def self.instance()
+        return @@instance
+      end
 
       # Loads the default configuration system
       # @param [String] configuration_file Configuration file to be loaded, by default loads $root_dir/config.yaml
-      def initialize(configuration_file="#{$root_dir}/config.yaml")
-        # argument type checking
-        raise Exception::TypeError, '"configuration_file" needs to be a string' if not configuration_file.string?
-        # test to make sure file exists
-        raise Exception::TypeError, 'Configuration yaml cannot be found' if not File.exist?(configuration_file)
+      def initialize(config)
+        raise Exception::TypeError, '"config" needs to be a string' if not config.string?
+        raise Exception::TypeError, 'Configuration yaml cannot be found' if not File.exist?(config)
         begin
           #open base config
-          @config = self.load(configuration_file)
+          @config = self.load(config)
           # set default value if key? does not exist
           @config.default = nil
+          @@config = config
         rescue Exception => e
           print_error "Fatal Error: cannot load configuration file"
           print_debug e
         end
+        @@instance = self
       end
 
       # Loads yaml file

@@ -39,10 +39,3 @@ require 'core/settings'
 
 # @note Include the core of BeEF
 require 'core/core'
-
-# @note Include helpers
-require 'core/module'
-require 'core/modules'
-require 'core/extension'
-require 'core/extensions'
-require 'core/hbmanager'

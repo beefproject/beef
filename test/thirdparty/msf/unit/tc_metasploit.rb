@@ -41,6 +41,7 @@ class TC_Metasploit < Test::Unit::TestCase
   # Load the config for testing
   #
   def load_config
+    BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
     BeEF::Core::Configuration.instance.load_extensions_config
     @config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
   end

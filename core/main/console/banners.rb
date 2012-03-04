@@ -14,7 +14,7 @@
 #   limitations under the License.
 #
 module BeEF
-module Extension
+module Core
 module Console
 
 module Banners
@@ -25,8 +25,8 @@ module Banners
     # Prints BeEF's ascii art
     #
     def print_ascii_art
-        if File.exists?('extensions/console/beef.ascii')
-            File.open('extensions/console/beef.ascii', 'r') do |f|
+        if File.exists?('core/main/console/beef.ascii')
+            File.open('core/main/console/beef.ascii', 'r') do |f|
                 while line = f.gets
                     puts line 
                 end

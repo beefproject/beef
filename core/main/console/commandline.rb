@@ -14,7 +14,7 @@
 #   limitations under the License.
 #
 module BeEF
-  module Extension
+  module Core
     module Console
       #
       # This module parses the command line argument when running beef.
@@ -24,6 +24,8 @@ module BeEF
         @options = Hash.new
         @options[:verbose] = false
         @options[:resetdb] = false
+        @options[:ascii_art] = false
+        @options[:ext_config] = ""
 
         @already_parsed = false
 
@@ -35,19 +37,27 @@ module BeEF
           return @options if @already_parsed
 
           begin
-          optparse = OptionParser.new do |opts|
-            opts.on('-x', '--reset', 'Reset the database') do
-              @options[:resetdb] = true
+            optparse = OptionParser.new do |opts|
+              opts.on('-x', '--reset', 'Reset the database') do
+                @options[:resetdb] = true
+              end
+
+              opts.on('-v', '--verbose', 'Display debug information') do
+                @options[:verbose] = true
+              end
+
+              opts.on('-a', '--ascii_art', 'Prints BeEF ascii art') do
+                @options[:ascii_art] = true
+              end
+
+              opts.on('-c', '--config FILE', 'Load a different configuration file: if it\'s called custom-config.yaml, git automatically ignores it.') do |f|
+                @options[:ext_config] = f
+              end
             end
 
-            opts.on('-v', '--verbose', 'Display debug information') do
-              @options[:verbose] = true
-            end
-          end
-
-          optparse.parse!
-          @already_parsed = true
-          @options
+            optparse.parse!
+            @already_parsed = true
+            @options
           rescue OptionParser::InvalidOption => e
             puts "Invalid command line option provided. Please run beef --help"
             exit 1
