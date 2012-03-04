@@ -22,6 +22,7 @@ require './core/filter/tc_command'
 require './core/tc_loader'
 require './core/tc_core'
 require './core/tc_api'
+require './core/tc_bootstrap'
 require './core/tc_modules'
 require './core/tc_social_engineering'
 require './core/tc_autorun'
@@ -44,6 +45,7 @@ class TS_BeefTests
     suite << TC_Filter.suite
     suite << TC_Loader.suite
     suite << TC_Core.suite
+    suite << TC_Bootstrap.suite
     suite << TC_Api.suite
     suite << TC_Modules.suite
     suite << TC_Filesystem.suite
@@ -65,4 +67,3 @@ class TS_BeefTests
 end
 
 Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
-
