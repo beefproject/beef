@@ -23,10 +23,8 @@ public class getGPSLocation extends Applet{
 
 	public void init() {
 		if (isWindows()) {
-			//System.out.println("This is Windows Machine");
 			result=getWindows();
 		} else if (isMac()) {
-			//System.out.println("This is Mac Machine");
 			result=getMac();
 		} else {
 			//System.out.println("Your OS is not support!!");
@@ -34,7 +32,6 @@ public class getGPSLocation extends Applet{
 	}
 	
 	public static String getWindows(){
-			String result = null;
             try {  
 			
 		ArrayList ssidList = new ArrayList();
@@ -76,7 +73,6 @@ public class getGPSLocation extends Applet{
 
 		int arraySize=ssidList.size();
 		if(arraySize==0){
-			//System.out.println("I don't know where the target is");
 			result="\nI don't know where the target is";
 		}
 		else{
@@ -89,9 +85,9 @@ public class getGPSLocation extends Applet{
 	}
 	
 	public static String googleLookup(ArrayList bssidList,ArrayList ssidList,ArrayList rssiList){
+	    String queryString = "https://maps.googleapis.com/maps/api/browserlocation/json?browser=firefox&sensor=true";
 	    try {  
 			int j=0;
-			String queryString = "https://maps.googleapis.com/maps/api/browserlocation/json?browser=firefox&sensor=true";
 			while(j<ssidList.size()){
 				queryString+="&wifi=mac:";
 				queryString+=bssidList.get(j);
@@ -104,74 +100,14 @@ public class getGPSLocation extends Applet{
 				queryString+="ss:";
 				queryString+=rssiList.get(j);
 				j++;
-			}
-					
-			//Get geocoordinates / Longitude and Latitude
-			String geoCoordinates = null;		
-
-			URL url = new URL(queryString);
-			URLConnection urlc = url.openConnection();
-			urlc.setRequestProperty("User-Agent", "Mozilla 5.0 (Windows; U; "+ "Windows NT 5.1; en-US; rv:1.8.0.11) ");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(urlc.getInputStream()));		
-			for (String output; (output = reader.readLine()) != null;) {
-				//System.out.println(output);
-				if(output.indexOf("18000.0")>0){
-					result+="\nLocation is not accurate\n";
-					//System.out.println("Location is not accurate\n");
-				}
-				else{	
-					if(output.indexOf("lat")>0){
-						output = output.replace("\"lat\" : ","");
-						output = output.replaceAll("^\\s+", "");
-						geoCoordinates = output;
-						result+="\nLatitude: ";
-						result+=output;
-						//System.out.println("Latitude: "+output);
-					}
-					if(output.indexOf("lng")>0){
-						output = output.replace("\"lng\" : ","");
-						output = output.replaceAll("^\\s+", "");
-						geoCoordinates += output;
-						result+="\nLongitude: ";
-						result+=output;
-						//System.out.println("Longitude: "+output);
-					}
-				}
-				
-			}
-			
-		
-			//Reverse geocoordinates to street address
-			String reverseGeo = "https://maps.googleapis.com/maps/geo?q="+geoCoordinates+"&output=json&sensor=true_or_false";
-			
-			//System.out.println(reverseGeo);
-
-				URL url1 = new URL(reverseGeo);
-				URLConnection urlc1 = url1.openConnection();
-				urlc1.setRequestProperty("User-Agent", "Mozilla 5.0 (Windows; U; "+ "Windows NT 5.1; en-US; rv:1.8.0.11) ");
-			BufferedReader reader1 = new BufferedReader(new InputStreamReader(urlc1.getInputStream()));		
-			for (String output1; (output1 = reader1.readLine()) != null;) {
-				if(output1.indexOf("address")>0){
-					output1 = output1.replace("\"address\": ",""); 
-					output1 = output1.replace("\",",""); 
-					output1 = output1.replace("\"",""); 
-					output1 = output1.replaceAll("^\\s+", "");
-					result+="\nAddress is ";
-					result+=output1;
-					//System.out.println("Address is "+output1);
-				}
 			}		
-			String mapAddress = "http://maps.google.com/maps?q="+geoCoordinates+"+%28You+are+located+here%29&iwloc=A&hl=en";
-			result+="\n"+mapAddress;
-			//System.out.println("\n"+mapAddress);
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
 		}
-		return result;		
+		return queryString;		
 	}
 	
 	public static String getMac(){
-		String result = null;	
         try {  
                 Process p = Runtime.getRuntime().exec("/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport scan");  
                 BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));  
@@ -205,11 +141,9 @@ public class getGPSLocation extends Applet{
 			int arraySize=ssidList.size();
 			if(arraySize==0){
 				result="\nI don't know where the target is";
-				//System.out.println("I don't know where the target is");
 			}
 			else{
 				result=googleLookup(bssidList,ssidList,rssiList);
-
 			}
 		} catch (Exception e) { 
 			System.out.println(e.getMessage());
