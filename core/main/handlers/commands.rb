@@ -55,9 +55,11 @@ module Handlers
       beefhook = get_param(@data, 'beefhook')
       (print_error "BeEFhook is invalid";return) if not BeEF::Filters.is_valid_hook_session_id?(beefhook)
 
+	  result = get_param(@data, 'results')
+
       # @note create the command module to handle the response
       command = @kclass.new(BeEF::Module.get_key_by_class(@kclass))  
-      command.build_callback_datastore(@http_params, @http_header) 
+      command.build_callback_datastore(@http_params, @http_header, result, command_id, beefhook) 
       command.session_id = beefhook 
       if command.respond_to?(:post_execute)
         command.post_execute

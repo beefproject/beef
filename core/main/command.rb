@@ -108,7 +108,7 @@ module BeEF
       # Sets the datastore for the callback function. This function is meant to be called by the CommandHandler
       # @param [Hash] http_params HTTP parameters
       # @param [Hash] http_headers HTTP headers
-      def build_callback_datastore(http_params, http_headers)
+      def build_callback_datastore(http_params, http_headers, result, command_id, beefhook)
         @datastore = {'http_headers' => {}} # init the datastore
 
         # get, check and add the http_params to the datastore
@@ -126,6 +126,9 @@ module BeEF
           (print_error 'http_header_value is invalid';return) if not BeEF::Filters.is_valid_command_module_datastore_param?(http_header_value)
           @datastore['http_headers'][http_header_key] = http_header_value # add the checked key and value to the datastore
         }
+        @datastore['results'] = result
+        @datastore['cid'] = command_id
+        @datastore['beefhook'] = beefhook		
       end
 
       # Returns the output of the command. These are the actual instructions sent to the browser.
