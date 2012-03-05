@@ -36,3 +36,4 @@ puts "\nRun bundler in your BeEF folder: bundle install"
 
 puts "\nRun BeEF: ./beef"
 
+#Testing fork regroup
