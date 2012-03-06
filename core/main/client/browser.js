@@ -499,11 +499,33 @@ beef.browser = {
 	 *
 	 * @example: if(beef.browser.hasJava()) { ... }
 	 */
+ 	
 	hasJava: function() {
 		if(!this.type().IE && window.navigator.javaEnabled && window.navigator.javaEnabled()) {
-			return true;
-		}
-		return false;
+			//If chrome detected, return false.  Do not run java applet
+	                if(beef.browser.isC()){
+				return false;
+
+			}
+			
+			else{
+				//Create java applet here and test for execution
+				var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/demos/checkJava.jar';
+    				var applet_id = 'checkJava';
+    				var applet_name = 'checkJava';
+    				var output;
+    				beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava' ,
+  					null, applet_archive, null);
+    				output = document.Microsoft_Corporation.getInfo();
+				beef.dom.detachApplet('checkJava');
+				if(output=1){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}	
+		}return false;
 	},
 	
 	/**
