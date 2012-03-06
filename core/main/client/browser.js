@@ -525,7 +525,7 @@ beef.browser = {
 					return false;
 				}
 			}	
-		}
+		}return false;
 	},
 	
 	/**
