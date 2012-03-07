@@ -505,7 +505,10 @@ beef.browser = {
 			// if Chrome is detected, return true without injecting the unsigned applet.
             // latest versions of Chrome requires manual user intervention even with unsigned applets,
             // so basically we don't want to alert the user after the initial hook.
-	        if(beef.browser.isC()){
+
+            //todo antisnatchor: this is a temporal fix, otherwise Safari is not-hooked.
+            //todo the applet in safari takes a few seconds to load.
+	        if(beef.browser.isC() && beef.browser.isS()){
 				return true;
 
 			}else{
