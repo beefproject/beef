@@ -21,6 +21,8 @@
 beef.net.local = {
 	
 	sock: false,
+	checkJava: false,
+	hasJava: false,
 	
 	/**
 	 * Initializes the java socket. We have to use this method because
@@ -29,16 +31,30 @@ beef.net.local = {
 	 * is invalid:
 	 * sock: new java.net.Socket();
 	 */
+
 	initializeSocket: function() {
-		if(! beef.browser.hasJava()) return -1;
-		
-		try {
-			this.sock = new java.net.Socket();
-		} catch(e) {
-			return -1;
+		if(this.checkJava){	
+			if(!beef.browser.hasJava()) {
+				this.checkJava=True;
+				this.hasJava=False;
+				return -1;
+			}else{
+				this.checkJava=True;
+				this.hasJava=True;
+				return 1;
+			}
 		}
-		
-		return 1;
+		else{
+			if(!this.hasJava) return -1;
+			else{	
+				try {
+					this.sock = new java.net.Socket();
+				} catch(e) {
+					return -1;
+				}
+				return 1;
+			}
+		}
 	},
 	
 	/**
@@ -47,7 +63,7 @@ beef.net.local = {
 	 * @error: return -1 if the internal ip cannot be retrieved.
 	 */
 	getLocalAddress: function() {
-		if(! beef.browser.hasJava()) return false;
+		if(!this.hasJava) return false;
 		
 		this.initializeSocket();
 		
@@ -65,7 +81,7 @@ beef.net.local = {
 	 * @error: return -1 if the hostname cannot be retrieved.
 	 */
 	getLocalHostname: function() {
-		if(! beef.browser.hasJava()) return false;
+		if(!this.hasJava) return false;
 		
 		this.initializeSocket();
 		
