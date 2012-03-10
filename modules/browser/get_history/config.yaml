@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Browser"
             name: "History Extraction"
-            description: "This module will retrieve the session cookie from the current page."
+            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done at http://lcamtuf.coredump.cx/cachetime/"
             authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
             target:
-                working: ["FF"]
+                working: ["FF","IE"]

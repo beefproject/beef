@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 class Get_history < BeEF::Core::Command
 
   def post_execute
