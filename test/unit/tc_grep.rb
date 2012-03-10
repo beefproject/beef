@@ -27,7 +27,7 @@ class TC_Grep < Test::Unit::TestCase
         end
       end
     end
-    
+
   end
 
 end

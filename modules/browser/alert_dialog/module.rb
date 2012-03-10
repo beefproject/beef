@@ -14,23 +14,23 @@
 #   limitations under the License.
 #
 class Alert_dialog < BeEF::Core::Command
-  
- # set and return all options for this module
+
+  # set and return all options for this module
   def self.options
     return [{
-      'name' => 'text', 
-      'description' => 'Sends an alert dialog to the victim', 
-      'type' => 'textarea',
-      'ui_label' => 'Alert text',
-      'value' => 'BeEF Alert Dialog',
-      'width' => '400px' 
-      }]
+                'name' => 'text',
+                'description' => 'Sends an alert dialog to the victim',
+                'type' => 'textarea',
+                'ui_label' => 'Alert text',
+                'value' => 'BeEF Alert Dialog',
+                'width' => '400px'
+            }]
   end
 
-  def post_execute 
+  def post_execute
     content = {}
     content['User Response'] = "The user clicked the 'OK' button when presented with an alert box."
     save content
   end
-  
+
 end

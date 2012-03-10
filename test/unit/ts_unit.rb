@@ -55,7 +55,7 @@ class TS_BeefTests
     suite << TC_Xssrays.suite
     suite << TC_Vnc.suite
     suite << TC_Obfuscation.suite
-	suite << TC_Logger.suite
+    suite << TC_Logger.suite
     suite << TC_IpecTunnel.suite
     suite << TC_Requester.suite
     suite << TC_Proxy.suite
