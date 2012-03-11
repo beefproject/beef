@@ -40,3 +40,7 @@ require 'core/modules'
 require 'core/extension'
 require 'core/extensions'
 require 'core/hbmanager'
+
+## @note Include RESTful API
+require 'core/main/rest/handlers/rest'
+require 'core/main/rest/api'
