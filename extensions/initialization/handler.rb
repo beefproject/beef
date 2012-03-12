@@ -193,14 +193,6 @@ module BeEF
             self.err_msg "Invalid window size returned from the hook browser's initial connection."
           end
 
-          # get and store the yes|no value for HasJava
-          has_java = get_param(@data['results'], 'HasJava')
-          if BeEF::Filters.is_valid_yes_no?(has_java)
-            BD.set(session_id, 'HasJava', has_java)
-          else
-            #self.err_msg "Invalid value for HasJava returned from the hook browser's initial connection."
-          end
-
           # get and store the yes|no value for JavaEnabled
           java_enabled = get_param(@data['results'], 'JavaEnabled')
           if BeEF::Filters.is_valid_yes_no?(java_enabled)

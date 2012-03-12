@@ -19,8 +19,7 @@ beef:
             enable: true
             category: "Host"
             name: "Get Wireless Keys"
-            description: "This module will retrieve the wireless profiles from the target computer. <br/> You will need to copy the results to 'exported_wlan_profiles.xml' and then reimport back into your Windows Vista/7 computers by running the command netsh wlan add profile filename=\"exported_wlan_profiles.xml\".  <br/>After that, just launch and connect to the wireless network without any password prompt.  <br/><br/> For more information, refer to http://pauldotcom.com/2012/03/retrieving-wireless-keys-from.html"
+            description: "This module will retrieve the wireless profiles from the target computer.<br/><br/>You will need to copy the results to 'exported_wlan_profiles.xml' and then reimport back into your Windows Vista/7 computers by running the command:<br/>netsh wlan add profile filename=\"exported_wlan_profiles.xml\".<br/><br/>After that, just launch and connect to the wireless network without any password prompt.<br/><br/>For more information, refer to http://pauldotcom.com/2012/03/retrieving-wireless-keys-from.html"
             authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
             target:
-                working: ["IE"]
-                user_notify: ["C", "S", "O", "FF"]
+                user_notify: ["IE", "C", "S", "O", "FF"]
