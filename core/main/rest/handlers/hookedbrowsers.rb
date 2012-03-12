@@ -29,6 +29,7 @@ module BeEF
                   'Expires' => '0'
         end
 
+        # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
         get '/' do
           online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
           offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
