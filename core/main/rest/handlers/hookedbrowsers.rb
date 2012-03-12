@@ -57,7 +57,7 @@ module BeEF
 
            {
                'name' => details.get(hb.session, 'BrowserName'),
-               'version' => details.get(hb.session, 'BrowserType'),
+               'version' => details.get(hb.session, 'BrowserVersion'),
                'os' => details.get(hb.session, 'OsName'),
                'platform' => details.get(hb.session, 'SystemPlatform'),
                'session' => hb.session,
