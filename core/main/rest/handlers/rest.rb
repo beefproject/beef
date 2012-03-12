@@ -19,6 +19,12 @@ module BeEF
     module Rest
       class Rest < Sinatra::Base
 
+        config = BeEF::Core::Configuration.instance
+
+        before do
+          error 401 unless params[:token] == config.get('beef.api_token')
+        end
+
         get '/sinatra' do
           "Sinatra! v.#{Sinatra::VERSION}"
         end

@@ -109,6 +109,9 @@ BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
 
+#@note Prints the API key needed to use the RESTful API
+print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
+
 # @note Call the API method 'pre_http_start'
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 

@@ -36,6 +36,19 @@ module Core
       # return random hex string
       return OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
     end
+
+    # Generate a secure random token, 20 chars, used as an auth token for the RESTful API.
+    # After creation it's stored in the BeEF configuration object => conf.get('beef.api_token')
+    # @return [String] Security token
+    def self.api_token
+      config = BeEF::Core::Configuration.instance
+      token_length = 20
+
+      # return random hex string
+      token = OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
+      config.set('beef.api_token', token)
+      token
+    end
   
   end
 end
