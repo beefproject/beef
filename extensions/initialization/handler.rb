@@ -169,22 +169,6 @@ module BeEF
             self.err_msg "Invalid system platform returned from the hook browser's initial connection."
           end
 
-          # get and store the internal ip address
-          internal_ip = get_param(@data['results'], 'InternalIP')
-          if BeEF::Filters.is_valid_ip?(internal_ip)
-            BD.set(session_id, 'InternalIP', internal_ip)
-          else
-            self.err_msg "Invalid internal IP address returned from the hook browser's initial connection."
-          end
-
-          # get and store the internal hostname
-          internal_hostname = get_param(@data['results'], 'InternalHostname')
-          if BeEF::Filters.is_valid_hostname?(host_name)
-            BD.set(session_id, 'InternalHostname', internal_hostname)
-          else
-            self.err_msg "Invalid internal hostname returned from the hook browser's initial connection."
-          end
-
           # get and store the hooked browser type
           browser_type = get_param(@data['results'], 'BrowserType')
           if BeEF::Filters.is_valid_browsertype?(browser_type)
@@ -207,6 +191,14 @@ module BeEF
             BD.set(session_id, 'WindowSize', window_size)
           else
             self.err_msg "Invalid window size returned from the hook browser's initial connection."
+          end
+
+          # get and store the yes|no value for HasJava
+          has_java = get_param(@data['results'], 'HasJava')
+          if BeEF::Filters.is_valid_yes_no?(has_java)
+            BD.set(session_id, 'HasJava', has_java)
+          else
+            #self.err_msg "Invalid value for HasJava returned from the hook browser's initial connection."
           end
 
           # get and store the yes|no value for JavaEnabled

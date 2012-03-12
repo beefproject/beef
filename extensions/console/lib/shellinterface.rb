@@ -417,21 +417,6 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add the internal ip address
-    internal_ip = BD.get(self.targetsession, 'InternalIP')
-    if not internal_ip.nil?
-      encoded_internal_ip = CGI.escapeHTML(internal_ip)
-      encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_ip_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
     # set and add the System Platform
     system_platform = BD.get(self.targetsession, 'SystemPlatform')
     if not system_platform.nil?
@@ -447,21 +432,6 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
-    # set and add the internal hostname
-    internal_hostname = BD.get(self.targetsession, 'InternalHostname')
-    if not internal_hostname.nil?
-      encoded_internal_hostname = CGI.escapeHTML(internal_hostname)
-      encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_hostname_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-   
     # set and add the zombie screen size and color depth
     screen_params = BD.get(self.targetsession, 'ScreenParams')
     if not screen_params.nil?

