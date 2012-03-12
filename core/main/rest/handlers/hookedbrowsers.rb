@@ -23,10 +23,49 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
+          headers 'Content-Type' => 'application/json; charset=UTF-8',
+                  'Pragma' => 'no-cache',
+                  'Cache-Control' => 'no-cache',
+                  'Expires' => '0'
         end
 
         get '/' do
-          "return hooked browsers"
+          online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
+          offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+
+          output = {
+              'hooked-browsers' => {
+                  'online' => online_hooks,
+                  'offline' => offline_hooks
+              }
+          }
+          output.to_json
+        end
+
+        def hb_to_json(hbs)
+          hbs_hash = {}
+          i = 0
+          hbs.each do |hb|
+            hbs_hash[i] = (get_hb_details(hb))
+            i+=1
+          end
+          hbs_hash
+        end
+
+        def get_hb_details(hb)
+           details = BeEF::Extension::Initialization::Models::BrowserDetails
+
+           {
+               'name' => details.get(hb.session, 'BrowserName'),
+               'version' => details.get(hb.session, 'BrowserType'),
+               'os' => details.get(hb.session, 'OsName'),
+               'platform' => details.get(hb.session, 'SystemPlatform'),
+               'session' => hb.session,
+               'ip' => hb.ip,
+               'domain' => details.get(hb.session, 'HostName'),
+               'port' => hb.port.to_s,
+               'page_uri' => details.get(hb.session, 'PageURI')
+           }
         end
 
       end
