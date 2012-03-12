@@ -42,5 +42,7 @@ require 'core/extensions'
 require 'core/hbmanager'
 
 ## @note Include RESTful API
-require 'core/main/rest/handlers/rest'
+require 'core/main/rest/handlers/hookedbrowsers'
+require 'core/main/rest/handlers/modules'
+require 'core/main/rest/handlers/logs'
 require 'core/main/rest/api'

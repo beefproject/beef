@@ -17,7 +17,7 @@
 module BeEF
   module Core
     module Rest
-      class Rest < Sinatra::Base
+      class Modules < Sinatra::Base
 
         config = BeEF::Core::Configuration.instance
 
@@ -25,13 +25,8 @@ module BeEF
           error 401 unless params[:token] == config.get('beef.api_token')
         end
 
-        get '/sinatra' do
-          "Sinatra! v.#{Sinatra::VERSION}"
-        end
-
-        get '/modules' do
-          puts Sinatra::VERSION
-          "List all modules!"
+        get '/' do
+          "return available modules"
         end
 
       end

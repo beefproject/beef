@@ -17,14 +17,27 @@ module BeEF
   module Core
     module Rest
 
-      module RegisterHttpHandler
-
+      module RegisterHooksHandler
         def self.mount_handler(server)
-          server.mount('/api', BeEF::Core::Rest::Rest.new)
+          server.mount('/api/hooks', BeEF::Core::Rest::HookedBrowsers.new)
         end
       end
 
-      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
+      module RegisterModulesHandler
+        def self.mount_handler(server)
+          server.mount('/api/modules', BeEF::Core::Rest::Modules.new)
+        end
+      end
+
+      module RegisterLogsHandler
+        def self.mount_handler(server)
+          server.mount('/api/logs', BeEF::Core::Rest::Logs.new)
+        end
+      end
+
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHooksHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterModulesHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterLogsHandler, BeEF::API::Server, 'mount_handler')
 
     end
   end
