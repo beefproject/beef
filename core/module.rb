@@ -434,22 +434,22 @@ module BeEF
     # @param [String] mod module key
     # @param [String] hbsession hooked browser session
     # @param [Array] opts array of module execute options (see #get_options)
-    # @return [Boolean] whether or not the BeEF system executed the module
+    # @return [Fixnum] the command_id associated to the module execution when info is persisted. nil if there are errors.
     # @note The return value of this function does not specify if the module was successful, only that it was executed within the framework
     def self.execute(mod, hbsession, opts=[])
       if not (self.is_present(mod) and self.is_enabled(mod))
         print_error "Module not found '#{mod}'. Failed to execute module."
-        return false
+        return nil
       end
       if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
         BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
-        # @note We return true by default as we cannot determine the correct status if multiple API hooks have been called
-        return true
+        # @note We return not_nil by default as we cannot determine the correct status if multiple API hooks have been called
+        return 'override_execute'
       end
       hb = BeEF::HBManager.get_by_session(hbsession)
       if not hb
         print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
-        return false
+        return nil
       end
       self.check_hard_load(mod)
       command_module = self.get_definition(mod).new(mod)
@@ -457,12 +457,12 @@ module BeEF
         command_module.pre_execute
       end
       h = self.merge_options(mod, [])
-      c = BeEF::Core::Models::Command.new(:data => self.merge_options(mod, opts).to_json,
+      c = BeEF::Core::Models::Command.create(:data => self.merge_options(mod, opts).to_json,
                                           :hooked_browser_id => hb.id,
                                           :command_module_id => BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
                                           :creationdate => Time.new.to_i
-      ).save
-      return true
+      )
+      return c.id
     end
 
     # Merges default module options with array of custom options

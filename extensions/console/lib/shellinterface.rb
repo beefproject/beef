@@ -195,7 +195,7 @@ class ShellInterface
         def2.push({'name' => k, 'value' => v})
     }
     # End hack
-    if BeEF::Module.execute(mod_key, self.targetsession.to_s, def2) == true
+    if BeEF::Module.execute(mod_key, self.targetsession.to_s, def2) != nil
       return true
     else
       return false
