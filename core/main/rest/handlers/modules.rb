@@ -34,9 +34,20 @@ module BeEF
           "return available modules"
         end
 
-        # @note Get the module definition (info, options, targets)
-        get '/:session/:mod_id' do
+        # @note Get the module definition (info, options)
+        get '/:mod_id' do
+          cmd = BeEF::Core::Models::CommandModule.get(params[:mod_id])
+          error 404 unless cmd != nil
+          modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
+          error 404 unless modk != nil
 
+          #todo check if it's possible to also retrieve the TARGETS supported
+          {
+              'name'   => cmd.name,
+              'description' => config.get("beef.module.#{cmd.name}.description"),
+              'category'=> config.get("beef.module.#{cmd.name}.category"),
+              'options'   => BeEF::Module.get_options(modk) #todo => get also payload options..get_payload_options(modk,text)
+          }.to_json
         end
 
         # @note Get the module result for the specific executed command
@@ -84,7 +95,7 @@ module BeEF
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
-          error 401 unless modk != nil
+          error 404 unless modk != nil
 
           request.body.rewind
           begin

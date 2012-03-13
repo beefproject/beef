@@ -67,11 +67,6 @@ module BeEF
         if class_symbol and class_symbol.respond_to?(:options)
           return class_symbol.options
         end
-        #TODO: do we really need to print this info? At then modules with no options are common,
-        # so I guess we shouldn't print this info even in debug mode
-        #            else
-        #                print_debug "Module '#{mod}', no options method defined"
-        #            end
       end
       return []
     end
