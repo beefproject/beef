@@ -208,7 +208,7 @@ beef.mitb = {
         }
     },
 
-    // Fetches a window.location=http://something and setting up history
+    // Fetches a window.location=http://domainname.com and setting up history
     fetchOnclick:function (url) {
         try {
             var target = document.getElementsByTagName("html")[0];
