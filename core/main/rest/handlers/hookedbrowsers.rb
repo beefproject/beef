@@ -20,6 +20,8 @@ module BeEF
       class HookedBrowsers < Sinatra::Base
 
         config = BeEF::Core::Configuration.instance
+        configure do set :show_exceptions, false end
+        not_found do 'Not Found.' end
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
