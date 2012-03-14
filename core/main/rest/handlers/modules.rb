@@ -31,9 +31,23 @@ module BeEF
                   'Expires' => '0'
         end
 
-        # @note Get all available modules
+        # @note Get all available and enabled modules (id, name, category)
         get '/' do
-          "return available modules"
+          mods = BeEF::Core::Models::CommandModule.all
+
+          mods_hash = {}
+          i = 0
+          mods.each do |mod|
+            modk = BeEF::Module.get_key_by_database_id(mod.id)
+            next if !BeEF::Module.is_enabled(modk)
+            mods_hash[i] = {
+                'id' => mod.id,
+                'name' => config.get("beef.module.#{modk}.name"),
+                'category' => config.get("beef.module.#{modk}.category")
+            }
+            i+=1
+          end
+          mods_hash.to_json
         end
 
         # @note Get the module definition (info, options)
