@@ -439,7 +439,7 @@ module BeEF
       if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
         BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
         # @note We return not_nil by default as we cannot determine the correct status if multiple API hooks have been called
-        return 'override_execute'
+        return 'not_available' # @note using metasploit, we cannot know if the module execution was successful or not
       end
       hb = BeEF::HBManager.get_by_session(hbsession)
       if not hb
