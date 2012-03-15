@@ -606,7 +606,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         def2.push({'name' => k, 'value' => v})
     }
     # End hack
-    @body = (BeEF::Module.execute(mod_key, zombie_session, def2)) ? '{success: true}' : '{success: false}'
+    exec_results = BeEF::Module.execute(mod_key, zombie_session, def2)
+    @body = (exec_results != nil) ? '{success: true}' : '{success: false}'
   end
   
   # Re-execute an command_module to a zombie.

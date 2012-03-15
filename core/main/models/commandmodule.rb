@@ -28,8 +28,6 @@ module Models
     property :path, Text, :lazy => false
   
     has n, :commands
-    has 1, :dynamic_command_info
-  
   end
   
 end
