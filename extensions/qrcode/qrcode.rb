@@ -25,7 +25,7 @@ module Qrcode
       require 'uri'
       
       configuration = BeEF::Core::Configuration.instance
-      BeEF::Extension::Console::Banners.interfaces.each do |int|
+      BeEF::Core::Console::Banners.interfaces.each do |int|
         print_success "QRCode images available for interface: #{int}"
         data = ""
         configuration.get("beef.extension.qrcode.target").each do |target|
