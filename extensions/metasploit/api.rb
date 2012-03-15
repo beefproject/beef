@@ -28,7 +28,7 @@ module API
         if msf.login
             msf_module_config = {}
             path = BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')
-            if not BeEF::Extension::Console.resetdb? and File.exists?("#{path}msf-exploits.cache")
+            if not BeEF::Core::Console::CommandLine.parse[:resetdb] and File.exists?("#{path}msf-exploits.cache")
                 print_debug "Attempting to use Metasploit exploits cache file"
                 raw = File.read("#{path}msf-exploits.cache")
                 begin
