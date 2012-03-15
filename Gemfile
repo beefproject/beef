@@ -25,6 +25,7 @@ else
 end
 
 gem "thin"
+gem "sinatra", "1.3.2"
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
 gem "dm-core"
