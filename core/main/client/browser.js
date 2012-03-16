@@ -501,7 +501,7 @@ beef.browser = {
      */
 	javaEnabled: function() {
 
-		return (!!window.navigator.javaEnabled && !!window.navigator.javaEnabled());
+		return (!!window.navigator.javaEnabled());
 	
 	},
 
