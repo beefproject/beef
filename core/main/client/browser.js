@@ -159,11 +159,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF11.
+	 * @example: beef.browser.isFF11()
+	 */
+	isFF11: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/11\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11();
 	},
 
 	/**
@@ -377,6 +385,7 @@ beef.browser = {
 			FF8:	this.isFF8(),	// Firefox 8
 			FF9:	this.isFF9(),	// Firefox 9
 			FF10:	this.isFF10(),	// Firefox 10
+			FF11:	this.isFF11(),	// Firefox 11
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -431,6 +440,7 @@ beef.browser = {
 		if (this.isFF8())	{ return '8'  };	// Firefox 8
 		if (this.isFF9())	{ return '9'  };	// Firefox 9
 		if (this.isFF10())	{ return '10' };	// Firefox 10
+		if (this.isFF11())	{ return '11' };	// Firefox 11
 
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
