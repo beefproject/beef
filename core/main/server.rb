@@ -29,7 +29,8 @@ module BeEF
       def initialize
         @configuration = BeEF::Core::Configuration.instance
         beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-        @url = "http://#{beef_host}:#{@configuration.get("beef.http.port")}"
+        beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+        @url = "http://#{beef_host}:#{beef_port}"
         @root_dir = File.expand_path('../../../', __FILE__)
         @command_urls = {}
         @mounts = {}
@@ -44,6 +45,8 @@ module BeEF
             'beef_root_dir' => @root_dir,
             'beef_host' => @configuration.get('beef.http.host'),
             'beef_port' => @configuration.get('beef.http.port'),
+            'beef_public' => @configuration.get('beef.http.public'),
+            'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_dns' => @configuration.get('beef.http.dns'),
             'beef_hook' => @configuration.get('beef.http.hook_file')
         }
