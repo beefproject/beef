@@ -48,9 +48,8 @@ beef.browser = {
 	 * Returns true if IE8.
 	 * @example: beef.browser.isIE8()
 	 */
-	isIE8: function() {						
-		$j("body").append('<!--[if IE 8]>     <div id="beefiecheck" class="ie ie8"></div>      <![endif]-->');
-		return ($j('#beefiecheck').hasClass('ie8'))?true:false;
+	isIE8: function() {
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !window.performance;
 	},
 	
 	/**
@@ -58,8 +57,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		$j("body").append('<!--[if IE 9]>     <div id="beefiecheck" class="ie ie9"></div>      <![endif]-->');
-		return ($j('#beefiecheck').hasClass('ie9'))?true:false;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
 	},
 	
 	/**
@@ -167,11 +165,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF12
+* @example: beef.browser.isFF12()
+	 */
+	isFF12: function() {
+return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/12\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12();
 	},
 
 	/**
@@ -386,6 +392,7 @@ beef.browser = {
 			FF9:	this.isFF9(),	// Firefox 9
 			FF10:	this.isFF10(),	// Firefox 10
 			FF11:	this.isFF11(),	// Firefox 11
+			FF12:	this.isFF12(),	// Firefox 12
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -441,7 +448,7 @@ beef.browser = {
 		if (this.isFF9())	{ return '9'  };	// Firefox 9
 		if (this.isFF10())	{ return '10' };	// Firefox 10
 		if (this.isFF11())	{ return '11' };	// Firefox 11
-
+		if (this.isFF12())	{ return '12' };	// Firefox 12
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
