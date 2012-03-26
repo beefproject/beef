@@ -79,7 +79,14 @@ if (beef.browser.isFF() == 1) {
 	  { 'name': 'Expedia', 'urls': [ 'http://www.expedia.com/static/default/default/scripts/expedia/core/e.js?v=release-2011-11-r4.9.317875' ] },
 	  { 'name': 'Amazon (US)', 'urls': [ 'http://z-ecx.images-amazon.com/images/G/01/browser-scripts/us-site-wide-css-quirks/site-wide-3527593236.css._V162874846_.css' ] },
 	  { 'name': 'Newegg', 'urls': [ 'http://images10.newegg.com/WebResource/Themes/2005/CSS/template.v1.w.5723.0.css' ] },
-	  { 'name': 'eBay', 'urls': [ 'http://ir.ebaystatic.com/v4js/z/io/gbsozkl4ha54vasx4meo3qmtw.js' ] }
+	  { 'name': 'eBay', 'urls': [ 'http://ir.ebaystatic.com/v4js/z/io/gbsozkl4ha54vasx4meo3qmtw.js' ] },
+      { 'category': 'Coding' },
+      { 'name': 'GitHub', 'urls': [ 'https://a248.e.akamai.net/assets.github.com/stylesheets/bundles/github-fa63b2501ea82170d5b3b1469e26c6fa6c3116dc.css' ] },
+      { 'category': 'Security' },
+      { 'name': 'Exploit DB', 'urls': [ 'http://www.exploit-db.com/wp-content/themes/exploit/style.css' ] },
+      { 'name': 'Packet Storm', 'urls': [ 'http://packetstormsecurity.org/img/pss.ico' ] },
+      { 'category': 'Email' },
+      { 'name': 'Hotmail', 'urls': [ 'https://secure.shared.live.com/~Live.SiteContent.ID/~16.2.9/~/~/~/~/css/R3WinLive1033.css' ] }
 	];
 	/*************************
 	 * CONFIGURABLE SETTINGS *
