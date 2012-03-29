@@ -19,6 +19,11 @@ module BeEF
   end
 end
 
+## @note Include the BeEF router
+require 'core/main/router/router'
+require 'core/main/router/api'
+
+
 ## @note Include http server functions for beef
 require 'core/main/server'
 require 'core/main/handlers/modules/beefjs'
