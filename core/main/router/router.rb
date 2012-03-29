@@ -23,10 +23,6 @@ module BeEF
         configure do set :show_exceptions, false end
         not_found do 'Not Found' end
 
-        get '/' do
-          'Try harder...muahah!'
-        end
-
       end
     end
   end
