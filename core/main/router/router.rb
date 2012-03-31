@@ -17,6 +17,9 @@
 module BeEF
   module Core
     module Router
+
+      #@note This is the main Router parent class.
+      #@note All the HTTP handlers registered on BeEF will extend this class.
       class Router < Sinatra::Base
 
         config = BeEF::Core::Configuration.instance
@@ -30,6 +33,7 @@ module BeEF
              case type
                when "apache"
                 headers "Server" => "Apache/2.2.3 (CentOS)"
+
                 #todo https://github.com/beefproject/beef/issues/98 if web_server imitation is enabled
                 #todo the 404 response will be something like the following:
                 #<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
@@ -41,6 +45,7 @@ module BeEF
                 # <hr>
                 # <address>Apache/2.2.3 (CentOS)</address>
                 # </body></html>
+
                when "iis"
                 headers "Server" => "Microsoft-IIS/7.0"
              end
