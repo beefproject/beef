@@ -54,7 +54,7 @@ module Handlers
               'Expires' => '0',
               'Content-Type' => 'text/javascript',
               'Access-Control-Allow-Origin' => '*',
-              'Access-Control-Allow-Methods' => 'POST'
+              'Access-Control-Allow-Methods' => 'POST, GET'
             }
         )
 
