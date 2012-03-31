@@ -13,14 +13,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    module:
-         get_history:
-            enable: true
-            category: "Browser"
-            name: "History Extraction"
-            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done at http://lcamtuf.coredump.cx/cachetime/"
-            authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
-            target:
-                working: ["FF","IE"]
-                not_working: ["O","C","S"]
+
+class Get_visited_domains < BeEF::Core::Command
+
+  def post_execute
+    content = {}
+    content['results'] = @datastore['results']
+    save content
+  end
+
+end

