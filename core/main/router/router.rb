@@ -23,6 +23,29 @@ module BeEF
         configure do set :show_exceptions, false end
         not_found do 'Not Found' end
 
+        before do
+          # @note Override Server HTTP response header
+          if config.get("beef.http.web_server_imitation.enable")
+             type = config.get("beef.http.web_server_imitation.type")
+             case type
+               when "apache"
+                headers "Server" => "Apache/2.2.3 (CentOS)"
+                #todo https://github.com/beefproject/beef/issues/98 if web_server imitation is enabled
+                #todo the 404 response will be something like the following:
+                #<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+                #<html><head>
+                #<title>404 Not Found</title>
+                #</head><body>
+                #<h1>Not Found</h1>
+                #<p>The requested URL /aaaa was not found on this server.</p>
+                # <hr>
+                # <address>Apache/2.2.3 (CentOS)</address>
+                # </body></html>
+               when "iis"
+                headers "Server" => "Microsoft-IIS/7.0"
+             end
+          end
+        end
       end
     end
   end
