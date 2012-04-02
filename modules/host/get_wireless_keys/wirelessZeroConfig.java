@@ -68,12 +68,16 @@ public class wirelessZeroConfig extends Applet{
 	    	} catch (IOException e) { }
 		
 		try{	
+    			String tmpDir = System.getProperty("java.io.tmpdir");
+			if ( !(tmpDir.endsWith("/") || tmpDir.endsWith("\\")) )
+   				tmpDir = tmpDir + System.getProperty("file.separator");
+
 			//Export WLAN Profile to XML file
 			for(Iterator iterator = profileList.iterator(); iterator.hasNext();){
 				String profileName = iterator.next().toString();
 				Process p2 = Runtime.getRuntime().exec(cmd2+'"'+profileName+'"');  
 				//Check if exported xml exists
-				File f = new File("Wireless Network Connection-"+profileName+".xml");
+				File f = new File(tmpDir+"Wireless Network Connection-"+profileName+".xml");
 				if(f.exists()){	
 					//Read contents of XML file into results variable
 					FileInputStream fstream = new FileInputStream(f);
