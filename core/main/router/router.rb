@@ -94,7 +94,7 @@ module BeEF
                         "Content-Type" => "text/html"
 
               when "iis"
-                headers "Server" => "Microsoft-IIS/7.0",
+                headers "Server" => "Microsoft-IIS/6.0",
                         "X-Powered-By" => "ASP.NET",
                         "Content-Type" => "text/html"
               else
