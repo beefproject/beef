@@ -217,7 +217,8 @@ module BeEF
                     "</body>" +
                     "</html>"
               when "iis"
-
+                #todo find the default Under Construction root page, like http://help.axcms.net/upload/iis6_localhost_9593.jpg
+                 ""
               else
                 ""
             end
