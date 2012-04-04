@@ -44,8 +44,10 @@ module API
       beef_server.mount('/ui/media', Rack::File.new(media_dir))
 
       
-      # mount the favicon file
-       beef_server.mount('/favicon.ico', Rack::File.new("#{media_dir}#{configuration.get("beef.extension.admin_ui.favicon_dir")}/#{configuration.get("beef.extension.admin_ui.favicon_file_name")}"))
+      # mount the favicon file, if we're not imitating a web server.
+      if !configuration.get("beef.http.web_server_imitation.enable")
+        beef_server.mount('/favicon.ico', Rack::File.new("#{media_dir}#{configuration.get("beef.extension.admin_ui.favicon_dir")}/#{configuration.get("beef.extension.admin_ui.favicon_file_name")}"))
+      end
     end
     
   end
