@@ -74,7 +74,8 @@ module BeEF
                     "and search for topics titled <b>Web Site Setup</b>, <b>Common Administrative Tasks</b>, and <b>About Custom Error Messages</b>.</li>" +
                     "</ul>" +
                     "</TD></TR></TABLE></BODY></HTML>"
-
+              else
+                "Not Found."
             end
           else
             "Not Found."
@@ -94,9 +95,9 @@ module BeEF
                 headers "Server" => "Microsoft-IIS/7.0",
                         "X-Powered-By" => "ASP.NET",
                         "Content-Type" => "text/html"
+               else
+                 print_error "You have and error in beef.http.web_server_imitation.type! Supported values are: apache, iis."
              end
-          else
-            print_error "You have and error in beef.http.web_server_imitation.type! Supported values are: apache, iis."
           end
         end
       end
