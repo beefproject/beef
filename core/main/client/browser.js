@@ -309,11 +309,27 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
     },
 
 	/**
+	 * Returns true if Chrome 18.
+	 * @example: beef.browser.isC18()
+	 */
+	isC18: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==18)?true:false);
+	},
+
+	/**
+	 * Returns true if Chrome 19.
+	 * @example: beef.browser.isC19()
+	 */
+	isC19: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==19)?true:false);
+	},
+
+	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19();
 	},
 
 	/**
@@ -377,7 +393,9 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 			C14:	this.isC14(),	// Chrome 14
 			C15:    this.isC15(),   // Chrome 15
 			C16:	this.isC16(),	// Chrome 16
-            C17:	this.isC17(),	// Chrome 16
+            C17:	this.isC17(),	// Chrome 17
+			C18:	this.isC18(),	// Chrome 18
+			C19:	this.isC19(),	// Chrome 19
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -434,7 +452,8 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 		if (this.isC15())	{ return '15' }; 	// Chrome 15
 		if (this.isC16())	{ return '16' };	// Chrome 16
         if (this.isC17())	{ return '17' };	// Chrome 17
-
+		if (this.isC18())   { return '18' };    // Chrome 18
+		if (this.isC19())   { return '19' };    // Chrome 19
 
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
