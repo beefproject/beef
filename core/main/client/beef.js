@@ -49,8 +49,10 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		 */
 		execute: function(fn) {
 			this.commands.push(fn);
+            /*controllare se il websocket è attivo*/
 		},
-		
+
+
 		/**
 		 * Registers a component in BeEF JS.
 		 * @params: {String} the component.

