@@ -28,27 +28,29 @@ module BeEF
           server = WebSocketServer.new :accepted_domains => "0.0.0.0",
                                        :port => port
           print_info("WebSocket server started: port [#{port.to_s}], secure [#{secure.to_s}]")
-          server.run() do |ws|
-            #@TODO debug print the path and who request for hooked browser mapping
-            print_info("Path requested #{ws.path} Origins #{ws.origin}")
-            if ws.path == "/"
-              ws.handshake() #accept and connect
+          Thread.new {
+            server.run() do |ws|
+              #@TODO debug print the path and who request for hooked browser mapping
+              print_info("WebSocket -> Path requested [#{ws.path}], Origin [#{ws.origin}]")
+              if ws.path == "/"
+                ws.handshake() #accept and connect
 
-              while true
-                #command interpretation
-                message=ws.receve()
+                while true
+                  #command interpretation
+                  message=ws.receve()
 
-                if (message!="helo")
-                  #module return value case
-                else
-                  print_info("Browser #{ws.origin} says helo! ws is running")
+                  if (message!="helo")
+                    #module return value case
+                  else
+                    print_info("Browser #{ws.origin} says helo! ws is running")
+                  end
+
                 end
-
               end
             end
+          }
         end
       end
     end
   end
-  end
-  end
+end
