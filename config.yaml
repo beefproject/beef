@@ -17,7 +17,7 @@
 
 beef:
     version: '0.4.3.3-alpha'
-    debug: true
+    debug: false
 
     restrictions:
         # subnet of browser ip addresses that can hook to the framework 
@@ -27,7 +27,7 @@ beef:
         permitted_ui_subnet: "0.0.0.0/0"
     
     http:
-        debug: true #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
+        debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
         port: "3000"
         # if running behind a nat set the public ip address here
@@ -40,7 +40,7 @@ beef:
         websocket:
           enable: true
           secure: false # use WebSocketSecure
-          port: 6666
+          port: 11989
 
     database:
         # For information on using other databases please read the
