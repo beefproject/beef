@@ -15,15 +15,20 @@
 #
 module BeEF
   module Core
-    module Rest
-      class Websocket
+    module Websocket
+
+
+      def initialize
+
+
+        print_info("Inside")
         #load the library
         $LOAD_PATH << File.dirname(__FILE__) + "../lib"
         require "web_socket"
         server = WebSocketServer.new("localhost", 6666) #we get host and port how
         server.run() do |ws|
           #@TODO debug print the path and who request for hooked browser mapping
-          printf("Path requested #{ws.path} Originis #{ws.origin}")
+          print_info("Path requested #{ws.path} Originis #{ws.origin}")
           if ws.path == "/"
             ws.handshake() #accept and connect
 
@@ -34,17 +39,16 @@ module BeEF
               if (message!="helo")
                 #module return value case
               else
-                printf("Browser #{ws.origin} says helo! ws is running")
+                print_info("Browser #{ws.origin} says helo! ws is running")
               end
 
-
             end
-
-
           end
 
 
         end
+
+
       end
     end
   end
