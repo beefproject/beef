@@ -22,8 +22,10 @@ beef.websocket = {
     /*websocket send Helo to beef server and start async communication*/
     start:function(){
         console.log("started ws \n")
+
            /*server is always on ws.beefServer:6666*/
         var webSocketServer=beef.net.host; /*beefHost*/
+        console.log(webSocketServer);
         var webSocketPort=6666;
           if(beef.browser.getBrowserName=="FF")
               this.socket = new MozWebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
