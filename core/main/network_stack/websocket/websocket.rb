@@ -26,29 +26,29 @@ module BeEF
           #todo antisnatchor: start websocket secure if beef.http.websocket.secure == true
           server = WebSocketServer.new :accepted_domains => "0.0.0.0",
                                        :port => config.get("beef.http.websocket.port")
-          websThread = Thread.new {
-            server.run() do |ws|
-              #@TODO debug print the path and who request for hooked browser mapping
-              print_info("Path requested #{ws.path} Origins #{ws.origin}")
-              if ws.path == "/"
-                ws.handshake() #accept and connect
+          websThread = Thread.new  {
+                    server.run() do |ws|
+            #@TODO debug print the path and who request for hooked browser mapping
+            print_info("Path requested #{ws.path} Origins #{ws.origin}")
+            if ws.path == "/"
+              ws.handshake() #accept and connect
 
-                while true
-                  #command interpretation
-                  message=ws.receve()
+              while true
+                #command interpretation
+                message=ws.receve()
 
-                  if (message!="helo")
-                    #module return value case
-                  else
-                    print_info("Browser #{ws.origin} says helo! ws is running")
-                  end
-
+                if (message!="helo")
+                  #module return value case
+                else
+                  print_info("Browser #{ws.origin} says helo! ws is running")
                 end
+
               end
             end
-          }
-        end
+                    end
+                    }
       end
     end
   end
-end
+  end
+  end
