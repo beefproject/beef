@@ -1,0 +1,136 @@
+#!/usr/bin/env ruby
+
+#
+#   Copyright 2012 Wade Alcorn wade@bindshell.net
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+# stop deprecation warning from being displayed
+$VERBOSE = nil
+
+# @note Version check to ensure BeEF is running Ruby 1.9 >
+if  RUBY_VERSION < '1.9'
+  puts "\n"
+  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
+  puts "OSX:"
+  puts "See Readme"
+  puts "\n"
+  exit
+end
+
+$:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
+$root_dir = File.expand_path('..', __FILE__)
+
+# @note Prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
+if RUBY_VERSION =~ /1.9/
+  Encoding.default_external = Encoding::UTF_8
+  Encoding.default_internal = Encoding::UTF_8
+end
+
+# @note Require core loader's
+require 'core/loader'
+
+# @note Initialize the Configuration object. Eventually loads a different config.yaml if -c flag was passed.
+if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
+  config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
+else
+  config = BeEF::Core::Configuration.new("#{$root_dir}/#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+end
+
+# @note After the BeEF core is loaded, bootstrap the rest of the framework internals
+require 'core/bootstrap'
+
+# @note Loads enabled extensions
+BeEF::Extensions.load
+
+# @note Prints the BeEF ascii art if the -a flag was passed
+if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
+  BeEF::Core::Console::Banners.print_ascii_art
+end
+
+# @note Prints BeEF welcome message
+BeEF::Core::Console::Banners.print_welcome_msg
+
+# @note Loads enabled modules
+BeEF::Modules.load
+
+# @note Disable reverse dns
+Socket.do_not_reverse_lookup = true
+
+# @note Database setup - use DataMapper::Logger.new($stdout, :debug) for development debugging
+case config.get("beef.database.driver")
+  when "sqlite"
+    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
+  when "mysql","postgres"
+    DataMapper.setup(:default,
+                     :adapter => config.get("beef.database.driver"),
+                     :host => config.get("beef.database.db_host"),
+                     :username => config.get("beef.database.db_user"),
+                     :password => config.get("beef.database.db_passwd"),
+                     :database => config.get("beef.database.db_name"),
+                     :encoding => config.get("beef.database.db_encoding")
+    )
+  else
+    print_error 'No default database selected. Please add one in config.yaml'
+end
+
+# @note Resets the database if the -x flag was passed
+if BeEF::Core::Console::CommandLine.parse[:resetdb]
+  print_info 'Resetting the database for BeEF.'
+  DataMapper.auto_migrate!
+else
+  DataMapper.auto_upgrade!
+end
+
+# @note Extensions may take a moment to load, thus we print out a please wait message
+print_info 'BeEF is loading. Wait a few seconds...'
+
+# @note Execute migration procedure, checks for new modules
+BeEF::Core::Migration.instance.update_db!
+
+# @note Create HTTP Server and prepare it to run
+http_hook_server = BeEF::Core::Server.instance
+http_hook_server.prepare
+
+# @note Prints information back to the user before running the server
+BeEF::Core::Console::Banners.print_loaded_extensions
+BeEF::Core::Console::Banners.print_loaded_modules
+BeEF::Core::Console::Banners.print_network_interfaces_count
+BeEF::Core::Console::Banners.print_network_interfaces_routes
+
+#@note Prints the API key needed to use the RESTful API
+print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
+
+BeEF::Core::Websocket.initialize
+
+
+
+
+# @note Call the API method 'pre_http_start'
+BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+
+# @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
+if config.get("beef.extension.console.shell.enable") == true
+  require 'extensions/console/shell'
+  puts ""
+  begin
+    FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
+    BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
+                                        BeEF::Extension::Console::Shell::DefaultPromptChar,{'config' => config, 'http_hook_server' => http_hook_server}).run
+  rescue Interrupt
+  end
+else
+  print_info 'BeEF server started (press control+c to stop)'
+  http_hook_server.start
+end
