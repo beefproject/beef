@@ -481,9 +481,13 @@ class WebSocketServer
       return @tcp_server.accept()
     end
 
+
     def accepted_origin?(origin)
-      domain = origin_to_domain(origin)
-      return @accepted_domains.any?(){ |d| File.fnmatch(d, domain) }
+      #domain = origin_to_domain(origin)
+      #return @accepted_domains.any?(){ |d| File.fnmatch(d, domain) }
+
+      #todo antisnatchor -> we want to accept every origin
+      true
     end
 
     def origin_to_domain(origin)
