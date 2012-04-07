@@ -37,6 +37,10 @@ beef:
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
+        websocket:
+          enable: true
+          secure: false # use WebSocketSecure
+          port: 6666
 
     database:
         # For information on using other databases please read the

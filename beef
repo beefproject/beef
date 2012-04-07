@@ -113,7 +113,9 @@ BeEF::Core::Console::Banners.print_network_interfaces_routes
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
 #@note Starts the WebSocket server
-BeEF::Core::Websocket::Websocket.new
+if config.get("beef.http.websocket.enable")
+  BeEF::Core::Websocket::Websocket.new
+end
 
 
 

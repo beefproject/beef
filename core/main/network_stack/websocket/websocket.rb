@@ -21,10 +21,12 @@ module BeEF
 
         def initialize
           print_info("Starting WebSockets")
+          config = BeEF::Core::Configuration.instance
 
-          #todo antisnatchor: add config file options for IP/port/enable websocket
+          #todo antisnatchor: start websocket secure if beef.http.websocket.secure == true
+          server = WebSocketServer.new :accepted_domains => "0.0.0.0",
+                                       :port => config.get("beef.http.websocket.port")
 
-          server = WebSocketServer.new(:accepted_domains => "0.0.0.0",:port => 6666) #we get host and port
           server.run() do |ws|
             #@TODO debug print the path and who request for hooked browser mapping
             print_info("Path requested #{ws.path} Origins #{ws.origin}")
