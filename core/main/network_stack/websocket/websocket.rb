@@ -26,8 +26,8 @@ module BeEF
           #todo antisnatchor: start websocket secure if beef.http.websocket.secure == true
           server = WebSocketServer.new :accepted_domains => "0.0.0.0",
                                        :port => config.get("beef.http.websocket.port")
-
-          server.run() do |ws|
+          websThread = Thread.new  {
+                    server.run() do |ws|
             #@TODO debug print the path and who request for hooked browser mapping
             print_info("Path requested #{ws.path} Origins #{ws.origin}")
             if ws.path == "/"
@@ -45,7 +45,8 @@ module BeEF
 
               end
             end
-        end
+                    end
+                    }
       end
     end
   end
