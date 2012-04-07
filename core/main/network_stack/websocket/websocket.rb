@@ -37,7 +37,7 @@ module BeEF
 
                 while true
                   #command interpretation
-                  message=ws.receve()
+                  message=ws.receive()
 
                   if (message!="helo")
                     #module return value case
