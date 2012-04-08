@@ -25,7 +25,7 @@ beef.websocket = {
         var webSocketServer = beef.net.host;
         var webSocketPort = 11989;
         //@todo ceck if we have to use wss or ws we need a globalvalue
-        if (beef.browser.isFF()) {
+        if (beef.browser.isFF() && ! beef.browser.isFF11) {
             beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
         } else {
