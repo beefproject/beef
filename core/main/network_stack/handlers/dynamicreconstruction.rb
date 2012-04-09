@@ -28,7 +28,7 @@ module Handlers
     MOUNTS = BeEF::Core::Server.instance.mounts
 
     before do
-      error 404 unless params != nil
+      error 404 unless !params.empty?
       headers 'Pragma' => 'no-cache',
               'Cache-Control' => 'no-cache',
               'Expires' => '0'
