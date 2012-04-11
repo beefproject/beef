@@ -48,9 +48,16 @@ module Modules
       command_module.pre_send
 
       build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
+      print_info(BeEF::Core::Websocket::Websocket.getsocket(hooked_browser))
 
-      @body << command_module.output + "\n\n"
-      
+      #@todo radoen debug this one
+      if  BeEF::Core::Websocket::Websocket.getsocket(hooked_browser)
+
+        BeEF::Core::Websocket::Websocket.sent(command,hooked_browser)
+      else
+        @body << command_module.output + "\n\n"
+
+      end
       # @note prints the event to the console
       if BeEF::Settings.console?
       name = command_module.friendlyname || kclass

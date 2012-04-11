@@ -17,9 +17,13 @@ module BeEF
   module Core
     module Websocket
       class Websocket
+        #all hooked browser
+
+       @@activeSocket= Hash.new #empty at begin
 
 
         def initialize
+          print_info("/n In activesocket we have #{@@activeSocket}")
           config = BeEF::Core::Configuration.instance
           port = config.get("beef.http.websocket.port")
           secure = config.get("beef.http.websocket.secure")
@@ -39,17 +43,26 @@ module BeEF
                   #command interpretation
                   message=ws.receive()
 
-                  if (message!="helo")
-                    #module return value case
-                  else
+                  if(/BEEFHOOK=/.match(message))
                     print_info("Browser #{ws.origin} says helo! ws is running")
+                    #insert new connection in activesocket
+                    @@activeSocket[message.split(/BEEFHOOK=/)] = ws
+                    print_debug("In activesocket we have #{@@activeSocket}")
                   end
-
                 end
               end
             end
           }
         end
+        #@note used in command.rd return nill if browser is not in list else giveback websocket
+        def getsocket (browser_id)
+          @@activeSocket[browser_id]
+        end
+        #@note send a function to hooked and ws browser
+        def sent (fn ,browser_id )
+             @@activeSocket[browser_id].send(fn)
+        end
+
       end
     end
   end

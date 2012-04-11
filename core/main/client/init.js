@@ -65,8 +65,8 @@ function beef_init() {
     beef.updater.execute_commands();
     beef.updater.check();
     beef.logger.start();
-    /*@TODO we need a check here*/
-    beef.websocket.start();
+    if(beef.browser.hasWebSocket())
+        beef.websocket.start();
   }
 
 }

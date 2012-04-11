@@ -71,4 +71,4 @@ beef:
             enable: false
         console:
             shell:
-                enable: false
+                enable: true

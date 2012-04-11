@@ -57,6 +57,8 @@ beef.updater = {
 				this.get_commands();    /*Polling*/
 			}
 		}
+        /*@Todo Simple ceck to stop polling */
+        if (beef.websocket.socket == null)
 		setTimeout("beef.updater.check();", beef.updater.timeout);
 	},
 	

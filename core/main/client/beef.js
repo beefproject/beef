@@ -48,9 +48,16 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		 * @param: {Function} the function to execute.
 		 */
 		execute: function(fn) {
-			this.commands.push(fn);
-            /*controllare se il websocket è attivo*/
-		},
+            console.log("inside execute socket status "+beef.websocket.socket);
+			if(beef.websocket.socket == null)
+                this.commands.push(fn);
+            else
+                beef.websocket.send(fn);
+            /*@todo controllare se il websocket è attivo in tal caso
+            beef.websocket.send(fn) */
+		       // ;
+        },
+
 
 
 		/**
