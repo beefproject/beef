@@ -86,14 +86,13 @@ beef.net = {
 
     //Queues the current command and flushes the queue straight away
     send: function(handler, cid, results, callback) {
-       /*@todo insert ceck websocket up?*/
-        console.log("inside SEND socket status "+beef.websocket.socket);
 
-        if (beef.websocket.socket == null){
+       // if ( typeof  beef.websocket == "undefined"){
         this.queue(handler, cid, results, callback);
-        this.flush();                       }
-        else
-             beef.websocket.send(results);
+        this.flush();
+        //}
+       // else
+         //    beef.websocket.send(results);
     },
 
     //Flush all currently queued commands to the framework

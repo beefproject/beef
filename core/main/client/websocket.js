@@ -54,7 +54,7 @@ beef.websocket = {
     },
 
     send:function (data) {
-        this.socket.send(data);
+       this.socket.send(data);
         console.log("Sent [" + data + "]");
     }
 

@@ -38,7 +38,7 @@ beef:
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
         websocket:
-          enable: true
+          enable: false
           secure: false # use WebSocketSecure
           port: 11989
 
@@ -71,4 +71,4 @@ beef:
             enable: false
         console:
             shell:
-                enable: true
+                enable: false

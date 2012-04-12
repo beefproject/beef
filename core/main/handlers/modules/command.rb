@@ -14,64 +14,64 @@
 #   limitations under the License.
 #
 module BeEF
-module Core
-module Handlers
-module Modules
+  module Core
+    module Handlers
+      module Modules
 
-  module Command
+        module Command
 
-    # Adds the command module instructions to a hooked browser's http response. 
-    # @param [Object] command Command object
-    # @param [Object] hooked_browser Hooked Browser object
-    def add_command_instructions(command, hooked_browser)
+          # Adds the command module instructions to a hooked browser's http response.
+          # @param [Object] command Command object
+          # @param [Object] hooked_browser Hooked Browser object
+          def add_command_instructions(command, hooked_browser)
 
-      (print_error "hooked_browser is nil";return) if hooked_browser.nil?
-      (print_error "hooked_browser.session is nil";return) if hooked_browser.session.nil?
-      (print_error "hooked_browser is nil";return) if command.nil?
-      (print_error "hooked_browser.command_module_id is nil";return) if command.command_module_id.nil?
+            (print_error "hooked_browser is nil"; return) if hooked_browser.nil?
+            (print_error "hooked_browser.session is nil"; return) if hooked_browser.session.nil?
+            (print_error "hooked_browser is nil"; return) if command.nil?
+            (print_error "hooked_browser.command_module_id is nil"; return) if command.command_module_id.nil?
 
-      # @note get the command module
-      command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)      
-      (print_error "command_module is nil";return) if command_module.nil?
-      (print_error "command_module.path is nil";return) if command_module.path.nil?
+            # @note get the command module
+            command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
+            (print_error "command_module is nil"; return) if command_module.nil?
+            (print_error "command_module.path is nil"; return) if command_module.path.nil?
 
-      if(command_module.path.match(/^Dynamic/))
-         command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
-      else
-         key = BeEF::Module.get_key_by_database_id(command.command_module_id) 
-         command_module = BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{key}.class")).new(key)
+            if (command_module.path.match(/^Dynamic/))
+              command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
+            else
+              key = BeEF::Module.get_key_by_database_id(command.command_module_id)
+              command_module = BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{key}.class")).new(key)
+            end
+
+            command_module.command_id = command.id
+            command_module.session_id = hooked_browser.session
+            command_module.build_datastore(command.data)
+            command_module.pre_send
+
+            build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
+            let= BeEF::Core::Websocket::Websocket.instance
+            #@todo radoen debug this one
+            exist=  let.getsocket(hooked_browser.session)
+            if  exist != nil
+
+              let.sent(command_module.output, hooked_browser.session)
+            else
+              @body << command_module.output + "\n\n"
+
+            end
+            # @note prints the event to the console
+            if BeEF::Settings.console?
+              name = command_module.friendlyname || kclass
+              print_info "Hooked browser #{hooked_browser.ip} has been sent instructions from command module '#{name}'"
+            end
+
+            # @note flag that the command has been sent to the hooked browser
+            command.instructions_sent = true
+            command.save
+          end
+
+        end
+
       end
-
-      command_module.command_id = command.id
-      command_module.session_id = hooked_browser.session
-      command_module.build_datastore(command.data)
-      command_module.pre_send
-
-      build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
-      print_info(BeEF::Core::Websocket::Websocket.getsocket(hooked_browser))
-
-      #@todo radoen debug this one
-      if  BeEF::Core::Websocket::Websocket.getsocket(hooked_browser)
-
-        BeEF::Core::Websocket::Websocket.sent(command,hooked_browser)
-      else
-        @body << command_module.output + "\n\n"
-
-      end
-      # @note prints the event to the console
-      if BeEF::Settings.console?
-      name = command_module.friendlyname || kclass
-      print_info "Hooked browser #{hooked_browser.ip} has been sent instructions from command module '#{name}'"
-      end
-
-      # @note flag that the command has been sent to the hooked browser
-      command.instructions_sent = true 
-      command.save
     end
-
   end
-
-end
-end
-end
 end

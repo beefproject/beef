@@ -16,9 +16,13 @@
 module BeEF
   module Core
     module Websocket
-      class Websocket
-        #all hooked browser
+      require 'singleton'
 
+      class Websocket
+       # require 'singleton'
+        #include Singleton
+        #all hooked browser
+        include Singleton
        @@activeSocket= Hash.new #empty at begin
 
 
@@ -46,7 +50,7 @@ module BeEF
                   if(/BEEFHOOK=/.match(message))
                     print_info("Browser #{ws.origin} says helo! ws is running")
                     #insert new connection in activesocket
-                    @@activeSocket[message.split(/BEEFHOOK=/)] = ws
+                    @@activeSocket["#{message.split(/BEEFHOOK=/)}"] = ws
                     print_debug("In activesocket we have #{@@activeSocket}")
                   end
                 end

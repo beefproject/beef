@@ -114,7 +114,7 @@ print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
 #@note Starts the WebSocket server
 if config.get("beef.http.websocket.enable")
-  BeEF::Core::Websocket::Websocket.new
+  BeEF::Core::Websocket::Websocket.instance
 end
 
 

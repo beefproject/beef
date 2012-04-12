@@ -61,12 +61,15 @@ window.onclose = function(event) {
 function beef_init() {
   if (!beef.pageIsLoaded) {
     beef.pageIsLoaded = true;
+      /*@note we have to load websocket only if browser has websocket and beef server has websocketserver up
+       * the second check is require for this */
+      if(beef.browser.hasWebSocket() && typeof beef.websocket != 'undefined')
+          beef.websocket.start();
+  }
 	beef.net.browser_details();
     beef.updater.execute_commands();
     beef.updater.check();
     beef.logger.start();
-    if(beef.browser.hasWebSocket())
-        beef.websocket.start();
-  }
+
 
 }
