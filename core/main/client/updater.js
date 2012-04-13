@@ -23,7 +23,7 @@ beef.updater = {
 	// Low timeouts combined with the way the framework sends commamd modules result 
 	// in instructions being sent repeatedly or complex code. 
 	// If you suffer from ADHD, you can decrease this setting.
-	timeout: 1000,
+	timeout: 5000,
 	
 	// A lock.
 	lock: false,

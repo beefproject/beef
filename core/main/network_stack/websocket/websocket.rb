@@ -27,7 +27,6 @@ module BeEF
 
 
         def initialize
-          print_info("/n In activesocket we have #{@@activeSocket}")
           config = BeEF::Core::Configuration.instance
           port = config.get("beef.http.websocket.port")
           secure = config.get("beef.http.websocket.secure")
@@ -50,7 +49,7 @@ module BeEF
                   if(/BEEFHOOK=/.match(message))
                     print_info("Browser #{ws.origin} says helo! ws is running")
                     #insert new connection in activesocket
-                    @@activeSocket["#{message.split(/BEEFHOOK=/)}"] = ws
+                    @@activeSocket["#{message.split(/BEEFHOOK=/)[1]}"] = ws
                     print_debug("In activesocket we have #{@@activeSocket}")
                   end
                 end
@@ -60,7 +59,11 @@ module BeEF
         end
         #@note used in command.rd return nill if browser is not in list else giveback websocket
         def getsocket (browser_id)
-          @@activeSocket[browser_id]
+          if ( @@activeSocket[browser_id] != nil)
+              true
+          else
+              false
+          end
         end
         #@note send a function to hooked and ws browser
         def sent (fn ,browser_id )
