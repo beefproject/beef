@@ -48,11 +48,13 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		 * @param: {Function} the function to execute.
 		 */
 		execute: function(fn) {
-            if ( typeof  beef.websocket == "undefined")
+            if ( typeof  beef.websocket == "undefined"){
+                console.log("--- NO WEBSOCKETS ---");
                 this.commands.push(fn);
-            else
-                beef.websocket.send(fn);
-
+            }else{
+                console.log("--- WEBSOCKETS ENABLED ---");
+                fn();
+            }
         },
 
 
