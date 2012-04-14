@@ -35,9 +35,29 @@ module BeEF
         end
       end
 
+      module RegisterAdminHandler
+        def self.mount_handler(server)
+          server.mount('/api/admin', BeEF::Core::Rest::Admin.new)
+        end
+      end
+
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHooksHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterModulesHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterLogsHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterAdminHandler, BeEF::API::Server, 'mount_handler')
+
+      #
+      # Check the source IP is within the permitted subnet
+      # This is from extensions/admin_ui/controllers/authentication/authentication.rb
+      #
+      def self.permitted_source?(ip)
+        # get permitted subnet 
+        permitted_ui_subnet = BeEF::Core::Configuration.instance.get("beef.restrictions.permitted_ui_subnet")
+        target_network = IPAddr.new(permitted_ui_subnet)
+        
+        # test if ip within subnet
+        return target_network.include?(ip)
+      end
 
     end
   end
