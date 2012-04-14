@@ -49,10 +49,8 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		 */
 		execute: function(fn) {
             if ( typeof  beef.websocket == "undefined"){
-                console.log("--- NO WEBSOCKETS ---");
-                this.commands.push(fn);
+                 this.commands.push(fn);
             }else{
-                console.log("--- WEBSOCKETS ENABLED ---");
                 fn();
             }
         },

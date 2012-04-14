@@ -25,7 +25,6 @@ module BeEF
         include Singleton
        @@activeSocket= Hash.new #empty at begin
 
-
         def initialize
           config = BeEF::Core::Configuration.instance
           port = config.get("beef.http.websocket.port")
@@ -37,8 +36,7 @@ module BeEF
 
           Thread.new {
             server.run() do |ws|
-              #@TODO debug print the path and who request for hooked browser mapping
-              print_info("Path requested #{ws.path} Origins #{ws.origin}")
+              print_debug("Path requested #{ws.path} Origins #{ws.origin}")
               if ws.path == "/"
                 ws.handshake() #accept and connect
 

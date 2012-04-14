@@ -87,13 +87,9 @@ beef.net = {
     //Queues the current command and flushes the queue straight away
     send: function(handler, cid, results, callback) {
 
-       // if ( typeof  beef.websocket == "undefined"){
         this.queue(handler, cid, results, callback);
         this.flush();
-        //}
-       // else
-         //    beef.websocket.send(results);
-    },
+      },
 
     //Flush all currently queued commands to the framework
     flush: function() {

