@@ -66,10 +66,18 @@ module Events
                 return event['time'].to_s+'s - [Mouse Click] x: '+event['x'].to_s+' y:'+event['y'].to_s+' > '+event['target'].to_s
             when 'focus'
                 return event['time'].to_s+'s - [Focus] Browser has regained focus.'
+			when 'copy'
+				return event['time'].to_s+'s - [User Copied Text] "'+event['data'].to_s+'"'
+			when 'cut'
+				return event['time'].to_s+'s - [User Cut Text] "'+event['data'].to_s+'"'
+			when 'paste'
+				return event['time'].to_s+'s - [User Pasted Text] "'+event['data'].to_s+'"'
             when 'blur'
                 return event['time'].to_s+'s - [Blur] Browser has lost focus.'
             when 'keys'
                 return event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
+			when 'submit'
+				return event['time'].to_s+'s - [Form Submitted] '+event['data'].to_s+' > '+event['target'].to_s
         end
         print_debug '[EVENTS] Event handler has received an unknown event'
         return 'Unknown event'

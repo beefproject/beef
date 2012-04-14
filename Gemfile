@@ -49,6 +49,8 @@ if ENV['BEEF_TEST']
   # sudo apt-get install libxslt-dev libxml2-dev
   # sudo port install libxml2 libxslt
   gem "capybara"
+  #RESTful API tests/generic command module tests
+  gem "rest-client", "~> 1.6.7"
 end
 
 source "http://rubygems.org"

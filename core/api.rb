@@ -60,10 +60,9 @@ module BeEF
       # @param [String] method the method of the class
       # @param [Array] params an array of parameters that need to be matched
       # @return [Boolean] whether or not the owner is registered
-      # @todo Change the param matching to use the new :is_matched_params?() method - Issue #479
       def registered?(owner, c, method, params = [])
         @registry.each{|r|
-          if r['owner'] == owner and r['class'] == c and r['method'] == method and params == r['params']
+          if r['owner'] == owner and r['class'] == c and r['method'] == method and self.is_matched_params?(r, params)
             return true
           end
         }

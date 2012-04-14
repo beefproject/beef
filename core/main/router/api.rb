@@ -13,14 +13,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    module:
-         get_history:
-            enable: true
-            category: "Browser"
-            name: "History Extraction"
-            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done at http://lcamtuf.coredump.cx/cachetime/"
-            authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
-            target:
-                working: ["FF","IE"]
-                not_working: ["O","C","S"]
+module BeEF
+  module Core
+    module Router
+
+      module RegisterRouterHandler
+        def self.mount_handler(server)
+          server.mount('/', BeEF::Core::Router::Router.new)
+        end
+      end
+
+      BeEF::API::Registrar.instance.register(BeEF::Core::Router::RegisterRouterHandler, BeEF::API::Server, 'mount_handler')
+
+    end
+  end
+end

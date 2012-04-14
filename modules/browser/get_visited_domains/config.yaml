@@ -13,5 +13,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-
-0.4.3.4-alpha
+beef:
+    module:
+         get_visited_domains:
+            enable: true
+            category: "Browser"
+            name: "Get Visited Domains"
+            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done at http://lcamtuf.coredump.cx/cachetime/"
+            authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
+            target:
+                working: ["FF","IE"]
+                not_working: ["O","C","S"]

@@ -14,7 +14,7 @@
 #   limitations under the License.
 #
 
-class Get_history < BeEF::Core::Command
+class Get_visited_domains < BeEF::Core::Command
 
   def post_execute
     content = {}

