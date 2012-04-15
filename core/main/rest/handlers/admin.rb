@@ -58,7 +58,9 @@ module BeEF
               BeEF::Core::Logger.instance.register('Authentication', "User with ip #{request.ip} has failed to authenticate in the application.")
               halt 401
             else
-              '{"success":"true","token":"' + config.get('beef.api_token') + '"'
+              { "success" => true,
+                "token" => "#{config.get('beef.api_token')}"
+              }.to_json
             end
           rescue Exception => e
             error 400
