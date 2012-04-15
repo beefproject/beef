@@ -54,7 +54,7 @@ module BeEF
           begin
             data = JSON.parse request.body.read
             # check username and password
-            if not (data['username'].eql? config.get('beef.extension.admin_ui.username') and data['password'].eql? config.get('beef.extension.admin_ui.password') )
+            if not (data['username'].eql? config.get('beef.credentials.user') and data['password'].eql? config.get('beef.credentials.passwd') )
               BeEF::Core::Logger.instance.register('Authentication', "User with ip #{request.ip} has failed to authenticate in the application.")
               halt 401
             else
