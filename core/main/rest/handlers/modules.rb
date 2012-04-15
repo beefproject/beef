@@ -41,6 +41,7 @@ module BeEF
             next if !BeEF::Module.is_enabled(modk)
             mods_hash[i] = {
                 'id' => mod.id,
+                'class' => config.get("beef.module.#{modk}.class"),
                 'name' => config.get("beef.module.#{modk}.name"),
                 'category' => config.get("beef.module.#{modk}.category")
             }
