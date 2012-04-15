@@ -87,7 +87,34 @@ class TC_DebugModules < Test::Unit::TestCase
     result = JSON.parse(response.body)
     data = JSON.parse(result["data"])
     assert_not_nil data
-    assert data["data"] == (repeat_string * repeat_count)
+    assert_equal data["data"],(repeat_string * repeat_count)
+  end
+
+  # Test debug module "Test_return_ascii_chars" using the RESTful API
+  def test_return_ascii_chars
+    BeefTest.new_victim
+    sleep 2.0
+    response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_ascii_chars}?token=#{@@token}",
+                               {}.to_json,
+                               :content_type => :json,
+                               :accept => :json
+    assert_equal 200, response.code
+    assert_not_nil response.body
+    result = JSON.parse(response.body)
+    success = result['success']
+    assert success
+
+    cmd_id = result['command_id']
+    sleep 3.0
+    response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_ascii_chars}/#{cmd_id}", {:params => {:token => @@token}}
+    assert_equal 200, response.code
+    assert_not_nil response.body
+    result = JSON.parse(response.body)
+    data = JSON.parse(result["data"])
+    assert_not_nil data
+    ascii_chars = ""
+    (32..127).each do |i| ascii_chars << i.chr end
+    assert_equal ascii_chars,data["data"]
   end
 
 end
