@@ -30,8 +30,39 @@ module BeEF
                   'Expires' => '0'
         end
 
-        get '/' do
-          "Hiya"
+        # @note Authenticate using the config set username/password to retrieve the "token" used for subsquent calls.
+        # Return the secret token used for subsquene tAPI calls.
+        #
+        # Input must be specified in JSON format
+        #
+        # +++ Example: +++
+        #POST /api/admin/login HTTP/1.1
+        #Host: 127.0.0.1:3000
+        #Content-Type: application/json; charset=UTF-8
+        #Content-Length: 18
+        #
+        #{"username":"beef", "password":"beef"}
+        #===response (snip)===
+        #HTTP/1.1 200 OK
+        #Content-Type: application/json; charset=UTF-8
+        #Content-Length: 35
+        #
+        #{"success":"true","token":"122323121"}
+        #
+        post '/login' do
+          request.body.rewind
+          begin
+            data = JSON.parse request.body.read
+            # check username and password
+            if not (data['username'].eql? config.get('beef.extension.admin_ui.username') and data['password'].eql? config.get('beef.extension.admin_ui.password') )
+              BeEF::Core::Logger.instance.register('Authentication', "User with ip #{request.ip} has failed to authenticate in the application.")
+              halt 401
+            else
+              '{"success":"true","token":"' + config.get('beef.api_token') + '"'
+            end
+          rescue Exception => e
+            error 400
+          end
         end
 
         private
