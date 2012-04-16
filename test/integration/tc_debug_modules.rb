@@ -13,6 +13,7 @@ class TC_DebugModules < Test::Unit::TestCase
   @@mod_debug_ascii_chars = nil
   @@mod_debug_test_network = nil
 
+  # test jenkins
   # Test RESTful API authentication with default credentials, returns the API token to be used later.
   def test_restful_auth
     response = RestClient.post "#{RESTAPI_ADMIN}/login",
