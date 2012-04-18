@@ -19,7 +19,7 @@ module Console
 
 class ShellInterface
   
-  BD = BeEF::Extension::Initialization::Models::BrowserDetails
+  BD = BeEF::Core::Models::BrowserDetails
   
   def initialize(config)
     self.config = config

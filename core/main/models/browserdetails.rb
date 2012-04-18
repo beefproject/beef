@@ -14,8 +14,7 @@
 #   limitations under the License.
 #
 module BeEF
-module Extension
-module Initialization
+module Core
 module Models
   #
   # Table stores the details of browsers.
@@ -26,16 +25,7 @@ module Models
   
     include DataMapper::Resource
     
-    storage_names[:default] = 'extension_initialization_browserdetails'
-    
-
-    #
-    # Class constructor
-    #
-    def initialize(config)
-      super(config)
-    end
-  
+    storage_names[:default] = 'core_browserdetails'
     property :session_id, String, :length => 255, :key => true
     property :detail_key, String, :length => 255, :lazy => false, :key => true
     property :detail_value, Text, :lazy => false  
@@ -59,7 +49,7 @@ module Models
       return nil if not get(session_id, detail_key).nil?
     
       # store the returned browser details
-      browserdetails = BeEF::Extension::Initialization::Models::BrowserDetails.new(
+      browserdetails = BeEF::Core::Models::BrowserDetails.new(
               :session_id => session_id,
               :detail_key => detail_key,
               :detail_value => detail_value)
@@ -117,7 +107,6 @@ module Models
   
   end
 
-end
 end
 end
 end

@@ -85,9 +85,9 @@ class Panel < BeEF::Extension::AdminUI::HttpController
   # create a hash of simple hooked browser details
   def get_simple_hooked_browser_hash(hooked_browser)
     
-    browser_icon = BeEF::Extension::Initialization::Models::BrowserDetails.browser_icon(hooked_browser.session)
-    os_icon = BeEF::Extension::Initialization::Models::BrowserDetails.os_icon(hooked_browser.session)
-    domain = BeEF::Extension::Initialization::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
+    browser_icon = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
+    os_icon = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
+    domain = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
     
     return {
       'session' => hooked_browser.session,

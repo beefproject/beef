@@ -23,6 +23,7 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
+          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -54,7 +55,7 @@ module BeEF
         end
 
         def get_hb_details(hb)
-           details = BeEF::Extension::Initialization::Models::BrowserDetails
+           details = BeEF::Core::Models::BrowserDetails
 
            {
                'name' => details.get(hb.session, 'BrowserName'),

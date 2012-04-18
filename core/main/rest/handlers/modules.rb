@@ -23,6 +23,7 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
+          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -40,6 +41,7 @@ module BeEF
             next if !BeEF::Module.is_enabled(modk)
             mods_hash[i] = {
                 'id' => mod.id,
+                'class' => config.get("beef.module.#{modk}.class"),
                 'name' => config.get("beef.module.#{modk}.name"),
                 'category' => config.get("beef.module.#{modk}.category")
             }
