@@ -38,27 +38,30 @@ module BeEF
 
           Thread.new {
             server.run() do |ws|
-              print_debug("Path requested #{ws.path} Origins #{ws.origin}")
-              if ws.path == "/"
-                ws.handshake() #accept and connect
-
-                while true
-                  #command interpretation
-                  message=ws.receive()
-                  messageHash= JSON.parse("#{message}")
-                  #@note messageHash[result] is Base64 encoded
-                  if (messageHash["cookie"]!= nil)
-                    print_info("Browser #{ws.origin} says helo! WebSocket is running")
-                    #insert new connection in activesocket
-                    @@activeSocket["#{messageHash["cookie"]}"] = ws
-                    print_debug("In activesocket we have #{@@activeSocket}")
-                  else
-                    #json recv is a cmd response decode and send all to
-                    #we have to call dynamicreconstructor handler camp must be websocket
-                    print_debug("Received from WebSocket #{messageHash}")
-                    execute(messageHash)
+              begin
+                print_debug("Path requested #{ws.path} Origins #{ws.origin}")
+                  if ws.path == "/"
+                    ws.handshake() #accept and connect
+                    while true
+                      #command interpretation
+                      message=ws.receive()
+                      messageHash= JSON.parse("#{message}")
+                      #@note messageHash[result] is Base64 encoded
+                      if (messageHash["cookie"]!= nil)
+                        print_info("Browser #{ws.origin} says helo! WebSocket is running")
+                        #insert new connection in activesocket
+                        @@activeSocket["#{messageHash["cookie"]}"] = ws
+                        print_debug("In activesocket we have #{@@activeSocket}")
+                      else
+                        #json recv is a cmd response decode and send all to
+                        #we have to call dynamicreconstructor handler camp must be websocket
+                        print_debug("Received from WebSocket #{messageHash}")
+                        execute(messageHash)
+                      end
+                    end
                   end
-                end
+              rescue Exception => e
+                print_error "Hooked browser from origin #{ws.origin} abruptly disconnected."
               end
             end
           }
