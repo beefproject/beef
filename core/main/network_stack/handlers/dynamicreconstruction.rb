@@ -116,7 +116,6 @@ module BeEF
             end
           end
 
-          BeEF::Core::Handlers::Commands
           # Assist function for getting parameter from hash
           # @param [Hash] query Hash to pull key from
           # @param [String] key The key association to return from `query`
