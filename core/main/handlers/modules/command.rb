@@ -66,11 +66,10 @@ module BeEF
               //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
               //   See the License for the specific language governing permissions and
               //   limitations under the License.
-              //',"")
+              //', "")
               let.sent(funtosend, hooked_browser.session)
               #print_info("We are sending #{funtosend}")
             else
-              print_info("not in else")
               @body << command_module.output + "\n\n"
 
             end

