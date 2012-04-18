@@ -14,18 +14,15 @@
 #   limitations under the License.
 #
 module BeEF
-  module Extension
-    module Initialization
-
-      #
-      # The http handler that manages the return of the initial browser details.
-      #
-      class Handler
+  module Core
+    module Handlers
+      # @note Retrieves information about the browser (type, version, plugins etc.)
+      class BrowserDetails
 
         @data = {}
 
         HB = BeEF::Core::Models::HookedBrowser
-        BD = BeEF::Extension::Initialization::Models::BrowserDetails
+        BD = BeEF::Core::Models::BrowserDetails
 
         def initialize(data)
           @data = data
@@ -33,7 +30,7 @@ module BeEF
         end
 
         def err_msg(error)
-          print_error "[INITIALIZATION] #{error}"
+          print_error "[Browser Details] #{error}"
         end
 
         def setup()

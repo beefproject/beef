@@ -30,6 +30,7 @@ require 'core/main/handlers/modules/beefjs'
 require 'core/main/handlers/modules/command'
 require 'core/main/handlers/commands'
 require 'core/main/handlers/hookedbrowsers'
+require 'core/main/handlers/browserdetails'
 
 # @note Include the network stack
 require 'core/main/network_stack/handlers/dynamicreconstruction'

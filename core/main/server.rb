@@ -82,6 +82,9 @@ module BeEF
         # Create http handler for the javascript hook file
         self.mount("#{@configuration.get("beef.http.hook_file")}", BeEF::Core::Handlers::HookedBrowsers.new)
 
+        # Create handler for the initialization checks (Browser Details)
+        self.mount("/init", BeEF::Core::Handlers::BrowserDetails)
+
         # Dynamically get the list of all the http handlers using the API and register them
         BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'mount_handler', self)
 

@@ -55,7 +55,7 @@ module BeEF
         end
 
         def get_hb_details(hb)
-           details = BeEF::Extension::Initialization::Models::BrowserDetails
+           details = BeEF::Core::Models::BrowserDetails
 
            {
                'name' => details.get(hb.session, 'BrowserName'),
