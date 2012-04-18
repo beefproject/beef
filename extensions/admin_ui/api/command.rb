@@ -29,7 +29,7 @@ module API
     # Get the browser detail from the database.
     #
     def get_browser_detail(key)
-      bd = BeEF::Extension::Initialization::Models::BrowserDetails
+      bd = BeEF::Core::Models::BrowserDetails
       (print_error "@session_id is invalid";return) if not BeEF::Filters.is_valid_hook_session_id?(@session_id)
       bd.get(@session_id, key)
     end

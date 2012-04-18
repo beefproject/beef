@@ -151,7 +151,7 @@ class Core
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Extension::Initialization::Models::BrowserDetails.os_icon(zombie.session))]
+      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Core::Models::BrowserDetails.os_icon(zombie.session))]
     end
     
     puts "\n"
@@ -182,7 +182,7 @@ class Core
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Extension::Initialization::Models::BrowserDetails.os_icon(zombie.session))]
+      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Core::Models::BrowserDetails.os_icon(zombie.session))]
     end
     
     puts "\n"

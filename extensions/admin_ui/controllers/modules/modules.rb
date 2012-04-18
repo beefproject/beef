@@ -23,7 +23,7 @@ module Controllers
 #
 class Modules < BeEF::Extension::AdminUI::HttpController
   
-  BD = BeEF::Extension::Initialization::Models::BrowserDetails
+  BD = BeEF::Core::Models::BrowserDetails
   
   def initialize
     super({
