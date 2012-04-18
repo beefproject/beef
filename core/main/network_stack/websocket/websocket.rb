@@ -48,14 +48,14 @@ module BeEF
                   messageHash= JSON.parse("#{message}")
                   #@note messageHash[result] is Base64 encoded
                   if (messageHash["cookie"]!= nil)
-                    print_info("Browser #{ws.origin} says helo! ws is running")
+                    print_info("Browser #{ws.origin} says helo! WebSocket is running")
                     #insert new connection in activesocket
                     @@activeSocket["#{messageHash["cookie"]}"] = ws
                     print_debug("In activesocket we have #{@@activeSocket}")
                   else
                     #json recv is a cmd response decode and send all to
                     #we have to call dynamicreconstructor handler camp must be websocket
-                    print_info("We recived that #{messageHash}")
+                    print_debug("Received from WebSocket #{messageHash}")
                     execute(messageHash)
                   end
                 end
