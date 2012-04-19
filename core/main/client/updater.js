@@ -58,7 +58,7 @@ beef.updater = {
 			}
 		}
 
-      //if ( typeof beef.websocket === "undefined")
+      // ( typeof beef.websocket === "undefined")
 		setTimeout("beef.updater.check();", beef.updater.timeout);
 	},
 	

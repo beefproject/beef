@@ -22,11 +22,11 @@ module BeEF
       require 'base64'
       class Websocket
         include Singleton
-
+        include BeEF::Core::Handlers::Modules::Command
         # @note obtain dynamic mount points from HttpHookServer
         MOUNTS = BeEF::Core::Server.instance.mounts
         @@activeSocket= Hash.new #empty at begin
-
+        @@lastalive= Hash.new
         def initialize
           config = BeEF::Core::Configuration.instance
           port = config.get("beef.http.websocket.port")
@@ -52,6 +52,13 @@ module BeEF
                         #insert new connection in activesocket
                         @@activeSocket["#{messageHash["cookie"]}"] = ws
                         print_debug("In activesocket we have #{@@activeSocket}")
+                      elsif messageHash["alive"] != nil
+                        hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"].gsub("BEEFHOOK=",""))
+                        hooked_browser.lastseen = Time.new.to_i
+                        hooked_browser.count!
+                        hooked_browser.save
+                        zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
+                        zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
                       else
                         #json recv is a cmd response decode and send all to
                         #we have to call dynamicreconstructor handler camp must be websocket
@@ -61,26 +68,17 @@ module BeEF
                     end
                   end
               rescue Exception => e
-                print_error "Hooked browser from origin #{ws.origin} abruptly disconnected."
+                print_error "Hooked browser from origin #{ws.origin} abruptly disconnected. #{e}"
               end
             end
           }
-          ##Alive check
-          # Thread.new{
-          #
-          #   @@activeSocket.each_key{|key , value|
-          #             ping send token and update beefdb whit new timestamp insert a timer
-          #
-          #   }
-          #
-          #
-          # }
+
         end
 
         #@note used in command.rd return nill if browser is not in list else giveback websocket
         #@param [String] browser_id the cookie value
         def getsocket (browser_id)
-          if (@@activeSocket[browser_id] != nil)
+          if (@@activeSocket["BEEFHOOK=#{browser_id}"] != nil)
             true
           else
             false
@@ -91,7 +89,7 @@ module BeEF
         #@param [String] fn the module to execute
         #@param [String] browser_id the cookie value
         def sent (fn, browser_id)
-          @@activeSocket[browser_id].send(fn)
+          @@activeSocket["BEEFHOOK=#{browser_id}"].send(fn)
         end
 
         BeEF::Core::Handlers::Commands
@@ -99,6 +97,7 @@ module BeEF
         #@param [Hash] data contains the answer of a command
         #@todo ve this stuff in an Handler and resolve the Module friendly name
         def execute (data)
+
           command_results=Hash.new
           command_results["data"]=Base64.decode64(data["result"])
           (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(data["bh"])
