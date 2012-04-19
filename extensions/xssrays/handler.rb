@@ -48,7 +48,6 @@ module BeEF
         headers 'Pragma' => 'no-cache',
                 'Cache-Control' => 'no-cache',
                 'Expires' => '0',
-                'Content-Type' => 'text/javascript',
                 'Access-Control-Allow-Origin' => '*',
                 'Access-Control-Allow-Methods' => 'POST,GET'
 
