@@ -44,6 +44,19 @@ module BeEF
           output.to_json
         end
 
+        # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
+        get '/:session' do
+          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          error 401 unless hb != nil
+
+          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+          result = {}
+          details.each do |property|
+            result[property.detail_key] = property.detail_value
+          end
+          result.to_json
+        end
+
         def hb_to_json(hbs)
           hbs_hash = {}
           i = 0
