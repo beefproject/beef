@@ -189,7 +189,7 @@ beef.net.xssrays = {
                     target.search = target.search.slice(1);
                     target.search = target.search.split(/&|&amp;/);
 
-                    if(beef.browser.isIE()){ //the damn IE doesn't contain the forward slash in pathname
+                    if(beef.browser.isIE() && target.pathname.charAt(0) != "/"){ //the damn IE doesn't contain the forward slash in pathname
                        var pathname = "/" + target.pathname;
                     }else{
                         var pathname = target.pathname;
