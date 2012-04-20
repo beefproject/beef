@@ -98,8 +98,7 @@ beef.net = {
                 //todo this is necessary because at start could happened that ws in not still up and the browser try to send back browser info via websocket and failed
                 this.queue(handler, cid, results, callback);
                 this.flush();
-                console.log("error in send " + e);
-            }
+                }
         }
     },
 

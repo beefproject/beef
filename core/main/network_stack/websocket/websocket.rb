@@ -53,6 +53,7 @@ module BeEF
                         @@activeSocket["#{messageHash["cookie"]}"] = ws
                         print_debug("In activesocket we have #{@@activeSocket}")
                       elsif messageHash["alive"] != nil
+                        #@todo browser could be not in bd so we have to add it
                         hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"].gsub("BEEFHOOK=",""))
                         hooked_browser.lastseen = Time.new.to_i
                         hooked_browser.count!
@@ -62,14 +63,14 @@ module BeEF
                       else
                         #json recv is a cmd response decode and send all to
                         #we have to call dynamicreconstructor handler camp must be websocket
-                        print_debug("Received from WebSocket #{messageHash}")
+                        #print_debug("Received from WebSocket #{messageHash}")
                         execute(messageHash)
                       end
                     end
                   end
               rescue Exception => e
                 print_error "Hooked browser from origin #{ws.origin} abruptly disconnected. #{e}"
-              end
+                 end
             end
           }
 
@@ -100,6 +101,7 @@ module BeEF
 
           command_results=Hash.new
           command_results["data"]=Base64.decode64(data["result"])
+          command_results["data"].force_encoding('UTF-8')
           (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(data["bh"])
           (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
           (print_error "command name is empty"; return) if data["handler"].empty?
