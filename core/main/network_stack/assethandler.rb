@@ -56,6 +56,7 @@ module Handlers
         @allocations.delete(url)
         @http_server.unmount(url)
         @http_server.remap
+        print_info "Url [" + url + "] unmounted"
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated
