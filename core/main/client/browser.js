@@ -57,7 +57,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
 	},
 	
 	/**
