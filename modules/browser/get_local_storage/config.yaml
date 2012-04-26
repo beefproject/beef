@@ -39,4 +39,5 @@ beef:
                     S:
                         min_ver: 4
                         max_ver: latest
+                not_working: ["ALL"]
 
