@@ -17,12 +17,11 @@ beef:
     module:
         ajax_fingerprint:
             enable: true
-            category: "Browser"
+            category: "Host"
             name: "Fingerprint Ajax"
-            description: "Fingerprint Ajax and JS libraries present"
+            description: "Fingerprint Ajax and JS libraries present on the hooked page."
             authors: ["qswain"]
             target:
                 working: ["FF","S"]
                 not_working: ["C"]
 
-            
