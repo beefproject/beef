@@ -30,6 +30,11 @@ module BeEF
                   'Expires' => '0'
         end
 
+        # @note Return a can of Leffe to the thirsty Bovine Security Team member. AthCon2012 joke /antisnatchor/
+        #get "/to/a/pub"
+        #  "BeER please"
+        #end
+
         # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
         get '/' do
           online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))

