@@ -18,7 +18,7 @@ beef:
         ajax_fingerprint:
             enable: true
             category: "Host"
-            name: "Fingerprint Ajax"
+            name: "Hooked Domain"
             description: "Fingerprint Ajax and JS libraries present on the hooked page."
             authors: ["qswain"]
             target:
