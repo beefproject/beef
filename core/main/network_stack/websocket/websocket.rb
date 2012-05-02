@@ -27,10 +27,10 @@ module BeEF
         MOUNTS = BeEF::Core::Server.instance.mounts
         @@activeSocket= Hash.new #empty at begin
         @@lastalive= Hash.new
+        @@config = BeEF::Core::Configuration.instance
         def initialize
-          config = BeEF::Core::Configuration.instance
-          port = config.get("beef.http.websocket.port")
-          secure = config.get("beef.http.websocket.secure")
+          port = @@config.get("beef.http.websocket.port")
+          secure = @@config.get("beef.http.websocket.secure")
           #todo antisnatchor: start websocket secure if beef.http.websocket.secure == true
           server = WebSocketServer.new :accepted_domains => "127.0.0.1",
                                        :port => port
@@ -54,7 +54,7 @@ module BeEF
                         print_debug("In activesocket we have #{@@activeSocket}")
                       elsif messageHash["alive"] != nil
                         #@todo browser could be not in bd so we have to add it
-                        hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"].gsub("BEEFHOOK=",""))
+                        hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"])
                         hooked_browser.lastseen = Time.new.to_i
                         hooked_browser.count!
                         hooked_browser.save

