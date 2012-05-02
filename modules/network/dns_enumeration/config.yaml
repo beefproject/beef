@@ -23,4 +23,4 @@ beef:
             authors: ["jgaliana"]
             target:
                 working: ["FF", "C"]
-                not_working: ["O"]
+                not_working: ["IE", "S", "O"]

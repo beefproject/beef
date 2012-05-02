@@ -49,7 +49,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE8()
 	 */
 	isIE8: function() {
-		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !window.performance;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !window.performance;
 	},
 	
 	/**
@@ -57,7 +57,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
 	},
 	
 	/**
