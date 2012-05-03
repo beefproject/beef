@@ -166,8 +166,9 @@ task :cde do
   Dir.chdir "..";
   puts "\nCreating CDE Package...\n";
   sh "./CDE/cde ruby beef";
-  sleep (1)
+  sleep (1);
   puts "\nCleaning Up...\n";
   sh "rm -r CDE";
   puts "\nCDE Package Created...\n";
+ end
 
