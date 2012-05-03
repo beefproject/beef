@@ -152,3 +152,22 @@ task :dmg do
   puts "\nBeEF.dmg created\n"
 end
 
+
+################################
+# Create CDE Package
+# This will download and make the CDE Executable and 
+# gnereate a CDE Package in cde-package
+
+task :cde do
+  puts "\nCloning and Making CDE...";
+  sh "git clone git://github.com/pgbovine/CDE.git";
+  Dir.chdir "CDE";
+  sh "make";
+  Dir.chdir "..";
+  puts "\nCreating CDE Package...\n";
+  sh "./CDE/cde ruby beef";
+  sleep (1)
+  puts "\nCleaning Up...\n";
+  sh "rm -r CDE";
+  puts "\nCDE Package Created…\n";
+
