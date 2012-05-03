@@ -15,13 +15,11 @@
 #
 beef:
     module:
-        ajax_fingerprint:
+        google_search:
             enable: true
-            category: "Hooked Domain"
-            name: "Fingerprint Ajax"
-            description: "Fingerprint Ajax and JS libraries present on the hooked page."
-            authors: ["qswain"]
+            category: "Browser"
+            name: "Google Search"
+            description: "This module uses the hooked browser to search Google."
+            authors: ["bcoles"]
             target:
-                working: ["FF","S"]
-                not_working: ["C"]
-
+                working: ["ALL"]

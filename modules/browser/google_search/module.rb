@@ -13,15 +13,20 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    module:
-        ajax_fingerprint:
-            enable: true
-            category: "Hooked Domain"
-            name: "Fingerprint Ajax"
-            description: "Fingerprint Ajax and JS libraries present on the hooked page."
-            authors: ["qswain"]
-            target:
-                working: ["FF","S"]
-                not_working: ["C"]
+class Google_search < BeEF::Core::Command
+
+	def self.options
+		return [
+			{'name' => 'query', 'ui_label' => 'Query', 'type' => 'textarea', 'value' =>'beef', 'width' => '400px', 'height' => '50px'}
+		]
+	end
+
+	def post_execute
+		content = {}
+		content['results'] = @datastore['results']
+		content['query'] = @datastore['query']
+		save content
+	end
+
+end
 

@@ -146,7 +146,7 @@ beef.net = {
     request: function(scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
         var cross_domain = true;
-        if (document.domain == domain){
+		if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks
             if(document.location.port == "" || document.location.port == null){
                 cross_domain = !(port == "80" || port == "443");
             }
@@ -243,9 +243,9 @@ beef.net = {
 
         // check if same domain or cross domain
         var cross_domain = true;
-        if (document.domain == domain) {
+        if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks
            if(document.location.port == "" || document.location.port == null){
-              cross_domain = !(port == "80" || port == "443");
+               cross_domain = !(port == "80" || port == "443");
            } else {
               if (document.location.port == port) cross_domain = false;
            }
