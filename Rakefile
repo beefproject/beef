@@ -169,5 +169,5 @@ task :cde do
   sleep (1)
   puts "\nCleaning Up...\n";
   sh "rm -r CDE";
-  puts "\nCDE Package Created…\n";
+  puts "\nCDE Package Created...\n";
 
