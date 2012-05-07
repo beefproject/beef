@@ -49,11 +49,13 @@ module Modules
       end
       
       # @note if http_port <> public_port in config ini, use the public_port
-      if hook_session_config['beef_port'] != hook_session_config['beef_public_port']
-        hook_session_config['beef_port'] = hook_session_config['beef_public_port']
-        hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_port']}/, hook_session_config['beef_public_port'])
-        if hook_session_config['beef_public_port'] == '443'
-          hook_session_config['beef_url'].sub!(/http:/, 'https:')
+      unless hook_session_config['beef_public_port'].nil?
+        if hook_session_config['beef_port'] != hook_session_config['beef_public_port']
+          hook_session_config['beef_port'] = hook_session_config['beef_public_port']
+          hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_port']}/, hook_session_config['beef_public_port'])
+          if hook_session_config['beef_public_port'] == '443'
+            hook_session_config['beef_url'].sub!(/http:/, 'https:')
+          end
         end
       end
       
