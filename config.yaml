@@ -32,6 +32,7 @@ beef:
         port: "3000"
         # if running behind a nat set the public ip address here
         #public: ""
+        #public_port: ""
         dns: "localhost"
         panel_path: "/ui/panel"
         hook_file: "/hook.js"

