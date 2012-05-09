@@ -19,16 +19,6 @@ echo "======================================"
 echo "          BeEF Installer   "
 echo "======================================"
 echo ""
-echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environment and it's dependencies." 
-echo "" 
-echo "In rare cases, this may lead to unexpected behaviour or package conflicts on some systems."
-echo ""
-
-read -p  "Are you sure you wish to continue (Y/n)? " 
-if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" == "n" ] ; then
-	 exit;
-fi
-
 echo "Detecting OS..";
 
 
