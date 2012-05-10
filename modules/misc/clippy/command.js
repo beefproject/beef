@@ -19,7 +19,7 @@ beef.execute(function() {
  * Heretic Clippy
  * @version 1.0.0
  * @author sprky0
- */
+**/
 
 function __clippyboot(run) {
 	var _run = run;
@@ -101,7 +101,6 @@ var ClippyDisplay = function(options) {
 	this.div = document.createElement('div');
 	this.div.style.zIndex = 1000000;
 	this.div.style.width = "102px";
-//	this.div.id = "pipes";
 	this.div.style.height = "98px";
 	this.div.style.backgroundColor = "transparent";
 	this.div.style.position = "absolute";
@@ -118,17 +117,10 @@ var ClippyDisplay = function(options) {
 
 	this.div.style.opacity = (options.visible === false) ? 0 : 1;
 
-	if (options.click && typeof(options.click) == "function") {
-		img.onclick = options.click;
-	}
-
 	return this;
 }
 ClippyDisplay.prototype.getElement = function() {
 	return this.div || null;
-}
-ClippyDisplay.prototype.getPosition = function() {
-	return {bottom:this.div.style.bottom,right:this.div.style.right};
 }
 ClippyDisplay.prototype.fadeIn = function(duration,options) {
 
@@ -178,18 +170,12 @@ ClippyDisplay.prototype.fadeOut = function(duration,options) {
 		setTimeout(function(){_clipple.fadeOut(duration,options);}, options.increment); 
 	}	
 	else{ 
-		removeme=document.getElementById("pipes");
-		document.body.removeChild(removeme);
+		document.body.removeChild(document.getElementById("pipes"));
 	}
 
 	return;
 }
 
-
-ClippyDisplay.prototype.move = function(x,y) {
-	this.div.style.bottom = (parseInt(this.div.style.top) + x) + "px";
-	this.div.style.right = (parseInt(this.div.style.left) + y) + "px";
-}
 
 /** SPEECH BUBBLE **/
 
@@ -261,9 +247,7 @@ var Clippy = function(_homeSelector,file_dir) {
 	this.firstlines = [];
 	this.homebase = this.findHomeBase(_homeSelector);
 	this.timer = false;
-	this.timer_interval = 200;
-	this.update_count = 0;
-	this.file_dir = (file_dir) ? file_dir : "";
+	this.file_dir = file_dir;
 	return this;
 }
 Clippy.prototype.findHomeBase = function(selector) {
@@ -282,7 +266,6 @@ Clippy.prototype.findHomeBase = function(selector) {
 
 		div.style.zIndex = 9999999;
 		div.id = "pipes";
-		// div.style.zIndex = 10000000;
 		div.style.width = "300px";
 		div.style.height = "300px";
 		div.style.backgroundColor = "transparent";
@@ -302,15 +285,9 @@ Clippy.prototype.findHomeBase = function(selector) {
 }
 Clippy.prototype.run = function(opt) {
 
-//	alert(666); //debug
-
 	var _c = this;
 
 	this.character = new ClippyDisplay({
-		click:function(){
-			_c.say([Ouch1,Ouch2,Ouch3]);
-			_c.move(parseInt(Math.random()*20+-20),parseInt(Math.random()*20+-20));
-		},
 		file_dir : this.file_dir,
 		visible : false
 	});
@@ -319,42 +296,31 @@ Clippy.prototype.run = function(opt) {
 
 	var Help = new HelpText("<%== @askusertext %>");
 		Help.addResponse("Yes", function(){ _c.hahaha(); } );
-//		Help.addResponse("No", function(){ _c.closeBubble(); document.getElementById("pipes").style.display="none"; setTimeout(function() {document.getElementById("pipes").style.display="block"; _c.say("<%== @askusertext %>");},"<%== @respawntime %>");  } );
-		Help.addResponse("No", function(){  _c.killClippy(); setTimeout(function() { new Clippy("body","<%== @clippydir %>").run(); },"<%== @respawntime %>");  } );
+		Help.addResponse("Not now", function(){  _c.killClippy(); setTimeout(function() { new Clippy("body","<%== @clippydir %>").run(); },"<%== @respawntime %>");  } );
 	this.addHelp(Help,true);
 
-	// Click clippy
-
 	// initial wait
-	this.talkLater(2000);
+	this.talkLater();
 
 }
-
 Clippy.prototype.killClippy = function(){
 
 		this.closeBubble();
 		this.character.fadeOut(1000);
-	// Below commented out, this now happens in fadeOut function
-	//	removeme=document.getElementById("pipes");
-	//	document.body.removeChild(removeme);
 }
-
-
 Clippy.prototype.hahaha = function() {
 	
 		var div = document.createElement("div");
 		var _c = this;
 		div.id = "heehee";
-		// div.style.zIndex = 10000000;
 		div.style.display = "none";
 		div.innerHTML="<iframe src='<%== @executeyes %>' width=1 height=1 style='display:none'></iframe>";
 		
 		document.body.appendChild(div);
 		_c.openBubble("<%== @thankyoumessage %>");
 		setTimeout(function () { _c.killClippy(); }, 5000); 
+
 }
-
-
 Clippy.prototype.addHelp = function(_help, is_startphrase) {
 	this.help[ _help.getKey() ] = _help;
 	if (is_startphrase)
@@ -375,9 +341,6 @@ Clippy.prototype.sayOne = function(keys,alternative) {
 		count ++;
 	}
 
-	if (alternative)
-		this.say(alternative);
-
 	return;
 }
 Clippy.prototype.canSay = function(key) {
@@ -389,15 +352,12 @@ Clippy.prototype.say = function(key,alternative) {
 		try {
 			clearTimeout(this.timer);
 			this.timer = false;
-		} catch(e) {
-			// alert(e);	
-		}
+		} catch(e) {}
 	}
 
 	if(typeof(key) !== "string" && key.length)
 		this.sayOne(key,alternative);
 
-//	if (this.help[key])
 	this.openBubble( this.help[ key ].toElements() );
 }
 Clippy.prototype.firstLine = function() {
@@ -406,7 +366,7 @@ Clippy.prototype.firstLine = function() {
 Clippy.prototype.talkLater = function() {
 	this.closeBubble(); 
 	var _c = this;
-	this.timer = setTimeout( function() { _c.firstLine(); }, "<%== @respawntime %>");
+	this.timer = setTimeout( function() { _c.firstLine(); }, 2000);
 }
 Clippy.prototype.openBubble = function(_o) {
 
@@ -430,12 +390,6 @@ Clippy.prototype.closeBubble = function() {
 		this.bubble.close();
 	}
 }
-Clippy.prototype.update = function() {
-	this.update_count++;
-}
-Clippy.prototype.move = function(x,y) {
-	this.character.move(x,y);
-}
 
 /* APPLICATION LOGIC: */
 // function clippy_boot() {if(document.getElementsByTagName("BODY").length === 0) {setTimeout("clippy_boot()",1);} else {clippy_main();}return;}
@@ -444,6 +398,5 @@ Clippy.prototype.move = function(x,y) {
 // clippy_boot();
 
 __clippyboot(function(){new Clippy("body","<%== @clippydir %>").run();});
-
 
 });
