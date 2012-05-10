@@ -22,7 +22,7 @@ class Phonegap_persistence < BeEF::Core::Command
 
     @configuration = BeEF::Core::Configuration.instance
     beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-    beef_port = @configuration.get("beef.http.port")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
 
     return [{
       'name' => 'hook_url',

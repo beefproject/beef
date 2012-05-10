@@ -118,7 +118,9 @@ module BeEF
       # Load module configurations
       def load_modules_config
         self.set('beef.module', {})
-        Dir.glob("#{$root_dir}/modules/**/*/config.yaml") do | cf |
+        # support nested sub-categories, like browser/hooked_domain/ajax_fingerprint
+        module_configs = File.join("#{$root_dir}/modules/**", "config.yaml")
+        Dir.glob(module_configs) do | cf |
           y = self.load(cf)
           if y != nil
             y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')

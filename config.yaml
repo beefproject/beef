@@ -16,7 +16,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.4.3.4-alpha'
+    version: '0.4.3.5-alpha'
     debug: false
 
     restrictions:
@@ -32,6 +32,7 @@ beef:
         port: "3000"
         # if running behind a nat set the public ip address here
         #public: ""
+        #public_port: "" # port setting is experimental
         dns: "localhost"
         panel_path: "/ui/panel"
         hook_file: "/hook.js"

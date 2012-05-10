@@ -54,6 +54,17 @@ module Modules
         hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
       end
 
+      # @note if http_port <> public_port in config ini, use the public_port
+      unless hook_session_config['beef_public_port'].nil?
+        if hook_session_config['beef_port'] != hook_session_config['beef_public_port']
+          hook_session_config['beef_port'] = hook_session_config['beef_public_port']
+          hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_port']}/, hook_session_config['beef_public_port'])
+          if hook_session_config['beef_public_port'] == '443'
+            hook_session_config['beef_url'].sub!(/http:/, 'https:')
+          end
+        end
+      end
+      
       # @note populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)
       @body << eruby.evaluate(hook_session_config)
