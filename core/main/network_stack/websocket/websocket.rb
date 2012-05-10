@@ -44,8 +44,8 @@ module BeEF
                     ws.handshake() #accept and connect
                     while true
                       #command interpretation
-                      message=ws.receive()
-                      messageHash= JSON.parse("#{message}")
+                      message = ws.receive()
+                      messageHash = JSON.parse("#{message}")
                       #@note messageHash[result] is Base64 encoded
                       if (messageHash["cookie"]!= nil)
                         print_info("Browser #{ws.origin} says helo! WebSocket is running")
@@ -53,7 +53,6 @@ module BeEF
                         @@activeSocket["#{messageHash["cookie"]}"] = ws
                         print_debug("In activesocket we have #{@@activeSocket}")
                       elsif messageHash["alive"] != nil
-                        #@todo browser could be not in bd so we have to add it
                         hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"])
                         hooked_browser.lastseen = Time.new.to_i
                         hooked_browser.count!
@@ -76,10 +75,10 @@ module BeEF
 
         end
 
-        #@note used in command.rd return nill if browser is not in list else giveback websocket
-        #@param [String] browser_id the cookie value
-        def getsocket (browser_id)
-          if (@@activeSocket["BEEFHOOK=#{browser_id}"] != nil)
+        #@note retrieve the right websocket channel given an hooked browser session
+        #@param [String] session the hooked browser session
+        def getsocket (session)
+          if (@@activeSocket[session] != nil)
             true
           else
             false
@@ -88,9 +87,9 @@ module BeEF
 
         #@note send a function to hooked and ws browser
         #@param [String] fn the module to execute
-        #@param [String] browser_id the cookie value
-        def sent (fn, browser_id)
-          @@activeSocket["BEEFHOOK=#{browser_id}"].send(fn)
+        #@param [String] session the hooked browser session
+        def sent (fn, session)
+          @@activeSocket[session].send(fn)
         end
 
         BeEF::Core::Handlers::Commands

