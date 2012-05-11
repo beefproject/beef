@@ -55,5 +55,4 @@ require 'core/main/rest/handlers/admin'
 require 'core/main/rest/api'
 
 ## @note Include Websocket
-require 'core/main/network_stack/websocket/lib/web_socket'
 require 'core/main/network_stack/websocket/websocket'

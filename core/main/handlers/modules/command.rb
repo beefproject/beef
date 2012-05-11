@@ -49,8 +49,8 @@ module BeEF
 
             build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
             let= BeEF::Core::Websocket::Websocket.instance
-            #@todo radoen debug this one
 
+            #todo antisnatchor: remove this gsub crap adding some hook packing.
             if  let.getsocket(hooked_browser.session)
               funtosend=command_module.output.gsub('//
               //   Copyright 2012 Wade Alcorn wade@bindshell.net
@@ -68,10 +68,8 @@ module BeEF
               //   limitations under the License.
               //', "")
               let.sent(funtosend, hooked_browser.session)
-              #print_info("We are sending #{funtosend}")
             else
               @body << command_module.output + "\n\n"
-
             end
             # @note prints the event to the console
             if BeEF::Settings.console?

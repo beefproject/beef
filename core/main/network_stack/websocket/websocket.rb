@@ -13,64 +13,59 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-#@todo STOP POLLING
 module BeEF
   module Core
     module Websocket
       require 'singleton'
       require 'json'
       require 'base64'
+      require 'em-websocket'
       class Websocket
         include Singleton
         include BeEF::Core::Handlers::Modules::Command
-        # @note obtain dynamic mount points from HttpHookServer
-        MOUNTS = BeEF::Core::Server.instance.mounts
-        @@activeSocket= Hash.new #empty at begin
+
+        @@activeSocket= Hash.new
         @@lastalive= Hash.new
         @@config = BeEF::Core::Configuration.instance
+
         def initialize
           port = @@config.get("beef.http.websocket.port")
           secure = @@config.get("beef.http.websocket.secure")
-          #todo antisnatchor: start websocket secure if beef.http.websocket.secure == true
-          server = WebSocketServer.new :accepted_domains => "127.0.0.1",
-                                       :port => port
-          print_info("Started WebSocket server: port [#{port.to_s}], secure [#{secure.to_s}]")
-
           Thread.new {
-            server.run() do |ws|
-              begin
-                print_debug("Path requested #{ws.path} Origins #{ws.origin}")
-                  if ws.path == "/"
-                    ws.handshake() #accept and connect
-                    while true
-                      #command interpretation
-                      message = ws.receive()
-                      messageHash = JSON.parse("#{message}")
-                      #@note messageHash[result] is Base64 encoded
-                      if (messageHash["cookie"]!= nil)
-                        print_info("Browser #{ws.origin} says helo! WebSocket is running")
-                        #insert new connection in activesocket
-                        @@activeSocket["#{messageHash["cookie"]}"] = ws
-                        print_debug("In activesocket we have #{@@activeSocket}")
-                      elsif messageHash["alive"] != nil
-                        hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => messageHash["alive"])
+            sleep 2 # prevent issues when starting at the same time the TunnelingProxy, Thin and Evented WebSockets
+            EventMachine.run { #todo antisnatchor: add support for WebSocket secure (new object with different config options, then start)
+              EventMachine::WebSocket.start(:host => "0.0.0.0", :port => port) do |ws|
+                begin
+                  print_debug "New WebSocket channel open."
+                  ws.onmessage { |msg|
+                    msg_hash = JSON.parse("#{msg}")
+                    #@note messageHash[result] is Base64 encoded
+                    if (msg_hash["cookie"]!= nil)
+                      print_debug("WebSocket - Browser says helo! WebSocket is running")
+                      #insert new connection in activesocket
+                      @@activeSocket["#{msg_hash["cookie"]}"] = ws
+                      print_debug("WebSocket - activeSocket content [#{@@activeSocket}]")
+                    elsif msg_hash["alive"] != nil
+                      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => msg_hash["alive"])
+                      unless hooked_browser.nil?
                         hooked_browser.lastseen = Time.new.to_i
                         hooked_browser.count!
                         hooked_browser.save
                         zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
-                        zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
-                      else
-                        #json recv is a cmd response decode and send all to
-                        #we have to call dynamicreconstructor handler camp must be websocket
-                        #print_debug("Received from WebSocket #{messageHash}")
-                        execute(messageHash)
+                        zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
                       end
+                    else
+                      #json recv is a cmd response decode and send all to
+                      #we have to call dynamicreconstructor handler camp must be websocket
+                      #print_debug("Received from WebSocket #{messageHash}")
+                      execute(msg_hash)
                     end
-                  end
-              rescue Exception => e
-                print_error "Hooked browser from origin #{ws.origin} abruptly disconnected. #{e}"
-                 end
-            end
+                  }
+                rescue Exception => e
+                  print_error "WebSocket error: #{e}"
+                end
+              end
+            }
           }
 
         end
@@ -99,15 +94,14 @@ module BeEF
           command_results=Hash.new
           command_results["data"]=Base64.decode64(data["result"])
           command_results["data"].force_encoding('UTF-8')
-          (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(data["bh"])
+          hooked_browser = data["bh"]
+          (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
           (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
           (print_error "command name is empty"; return) if data["handler"].empty?
           (print_error "command results are empty"; return) if command_results.empty?
-          BeEF::Core::Models::Command.save_result(data["bh"], data["cid"],
-            @@config.get("beef.module.#{data["handler"].gsub("/command/","").gsub(".js","")}.name"), command_results)
+          BeEF::Core::Models::Command.save_result(hooked_browser, data["cid"],
+               @@config.get("beef.module.#{data["handler"].gsub("/command/", "").gsub(".js", "")}.name"), command_results)
         end
-
-
       end
     end
   end
