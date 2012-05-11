@@ -44,6 +44,7 @@ beef:
           enable: true
           secure: false # use WebSocketSecure
           port: 11989
+          alive_timer: 5000 # poll BeEF every 5 seconds
 
         # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
         web_server_imitation:

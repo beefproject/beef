@@ -64,6 +64,12 @@ module Modules
           end
         end
       end
+
+      if config.get("beef.http.websocket.enable")
+        hook_session_config['websocket_secure'] = config.get("beef.http.websocket.secure")
+        hook_session_config['websocket_port'] = config.get("beef.http.websocket.port")
+        hook_session_config['websocket_timer'] = config.get("beef.http.websocket.alive_timer")
+      end
       
       # @note populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)

