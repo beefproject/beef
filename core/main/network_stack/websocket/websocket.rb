@@ -95,9 +95,7 @@ module BeEF
         BeEF::Core::Handlers::Commands
         #call the handler for websocket cmd response
         #@param [Hash] data contains the answer of a command
-        #@todo ve this stuff in an Handler and resolve the Module friendly name
         def execute (data)
-
           command_results=Hash.new
           command_results["data"]=Base64.decode64(data["result"])
           command_results["data"].force_encoding('UTF-8')
@@ -105,8 +103,8 @@ module BeEF
           (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
           (print_error "command name is empty"; return) if data["handler"].empty?
           (print_error "command results are empty"; return) if command_results.empty?
-          BeEF::Core::Models::Command.save_result(data["bh"], data["cid"], data["handler"], command_results)
-
+          BeEF::Core::Models::Command.save_result(data["bh"], data["cid"],
+            @@config.get("beef.module.#{data["handler"].gsub("/command/","").gsub(".js","")}.name"), command_results)
         end
 
 
