@@ -176,9 +176,9 @@ beef.net = {
            $j.ajaxSetup({
               dataType: dataType
            });
-        }else{ //GET, HEAD, ...
+        }else if ( beef.browser.isIE() ) { //set dataType script when GET, HEAD, for IE only
            $j.ajaxSetup({
-               dataType: 'script'
+                dataType: 'script'
            });
         }
 
@@ -286,8 +286,13 @@ beef.net = {
           });
         }
 
+        // this is required for bugs in IE so data can be transfered back to the server
+        if ( beef.browser.isIE() ) {
+            dataType = 'script'
+        }
+
         $j.ajax({type: method,
-            dataType: 'script', // this is required for bugs in IE so data can be transfered back to the server
+            dataType: dataType,
             url: url,
             headers: headers,
             timeout: (timeout * 1000),
@@ -324,11 +329,9 @@ beef.net = {
             complete: function(xhr, textStatus) {
                 // cross-domain request
                 if (cross_domain) {
-                    response.status_code = -1;
-                    response.status_text = "crossdomain";
-                    response.port_status = "crossdomain";
-                    response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
-                    response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+                    response.status_code = xhr.status;
+                    response.status_text = textStatus;
+                    response.headers = xhr.getAllResponseHeaders();
                 } else {
                     // same-domain request
                     response.status_code = xhr.status;
