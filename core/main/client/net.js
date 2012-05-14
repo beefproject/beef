@@ -286,7 +286,7 @@ beef.net = {
           });
         }
 
-        // this is required for bugs in IE so data can be transfered back to the server
+		// this is required for bugs in IE so data can be transfered back to the server
         if ( beef.browser.isIE() ) {
             dataType = 'script'
         }
@@ -329,9 +329,31 @@ beef.net = {
             complete: function(xhr, textStatus) {
                 // cross-domain request
                 if (cross_domain) {
-                    response.status_code = xhr.status;
-                    response.status_text = textStatus;
-                    response.headers = xhr.getAllResponseHeaders();
+
+					response.port_status = "crossdomain";
+
+                    if (xhr.status != 0) {
+						response.status_code = xhr.status;
+					} else {
+						response.status_code = -1;
+					}
+
+					if (textStatus) {
+                    	response.status_text = textStatus;
+					} else {
+						response.status_text = "crossdomain";
+					}
+
+					if (xhr.getAllResponseHeaders()) {
+	                    response.headers = xhr.getAllResponseHeaders();
+					} else {
+						response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+					}
+
+					if (!response.response_body) {
+						response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+					}
+
                 } else {
                     // same-domain request
                     response.status_code = xhr.status;
