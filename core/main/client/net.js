@@ -176,7 +176,7 @@ beef.net = {
            $j.ajaxSetup({
               dataType: dataType
            });
-        }else if ( beef.browser.isIE() ) { //set dataType script when GET, HEAD, for IE only
+        } else {
            $j.ajaxSetup({
                 dataType: 'script'
            });
