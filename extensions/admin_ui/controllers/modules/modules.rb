@@ -511,7 +511,39 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       return parent
     end
   end
- 
+
+  #Recursive function to sort all the parent's children
+  def sort_recursive_tree(parent)
+    # sort the children nodes by status and name
+    parent.each {|x| 
+      #print_info "Sorting: " + x['children'].to_s
+      if x.is_a?(Hash) and x.has_key?('children')
+        x['children'] = x['children'].sort_by {|a| 
+          fldr = a['cls'] ? a['cls'] : 'zzzzz'
+          "#{fldr}#{a['status']}#{a['text']}"
+        }
+        x['children'].each {|c|
+          sort_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+       }
+     end
+    }
+  end
+
+  #Recursive function to retitle folders with the number of children
+  def retitle_recursive_tree(parent)
+    # append the number of command modules so the branch name results in: "<category name> (num)"
+    parent.each {|command_module_branch|
+      if command_module_branch.is_a?(Hash) and command_module_branch.has_key?('children')
+        num_of_command_modules = command_module_branch['children'].length
+        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
+
+        command_module_branch['children'].each {|c|
+          retitle_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+        }
+      end
+    }
+  end
+
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
     blanktree = []
@@ -571,20 +603,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # sort the parent array nodes 
     tree.sort! {|a,b| a['text'] <=> b['text']}
     
-    # sort the children nodes by status and name
-    tree.each {|x| x['children'] =
-      #Thanks a lot guys, thanks to the sub-folders this gets way more quirky ..
-      #Although, the sorting trick below is pretty funny :P
-      x['children'].sort_by {|a| 
-        fldr = a['cls'] ? a['cls'] : 'zzzzz'
-        "#{fldr}#{a['status']}#{a['text']}"}
-    }
+    sort_recursive_tree(tree)
+
+    retitle_recursive_tree(tree)
     
-    # append the number of command modules so the branch name results in: "<category name> (num)"
-    tree.each {|command_module_branch|
-      num_of_command_modules = command_module_branch['children'].length
-      command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
-    }
+
       
     # return a JSON array of hashes
     @body = tree.to_json
