@@ -19,6 +19,17 @@ echo "======================================"
 echo "          BeEF Installer   "
 echo "======================================"
 echo ""
+
+echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and it's dependencies." 
+echo "" 
+echo "In rare cases, this may lead to unexpected behaviour or package conflicts on some systems."
+echo ""
+read -p  "Are you sure you wish to continue (Y/n)? " 
+if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" == "n" ] ; then
+	 exit;
+fi
+
+echo ""
 echo "Detecting OS..";
 
 
@@ -52,7 +63,6 @@ if [ "$OS" == "Darwin" ]; then
 	bundle install
 	OK="yes"
 	
-	cd beef	
 	./beef
 	
 	echo ""
@@ -69,17 +79,31 @@ if [ "$Distro" == "Debian" ]; then
 	echo "Debian/Ubuntu Detected"
 	echo "Installing Prerequisite Packages.."
 	sudo apt-get update 
-	sudo apt-get install ruby1.9.1-dev build-essential libsqlite3-ruby libsqlite3-dev build-essential libsqlite3-ruby git libsqlite3-dev rake 
+	sudo apt-get install curl git
+
+
+
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion
+
+bash < <(curl -sk https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+
+echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+
+source ~/.bashrc
+source $HOME/.rvm/scripts/rvm
+
+	rvm install 1.9.2
+	rvm use 1.9.2 --default
 
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
 	cd beef
 
 	echo "Installing Ruby Gems"
-	sudo gem install bundler
-	sudo bundle install
+	gem install bundler
+	bundle install
 	
-	cd beef
+	
 	./beef
 
 	OK="yes"
@@ -115,7 +139,6 @@ if [ "$Distro" == "RedHat" ]; then
 	
 	source ~/.bash_profile
 	
-	cd beef
 	./beef
 
 	OK="yes"
@@ -128,7 +151,7 @@ if [ "$Distro" == "RedHat" ]; then
 fi
 
 if [ "$OK" == "yes" ]; then		
-
+echo ""
 else 
 	echo ""
 	echo "======================================="
