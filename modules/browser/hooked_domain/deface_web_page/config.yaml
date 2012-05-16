@@ -19,7 +19,7 @@ beef:
             enable: true
             category: ["Browser","Hooked Domain"]
             name: "Replace Content (Deface)"
-            description: "Overwrite the body of the page the hooked browser is on with the 'Deface Content' string."
+            description: "Overwrite the page, title and shortcut icon on the hooked page."
             authors: ["antisnatchor"]
             target:
                 user_notify: ['ALL']
