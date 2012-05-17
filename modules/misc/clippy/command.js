@@ -19,6 +19,7 @@ beef.execute(function() {
  * Heretic Clippy
  * @version 1.0.0
  * @author sprky0
+ * @modified vt & denden
 **/
 
 function __clippyboot(run) {
@@ -35,7 +36,6 @@ var GUID = {base:"_",cur:0,get:function(){this.cur++;return this.base+this.cur;}
 var HelpText = function(_question,reusable) {
 	this.question = _question;
 	this.options = [];
-	// this.key = key_override ? key_override : GUID.get();
 	this.key = GUID.get();
 	this.views = 0;
 	this.reusable = (reusable === true);
@@ -107,13 +107,20 @@ var ClippyDisplay = function(options) {
 	this.div.style.bottom = 0;
 	this.div.style.color = "black";
 	this.div.style.right = "60px";
-	this.div.style.display = "block";
-	var img = new Image();
-		img.src = this.file_dir + "clippy-main.png";
-		img.style.position = "relative";
-		img.style.display = "block";
+	this.div.style.display = "inline";
 
-	this.div.appendChild(img);
+	if (navigator.userAgent.match(/MSIE/)) {
+		this.div.style.filter = "revealTrans(transition=12,duration=1.8)";
+	}
+	else {
+		var img = new Image();
+			img.src = this.file_dir + "clippy-main.png";
+			img.style.position = "relative";
+			img.style.display = "block";
+			img.id = "clippyid";
+
+		this.div.appendChild(img);
+	}
 
 	this.div.style.opacity = (options.visible === false) ? 0 : 1;
 
@@ -139,9 +146,17 @@ ClippyDisplay.prototype.fadeIn = function(duration,options) {
 
 	options.remain--;
 	options.value += options.step;
-	_clipple.div.style.opacity = options.value;
 	
-	if (options.remain > 0) { setTimeout(function(){_clipple.fadeIn(duration,options);}, options.increment); }
+	if (navigator.userAgent.match(/MSIE/)) {
+		imgfile = _clipple.file_dir + "clippy-main.png";
+		_clipple.div.filters[0].Apply();
+		_clipple.div.innerHTML="<img src='"+imgfile+"' />";
+		_clipple.div.filters[0].Play();
+	}
+	else {
+		_clipple.div.style.opacity = options.value;
+		if (options.remain > 0) { setTimeout(function(){_clipple.fadeIn(duration,options);}, options.increment); }
+	}
 
 	return;
 }
@@ -166,11 +181,18 @@ ClippyDisplay.prototype.fadeOut = function(duration,options) {
 	options.value -= options.step;
 	_clipple.div.style.opacity = options.value;
 	
-	if (options.remain > 0) { 
-		setTimeout(function(){_clipple.fadeOut(duration,options);}, options.increment); 
-	}	
-	else{ 
+
+
+	if (navigator.userAgent.match(/MSIE/)) {
 		document.body.removeChild(document.getElementById("pipes"));
+	}
+	else {
+		if (options.remain > 0) { 
+			setTimeout(function(){_clipple.fadeOut(duration,options);}, options.increment); 
+		}	
+		else{ 
+			document.body.removeChild(document.getElementById("pipes"));
+		}
 	}
 
 	return;
@@ -210,7 +232,6 @@ var PopupDisplay = function(o,options) {
 	this.message.style.background = "transparent url('" + this.file_dir + "clippy-speech-mid.png') top left repeat-y";
 	this.message.style.padding = "8px";
 	this.message.style.font = "11.5px Arial, Verdana, Sans";
-	// this.message.innerHTML = text;
 	this.message.appendChild(o);
 
 	this.div.appendChild(this.message);
@@ -269,7 +290,7 @@ Clippy.prototype.findHomeBase = function(selector) {
 		div.style.width = "300px";
 		div.style.height = "300px";
 		div.style.backgroundColor = "transparent";
-		div.style.position = "fixed";
+		div.style.position = "absolute";
 		div.style.bottom = "0";
 		div.style.right = "0";
 		
