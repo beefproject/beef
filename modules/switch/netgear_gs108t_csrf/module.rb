@@ -1,5 +1,5 @@
 #
-#   Copyright 2012 Bart Leppens
+#   Copyright 2012 Wade Alcorn wade@bindshell.net
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ class Netgear_gs108t_csrf < BeEF::Core::Command
   
   def self.options
     return [
-        {'name' => 'base', 'ui_label' => 'Switch web root', 'value' => 'http://192.168.0.139/'}, 
+        {'name' => 'base', 'ui_label' => 'Switch web root', 'value' => 'http://192.168.0.239/'}, 
         {'name' => 'oldpassword', 'ui_label' => 'Old Password', 'value' => 'password'}, 
         {'name' => 'newpassword', 'ui_label' => 'Desired password', 'value' => '__BeEF__'}
     ]

