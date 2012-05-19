@@ -23,7 +23,7 @@ beef.updater = {
 	// Low timeouts combined with the way the framework sends commamd modules result 
 	// in instructions being sent repeatedly or complex code. 
 	// If you suffer from ADHD, you can decrease this setting.
-	timeout: 1000,
+	timeout: 5000,
 	
 	// A lock.
 	lock: false,
@@ -51,10 +51,14 @@ beef.updater = {
 			beef.net.flush();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
-			} else {
-				this.get_commands();
+			}
+
+            else {
+				this.get_commands();    /*Polling*/
 			}
 		}
+
+      // ( typeof beef.websocket === "undefined")
 		setTimeout("beef.updater.check();", beef.updater.timeout);
 	},
 	
@@ -78,7 +82,8 @@ beef.updater = {
 		if(beef.commands.length == 0) return;
 		
 		this.lock = true;
-		
+		/*here execute the command */
+
 		while(beef.commands.length > 0) {
 			command = beef.commands.pop();
 			try {

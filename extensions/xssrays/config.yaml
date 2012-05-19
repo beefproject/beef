@@ -22,4 +22,4 @@ beef:
             clean_timeout: 3000
             cross_domain: true
             # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: false
+            js_console_logs: true
