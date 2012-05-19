@@ -92,10 +92,11 @@ beef.net = {
         }
         else {
             try {
-                beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid + '", "result":"' + beef.encode.base64.encode(results) + '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
+                beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
+                    '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
+                    '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
             }
             catch (e) {
-                //todo this is necessary because at start could happened that ws in not still up and the browser try to send back browser info via websocket and failed
                 this.queue(handler, cid, results, callback);
                 this.flush();
                 }
@@ -184,14 +185,14 @@ beef.net = {
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
          * This will turn POSTs into GETs for remote-domain requests.
          */
-        if (method == "POST") {
-            $j.ajaxSetup({
-                dataType:dataType
-            });
-        } else { //GET, HEAD, ...
-            $j.ajaxSetup({
-                dataType:'script'
-            });
+        if (method == "POST"){
+           $j.ajaxSetup({
+              dataType: dataType
+           });
+        } else {
+           $j.ajaxSetup({
+                dataType: 'script'
+           });
         }
 
         //build and execute the request
@@ -299,11 +300,16 @@ beef.net = {
             });
         }
 
-        $j.ajax({type:method,
-            dataType:'script', // this is required for bugs in IE so data can be transfered back to the server
-            url:url,
-            headers:headers,
-            timeout:(timeout * 1000),
+		// this is required for bugs in IE so data can be transfered back to the server
+        if ( beef.browser.isIE() ) {
+            dataType = 'script'
+        }
+
+        $j.ajax({type: method,
+            dataType: dataType,
+            url: url,
+            headers: headers,
+            timeout: (timeout * 1000),
 
             // needed otherwise jQuery always adds:
             // Content-type: application/xml
@@ -337,11 +343,31 @@ beef.net = {
             complete:function (xhr, textStatus) {
                 // cross-domain request
                 if (cross_domain) {
-                    response.status_code = -1;
-                    response.status_text = "crossdomain";
-                    response.port_status = "crossdomain";
-                    response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
-                    response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+
+					response.port_status = "crossdomain";
+
+                    if (xhr.status != 0) {
+						response.status_code = xhr.status;
+					} else {
+						response.status_code = -1;
+					}
+
+					if (textStatus) {
+                    	response.status_text = textStatus;
+					} else {
+						response.status_text = "crossdomain";
+					}
+
+					if (xhr.getAllResponseHeaders()) {
+	                    response.headers = xhr.getAllResponseHeaders();
+					} else {
+						response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+					}
+
+					if (!response.response_body) {
+						response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+					}
+
                 } else {
                     // same-domain request
                     response.status_code = xhr.status;

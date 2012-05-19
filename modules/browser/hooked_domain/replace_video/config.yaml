@@ -14,12 +14,12 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        replace_video:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Replace Videos"
+            description: "Replaces an object selected with jQuery (all embed tags by default) with an embed tag containing the youtube video of your choice (rickroll by default)."
+            authors: ["Yori Kvitchko", "antisnatchor"]
+            target:
+                user_notify: ['ALL']

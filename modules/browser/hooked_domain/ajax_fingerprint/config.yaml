@@ -14,12 +14,14 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        ajax_fingerprint:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Fingerprint Ajax"
+            description: "Fingerprint Ajax and JS libraries present on the hooked page."
+            authors: ["qswain"]
+            target:
+                working: ["FF","S"]
+                not_working: ["C"]
+

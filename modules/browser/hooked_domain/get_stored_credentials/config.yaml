@@ -14,12 +14,14 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        get_stored_credentials:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Get Stored Credentials"
+            description: "This module retrieves saved username/password combinations from the login page on the hooked domain.<br /><br />It will fail if more than one set of domain credentials are saved in the browser."
+            authors: ["bcoles"]
+            target:
+                working: ["FF"]
+                not_working: ["All"]
+

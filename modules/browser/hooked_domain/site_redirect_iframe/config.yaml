@@ -14,12 +14,13 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        site_redirect_iframe:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Redirect Browser (iFrame)"
+            description: "This module creates a 100% x 100% overlaying iframe and keeps the browers hooked to the framework. The content of the iframe, page title, page shortcut icon and the time delay are specified in the parameters below.<br><br>The content of the URL bar will not be changed in the hooked browser."
+            authors: ["ethicalhack3r", "Yori Kvitchko"]
+            target:
+                user_notify: ["ALL"]
+

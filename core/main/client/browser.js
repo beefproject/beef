@@ -597,29 +597,37 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 	 * Returns the list of plugins installed in the browser.
 	 */
 	getPlugins: function() {
-		var results = '';
-        if (this.isIE())
-        {
-            results = this.getPluginsIE();
-        } else {
-            if (navigator.plugins && navigator.plugins.length > 0)
-            {
-                var length = navigator.plugins.length;
-                for (var i=0; i < length; i++)
-                {
-                    if (i != 0)
-                        results += '\n';
-                    if(beef.browser.isFF()){ //FF returns exact plugin versions
-                        results += navigator.plugins[i].name + '-v.' + navigator.plugins[i].version;
-                    }else{ // Webkit and Presto (Opera) doesn't support the version attribute, and
-                           // sometimes they store plugin version in description (Real, Adobe)
-                        results += navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
-                    }
-                }
-            } else {
-                results = 'navigator.plugins is not supported in this browser!';
-            }
-        }
+
+		var results;
+		Array.prototype.unique = function() {
+			var o = {}, i, l = this.length, r = [];
+			for(i=0; i<l;i+=1) o[this[i]] = this[i];
+			for(i in o) r.push(o[i]);
+			return r;
+		};
+
+		// Internet Explorer
+		if (this.isIE()) this.getPluginsIE();
+
+		// All other browsers that support navigator.plugins
+		else if (navigator.plugins && navigator.plugins.length > 0) {
+			results = new Array();
+			for (var i=0; i < navigator.plugins.length; i++) {
+
+				// Firefox returns exact plugin versions
+				if (beef.browser.isFF()) results[i] = navigator.plugins[i].name + '-v.' + navigator.plugins[i].version;
+
+				// Webkit and Presto (Opera)
+				// Don't support the version attribute
+				// Sometimes store the version in description (Real, Adobe)
+				else results[i] = navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
+			}
+			results = results.unique().toString();
+
+		// All browsers that don't support navigator.plugins
+		} else results = 'navigator.plugins is not supported in this browser!';
+
+		// Return results
 		return results;
 	},
 	

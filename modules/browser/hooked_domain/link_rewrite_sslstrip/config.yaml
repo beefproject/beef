@@ -14,12 +14,12 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        link_rewrite_sslstrip:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Replace HREFs (HTTPS)"
+            description: "This module will rewrite all the href attributes of HTTPS links to use HTTP instead of HTTPS. Links relative to the web root are not rewritten."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

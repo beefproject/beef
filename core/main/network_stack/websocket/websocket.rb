@@ -27,6 +27,7 @@ module BeEF
         @@activeSocket= Hash.new
         @@lastalive= Hash.new
         @@config = BeEF::Core::Configuration.instance
+        MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
           port = @@config.get("beef.http.websocket.port")
@@ -51,8 +52,20 @@ module BeEF
                         hooked_browser.lastseen = Time.new.to_i
                         hooked_browser.count!
                         hooked_browser.save
+
+                        #Check if new modules need to be sent
                         zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
                         zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
+
+                        #@todo antisnatchor:
+                        #@todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions
+                        #Check if new forged requests need to be sent (Requester/TunnelingProxy)
+                        dhook = BeEF::Extension::Requester::API::Hook.new
+                        dhook.requester_run(hooked_browser, '')
+
+                        #Check if new XssRays scan need to be started
+                        xssrays = BeEF::Extension::Xssrays::API::Scan.new
+                        xssrays.start_scan(hooked_browser, '')
                       end
                     else
                       #json recv is a cmd response decode and send all to
@@ -83,7 +96,7 @@ module BeEF
         #@note send a function to hooked and ws browser
         #@param [String] fn the module to execute
         #@param [String] session the hooked browser session
-        def sent (fn, session)
+        def send (fn, session)
           @@activeSocket[session].send(fn)
         end
 
@@ -99,8 +112,21 @@ module BeEF
           (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
           (print_error "command name is empty"; return) if data["handler"].empty?
           (print_error "command results are empty"; return) if command_results.empty?
-          BeEF::Core::Models::Command.save_result(hooked_browser, data["cid"],
-               @@config.get("beef.module.#{data["handler"].gsub("/command/", "").gsub(".js", "")}.name"), command_results)
+          handler = data["handler"]
+          if handler.match(/command/)
+            BeEF::Core::Models::Command.save_result(hooked_browser, data["cid"],
+                 @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"), command_results)
+          else #processing results from extensions, call the right handler
+            data["beefhook"] = hooked_browser
+            data["results"] = JSON.parse(Base64.decode64(data["result"]))
+            if MOUNTS.has_key?(handler)
+              if MOUNTS[handler].class == Array and MOUNTS[handler].length == 2
+                MOUNTS[handler][0].new(data, MOUNTS[handler][1])
+              else
+                MOUNTS[handler].new(data)
+              end
+            end
+          end
         end
       end
     end

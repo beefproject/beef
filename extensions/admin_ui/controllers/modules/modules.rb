@@ -427,8 +427,28 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       return BeEF::Module.support(mod, {'browser' => BD.get(hook_session_id, 'BrowserName'), 'ver' => BD.get(hook_session_id, 'BrowserVersion'), 'os' => [BD.get(hook_session_id, 'OsName')]})
   end
 
-  def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
+  # If we're adding a leaf to the command tree, and it's in a subfolder, we need to recurse
+  # into the tree to find where it goes
+  def update_command_module_tree_recurse(tree,category,leaf)
+    working_category = category.shift
 
+    tree.each {|t|
+      if t['text'].eql? working_category and category.count > 0
+        #We have deeper to go
+        update_command_module_tree_recurse(t['children'],category,leaf)
+      elsif t['text'].eql? working_category
+        #Bingo
+        t['children'].push(leaf)
+        break
+      end
+    }
+
+    #return tree
+
+  end
+
+  #Add the command to the tree
+  def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
       # construct leaf node for the command module tree
       leaf_node = {
           'text' => cmd_name,
@@ -439,24 +459,99 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       }
 
       # add the node to the branch in the command module tree
-      tree.each {|x|
-        if x['text'].eql? cmd_category
-          x['children'].push( leaf_node )
-            break
-        end
-      }
+      if cmd_category.is_a?(Array)
+        #The category is an array, therefore it's a sub-folderised category
+        cat_copy = cmd_category.dup #Don't work with the original array, because, then it breaks shit
+        update_command_module_tree_recurse(tree,cat_copy,leaf_node)
+      else
+        #original logic here, simply add the command to the tree.
+        tree.each {|x|
+          if x['text'].eql? cmd_category
+            x['children'].push( leaf_node )
+              break
+          end
+        }
+      end
   end
-  
+
+  #Recursive function to build the tree now with sub-folders
+  def build_recursive_tree(parent,input)
+   cinput = input.shift.chomp('/')
+   if cinput.split('/').count == 1 #then we have a single folder now
+     if parent.detect {|p| p['text'] == cinput}.nil?
+       parent << {'text' => cinput, 'cls' => 'folder', 'children' => []}
+     else
+       if input.count > 0
+         parent.each {|p|
+           if p['text'] == cinput
+             p['children'] = build_recursive_tree(p['children'],input)
+           end
+         }
+       end
+     end
+   else
+     #we have multiple folders
+     newinput = cinput.split('/')
+     newcinput = newinput.shift
+     if parent.detect {|p| p['text'] == newcinput }.nil?
+       fldr = {'text' => newcinput, 'cls' => 'folder', 'children' => []}
+       parent << build_recursive_tree(fldr['children'],newinput)
+     else
+       parent.each {|p|
+         if p['text'] == newcinput
+           p['children'] = build_recursive_tree(p['children'],newinput)
+         end
+       }
+     end
+   end
+
+    if input.count > 0
+      return build_recursive_tree(parent,input)
+    else
+      return parent
+    end
+  end
+
+  #Recursive function to sort all the parent's children
+  def sort_recursive_tree(parent)
+    # sort the children nodes by status and name
+    parent.each {|x| 
+      #print_info "Sorting: " + x['children'].to_s
+      if x.is_a?(Hash) and x.has_key?('children')
+        x['children'] = x['children'].sort_by {|a| 
+          fldr = a['cls'] ? a['cls'] : 'zzzzz'
+          "#{fldr}#{a['status']}#{a['text']}"
+        }
+        x['children'].each {|c|
+          sort_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+       }
+     end
+    }
+  end
+
+  #Recursive function to retitle folders with the number of children
+  def retitle_recursive_tree(parent)
+    # append the number of command modules so the branch name results in: "<category name> (num)"
+    parent.each {|command_module_branch|
+      if command_module_branch.is_a?(Hash) and command_module_branch.has_key?('children')
+        num_of_command_modules = command_module_branch['children'].length
+        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
+
+        command_module_branch['children'].each {|c|
+          retitle_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+        }
+      end
+    }
+  end
+
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
+    blanktree = []
     tree = []
-    BeEF::Modules.get_categories.each { |c|
-        tree.push({
-            'text' => c,
-            'cls' => 'folder',
-            'children' => []
-        })
-    }
+
+    #Due to the sub-folder nesting, we use some really badly hacked together recursion
+    #Note to the bored - if someone (anyone please) wants to refactor, I'll buy you cookies. -x
+    tree = build_recursive_tree(blanktree,BeEF::Modules.get_categories)
 
     BeEF::Modules.get_enabled.each{|k, mod|
       # get the hooked browser session id and set it in the command module
@@ -508,16 +603,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # sort the parent array nodes 
     tree.sort! {|a,b| a['text'] <=> b['text']}
     
-    # sort the children nodes by status and name
-    tree.each {|x| x['children'] =
-      x['children'].sort_by {|a| [a['status'],a['text']]}
-    }
+    sort_recursive_tree(tree)
+
+    retitle_recursive_tree(tree)
     
-    # append the number of command modules so the branch name results in: "<category name> (num)"
-    tree.each {|command_module_branch|
-      num_of_command_modules = command_module_branch['children'].length
-      command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
-    }
+
       
     # return a JSON array of hashes
     @body = tree.to_json

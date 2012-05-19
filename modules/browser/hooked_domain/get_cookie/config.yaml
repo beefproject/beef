@@ -14,12 +14,12 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        xssrays:
+    module:
+        get_cookie:
             enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+            category: ["Browser","Hooked Domain"]
+            name: "Get Cookie"
+            description: "This module will retrieve the session cookie from the current page."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

@@ -24,12 +24,12 @@ module BeEF
           # @param [Object] command Command object
           # @param [Object] hooked_browser Hooked Browser object
           def add_command_instructions(command, hooked_browser)
-
             (print_error "hooked_browser is nil"; return) if hooked_browser.nil?
             (print_error "hooked_browser.session is nil"; return) if hooked_browser.session.nil?
             (print_error "hooked_browser is nil"; return) if command.nil?
             (print_error "hooked_browser.command_module_id is nil"; return) if command.command_module_id.nil?
 
+            config = BeEF::Core::Configuration.instance
             # @note get the command module
             command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
             (print_error "command_module is nil"; return) if command_module.nil?
@@ -39,7 +39,7 @@ module BeEF
               command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
             else
               key = BeEF::Module.get_key_by_database_id(command.command_module_id)
-              command_module = BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{key}.class")).new(key)
+              command_module = BeEF::Core::Command.const_get(config.get("beef.module.#{key}.class")).new(key)
             end
 
             command_module.command_id = command.id
@@ -48,11 +48,11 @@ module BeEF
             command_module.pre_send
 
             build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
-            let= BeEF::Core::Websocket::Websocket.instance
 
+            ws = BeEF::Core::Websocket::Websocket.instance
             #todo antisnatchor: remove this gsub crap adding some hook packing.
-            if  let.getsocket(hooked_browser.session)
-              funtosend=command_module.output.gsub('//
+            if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
+              content = command_module.output.gsub('//
               //   Copyright 2012 Wade Alcorn wade@bindshell.net
               //
               //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +67,7 @@ module BeEF
               //   See the License for the specific language governing permissions and
               //   limitations under the License.
               //', "")
-              let.sent(funtosend, hooked_browser.session)
+              ws.send(content, hooked_browser.session)
             else
               @body << command_module.output + "\n\n"
             end

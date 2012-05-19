@@ -13,13 +13,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    extension:
-        xssrays:
-            enable: true
-            name: 'XSSRays'
-            authors: ["antisnatchor"]
-            clean_timeout: 3000
-            cross_domain: true
-            # set js_console_logs to false when using BeEF in production (also because IE < 9 doesn't support the console object)
-            js_console_logs: true
+module BeEF
+module Extension
+module Customhook
+  
+  extend BeEF::API::Extension
+  
+  @short_name = 'customhook'
+  
+  @full_name = 'Custom Hook Point with iFrame Impersonation'
+  
+  @description = 'An auto-hook and full-screen iframe - demonstrating extension creation and social engineering attacks'
+  
+end
+end
+end
+
+require 'extensions/customhook/api'
+require 'extensions/customhook/handler'
