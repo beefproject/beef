@@ -112,6 +112,15 @@ BeEF::Core::Console::Banners.print_network_interfaces_routes
 #@note Prints the API key needed to use the RESTful API
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
+#@note Starts the WebSocket server
+if config.get("beef.http.websocket.enable")
+  BeEF::Core::Websocket::Websocket.instance
+  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port")}], secure [#{config.get("beef.http.websocket.secure")}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
+end
+
+
+
+
 # @note Call the API method 'pre_http_start'
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 

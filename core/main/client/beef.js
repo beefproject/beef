@@ -48,9 +48,15 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		 * @param: {Function} the function to execute.
 		 */
 		execute: function(fn) {
-			this.commands.push(fn);
-		},
-		
+            if ( typeof  beef.websocket == "undefined"){
+                 this.commands.push(fn);
+            }else{
+                fn();
+            }
+        },
+
+
+
 		/**
 		 * Registers a component in BeEF JS.
 		 * @params: {String} the component.
