@@ -16,8 +16,10 @@
 class Pretty_theft < BeEF::Core::Command
   
   def self.options
+    configuration = BeEF::Core::Configuration.instance
+    logo_uri = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/ui/media/images/beef.png"
     return [
-        {'name' =>'imgsauce', 'description' =>'Custom Logo', 'ui_label'=>'Custom Logo', 'value' => 'http://beefproject.com/images/logo.png'}
+        {'name' =>'imgsauce', 'description' =>'Custom Logo', 'ui_label'=>'Custom Logo', 'value' => logo_uri}
     ]
   end
   
