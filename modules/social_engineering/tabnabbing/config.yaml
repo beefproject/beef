@@ -15,11 +15,12 @@
 #
 beef:
     module:
-        Netgear_gs108t_csrf:
+        tabnabbing:
             enable: true
-            category: "Switch"
-            name: "Netgear GS108T CSRF"
-            description: "Attempts to change the password on a Netgear GS108T managed switch."
-            authors: ["Bart Leppens"]
+            category: "Social Engineering"
+            name: "TabNabbing"
+            description: "This module redirects to the specified URL after the tab has been inactive for a specified amount of time."
+            authors: ["bcoles"]
             target:
-                working: ["ALL"]
+                user_notify: ["All"]
+

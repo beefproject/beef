@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        linksys_wrt54g_csrf:
+        google_search:
             enable: true
-            category: "Router"
-            name: "Linksys WRT54G CSRF"
-            description: "Attempts to enable remote administration and change the password on a Linksys WRT54G router."
-            authors: ["Martin Barbella"]
+            category: "Misc"
+            name: "Google Search"
+            description: "This module uses the hooked browser to search Google."
+            authors: ["bcoles"]
             target:
                 working: ["ALL"]

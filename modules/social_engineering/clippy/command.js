@@ -340,6 +340,7 @@ Clippy.prototype.hahaha = function() {
 		document.body.appendChild(div);
 		_c.openBubble("<%== @thankyoumessage %>");
 		setTimeout(function () { _c.killClippy(); }, 5000); 
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=user has accepted');
 
 }
 Clippy.prototype.addHelp = function(_help, is_startphrase) {

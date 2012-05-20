@@ -15,11 +15,11 @@
 #
 beef:
     module:
-        clippy:
+        pretty_theft:
             enable: true
-            category: "Misc"
-            name: "Clippy"
-            description: "Brings up a clippy image and asks the user to do stuff."
-            authors: ["vt [nick.freeman@security-assessment.com]", "denden [denis.andzakovic@security-assessment.com]"]
+            category: "Social Engineering"
+            name: "Pretty Theft"
+            description: "Asks the user for their username and password using a tidy floating div."
+            authors: ["vt [nick.freeman@security-assessment.com]", "xntrik"]
             target:
                 user_notify: ['ALL']
