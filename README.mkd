@@ -19,7 +19,7 @@
 What is BeEF?
 -------------
 
-BeEF is short for The Browser Exploitation Framework. It is a penetration testing tool that focuses on the web browser.
+__BeEF__ is short for __The Browser Exploitation Framework__. It is a penetration testing tool that focuses on the web browser.
 
 Amid growing concerns about web-borne attacks against clients, including mobile clients, BeEF allows the professional penetration tester to assess the actual security posture of a target environment by using client-side attack vectors. Unlike other security frameworks, BeEF looks past the hardened network perimeter and client system, and examines exploitability within the context of the one open door: the web browser. BeEF will hook one or more web browsers and use them as beachheads for launching directed command modules and further attacks against the system from within the browser context.
 
@@ -30,15 +30,15 @@ Get Involved
 You can get in touch with the BeEF team. Just check out the following: 
 
 
-Please, send us pull requests!
+__Please, send us pull requests!__
 
-Web: http://beefproject.com/
+__Web:__ http://beefproject.com/
 
-Mail: beef-subscribe@bindshell.net
+__Mail:__ beef-subscribe@bindshell.net
 
-IRC: ircs://irc.freenode.net/beefproject
+__IRC:__ ircs://irc.freenode.net/beefproject
 
-Twitter: @beefproject
+__Twitter:__ @beefproject
 
 
 Requirements
