@@ -1,0 +1,81 @@
+===============================================================================
+   
+   Copyright 2012 Wade Alcorn wade@bindshell.net
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+===============================================================================
+
+Installation
+------------
+
+   1. Prerequisites (platform independent)
+   2. Prerequisites (Windows)
+   3. Prerequisites (Linux)
+   4. Prerequisites (Mac OSX)
+   5. Install instructions
+   6. Run instructions
+
+
+
+   1. Prerequisites (platform independent)
+
+      BeEF requires ruby 1.9 and the "bundler" gem. Bundler can be installed by:
+
+      gem install bundler
+
+      
+   2. Prerequisites (Windows)
+      
+      Windows requires the sqlite.dll.  Simply grab the zip file below and extract it to your Ruby bin directory:
+
+	  http://www.sqlite.org/sqlitedll-3_7_0_1.zip
+      
+
+   3. Prerequisites (Linux)
+
+      !!! This must be done PRIOR to running the bundle install command !!!
+      
+      On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
+
+      3.0. sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
+      3.1. install rvm from rvm.beginrescueend.com, this takes care of the various incompatable and conflicting ruby packages that are required
+      3.2. rvm install 1.9.2
+      3.3. rvm use 1.9.2
+	  
+   4. Prerequisites (Mac OSX)
+   
+      - XCode: provides the sqlite support BeEF needs
+      
+      - Ruby 1.9
+      	To install RVM and Ruby 1.9.3 on Mac OS:  
+      	$ bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile 
+      	$ rvm install 1.9.3-p0 --with-gcc=clang
+		$ rvm use 1.9.3
+      
+
+   5. Install instructions
+   
+      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/zipball/master or cloning the GIT repo git@github.com:beefproject/beef.git
+
+	  Navigate to the ruby source directory and run:
+
+	  bundle install
+
+      Bundler installs all the pre-requisite gems.
+
+   6. Run instructions
+
+      Simply run:
+
+      ./beef
