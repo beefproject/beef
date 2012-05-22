@@ -158,14 +158,14 @@ this.get = function(name, cb, dont_reset)
 	$(document).ready(function() {
 		self._evercookie(name, cb, undefined, undefined, dont_reset);
 	});
-}
+};
 
 this.set = function(name, value)
 {
 	$(document).ready(function() {
 			self._evercookie(name, function() { }, value);
 	});
-}
+};
 
 this._evercookie = function(name, cb, value, i, dont_reset)
 {
@@ -273,7 +273,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 				cb(candidate, tmpec);
 		}
 	}
-}
+};
 
 this.evercookie_window = function(name, value)
 {
@@ -283,7 +283,7 @@ this.evercookie_window = function(name, value)
 		else
 			return this.getFromStr(name, window.name);
 	} catch(e) { }
-}
+};
 
 this.evercookie_userdata = function(name, value)
 {
@@ -302,7 +302,7 @@ this.evercookie_userdata = function(name, value)
 			return elm.getAttribute(name);
 		}
 	} catch(e) { }
-}
+};
 
 this.evercookie_cache = function(name, value)
 {
@@ -335,7 +335,7 @@ this.evercookie_cache = function(name, value)
 			}
 		});
 	}
-}
+};
 
 this.evercookie_etag = function(name, value)
 {
@@ -368,7 +368,7 @@ this.evercookie_etag = function(name, value)
 			}
 		});
 	}
-}
+};
 
 this.evercookie_lso = function(name, value)
 {
@@ -390,7 +390,7 @@ this.evercookie_lso = function(name, value)
 	attributes.id        = "myswf";
 	attributes.name      = "myswf";
 	swfobject.embedSWF("evercookie.swf", "swfcontainer", "1", "1", "9.0.0", false, flashvars, params, attributes);
-}
+};
 
 this.evercookie_png = function(name, value)
 {
@@ -453,7 +453,7 @@ this.evercookie_png = function(name, value)
 			}	
 		}
 	}
-}
+};
 
 this.evercookie_local_storage = function(name, value)
 {
@@ -468,7 +468,7 @@ this.evercookie_local_storage = function(name, value)
 		}
 	}
 	catch (e) { }
-}
+};
 
 this.evercookie_database_storage = function(name, value)
 {
@@ -506,7 +506,7 @@ this.evercookie_database_storage = function(name, value)
 			}
 		}
 	} catch(e) { }
-}
+};
 
 this.evercookie_session_storage = function(name, value)
 {
@@ -520,7 +520,7 @@ this.evercookie_session_storage = function(name, value)
 				return sessionStorage.getItem(name);
 		}
 	} catch(e) { }
-}
+};
 
 this.evercookie_global_storage = function(name, value)
 {
@@ -536,7 +536,7 @@ this.evercookie_global_storage = function(name, value)
 				return eval("globalStorage[host]." + name);
 		} catch(e) { }
 	}
-}
+};
 this.evercookie_silverlight = function(name, value) {
     /*
      * Create silverlight embed
@@ -566,7 +566,7 @@ this.evercookie_silverlight = function(name, value) {
             '</a>' +
         '</object>';
         document.body.innerHTML+=html;
-}
+};
 
 // public method for encoding
 this.encode = function (input) {
@@ -600,7 +600,7 @@ this.encode = function (input) {
 	}
 
 	return output;
-}
+};
 
 // public method for decoding
 this.decode = function (input) {
@@ -636,7 +636,7 @@ this.decode = function (input) {
 
 	return output;
 
-}
+};
 
 // private method for UTF-8 encoding
 this._utf8_encode = function (string) {
@@ -663,7 +663,7 @@ this._utf8_encode = function (string) {
 	}
 
 	return utftext;
-}
+};
 
 // private method for UTF-8 decoding
 this._utf8_decode = function (utftext) {
@@ -694,7 +694,7 @@ this._utf8_decode = function (utftext) {
 	}
 
 	return string;
-}
+};
 
 // this is crazy but it's 4am in dublin and i thought this would be hilarious
 // blame the guinness
@@ -759,7 +759,7 @@ this.evercookie_history = function(name, value)
 			return this.decode(val);
 		}
 	}
-}
+};
 
 this.createElem = function(type, name, append)
 {
@@ -778,14 +778,14 @@ this.createElem = function(type, name, append)
 		document.body.appendChild(el);
 
 	return el;
-}
+};
 
 this.createIframe = function(url, name)
 {
 	var el = this.createElem('iframe', name, 1);
 	el.setAttribute('src', url);
 	return el;
-}
+};
 
 // wait for our swfobject to appear (swfobject.js to load)
 this.waitForSwf = function(i)
@@ -798,7 +798,7 @@ this.waitForSwf = function(i)
 	// wait for ~2 seconds for swfobject to appear
 	if (i < _ec_tests && typeof swfobject == 'undefined')
 		setTimeout(function() { waitForSwf(i) }, 300);
-}
+};
 
 this.evercookie_cookie = function(name, value)
 {
@@ -810,7 +810,7 @@ this.evercookie_cookie = function(name, value)
 	}
 	else
 		return this.getFromStr(name, document.cookie);
-}
+};
 
 // get value from param-like string (eg, "x=y&name=VALUE")
 this.getFromStr = function(name, text)
@@ -828,7 +828,7 @@ this.getFromStr = function(name, text)
 		if (c.indexOf(nameEQ) == 0)
 			return c.substring(nameEQ.length, c.length);
 	}
-}
+};
 
 this.getHost = function()
 {
@@ -836,7 +836,7 @@ this.getHost = function()
 	if (domain.indexOf('www.') == 0)
 		domain = domain.replace('www.', '');
 	return domain;
-}
+};
 
 this.toHex = function(str)
 {
@@ -852,7 +852,7 @@ this.toHex = function(str)
         r += h;
     }
     return r;
-}
+};
 
 this.fromHex = function(str)
 {
@@ -866,7 +866,7 @@ this.fromHex = function(str)
         e = s;
     }
     return r;
-}
+};
 
 /* 
  * css history knocker (determine what sites your visitors have been to)
@@ -901,7 +901,7 @@ this.hasVisited = function(url)
 		this._testURL("https://" + url, this.no_color) ||
 		this._testURL("http://www." + url, this.no_color) ||
 		this._testURL("https://www." + url, this.no_color);
-}
+};
 
 /* create our anchor tag */
 var _link = this.createElem('a', '_ec_rgb_link');
@@ -930,30 +930,28 @@ try {
 }
 
 /* if test_color, return -1 if we can't set a style */
-this._getRGB = function(u, test_color)
-{
-	if (test_color && created_style == 0)
-		return -1;
+this._getRGB = function (u, test_color) {
+    if (test_color && created_style == 0)
+        return -1;
 
-	/* create the new anchor tag with the appropriate URL information */
-	_link.href = u;
-	_link.innerHTML = u;
-	// not sure why, but the next two appendChilds always have to happen vs just once
-	document.body.appendChild(style);
-	document.body.appendChild(_link);
-	
-	/* add the link to the DOM and save the visible computed color */
-	var color;
-	if (document.defaultView)
-		color = document.defaultView.getComputedStyle(_link, null).getPropertyValue('color');
-	else
-		color = _link.currentStyle['color'];
+    /* create the new anchor tag with the appropriate URL information */
+    _link.href = u;
+    _link.innerHTML = u;
+    // not sure why, but the next two appendChilds always have to happen vs just once
+    document.body.appendChild(style);
+    document.body.appendChild(_link);
 
-	return color;
-}
+    /* add the link to the DOM and save the visible computed color */
+    var color;
+    if (document.defaultView)
+        color = document.defaultView.getComputedStyle(_link, null).getPropertyValue('color');
+    else
+        color = _link.currentStyle['color'];
 
-this._testURL = function(url, no_color)
-{
+    return color;
+};
+
+this._testURL = function(url, no_color){
 	var color = this._getRGB(url);
 
 	/* check to see if the link has been visited if the computed color is red */

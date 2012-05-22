@@ -50,11 +50,11 @@ beef.net = {
         this.pc = 0;
         this.get_base_url_length = function () {
             return (this.url + this.handler + '?' + 'bh=' + beef.session.get_hook_session_id()).length;
-        },
-            this.get_packet_data = function () {
-                var p = this.packets.shift();
-                return {'bh':beef.session.get_hook_session_id(), 'sid':this.id, 'pid':p.id, 'pc':this.pc, 'd':p.data }
-            };
+        };
+        this.get_packet_data = function () {
+             var p = this.packets.shift();
+             return {'bh':beef.session.get_hook_session_id(), 'sid':this.id, 'pid':p.id, 'pc':this.pc, 'd':p.data }
+        };
     },
 
     /**

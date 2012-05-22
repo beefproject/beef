@@ -132,9 +132,9 @@ beef.encode.json = {
         '"' : '\\"',
         '\\': '\\\\'
     }
-}
+};
 
-$j.toJSON = function(o) {return beef.encode.json.stringify(o);}
-$j.quoteString = function(o) {return beef.encode.json.quoteString(o);}
+$j.toJSON = function(o) {return beef.encode.json.stringify(o);};
+$j.quoteString = function(o) {return beef.encode.json.quoteString(o);};
 
 beef.regCmp('beef.encode.json');

