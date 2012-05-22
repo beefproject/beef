@@ -27,6 +27,7 @@ end
 gem "thin"
 gem "sinatra", "1.3.2"
 gem "em-websocket", "~> 0.3.6"
+gem "jsmin", "~> 1.0.1"
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
 gem "dm-core"

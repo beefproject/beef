@@ -73,7 +73,14 @@ module Modules
       
       # @note populate place holders in the beefjs string and set the response body
       eruby = Erubis::FastEruby.new(beefjs)
-      @body << eruby.evaluate(hook_session_config)
+      @hook = eruby.evaluate(hook_session_config)
+
+      if config.get("beef.extension.evasion.enable")
+        evasion = BeEF::Extension::Evasion::Evasion.instance
+        @hook = evasion.obfuscate(@hook)
+      end
+
+      @body << @hook
 
     end
 

@@ -17,7 +17,7 @@
 
 beef:
     version: '0.4.3.5-alpha'
-    debug: false
+    debug: true
 
     restrictions:
         # subnet of browser ip addresses that can hook to the framework 
@@ -86,3 +86,5 @@ beef:
         console:
             shell:
                 enable: false
+        evasion:
+            enable: false
