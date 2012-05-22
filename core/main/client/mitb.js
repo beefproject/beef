@@ -253,4 +253,6 @@ beef.mitb = {
     endSession:function () {
         beef.mitb.sniff("Window closed.");
     }
-}
+};
+
+beef.regCmp('beef.mitb');
