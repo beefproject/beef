@@ -18,6 +18,11 @@ module BeEF
     module Evasion
       class Scramble
         include Singleton
+
+        def need_bootstrap
+          false
+        end
+
         def execute(input, config)
           @output = input
           to_scramble = config.get('beef.extension.evasion.scramble')

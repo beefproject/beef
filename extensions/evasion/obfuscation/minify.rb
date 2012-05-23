@@ -19,6 +19,11 @@ module BeEF
       require 'jsmin'
       class Minify
         include Singleton
+
+        def need_bootstrap
+          false
+        end
+
         def execute(input, config)
           input = JSMin.minify(input)
           print_debug "[OBFUSCATION - MINIFIER] Javascript has been minified"
