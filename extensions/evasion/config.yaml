@@ -20,5 +20,7 @@ beef:
             name: 'Evasion'
             authors: ["antisnatchor"]
             scramble_variables: true
-            to_scramble: ["beef", "Beef"]
+            scramble:
+              beef: "beef"
+              Beef: "Beef"
             chain: ["scramble","minify","base_64"]

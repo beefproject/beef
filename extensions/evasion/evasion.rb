@@ -29,6 +29,10 @@ module BeEF
             @input = apply_chain(input, @@techniques)
           end
 
+          def inject_boostrapper(input)
+             # add stuff at the end, only once (when serving the initial init javascript)
+          end
+
           def apply_chain(input, techniques)
             @output = input
             techniques.each do |technique|

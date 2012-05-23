@@ -19,28 +19,24 @@ module BeEF
       class Scramble
         include Singleton
 
-        def random_string(length=5)
-          chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
-          result = ''
-          length.times { result << chars[rand(chars.size)] }
-          result
-        end
-
         def execute(input, config)
-          to_scramble = config.get('beef.extension.evasion.to_scramble')
-          to_scramble.each do |var|
-             mod_var = random_string
-             input = input.gsub!(var,random_string)
-             print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{mod_var}]"
-
-             #todo: add scrambled vars to an Hash.
-             #todo: even better. Add them to the Configuration object, like "beef" => "cnjD3"
-             #@@to_scramble = config.get('beef.http.evasion.scramble_variables')
-             #@@scrambled = Hash.new
+          to_scramble = config.get('beef.extension.evasion.scramble')
+          to_scramble.each do |var, value|
+             key = config.get("beef.extension.evasion.scramble.#{var}")
+             if value == key
+               # Variables have not been scrambled yet
+               mod_var = BeEF::Extension::Evasion::Helper::random_string(3)
+               input = input.gsub!(var,mod_var)
+               config.set("beef.extension.evasion.scramble.#{var}",mod_var)
+               print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{mod_var}]"
+             else
+               # Variables already scrambled, re-use the one already created to maintain consistency
+               input = input.gsub!(var,value)
+               print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{value}]"
+             end
           end
            input
         end
-
       end
     end
   end

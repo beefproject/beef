@@ -26,6 +26,7 @@ end
 end
 
 require 'extensions/evasion/evasion'
+require 'extensions/evasion/helper'
 require 'extensions/evasion/obfuscation/scramble'
 require 'extensions/evasion/obfuscation/minify'
 require 'extensions/evasion/obfuscation/base_64'
