@@ -18,24 +18,24 @@ module BeEF
     module Evasion
       class Scramble
         include Singleton
-
         def execute(input, config)
+          @output = input
           to_scramble = config.get('beef.extension.evasion.scramble')
           to_scramble.each do |var, value|
-             key = config.get("beef.extension.evasion.scramble.#{var}")
-             if value == key
+             if var == value
                # Variables have not been scrambled yet
                mod_var = BeEF::Extension::Evasion::Helper::random_string(3)
-               input = input.gsub!(var,mod_var)
+               @output.gsub!(var,mod_var)
                config.set("beef.extension.evasion.scramble.#{var}",mod_var)
                print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{mod_var}]"
              else
                # Variables already scrambled, re-use the one already created to maintain consistency
-               input = input.gsub!(var,value)
+               @output.gsub!(var,value)
                print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{value}]"
              end
+             @output
           end
-           input
+          @output
         end
       end
     end
