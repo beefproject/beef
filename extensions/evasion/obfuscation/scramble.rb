@@ -25,6 +25,7 @@ module BeEF
 
         def execute(input, config)
           @output = input
+
           to_scramble = config.get('beef.extension.evasion.scramble')
           to_scramble.each do |var, value|
              if var == value
@@ -40,6 +41,20 @@ module BeEF
              end
              @output
           end
+
+          if config.get('beef.extension.evasion.scramble_cookies')
+            # ideally this should not be static, but it's static in JS code, so fine for nowend
+            mod_cookie = BeEF::Extension::Evasion::Helper::random_string(5)
+            if config.get('beef.http.hook_session_name') == "BEEFHOOK"
+              @output.gsub!("BEEFHOOK",mod_cookie)
+              config.set('beef.http.hook_session_name',mod_cookie)
+              print_debug "[OBFUSCATION - SCRAMBLER] cookie [BEEFHOOK] scrambled -> [#{mod_cookie}]"
+            else
+              @output.gsub!("BEEFHOOK",config.get('beef.http.hook_session_name'))
+              print_debug "[OBFUSCATION - SCRAMBLER] cookie [BEEFHOOK] scrambled -> [#{config.get('beef.http.hook_session_name')}]"
+            end
+          end
+
           @output
         end
       end

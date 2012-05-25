@@ -20,7 +20,9 @@ beef:
             name: 'Evasion'
             authors: ["antisnatchor"]
             scramble_variables: true
+            scramble_cookies: true
             scramble:
               beef: "beef"
               Beef: "Beef"
+              evercookie: "evercookie"
             chain: ["scramble","minify","base_64"]
