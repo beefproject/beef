@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Chrome Extensions"
             name: "Get All Cookies"
-            description: "Steal cookies even HTTPonly ones (providing the hooked extension has cookies access)<br />If a URL to steal cookies from is not specified then will steal _all_ cookies (this can be a lot!)"
+            description: "Steal cookies, even HttpOnly cookies, providing the hooked extension has cookies access.<br />If a URL is not specified then <em>all</em> cookies are returned (this can be a lot!)"
             authors: ["mh"]
             target:
                 working: ["C"]

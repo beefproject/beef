@@ -18,7 +18,7 @@ class Get_all_cookies < BeEF::Core::Command
  def self.options
 
     return [
-        {'name' =>'url', 'ui_label'=>'Domain to steal cookies from e.g. http://facebook.com', 'value' => 'default_all'}
+        {'name' =>'url', 'ui_label'=>'Domain (e.g. http://facebook.com)', 'value' => 'default_all'}
     ]
   end
 
