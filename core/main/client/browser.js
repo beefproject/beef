@@ -166,10 +166,18 @@ beef.browser = {
 
 	/**
 	 * Returns true if FF12
-* @example: beef.browser.isFF12()
+	 * @example: beef.browser.isFF12()
 	 */
 	isFF12: function() {
-return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/12\./) != null;
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/12\./) != null;
+	},
+
+	/**
+	 * Returns true if FF13
+	 * @example: beef.browser.isFF13()
+	 */
+	isFF13: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/13\./) != null;
 	},
 
 	/**
@@ -177,7 +185,7 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13();
 	},
 
 	/**
@@ -411,6 +419,7 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 			FF10:	this.isFF10(),	// Firefox 10
 			FF11:	this.isFF11(),	// Firefox 11
 			FF12:	this.isFF12(),	// Firefox 12
+			FF13:	this.isFF13(),	// Firefox 13
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -468,6 +477,7 @@ return !!window.history.replaceState && window.navigator.userAgent.match(/Firefo
 		if (this.isFF10())	{ return '10' };	// Firefox 10
 		if (this.isFF11())	{ return '11' };	// Firefox 11
 		if (this.isFF12())	{ return '12' };	// Firefox 12
+		if (this.isFF13())	{ return '13' };	// Firefox 13
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
