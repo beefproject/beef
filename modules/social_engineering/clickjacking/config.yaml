@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Clickjacking"
-            description: "This module serves as a template for clickjacking attacks.<br />Simply specify the target URL and the offset (in pixels) for the iframe content. The iframe will follow the mouse cursor."
+            description: "This module serves as a template for clickjacking attacks.<br />Simply specify the target URL and the offset (in pixels) for the iframe content. The iframe will follow the mouse cursor.<br />Debug mode creates a visible iframe for testing purposes."
             authors: ["bcoles"]
             target:
                 user_notify: ["FF", "C"]
