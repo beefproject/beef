@@ -18,8 +18,8 @@ beef.execute(function() {
 	var offset_top  = "<%= @offset_top %>";
 	var offset_left = "<%= @offset_left %>";
 	var url = "<%= @url %>";
+	var debug = <%= @debug %>;
 
-	var debug = false;
 	if (debug) opacity = 10; else opacity = 0;
 
 	// create container

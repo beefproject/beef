@@ -21,7 +21,8 @@ class Clickjacking < BeEF::Core::Command
 		return [
 			{ 'name' => 'url', 'description' => 'Target URL', 'ui_label' => 'Target URL', 'value' => uri, 'width'=>'400px' },
 			{ 'name' => 'offset_top', 'description' => 'Offset Top (in pixels)', 'ui_label' => 'Offset Top (px)', 'value' => '-40', 'width'=>'150px' },
-			{ 'name' => 'offset_left', 'description' => 'Offset Left (in pixels)', 'ui_label' => 'Offset Left (px)', 'value' => '-10', 'width'=>'150px' }
+			{ 'name' => 'offset_left', 'description' => 'Offset Left (in pixels)', 'ui_label' => 'Offset Left (px)', 'value' => '-10', 'width'=>'150px' },
+			{ 'name' => 'debug', 'type' => 'combobox', 'ui_label' => 'Debug Mode', 'store_type' => 'arraystore', 'store_fields' => ['debug'], 'store_data' => [['true'],['false']], 'valueField' => 'debug', 'value' => 'false', editable: false, 'displayField' => 'debug', 'mode' => 'local', 'autoWidth' => true }
 		]
 	end
 
