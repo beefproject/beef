@@ -17,10 +17,10 @@ beef:
     module:
         mobilesafari_address_spoofing:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "iOS Address Bar Spoofing"
             description: "Mobile Safari iOS 5.1 Address Bar Spoofing. This is fixed in latest version of Mobile Safari (the URL turns 'blank')"
-            authors: ["bcoles","xntrik","majorsecurity.net"]
+            authors: ["bcoles", "xntrik", "majorsecurity.net"]
             target:
                 working:
                     S:

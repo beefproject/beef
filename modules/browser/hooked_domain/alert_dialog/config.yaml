@@ -17,7 +17,7 @@ beef:
     module:
         alert_dialog:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Create Alert Dialog"
             description: "Sends an alert dialog to the hooked browser."
             authors: ["wade", "bm"]

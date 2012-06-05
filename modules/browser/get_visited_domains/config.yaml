@@ -22,5 +22,5 @@ beef:
             description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done at http://lcamtuf.coredump.cx/cachetime/"
             authors: ["keith_lee @keith55 http://milo2012.wordpress.com"]
             target:
-                working: ["FF","IE"]
-                not_working: ["O","C","S"]
+                working: ["FF", "IE"]
+                not_working: ["O", "C", "S"]

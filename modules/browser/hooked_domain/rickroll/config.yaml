@@ -17,7 +17,7 @@ beef:
     module:
         rickroll:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Redirect Browser (Rickroll)"
             description: "Overwrite the body of the page the victim is on with a full screen Rickroll."
             authors: ["Yori Kvitchko"]

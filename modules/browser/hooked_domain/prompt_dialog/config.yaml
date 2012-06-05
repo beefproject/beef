@@ -17,7 +17,7 @@ beef:
     module:
         prompt_dialog:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Create Prompt Dialog"
             description: "Sends a prompt dialog to the hooked browser."
             authors: ["wade", "bm"]

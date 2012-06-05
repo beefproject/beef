@@ -17,7 +17,7 @@ beef:
     module:
         get_local_storage:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Get Local Storage"
             description: "Extracts data from the HTML5 localStorage object."
             authors: ["bcoles"]
