@@ -17,7 +17,7 @@ beef:
     module:
         get_page_html:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Get Page HTML"
             description: "This module will retrieve the HTML from the current page."
             authors: ["bcoles"]

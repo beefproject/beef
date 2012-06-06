@@ -17,7 +17,7 @@ beef:
     module:
         deface_web_page:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Replace Content (Deface)"
             description: "Overwrite the page, title and shortcut icon on the hooked page."
             authors: ["antisnatchor"]

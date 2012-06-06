@@ -17,7 +17,7 @@ beef:
     module:
         site_redirect_iframe:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Redirect Browser (iFrame)"
             description: "This module creates a 100% x 100% overlaying iframe and keeps the browers hooked to the framework. The content of the iframe, page title, page shortcut icon and the time delay are specified in the parameters below.<br><br>The content of the URL bar will not be changed in the hooked browser."
             authors: ["ethicalhack3r", "Yori Kvitchko"]

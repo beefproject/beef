@@ -17,7 +17,7 @@ beef:
     module:
         get_page_links:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Get Page HREFs"
             description: "This module will retrieve HREFs from the target page."
             authors: ["vo"]

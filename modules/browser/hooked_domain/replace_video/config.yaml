@@ -17,7 +17,7 @@ beef:
     module:
         replace_video:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Replace Videos"
             description: "Replaces an object selected with jQuery (all embed tags by default) with an embed tag containing the youtube video of your choice (rickroll by default)."
             authors: ["Yori Kvitchko", "antisnatchor"]
