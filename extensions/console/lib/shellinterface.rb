@@ -19,7 +19,7 @@ module Console
 
 class ShellInterface
   
-  BD = BeEF::Extension::Initialization::Models::BrowserDetails
+  BD = BeEF::Core::Models::BrowserDetails
   
   def initialize(config)
     self.config = config
@@ -195,7 +195,7 @@ class ShellInterface
         def2.push({'name' => k, 'value' => v})
     }
     # End hack
-    if BeEF::Module.execute(mod_key, self.targetsession.to_s, def2) == true
+    if BeEF::Module.execute(mod_key, self.targetsession.to_s, def2) != nil
       return true
     else
       return false
@@ -328,21 +328,36 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
+	# set and add the return values for the date
+    date_stamp = BD.get(self.targetsession, 'DateStamp')
+    if not date_stamp.nil?
+      encoded_date_stamp = CGI.escapeHTML(date_stamp)
+      encoded_date_stamp_hash = { 'Date' => encoded_date_stamp }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_date_stamp,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for the os name
     os_name = BD.get(self.targetsession, 'OsName')
     if not os_name.nil?
       encoded_os_name = CGI.escapeHTML(os_name)
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
-    
+
       page_name_row = {
         'category' => 'Host',
         'data' => encoded_os_name_hash,
         'from' => 'Initialization'
       }
-    
+
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
-    
+
     # set and add the return values for the browser name
     browser_name = BD.get(self.targetsession, 'BrowserName') 
     if not browser_name.nil?
@@ -417,21 +432,6 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add the internal ip address
-    internal_ip = BD.get(self.targetsession, 'InternalIP')
-    if not internal_ip.nil?
-      encoded_internal_ip = CGI.escapeHTML(internal_ip)
-      encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_ip_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
     # set and add the System Platform
     system_platform = BD.get(self.targetsession, 'SystemPlatform')
     if not system_platform.nil?
@@ -447,37 +447,22 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
-    # set and add the internal hostname
-    internal_hostname = BD.get(self.targetsession, 'InternalHostname')
-    if not internal_hostname.nil?
-      encoded_internal_hostname = CGI.escapeHTML(internal_hostname)
-      encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_hostname_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-   
     # set and add the zombie screen size and color depth
-    screen_params = BD.get(self.targetsession, 'ScreenParams')
-    if not screen_params.nil?
+    screen_size = BD.get(self.targetsession, 'ScreenSize')
+    if not screen_size.nil?
       
-      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-      width = screen_params_hash['width']
-      height = screen_params_hash['height']
-      colordepth = screen_params_hash['colordepth']
+      screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+      width = screen_size_hash['width']
+      height = screen_size_hash['height']
+      colordepth = screen_size_hash['colordepth']
 
       # construct the string to be displayed in the details tab
-      encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
-      encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
+      encoded_screen_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
+      encoded_screen_size_hash = { 'Screen Size' => encoded_screen_size }
       
       page_name_row = {
         'category' => 'Host',
-        'data' => encoded_screen_params_hash,
+        'data' => encoded_screen_size_hash,
         'from' => 'Initialization'
       }
 

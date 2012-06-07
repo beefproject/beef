@@ -32,6 +32,7 @@ require './extensions/tc_xssrays'
 require './extensions/tc_vnc'
 require './extensions/tc_ipec_tunnel'
 require './extensions/tc_hackverter'
+require './extensions/tc_hooks'
 require './extensions/tc_proxy'
 require './extensions/tc_requester'
 require './extensions/tc_event_logger'
@@ -61,6 +62,7 @@ class TS_BeefTests
     suite << TC_Proxy.suite
     suite << TC_Hackverter.suite
     suite << TC_EventLogger.suite
+	suite << TC_Hooks.suite
 
     return suite
   end

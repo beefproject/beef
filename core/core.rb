@@ -26,10 +26,8 @@ require 'core/main/models/hookedbrowser'
 require 'core/main/models/log'
 require 'core/main/models/command'
 require 'core/main/models/result'
-require 'core/main/models/dynamiccommandinfo'
-require 'core/main/models/dynamicpayloadinfo'
-require 'core/main/models/dynamicpayloads'
 require 'core/main/models/optioncache'
+require 'core/main/models/browserdetails'
 
 # @note Include the constants
 require 'core/main/constants/browsers'

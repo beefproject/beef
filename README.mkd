@@ -1,0 +1,84 @@
+===============================================================================
+   
+   Copyright 2012 Wade Alcorn wade@bindshell.net
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+===============================================================================
+
+What is BeEF?
+-------------
+
+__BeEF__ is short for __The Browser Exploitation Framework__. It is a penetration testing tool that focuses on the web browser.
+
+Amid growing concerns about web-borne attacks against clients, including mobile clients, BeEF allows the professional penetration tester to assess the actual security posture of a target environment by using client-side attack vectors. Unlike other security frameworks, BeEF looks past the hardened network perimeter and client system, and examines exploitability within the context of the one open door: the web browser. BeEF will hook one or more web browsers and use them as beachheads for launching directed command modules and further attacks against the system from within the browser context.
+
+
+Get Involved 
+------------
+
+You can get in touch with the BeEF team. Just check out the following: 
+
+
+__Please, send us pull requests!__
+
+__Web:__ http://beefproject.com/
+
+__Mail:__ beef-subscribe@bindshell.net
+
+__IRC:__ ircs://irc.freenode.net/beefproject
+
+__Twitter:__ @beefproject
+
+
+Requirements
+------------
+
+* OSX 10.5.0 or higher, Modern Linux, Windows XP or higher
+* [Ruby](http://rubylang.org) 1.9.2 RVM or higher
+* [SQLite](http://sqlite.org) 3.x
+* The following GEMS: 
+   - bundler 
+   - thin
+   - Sinatra 
+   - ANSI 
+   - TERM-ANSIcolor 
+   - dm-core 
+   - json 
+   - data_objects 
+   - dm-sqlite-adapter 
+   - parseconfig 
+   - erubis 
+   - dm-migrations 
+   - msfrpc-client 
+   - eventmachine
+   - win32console (Windows Only)
+
+
+Quick Start
+----------- 
+
+__The following is for the impatient.__ 
+
+For full installation details (including on Microsoft Windows), please refer to INSTALL.txt. 
+
+       $ bash -s stable < <(curl -s https://raw.github.com/beefproject/beef/a6a7536e736e7788e12df91756a8f132ced24970/install-beef)
+
+
+Usage 
+----- 
+
+To get started, simply execute beef and follow the instructions: 
+
+       $ ./beef
+

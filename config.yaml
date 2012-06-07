@@ -16,7 +16,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.4.3.3-alpha'
+    version: '0.4.3.5-alpha'
     debug: false
 
     restrictions:
@@ -32,11 +32,24 @@ beef:
         port: "3000"
         # if running behind a nat set the public ip address here
         #public: ""
+        #public_port: "" # port setting is experimental
         dns: "localhost"
         panel_path: "/ui/panel"
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
+
+        # Prefer WebSockets over XHR-polling when possible.
+        websocket:
+          enable: false
+          secure: false # use WebSocketSecure
+          port: 11989
+          alive_timer: 1000 # poll BeEF every second
+
+        # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
+        web_server_imitation:
+            enable: false
+            type: "apache" #supported: apache, iis
 
     database:
         # For information on using other databases please read the
@@ -55,6 +68,11 @@ beef:
         db_passwd: "beef123"
         db_encoding: "UTF-8"
 
+    # Credentials to authenticate in BeEF. Used by both the RESTful API and the Admin_UI extension
+    credentials:
+        user:   "beef"
+        passwd: "beef"
+
     crypto_default_value_length: 80
 
     # You may override default extension configuration parameters here
@@ -68,3 +86,5 @@ beef:
         console:
             shell:
                 enable: false
+        evasion:
+            enable: false

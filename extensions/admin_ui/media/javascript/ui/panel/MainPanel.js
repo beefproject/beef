@@ -41,6 +41,7 @@ MainPanel = function(){
     this.grid = new DataGrid('/ui/logs/all.json',30);
 	this.grid.border = false;
     this.welcome_tab = new WelcomeTab;
+	//this.hooks_tab = new HooksTab;
     //this.hackvertor_tab = new HackVertorTab;
 
     MainPanel.superclass.constructor.call(this, {
@@ -71,7 +72,14 @@ MainPanel = function(){
             items:[
                 this.grid
             /*
-            ]},{
+			]},{
+			id:'hooks-view',
+			layout:'border',
+			title:'Hooks',
+			hideMode:'offsets',
+			items:[
+				//this.hooks_tab
+			]},{
             id:'hackvertor-view',
             layout:'border',
             title:'HackVertor',

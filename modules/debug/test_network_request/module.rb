@@ -24,7 +24,7 @@ class Test_network_request < BeEF::Core::Command
   def self.options
     @configuration = BeEF::Core::Configuration.instance
     beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-    beef_port = @configuration.get("beef.http.port")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
 
     return [
         {'name' => 'scheme', 'ui_label'=>'Scheme', 'type' => 'text', 'width' => '400px', 'value' => 'http' },

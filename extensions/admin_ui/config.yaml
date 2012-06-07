@@ -17,9 +17,7 @@ beef:
     extension:
         admin_ui:
             name: 'Admin UI'
-            enable: true 
-            username: "beef"
-            password: "beef"
+            enable: true
             favicon_file_name: "favicon.ico"
             favicon_dir: "/images"
             login_fail_delay: 1

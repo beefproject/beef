@@ -69,7 +69,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     end
     
     # check username and password
-    if not (username.eql? config.get('beef.extension.admin_ui.username') and password.eql? config.get('beef.extension.admin_ui.password') )
+    if not (username.eql? config.get('beef.credentials.user') and password.eql? config.get('beef.credentials.passwd') )
       BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has failed to authenticate in the application.")
       return
     end

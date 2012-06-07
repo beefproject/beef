@@ -26,6 +26,9 @@ module BeEF
         @options[:resetdb] = false
         @options[:ascii_art] = false
         @options[:ext_config] = ""
+        @options[:port] = ""
+        @options[:ws_port] = ""
+
 
         @already_parsed = false
 
@@ -52,6 +55,14 @@ module BeEF
 
               opts.on('-c', '--config FILE', 'Load a different configuration file: if it\'s called custom-config.yaml, git automatically ignores it.') do |f|
                 @options[:ext_config] = f
+              end
+
+              opts.on('-p', '--port PORT', 'Change the default BeEF listening port') do |p|
+                @options[:port] = p
+              end
+
+              opts.on('-w', '--wsport WS_PORT', 'Change the default BeEF WebSocket listening port') do |ws_port|
+                @options[:ws_port] = ws_port
               end
             end
 

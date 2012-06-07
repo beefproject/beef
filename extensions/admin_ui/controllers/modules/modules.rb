@@ -23,7 +23,7 @@ module Controllers
 #
 class Modules < BeEF::Extension::AdminUI::HttpController
   
-  BD = BeEF::Extension::Initialization::Models::BrowserDetails
+  BD = BeEF::Core::Models::BrowserDetails
   
   def initialize
     super({
@@ -119,21 +119,36 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
+    # set and add the return values for the date stamp
+    date_stamp = BD.get(zombie_session, 'DateStamp')
+    if not date_stamp.nil?
+      encoded_date_stamp = CGI.escapeHTML(date_stamp)
+      encoded_date_stamp_hash = { 'Date' => encoded_date_stamp }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_date_stamp_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for the os name
     os_name = BD.get(zombie_session, 'OsName')
     if not host_name.nil?
       encoded_os_name = CGI.escapeHTML(os_name)
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
-    
+
       page_name_row = {
         'category' => 'Host',
         'data' => encoded_os_name_hash,
         'from' => 'Initialization'
       }
-    
+
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
-    
+ 
     # set and add the return values for the browser name
     browser_name = BD.get(zombie_session, 'BrowserName') 
     if not browser_name.nil?
@@ -208,36 +223,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add the internal ip address
-    internal_ip = BD.get(zombie_session, 'InternalIP')
-    if not internal_ip.nil?
-      encoded_internal_ip = CGI.escapeHTML(internal_ip)
-      encoded_internal_ip_hash = { 'Internal IP' => encoded_internal_ip }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_ip_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-    
-    # set and add the internal hostname
-    internal_hostname = BD.get(zombie_session, 'InternalHostname')
-    if not internal_hostname.nil?
-      encoded_internal_hostname = CGI.escapeHTML(internal_hostname)
-      encoded_internal_hostname_hash = { 'Internal Hostname' => encoded_internal_hostname }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_internal_hostname_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
     # set and add the System Platform
     system_platform = BD.get(zombie_session, 'SystemPlatform')
     if not system_platform.nil?
@@ -254,24 +239,24 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     end
 
     # set and add the zombie screen size and color depth
-    screen_params = BD.get(zombie_session, 'ScreenParams')
-    if not screen_params.nil?
+    screen_size = BD.get(zombie_session, 'ScreenSize')
+    if not screen_size.nil?
       
-      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-      width = screen_params_hash['width']
+      screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+      width = screen_size_hash['width']
       (print_error "width is wrong type";return) if not width.is_a?(Fixnum)
-      height = screen_params_hash['height']
+      height = screen_size_hash['height']
       (print_error "height is wrong type";return) if not height.is_a?(Fixnum)
-      colordepth = screen_params_hash['colordepth']
+      colordepth = screen_size_hash['colordepth']
       (print_error "colordepth is wrong type";return) if not colordepth.is_a?(Fixnum)
       
       # construct the string to be displayed in the details tab
-      encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
-      encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
+      encoded_screen_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
+      encoded_screen_size_hash = { 'Screen Size' => encoded_screen_size }
       
       page_name_row = {
         'category' => 'Host',
-        'data' => encoded_screen_params_hash,
+        'data' => encoded_screen_size_hash,
         'from' => 'Initialization'
       }
 
@@ -457,8 +442,28 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       return BeEF::Module.support(mod, {'browser' => BD.get(hook_session_id, 'BrowserName'), 'ver' => BD.get(hook_session_id, 'BrowserVersion'), 'os' => [BD.get(hook_session_id, 'OsName')]})
   end
 
-  def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
+  # If we're adding a leaf to the command tree, and it's in a subfolder, we need to recurse
+  # into the tree to find where it goes
+  def update_command_module_tree_recurse(tree,category,leaf)
+    working_category = category.shift
 
+    tree.each {|t|
+      if t['text'].eql? working_category and category.count > 0
+        #We have deeper to go
+        update_command_module_tree_recurse(t['children'],category,leaf)
+      elsif t['text'].eql? working_category
+        #Bingo
+        t['children'].push(leaf)
+        break
+      end
+    }
+
+    #return tree
+
+  end
+
+  #Add the command to the tree
+  def update_command_module_tree(tree, cmd_category, cmd_icon_path, cmd_status, cmd_name, cmd_id)
       # construct leaf node for the command module tree
       leaf_node = {
           'text' => cmd_name,
@@ -469,24 +474,99 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       }
 
       # add the node to the branch in the command module tree
-      tree.each {|x|
-        if x['text'].eql? cmd_category
-          x['children'].push( leaf_node )
-            break
-        end
-      }
+      if cmd_category.is_a?(Array)
+        #The category is an array, therefore it's a sub-folderised category
+        cat_copy = cmd_category.dup #Don't work with the original array, because, then it breaks shit
+        update_command_module_tree_recurse(tree,cat_copy,leaf_node)
+      else
+        #original logic here, simply add the command to the tree.
+        tree.each {|x|
+          if x['text'].eql? cmd_category
+            x['children'].push( leaf_node )
+              break
+          end
+        }
+      end
   end
-  
+
+  #Recursive function to build the tree now with sub-folders
+  def build_recursive_tree(parent,input)
+   cinput = input.shift.chomp('/')
+   if cinput.split('/').count == 1 #then we have a single folder now
+     if parent.detect {|p| p['text'] == cinput}.nil?
+       parent << {'text' => cinput, 'cls' => 'folder', 'children' => []}
+     else
+       if input.count > 0
+         parent.each {|p|
+           if p['text'] == cinput
+             p['children'] = build_recursive_tree(p['children'],input)
+           end
+         }
+       end
+     end
+   else
+     #we have multiple folders
+     newinput = cinput.split('/')
+     newcinput = newinput.shift
+     if parent.detect {|p| p['text'] == newcinput }.nil?
+       fldr = {'text' => newcinput, 'cls' => 'folder', 'children' => []}
+       parent << build_recursive_tree(fldr['children'],newinput)
+     else
+       parent.each {|p|
+         if p['text'] == newcinput
+           p['children'] = build_recursive_tree(p['children'],newinput)
+         end
+       }
+     end
+   end
+
+    if input.count > 0
+      return build_recursive_tree(parent,input)
+    else
+      return parent
+    end
+  end
+
+  #Recursive function to sort all the parent's children
+  def sort_recursive_tree(parent)
+    # sort the children nodes by status and name
+    parent.each {|x| 
+      #print_info "Sorting: " + x['children'].to_s
+      if x.is_a?(Hash) and x.has_key?('children')
+        x['children'] = x['children'].sort_by {|a| 
+          fldr = a['cls'] ? a['cls'] : 'zzzzz'
+          "#{fldr}#{a['status']}#{a['text']}"
+        }
+        x['children'].each {|c|
+          sort_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+       }
+     end
+    }
+  end
+
+  #Recursive function to retitle folders with the number of children
+  def retitle_recursive_tree(parent)
+    # append the number of command modules so the branch name results in: "<category name> (num)"
+    parent.each {|command_module_branch|
+      if command_module_branch.is_a?(Hash) and command_module_branch.has_key?('children')
+        num_of_command_modules = command_module_branch['children'].length
+        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
+
+        command_module_branch['children'].each {|c|
+          retitle_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
+        }
+      end
+    }
+  end
+
   # Returns the list of all command_modules for a TreePanel in the interface.
   def select_command_modules_tree
+    blanktree = []
     tree = []
-    BeEF::Modules.get_categories.each { |c|
-        tree.push({
-            'text' => c,
-            'cls' => 'folder',
-            'children' => []
-        })
-    }
+
+    #Due to the sub-folder nesting, we use some really badly hacked together recursion
+    #Note to the bored - if someone (anyone please) wants to refactor, I'll buy you cookies. -x
+    tree = build_recursive_tree(blanktree,BeEF::Modules.get_categories)
 
     BeEF::Modules.get_enabled.each{|k, mod|
       # get the hooked browser session id and set it in the command module
@@ -538,16 +618,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # sort the parent array nodes 
     tree.sort! {|a,b| a['text'] <=> b['text']}
     
-    # sort the children nodes by status and name
-    tree.each {|x| x['children'] =
-      x['children'].sort_by {|a| [a['status'],a['text']]}
-    }
+    sort_recursive_tree(tree)
+
+    retitle_recursive_tree(tree)
     
-    # append the number of command modules so the branch name results in: "<category name> (num)"
-    tree.each {|command_module_branch|
-      num_of_command_modules = command_module_branch['children'].length
-      command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
-    }
+
       
     # return a JSON array of hashes
     @body = tree.to_json
@@ -636,7 +711,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         def2.push({'name' => k, 'value' => v})
     }
     # End hack
-    @body = (BeEF::Module.execute(mod_key, zombie_session, def2)) ? '{success: true}' : '{success: false}'
+    exec_results = BeEF::Module.execute(mod_key, zombie_session, def2)
+    @body = (exec_results != nil) ? '{success: true}' : '{success: false}'
   end
   
   # Re-execute an command_module to a zombie.

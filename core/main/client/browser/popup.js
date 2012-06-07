@@ -25,7 +25,7 @@ beef.browser.popup = {
 	
 		blocker_enbabled: function ()
 		{
-			screenParams = beef.browser.getScreenParams();
+			screenParams = beef.browser.getScreenSize();
 			var popUp = window.open('/', 'windowName0', 'width=1, height=1, left='+screenParams.width+', top='+screenParams.height+', scrollbars, resizable');
 			if (popUp == null || typeof(popUp)=='undefined') {   
 			  	return true;

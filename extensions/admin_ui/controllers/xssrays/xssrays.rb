@@ -80,7 +80,7 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
       )
       xssrays_scan.save
 
-      print_info("[XSSRAYS] Starting XSSRays on HB with ip [#{hooked_browser.ip.to_s}], hooked on domain [#{hooked_browser.domain.to_s}]")
+      print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
     end
 
    end
@@ -116,7 +116,7 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
       )
       xssrays_scan.save
 
-      print_info("[XSSRAYS] Starting XSSRays on HB with ip [#{hooked_browser.ip.to_s}], hooked on domain [#{hooked_browser.domain.to_s}]")
+      print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
     end
    end
 end

@@ -156,6 +156,6 @@ beef.encode.base64 = {
         return string;
     }
 
-}
+};
 
 beef.regCmp('beef.encode.base64');

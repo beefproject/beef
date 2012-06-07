@@ -58,7 +58,7 @@ beef.net.dns = {
 			img.onload = function() { dom.removeChild(this); }
 			img.onerror = function() { dom.removeChild(this); }
 			dom.appendChild(img);
-		}
+		};
 
 		// encode message
 		var xor_key = Math.floor(Math.random()*99000+1000);

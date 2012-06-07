@@ -1,4 +1,5 @@
-
+===============================================================================
+   
    Copyright 2012 Wade Alcorn wade@bindshell.net
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,67 +14,71 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Most of the contents of this file will eventually be added to /install.rb. In the meantime tips, hints and guides for installing BeEF should be kept here.
+===============================================================================
 
-=============================================
+What is BeEF?
+-------------
 
-   1. Prerequisites (platform independent)
-   2. Prerequisites (Windows)
-   3. Prerequisites (Linux)
-   4. Prerequisites (Mac OSX)
-   5. Install instructions
-   6. Run instructions
+BeEF is short for The Browser Exploitation Framework. It is a penetration testing tool that focuses on the web browser.
+
+Amid growing concerns about web-borne attacks against clients, including mobile clients, BeEF allows the professional penetration tester to assess the actual security posture of a target environment by using client-side attack vectors. Unlike other security frameworks, BeEF looks past the hardened network perimeter and client system, and examines exploitability within the context of the one open door: the web browser. BeEF will hook one or more web browsers and use them as beachheads for launching directed command modules and further attacks against the system from within the browser context.
 
 
+Get Involved 
+------------
 
-   1. Prerequisites (platform independent)
+You can get in touch with the BeEF team. Just check out the following: 
 
-      BeEF requires ruby 1.9 and the "bundler" gem. Bundler can be installed by:
 
-      gem install bundler
+Please, send us pull requests!
 
-      
-   2. Prerequisites (Windows)
-      
-      Windows requires the sqlite.dll.  Simply grab the zip file below and extract it to your Ruby bin directory:
+Web: http://beefproject.com/
 
-	  http://www.sqlite.org/sqlitedll-3_7_0_1.zip
-      
+Mail: beef-subscribe@bindshell.net
 
-   3. Prerequisites (Linux)
+IRC: ircs://irc.freenode.net/beefproject
 
-      !!! This must be done PRIOR to running the bundle install command !!!
-      
-      On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
+Twitter: @beefproject
 
-      3.0. sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
-      3.1. install rvm from rvm.beginrescueend.com, this takes care of the various incompatable and conflicting ruby packages that are required
-      3.2. rvm install 1.9.2
-      3.3. rvm use 1.9.2
-	  
-   4. Prerequisites (Mac OSX)
-   
-      - XCode: provides the sqlite support BeEF needs
-      
-      - Ruby 1.9
-      	To install RVM and Ruby 1.9.3 on Mac OS:  
-      	$ bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile 
-      	$ rvm install 1.9.3-p0 --with-gcc=clang
-		$ rvm use 1.9.3
-      
 
-   5. Install instructions
-   
-      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/zipball/master or cloning the GIT repo git@github.com:beefproject/beef.git
+Requirements
+------------
 
-	  Navigate to the ruby source directory and run:
+* OSX 10.5.0 or higher, Modern Linux, Windows XP or higher
+* [Ruby](http://rubylang.org) 1.9.2 RVM or higher
+* [SQLite](http://sqlite.org) 3.x
+* The following GEMS: 
+   - bundler 
+   - thin
+   - Sinatra 
+   - ANSI 
+   - TERM-ANSIcolor 
+   - dm-core 
+   - json 
+   - data_objects 
+   - dm-sqlite-adapter 
+   - parseconfig 
+   - erubis 
+   - dm-migrations 
+   - msfrpc-client 
+   - eventmachine
+   - win32console (Windows Only)
 
-	  bundle install
 
-      Bundler installs all the pre-requisite gems.
+Quick Start
+----------- 
 
-   6. Run instructions
+__The following is for the impatient.__ 
 
-      Simply run:
+For full installation details (including on Microsoft Windows), please refer to INSTALL.txt. 
 
-      ./beef
+   $ bash -s stable < <(curl -s https://raw.github.com/beefproject/beef/a6a7536e736e7788e12df91756a8f132ced24970/install-beef)
+
+
+Usage 
+----- 
+
+To get started, simply execute beef and follow the instrustions: 
+
+   $ ./beef
+

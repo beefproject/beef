@@ -92,6 +92,7 @@ module Banners
       
       self.interfaces.map do |host| # display the important URLs on each interface from the interfaces array
         print_success "running on network interface: #{host}"
+        beef_host = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
         data = "Hook URL: http://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.hook_file")}\n"
         data += "UI URL:   http://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.panel_path")}\n"
         

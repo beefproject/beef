@@ -29,7 +29,8 @@ module BeEF
       def initialize
         @configuration = BeEF::Core::Configuration.instance
         beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-        @url = "http://#{beef_host}:#{@configuration.get("beef.http.port")}"
+        beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+        @url = "http://#{beef_host}:#{beef_port}"
         @root_dir = File.expand_path('../../../', __FILE__)
         @command_urls = {}
         @mounts = {}
@@ -44,6 +45,8 @@ module BeEF
             'beef_root_dir' => @root_dir,
             'beef_host' => @configuration.get('beef.http.host'),
             'beef_port' => @configuration.get('beef.http.port'),
+            'beef_public' => @configuration.get('beef.http.public'),
+            'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_dns' => @configuration.get('beef.http.dns'),
             'beef_hook' => @configuration.get('beef.http.hook_file')
         }
@@ -81,6 +84,9 @@ module BeEF
       def prepare
         # Create http handler for the javascript hook file
         self.mount("#{@configuration.get("beef.http.hook_file")}", BeEF::Core::Handlers::HookedBrowsers.new)
+
+        # Create handler for the initialization checks (Browser Details)
+        self.mount("/init", BeEF::Core::Handlers::BrowserDetails)
 
         # Dynamically get the list of all the http handlers using the API and register them
         BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'mount_handler', self)

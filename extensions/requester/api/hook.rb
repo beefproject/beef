@@ -34,18 +34,45 @@ module BeEF
             }
 
             return if output.empty?
+            config = BeEF::Core::Configuration.instance
+            ws = BeEF::Core::Websocket::Websocket.instance
 
-            # Build the BeEFJS requester component
-            build_missing_beefjs_components 'beef.net.requester'
+            # todo antisnatchor: prevent sending "content" multiple times. Better leaving it after the first run, and don't send it again.
+            #todo antisnatchor: remove this gsub crap adding some hook packing.
+            if config.get("beef.http.websocket.enable") && ws.getsocket(hb.session)
+              content = File.read(find_beefjs_component_path 'beef.net.requester').gsub('//
+              //   Copyright 2012 Wade Alcorn wade@bindshell.net
+              //
+              //   Licensed under the Apache License, Version 2.0 (the "License");
+              //   you may not use this file except in compliance with the License.
+              //   You may obtain a copy of the License at
+              //
+              //       http://www.apache.org/licenses/LICENSE-2.0
+              //
+              //   Unless required by applicable law or agreed to in writing, software
+              //   distributed under the License is distributed on an "AS IS" BASIS,
+              //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+              //   See the License for the specific language governing permissions and
+              //   limitations under the License.
+              //', "")
+              add_to_body output
+              ws.send(content + @body,hb.session)
+               #if we use WebSockets, just reply wih the component contents
+            else # if we use XHR-polling, add the component to the main hook file
+              build_missing_beefjs_components 'beef.net.requester'
+              # Send the command to perform the requests to the hooked browser
+              add_to_body output
+            end
+          end
 
-            # Send the command to perform the requests to the hooked browser
+          def add_to_body(output)
             @body << %Q{
-              beef.execute(function() {
-                beef.net.requester.send(
-                  #{output.to_json}
-                );
-              });
-            }
+                beef.execute(function() {
+                  beef.net.requester.send(
+                    #{output.to_json}
+                  );
+                });
+              }
           end
 
           #

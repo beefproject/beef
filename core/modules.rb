@@ -33,11 +33,20 @@ module BeEF
     def self.get_categories
       categories = []
       BeEF::Core::Configuration.instance.get('beef.module').each {|k,v|
-        if not categories.include?(v['category'])
-          categories << v['category']
+        flatcategory = ""
+        if v['category'].kind_of?(Array)
+          # Therefore this module has nested categories (sub-folders), munge them together into a string with '/' characters, like a folder.
+          v['category'].each {|cat|
+            flatcategory << cat + "/"
+          }
+        else
+          flatcategory = v['category']
+        end
+        if not categories.include?(flatcategory)
+          categories << flatcategory
         end
       }
-      return categories.sort
+      return categories.sort.uniq #This is now uniqued, because otherwise the recursive function to build the json tree breaks if there are duplicates.
     end
 
     # Get all modules currently stored in the database

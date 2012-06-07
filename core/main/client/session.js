@@ -82,7 +82,7 @@ beef.session = {
 	/**
 	 * Overrides each link, and creates an iframe (loading the href) instead of following the link
 	 */
-	persistant: function() {
+	persistent: function() {
 		$j('a').click(function(e) {
 			if ($j(this).attr('href') != '')
 			{

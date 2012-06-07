@@ -56,7 +56,7 @@ class Command
     print_line("Module parameters:")
 
     driver.interface.cmd['Data'].each{|data|
-      print_line(data['name'] + " => \"" + data['value'] + "\" # this is the " + data['ui_label'] + " parameter")
+      print_line(data['name'] + " => \"" + data['value'].to_s + "\" # this is the " + data['ui_label'] + " parameter")
     } if not driver.interface.cmd['Data'].nil?
   end
   
@@ -153,7 +153,9 @@ class Command
         print_line("Results retrieved: " + Time.at(output[0]['date'].to_i).to_s)
         print_line("")
         print_line("Response:")
-        print_line(output[0]['data']['data'].to_s)
+        output.each do |op|
+          print_line(op['data']['data'].to_s)
+        end
       end
     end
   end
