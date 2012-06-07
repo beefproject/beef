@@ -21,7 +21,7 @@ class Webcam < BeEF::Core::Command
   end
   def self.options
        configuration = BeEF::Core::Configuration.instance
-       social_engineering_title = "This website is using Adobe Flashd"
+       social_engineering_title = "This website is using Adobe Flash"
        social_engineering_text = "In order to work with the programming framework this website is using, you need to allow the Adobe Flash Player Settings. If you use the new Ajax and HTML5 features in conjunction with Adobe Flash Player, it will increase your user experience."
        no_of_pictures = 20
        interval = 1000
@@ -44,7 +44,7 @@ class Webcam < BeEF::Core::Command
            'width' => '100px' }, {
             'name' => 'interval', 
             'description' => 'The interval in which pictures are taken.',
-            'ui_label' => 'Interval to take pictures in ms',
+            'ui_label' => 'Interval to take pictures (ms)',
             'value' => interval,
             'width' => '100px' }
            ]

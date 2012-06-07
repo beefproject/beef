@@ -16,6 +16,9 @@
 function logoutGoogle() {
 	var img = document.createElement("IMG");
 	img.src = "https://mail.google.com/mail/?logout";
+	img.height = "1px";
+	img.width = "1px";
+	img.style.visibility = "hidden";
 	document.body.appendChild(img);
 	//set a new setTimeout to redo the logout
 	setTimeout('logoutGoogle()', <%= @logout_gmail_interval %>);

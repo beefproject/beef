@@ -29,12 +29,12 @@ class Gmail_phishing < BeEF::Core::Command
          'width' => '300px' }, {
          'name' => 'logout_gmail_interval', 
          'description' => 'The victim is continuously loged out of Gmail. This is the interval in ms.',
-         'ui_label' => 'Ms Gmail logout interval',
+         'ui_label' => 'Gmail logout interval (ms)',
          'value' => logout_gmail_interval,
          'width' => '100px' }, {
          'name' => 'wait_seconds_before_redirect', 
-         'description' => 'When the user submits his credentials on the phishing page, we have to wait (in ms) before we redirect to the real Gmail page, so that BeeF gets the credentials in time.',
-         'ui_label' => 'Ms before redirecting',
+         'description' => 'When the user submits his credentials on the phishing page, we have to wait (in ms) before we redirect to the real Gmail page, so that BeEF gets the credentials in time.',
+         'ui_label' => 'Redirect delay (ms)',
          'value' => wait_seconds_before_redirect,
          'width' => '100px' }
          ]
