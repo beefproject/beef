@@ -15,12 +15,11 @@
 #
 beef:
     module:
-        glassfish_war_upload_xsrf:
+        gmail_phishing:
             enable: true
-            category: "Exploits"
-            name: "GlassFish WAR Upload XSRF"
-            description: "This module attempts to deploy a malicious war file on an Oracle GlassFish Server 3.1.1 (build 12).  It makes advantage of a CSRF bug in the REST interface.<br />For more information refer to <a href='http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html'>http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html</a>."
-            authors: ["Bart Leppens"]
+            category: ["Social Engineering"]
+            name: "Google Phishing"
+            description: "This plugin uses an image tag to XSRF the logout button of Gmail. Continuously the user is logged out of Gmail (eg. if he is logged in in another tab). Additionally it will show the Google favicon and a Gmail phishing page (although the URL is NOT the Gmail URL)."
+            authors: ["floyd @floyd_ch floyd.ch"]
             target:
-                working: ["FF", "S", "C"]
-                not_working: ["IE"]
+                user_notify: ['ALL']

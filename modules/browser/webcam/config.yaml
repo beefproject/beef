@@ -15,12 +15,11 @@
 #
 beef:
     module:
-        glassfish_war_upload_xsrf:
+        webcam:
             enable: true
-            category: "Exploits"
-            name: "GlassFish WAR Upload XSRF"
-            description: "This module attempts to deploy a malicious war file on an Oracle GlassFish Server 3.1.1 (build 12).  It makes advantage of a CSRF bug in the REST interface.<br />For more information refer to <a href='http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html'>http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html</a>."
-            authors: ["Bart Leppens"]
+            category: "Browser"
+            name: "Webcam"
+            description: "This module will show the Adobe Flash 'Allow Webcam' dialog to the user. The user has to click the allow button, otherwise this module will not return pictures.<br />The title/text to convince the user can be customised. You can customise how many pictures you want to take and in which interval (default will take 20 pictures, 1 picture per second). The picture is sent as a base64 encoded JPG string."
+            authors: ["floyd @floyd_ch"]
             target:
-                working: ["FF", "S", "C"]
-                not_working: ["IE"]
+                 working: ["All"]
