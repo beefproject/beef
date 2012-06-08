@@ -118,6 +118,14 @@ module BeEF
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
           end
 
+          # get and store the date
+          date_stamp = get_param(@data['results'], 'DateStamp')
+          if BeEF::Filters.is_valid_date_stamp?(date_stamp)
+            BD.set(session_id, 'DateStamp', date_stamp)
+          else
+            self.err_msg "Invalid date returned from the hook browser's initial connection."
+          end
+
           # get and store page title
           page_title = get_param(@data['results'], 'PageTitle')
           if BeEF::Filters.is_valid_pagetitle?(page_title)
@@ -175,11 +183,11 @@ module BeEF
           end
 
           # get and store the zombie screen size and color depth
-          screen_params = get_param(@data['results'], 'ScreenParams')
-          if BeEF::Filters.is_valid_screen_params?(screen_params)
-            BD.set(session_id, 'ScreenParams', screen_params)
+          screen_size = get_param(@data['results'], 'ScreenSize')
+          if BeEF::Filters.is_valid_screen_size?(screen_size)
+            BD.set(session_id, 'ScreenSize', screen_size)
           else
-            self.err_msg "Invalid screen params returned from the hook browser's initial connection."
+            self.err_msg "Invalid screen size returned from the hook browser's initial connection."
           end
 
           # get and store the window size

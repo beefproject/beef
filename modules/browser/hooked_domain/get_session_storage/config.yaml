@@ -17,7 +17,7 @@ beef:
     module:
         get_session_storage:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Get Session Storage"
             description: "Extracts data from the HTML5 sessionStorage object."
             authors: ["bcoles"]

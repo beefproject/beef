@@ -17,7 +17,7 @@ beef:
     module:
         get_cookie:
             enable: true
-            category: ["Browser","Hooked Domain"]
+            category: ["Browser", "Hooked Domain"]
             name: "Get Cookie"
             description: "This module will retrieve the session cookie from the current page."
             authors: ["bcoles"]

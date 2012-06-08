@@ -77,7 +77,7 @@ module Modules
 
       if config.get("beef.extension.evasion.enable")
         evasion = BeEF::Extension::Evasion::Evasion.instance
-        @hook = evasion.obfuscate(@hook)
+        @hook = evasion.add_bootstrapper + evasion.obfuscate(@hook)
       end
 
       @body << @hook

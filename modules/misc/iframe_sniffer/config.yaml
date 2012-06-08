@@ -19,7 +19,8 @@ beef:
             enable: true
             category: "Misc"
             name: "iFrame Sniffer"
-            description: "This module attempts to do framesniffing (aka Leaky Frame).  It will append leakyframe.js (written by Paul Stone) to the DOM and check for specified anchors to be present on a url.<br />For more information, refer to <a href='http://www.contextis.co.uk/research/blog/framesniffing/'>http://www.contextis.co.uk/research/blog/framesniffing/</a>"
+            description: "This module attempts to do framesniffing (aka Leaky Frame).  It will append leakyframe.js (written by Paul Stone) to the DOM and check for specified anchors to be present on a URL.<br />For more information, refer to <a href='http://www.contextis.co.uk/research/blog/framesniffing/'>http://www.contextis.co.uk/research/blog/framesniffing/</a>"
             authors: ["Bart Leppens"]
             target:
-                working: "S"
+                working: ["S", "IE"]
+                not_working: ["ALL"]

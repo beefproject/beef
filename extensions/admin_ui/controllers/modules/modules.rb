@@ -119,21 +119,36 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
+    # set and add the return values for the date stamp
+    date_stamp = BD.get(zombie_session, 'DateStamp')
+    if not date_stamp.nil?
+      encoded_date_stamp = CGI.escapeHTML(date_stamp)
+      encoded_date_stamp_hash = { 'Date' => encoded_date_stamp }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_date_stamp_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for the os name
     os_name = BD.get(zombie_session, 'OsName')
     if not host_name.nil?
       encoded_os_name = CGI.escapeHTML(os_name)
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
-    
+
       page_name_row = {
         'category' => 'Host',
         'data' => encoded_os_name_hash,
         'from' => 'Initialization'
       }
-    
+
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
-    
+ 
     # set and add the return values for the browser name
     browser_name = BD.get(zombie_session, 'BrowserName') 
     if not browser_name.nil?
@@ -224,24 +239,24 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     end
 
     # set and add the zombie screen size and color depth
-    screen_params = BD.get(zombie_session, 'ScreenParams')
-    if not screen_params.nil?
+    screen_size = BD.get(zombie_session, 'ScreenSize')
+    if not screen_size.nil?
       
-      screen_params_hash = JSON.parse(screen_params.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-      width = screen_params_hash['width']
+      screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+      width = screen_size_hash['width']
       (print_error "width is wrong type";return) if not width.is_a?(Fixnum)
-      height = screen_params_hash['height']
+      height = screen_size_hash['height']
       (print_error "height is wrong type";return) if not height.is_a?(Fixnum)
-      colordepth = screen_params_hash['colordepth']
+      colordepth = screen_size_hash['colordepth']
       (print_error "colordepth is wrong type";return) if not colordepth.is_a?(Fixnum)
       
       # construct the string to be displayed in the details tab
-      encoded_screen_params = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
-      encoded_screen_params_hash = { 'Screen Params' => encoded_screen_params }
+      encoded_screen_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
+      encoded_screen_size_hash = { 'Screen Size' => encoded_screen_size }
       
       page_name_row = {
         'category' => 'Host',
-        'data' => encoded_screen_params_hash,
+        'data' => encoded_screen_size_hash,
         'from' => 'Initialization'
       }
 

