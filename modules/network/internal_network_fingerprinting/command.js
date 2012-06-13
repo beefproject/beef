@@ -97,7 +97,8 @@ beef.execute(function() {
 	new Array("Zenoss Core",":8080",false,"/zport/dmd/favicon.ico",16,16),
 	new Array("BeEF",":3000",false,"/ui/media/images/beef.png",200,149),
 	new Array("BeEF (PHP)",":80",false,"/beef/images/beef.gif",32,32),
-	new Array("Wordpress",":80",false,"/wp-includes/images/wpmini-blue.png",16,16)
+	new Array("Wordpress",":80",false,"/wp-includes/images/wpmini-blue.png",16,16),
+	new Array("Glassfish Server",":4848",false,"/theme/com/sun/webui/jsf/suntheme/images/login/gradlogsides.jpg", 1, 200)
 	);
 
 	// for each ip
