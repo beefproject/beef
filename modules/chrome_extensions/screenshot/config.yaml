@@ -15,12 +15,12 @@
 #
 beef:
     module:
-        glassfish_war_upload_xsrf:
+        screenshot:
             enable: true
-            category: "Exploits"
-            name: "GlassFish WAR Upload XSRF"
-            description: "This module attempts to deploy a malicious war file on an Oracle GlassFish Server 3.1.1 (build 12).  It makes advantage of a CSRF bug in the REST interface.<br />For more information refer to <a href='http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html'>http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html</a>."
-            authors: ["Bart Leppens"]
+            category: "Chrome Extensions"
+            name: "Screenshot"
+            description: "Screenshots current tab the user is in, screenshot returned as base64d data for a dataurl"
+            authors: ["mh"]
             target:
-                working: ["FF", "S", "C"]
-                not_working: ["IE", "O"]
+                working: ["C"]
+                not_working: ["All"]
