@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo Updating...
+git pull
