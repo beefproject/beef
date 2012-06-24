@@ -20,18 +20,41 @@ var ZombiesMgr = function(zombies_tree_lists) {
 	
 	// this is a helper class to create a zombie object from a JSON hash index
 	this.zombieFactory = function(index, zombie_array){
-		text = "<img src='/ui/media/images/icons/"+escape(zombie_array[index]["browser_icon"])+"' style='padding-top:3px;' width='13px' height='13px'/> ";
-		text += "<img src='/ui/media/images/icons/"+escape(zombie_array[index]["os_icon"])+"' style='padding-top:3px;' width='13px' height='13px'/> ";
-		text += zombie_array[index]["ip"];
+
+		var ip              = zombie_array[index]["ip"];
+		var session         = zombie_array[index]["session"];
+		var browser_name    = zombie_array[index]["browser_name"];
+		var browser_version = zombie_array[index]["browser_version"];
+		var browser_icon    = zombie_array[index]["browser_icon"];
+		var os_icon         = zombie_array[index]["os_icon"];
+		var os_name         = zombie_array[index]["os_name"];
+		var domain          = zombie_array[index]["domain"];
+		var port            = zombie_array[index]["port"];
+		var has_flash       = zombie_array[index]["has_flash"];
+		var has_web_sockets = zombie_array[index]["has_web_sockets"];
+		var date_stamp      = zombie_array[index]["date_stamp"];
+
+		text = "<img src='/ui/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text+= "<img src='/ui/media/images/icons/"+escape(os_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text+= ip;
+
+		balloon_text = "IP: "+ip;
+		balloon_text+= "<br/>Browser: "     + browser_name + " " + browser_version;
+		balloon_text+= "<br/>System: "      + os_name;
+		balloon_text+= "<br/>Domain: "      + domain + ":" + port;
+		balloon_text+= "<br/>Flash: "       + has_flash;
+		balloon_text+= "<br/>Web Sockets: " + has_web_sockets;
+		balloon_text+= "<br/>Date: "        + date_stamp;
 		
 		var new_zombie = {
-			'id' : index,
-			'ip' :  zombie_array[index]["ip"],
-			'session' : zombie_array[index]["session"],
-			'text': text,
-			'check' : false,
-			'domain' : zombie_array[index]["domain"],
-            'port' : zombie_array[index]["port"]
+			'id'           : index,
+			'ip'           : ip,
+			'session'      : session,
+			'text'         : text,
+			'balloon_text' : balloon_text,
+			'check'        : false,
+			'domain'       : domain,
+            'port'         : port
 		};
 		
 		return new_zombie;

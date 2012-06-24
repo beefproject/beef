@@ -62,7 +62,7 @@ module Models
     
       browserdetails
     end
-  
+ 
     #
     # Returns the icon representing the browser type the
     # hooked browser is using (i.e. Firefox, Internet Explorer)

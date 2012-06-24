@@ -84,18 +84,30 @@ class Panel < BeEF::Extension::AdminUI::HttpController
   
   # create a hash of simple hooked browser details
   def get_simple_hooked_browser_hash(hooked_browser)
-    
-    browser_icon = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
-    os_icon = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
-    domain = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
-    
+
+    browser_name    = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserName')
+	browser_version = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserVersion')
+    browser_icon    = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
+    os_icon         = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
+    os_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'OsName')
+    domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
+    has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
+    has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
+    date_stamp      =  BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
+
     return {
-      'session' => hooked_browser.session,
-      'ip' => hooked_browser.ip,
-      'domain' => domain,
-      'port' => hooked_browser.port.to_s,
-      'browser_icon' => browser_icon,
-      'os_icon' => os_icon
+      'session'         => hooked_browser.session,
+      'ip'              => hooked_browser.ip,
+      'domain'          => domain,
+      'port'            => hooked_browser.port.to_s,
+      'browser_name'    => browser_name,
+      'browser_version' => browser_version,
+      'browser_icon'    => browser_icon,
+      'os_icon'         => os_icon,
+      'os_name'         => os_name,
+      'has_flash'       => has_flash,
+      'has_web_sockets' => has_web_sockets,
+      'date_stamp'      => date_stamp
     }
     
   end
