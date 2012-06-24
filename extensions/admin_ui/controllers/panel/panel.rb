@@ -90,10 +90,12 @@ class Panel < BeEF::Extension::AdminUI::HttpController
     browser_icon    = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
     os_icon         = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
     os_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'OsName')
+    hw_icon         = BeEF::Core::Models::BrowserDetails.hw_icon(hooked_browser.session)
+    hw_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'Hardware')
     domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
     has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
     has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
-    date_stamp      =  BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
+    date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
     return {
       'session'         => hooked_browser.session,
@@ -105,6 +107,8 @@ class Panel < BeEF::Extension::AdminUI::HttpController
       'browser_icon'    => browser_icon,
       'os_icon'         => os_icon,
       'os_name'         => os_name,
+      'hw_icon'         => hw_icon,
+      'hw_name'         => hw_name,
       'has_flash'       => has_flash,
       'has_web_sockets' => has_web_sockets,
       'date_stamp'      => date_stamp

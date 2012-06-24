@@ -28,6 +28,8 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var browser_icon    = zombie_array[index]["browser_icon"];
 		var os_icon         = zombie_array[index]["os_icon"];
 		var os_name         = zombie_array[index]["os_name"];
+		var hw_name         = zombie_array[index]["hw_name"];
+		var hw_icon         = zombie_array[index]["hw_icon"];
 		var domain          = zombie_array[index]["domain"];
 		var port            = zombie_array[index]["port"];
 		var has_flash       = zombie_array[index]["has_flash"];
@@ -36,11 +38,13 @@ var ZombiesMgr = function(zombies_tree_lists) {
 
 		text = "<img src='/ui/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text+= "<img src='/ui/media/images/icons/"+escape(os_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text+= "<img src='/ui/media/images/icons/"+escape(hw_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text+= ip;
 
 		balloon_text = "IP: "+ip;
 		balloon_text+= "<br/>Browser: "     + browser_name + " " + browser_version;
 		balloon_text+= "<br/>System: "      + os_name;
+		balloon_text+= "<br/>Hardware: "    + hw_name;
 		balloon_text+= "<br/>Domain: "      + domain + ":" + port;
 		balloon_text+= "<br/>Flash: "       + has_flash;
 		balloon_text+= "<br/>Web Sockets: " + has_web_sockets;

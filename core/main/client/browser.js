@@ -765,6 +765,7 @@ beef.browser = {
 		var browser_plugins = beef.browser.getPlugins();
 		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
+		var hw_name = beef.hardware.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_size = beef.browser.getScreenSize();
@@ -789,6 +790,7 @@ beef.browser = {
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
+		if(hw_name) details['Hardware'] = hw_name;
 		if(date_stamp) details['DateStamp'] = date_stamp;
 		if(system_platform) details['SystemPlatform'] = system_platform;
 		if(browser_type) details['BrowserType'] = browser_type;

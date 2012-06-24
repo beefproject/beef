@@ -29,17 +29,19 @@ module Constants
   	OS_MAC_UA_STR         = 'Mac'
   	OS_MAC_IMG            = 'mac.png'
 	OS_QNX_UA_STR	      = 'QNX'
-	OS_QNX_IMG	      = 'qnx.ico'
+	OS_QNX_IMG	          = 'qnx.ico'
 	OS_BEOS_UA_STR	      = 'BeOS'
-	OS_BEOS_IMG	      = 'beos.png'
+	OS_BEOS_IMG	          = 'beos.png'
 	OS_OPENBSD_UA_STR     = 'OpenBSD'
 	OS_OPENBSD_IMG	      = 'openbsd.ico'
+	OS_IOS_UA_STR         = 'iOS'
+	OS_IOS_IMG            = 'ios.png'
 	OS_IPHONE_UA_STR      = 'iPhone'
- 	OS_IPHONE_IMG         = 'iphone.png'
+ 	OS_IPHONE_IMG         = 'iphone.jpg'
 	OS_IPAD_UA_STR	      = 'iPad'
-	OS_IPAD_IMG	      = 'ipad.png'
+	OS_IPAD_IMG	          = 'ipad.png'
 	OS_IPOD_UA_STR	      = 'iPod'
-	OS_IPOD_IMG	      = 'ipod.jpg'
+	OS_IPOD_IMG	          = 'ipod.jpg'
 	OS_MAEMO_UA_STR	      = 'Maemo'
 	OS_MAEMO_IMG	      = 'maemo.ico'
 	OS_BLACKBERRY_UA_STR  = 'BlackBerry'
@@ -65,12 +67,8 @@ module Constants
 					OS_BEOS_UA_STR
 				when /openbsd/
 					OS_OPENBSD_UA_STR
-				when /iphone/
-					OS_IPHONE_UA_STR
-				when /ipad/
-					OS_IPAD_UA_STR
-				when /ipod/
-					OS_IPOD_UA_STR
+				when /ios/, /iphone/, /ipad/, /ipod/
+					OS_IOS_UA_STR
 				when /maemo/
 					OS_MAEMO_UA_STR
 				when /blackberry/
