@@ -36,6 +36,7 @@ zombiesTreeList = function(id) {
 	//the tree node that contains the list of online hooked browsers
 	this.online_hooked_browsers_treenode = this.root.appendChild(
         new Ext.tree.TreeNode({
+            qtip: "Online hooked browsers",
             text:'Online Browsers',
             cls:'online-zombies-node',
             expanded:true
@@ -45,6 +46,7 @@ zombiesTreeList = function(id) {
 	//the tree node that contains the list of offline hooked browsers
 	this.offline_hooked_browsers_treenode = this.root.appendChild(
         new Ext.tree.TreeNode({
+            qtip: "Offline hooked browsers",
             text:'Offline Browsers',
             cls:'offline-zombies-node',
             expanded:false
@@ -183,7 +185,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	 */
     addZombie: function(hooked_browser, online, checkbox) {
 		var hb_id, mother_node, node;
-		
+
 		if(online) {
 			hb_id = 'zombie-online-' + hooked_browser.session;
 			mother_node = this.online_hooked_browsers_treenode;
@@ -193,7 +195,9 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		}
 		var exists = this.getNodeById(hb_id);
 		if(exists) return;
-		
+
+		hooked_browser.qtip = hooked_browser.text + ' hooked on ' + hooked_browser.domain + ":" + hooked_browser.port;
+
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
 			this.online_hooked_browsers_array.push(hooked_browser);
@@ -253,6 +257,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			sub_folder_node = new Ext.tree.TreeNode({
 				id: 'sub-folder-'+folder,
 				text: folder,
+				qtip: "Browsers hooked on "+folder,
 				checked: ((checkbox) ? false : null),
 				type: this.tree_configuration["sub-branch"]
 				});
