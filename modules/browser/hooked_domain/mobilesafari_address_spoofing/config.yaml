@@ -24,7 +24,7 @@ beef:
             target:
                 working:
                     S:
-                        os: ["iPhone"]
+                        os: ["iOS"]
                 not_working:
                     ALL:
                         os: ["All"]

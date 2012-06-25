@@ -550,6 +550,21 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the yes|no value for HasPhonegap
+    has_phonegap = BD.get(self.targetsession, 'HasPhonegap')
+    if not has_phonegap.nil?
+      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
+      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_phonegap_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the yes|no value for HasGoogleGears
     has_googlegears = BD.get(self.targetsession, 'HasGoogleGears')
     if not has_googlegears.nil?

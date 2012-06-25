@@ -346,6 +346,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the yes|no value for hasPhonegap
+    has_phonegap = BD.get(zombie_session, 'hasPhonegap')
+    if not has_phonegap.nil?
+      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
+      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_phonegap_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the yes|no value for HasGoogleGears
     has_googlegears = BD.get(zombie_session, 'HasGoogleGears')
     if not has_googlegears.nil?
