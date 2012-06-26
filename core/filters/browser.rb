@@ -47,6 +47,16 @@ module Filters
     true
   end
 
+  # Check the Hardware name value - for example, 'iPhone'
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid Hardware name characters
+  def self.is_valid_hwname?(str)
+    return false if not is_non_empty_string?(str)
+    return false if has_non_printable_char?(str)
+    return false if str.length < 2
+    true
+  end
+
   # Verify the browser version string is valid
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid browser version characters

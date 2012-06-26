@@ -23,7 +23,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Local File Theft"
-            description: "Javascript may have filesystem access if we are running from a local resource and using the file:// scheme. This module checks common locations and cheekily snaches anything it finds. Shamelessly plagurised from http://kos.io/xsspwn. To test this module save the BeEF hook page locally and open in safari from the your localfile system."
+            description: "JavaScript may have filesystem access if we are running from a local resource and using the file:// scheme.<br/>This module checks common locations and cheekily snaches anything it finds. Shamelessly plagurised from http://kos.io/xsspwn. To test this module save the BeEF hook page locally and open in Safari from the your localfile system."
             authors: ["mh"]
             target:
-                working: ["All"]
+                working: ["S"]

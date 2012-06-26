@@ -358,6 +358,21 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the return values for the os name
+    hw_name = BD.get(self.targetsession, 'Hardware')
+    if not hw_name.nil?
+      encoded_hw_name = CGI.escapeHTML(hw_name)
+      encoded_hw_name_hash = { 'Hardware' => encoded_hw_name }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_hw_name_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the return values for the browser name
     browser_name = BD.get(self.targetsession, 'BrowserName') 
     if not browser_name.nil?
@@ -529,6 +544,21 @@ class ShellInterface
       page_name_row = {
         'category' => 'Browser',
         'data' => encoded_has_flash_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for HasPhonegap
+    has_phonegap = BD.get(self.targetsession, 'HasPhonegap')
+    if not has_phonegap.nil?
+      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
+      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_phonegap_hash,
         'from' => 'Initialization'
       }
 

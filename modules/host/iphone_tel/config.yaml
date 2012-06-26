@@ -24,7 +24,7 @@ beef:
             target:
                 user_notify:
                     S:
-                        os: ["iPhone"]
+                        os: ["iOS"]
                 not_working:
                     ALL:
                         os: ["All"]
