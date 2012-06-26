@@ -65,14 +65,12 @@ function beef_init() {
             beef.websocket.start();
             beef.net.browser_details();
             beef.updater.execute_commands();
-            beef.are.init();
             beef.logger.start();
 
         }
         else {
             beef.net.browser_details();
             beef.updater.execute_commands();
-            beef.are.init();
             beef.updater.check();
             beef.logger.start();
         }

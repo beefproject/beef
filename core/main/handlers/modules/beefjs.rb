@@ -32,15 +32,12 @@ module Modules
       # @note we load websocket library only if ws server is enabled in config.yalm
       # check in init.js
       if config.get("beef.http.websocket.enable")
-<<<<<<< HEAD
-        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js websocket.js )
+
+        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js are.js)
       else
-        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js)
-=======
-        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js)
-      else
-        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js)
->>>>>>> 123b81b2b47ce59c45d6e59e489b342b85a70a77
+        js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js)
+
+
       end
 
       # @note construct the beefjs string from file(s)
