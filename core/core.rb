@@ -34,6 +34,7 @@ require 'core/main/constants/browsers'
 require 'core/main/constants/commandmodule'
 require 'core/main/constants/distributedengine'
 require 'core/main/constants/os'
+require 'core/main/constants/hardware'
 
 # @note Include core modules for beef
 require 'core/main/configuration'

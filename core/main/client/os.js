@@ -72,7 +72,11 @@ beef.os = {
 	isMacintosh: function() {
 		return (this.ua.match('(Mac_PowerPC)|(Macintosh)|(MacIntel)')) ? true : false;
 	},
-	
+
+	isWinPhone: function() {
+		return (this.ua.match('(Windows Phone)')) ? true : false;
+	},
+
 	isIphone: function() {
 		return (this.ua.indexOf('iPhone') != -1) ? true : false;
 	},
@@ -95,6 +99,10 @@ beef.os = {
 
 	isBlackBerry: function() {
 		return (this.ua.match('BlackBerry')) ? true : false;
+	},
+
+	isWebOS: function() {
+		return (this.ua.match('webOS')) ? true : false;
 	},
 
 	isQNX: function() {
@@ -139,11 +147,14 @@ beef.os = {
 		if(this.isSunOS()) return 'Sun OS';
 
 		//iPhone
-		if (this.isIphone()) return 'iPhone';
+		if (this.isIphone()) return 'iOS';
 		//iPad
-		if (this.isIpad()) return 'iPad';
+		if (this.isIpad()) return 'iOS';
 		//iPod
-		if (this.isIpod()) return 'iPod';
+		if (this.isIpod()) return 'iOS';
+
+		// zune
+		//if (this.isZune()) return 'Zune';
 		
 		//macintosh
 		if(this.isMacintosh()) {
@@ -156,6 +167,7 @@ beef.os = {
 		//others
 		if(this.isQNX()) return 'QNX';
 		if(this.isBeOS()) return 'BeOS';
+		if(this.isWebOS()) return 'webOS';
 		
 		return 'unknown';
 	}

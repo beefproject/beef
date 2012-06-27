@@ -13,18 +13,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    module:
-        mobilesafari_address_spoofing:
-            enable: true
-            category: ["Browser", "Hooked Domain"]
-            name: "iOS Address Bar Spoofing"
-            description: "Mobile Safari iOS 5.1 Address Bar Spoofing. This is fixed in latest version of Mobile Safari (the URL turns 'blank')"
-            authors: ["bcoles", "xntrik", "majorsecurity.net"]
-            target:
-                working:
-                    S:
-                        os: ["iOS"]
-                not_working:
-                    ALL:
-                        os: ["All"]
+class Invisible_iframe < BeEF::Core::Command
+
+	def self.options
+		return [
+            {'name' => 'target', 'ui_label' => 'URL', 'value' => 'http://beefproject.com/'}
+		]
+	end
+  
+	def post_execute
+		save({'result' => @datastore['result']})
+	end
+  
+end

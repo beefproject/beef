@@ -136,13 +136,28 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # set and add the return values for the os name
     os_name = BD.get(zombie_session, 'OsName')
-    if not host_name.nil?
+    if not os_name.nil?
       encoded_os_name = CGI.escapeHTML(os_name)
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
 
       page_name_row = {
         'category' => 'Host',
         'data' => encoded_os_name_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the return values for the hardware name
+    hw_name = BD.get(zombie_session, 'Hardware')
+    if not hw_name.nil?
+      encoded_hw_name = CGI.escapeHTML(hw_name)
+      encoded_hw_name_hash = { 'Hardware' => encoded_hw_name }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_hw_name_hash,
         'from' => 'Initialization'
       }
 
@@ -325,6 +340,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       page_name_row = {
         'category' => 'Browser',
         'data' => encoded_has_flash_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for hasPhonegap
+    has_phonegap = BD.get(zombie_session, 'hasPhonegap')
+    if not has_phonegap.nil?
+      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
+      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_phonegap_hash,
         'from' => 'Initialization'
       }
 

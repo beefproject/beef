@@ -15,16 +15,11 @@
 #
 beef:
     module:
-        mobilesafari_address_spoofing:
+        invisible_iframe:
             enable: true
-            category: ["Browser", "Hooked Domain"]
-            name: "iOS Address Bar Spoofing"
-            description: "Mobile Safari iOS 5.1 Address Bar Spoofing. This is fixed in latest version of Mobile Safari (the URL turns 'blank')"
-            authors: ["bcoles", "xntrik", "majorsecurity.net"]
+            category: "Misc"
+            name: "Create Invisible Iframe"
+            description: "Creates an invisible iframe."
+            authors: ["bcoles"]
             target:
-                working:
-                    S:
-                        os: ["iOS"]
-                not_working:
-                    ALL:
-                        os: ["All"]
+                working: ["ALL"]

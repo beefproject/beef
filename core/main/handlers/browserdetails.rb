@@ -118,6 +118,14 @@ module BeEF
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
           end
 
+          # get and store the hardware name
+          hw_name = get_param(@data['results'], 'Hardware')
+          if BeEF::Filters.is_valid_hwname?(hw_name)
+            BD.set(session_id, 'Hardware', hw_name)
+          else
+            self.err_msg "Invalid hardware name returned from the hook browser's initial connection."
+          end
+
           # get and store the date
           date_stamp = get_param(@data['results'], 'DateStamp')
           if BeEF::Filters.is_valid_date_stamp?(date_stamp)
@@ -220,6 +228,14 @@ module BeEF
             BD.set(session_id, 'HasFlash', has_flash)
           else
             self.err_msg "Invalid value for HasFlash returned from the hook browser's initial connection."
+          end
+
+          # get and store the yes|no value for HasPhonegap
+          has_phonegap = get_param(@data['results'], 'HasPhonegap')
+          if BeEF::Filters.is_valid_yes_no?(has_phonegap)
+            BD.set(session_id, 'HasPhonegap', has_phonegap)
+          else
+            self.err_msg "Invalid value for HasPhonegap returned from the hook browser's initial connection."
           end
 
           # get and store the yes|no value for HasGoogleGears

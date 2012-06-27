@@ -15,16 +15,12 @@
 #
 beef:
     module:
-        mobilesafari_address_spoofing:
+        confirm_close_tab:
             enable: true
-            category: ["Browser", "Hooked Domain"]
-            name: "iOS Address Bar Spoofing"
-            description: "Mobile Safari iOS 5.1 Address Bar Spoofing. This is fixed in latest version of Mobile Safari (the URL turns 'blank')"
-            authors: ["bcoles", "xntrik", "majorsecurity.net"]
+            category: "Persistence"
+            name: "Confirm Close Tab"
+            description: "Shows a confirm dialog to the user when he tries to close a tab. If he click yes, re-display the confirm dialog. Doesn't work on Opera < 12"
+            authors: ["antisnatchor"]
             target:
-                working:
-                    S:
-                        os: ["iOS"]
-                not_working:
-                    ALL:
-                        os: ["All"]
+                user_notify: ["ALL"]
+                not_working: ["O"]
