@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "IPEC"
             name: "DNS Tunnel"
-            description: "Sends data over DNS to a server which accepts wildcard subdomains."
+            description: "This module sends data one way over DNS.<br/><br/>A domain and message are taken as input. The message is XOR'd, url encoded, the '%' are replaced with '.' and the message is split into segments of 230 bytes. The segments are sent in sequence along with the sequence number and XOR key.<br/><br/>Note: A remote domain with a DNS server configured to accept wildcard subdomains is required to receive the data. BeEF does not support this feature so you're on your own when it comes to decoding the information."
             authors: ["bcoles"]
             target:
                 working: "All"
