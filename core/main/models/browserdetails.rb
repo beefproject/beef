@@ -118,9 +118,16 @@ module Models
 
       return BeEF::Core::Constants::Hardware::HW_WINPHONE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_WINPHONE_UA_STR
       return BeEF::Core::Constants::Hardware::HW_ZUNE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ZUNE_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_BLACKBERRY_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_BLACKBERRY_UA_STR
       return BeEF::Core::Constants::Hardware::HW_IPHONE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_IPHONE_UA_STR
       return BeEF::Core::Constants::Hardware::HW_IPAD_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_IPAD_UA_STR
       return BeEF::Core::Constants::Hardware::HW_IPOD_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_IPOD_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_KINDLE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_KINDLE_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_NOKIA_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_NOKIA_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_MOTOROLA_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_MOTOROLA_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_HTC_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_HTC_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_GOOGLE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_GOOGLE_UA_STR
+	return BeEF::Core::Constants::Hardware::HW_ERICSSON_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ERICSSON_UA_STR
 
       BeEF::Core::Constants::Hardware::HW_UNKNOWN_IMG
 

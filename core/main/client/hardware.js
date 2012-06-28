@@ -49,25 +49,42 @@ beef.hardware = {
 		return (this.ua.match('Kindle')) ? true : false;
 	},
 
+	isHtc: function() {
+		return (this.ua.match('HTC')) ? true : false;
+	},
+
+	isEricsson: function() {
+		return (this.ua.match('Ericsson')) ? true : false;
+	},
+
+	isNokia: function() {
+		return (this.ua.match('Nokia')) ? true : false;
+	},
+
+	isMotorola: function() {
+		return (this.ua.match('Motorola')) ? true : false;
+	},
+
+	isGoogle: function() {
+		return (this.ua.match('Nexus One')) ? true : false;
+	},
+
 	getName: function() {
 
-		if(this.isNokia()) {
-
-			if (this.ua.indexOf('Maemo Browser') != -1) return 'Maemo';
-			if (this.ua.match('(SymbianOS)|(Symbian OS)')) return 'SymbianOS';
-			if (this.ua.indexOf('Symbian') != -1) return 'Symbian';
-
-			//return 'Nokia';
-		}
-
+		if (this.isNokia()) return 'Nokia';
 		if (this.isWinPhone()) return 'Windows Phone';
 		if (this.isBlackBerry()) return 'BlackBerry';
 		if (this.isIphone()) return 'iPhone';
 		if (this.isIpad()) return 'iPad';
 		if (this.isIpod()) return 'iPod';
 		if (this.isKindle()) return 'Kindle';
+		if (this.isHtc()) return 'HTC';
+		if (this.isMotorola()) return 'Motorola';
+		if (this.isZune()) return 'Zune';
+		if (this.isGoogle()) return 'Google';
+		if (this.isEricsson()) return 'Ericsson';
 
-		return 'unknown';
+		return 'Unknown';
 	}
 };
 

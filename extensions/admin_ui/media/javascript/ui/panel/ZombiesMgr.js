@@ -35,7 +35,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var has_flash          = zombie_array[index]["has_flash"];
 		var has_web_sockets    = zombie_array[index]["has_web_sockets"];
 		var has_googlegears    = zombie_array[index]["has_googlegears"];
-		var has_phonegap       = zombie_array[index]["has_phonegap"];
+        var has_java           = zombie_array[index]["has_java"];
 		var date_stamp         = zombie_array[index]["date_stamp"];
 
 		text = "<img src='/ui/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
@@ -49,9 +49,9 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		balloon_text+= "<br/>Hardware: "       + hw_name;
 		balloon_text+= "<br/>Domain: "         + domain + ":" + port;
 		balloon_text+= "<br/>Flash: "          + has_flash;
-		balloon_text+= "<br/>Web Sockets: "    + has_web_sockets;
+        balloon_text+= "<br/>Java: "           + has_java;
+        balloon_text+= "<br/>Web Sockets: "    + has_web_sockets;
 		balloon_text+= "<br/>Google Gears: "   + has_googlegears;
-		balloon_text+= "<br/>Phonegap API: "   + has_phonegap;
 		balloon_text+= "<br/>Date: "           + date_stamp;
 		
 		var new_zombie = {
