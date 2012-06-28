@@ -25,4 +25,4 @@ beef:
               beef: "beef"
               Beef: "Beef"
               evercookie: "evercookie"
-            chain: ["scramble","minify","base_64"]
+            chain: ["scramble", "minify", "base_64"]
