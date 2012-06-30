@@ -143,6 +143,7 @@ module BeEF
         end
 
         #@note Fire a new command module to multiple hooked browsers.
+        # Returns the command IDs of the launched modules, or 0 if firing got issues.
         # POST request body example (for modules that don't need parameters, just remove "mod_params")
         #  {
         #    "mod_id":1,
@@ -151,6 +152,7 @@ module BeEF
         #     },
         #    "hb_ids":[1,2]
         #   }
+        # response example: {"1":16,"2":17}
         # curl example (alert module with custom text, 2 hooked browsers)):
         #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
         #-X POST http://127.0.0.1:3000/api/modules/multi?token=2316d82702b83a293e2d46a0886a003a6be0a633
@@ -170,16 +172,18 @@ module BeEF
             end
 
             hb_ids = body["hb_ids"]
+            results = Hash.new
             hb_ids.each do |hb_id|
               hb = BeEF::Core::Models::HookedBrowser.first(:id => hb_id)
-              next if hb == nil
-              exec_results = BeEF::Module.execute(modk, hb.session, mod_params)
-              #todo add exec results to a json for the final response
+              if hb == nil
+                results[hb_id] = 0
+                next
+              else
+                cmd_id = BeEF::Module.execute(modk, hb.session, mod_params)
+                results[hb_id] = cmd_id
+              end
             end
-
-            #todo return a json with the execution result for every module
-            #exec_results = BeEF::Module.execute(modk, params[:session], mod_params)
-            #exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
+            results.to_json
           rescue Exception => e
             print_error "Invalid JSON input passed to endpoint /api/modules/multi"
             error 400 # Bad Request
