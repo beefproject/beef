@@ -141,6 +141,50 @@ module BeEF
             error 400 # Bad Request
           end
         end
+
+        #@note Fire a new command module to multiple hooked browsers.
+        # POST request body example (for modules that don't need parameters, just remove "mod_params")
+        #  {
+        #    "mod_id":1,
+        #    "mod_params":{
+        #       "question":"are you hooked?"
+        #     },
+        #    "hb_ids":[1,2]
+        #   }
+        # curl example (alert module with custom text, 2 hooked browsers)):
+        #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
+        #-X POST http://127.0.0.1:3000/api/modules/multi?token=2316d82702b83a293e2d46a0886a003a6be0a633
+        post '/multi' do
+          request.body.rewind
+          begin
+            body = JSON.parse request.body.read
+
+            modk = BeEF::Module.get_key_by_database_id body["mod_id"]
+            error 404 unless modk != nil
+            mod_params = []
+
+            if body["mod_params"] != nil
+              body["mod_params"].each{|k,v|
+                mod_params.push({'name' => k, 'value' => v})
+              }
+            end
+
+            hb_ids = body["hb_ids"]
+            hb_ids.each do |hb_id|
+              hb = BeEF::Core::Models::HookedBrowser.first(:id => hb_id)
+              next if hb == nil
+              exec_results = BeEF::Module.execute(modk, hb.session, mod_params)
+              #todo add exec results to a json for the final response
+            end
+
+            #todo return a json with the execution result for every module
+            #exec_results = BeEF::Module.execute(modk, params[:session], mod_params)
+            #exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
+          rescue Exception => e
+            print_error "Invalid JSON input for module '#{params[:mod_id]}'"
+            error 400 # Bad Request
+          end
+        end
       end
     end
   end
