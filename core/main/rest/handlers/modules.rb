@@ -181,7 +181,7 @@ module BeEF
             #exec_results = BeEF::Module.execute(modk, params[:session], mod_params)
             #exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
           rescue Exception => e
-            print_error "Invalid JSON input for module '#{params[:mod_id]}'"
+            print_error "Invalid JSON input passed to endpoint /api/modules/multi"
             error 400 # Bad Request
           end
         end
