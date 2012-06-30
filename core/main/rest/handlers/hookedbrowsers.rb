@@ -76,11 +76,12 @@ module BeEF
            details = BeEF::Core::Models::BrowserDetails
 
            {
+               'id' => hb.id,
+               'session' => hb.session,
                'name' => details.get(hb.session, 'BrowserName'),
                'version' => details.get(hb.session, 'BrowserVersion'),
                'os' => details.get(hb.session, 'OsName'),
                'platform' => details.get(hb.session, 'SystemPlatform'),
-               'session' => hb.session,
                'ip' => hb.ip,
                'domain' => details.get(hb.session, 'HostName'),
                'port' => hb.port.to_s,
