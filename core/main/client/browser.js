@@ -380,12 +380,20 @@ beef.browser = {
            return (!!window.opera && (window.navigator.userAgent.match(/Opera\/9\.80.*Version\/11\./) != null));
        },
 
+        /**
+         * Returns true if Opera 12.xx.
+         * @example: beef.browser.isO12()
+         */
+        isO12: function() {
+            return (!!window.opera && (window.navigator.userAgent.match(/Opera\/9\.80.*Version\/12\./) != null));
+        },
+
 	/**
 	 * Returns true if Opera.
 	 * @example: beef.browser.isO()
 	 */
 	isO: function() {
-		return this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11();
+		return this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11() || this.isO12();
 	},
 		
 	/**
@@ -441,6 +449,7 @@ beef.browser = {
 			O9_60:  this.isO9_60(), // Opera 9.60 through 9.64
 			O10:    this.isO10(),  	// Opera 10.xx
 			O11:    this.isO11(),  	// Opera 11.xx
+            O12:    this.isO12(),  	// Opera 11.xx
 			O:      this.isO(), 	// Opera any version
 
 			S4:	this.isS4(),	// Safari 4.xx
@@ -501,6 +510,7 @@ beef.browser = {
 		if (this.isO9_60())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx
+        if (this.isO12())	{ return '12' };	// Opera 12.xx
 
 		return 'UNKNOWN';				// Unknown UA
 	},
