@@ -68,8 +68,11 @@ module Handlers
         t = Thread.new {
           server = TCPServer.new(host,port)
           loop do
-            client = server.accept
-            client.close
+            Thread.start(server.accept) do |client|
+              # client.puts ""
+              # we don't close the client socket
+              # client.close
+            end
           end
         }
         @sockets[name] = t
