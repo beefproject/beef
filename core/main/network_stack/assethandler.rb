@@ -29,6 +29,7 @@ module Handlers
     # Starts the AssetHandler instance
     def initialize
       @allocations = {}
+      @sockets = {}
       @http_server = BeEF::Core::Server.instance
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
@@ -57,6 +58,29 @@ module Handlers
         @http_server.unmount(url)
         @http_server.remap
         print_info "Url [" + url + "] unmounted"
+    end
+
+    # use it like: bind_socket("irc","0.0.0.0",6667)
+    def bind_socket(name, host, port)
+      if @sockets[name] != nil
+        print_error "Thread [#{name}] is already listening on [#{host}:#{port}]."
+      else
+        t = Thread.new {
+          server = TCPServer.new(host,port)
+          loop do
+            client = server.accept
+            client.close
+          end
+        }
+        @sockets[name] = t
+        print_info "Thread [#{name}] listening on [#{host}:#{port}]."
+      end
+    end
+
+    def unbind_socket(name)
+      t = @sockets[name]
+      Thread.kill(t)
+      print_info "Thread [#{name}] killed."
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated
