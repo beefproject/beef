@@ -245,7 +245,7 @@ class ShellInterface
         'os' => [BD.get(hook_session_id, 'OsName')]})
       
         when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-          return "Verfied Not Working"
+          return "Verified Not Working"
         when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
           return "Verified User Notify"
         when BeEF::Core::Constants::CommandModule::VERIFIED_WORKING

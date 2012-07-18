@@ -53,10 +53,10 @@ class Command
     print_line("Module name: " + driver.interface.cmd['Name'])
     print_line("Module category: " + driver.interface.cmd['Category'])
     print_line("Module description: " + driver.interface.cmd['Description'])
-    print_line("Module parameters:")
+    print_line("Module parameters:") if not driver.interface.cmd['Data'].length == 0
 
     driver.interface.cmd['Data'].each{|data|
-      print_line(data['name'] + " => \"" + data['value'].to_s + "\" # this is the " + data['ui_label'] + " parameter")
+      print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'])
     } if not driver.interface.cmd['Data'].nil?
   end
   

@@ -75,7 +75,7 @@ class Target
       folder['children'].each { |command|
         tbl << [command['id'].to_s,
                 folder['text'] + "/" + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
-                command['status'],
+                command['status'].gsub(/^Verified /,""),
                 driver.interface.getcommandresponses(command['id']).length] #TODO
       }
     }
