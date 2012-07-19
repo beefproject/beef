@@ -17,14 +17,13 @@
 module BeEF
 module Core
 
-  class Logger
+  class Notifications
     
     include Singleton
     
     # Constructor
     def initialize
-      @logs = BeEF::Core::Models::Log
-      @notifications = BeEF::Extensions::Notifications
+      @notifications = BeEF::Core::Models::Notifications
     end
   
     # Registers a new event in the logs
@@ -35,9 +34,6 @@ module Core
     def register(from, event, hb = 0)
       # type conversion to enforce standards
       hb = hb.to_i
-
-      # get time now
-      time_now = Time.now
       
       # arguments type checking
       raise Exception::TypeError, '"from" needs to be a string' if not from.string?
@@ -45,10 +41,7 @@ module Core
       raise Exception::TypeError, '"Hooked Browser ID" needs to be an integer' if not hb.integer?
       
       # logging the new event into the database
-      @logs.new(:type => "#{from}", :event => "#{event}", :date => time_now, :hooked_browser_id => hb).save
-
-      # if notifications are enabled send the info there too
-      @notifications.new(from, event, time_now, hb)
+      @logs.new(:type => "#{from}", :event => "#{event}", :date => Time.now, :hooked_browser_id => hb).save
       
       # return
       true
