@@ -28,6 +28,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def initialize
     super({
       'paths' => {
+        '/getRestfulApiToken.json'          => method(:get_restful_api_token),
         '/select/commandmodules/all.json'   => method(:select_all_command_modules),
         '/select/commandmodules/tree.json'  => method(:select_command_modules_tree),
         '/select/commandmodule.json'        => method(:select_command_module),
@@ -42,6 +43,17 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     })
     
     @session = BeEF::Extension::AdminUI::Session.instance
+  end
+
+  # @note Returns the RESTful api key. Authenticated call, so callable only
+  # from the admin UI after successful authentication (cookie).
+  # -> http://127.0.0.1:3000/ui/modules/getRestfulApiToken.json
+  # response
+  # <- {"token":"800679edbb59976935d7673924caaa9e99f55c32"}
+  def get_restful_api_token
+     @body = {
+         'token' => BeEF::Core::Configuration.instance.get("beef.api_token")
+     }.to_json
   end
   
   # Returns a JSON array containing the summary for a selected zombie.
