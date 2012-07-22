@@ -159,7 +159,12 @@ class Target
     
     driver.enstack_dispatcher(Command) if driver.dispatched_enstacked(Command) == false
     
-    driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] / "+driver.interface.cmd['Name']+" ")
+    if driver.interface.targetid.length > 1
+      driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] / "+driver.interface.cmd['Name']+" ")
+    else
+      driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] / "+driver.interface.cmd['Name']+" ")
+    end
+
   end
   
   def cmd_select_help(*args)

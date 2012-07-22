@@ -82,7 +82,7 @@ module BeEF
             # @note prints the event to the console
             if BeEF::Settings.console?
               name = command_module.friendlyname || kclass
-              print_info "Hooked browser #{hooked_browser.ip} has been sent instructions from command module '#{name}'"
+              print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has been sent instructions from command module '#{name}'"
             end
 
             # @note flag that the command has been sent to the hooked browser

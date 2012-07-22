@@ -336,7 +336,7 @@ class ShellInterface
 
       page_name_row = {
         'category' => 'Host',
-        'data' => encoded_date_stamp,
+        'data' => encoded_date_stamp_hash,
         'from' => 'Initialization'
       }
 
