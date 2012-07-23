@@ -70,7 +70,7 @@ module Handlers
           loop do
             Thread.start(server.accept) do |client|
               data = ""
-              recv_length = 64
+              recv_length = 1024
               while (tmp = client.recv(recv_length))
                 data += tmp
                 break if tmp.length < recv_length || tmp.length == recv_length
