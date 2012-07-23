@@ -17,7 +17,7 @@ beef:
     module:
         gmail_phishing:
             enable: true
-            category: ["Social Engineering"]
+            category: "Social Engineering"
             name: "Google Phishing"
             description: "This plugin uses an image tag to XSRF the logout button of Gmail. Continuously the user is logged out of Gmail (eg. if he is logged in in another tab). Additionally it will show the Google favicon and a Gmail phishing page (although the URL is NOT the Gmail URL)."
             authors: ["floyd @floyd_ch floyd.ch"]
