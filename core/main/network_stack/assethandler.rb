@@ -73,7 +73,7 @@ module Handlers
               recv_length = 64
               while (tmp = client.recv(recv_length))
                 data += tmp
-                break if tmp.length < recv_length
+                break if tmp.length < recv_length || tmp.length == recv_length
               end
               client.close
               print_debug "Bind Socket on Thread [#{name}] received:\n#{data}"
