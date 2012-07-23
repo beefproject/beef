@@ -19,11 +19,7 @@ beef:
             enable: true
             category: "Network"
             name: "IRC NAT Pinning" 
-<<<<<<< HEAD
             description: "Attempts to open closed ports on statefull firewalls and attempts to create pinholes on NAT-devices.  The firewall/NAT-device must support IRC connection tracking. BeEF will automatically bind a socket on port 6667 (IRC). Then you can connect to the victims public IP on that port.  For more information, please refer to: <a href='http://samy.pl/natpin/'>http://samy.pl/natpin/</a> ."
-=======
-            description: "Attempts to open closed ports on statefull firewalls and attempts to create pinholes on NAT-devices.  The firewall/NAT-device must support IRC connection tracking.  On the attackers side the TCP connection just needs to be accepted (nc -l -p 6667).  Then you can connect to the victims public IP on that port.  For more information, please refer to: <a href='http://samy.pl/natpin/'>http://samy.pl/natpin/</a> ."
->>>>>>> 5a2b29bab46a04c1062119fcff43be416d4fac00
             authors: ["Bart Leppens"]
             target:
                 working: ["FF"]

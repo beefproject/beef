@@ -15,9 +15,9 @@
 #
 class Irc_nat_pinning < BeEF::Core::Command
 
-  #def pre_send
-  #  BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_socket("IRC", "0.0.0.0", 6667)
-  #end
+  def pre_send
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_socket("IRC", "0.0.0.0", 6667)
+  end
 
   def self.options
     return [
