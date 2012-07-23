@@ -69,9 +69,14 @@ module Handlers
           server = TCPServer.new(host,port)
           loop do
             Thread.start(server.accept) do |client|
-              # client.puts ""
-              # we don't close the client socket
-              # client.close
+              data = ""
+              recv_length = 64
+              while (tmp = client.recv(recv_length))
+                data += tmp
+                break if tmp.length < recv_length
+              end
+              client.close
+              print_debug "Bind Socket on Thread [#{name}] received:\n#{data}"
             end
           end
         }
