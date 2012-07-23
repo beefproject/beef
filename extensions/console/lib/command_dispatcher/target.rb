@@ -28,7 +28,7 @@ class Target
     begin
       driver.interface.getcommands.each { |folder|
         folder['children'].each { |command|
-          @@commands << folder['text'] + "/" + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
+          @@commands << folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
         }
       }
     rescue
@@ -73,8 +73,8 @@ class Target
     
     driver.interface.getcommands.each { |folder|
       folder['children'].each { |command|
-        tbl << [command['id'].to_s,
-                folder['text'] + "/" + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
+        tbl << [command['id'].to_i,
+                folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
                 command['status'].gsub(/^Verified /,""),
                 driver.interface.getcommandresponses(command['id']).length] #TODO
       }
