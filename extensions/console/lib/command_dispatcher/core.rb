@@ -308,7 +308,7 @@ class Core
       if driver.interface.targetid.length > 1
         driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
       else
-        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
+        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
       end
     end  
     
