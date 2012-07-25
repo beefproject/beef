@@ -20,8 +20,11 @@ class Irc_nat_pinning < BeEF::Core::Command
   end
 
   def self.options
+    @configuration = BeEF::Core::Configuration.instance
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+
     return [
-        {'name'=>'connectto', 'ui_label' =>'Connect to','value'=>'http://attacker.com'},
+        {'name'=>'connectto', 'ui_label' =>'Connect to','value'=>beef_host},
         {'name'=>'privateip', 'ui_label' =>'Private IP','value'=>'192.168.0.100'},
         {'name'=>'privateport', 'ui_label' =>'Private Port','value'=>'22'}
     ]

