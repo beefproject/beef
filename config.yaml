@@ -17,7 +17,7 @@
 
 beef:
     version: '0.4.3.6-alpha'
-    debug: false
+    debug: true
 
     restrictions:
         # subnet of browser ip addresses that can hook to the framework 
@@ -43,7 +43,7 @@ beef:
         websocket:
           enable: false
           secure: false # use WebSocketSecure
-          port: 11989
+          port: 61985 # good success rate through proxies
           alive_timer: 1000 # poll BeEF every second
 
         # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
@@ -85,6 +85,6 @@ beef:
             enable: false
         console:
             shell:
-                enable: false
+                enable: true
         evasion:
             enable: false
