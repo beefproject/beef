@@ -27,4 +27,4 @@ end
 end
 end
 
-require 'extensions/notifications/handler'
+require 'extensions/notifications/notifications'

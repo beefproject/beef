@@ -20,9 +20,20 @@ beef:
             name: Notifications
             twitter:
               enable: true
-              consumer_token: consumer_token
-              consumer_secret: consumer_secret
+              consumer_key: your_app_consumer_key
+              consumer_secret: your_app_consumer_secret
+              oauth_token: your_twitter_access_token_for_this_app
+              oauth_token_secret: your_twitter_access_secret_for_this_app
+              target_username: your_twitter_username
             email:
               enable: false
-              address: nobody@nobody.com
+              from_address: your_email_address
+              to_address: where_to_send_notification
+              smtp_host: 127.0.0.1
+              smtp_port: 25
+              smtp_tls_enable: false
+            irc:
+              server: irc.freenode.net
+              channel: #random_beef_channel_foobar
+
 

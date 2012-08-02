@@ -24,7 +24,7 @@ module Core
     # Constructor
     def initialize
       @logs = BeEF::Core::Models::Log
-      @notifications = BeEF::Extensions::Notifications
+      @notifications = BeEF::Extension::Notifications::Notifications
     end
   
     # Registers a new event in the logs
