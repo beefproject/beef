@@ -37,12 +37,17 @@ module Notifications
         @hb = hb
       end
 
-      username = @config.get('beef.extension.notifications.twitter.target_username')
-      to_address    = @config.get('beef.extension.notifications.email.to_address')
       message = "#{from} #{event} #{time_now} #{hb}"
 
-      BeEF::Extension::Notifications::Channels::Tweet.new(username,message)
-      BeEF::Extension::Notifications::Channels::Email.new(to_address,message)
+      if @config.get('beef.extension.notifications.twitter.enable') == true
+        username = @config.get('beef.extension.notifications.twitter.target_username')
+        BeEF::Extension::Notifications::Channels::Tweet.new(username,message)
+      end
+
+      if @config.get('beef.extension.notifications.email.enable') == true
+        to_address    = @config.get('beef.extension.notifications.email.to_address')
+        BeEF::Extension::Notifications::Channels::Email.new(to_address,message)
+      end
     end
 
   end

@@ -19,12 +19,12 @@ beef:
             enable: true 
             name: Notifications
             twitter:
-              enable: true
-              consumer_key: your_app_consumer_key
-              consumer_secret: your_app_consumer_secret
-              oauth_token: your_twitter_access_token_for_this_app
-              oauth_token_secret: your_twitter_access_secret_for_this_app
-              target_username: your_twitter_username
+              enable: false
+              consumer_key: consumer_key
+              consumer_secret: consumer_secret
+              oauth_token: oauth_token_for_this_app
+              oauth_token_secret: oauth_token_secret_for_this_app
+              target_username: twitter_handle_to_receive_tweet
             email:
               enable: false
               from_address: your_email_address
