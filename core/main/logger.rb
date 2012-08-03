@@ -24,7 +24,10 @@ module Core
     # Constructor
     def initialize
       @logs = BeEF::Core::Models::Log
-      @notifications = BeEF::Extension::Notifications::Notifications
+      @config = BeEF::Core::Configuration.instance
+
+      # if notifications are enabled create a new instance
+      @notifications = BeEF::Extension::Notifications::Notifications unless @config.get('beef.extension.notifications.enable') == false
     end
   
     # Registers a new event in the logs
@@ -48,7 +51,9 @@ module Core
       @logs.new(:type => "#{from}", :event => "#{event}", :date => time_now, :hooked_browser_id => hb).save
 
       # if notifications are enabled send the info there too
-      @notifications.new(from, event, time_now, hb)
+      if @notifications
+        @notifications.new(from, event, time_now, hb)
+      end
       
       # return
       true
