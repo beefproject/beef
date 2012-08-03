@@ -32,8 +32,3 @@ beef:
               smtp_host: 127.0.0.1
               smtp_port: 25
               smtp_tls_enable: false
-            irc:
-              server: irc.freenode.net
-              channel: #random_beef_channel_foobar
-
-
