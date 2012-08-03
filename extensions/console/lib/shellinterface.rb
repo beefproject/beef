@@ -60,6 +60,9 @@ class ShellInterface
     
     tree = []
     BeEF::Modules.get_categories.each { |c|
+        if c[-1,1] != "/"
+          c.concat("/")
+        end
         tree.push({
             'text' => c,
             'cls' => 'folder',
@@ -68,7 +71,21 @@ class ShellInterface
     }
 
     BeEF::Modules.get_enabled.each{|k, mod|
-      update_command_module_tree(tree, mod['category'], get_command_module_status(k), mod['name'],mod['db']['id'])
+
+      flatcategory = ""
+      if mod['category'].kind_of?(Array)
+        # Therefore this module has nested categories (sub-folders), munge them together into a string with '/' characters, like a folder.
+        mod['category'].each {|cat|
+          flatcategory << cat + "/"
+        }
+      else
+        flatcategory = mod['category']
+        if flatcategory[-1,1] != "/"
+          flatcategory.concat("/")
+        end
+      end
+
+      update_command_module_tree(tree, flatcategory, get_command_module_status(k), mod['name'],mod['db']['id'])
     }
 
     # if dynamic modules are found in the DB, then we don't have yaml config for them
@@ -336,7 +353,7 @@ class ShellInterface
 
       page_name_row = {
         'category' => 'Host',
-        'data' => encoded_date_stamp,
+        'data' => encoded_date_stamp_hash,
         'from' => 'Initialization'
       }
 
