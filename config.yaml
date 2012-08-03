@@ -85,6 +85,6 @@ beef:
             enable: false
         console:
             shell:
-                enable: true
+                enable: false
         evasion:
             enable: false
