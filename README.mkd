@@ -72,7 +72,7 @@ __The following is for the impatient.__
 
 For full installation details (including on Microsoft Windows), please refer to INSTALL.txt. 
 
-       $ bash -s stable < <(curl -s https://raw.github.com/beefproject/beef/a6a7536e736e7788e12df91756a8f132ced24970/install-beef)
+       $ curl https://raw.github.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
 
 
 Usage 
