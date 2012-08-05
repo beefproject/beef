@@ -51,6 +51,12 @@ beef:
             enable: false
             type: "apache" #supported: apache, iis
 
+        # Experimental HTTPS support for the hook / admin / all other Thin managed web services
+        https:
+            enable: false
+            key: "server.key"   #This is expected to be in BeEF's root folder
+            cert: "server.crt"  #This is expected to be in BeEF's root folder
+
     database:
         # For information on using other databases please read the
         # README.databases file

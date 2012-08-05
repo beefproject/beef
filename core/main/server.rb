@@ -48,7 +48,8 @@ module BeEF
             'beef_public' => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_dns' => @configuration.get('beef.http.dns'),
-            'beef_hook' => @configuration.get('beef.http.hook_file')
+            'beef_hook' => @configuration.get('beef.http.hook_file'),
+            'beef_proto' => @configuration.get('beef.http.https.enable') == true ? "https" : "http"
         }
       end
 
@@ -108,6 +109,13 @@ module BeEF
               @configuration.get('beef.http.host'),
               @configuration.get('beef.http.port'),
               @rack_app)
+
+          if @configuration.get('beef.http.https.enable') == true
+            @http_server.ssl = true
+            @http_server.ssl_options = {:private_key_file => $root_dir + "/" + @configuration.get('beef.http.https.key'),
+                                      :cert_chain_file => $root_dir + "/" + @configuration.get('beef.http.https.cert'),
+                                      :verify_peer => false}
+          end
         end
       end
 

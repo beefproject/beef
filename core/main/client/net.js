@@ -23,6 +23,7 @@ beef.net = {
     host:"<%= @beef_host %>",
     port:"<%= @beef_port %>",
     hook:"<%= @beef_hook %>",
+    httpproto:"<%= @beef_proto %>",
     handler:'/dh',
     chop:500,
     pad:30, //this is the amount of padding for extra params such as pc, pid and sid
@@ -137,7 +138,7 @@ beef.net = {
     push:function (stream) {
         //need to implement wait feature here eventually
         for (var i = 0; i < stream.pc; i++) {
-            this.request(this.port == '443' ? 'https' : 'http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
+            this.request(this.httpproto, 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
         }
     },
 
