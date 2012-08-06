@@ -29,7 +29,7 @@ beef:
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
-        port: "443"
+        port: "3000"
         # if running behind a nat set the public ip address here
         #public: ""
         #public_port: "" # port setting is experimental
