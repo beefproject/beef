@@ -29,7 +29,7 @@ beef:
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
-        port: "3000"
+        port: "443"
         # if running behind a nat set the public ip address here
         #public: ""
         #public_port: "" # port setting is experimental
@@ -54,8 +54,10 @@ beef:
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
-            key: "server.key"   #This is expected to be in BeEF's root folder
-            cert: "server.crt"  #This is expected to be in BeEF's root folder
+            # In production environments, be sure to use a valid certificate signed for the value
+            # used in beef.http.dns (the domain name of the server where you run BeEF)
+            key: "beef_key.pem"
+            cert: "beef_cert.pem"
 
     database:
         # For information on using other databases please read the
