@@ -211,13 +211,21 @@ beef.browser = {
 	isS5: function() {
 		return (window.navigator.userAgent.match(/ Version\/5\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
 	},
+
+    /**
+     * Returns true if Safari 6.xx
+     * @example: beef.browser.isS6()
+     */
+    isS6: function() {
+        return (window.navigator.userAgent.match(/ Version\/6\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+    },
 	
 	/**
 	 * Returns true if Safari.
 	 * @example: beef.browser.isS()
 	 */
 	isS: function() {
-		return this.isS4() || this.isS5() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+		return this.isS4() || this.isS5() || this.isS6() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
 	},
 
 	/**
@@ -472,6 +480,7 @@ beef.browser = {
 
 			S4:	this.isS4(),	// Safari 4.xx
 			S5:	this.isS5(),	// Safari 5.xx
+            S6: this.isS6(),   // Safari 6.x
 			S:	this.isS()	// Safari any version
 		}
 	},
@@ -525,8 +534,9 @@ beef.browser = {
 
 		if (this.isS4())	{ return '4'  };	// Safari 4
 		if (this.isS5())	{ return '5'  };	// Safari 5
+        if (this.isS6())	{ return '6'  };	// Safari 5
 
-		if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
+        if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
 		if (this.isO9_60())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx
