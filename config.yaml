@@ -17,7 +17,7 @@
 
 beef:
     version: '0.4.3.6-alpha'
-    debug: false
+    debug: true
 
     restrictions:
         # subnet of browser ip addresses that can hook to the framework 
@@ -41,9 +41,10 @@ beef:
 
         # Prefer WebSockets over XHR-polling when possible.
         websocket:
-          enable: false
-          secure: false # use WebSocketSecure
+          enable: true
+          secure: true # use WebSocketSecure work only on https domain and whit https support enabled in BeEF
           port: 61985 # good success rate through proxies
+          secure_port: 61986 #to accept wss connection
           alive_timer: 1000 # poll BeEF every second
 
         # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
@@ -53,7 +54,7 @@ beef:
 
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
-            enable: false
+            enable: true
             # In production environments, be sure to use a valid certificate signed for the value
             # used in beef.http.dns (the domain name of the server where you run BeEF)
             key: "beef_key.pem"

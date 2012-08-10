@@ -27,15 +27,88 @@ module BeEF
         @@activeSocket= Hash.new
         @@lastalive= Hash.new
         @@config = BeEF::Core::Configuration.instance
+        #@@wsopt=nil
         MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
-          port = @@config.get("beef.http.websocket.port")
-          secure = @@config.get("beef.http.websocket.secure")
+
+
+          secure = @@config.get("beef.http.websocket.secure") #&& @@config.get("beef.http.https.enable")
+          @root_dir = File.expand_path('../../../../../', __FILE__)
+
+          if (secure)
+            #Thread for websocket-secure
+            Thread.new {
+              port = @@config.get("beef.http.websocket.secure_port")
+              sleep 2 # prevent issues when starting at the same time the TunnelingProxy, Thin and Evented WebSockets
+              EventMachine.run {
+
+                wsopt = {:host => "0.0.0.0", :port => port, :secure => true,
+                         :tls_options => {
+                             :private_key_file => @root_dir+"/"+@@config.get("beef.http.https.key"),
+                             :cert_chain_file => @root_dir+"/"+ @@config.get("beef.http.https.cert")
+                         }
+                }
+
+
+                EventMachine::WebSocket.start(wsopt) do |ws|
+                  begin
+                    print_debug "New WebSocket-secured channel open."
+                    ws.onmessage { |msg|
+                      msg_hash = JSON.parse("#{msg}")
+                      #@note messageHash[result] is Base64 encoded
+                      if (msg_hash["cookie"]!= nil)
+                        print_debug("WebSocket-secured - Browser says helo! WebSocket is running")
+                        #insert new connection in activesocket
+                        @@activeSocket["#{msg_hash["cookie"]}"] = ws
+                        print_debug("WebSocket-secured - activeSocket content [#{@@activeSocket}]")
+                      elsif msg_hash["alive"] != nil
+                        hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => msg_hash["alive"])
+                        unless hooked_browser.nil?
+                          hooked_browser.lastseen = Time.new.to_i
+                          hooked_browser.count!
+                          hooked_browser.save
+
+                          #Check if new modules need to be sent
+                          zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
+                          zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
+
+                          #@todo antisnatchor:
+                          #@todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions
+                          #Check if new forged requests need to be sent (Requester/TunnelingProxy)
+                          dhook = BeEF::Extension::Requester::API::Hook.new
+                          dhook.requester_run(hooked_browser, '')
+
+                          #Check if new XssRays scan need to be started
+                          xssrays = BeEF::Extension::Xssrays::API::Scan.new
+                          xssrays.start_scan(hooked_browser, '')
+                        end
+                      else
+                        #json recv is a cmd response decode and send all to
+                        #we have to call dynamicreconstructor handler camp must be websocket
+                        #print_debug("Received from WebSocket #{messageHash}")
+                        execute(msg_hash)
+                      end
+                    }
+                  rescue Exception => e
+                    print_error "WebSocket-secured error: #{e}"
+                  end
+                end
+              }
+
+            }
+          end
+
+          #Thread for websocket
           Thread.new {
+            port = @@config.get("beef.http.websocket.port")
             sleep 2 # prevent issues when starting at the same time the TunnelingProxy, Thin and Evented WebSockets
-            EventMachine.run { #todo antisnatchor: add support for WebSocket secure (new object with different config options, then start)
-              EventMachine::WebSocket.start(:host => "0.0.0.0", :port => port) do |ws|
+            EventMachine.run {
+
+              wsopt = {:host => "0.0.0.0", :port => port}
+
+
+              EventMachine::WebSocket.start(wsopt) do |ws|
                 begin
                   print_debug "New WebSocket channel open."
                   ws.onmessage { |msg|
@@ -81,6 +154,7 @@ module BeEF
             }
           }
 
+
         end
 
         #@note retrieve the right websocket channel given an hooked browser session
@@ -115,7 +189,7 @@ module BeEF
           handler = data["handler"]
           if handler.match(/command/)
             BeEF::Core::Models::Command.save_result(hooked_browser, data["cid"],
-                 @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"), command_results)
+                                                    @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"), command_results)
           else #processing results from extensions, call the right handler
             data["beefhook"] = hooked_browser
             data["results"] = JSON.parse(Base64.decode64(data["result"]))
