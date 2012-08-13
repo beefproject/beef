@@ -38,7 +38,11 @@ module Channels
         config.oauth_token_secret = @config.get('beef.extension.notifications.twitter.oauth_token_secret')
       end
 
-      Twitter.direct_message_create(username, message)
+      begin
+        Twitter.direct_message_create(username, message)
+      rescue
+        print "Twitter send failed, verify tokens have Read/Write/DM acceess..\n"
+      end
     end
   end
   
