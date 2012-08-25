@@ -28,7 +28,7 @@ beef.websocket = {
         var webSocketSecure = <%= @websocket_secure %>;
         var protocol = "ws://";
         //console.log("We are inside init");
-        /*use wss only if hooked domain is under tls*/
+        /*use wss only if hooked domain is under https. Mixed-content in WS is quite different from a non-WS context*/
         if(webSocketSecure && window.location.protocol=="https:"){
             protocol = "wss://";
         webSocketPort= <%= @websocket_sec_port %>;

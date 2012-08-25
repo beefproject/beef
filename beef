@@ -124,9 +124,9 @@ print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 #@note Starts the WebSocket server
 if config.get("beef.http.websocket.enable")
   BeEF::Core::Websocket::Websocket.instance
-  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], secure [#{config.get("beef.http.websocket.secure")}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
+  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
   if config.get("beef.http.websocket.secure")
-    print_info "Starting WebSocket-Secured server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
+    print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
   end
 end
 
