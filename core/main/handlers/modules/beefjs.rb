@@ -26,29 +26,51 @@ module BeEF
           def build_beefjs!(req_host)
             config = BeEF::Core::Configuration.instance
             # @note set up values required to construct beefjs
-            beefjs = ''
+            beef_js = ''
             # @note location of sub files
-            beefjs_path = "#{$root_dir}/core/main/client/"
-            # @note we load websocket library only if ws server is enabled in config.yalm
-            # check in init.js
-            if config.get("beef.http.websocket.enable")
+            beef_js_path = "#{$root_dir}/core/main/client/"
 
-              js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js are.js)
+            # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
+            ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js)
+
+            # @note Load websocket library only if WS server is enabled in config.yaml
+            if config.get("beef.http.websocket.enable") == false
+              # @note BeEF libraries: need Eruby evaluation and obfuscation
+              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js)
             else
-              js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js)
-
-
+              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js are.js)
             end
 
-            # @note construct the beefjs string from file(s)
-            js_sub_files.each { |js_sub_file_name|
-              js_sub_file_abs_path = beefjs_path + js_sub_file_name
-              beefjs << (File.read(js_sub_file_abs_path) + "\n\n")
+            ext_js_to_obfuscate = ''
+            ext_js_to_not_obfuscate = ''
+
+            # @note If Evasion is enabled, the final ext_js string will be ext_js_to_obfuscate + ext_js_to_not_obfuscate
+            # @note If Evasion is disabled, the final ext_js will be just ext_js_to_not_obfuscate
+            ext_js_sub_files.each{ |ext_js_sub_file|
+              if config.get("beef.extension.evasion.enable")
+                if config.get("beef.extension.evasion.exclude_core_js").include?(ext_js_sub_file)
+                  print_debug "Excluding #{ext_js_sub_file} from core files obfuscation list"
+                  # do not obfuscate the file
+                  ext_js_sub_file_path = beef_js_path + ext_js_sub_file
+                  ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                else
+                  ext_js_sub_file_path = beef_js_path + ext_js_sub_file
+                  ext_js_to_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                end
+              else
+                # Evasion is not enabled, do not obfuscate anything
+                ext_js_sub_file_path = beef_js_path + ext_js_sub_file
+                ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+              end
+            }
+
+            # @note construct the beef_js string from file(s)
+            beef_js_sub_files.each { |beef_js_sub_file|
+              beef_js_sub_file_path = beef_js_path + beef_js_sub_file
+              beef_js << (File.read(beef_js_sub_file_path) + "\n\n")
             }
 
             # @note create the config for the hooked browser session
-
-            hook_session_name = config.get('beef.http.hook_session_name')
             hook_session_config = BeEF::Core::Server.instance.to_h
 
             # @note if http_host="0.0.0.0" in config ini, use the host requested by client
@@ -68,6 +90,7 @@ module BeEF
               end
             end
 
+            # @note Set some WebSocket properties
             if config.get("beef.http.websocket.enable")
               hook_session_config['websocket_secure'] = config.get("beef.http.websocket.secure")
               hook_session_config['websocket_port'] = config.get("beef.http.websocket.port")
@@ -75,16 +98,20 @@ module BeEF
               hook_session_config['websocket_sec_port']= config.get("beef.http.websocket.secure_port")
             end
 
-            # @note populate place holders in the beefjs string and set the response body
-            eruby = Erubis::FastEruby.new(beefjs)
+            # @note populate place holders in the beef_js string and set the response body
+            eruby = Erubis::FastEruby.new(beef_js)
             @hook = eruby.evaluate(hook_session_config)
 
             if config.get("beef.extension.evasion.enable")
               evasion = BeEF::Extension::Evasion::Evasion.instance
               @hook = evasion.add_bootstrapper + evasion.obfuscate(@hook)
+              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate) + @hook
+            else
+              @final_hook = ext_js_to_not_obfuscate + @hook
             end
 
-            @body << @hook
+            # @note Return the final hook to be sent to the browser
+            @body << @final_hook
 
           end
 
@@ -131,9 +158,7 @@ module BeEF
               end
             }
           end
-
         end
-
       end
     end
   end
