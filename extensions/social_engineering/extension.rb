@@ -27,5 +27,6 @@ end
 
 require 'extensions/social_engineering/web_cloner/web_cloner'
 require 'extensions/social_engineering/web_cloner/interceptor'
+require 'extensions/social_engineering/mass_mailer/mass_mailer'
 
 
