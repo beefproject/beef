@@ -23,22 +23,23 @@ module BeEF
 
         def initialize
           @config = BeEF::Core::Configuration.instance
-          @user_agent = @config.get('beef.extension.social_engineering.mass_mailer.user_agent')
-          @host = @config.get('beef.extension.social_engineering.mass_mailer.host')
-          @port = @config.get('beef.extension.social_engineering.mass_mailer.port')
-          @helo = @config.get('beef.extension.social_engineering.mass_mailer.helo')
-          @from = @config.get('beef.extension.social_engineering.mass_mailer.from')
-          @password = @config.get('beef.extension.social_engineering.mass_mailer.password')
+          @config_prefix = "beef.extension.social_engineering.mass_mailer"
+          @templates_dir = "#{File.expand_path('../../../../extensions/social_engineering/mass_mailer/templates', __FILE__)}/"
 
-          @subject = "Hi from BeEF"
+          @user_agent = @config.get("#{@config_prefix}.user_agent")
+          @host = @config.get("#{@config_prefix}.host")
+          @port = @config.get("#{@config_prefix}.port")
+          @helo = @config.get("#{@config_prefix}.helo")
+          @from = @config.get("#{@config_prefix}.from")
+          @password = @config.get("#{@config_prefix}.password")
         end
 
         # tos_hash is an Hash like:
         # 'antisnatchor@gmail.com' => 'Michele'
         # 'ciccio@pasticcio.com' => 'Ciccio'
-        def send_email(tos_hash)
+        def send_email(template, subject, tos_hash)
           # create new SSL context and disable CA chain validation
-          if @config.get('beef.extension.social_engineering.mass_mailer.use_tls')
+          if @config.get("#{@config_prefix}.use_tls")
             @ctx = OpenSSL::SSL::SSLContext.new
             @ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE # In case the SMTP server uses a self-signed cert, we proceed anyway
             @ctx.ssl_version = "TLSv1"
@@ -46,10 +47,10 @@ module BeEF
 
           # create a new SMTP object, enable TLS with the previous instantiated context, and connects to the server
           smtp = Net::SMTP.new(@host, @port)
-          smtp.enable_starttls(@ctx) unless @config.get('beef.extension.social_engineering.mass_mailer.use_tls') == false
+          smtp.enable_starttls(@ctx) unless @config.get("#{@config_prefix}.use_tls") == false
           smtp.start(@helo, @from, @password, :login) do |smtp|
             tos_hash.each do |mail, name|
-            message = compose_email(mail, name, @subject)
+            message = compose_email(mail, name, subject, template)
             smtp.send_message(message, @from, mail)
             end
           end
@@ -58,23 +59,27 @@ module BeEF
         #todo sending to hostmonster the email is probably flagged as spam:
         # todo: error -> 550 550 Administrative prohibition (state 17
 
-        def compose_email(to, name, subject)
+        def compose_email(to, name, subject, template)
            msg_id = random_string(50)
            boundary = "------------#{random_string(24)}"
            rel_boundary = "------------#{random_string(24)}"
-           plain_text = "Hi #{name},\nPlease be sure to check this link:\n"
 
-           @file_path = '/Users/morru/WORKS/BeEF/beef-44Con-code/extensions/social_engineering/mass_mailer/templates/default/'
-           file = 'beef_logo.png'
+           link = "http://127.0.0.1:3000/demos/basic.html"
+           linktext = "http://antisnatchor.com"
 
            header = email_headers(@from, @user_agent, to, name, subject, msg_id, boundary)
-           plain_body = email_plain_body(plain_text,boundary)
+           plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),boundary)
            rel_header = email_related(rel_boundary)
-           html_body = email_html_body(rel_boundary, file, plain_text)
-           image = email_add_image(file,rel_boundary)
+           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),rel_boundary)
+
+           images = ""
+           @config.get("#{@config_prefix}.templates.default.images").each do |image|
+             images += email_add_image(image, "#{@templates_dir}#{template}/#{image}",rel_boundary)
+           end
+
            close = email_close(boundary)
 
-           message = header + plain_body + rel_header + html_body + image + close
+           message = header + plain_body + rel_header + html_body + images + close
            print_debug "Raw Email content:\n #{message}"
            message
         end
@@ -119,35 +124,27 @@ EOF
           related
         end
 
-        def email_html_body(rel_boundary, file, plain_body)
+        def email_html_body(html_body, rel_boundary)
            html_body = <<EOF
 Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body
- bgcolor="#FFFFFF" text="#000000">
-#{plain_body}<br>
-  <br>
-  <img src="cid:#{file}" name="#{file}" alt="#{file}"><br>
-  <br>
-Thanks
-</body>
-</html>
+#{html_body}
 --#{rel_boundary}
 EOF
            html_body
         end
 
-        def email_add_image(file, rel_boundary)
-          file_encoded = [File.read(@file_path + file)].pack("m") # base64
+        def email_add_image(name, path, rel_boundary)
+          file_encoded = [File.read(path)].pack("m") # base64 encoded
+          #todo: content-type must be determined at least from file extension, not hardcoded
           image = <<EOF
 Content-Type: image/png;
- name="#{file}"
+ name="#{name}"
 Content-Transfer-Encoding: base64
-Content-ID: <#{file}>
+Content-ID: <#{name}>
 Content-Disposition: inline;
- filename="#{file}"
+ filename="#{name}"
 
 #{file_encoded}
 --#{rel_boundary}
@@ -160,6 +157,31 @@ EOF
 --#{boundary}--
 EOF
           close
+        end
+
+        # Replaces placeholder values from the plain/html email templates
+        def parse_template(name, link, linktext, template_path)
+          result = ""
+          img_config = "#{@config_prefix}.templates.default.images_cids"
+          img_count = 0
+          File.open(template_path, 'r').each do |line|
+             # change the Recipient name
+             if line.include?("__name__")
+               result += line.gsub("__name__",name)
+             # change the link/linktext
+             elsif line.include?("__link__")
+               result += line.gsub("__link__",link).gsub("__linktext__",linktext)
+             # change images cid/name/alt
+             elsif line.include?("src=\"cid:__")
+               img_count += 1
+               result += line.gsub("__cid#{img_count}__",
+                                   @config.get("#{img_config}.cid#{img_count}")).gsub("__img#{img_count}__",
+                                   @config.get("#{img_config}.cid#{img_count}"))
+             else
+               result += line
+             end
+          end
+          result
         end
 
         def random_string(length)
