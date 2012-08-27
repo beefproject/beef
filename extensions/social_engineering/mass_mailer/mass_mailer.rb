@@ -37,7 +37,7 @@ module BeEF
         # tos_hash is an Hash like:
         # 'antisnatchor@gmail.com' => 'Michele'
         # 'ciccio@pasticcio.com' => 'Ciccio'
-        def send_email(template, subject, tos_hash)
+        def send_email(template, fromname, subject, link, linktext, tos_hash)
           # create new SSL context and disable CA chain validation
           if @config.get("#{@config_prefix}.use_tls")
             @ctx = OpenSSL::SSL::SSLContext.new
@@ -45,13 +45,19 @@ module BeEF
             @ctx.ssl_version = "TLSv1"
           end
 
+          n = tos_hash.size
+          x = 1
+          print_info "Sending #{n} mail(s) from [#{@from}] - name [#{fromname}] using template [#{template}]:\nsubject: #{subject}\nlink: #{link}\nlinktext: #{linktext}"
+
           # create a new SMTP object, enable TLS with the previous instantiated context, and connects to the server
           smtp = Net::SMTP.new(@host, @port)
           smtp.enable_starttls(@ctx) unless @config.get("#{@config_prefix}.use_tls") == false
           smtp.start(@helo, @from, @password, :login) do |smtp|
             tos_hash.each do |mail, name|
-            message = compose_email(mail, name, subject, template)
+            message = compose_email(fromname, mail, name, subject, link, linktext, template)
             smtp.send_message(message, @from, mail)
+            print_info "Mail #{x}/#{n} to [#{mail}] sent."
+            x += 1
             end
           end
         end
@@ -59,18 +65,15 @@ module BeEF
         #todo sending to hostmonster the email is probably flagged as spam:
         # todo: error -> 550 550 Administrative prohibition (state 17
 
-        def compose_email(to, name, subject, template)
+        def compose_email(fromname, to, name, subject, link, linktext, template)
            msg_id = random_string(50)
            boundary = "------------#{random_string(24)}"
            rel_boundary = "------------#{random_string(24)}"
 
-           link = "http://127.0.0.1:3000/demos/basic.html"
-           linktext = "http://antisnatchor.com"
-
-           header = email_headers(@from, @user_agent, to, name, subject, msg_id, boundary)
+           header = email_headers(@from, fromname, @user_agent, to, name, subject, msg_id, boundary)
            plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),boundary)
            rel_header = email_related(rel_boundary)
-           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),rel_boundary)
+           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html"),rel_boundary)
 
            images = ""
            @config.get("#{@config_prefix}.templates.default.images").each do |image|
@@ -84,12 +87,16 @@ module BeEF
            message
         end
 
-        def email_headers(from, user_agent, to, name, subject, msg_id, boundary)
+        #todo "Michele Orru" need to be configurable
+        def email_headers(from, fromname, user_agent, to, name, subject, msg_id, boundary)
           headers = <<EOF
-From: Michele Orru #{from}
-User-Agent: #{user_agent}
-To: #{name} #{to}
-Message-ID: <msg_id@#{@host}>
+From: "#{fromname}" <#{from}>
+Reply-To: "#{fromname}" <#{from}>
+Return-Path: "#{fromname}" <#{from}>
+X-Mailer: #{user_agent}
+To: #{to}
+Message-ID: <#{msg_id}@#{@host}>
+X-Spam-Status: No, score=0.001 required=5
 Subject: #{subject}
 MIME-Version: 1.0
 Content-Type: multipart/alternative;

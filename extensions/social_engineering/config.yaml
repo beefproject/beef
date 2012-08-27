@@ -28,7 +28,7 @@ beef:
                 port: 587
                 use_tls: true
                 helo: "gmail.com" # this is usually the domain name
-                from: "yourpass@gmail.com"
+                from: "yourmail@gmail.com"
                 password: "yourpass"
                 # available templates
                 templates:
