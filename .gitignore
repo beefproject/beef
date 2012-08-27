@@ -1,3 +1,4 @@
 beef.db
 test/msf-test
 custom-config.yaml
+extensions/social_engineering/web_cloner/cloned_pages
