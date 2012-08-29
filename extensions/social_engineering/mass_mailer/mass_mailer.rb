@@ -47,7 +47,10 @@ module BeEF
 
           n = tos_hash.size
           x = 1
-          print_info "Sending #{n} mail(s) from [#{@from}] - name [#{fromname}] using template [#{template}]:\nsubject: #{subject}\nlink: #{link}\nlinktext: #{linktext}"
+          print_info "Sending #{n} mail(s) from [#{@from}] - name [#{fromname}] using template [#{template}]:"
+          print_info "subject: #{subject}"
+          print_info "link: #{link}"
+          print_info "linktext: #{linktext}"
 
           # create a new SMTP object, enable TLS with the previous instantiated context, and connects to the server
           smtp = Net::SMTP.new(@host, @port)
@@ -62,15 +65,12 @@ module BeEF
           end
         end
 
-        #todo sending to hostmonster the email is probably flagged as spam:
-        # todo: error -> 550 550 Administrative prohibition (state 17
-
         def compose_email(fromname, to, name, subject, link, linktext, template)
            msg_id = random_string(50)
            boundary = "------------#{random_string(24)}"
            rel_boundary = "------------#{random_string(24)}"
 
-           header = email_headers(@from, fromname, @user_agent, to, name, subject, msg_id, boundary)
+           header = email_headers(@from, fromname, @user_agent, to, subject, msg_id, boundary)
            plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),boundary)
            rel_header = email_related(rel_boundary)
            html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html"),rel_boundary)
@@ -80,15 +80,19 @@ module BeEF
              images += email_add_image(image, "#{@templates_dir}#{template}/#{image}",rel_boundary)
            end
 
+           attachments = ""
+           @config.get("#{@config_prefix}.templates.default.attachments").each do |attachment|
+             attachments += email_add_attachment(attachment, "#{@templates_dir}#{template}/#{attachment}",rel_boundary)
+           end
+
            close = email_close(boundary)
 
-           message = header + plain_body + rel_header + html_body + images + close
+           message = header + plain_body + rel_header + html_body + images + attachments + close
            print_debug "Raw Email content:\n #{message}"
            message
         end
 
-        #todo "Michele Orru" need to be configurable
-        def email_headers(from, fromname, user_agent, to, name, subject, msg_id, boundary)
+        def email_headers(from, fromname, user_agent, to, subject, msg_id, boundary)
           headers = <<EOF
 From: "#{fromname}" <#{from}>
 Reply-To: "#{fromname}" <#{from}>
@@ -144,13 +148,27 @@ EOF
 
         def email_add_image(name, path, rel_boundary)
           file_encoded = [File.read(path)].pack("m") # base64 encoded
-          #todo: content-type must be determined at least from file extension, not hardcoded
           image = <<EOF
-Content-Type: image/png;
+Content-Type: #{get_mime(path)};
  name="#{name}"
 Content-Transfer-Encoding: base64
 Content-ID: <#{name}>
 Content-Disposition: inline;
+ filename="#{name}"
+
+#{file_encoded}
+--#{rel_boundary}
+EOF
+          image
+        end
+
+        def email_add_attachment(name, path, rel_boundary)
+          file_encoded = [File.read(path)].pack("m") # base64 encoded
+          image = <<EOF
+Content-Type: #{get_mime(path)};
+ name="#{name}"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
  filename="#{name}"
 
 #{file_encoded}
@@ -191,9 +209,15 @@ EOF
           result
         end
 
+        def get_mime(file_path)
+          mime = "file --mime -b #{file_path}"
+          result = ""
+          IO.popen(mime.to_s) { |f| result = f.gets.split(";").first }
+          result
+        end
+
         def random_string(length)
            output = (0..length).map{ rand(36).to_s(36).upcase }.join
-           output
         end
       end
     end
