@@ -55,12 +55,24 @@ module BeEF
           # create a new SMTP object, enable TLS with the previous instantiated context, and connects to the server
           smtp = Net::SMTP.new(@host, @port)
           smtp.enable_starttls(@ctx) unless @config.get("#{@config_prefix}.use_tls") == false
-          smtp.start(@helo, @from, @password, :login) do |smtp|
-            tos_hash.each do |mail, name|
-            message = compose_email(fromname, mail, name, subject, link, linktext, template)
-            smtp.send_message(message, @from, mail)
-            print_info "Mail #{x}/#{n} to [#{mail}] sent."
-            x += 1
+
+          if @config.get("#{@config_prefix}.use_auth")
+            smtp.start(@helo, @from, @password, :login) do |smtp|
+              tos_hash.each do |to, name|
+                message = compose_email(fromname, to, name, subject, link, linktext, template)
+                smtp.send_message(message, @from, to)
+                print_info "Mail #{x}/#{n} to [#{to}] sent."
+                x += 1
+              end
+            end
+          else
+            smtp.start(@helo, @from) do |smtp|
+              tos_hash.each do |to, name|
+                message = compose_email(fromname, to, name, subject, link, linktext, template)
+                smtp.send_message(message, @from, to)
+                print_info "Mail #{x}/#{n} to [#{to}] sent."
+                x += 1
+              end
             end
           end
         end

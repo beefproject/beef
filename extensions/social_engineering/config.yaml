@@ -26,6 +26,7 @@ beef:
                 user_agent: "Microsoft-MacOutlook/12.12.0.111556"
                 host: "smtp.gmail.com"
                 port: 587
+                use_auth: true
                 use_tls: true
                 helo: "gmail.com" # this is usually the domain name
                 from: "yourmail@gmail.com"
