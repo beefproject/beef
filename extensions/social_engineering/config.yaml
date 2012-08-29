@@ -29,7 +29,7 @@ beef:
                 use_auth: true
                 use_tls: true
                 helo: "gmail.com" # this is usually the domain name
-                from: "yourmail@gmail.com"
+                from: "youruser@gmail.com"
                 password: "yourpass"
                 # available templates
                 templates:
@@ -39,4 +39,4 @@ beef:
                        images_cids:
                           cid1: "beef_logo.png"
                          #cid2: "second_image.png"
-                       attachment: [""]
+                       attachments: ["beef_attachment.pdf"]
