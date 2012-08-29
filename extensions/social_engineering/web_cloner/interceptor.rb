@@ -19,13 +19,13 @@ module BeEF
 
       class Interceptor < Sinatra::Base
 
-      def initialize(file_path)
-        super
-        @config = BeEF::Core::Configuration.instance
-        @cloned_page = ""
-        File.open(file_path,'r').each do |line|
-          @cloned_page += line
-        end
+      def initialize(file_path, redirect_to)
+        super self
+        file = File.open(file_path,'r')
+        @cloned_page = file.read
+        @redirect_to = redirect_to
+        file.close
+        print_info "Cloned page using content from [cloned_pages/#{File.basename(file_path)}] initialized."
       end
 
       # intercept GET
@@ -43,6 +43,8 @@ module BeEF
         data = request.body.read
         print_info "Intercepted data:"
         print_info data
+
+        redirect @redirect_to
 
         #todo: do a GET request on the target website, retrieve the respone headers and check if X-Frame-Options is present
         #todo: or framebusting is present. If is not present, open the original URL in an iFrame, otherwise redirect the user

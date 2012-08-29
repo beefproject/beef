@@ -27,40 +27,16 @@ module BeEF
         end
 
         def clone_page(url)
-          #todo see web_cloner.rb, work perfectly
-          # output.html and output2.html (the one with the form action modified to /)
-          # must be stored in cloned_pages
           print_info "Cloning page at URL #{url}"
           uri = URI(url)
-
-          #output = url.split("/").last #todo test if http://google.com/ produces an error
           output = uri.host
           output_mod = "#{output}_mod"
-
           user_agent = @config.get('beef.extension.social_engineering.web_cloner.user_agent')
 
-          #todo: prevent Command Injection
-          wget = "wget '#{url}' -O #{@cloned_pages_dir + output} --no-check-certificate -c -k -U '#{user_agent}'"
-          IO.popen(wget.to_s) { |f| @result = f.gets }
-          print_debug @result
-          #todo, also check if the URL is valid with:
-          #unless (url =~ URI::regexp).nil?
-          #  # Correct URL
-          #end
-
-          #todo: this should be the good way to prevent command injection, because the shell is not open.
-          #todo: there are issues:  Scheme missing when calling wget
-          #wget_path   = "wget"
-          #env         = {}
-          #args        = %W['#{url}' -O #{output} --no-check-certificate -c -k -U #{user_agent}]
-          #IO.popen([env, wget_path, *args], 'r+') { |f| @result = f.gets }
-
-
-          #if !File.writable?(File.basename(@cloned_pages_dir + output_mod))
-          #  print_info "Cannot write to file..."
-          #  IO.popen("chmod 777 #{@cloned_pages_dir}") { |f| @result = f.gets }
-          #  sleep 2
-          #end
+          #todo: prevent command injection using IO.popen passing an array of arguments
+          # see here: http://devblog.avdi.org/2012/03/29/generating-cows-with-io-popen/
+          wget = "wget '#{url}' --no-check-certificate -c -k -U '#{user_agent}' -O #{@cloned_pages_dir + output}"
+          IO.popen(wget.to_s) { |f| result = f.gets }
 
           File.open("#{@cloned_pages_dir + output_mod}", 'w') do |out_file|
             File.open("#{@cloned_pages_dir + output}", 'r').each do |line|
@@ -92,8 +68,8 @@ module BeEF
           print_info "Page at URL [#{url}] has been cloned. Modified HTML in [cloned_paged/#{output_mod}]"
 
           file_path = @cloned_pages_dir + output_mod # the path to the cloned_pages directory where we have the HTML to serve
-          @http_server.mount("/#{output}", BeEF::Extension::SocialEngineering::Interceptor.new(file_path))
-          print_info "Mounting cloned page on URL #{output}"
+          @http_server.mount("/#{output}", BeEF::Extension::SocialEngineering::Interceptor.new(file_path, url))
+          print_info "Mounting cloned page on URL [/#{output}]"
           @http_server.remap
         end
 
