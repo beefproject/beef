@@ -39,6 +39,9 @@ gem "erubis"
 gem "dm-migrations"
 gem "msfrpc-client"
 
+# notifications
+gem "twitter"
+
 if ENV['BEEF_TEST']
 # for running unit tests
   gem "test-unit"

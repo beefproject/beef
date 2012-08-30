@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Fake Flash Update"
-            description: "Prompts the user to install an update to Adobe Flash Player.<br />The default install file is a Chrome extension. <br /><br /> A chrome extenstion has privileged access and can do a whole lot.. <ul><li>- Access all tabs and inject beef into all tabs</li><li>- Use hooked browser as a proxy to do cross domain requests</li><li>- Get all cookies including HTTPonly cookies</li></ul><br />See chrome extensions beef modules for more examples<br />See extensions/demos/flash_update_chrome_extension for extension source"
+            description: "Prompts the user to install an update to Adobe Flash Player.<br />The default install file is a Chrome extension. <br /><br /> A chrome extenstion has privileged access and can do a whole lot.. <ul><li>- Access all tabs and inject beef into all tabs</li><li>- Use hooked browser as a proxy to do cross domain requests</li><li>- Get all cookies including HTTPonly cookies</li></ul><br />See chrome extensions beef modules for more examples<br />See extensions/demos/flash_update_chrome_extension for extension source. <b>Note</b>: the Chrome extension delivery will work on Chrome <= 20. From Chrome 21 things changed in terms of how extensions can be loaded."
             authors: ["mh"]
             target:
                 user_notify: ['ALL']

@@ -13,22 +13,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# local_file_theft
-#
-# Shamelessly plagurised from kos.io/xsspwn
 
-class Local_file_theft < BeEF::Core::Command
+#   persist on over app's sleep/wake events
+class Phonegap_persist_resume < BeEF::Core::Command
 
-  def self.options
-    return [
-        {'name' => 'target_file', 
-         'description' => 'The full path to the local file to steal e.g. file:///var/mobile/Library/AddressBook/AddressBook.sqlitedb', 
-         'ui_label' => 'Target file',
-         'value' => 'autodetect'
-         } 
-    ]
-  end
- 
    def post_execute
     content = {}
     content['result'] = @datastore['result']

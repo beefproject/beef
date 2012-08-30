@@ -13,26 +13,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# local_file_theft
-#
-# Shamelessly plagurised from kos.io/xsspwn
-
-class Local_file_theft < BeEF::Core::Command
-
-  def self.options
-    return [
-        {'name' => 'target_file', 
-         'description' => 'The full path to the local file to steal e.g. file:///var/mobile/Library/AddressBook/AddressBook.sqlitedb', 
-         'ui_label' => 'Target file',
-         'value' => 'autodetect'
-         } 
-    ]
-  end
- 
-   def post_execute
-    content = {}
-    content['result'] = @datastore['result']
-    save content
-  end 
+module BeEF
+module Extension
+module Notifications
+  
+  extend BeEF::API::Extension
+  
+  @short_name = 'notifications'
+  @full_name = 'Notifications'
+  @description = 'Generates external notifications for events in BeEF'
   
 end
+end
+end
+
+require 'extensions/notifications/notifications'

