@@ -16,7 +16,7 @@
 beef:
     extension:
         evasion:
-            enable: true 
+            enable: true
             name: 'Evasion'
             authors: ["antisnatchor"]
             exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js"]
@@ -26,4 +26,5 @@ beef:
               beef: "beef"
               Beef: "Beef"
               evercookie: "evercookie"
-            chain: ["scramble", "minify"]
+            #chain: ["scramble", "minify"]
+            chain: ["minify", "base64", "whitespace"]
