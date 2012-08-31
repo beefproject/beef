@@ -62,9 +62,9 @@ module BeEF
         raise Exception::TypeError, '"url" needs to be a string' if not url.string?
 
         if args == nil
-          mounts[url] = http_handler_class
+          @mounts[url] = http_handler_class
         else
-          mounts[url] = http_handler_class, *args
+          @mounts[url] = http_handler_class, *args
         end
         print_debug("Server: mounted handler '#{url}'")
       end
