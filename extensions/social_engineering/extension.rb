@@ -34,9 +34,23 @@ module Extension
 end
 end
 
+# Handlers
 require 'extensions/social_engineering/web_cloner/web_cloner'
 require 'extensions/social_engineering/web_cloner/interceptor'
 require 'extensions/social_engineering/mass_mailer/mass_mailer'
+
+# Models
+require 'extensions/social_engineering/models/web_cloner'
+require 'extensions/social_engineering/models/interceptor'
+#require 'extensions/social_engineering/models/mass_mailer'
+
+# RESTful api endpoints
 require 'extensions/social_engineering/rest/socialengineering'
+
+
+
+
+
+
 
 

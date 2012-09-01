@@ -43,7 +43,7 @@ module BeEF
 
             if uri != nil && mount != nil
               if (uri =~ URI::regexp).nil? #invalid URI
-                "Invalid URI"
+                print_error "Invalid URI"
                 halt 401
               end
 
