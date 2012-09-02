@@ -34,32 +34,47 @@ module BeEF
           output_mod = "#{output}_mod"
           user_agent = @config.get('beef.extension.social_engineering.web_cloner.user_agent')
 
-
-          wget = "wget '#{url}' --background --no-check-certificate -c -k -U '#{user_agent}' -O #{@cloned_pages_dir + output}"
-          IO.popen(wget.to_s) { |f|
-            @result = f.gets
-            print_debug "Wget: #{@result}"
-          }
-
           success = false
-          if @result.nil?
-             print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
-          else
+          # prevent command injection attacks, passing URLs like (http://antisnatchor'||touch /tmp/foo #). No shells are open in the following case.
+          begin
+            IO.popen(["wget", "#{url}","-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}","--no-check-certificate","--background"], 'r+') do |wget_io| end
+            success = true
+          rescue Exception => e
+            print_error "Errors executing wget: #{e}"
+            print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
+          end
+
+          if success
             File.open("#{@cloned_pages_dir + output_mod}", 'w') do |out_file|
               File.open("#{@cloned_pages_dir + output}", 'r').each do |line|
                 # Modify the <form> line changing the action URI to / in order to be properly intercepted by BeEF
                 if line.include?("<form ")
                   line_attrs = line.split(" ")
-                  count = 0
+                  c = 0
+                  cc = 0
                   #todo: probably doable also with map!
+
+                  # modify the form 'action' attribute
                   line_attrs.each do |attr|
                     if attr.include? "action=\""
                       print_info "Form action found: #{attr}"
                       break
                     end
-                    count += 1
+                    c += 1
                   end
-                  line_attrs[count] = "action=\"#{mount}\""
+                  line_attrs[c] = "action=\"#{mount}\""
+
+                  #todo: to be tested, needed in case like yahoo
+                  # delete the form 'onsubmit' attribute
+                  #line_attrs.each do |attr|
+                  #  if attr.include? "onsubmit="
+                  #    print_info "Form onsubmit event found: #{attr}"
+                  #    break
+                  #  end
+                  #  cc += 1
+                  #end
+                  #line_attrs[cc] = ""
+
                   mod_form = line_attrs.join(" ")
                   print_info "Form action value changed in order to be intercepted :-D"
                   out_file.print mod_form
@@ -94,6 +109,7 @@ module BeEF
               success = true
             else
               print_error "Error cloning #{url}. Be sure that you don't have errors while retrieving the page with 'wget'."
+              success = false
             end
           end
             success
