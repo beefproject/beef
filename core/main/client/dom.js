@@ -194,6 +194,31 @@ beef.dom = {
 		return count;
 	},
 
+	/**
+	 * Parse all links in the page matched by the selector, replacing all telephone urls ('tel' protocol handler) with a new telephone number
+	 * @param: {String} new_number: the new link telephone number to be written
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteTelLinks: function(new_number, selector) {
+
+		var count = 0;
+		var re = new RegExp("tel:/?/?.*", "gi");
+		var sel = (selector == null) ? 'a' : selector;
+
+		$j(sel).each(function() {
+			if ($j(this).attr('href') != null) {
+				var url = $j(this).attr('href');
+				if (url.match(re)) {
+					$j(this).attr('href', url.replace(re, "tel:"+new_number)).click(function() { return true; });
+					count++;
+				}
+			}
+		});
+
+		return count;
+	},
+
     /**
      *  Given an array of objects (key/value), return a string of param tags ready to append in applet/object/embed
      * @params: {Array} an array of params for the applet, ex.: [{'argc':'5', 'arg0':'ReverseTCP'}]
