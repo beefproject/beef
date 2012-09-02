@@ -20,9 +20,11 @@ beef:
             name: 'Social Engineering'
             authors: ["antisnatchor"]
             web_cloner:
+                # NOTE: you must have 'wget' in your PATH
                 add_beef_hook: true
                 user_agent: "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"
             mass_mailer:
+                # NOTE: you must have 'file' in your PATH
                 user_agent: "Microsoft-MacOutlook/12.12.0.111556"
                 host: "smtp.gmail.com"
                 port: 587
