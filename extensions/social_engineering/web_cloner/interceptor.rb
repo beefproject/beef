@@ -25,7 +25,7 @@ module BeEF
 
       # intercept GET
       get "/" do
-        print_info "GET request"
+        print_info "GET request from IP #{request.ip}"
         print_info "Referer: #{request.referer}"
         cloned_page = settings.cloned_page
         cloned_page
@@ -33,7 +33,7 @@ module BeEF
 
       # intercept POST
       post "/" do
-        print_info "POST request"
+        print_info "POST request from IP #{request.ip}"
         request.body.rewind
         data = request.body.read
         print_info "Intercepted data:"
@@ -41,7 +41,8 @@ module BeEF
 
         interceptor_db = BeEF::Core::Models::Interceptor.new(
             :webcloner_id => settings.db_entry.id,
-            :post_data => data
+            :post_data => data,
+            :ip => request.ip
         )
         interceptor_db.save
 

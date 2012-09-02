@@ -23,7 +23,7 @@ module BeEF
         storage_names[:default] = 'extension_seng_interceptor'
 
         property :id, Serial
-
+        property :ip, Text, :lazy => false
         property :post_data, Text, :lazy => false
 
         belongs_to :webcloner

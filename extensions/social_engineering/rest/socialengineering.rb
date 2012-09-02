@@ -53,7 +53,17 @@ module BeEF
               end
 
               web_cloner = BeEF::Extension::SocialEngineering::WebCloner.instance
-              web_cloner.clone_page(uri,mount)
+              success = web_cloner.clone_page(uri,mount)
+              if success
+                result = {
+                    "success" => true,
+                    "mount" => mount
+                }.to_json
+              else
+                result = {
+                    "success" => false
+                }.to_json
+              end
             end
 
           rescue Exception => e
