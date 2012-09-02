@@ -222,9 +222,10 @@ EOF
         end
 
         def get_mime(file_path)
-          mime = "file --mime -b #{file_path}"
           result = ""
-          IO.popen(mime.to_s) { |f| result = f.gets.split(";").first }
+          IO.popen(["file", "--mime","-b", "#{file_path}"], 'r+') do |io|
+            result = io.readlines.first.split(";").first
+          end
           result
         end
 
