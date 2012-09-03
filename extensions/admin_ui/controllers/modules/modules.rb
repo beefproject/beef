@@ -591,12 +591,15 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # append the number of command modules so the branch name results in: "<category name> (num)"
     parent.each {|command_module_branch|
       if command_module_branch.is_a?(Hash) and command_module_branch.has_key?('children')
-        num_of_command_modules = command_module_branch['children'].length
-        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
-
+        num_of_subs = 0
         command_module_branch['children'].each {|c|
+          #add in the submodules and subtract 1 for the folder node
+          num_of_subs+=c['children'].length-1 if c.has_key?('children')
           retitle_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
         }
+        num_of_command_modules = command_module_branch['children'].length + num_of_subs
+        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
+
       end
     }
   end
