@@ -29,8 +29,6 @@ class Simple_hijacker < BeEF::Core::Command
     @templates.each{ |template|
       tplpath = "#{$root_dir}/modules/social_engineering/simple_hijacker/templates/#{template}.js"
         raise "Invalid template path for command template #{template}" if not File.exists?(tplpath)
-        file = File.open(tplpath, "r")
-        data.push({'name' => template, 'type' => 'hidden', 'value' => file.read})
       tmptpl<<[ template]
     }
  
