@@ -605,13 +605,28 @@ beef.browser = {
 	 * Checks if the Phonegap API is available from the hooked domain.
 	 * @return: {Boolean} true or false.
 	 *
-	 * @example: if(beef.browser.hasJava()) { ... }
-	*/
+	 * @example: if(beef.browser.hasPhonegap()) { ... }
+	 */
 	hasPhonegap: function() {
 		var result = false;
 		try { if (!!device.phonegap) result = true; else result = false; }
 		catch(e) { result = false; }
 		return result;
+	},
+
+	/**
+	 * Checks if the browser supports CORS
+	 * @return: {Boolean} true or false.
+	 *
+	 * @example: if(beef.browser.hasCors()) { ... }
+	 */
+	hasCors: function() {
+		if ('withCredentials' in new XMLHttpRequest())
+			return true;	
+		else if (typeof XDomainRequest !== "undefined")
+			return true;
+		else
+			return false;
 	},
 
 	/**
