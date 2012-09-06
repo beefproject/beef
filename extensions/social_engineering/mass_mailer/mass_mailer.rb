@@ -83,18 +83,20 @@ module BeEF
            rel_boundary = "------------#{random_string(24)}"
 
            header = email_headers(@from, fromname, @user_agent, to, subject, msg_id, boundary)
-           plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain"),boundary)
+           plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain", template), boundary)
            rel_header = email_related(rel_boundary)
-           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html"),rel_boundary)
+           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html", template),rel_boundary)
 
            images = ""
-           @config.get("#{@config_prefix}.templates.default.images").each do |image|
+           @config.get("#{@config_prefix}.templates.#{template}.images").each do |image|
              images += email_add_image(image, "#{@templates_dir}#{template}/#{image}",rel_boundary)
            end
 
            attachments = ""
-           @config.get("#{@config_prefix}.templates.default.attachments").each do |attachment|
-             attachments += email_add_attachment(attachment, "#{@templates_dir}#{template}/#{attachment}",rel_boundary)
+           if @config.get("#{@config_prefix}.templates.#{template}.attachments") != nil
+             @config.get("#{@config_prefix}.templates.#{template}.attachments").each do |attachment|
+               attachments += email_add_attachment(attachment, "#{@templates_dir}#{template}/#{attachment}",rel_boundary)
+             end
            end
 
            close = email_close(boundary)
@@ -197,9 +199,9 @@ EOF
         end
 
         # Replaces placeholder values from the plain/html email templates
-        def parse_template(name, link, linktext, template_path)
+        def parse_template(name, link, linktext, template_path, template)
           result = ""
-          img_config = "#{@config_prefix}.templates.default.images_cids"
+          img_config = "#{@config_prefix}.templates.#{template}.images_cids"
           img_count = 0
           File.open(template_path, 'r').each do |line|
              # change the Recipient name
@@ -207,13 +209,21 @@ EOF
                result += line.gsub("__name__",name)
              # change the link/linktext
              elsif line.include?("__link__")
-               result += line.gsub("__link__",link).gsub("__linktext__",linktext)
+               if line.include?("__linktext__")
+                 result += line.gsub("__link__",link).gsub("__linktext__",linktext)
+               else
+                 result += line.gsub("__link__",link)
+               end
              # change images cid/name/alt
              elsif line.include?("src=\"cid:__")
                img_count += 1
-               result += line.gsub("__cid#{img_count}__",
-                                   @config.get("#{img_config}.cid#{img_count}")).gsub("__img#{img_count}__",
-                                   @config.get("#{img_config}.cid#{img_count}"))
+               if line.include?("name=\"img__") || line.include?("alt=\"__img")
+                 result += line.gsub("__cid#{img_count}__",
+                                     @config.get("#{img_config}.cid#{img_count}")).gsub("__img#{img_count}__",
+                                     @config.get("#{img_config}.cid#{img_count}"))
+               else
+                 result += line.gsub("__cid#{img_count}__",@config.get("#{img_config}.cid#{img_count}"))
+               end
              else
                result += line
              end

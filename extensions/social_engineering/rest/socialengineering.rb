@@ -102,7 +102,7 @@ module BeEF
               halt 401
             end
 
-            if (link =~ URI::regexp).nil? || (linktext =~ URI::regexp).nil?#invalid URI
+            if (link =~ URI::regexp).nil?#invalid URI
               print_error "Invalid link or linktext"
               halt 401
             end
