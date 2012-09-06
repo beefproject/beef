@@ -42,3 +42,16 @@ beef:
                           cid1: "beef_logo.png"
                          #cid2: "second_image.png"
                        attachments: ["beef_attachment.pdf"]
+                    edfenergy:
+                       images: ["corner-tl.png", "main.png","edf_logo.png","promo-corner-left.png","promo-corner-right-arrow.png","promo-reflection.png","2012.png","corner-bl.png","corner-br.png","bottom-border.png"]
+                       images_cids:
+                          cid1: "corner-tl.png"
+                          cid2:  "main.png"
+                          cid3:  "edf_logo.png"
+                          cid4:  "promo-corner-left.png"
+                          cid5:  "promo-corner-right-arrow.png"
+                          cid6:  "promo-reflection.png"
+                          cid7:  "2012.png"
+                          cid8:  "corner-bl.png"
+                          cid9:  "corner-br.png"
+                          cid10: "bottom-border.png"
