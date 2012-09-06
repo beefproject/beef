@@ -40,6 +40,7 @@ module BeEF
             body = JSON.parse request.body.read
             uri = body["url"]
             mount = body["mount"]
+            use_existing = body["use_existing"]
 
             if uri != nil && mount != nil
               if (uri =~ URI::regexp).nil? #invalid URI
@@ -53,7 +54,7 @@ module BeEF
               end
 
               web_cloner = BeEF::Extension::SocialEngineering::WebCloner.instance
-              success = web_cloner.clone_page(uri,mount)
+              success = web_cloner.clone_page(uri,mount,use_existing)
               if success
                 result = {
                     "success" => true,
