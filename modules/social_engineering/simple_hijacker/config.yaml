@@ -14,17 +14,13 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        evasion:
+    module:
+        simple_hijacker:
             enable: true
-            name: 'Evasion'
-            authors: ["antisnatchor"]
-            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js"]
-            scramble_variables: true
-            scramble_cookies: true
-            scramble:
-              beef: "beef"
-              Beef: "Beef"
-              evercookie: "evercookie"
-            #chain: ["scramble", "minify"]
-            chain: ["minify", "base64", "whitespace"]
+            category: "Social Engineering"
+            name: "Simple Hijacker"
+            description: "Hijack clicks on links to display what you want."
+            templates: ["credential", "confirmbox", "amazon", "chromecertbeggar"]
+            authors: ["gallypette"]
+            target:
+                user_notify: ['ALL']

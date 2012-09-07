@@ -18,7 +18,6 @@ class Lcamtuf_download < BeEF::Core::Command
   # set and return all options for this module
   def self.options
 
-
     return [{
       'name' => 'real_file_uri', 
       'description' => 'The web accessible URI for the real file.',
@@ -33,7 +32,7 @@ class Lcamtuf_download < BeEF::Core::Command
       'value' => '',
       'width' => '300px'
       },
-      { 'name' => 'do_once', 'type' => 'combobox', 'ui_label' => 'Once', 'store_type' => 'arraystore',
+      { 'name' => 'do_once', 'type' => 'combobox', 'ui_label' => 'Run Once', 'store_type' => 'arraystore',
           'store_fields' => ['do_once'], 'store_data' => [['false'],['true']],
           'valueField' => 'do_once', 'displayField' => 'do_once', 'mode' => 'local', 'value' => 'false', 'autoWidth' => true
       }]

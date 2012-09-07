@@ -13,18 +13,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-beef:
-    extension:
-        evasion:
-            enable: true
-            name: 'Evasion'
-            authors: ["antisnatchor"]
-            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js"]
-            scramble_variables: true
-            scramble_cookies: true
-            scramble:
-              beef: "beef"
-              Beef: "Beef"
-              evercookie: "evercookie"
-            #chain: ["scramble", "minify"]
-            chain: ["minify", "base64", "whitespace"]
+class Link_rewrite_tel < BeEF::Core::Command
+
+  def self.options
+    return [
+      { 'ui_label'=>'Number', 'name'=>'tel_number', 'description' => 'New telephone number', 'value'=>'5558585', 'width'=>'200px' }
+    ]
+  end
+  
+  def post_execute
+    save({'result' => @datastore['result']})
+  end
+  
+end

@@ -104,8 +104,7 @@ module BeEF
 
             if config.get("beef.extension.evasion.enable")
               evasion = BeEF::Extension::Evasion::Evasion.instance
-              @hook = evasion.add_bootstrapper + evasion.obfuscate(@hook)
-              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate) + @hook
+              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate + @hook) 
             else
               @final_hook = ext_js_to_not_obfuscate + @hook
             end

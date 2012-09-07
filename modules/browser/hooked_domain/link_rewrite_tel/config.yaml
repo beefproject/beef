@@ -14,17 +14,12 @@
 #   limitations under the License.
 #
 beef:
-    extension:
-        evasion:
+    module:
+        link_rewrite_tel:
             enable: true
-            name: 'Evasion'
-            authors: ["antisnatchor"]
-            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js"]
-            scramble_variables: true
-            scramble_cookies: true
-            scramble:
-              beef: "beef"
-              Beef: "Beef"
-              evercookie: "evercookie"
-            #chain: ["scramble", "minify"]
-            chain: ["minify", "base64", "whitespace"]
+            category: ["Browser", "Hooked Domain"]
+            name: "Replace HREFs (TEL)"
+            description: "This module will rewrite all the href attributes of telephone links (ie, tel:5558585) to call a number of your choice."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

