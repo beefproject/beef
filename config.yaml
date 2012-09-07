@@ -94,8 +94,8 @@ beef:
             enable: false
         social_engineering:
             enable: false
-        console:
-            shell:
-                enable: false
         evasion:
             enable: false
+        console:
+             shell:
+                enable: false
