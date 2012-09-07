@@ -189,11 +189,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF15
+	 * @example: beef.browser.isFF15()
+	 */
+	isFF15: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/15\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15();
 	},
 
 	/**
@@ -463,6 +471,7 @@ beef.browser = {
 			FF12:	this.isFF12(),	// Firefox 12
 			FF13:	this.isFF13(),	// Firefox 13
 			FF14:	this.isFF14(),	// Firefox 14
+			FF15:	this.isFF15(),	// Firefox 15
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -526,6 +535,7 @@ beef.browser = {
 		if (this.isFF12())	{ return '12' };	// Firefox 12
 		if (this.isFF13())	{ return '13' };	// Firefox 13
 		if (this.isFF14())	{ return '14' };	// Firefox 14
+		if (this.isFF15())  { return '15' };    // Firefox 15
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
