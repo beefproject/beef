@@ -57,6 +57,7 @@ margin-top:40px;
 padding:5px 0;
 }
 .inner .footnote > a{
+/*
 display:inline-block;
 width:100px;
 background:#09C;
@@ -68,10 +69,12 @@ line-height:30px;
 border-radius5px;
 border:1p solid #999;
 text-decoration:none;
+*/
+display:none;
 margin-top:5px;
 }
 .inner .footnote > span{
-display:none;
+/*display:none;*/
 }
 .click-thru{
 color:#333;
@@ -144,10 +147,6 @@ quotes[5] = {title: "You are a sad strange little man, and you have my pity.", f
 $(".more-quotes").live("click", function(){
 	var random = Math.floor(Math.random()*(quotes.length));
 	$(".text").html(quotes[random].title);
-	//It's easy to add arbitrary actions, commented out is an example
-	//$(".footnote > span").html(quotes[random].footnote).hide();
-	//$(".footnote > a").show();
-
 	$(".footnote > span").html(quotes[random].footnote).show();
 	$(".footnote > a").hide();
 });

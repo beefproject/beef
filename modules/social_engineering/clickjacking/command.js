@@ -95,26 +95,28 @@ beef.execute(function() {
 	function iframeClicked(){
 		clicked++;
 		var jsfunc = '';
-		try{
-			//check if there's an action to perform
-			if (isNaN(parseInt(clicks[clicked-1].posTop))) {
-				removeAll(elems);
-				throw "No more clicks.";
-			}
-			jsfunc = clicks[clicked-1].js;
-			innerPos.top = clicks[clicked].posTop;
-			innerPos.left = clicks[clicked].posLeft;
-			eval(unescape(jsfunc));
-			setTimeout(function(){
-				updateIframePosition();
-			}, <%= @clickDelay %>);
-		} catch(e) {
-			cjLog(e);
-		}
+		jsfunc = clicks[clicked-1].js;
+		innerPos.top = clicks[clicked].posTop;
+		innerPos.left = clicks[clicked].posLeft;
+		eval(unescape(jsfunc));
+		setTimeout(function(){
+			updateIframePosition();
+		}, <%= @clickDelay %>);
+
 		setTimeout(function(){
 			var btnSelector = "#" + elems.btn;
 			var btnObj = $(btnSelector);
 			$(btnObj).focus();
+
+			//check if there are any more actions to perform
+			try {
+				if (isNaN(parseInt(clicks[clicked].posTop))) {
+					removeAll(elems);
+					throw "No more clicks.";
+				}
+			} catch(e) {
+				cjLog(e);
+			}
 		}, 200);
 	}
 
