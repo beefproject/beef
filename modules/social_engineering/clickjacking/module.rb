@@ -31,12 +31,12 @@ class Clickjacking < BeEF::Core::Command
 		{'name' => 'Click_1', 'type' => 'label', 'html' => '~~~~~~~~~~ CLICK 1' },
 		{'name' => 'clickaction_1', 'ui_label'=>'JS', 'type' => 'textarea', 'value' =>'$("#overlay1").data("overlay").close();', 'width' => '400px', 'height' => '50px'},
 		{'name' => 'iFrameLeft_1', 'ui_label' => 'X-pos', 'value' => '20', 'width'=>'100px' },
-		{'name' => 'iFrameTop_1', 'ui_label' => 'Y-pos', 'value' => '50', 'width'=>'100px' },
+		{'name' => 'iFrameTop_1', 'ui_label' => 'Y-pos', 'value' => '55', 'width'=>'100px' },
 
 		{'name' => 'Click_2', 'type' => 'label', 'html' => '~~~~~~~~~~ CLICK 2' },
 		{'name' => 'clickaction_2', 'ui_label'=>'JS', 'type' => 'textarea', 'value' =>'$(".more-quotes").trigger("click");', 'width' => '400px', 'height' => '50px'},
 		{'name' => 'iFrameLeft_2', 'ui_label' => 'X-pos', 'value' => '20', 'width'=>'100px' },
-		{'name' => 'iFrameTop_2', 'ui_label' => 'Y-pos', 'value' => '123', 'width'=>'100px' },
+		{'name' => 'iFrameTop_2', 'ui_label' => 'Y-pos', 'value' => '135', 'width'=>'100px' },
 
 		{'name' => 'Click_3', 'type' => 'label', 'html' => '~~~~~~~~~~ CLICK 3' },
 		{'name' => 'clickaction_3', 'ui_label'=>'JS', 'type' => 'textarea', 'value' =>'void(0)', 'width' => '400px', 'height' => '50px'},

