@@ -41,11 +41,11 @@ module Banners
         config = BeEF::Core::Configuration.instance
         version = config.get('beef.version')
         print_info "Browser Exploitation Framework (BeEF)"
-        data =  "Version #{version}\n"
-        data += "Website http://beefproject.com\n"
-        data += "Twitter @beefproject\n"
-        data += "Run 'beef -h' for basic help.\n"
-        data += "Run 'update-beef' to update to the latest revision."
+        data =  "Version: #{version}\n"
+        data += "Twitter: @beefproject\n"
+        data += "Website: http://beefproject.com\n"
+        data += "Blog: http://blog.beefproject.com\n"
+        data += "Help: run 'beef -h'\n"
         print_more data
     end
 
