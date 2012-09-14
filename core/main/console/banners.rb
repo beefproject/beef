@@ -44,7 +44,7 @@ module Banners
         data =  "Version #{version}\n"
         data += "Website http://beefproject.com\n"
         data += "Run 'beef -h' for basic help.\n"
-        data += "Run 'git pull' to update to the latest revision."
+        data += "Run 'update-beef' to update to the latest revision."
         print_more data
     end
 
