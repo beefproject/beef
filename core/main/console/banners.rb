@@ -43,6 +43,7 @@ module Banners
         print_info "Browser Exploitation Framework (BeEF)"
         data =  "Version #{version}\n"
         data += "Website http://beefproject.com\n"
+        data += "Twitter @beefproject\n"
         data += "Run 'beef -h' for basic help.\n"
         data += "Run 'update-beef' to update to the latest revision."
         print_more data
