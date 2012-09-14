@@ -40,12 +40,11 @@ module Banners
     def print_welcome_msg
         config = BeEF::Core::Configuration.instance
         version = config.get('beef.version')
-        print_info "Browser Exploitation Framework (BeEF)"
-        data =  "Version: #{version}\n"
-        data += "Twitter: @beefproject\n"
-        data += "Website: http://beefproject.com\n"
+        print_info "Browser Exploitation Framework (BeEF) #{version}"
+        data = "Twit: @beefproject\n"
+        data += "Site: http://beefproject.com\n"
         data += "Blog: http://blog.beefproject.com\n"
-        data += "Help: run 'beef -h'\n"
+        data += "Wiki: https://github.com/beefproject/beef/wiki\n"
         print_more data
     end
 
