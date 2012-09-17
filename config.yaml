@@ -93,7 +93,7 @@ beef:
         metasploit:
             enable: false
         social_engineering:
-            enable: false
+            enable: true
         evasion:
             enable: false
         console:
