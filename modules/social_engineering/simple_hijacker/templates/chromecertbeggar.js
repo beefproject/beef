@@ -12,7 +12,7 @@
 
   forward = function(){
     send("User continuing to "+target);
-    timer=setInterval(function(){window.location = target;},500);
+    timer=setTimeout(function(){window.location = target;},500);
   }
   
   getDomain = function(url){
