@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Pretty Theft"
-            description: "Asks the user for their username and password using a tidy floating div."
-            authors: ["vt [nick.freeman@security-assessment.com]", "xntrik"]
+            description: "Asks the user for their username and password using a floating div."
+            authors: ["pwndizzle", "vt [nick.freeman@security-assessment.com]", "xntrik"]
             target:
                 user_notify: ['ALL']
