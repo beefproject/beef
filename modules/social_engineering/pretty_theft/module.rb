@@ -19,7 +19,11 @@ class Pretty_theft < BeEF::Core::Command
     configuration = BeEF::Core::Configuration.instance
     logo_uri = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/ui/media/images/beef.png"
     return [
-        {'name' =>'imgsauce', 'description' =>'Custom Logo', 'ui_label'=>'Custom Logo', 'value' => logo_uri}
+		{'name' => 'choice', 'type' => 'combobox', 'ui_label' => 'Dialog Type', 'store_type' => 'arraystore', 'store_fields' => ['choice'], 'store_data' => [['Facebook'],['LinkedIn'],['Generic']], 'valueField' => 'choice', 'value' => 'Facebook', editable: false, 'displayField' => 'choice', 'mode' => 'local', 'autoWidth' => true },
+       		
+		{'name' => 'backing', 'type' => 'combobox', 'ui_label' => 'Backing', 'store_type' => 'arraystore', 'store_fields' => ['backing'], 'store_data' => [['Grey'],['Clear']], 'valueField' => 'backing', 'value' => 'Grey', editable: false, 'displayField' => 'backing', 'mode' => 'local', 'autoWidth' => true },
+
+		{'name' =>'imgsauce', 'description' =>'Custom Logo', 'ui_label'=>'Custom Logo (Generic only)', 'value' => logo_uri}
     ]
   end
   
