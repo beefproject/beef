@@ -20,7 +20,7 @@ beef:
             category: "Social Engineering"
             name: "Simple Hijacker"
             description: "Hijack clicks on links to display what you want."
-            templates: ["credential", "confirmbox", "amazon", "chromecertbeggar"]
+            templates: ["credential", "confirmbox", "amazon", "chromecertbeggar", "chromecertbeggar2"]
             authors: ["gallypette"]
             target:
                 user_notify: ['ALL']
