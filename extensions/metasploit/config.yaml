@@ -38,8 +38,10 @@ beef:
             auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
             msf_path: [ 
-              {os: 'osx', path: '/tmp/'},
-              {os: 'bt5', path: '/opt/metasploit/'},
+              {os: 'osx', path: '/opt/local/msf/'},
+              {os: 'bt5r3', path: '/opt/metasploit/msf3/'},
+              {os: 'bt5', path: '/opt/framework3/msf3/'},
+              {os: 'backbox', path: '/opt/metasploit3/msf3/'},
               {os: 'win', path: 'c:\metasploit\msf3\'},
               {os: 'custom', path: ''}
             ]
