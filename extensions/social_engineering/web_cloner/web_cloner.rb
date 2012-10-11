@@ -103,6 +103,13 @@ module BeEF
 
             file_path = @cloned_pages_dir + output_mod # the path to the cloned_pages directory where we have the HTML to serve
 
+            # if the user wants to clone http://a.com/login.jsp?cas=true&ciccio=false , split the URL mounting only the path.
+            # then the phishing link can be used anyway with all the proper parameters to looks legit.
+            if mount.include?("?")
+              mount = mount.split("?").first
+              print_info "Normalizing mount point. You can still use params for the phishing link."
+            end
+
             # Check if the original URL can be framed
             frameable = is_frameable(url)
 
