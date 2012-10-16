@@ -61,11 +61,21 @@ beef.browser = {
 	},
 	
 	/**
+	 *
+	 * Returns true if IE10.
+	 * @example: beef.browser.isIE10()
+	 */
+	 // placeholder
+	isIE10: function() {
+		return false;
+	},
+
+	/**
 	 * Returns true if IE.
 	 * @example: beef.browser.isIE()
 	 */
 	isIE: function() {
-		return this.isIE6() || this.isIE7() || this.isIE8() || this.isIE9();
+		return this.isIE6() || this.isIE7() || this.isIE8() || this.isIE9() || this.isIE10();
 	},
 	
 	/**
@@ -197,11 +207,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF16
+	 * @example: beef.browser.isFF16()
+	 */
+	isFF16: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/16\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16();
 	},
 
 	/**
@@ -209,7 +227,7 @@ beef.browser = {
 	 * @example: beef.browser.isS4()
 	 */
 	isS4: function() {
-		return (window.navigator.userAgent.match(/ Version\/4\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+		return (window.navigator.userAgent.match(/ Version\/4\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
 	},
 	
 	/**
@@ -217,23 +235,23 @@ beef.browser = {
 	 * @example: beef.browser.isS5()
 	 */
 	isS5: function() {
-		return (window.navigator.userAgent.match(/ Version\/5\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+		return (window.navigator.userAgent.match(/ Version\/5\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
 	},
 
-    /**
-     * Returns true if Safari 6.xx
-     * @example: beef.browser.isS6()
-     */
-    isS6: function() {
-        return (window.navigator.userAgent.match(/ Version\/6\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
-    },
+	/**
+ 	 * Returns true if Safari 6.xx
+	 * @example: beef.browser.isS6()
+	 */
+	isS6: function() {
+		return (window.navigator.userAgent.match(/ Version\/6\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
+	},
 	
 	/**
 	 * Returns true if Safari.
 	 * @example: beef.browser.isS()
 	 */
 	isS: function() {
-		return this.isS4() || this.isS5() || this.isS6() || (!window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome);
+		return this.isS4() || this.isS5() || this.isS6();
 	},
 
 	/**
@@ -449,11 +467,11 @@ beef.browser = {
 			C14:	this.isC14(),	// Chrome 14
 			C15:    this.isC15(),   // Chrome 15
 			C16:	this.isC16(),	// Chrome 16
-            C17:	this.isC17(),	// Chrome 17
+			C17:	this.isC17(),	// Chrome 17
 			C18:	this.isC18(),	// Chrome 18
 			C19:	this.isC19(),	// Chrome 19
 			C20:	this.isC20(),	// Chrome 20
-            C21:	this.isC21(),	// Chrome 21
+			C21:	this.isC21(),	// Chrome 21
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -472,24 +490,26 @@ beef.browser = {
 			FF13:	this.isFF13(),	// Firefox 13
 			FF14:	this.isFF14(),	// Firefox 14
 			FF15:	this.isFF15(),	// Firefox 15
+			FF16:	this.isFF16(),	// Firefox 16
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
 			IE7:	this.isIE7(),	// Internet Explorer 7
 			IE8:	this.isIE8(),	// Internet Explorer 8
 			IE9:	this.isIE9(),	// Internet Explorer 9
+			IE10:	this.isIE10(),	// Internet Explorer 10
 			IE:	this.isIE(),	// Internet Explorer any version
 
 			O9_52:  this.isO9_52(), // Opera 9.50 through 9.52
 			O9_60:  this.isO9_60(), // Opera 9.60 through 9.64
 			O10:    this.isO10(),  	// Opera 10.xx
 			O11:    this.isO11(),  	// Opera 11.xx
-            O12:    this.isO12(),  	// Opera 11.xx
+			O12:    this.isO12(),  	// Opera 11.xx
 			O:      this.isO(), 	// Opera any version
 
 			S4:	this.isS4(),	// Safari 4.xx
 			S5:	this.isS5(),	// Safari 5.xx
-            S6: this.isS6(),   // Safari 6.x
+			S6:	this.isS6(),	// Safari 6.x
 			S:	this.isS()	// Safari any version
 		}
 	},
@@ -514,13 +534,13 @@ beef.browser = {
 		if (this.isC14())	{ return '14' }; 	// Chrome 14
 		if (this.isC15())	{ return '15' }; 	// Chrome 15
 		if (this.isC16())	{ return '16' };	// Chrome 16
-        if (this.isC17())	{ return '17' };	// Chrome 17
-		if (this.isC18())   { return '18' };    // Chrome 18
-		if (this.isC19())   { return '19' };    // Chrome 19
+		if (this.isC17())	{ return '17' };	// Chrome 17
+		if (this.isC18())	{ return '18' };	// Chrome 18
+		if (this.isC19())	{ return '19' };	// Chrome 19
 		if (this.isC20())	{ return '20' };	// Chrome 20
-        if (this.isC21())	{ return '21' };	// Chrome 21
+		if (this.isC21())	{ return '21' };	// Chrome 21
 
-        if (this.isFF2())	{ return '2'  };	// Firefox 2
+		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF3_5())	{ return '3.5'};	// Firefox 3.5
 		if (this.isFF3_6())	{ return '3.6'};	// Firefox 3.6
@@ -535,22 +555,24 @@ beef.browser = {
 		if (this.isFF12())	{ return '12' };	// Firefox 12
 		if (this.isFF13())	{ return '13' };	// Firefox 13
 		if (this.isFF14())	{ return '14' };	// Firefox 14
-		if (this.isFF15())  { return '15' };    // Firefox 15
+		if (this.isFF15())	{ return '15' };	// Firefox 15
+		if (this.isFF16())	{ return '16' };	// Firefox 16
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
 		if (this.isIE8())	{ return '8'  };	// Internet Explorer 8
 		if (this.isIE9())	{ return '9'  };	// Internet Explorer 9
+		if (this.isIE10())	{ return '10' };	// Internet Explorer 10
 
 		if (this.isS4())	{ return '4'  };	// Safari 4
 		if (this.isS5())	{ return '5'  };	// Safari 5
-        if (this.isS6())	{ return '6'  };	// Safari 5
+		if (this.isS6())	{ return '6'  };	// Safari 5
 
-        if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
+		if (this.isO9_52())	{ return '9.5'};	// Opera 9.5x
 		if (this.isO9_60())	{ return '9.6'};	// Opera 9.6
 		if (this.isO10())	{ return '10' };	// Opera 10.xx
 		if (this.isO11())	{ return '11' };	// Opera 11.xx
-        if (this.isO12())	{ return '12' };	// Opera 12.xx
+		if (this.isO12())	{ return '12' };	// Opera 12.xx
 
 		return 'UNKNOWN';				// Unknown UA
 	},
@@ -600,11 +622,11 @@ beef.browser = {
 	},
 
 	/**
-	* Checks if the zombie has Java enabled.
+	 * Checks if the zombie has Java enabled.
  	 * @return: {Boolean} true or false.
-     *
-     * @example: if(beef.browser.javaEnabled()) { ... }
-     */
+	 *
+	 * @example: if(beef.browser.javaEnabled()) { ... }
+	 */
 	javaEnabled: function() {
 
 		return (!!window.navigator.javaEnabled());
@@ -652,7 +674,7 @@ beef.browser = {
 			return false;
 		}
 
-        // This is a temporary fix as this does not work on Safari and Chrome
+		// This is a temporary fix as this does not work on Safari and Chrome
 		// Chrome requires manual user intervention even with unsigned applets.
 		// Safari requires a few seconds to load the applet.
 		if (beef.browser.isC() || beef.browser.isS()) {
