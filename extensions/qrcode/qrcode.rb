@@ -26,6 +26,7 @@ module Qrcode
       
       configuration = BeEF::Core::Configuration.instance
       BeEF::Core::Console::Banners.interfaces.each do |int|
+        next if int == "localhost" or int == "127.0.0.1"
         print_success "QRCode images available for interface: #{int}"
         data = ""
         configuration.get("beef.extension.qrcode.target").each do |target|
