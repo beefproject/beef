@@ -391,11 +391,19 @@ beef.browser = {
     },
 
 	/**
+	 * Returns true if Chrome 22.
+	 * @example: beef.browser.isC22()
+	 */
+	isC22: function() {
+		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==22)?true:false);
+	},
+
+	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22();
 	},
 
 	/**
@@ -472,6 +480,7 @@ beef.browser = {
 			C19:	this.isC19(),	// Chrome 19
 			C20:	this.isC20(),	// Chrome 20
 			C21:	this.isC21(),	// Chrome 21
+			C22:	this.isC22(),	// Chrome 22
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -539,6 +548,7 @@ beef.browser = {
 		if (this.isC19())	{ return '19' };	// Chrome 19
 		if (this.isC20())	{ return '20' };	// Chrome 20
 		if (this.isC21())	{ return '21' };	// Chrome 21
+		if (this.isC22())   { return '22' };    // Chrome 22
 
 		if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
