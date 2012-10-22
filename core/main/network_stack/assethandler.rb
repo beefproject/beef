@@ -63,7 +63,7 @@ module Handlers
     # use it like: bind_socket("irc","0.0.0.0",6667)
     def bind_socket(name, host, port)
       if @sockets[name] != nil
-        print_error "Thread [#{name}] is already listening on [#{host}:#{port}]."
+        print_error "Bind Socket [#{name}] is already listening on [#{host}:#{port}]."
       else
         t = Thread.new {
           server = TCPServer.new(host,port)
@@ -71,24 +71,47 @@ module Handlers
             Thread.start(server.accept) do |client|
               data = ""
               recv_length = 1024
+              threshold = 1024 * 512
               while (tmp = client.recv(recv_length))
                 data += tmp
                 break if tmp.length < recv_length || tmp.length == recv_length
+                # 512 KB max of incoming data
+                break if data > threshold
+              end
+              if  data.size > threshold
+                print_error "More than 512 KB of data incoming for Bind Socket [#{name}]. For security purposes client connection is closed, and data not saved."
+              else
+                @sockets[name] = {'thread' => t, 'data' => data}
+                print_info "Bind Socket [#{name}] received [#{data.size}] bytes of data."
+                print_debug "Bind Socket [#{name}] received:\n#{data}"
               end
               client.close
-              print_debug "Bind Socket on Thread [#{name}] received:\n#{data}"
             end
           end
         }
-        @sockets[name] = t
-        print_info "Thread [#{name}] listening on [#{host}:#{port}]."
+        print_info "Bind socket [#{name}] listening on [#{host}:#{port}]."
       end
     end
 
+    def get_socket_data(name)
+      data = nil
+      if @sockets[name] != nil
+        data = @sockets[name]['data']
+      else
+        print_error "Bind Socket [#{name}] does not exists."
+      end
+      data
+    end
+
     def unbind_socket(name)
-      t = @sockets[name]
-      Thread.kill(t)
-      print_info "Thread [#{name}] killed."
+        t = @sockets[name]['thread']
+        if t.alive?
+          print_debug "Thread to be killed: #{t}"
+          Thread.kill(t)
+          print_info "Bind Socket [#{name}] killed."
+        else
+          print_info "Bind Socket [#{name}] ALREADY killed."
+        end
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated
