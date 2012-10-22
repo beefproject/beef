@@ -147,22 +147,29 @@ module BeEF
         # check if the original URL can be framed. NOTE: doesn't check for framebusting code atm
         def is_frameable(url)
           result = true
-          uri = URI(url)
-          http = Net::HTTP.new(uri.host, uri.port)
-          if uri.scheme == "https"
-            http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          end
-          request = Net::HTTP::Get.new(uri.request_uri)
-          response = http.request(request)
-          frame_opt = response["X-Frame-Options"]
-
-          if frame_opt != nil
-            if frame_opt.casecmp("DENY") == 0 || frame_opt.casecmp("SAMEORIGIN") == 0
-              result = false
+          begin
+            uri = URI(url)
+            http = Net::HTTP.new(uri.host, uri.port)
+            if uri.scheme == "https"
+              http.use_ssl = true
+              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
             end
+            request = Net::HTTP::Get.new(uri.request_uri)
+            response = http.request(request)
+            frame_opt = response["X-Frame-Options"]
+
+            if frame_opt != nil
+              if frame_opt.casecmp("DENY") == 0 || frame_opt.casecmp("SAMEORIGIN") == 0
+                result = false
+              end
+            end
+            print_info "Page can be framed: [#{result}]"
+          rescue Exception => e
+            result = false
+            print_error "Unable to determine if page can be framed. Page can be framed: [#{result}]"
+            print_debug e
+            #print_debug e.backtrace
           end
-          print_info "Page can be framed: [#{result}]"
           result
         end
 
