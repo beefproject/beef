@@ -32,12 +32,19 @@ module API
       # retrieve the configuration class instance
       configuration = BeEF::Core::Configuration.instance
       
-      # registers the http controllers for the AdminUI extensions
-      Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each { |http_module|
+      # registers the http controllers used by BeEF core (authentication, logs, modules and panel)
+      Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each do |http_module|
         require http_module
         mod_name = File.basename http_module, '.rb'
         beef_server.mount("/ui/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
-      }
+      end
+
+      # registers the http controllers used by BeEF extensions (requester, proxy, xssrays, etc..)
+      Dir["#{$root_dir}/extensions/**/controllers/*.rb"].each do |http_module|
+        require http_module
+        mod_name = File.basename http_module, '.rb'
+        beef_server.mount("/ui/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
+      end
       
       # mount the folder were we store static files (javascript, css, images) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
