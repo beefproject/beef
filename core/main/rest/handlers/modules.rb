@@ -30,7 +30,9 @@ module BeEF
                   'Expires' => '0'
         end
 
+        #
         # @note Get all available and enabled modules (id, name, category)
+        #
         get '/' do
           mods = BeEF::Core::Models::CommandModule.all
 
@@ -50,7 +52,18 @@ module BeEF
           mods_hash.to_json
         end
 
+        get '/search/:mod_name' do
+          mod = BeEF::Core::Models::CommandModule.first(:name => params[:mod_name])
+          result = {}
+          if mod != nil
+            result = {'id' => mod.id}
+          end
+          result.to_json
+        end
+
+        #
         # @note Get the module definition (info, options)
+        #
         get '/:mod_id' do
           cmd = BeEF::Core::Models::CommandModule.get(params[:mod_id])
           error 404 unless cmd != nil
@@ -76,20 +89,29 @@ module BeEF
         #Content-Type: application/json; charset=UTF-8
         #
         #{"date":"1331637093","data":"{\"data\":\"text=michele\"}"}
+        #
         get '/:session/:mod_id/:cmd_id' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
           cmd = BeEF::Core::Models::Command.first(:hooked_browser_id => hb.id,
                                                   :command_module_id => params[:mod_id], :id => params[:cmd_id])
           error 404 unless cmd != nil
-          result = BeEF::Core::Models::Result.first(:hooked_browser_id => hb.id, :command_id => cmd.id)
-          error 404 unless result != nil
-          {
-             'date' => result.date,
-             'data' => result.data
-          }.to_json
+          results = BeEF::Core::Models::Result.all(:hooked_browser_id => hb.id, :command_id => cmd.id)
+          error 404 unless results != nil
+
+          results_hash = {}
+          i = 0
+          results.each do |result|
+            results_hash[i] = {
+                'date' => result.date,
+                'data' => result.data
+            }
+            i+=1
+          end
+          results_hash.to_json
         end
 
+        #
         # @note Fire a new command module to the specified hooked browser.
         # Return the command_id of the executed module if it has been fired correctly.
         # Input must be specified in JSON format
@@ -123,6 +145,7 @@ module BeEF
         #Content-Length: 35
         #
         #{"success":"true","command_id":"not_available"}
+        #
         post '/:session/:mod_id' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
@@ -142,6 +165,7 @@ module BeEF
           end
         end
 
+        #
         #@note Fire a new command module to multiple hooked browsers.
         # Returns the command IDs of the launched modules, or 0 if firing got issues.
         # POST request body example (for modules that don't need parameters, just remove "mod_params")
@@ -156,6 +180,7 @@ module BeEF
         # curl example (alert module with custom text, 2 hooked browsers)):
         #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
         #-X POST http://127.0.0.1:3000/api/modules/multi?token=2316d82702b83a293e2d46a0886a003a6be0a633
+        #
         post '/multi' do
           request.body.rewind
           begin

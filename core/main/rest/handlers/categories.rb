@@ -17,7 +17,7 @@
 module BeEF
   module Core
     module Rest
-      class Logs < BeEF::Core::Router::Router
+      class Categories < BeEF::Core::Router::Router
 
         config = BeEF::Core::Configuration.instance
 
@@ -30,45 +30,17 @@ module BeEF
                   'Expires' => '0'
         end
 
-        #
-        # @note Get all global logs
-        #
         get '/' do
-          logs = BeEF::Core::Models::Log.all()
-          logs_to_json(logs)
-        end
-
-        #
-        # @note Get hooked browser logs
-        #
-        get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
-          error 401 unless hb != nil
-
-          logs = BeEF::Core::Models::Log.all(:hooked_browser_id => hb.id)
-          logs_to_json(logs)
-        end
-
-        private
-
-        def logs_to_json(logs)
-          logs_json = []
-          count = logs.length
-
-          logs.each do |log|
-            logs_json << {
-                'id' => log.id.to_i,
-                'date' => log.date.to_s,
-                'event' => log.event.to_s,
-                'type' => log.type.to_s
-            }
-          end
-
-          {
-              'logs_count' => count,
-              'logs' => logs_json
-          }.to_json if not logs_json.empty?
-
+           categories = BeEF::Modules::get_categories
+           cats = Array.new
+           i = 0
+           # todo add sub-categories support!
+           categories.each do |category|
+             cat = {"id" => i, "name" => category}
+             cats << cat
+             i += 1
+           end
+           cats.to_json
         end
 
       end

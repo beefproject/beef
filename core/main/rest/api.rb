@@ -29,6 +29,12 @@ module BeEF
         end
       end
 
+      module RegisterCategoriesHandler
+        def self.mount_handler(server)
+          server.mount('/api/categories', BeEF::Core::Rest::Categories.new)
+        end
+      end
+
       module RegisterLogsHandler
         def self.mount_handler(server)
           server.mount('/api/logs', BeEF::Core::Rest::Logs.new)
@@ -43,6 +49,8 @@ module BeEF
 
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHooksHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterModulesHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterCategoriesHandler, BeEF::API::Server, 'mount_handler')
+
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterLogsHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterAdminHandler, BeEF::API::Server, 'mount_handler')
 
