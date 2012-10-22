@@ -9,7 +9,7 @@
  * Command History.
  * Commandline Editing. 
  *
- * Modified by antisnatchor
+ * Modified by antisnatchor (also to prevent XSS, see line 270)
  * */
 
 ( function( $ ) {
@@ -266,7 +266,10 @@
 
           if( typeof key === 'function' ) {
               data = key( tokens );
-              if( data ) { update_content( get_current_prompt(), value, data ) }
+              /*
+               * antisnatchor: preventing XSS
+               */
+              if( data ) { update_content( get_current_prompt(), $jEncoder.encoder.encodeForJavascript(value), data)}
           } else if( typeof key === 'string' ) {
             var to_send = { };
             to_send[ settings.AJAX_PARAM ] = tokens.join( ' ' );

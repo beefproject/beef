@@ -85,6 +85,11 @@ ZombieTab_IpecTab = function(zombie) {
         return str;
     }
 
+    function validateNumber(input, min, max) {
+        var value = parseInt(input);
+        return (!isNaN(value) && value >= min && value <= max);
+    }
+
 
     function initTerminal(zombie){
         String.prototype.reverse = function() {
@@ -99,41 +104,17 @@ ZombieTab_IpecTab = function(zombie) {
         var target_port = "";
 
         var command_directory = {
-            'eval': function( tokens ) {
-                tokens.shift();
-                var expression = tokens.join( ' ' );
-                var result = '';
-                try {
-                    result = eval( expression );
-                } catch( e ) {
-                    result = 'Error: ' + e.message;
-                }
-                return result;
-            },
-
-            'date': function( tokens ) {
-                var now = new Date();
-                return now.getDate() + '-' +
-                    now.getMonth() + '-' +
-                    ( 1900 + now.getYear() )
-            },
-
-            'cap': function( tokens ) {
-                tokens.shift();
-                return tokens.join( ' ' ).toUpperCase();
-            },
-
-            'go': function( tokens ) {
-                var url = tokens[1];
-                document.location.href = url;
-            },
 
             'target': function(tokens){
+                var ip_regex = new RegExp('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$');
                 target_ip = tokens[1];
-                target_port = tokens[2];
-                return "Target is now " + tokens[1] + ":" + tokens[2];
+                target_port =  tokens[2];
+                if(ip_regex.test(target_ip) && validateNumber(target_port, 1, 65535)){
+                    return "Target is now " + tokens[1] + ":" + tokens[2];
+                }else{
+                    return "Target error: invalid IP or port.";
+                }
             },
-
 
             'exec': function(tokens){
                 if(target_ip.length == 0 || target_port.length == 0)
