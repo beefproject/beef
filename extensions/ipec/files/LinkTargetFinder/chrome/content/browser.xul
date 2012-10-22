@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://linktargetfinder/skin/skin.css" type="text/css"?> 
+<!DOCTYPE linktargetfinder SYSTEM "chrome://linktargetfinder/locale/translations.dtd">
+<overlay id="sample" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+		<script src="linkTargetFinder.js" />
+		
+		<menupopup id="menu_ToolsPopup"> 
+			<menuitem label="&runlinktargetfinder;" key="link-target-finder-run-key" oncommand="linkTargetFinder.run()"/> 
+		</menupopup>
+		
+		<keyset>
+			<key id="link-target-finder-run-key" modifiers="accel alt shift" key="L" oncommand="linkTargetFinder.run()"/>
+		</keyset>
+		
+		<statusbar id="status-bar">
+			<statusbarpanel id="link-target-finder-status-bar-icon" class="statusbarpanel-iconic" src="chrome://linktargetfinder/skin/status-bar.png" tooltiptext="&runlinktargetfinder;" onclick="linkTargetFinder.run()" />
+		</statusbar>
+		
+		<toolbarpalette id="BrowserToolbarPalette">
+			<toolbarbutton id="link-target-finder-toolbar-button" label="Link Target Finder" tooltiptext="&runlinktargetfinder;" oncommand="linkTargetFinder.run()"/>
+		</toolbarpalette>
+</overlay>

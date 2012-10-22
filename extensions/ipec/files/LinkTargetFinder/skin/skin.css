@@ -1,0 +1,12 @@
+#link-target-finder-toolbar-button {
+	list-style-image: url("chrome://linktargetfinder/skin/toolbar-large.png");
+}
+
+#link-target-finder-status-bar-icon {
+	width: 83px;
+	margin: 0 5px;
+}
+
+.link-target-finder-selected {
+	outline: 2px solid red !important;
+}
