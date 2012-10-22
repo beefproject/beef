@@ -21,8 +21,6 @@ ZombieTab_IpecTab = function(zombie) {
 
 	var commands_statusbar = new Beef_StatusBar('ipec-bbar-zombie-'+zombie.session);
 
-     var req_pagesize = 30;
-
     var ipec_config_panel = new Ext.Panel({
 		id: 'ipec-config-zombie-'+zombie.session,
 		title: 'Scan Config',
@@ -256,81 +254,11 @@ ZombieTab_IpecTab = function(zombie) {
 
     });
 
-     var ipec_logs_store = new Ext.ux.data.PagingJsonStore({
-        storeId: 'ipec-logs-store-zombie-' + zombie.session,
-        url: '/ui/ipec/zombie.json',
-        remoteSort: false,
-        autoDestroy: true,
-        autoLoad: false,
-        root: 'logs',
-
-        fields: ['id', 'vector_method', 'vector_name', 'vector_poc'],
-        sortInfo: {field: 'id', direction: 'DESC'},
-
-        baseParams: {
-            nonce: Ext.get("nonce").dom.value,
-            zombie_session: zombie.session
-        }
-    });
-
-    var ipec_logs_bbar = new Ext.PagingToolbar({
-        pageSize: req_pagesize,
-        store: ipec_logs_store,
-        displayInfo: true,
-        displayMsg: 'Displaying history {0} - {1} of {2}',
-        emptyMsg: 'No history to display'
-    });
-
-    var ipec_logs_grid = new Ext.grid.GridPanel({
-        id: 'ipec-logs-grid-zombie-' + zombie.session,
-        store: ipec_logs_store,
-        bbar: ipec_logs_bbar,
-        border: false,
-        loadMask: {msg:'Loading History...'},
-
-        viewConfig: {
-            forceFit:true
-        },
-
-        view: new Ext.grid.GridView({
-            forceFit: true,
-            emptyText: "No History",
-            enableRowBody:true
-        }),
-
-        columns: [
-            {header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
-            {header: 'Vector Method', width: 30, sortable: true, dataIndex: 'vector_method', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-            {header: 'Vector Name', width: 40, sortable: true, dataIndex: 'vector_name', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-            {header: 'Vector PoC', sortable: true, dataIndex: 'vector_poc', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
-        ],
-
-        listeners: {
-            afterrender: function(datagrid) {
-                datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
-            }
-        }
-    });
-
-    var ipec_logs_panel = new Ext.Panel({
-		id: 'ipec-logs-panel-zombie-'+zombie.session,
-		title: 'Logs',
-		items:[ipec_logs_grid],
-		layout: 'fit',
-
-		listeners: {
-			activate: function(ipec_logs_panel) {
-				ipec_logs_panel.items.items[0].store.reload();
-			}
-		}
-	});
-
-    function genScanSettingsPanel(zombie, bar, value) {
+    function createIpecTerminalPanel(zombie, bar, value) {
 
 		panel = Ext.getCmp('ipec-config-zombie-'+zombie.session);
 		panel.setTitle('Prompt');
         panel.add(ipec_terminal_panel);
-//		panel.add(form);
 	}
 
 	ZombieTab_IpecTab.superclass.constructor.call(this, {
@@ -346,7 +274,7 @@ ZombieTab_IpecTab = function(zombie) {
         bbar: commands_statusbar,
         listeners: {
 			afterrender : function(){
-				genScanSettingsPanel(zombie, commands_statusbar);
+				createIpecTerminalPanel(zombie, commands_statusbar);
 			},
         autoScroll:true
 
