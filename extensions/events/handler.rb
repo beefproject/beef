@@ -51,36 +51,35 @@ module Events
       events = @data['results']
 
       # push events to logger
-      if (events.kind_of?(Array))
         logger = BeEF::Core::Logger.instance
-        events.each{|e|
-            logger.register('Event', parse(e), zombie.id)
-        }
-      end
-
+        events.each do |key,value|
+            logger.register('Event', parse(value), zombie.id)
+        end
     end
 
     def parse(event)
-        case event['type']
-            when 'click'
-                return event['time'].to_s+'s - [Mouse Click] x: '+event['x'].to_s+' y:'+event['y'].to_s+' > '+event['target'].to_s
-            when 'focus'
-                return event['time'].to_s+'s - [Focus] Browser has regained focus.'
-			when 'copy'
-				return event['time'].to_s+'s - [User Copied Text] "'+event['data'].to_s+'"'
-			when 'cut'
-				return event['time'].to_s+'s - [User Cut Text] "'+event['data'].to_s+'"'
-			when 'paste'
-				return event['time'].to_s+'s - [User Pasted Text] "'+event['data'].to_s+'"'
-            when 'blur'
-                return event['time'].to_s+'s - [Blur] Browser has lost focus.'
-            when 'keys'
-                return event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
-			when 'submit'
-				return event['time'].to_s+'s - [Form Submitted] '+event['data'].to_s+' > '+event['target'].to_s
-        end
-        print_debug '[EVENTS] Event handler has received an unknown event'
-        return 'Unknown event'
+      case event['type']
+        when 'click'
+          result = event['time'].to_s+'s - [Mouse Click] x: '+event['x'].to_s+' y:'+event['y'].to_s+' > '+event['target'].to_s
+        when 'focus'
+          result = event['time'].to_s+'s - [Focus] Browser has regained focus.'
+        when 'copy'
+          result = event['time'].to_s+'s - [User Copied Text] "'+event['data'].to_s+'"'
+        when 'cut'
+          result = event['time'].to_s+'s - [User Cut Text] "'+event['data'].to_s+'"'
+        when 'paste'
+          result = event['time'].to_s+'s - [User Pasted Text] "'+event['data'].to_s+'"'
+        when 'blur'
+          result = event['time'].to_s+'s - [Blur] Browser has lost focus.'
+        when 'keys'
+          result = event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
+        when 'submit'
+          result = event['time'].to_s+'s - [Form Submitted] '+event['data'].to_s+' > '+event['target'].to_s
+        else
+          print_debug '[EVENTS] Event handler has received an unknown event'
+          result = 'Unknown event'
+      end
+      result
     end
     
   end
