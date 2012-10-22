@@ -28,7 +28,12 @@
 	<%= script_tag 'ui/panel/tabs/ZombieTabRider.js' %>
 	<%= script_tag 'ui/panel/tabs/ZombieTabXssRays.js' %>
 
-	<%= script_tag 'ui/panel/PanelViewer.js' %>
+    <%= script_tag 'wterm/wterm.jquery.js' %>
+    <%= stylesheet_tag 'wterm.css' %>
+    <script type="text/javascript" language="JavaScript">var $jwterm = jQuery.noConflict();</script>
+    <%= script_tag 'ui/panel/tabs/ZombieTabIpec.js' %>
+
+    <%= script_tag 'ui/panel/PanelViewer.js' %>
 	<%= script_tag 'ui/panel/DataGrid.js' %>
 	<%= script_tag 'ui/panel/MainPanel.js' %>
 	<%= script_tag 'ui/panel/ZombieTab.js' %>
