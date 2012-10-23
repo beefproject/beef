@@ -1,0 +1,10 @@
+beef:
+    module:
+        javascript_inject:
+            enable: true
+            category: "Browser"
+            name: "Javascript Inject"
+            description: "This module will inject javascript into the source of a page"
+            authors: ["siege"]
+            target:
+                user_notify: ["ALL"]
