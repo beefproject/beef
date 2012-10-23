@@ -5,6 +5,6 @@ beef:
             category: "Browser"
             name: "Javascript Inject"
             description: "This module will inject javascript into the source of a page"
-            authors: ["siege"]
+            authors: ["siegemaster"]
             target:
                 user_notify: ["ALL"]
