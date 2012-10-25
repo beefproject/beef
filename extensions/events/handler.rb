@@ -60,24 +60,24 @@ module Events
     def parse(event)
       case event['type']
         when 'click'
-          result = event['time'].to_s+'s - [Mouse Click] x: '+event['x'].to_s+' y:'+event['y'].to_s+' > '+event['target'].to_s
+          result = "#{event['time']}s - [Mouse Click] x: #{event['x']} y:#{event['y']} > #{event['target']}"
         when 'focus'
-          result = event['time'].to_s+'s - [Focus] Browser has regained focus.'
+          result = "#{event['time']}s - [Focus] Browser has regained focus."
         when 'copy'
-          result = event['time'].to_s+'s - [User Copied Text] "'+event['data'].to_s+'"'
+          result = "#{event['time']}s - [User Copied Text] \"#{event['data']}\""
         when 'cut'
-          result = event['time'].to_s+'s - [User Cut Text] "'+event['data'].to_s+'"'
+          result = "#{event['time']}s - [User Cut Text] \"#{event['data']}\""
         when 'paste'
-          result = event['time'].to_s+'s - [User Pasted Text] "'+event['data'].to_s+'"'
+          result = "#{event['time']}s - [User Pasted Text] \"#{event['data']}\""
         when 'blur'
-          result = event['time'].to_s+'s - [Blur] Browser has lost focus.'
+          result = "#{event['time']}s - [Blur] Browser has lost focus."
         when 'keys'
-          result = event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
+          result = "#{event['time']}s - [User Typed] \"#{event['data']}\" > #{event['target']}"
         when 'submit'
-          result = event['time'].to_s+'s - [Form Submitted] '+event['data'].to_s+' > '+event['target'].to_s
+          result = "#{event['time']}s - [Form Submitted] \"#{event['data']}\" > #{event['target']}"
         else
           print_debug '[EVENTS] Event handler has received an unknown event'
-          result = 'Unknown event'
+          result = "#{event['time']}s - Unknown event"
       end
       result
     end
