@@ -13,68 +13,86 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-
 module BeEF
-module Core
-module Models
+  module Core
+    module Handlers
+      module Modules
 
-  # @note Table stores the commands that have been sent to the Hooked Browsers.
-  class Command
+        module Command
 
-    include DataMapper::Resource
+          # Adds the command module instructions to a hooked browser's http response.
+          # @param [Object] command Command object
+          # @param [Object] hooked_browser Hooked Browser object
+          def add_command_instructions(command, hooked_browser)
+            (print_error "hooked_browser is nil"; return) if hooked_browser.nil?
+            (print_error "hooked_browser.session is nil"; return) if hooked_browser.session.nil?
+            (print_error "hooked_browser is nil"; return) if command.nil?
+            (print_error "hooked_browser.command_module_id is nil"; return) if command.command_module_id.nil?
 
-    storage_names[:default] = 'commands'
+            config = BeEF::Core::Configuration.instance
+            # @note get the command module
+            command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
+            (print_error "command_module is nil"; return) if command_module.nil?
+            (print_error "command_module.path is nil"; return) if command_module.path.nil?
 
-    property :id, Serial
-    property :data, Text
-    property :creationdate, String, :length => 15, :lazy => false
-    property :label, Text, :lazy => false
-    property :instructions_sent, Boolean, :default => false
+            if (command_module.path.match(/^Dynamic/))
+              command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
+            else
+              key = BeEF::Module.get_key_by_database_id(command.command_module_id)
+              command_module = BeEF::Core::Command.const_get(config.get("beef.module.#{key}.class")).new(key)
+            end
 
-    has n, :results
+            command_module.command_id = command.id
+            command_module.session_id = hooked_browser.session
+            command_module.build_datastore(command.data)
+            command_module.pre_send
 
-    # Save results and flag that the command has been run on the hooked browser
-    # @param [String] hook_session_id The session_id.
-    # @param [String] command_id The command_id.
-    # @param [String] command_friendly_name The command friendly name.
-    # @param [String] result The result of the command module.
-    def self.save_result(hook_session_id, command_id, command_friendly_name, result)
-      # @note enforcing arguments types
-      command_id = command_id.to_i
+            build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
 
-      # @note argument type checking
-      raise Exception::TypeError, '"hook_session_id" needs to be a string' if not hook_session_id.string?
-      raise Exception::TypeError, '"command_id" needs to be an integer' if not command_id.integer?
-      raise Exception::TypeError, '"command_friendly_name" needs to be a string' if not command_friendly_name.string?
-      raise Exception::TypeError, '"result" needs to be a hash' if not result.hash?
+            ws = BeEF::Core::Websocket::Websocket.instance
 
-      # @note get the hooked browser structure and id from the database
-      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) || nil
-      raise Exception::TypeError, "hooked_browser is nil" if hooked_browser.nil?
-      raise Exception::TypeError, "hooked_browser.id is nil" if hooked_browser.id.nil?
-      hooked_browser_id = hooked_browser.id
-      raise Exception::TypeError, "hooked_browser.ip is nil" if hooked_browser.ip.nil?
-      hooked_browser_ip = hooked_browser.ip
+            if config.get("beef.extension.evasion.enable")
+              evasion = BeEF::Extension::Evasion::Evasion.instance
+              @output = evasion.obfuscate(command_module.output)
+            else
+              @output = command_module.output
+            end
 
-      # @note get the command module data structure from the database
-      command = first(:id => command_id.to_i, :hooked_browser_id => hooked_browser_id) || nil
-      raise Exception::TypeError, "command is nil" if command.nil?
+            #todo antisnatchor: remove this gsub crap adding some hook packing.
+            if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
+              #content = command_module.output.gsub('//
+              #//   Copyright 2012 Wade Alcorn wade@bindshell.net
+              #//
+              #//   Licensed under the Apache License, Version 2.0 (the "License");
+              #//   you may not use this file except in compliance with the License.
+              #//   You may obtain a copy of the License at
+              #//
+              #//       http://www.apache.org/licenses/LICENSE-2.0
+              #//
+              #//   Unless required by applicable law or agreed to in writing, software
+              #//   distributed under the License is distributed on an "AS IS" BASIS,
+              #//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+              #//   See the License for the specific language governing permissions and
+              #//   limitations under the License.
+              #//', "")
+              ws.send(@output, hooked_browser.session)
+            else
+              @body << @output + "\n\n"
+            end
+            # @note prints the event to the console
+            if BeEF::Settings.console?
+              name = command_module.friendlyname || kclass
+              print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has been sent instructions from command module [id:#{command.id}, name:'#{name}']"
+            end
 
-      # @note create the entry for the results 
-      command.results.new(:hooked_browser_id => hooked_browser_id, :data => result.to_json, :date => Time.now.to_i)
-      command.save
+            # @note flag that the command has been sent to the hooked browser
+            command.instructions_sent = true
+            command.save
+          end
 
-      # @note log that the result was returned
-      BeEF::Core::Logger.instance.register('Command', "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']", hooked_browser_id)
+        end
 
-      # @note prints the event into the console
-      if BeEF::Settings.console?
-        print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']"
       end
     end
-
   end
-
-end
-end
 end
