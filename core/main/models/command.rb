@@ -65,11 +65,11 @@ module Models
       command.save
 
       # @note log that the result was returned
-      BeEF::Core::Logger.instance.register('Command', "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module '#{command_friendly_name}'", hooked_browser_id)
+      BeEF::Core::Logger.instance.register('Command', "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']", hooked_browser_id)
 
       # @note prints the event into the console
       if BeEF::Settings.console?
-        print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module '#{command_friendly_name}'"
+        print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']"
       end
     end
 
