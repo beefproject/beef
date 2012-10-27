@@ -15,6 +15,6 @@
 //
 beef.execute(function() {
 	
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "popup_blocker_enabled="+beef.browser.popup.blocker_enbabled());
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "popup_blocker_enabled="+beef.browser.popup.blocker_enabled());
 
 });
