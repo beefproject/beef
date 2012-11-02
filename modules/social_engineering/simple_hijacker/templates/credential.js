@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
 	imgr = "http://0.0.0.0:3000/ui/media/images/beef.png";
 	var answer= '';
 	

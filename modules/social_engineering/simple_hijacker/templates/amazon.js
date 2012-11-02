@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
   beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
 	$j(document).attr('title', $j(this).html());
 	document.body.scroll = 'no';

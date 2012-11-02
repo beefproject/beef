@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
 // see http://kb.mozillazine.org/Firefox_:_FAQs_:_About:config_Entries
 // see http://mike.kaply.com/2012/06/21/best-practices-for-overriding-the-new-tab-page-with-your-extension/
 pref("extensions.linktargetfinder.autorun", false);
