@@ -24,6 +24,8 @@ module BeEF
         end
 
         def setup()
+          config = BeEF::Core::Configuration.instance
+
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
           (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
@@ -273,19 +275,25 @@ module BeEF
 
 
           # Call autorun modules
-          autorun = []
-          BeEF::Core::Configuration.instance.get('beef.module').each { |k, v|
-            if v.has_key?('autorun') and v['autorun'] == true
-              if BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name}) == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-                BeEF::Module.execute(k, session_id)
-                autorun.push(k)
-              else
-                print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser #{zombie.ip}"
+          if config.get('beef.autorun.enable')
+            autorun = []
+            BeEF::Core::Configuration.instance.get('beef.module').each { |k, v|
+              if v.has_key?('autorun') and v['autorun'] == true
+                target_status = BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name})
+                if target_status == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+                  BeEF::Module.execute(k, session_id)
+                  autorun.push(k)
+                elsif target_status == BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY and config.get('beef.autorun.allow_user_notify')
+                  BeEF::Module.execute(k, session_id)
+                  autorun.push(k)
+                else
+                  print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
+                end
               end
+            }
+            if autorun.length > 0
+              print_info "Autorun executed[#{autorun.join(', ')}] against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
             end
-          }
-          if autorun.length > 0
-            print_info "Autorun executed: #{autorun.join(', ')} against Hooked browser #{zombie.ip}"
           end
         end
 

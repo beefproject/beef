@@ -72,6 +72,13 @@ beef:
         user:   "beef"
         passwd: "beef"
 
+    # Autorun modules as soon the browser is hooked.
+    # NOTE: only modules with target type 'working' or 'user_notify' can be run automatically.
+    autorun:
+        enable: true
+        # set this to FALSE if you don't want to allow auto-run execution for modules with target->user_notify
+        allow_user_notify: true
+
     crypto_default_value_length: 80
 
     # You may override default extension configuration parameters here
