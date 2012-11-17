@@ -5,16 +5,14 @@
 //
 
 ZombieTab = function(zombie) {
-	
 	main_tab = new ZombieTab_DetailsTab(zombie);
 	log_tab = new ZombieTab_LogTab(zombie);
 	commands_tab = new ZombieTab_Commands(zombie);
 	requester_tab = new ZombieTab_Requester(zombie);
     xssrays_tab =  new ZombieTab_XssRaysTab(zombie);
     ipec_tab = new ZombieTab_IpecTab(zombie);
-
-
-    ZombieTab.superclass.constructor.call(this, {
+    autorun_tab = new ZombieTab_Autorun(zombie);
+	ZombieTab.superclass.constructor.call(this, {
         id:"current-browser",
 		activeTab: 0,
 		loadMask: {msg:'Loading browser...'},
@@ -25,7 +23,13 @@ ZombieTab = function(zombie) {
 			forceFit: true,
 			type: 'fit'
 		},
-		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab]
+		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab, autorun_tab],
+        listeners:{
+            afterrender:function(component){
+                // Hide auto-run tab
+                component.hideTabStripItem(autorun_tab);
+            }
+        }
 	});
 };
 
