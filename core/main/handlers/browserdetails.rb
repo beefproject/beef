@@ -24,6 +24,7 @@ module BeEF
         end
 
         def setup()
+          print_debug "[INIT] Processing Browser Details..."
           config = BeEF::Core::Configuration.instance
 
           # validate hook session value
