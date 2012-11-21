@@ -69,6 +69,9 @@ module BeEF
               hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
             end
 
+            # @note set the XHR-polling timeout
+            hook_session_config['xhr_poll_timeout'] = config.get("beef.http.xhr_poll_timeout")
+
             # @note if http_port <> public_port in config ini, use the public_port
             unless hook_session_config['beef_public_port'].nil?
               if hook_session_config['beef_port'] != hook_session_config['beef_public_port']

