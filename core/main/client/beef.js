@@ -6,12 +6,10 @@
 
 /*!
  * BeEF JS Library <%= @beef_version %>
- * http://beef.googlecode.com/
+ * Register the BeEF JS on the window object.
  */
 
 $j = jQuery.noConflict();
-
-//<%= @beef_hook_session_name %>='<%= @beef_hook_session_id %>';
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 	
