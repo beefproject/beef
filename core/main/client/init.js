@@ -4,11 +4,15 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-
-// if beef.pageIsLoaded is true, then this JS has been loaded >1 times 
-// and will have a new session id. The new session id will need to know
-// the brwoser details. So sendback the browser details again.
-
+/**
+ * @literal object: beef.init
+ * Contains the beef_init() method which starts the BeEF client-side
+ * logic. Also, it overrides the 'onpopstate' and 'onclose' events on the windows object.
+ *
+ * If beef.pageIsLoaded is true, then this JS has been loaded >1 times
+ * and will have a new session id. The new session id will need to know
+ * the brwoser details. So sendback the browser details again.
+ */
 BEEFHOOK = beef.session.get_hook_session_id();
 
 if (beef.pageIsLoaded) {
@@ -49,6 +53,13 @@ window.onclose = function (event) {
     }
 };
 
+/**
+ * Starts the polling mechanism, and initialize various components:
+ *  - browser details (see browser.js) are sent back to the "/init" handler
+ *  - the polling starts (checks for new commands, and execute them)
+ *  - the logger component is initialized (see logger.js)
+ *  - the Autorun Engine is initialized (see are.js)
+ */
 function beef_init() {
     if (!beef.pageIsLoaded) {
         beef.pageIsLoaded = true;
@@ -58,15 +69,12 @@ function beef_init() {
             beef.updater.execute_commands();
             beef.logger.start();
             beef.are.init();
-
-        }
-        else {
+        }else {
             beef.net.browser_details();
             beef.updater.execute_commands();
             beef.updater.check();
             beef.logger.start();
             beef.are.init();
         }
-
     }
 }
