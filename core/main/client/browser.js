@@ -389,12 +389,20 @@ beef.browser = {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==22)?true:false);
 	},
 
+    /**
+     * Returns true if Chrome 23.
+     * @example: beef.browser.isC23()
+     */
+    isC23: function() {
+        return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==23)?true:false);
+    },
+
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23();
 	},
 
 	/**
@@ -472,6 +480,7 @@ beef.browser = {
 			C20:	this.isC20(),	// Chrome 20
 			C21:	this.isC21(),	// Chrome 21
 			C22:	this.isC22(),	// Chrome 22
+            C23:	this.isC23(),	// Chrome 23
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -540,8 +549,9 @@ beef.browser = {
 		if (this.isC20())	{ return '20' };	// Chrome 20
 		if (this.isC21())	{ return '21' };	// Chrome 21
 		if (this.isC22())   { return '22' };    // Chrome 22
+        if (this.isC23())   { return '23' };    // Chrome 23
 
-		if (this.isFF2())	{ return '2'  };	// Firefox 2
+        if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
 		if (this.isFF3_5())	{ return '3.5'};	// Firefox 3.5
 		if (this.isFF3_6())	{ return '3.6'};	// Firefox 3.6
@@ -697,7 +707,6 @@ beef.browser = {
 		} catch(e) {
 			return false;
 		}
-		return false;
 	},
 	
 	/**
@@ -965,7 +974,7 @@ beef.browser = {
 	 * In FF6+ the websocket object has been prefixed with Moz, so now it's called MozWebSocket
 	 * */
 	hasWebSocket: function() {
-		if (!!window.WebSocket || !!window.MozWebSocket) return true; else return false;
+		return !!window.WebSocket || !!window.MozWebSocket;
 	},
 
 	/**
