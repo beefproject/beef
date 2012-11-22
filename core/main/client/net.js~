@@ -111,7 +111,7 @@ beef.net = {
     send:function (handler, cid, results, callback) {
       
       console.log('beef.net.send'+ typeof results + " " + typeof "aaa");
-      if(results && typeof results=="string")  // this line should be commented after hooking the browser because line bellow throws an error
+      if(results && typeof results=="string")  // this line should be uncommented before hooking the browser because line bellow throws an error
 	results = results.replace("https://","http://");
       
         if (typeof beef.websocket === "undefined" || (handler === "/init" && cid == 0)) {
