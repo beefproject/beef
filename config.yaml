@@ -59,6 +59,12 @@ beef:
         # README.databases file
 
         # supported DBs: sqlite, mysql, postgres
+        # NOTE: you must change the Gemfile adding a gem require line like:
+        #   gem "dm-postgres-adapter"
+        # or
+        #   gem "dm-mysql-adapter"
+        # if you want to switch drivers from sqlite to postgres (or mysql).
+        # Finally, run a 'bundle install' command and start BeEF.
         driver: "sqlite"
 
         # db_file is only used for sqlite
