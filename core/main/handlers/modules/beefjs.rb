@@ -23,13 +23,15 @@ module BeEF
             # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
             ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js)
 
+            # @note BeEF libraries: need Eruby evaluation and obfuscation
+            beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js net/cors.js are.js)
             # @note Load websocket library only if WS server is enabled in config.yaml
-            if config.get("beef.http.websocket.enable") == false
-              # @note BeEF libraries: need Eruby evaluation and obfuscation                                                                                                                           #antisnatchor: leave timeout.js as the last one!
-              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js timeout.js)
-            else                                                                                                                                                                                                   #antisnatchor: leave timeout.js as the last one!
-              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js are.js timeout.js)
+            if config.get("beef.http.websocket.enable") == true
+              beef_js_sub_files << "websocket.js"
             end
+
+            # @note antisnatchor: leave timeout.js as the last one!
+            beef_js_sub_files << "timeout.js"
 
             ext_js_to_obfuscate = ''
             ext_js_to_not_obfuscate = ''
