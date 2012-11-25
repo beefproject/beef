@@ -157,7 +157,8 @@ module BeEF
 
         #
         #@note Fire a new command module to multiple hooked browsers.
-        # Returns the command IDs of the launched modules, or 0 if firing got issues.
+        # Returns the command IDs of the launched module, or 0 if firing got issues.
+        #
         # POST request body example (for modules that don't need parameters, just remove "mod_params")
         #  {
         #    "mod_id":1,
@@ -166,12 +167,15 @@ module BeEF
         #     },
         #    "hb_ids":[1,2]
         #   }
+        #
         # response example: {"1":16,"2":17}
+        #
         # curl example (alert module with custom text, 2 hooked browsers)):
+        #
         #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
         #-X POST http://127.0.0.1:3000/api/modules/multi?token=2316d82702b83a293e2d46a0886a003a6be0a633
         #
-        post '/multi' do
+        post '/multi_browser' do
           request.body.rewind
           begin
             body = JSON.parse request.body.read
@@ -197,6 +201,68 @@ module BeEF
                 cmd_id = BeEF::Module.execute(modk, hb.session, mod_params)
                 results[hb_id] = cmd_id
               end
+            end
+            results.to_json
+          rescue Exception => e
+            print_error "Invalid JSON input passed to endpoint /api/modules/multi"
+            error 400 # Bad Request
+          end
+        end
+
+        # @note Fire multiple command modules to a single hooked browser.
+        # Returns the command IDs of the launched modules, or 0 if firing got issues.
+        #
+        # POST request body example (for modules that don't need parameters, just pass an empty JSON object like {} )
+        #{ "hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
+        #    "modules": [
+        #        {    # test_return_long_string module with custom input
+        #             "mod_id":99,
+        #              "mod_input":[{"repeat":"10"},{"repeat_string":"ABCDE"}]
+        #        },
+        #        {   # prompt_dialog module with custom input
+        #            "mod_id":116,
+        #            "mod_input":[{"question":"hooked?"}]
+        #        },
+        #        {   # alert_dialog module without input (using default input, if any)
+        #            "mod_id":128,
+        #            "mod_input":[]
+        #        }
+        #    ]
+        #  }
+        # response example: {"99":7,"116":8,"128":0} # <- This means the alert_dialog had issues (see return value 0)
+        #
+        # curl example (test_return_long_string and prompt_dialog module with custom inputs)):
+        #
+        #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
+        # "modules":[{"mod_id":99,"mod_input":[{"repeat":"10"},{"repeat_string":"ABCDE"}]},{"mod_id":116,"mod_input":[{"question":"hooked?"}]},{"mod_id":128,"mod_input":[]}]}'
+        #  -X POST http://127.0.0.1:3000/api/modules/multi_module?token=e640483ae9bca2eb904f003f27dd4bc83936eb92
+        #
+        post '/multi_module' do
+          request.body.rewind
+          begin
+            body = JSON.parse request.body.read
+            hb = BeEF::Core::Models::HookedBrowser.first(:session => body["hb"])
+            error 401 unless hb != nil
+
+            results = Hash.new
+            if body["modules"] != nil
+              body["modules"].each{|mod|
+                mod_id = mod["mod_id"]
+                mod_k = BeEF::Module.get_key_by_database_id mod["mod_id"]
+                if mod_k == nil
+                  results[mod_id] = 0
+                  next
+                else
+                  mod_params = []
+                  mod["mod_input"].each{|input|
+                    input.each{|k,v|
+                      mod_params.push({'name' => k, 'value' => v})
+                    }
+                  }
+                  cmd_id = BeEF::Module.execute(mod_k, hb.session, mod_params)
+                  results[mod_id] = cmd_id
+                end
+              }
             end
             results.to_json
           rescue Exception => e
