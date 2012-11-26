@@ -13,3 +13,16 @@ beef:
             authors: ["bcoles"]
             target:
                 working: ["ALL"]
+                not_working:
+                    IE:
+                        min_ver: 6
+                        max_ver: 7
+                    O:
+                        min_ver: 1
+                        max_ver: 11
+                    C:
+                        min_ver: 1
+                        max_ver: 2
+                    S:
+                        min_ver: 1
+                        max_ver: 3
