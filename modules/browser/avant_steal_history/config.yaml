@@ -17,8 +17,8 @@ beef:
     module:
         avant_steal_history:
             enable: true
-            category: ["Exploits", "XSS"]
-            name: "Avant Browser History Stealing"
+            category: "Browser"
+            name: "Get Visited URLs (Avant Browser)"
             description: "Invoke AFRunCommand() privileged function. The integer 60003 is passed by default to dump the Avant Browser history."
             authors: ["Roberto Suggi Liverani"]
             target:

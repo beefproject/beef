@@ -11,8 +11,8 @@
 # IT SHOULD ONLY BE RUN ON THE LIVE CD
 # Download LiveCD here: https://github.com/beefproject/beef/downloads
 #
-# This script contains a few fixes to make beef play nicely with the way  
-# remastersys creates the live cd distributable as well as generating host keys  
+# This script contains a few fixes to make BeEF play nicely with the way  
+# remastersys creates the live cd distributable as well as generating host keys 
 # to enable SSH etc. The script also make it easy for the user to update/start 
 # the BeEF server
 #
@@ -37,7 +37,7 @@ echo ""
 f1="/etc/ssh/ssh_host_rsa_key"
 if [ -f $f1 ]
 then
- echo ""
+	echo ""
 else 
 	echo -n "Would you like to enable ssh (y/N)? "
 	read var
@@ -57,7 +57,7 @@ echo ""
 # Prompt the user if they would like to update BeEF and 
 # other components installed (such as sqlmap and msf)
 #
-echo -n "Check and install updates for beef (y/N)? "
+echo -n "Check and install updates for BeEF (y/N)? "
 read var
 
 if [ $var = "y" ] ; then
@@ -67,7 +67,7 @@ if [ $var = "y" ] ; then
 fi
 echo ""
 
-echo -n "Check and install updates for mfs and sqlmap (y/N)? "
+echo -n "Check and install updates for msf and sqlmap (y/N)? "
 read var
 
 if [ $var = "y" ] ; then
@@ -81,8 +81,8 @@ fi
  
  
 #
-# Create a shortcut in the users home folder to BeEF, MSF and sqlmap (if they do 
-# not yet exist)
+# Create a shortcut in the user's home folder to BeEF, msf and sqlmap
+# (if they do not yet exist)
 #
 f1="beef"
 if [ -f $f1 ] ; then
@@ -94,7 +94,7 @@ else
 fi
 
 #
-# Prompt the user if they would like start beef
+# Prompt the user if they would like start BeEF
 #
 echo -n "Start BeEF (y/N)? "
 read var
