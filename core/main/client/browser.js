@@ -250,7 +250,7 @@ beef.browser = {
 	 * @example: beef.browser.isC5()
 	 */
 	isC5: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false);
 	},
 		
 	/**
@@ -258,7 +258,7 @@ beef.browser = {
 	 * @example: beef.browser.isC6()
 	 */
 	isC6: function() {
-		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==6)?true:false);
+		return (!!window.chrome && !!window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==6)?true:false);
 	},
 
 	/**
@@ -266,7 +266,7 @@ beef.browser = {
 	 * @example: beef.browser.isC7()
 	 */
 	isC7: function() {
-		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==7)?true:false);
+		return (!!window.chrome && !!window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==7)?true:false);
 	},
 
 	/**
@@ -274,7 +274,7 @@ beef.browser = {
 	 * @example: beef.browser.isC8()
 	 */
 	isC8: function() {
-		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false);
+		return (!!window.chrome && !!window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false);
 	},
 	
 	/**
@@ -282,7 +282,7 @@ beef.browser = {
 	 * @example: beef.browser.isC9()
 	 */
 	isC9: function() {
-		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false);
+		return (!!window.chrome && !!window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false);
 	},
 	
 	/**
@@ -290,7 +290,7 @@ beef.browser = {
 	 * @example: beef.browser.isC10()
 	 */
 	isC10: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==10)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==10)?true:false);
 	},
 
 	/**
@@ -298,7 +298,7 @@ beef.browser = {
 	 * @example: beef.browser.isC11()
 	 */
 	isC11: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==11)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==11)?true:false);
 	},
 	
 	/**
@@ -306,7 +306,7 @@ beef.browser = {
 	 * @example: beef.browser.isC12()
 	 */
 	isC12: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==12)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==12)?true:false);
 	},
 
 	/**
@@ -314,7 +314,7 @@ beef.browser = {
 	 * @example: beef.browser.isC13()
 	 */
 	isC13: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==13)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==13)?true:false);
 	},
 
 	/**
@@ -322,7 +322,7 @@ beef.browser = {
 	 * @example: beef.browser.isC14()
 	 */
 	isC14: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==14)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==14)?true:false);
 	},
 
 	/**
@@ -330,7 +330,7 @@ beef.browser = {
 	 * @example: beef.browser.isC15()
 	 */
 	isC15: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==15)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==15)?true:false);
 	},
 
 	/**
@@ -338,7 +338,7 @@ beef.browser = {
 	 * @example: beef.browser.isC16()
 	 */
 	isC16: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==16)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==16)?true:false);
 	},
 
     /**
@@ -346,7 +346,7 @@ beef.browser = {
      * @example: beef.browser.isC17()
      */
     isC17: function() {
-        return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==17)?true:false);
+        return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==17)?true:false);
     },
 
 	/**
@@ -354,7 +354,7 @@ beef.browser = {
 	 * @example: beef.browser.isC18()
 	 */
 	isC18: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==18)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==18)?true:false);
 	},
 
 	/**
@@ -362,7 +362,7 @@ beef.browser = {
 	 * @example: beef.browser.isC19()
 	 */
 	isC19: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==19)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==19)?true:false);
 	},
 
 	/**
@@ -370,7 +370,7 @@ beef.browser = {
 	 * @example: beef.browser.isC20()
 	 */
 	isC20: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==20)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==20)?true:false);
 	},
 
     /**
@@ -378,7 +378,7 @@ beef.browser = {
      * @example: beef.browser.isC21()
      */
     isC21: function() {
-        return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==21)?true:false);
+        return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==21)?true:false);
     },
 
 	/**
@@ -386,7 +386,7 @@ beef.browser = {
 	 * @example: beef.browser.isC22()
 	 */
 	isC22: function() {
-		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==22)?true:false);
+		return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==22)?true:false);
 	},
 
     /**
@@ -394,7 +394,7 @@ beef.browser = {
      * @example: beef.browser.isC23()
      */
     isC23: function() {
-        return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==23)?true:false);
+        return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==23)?true:false);
     },
 
 	/**
