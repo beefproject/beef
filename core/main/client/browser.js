@@ -206,11 +206,19 @@ beef.browser = {
 	},
 
 	/**
+	 * Returns true if FF17
+	 * @example: beef.browser.isFF17()
+	 */
+	isFF17: function() {
+		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/17\./) != null;
+	},
+
+	/**
 	 * Returns true if FF.
 	 * @example: beef.browser.isFF()
 	 */
 	isFF: function() {
-		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16();
+		return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17();
 	},
 
 	/**
@@ -500,6 +508,7 @@ beef.browser = {
 			FF14:	this.isFF14(),	// Firefox 14
 			FF15:	this.isFF15(),	// Firefox 15
 			FF16:	this.isFF16(),	// Firefox 16
+			FF17:	this.isFF17(),	// Firefox 17
 			FF:	this.isFF(),	// Firefox any version
 
 			IE6:	this.isIE6(),	// Internet Explorer 6
@@ -568,6 +577,7 @@ beef.browser = {
 		if (this.isFF14())	{ return '14' };	// Firefox 14
 		if (this.isFF15())	{ return '15' };	// Firefox 15
 		if (this.isFF16())	{ return '16' };	// Firefox 16
+		if (this.isFF17())  { return '17' };    // Firefox 17
 
 		if (this.isIE6())	{ return '6'  };	// Internet Explorer 6
 		if (this.isIE7())	{ return '7'  };	// Internet Explorer 7
