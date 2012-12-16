@@ -4,6 +4,10 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
+// Written by unsticky
+// Ported to BeEF by bcoles
+// For more information see http://ha.ckers.org/blog/20070319/detecting-default-browser-in-ie/
+
 beef.execute(function() {
 
 	var mt = document.mimeType;
