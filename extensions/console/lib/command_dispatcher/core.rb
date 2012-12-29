@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -47,10 +37,14 @@ class Core
   end
   
   def cmd_back(*args)
-	  if (driver.current_dispatcher.name == 'Command')
-	    driver.remove_dispatcher('Command')
-	    driver.interface.clearcommand #TODO: TIDY THIS UP
-	    driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
+	if (driver.current_dispatcher.name == 'Command')
+	  driver.remove_dispatcher('Command')
+	  driver.interface.clearcommand #TODO: TIDY THIS UP
+      if driver.interface.targetid.length > 1
+        driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
+      else
+        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
+      end
     elsif (driver.current_dispatcher.name == 'Target')
       driver.remove_dispatcher('Target')
       driver.interface.cleartarget
@@ -147,11 +141,12 @@ class Core
         [
           'Id',
           'IP',
+          'Browser',
           'OS'
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Core::Models::BrowserDetails.os_icon(zombie.session))]
+      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName')+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName')]
     end
     
     puts "\n"
@@ -178,11 +173,12 @@ class Core
         [
           'Id',
           'IP',
+          'Browser',
           'OS'
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,beef_logo_to_os(BeEF::Core::Models::BrowserDetails.os_icon(zombie.session))]
+      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName')+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName')]
     end
     
     puts "\n"
@@ -213,23 +209,30 @@ class Core
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gt => (Time.new.to_i - 30)).each do |zombie|
       onlinezombies << zombie.id
     end
-    
-    if not onlinezombies.include?(args[0].to_i)
-      print_status("Browser does not appear to be online..")
-      return false
-    end
-    
-    if not driver.interface.settarget(args[0]).nil?
+
+	targets = args[0].split(',')
+	targets.each {|t|
+        if not onlinezombies.include?(t.to_i)
+          print_status("Browser [id:"+t.to_s+"] does not appear to be online.")
+          return false
+        end
+		#print_status("Adding browser [id:"+t.to_s+"] to target list.")
+    }
+ 
+    if not driver.interface.settarget(targets).nil?
     
       if (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
-
 	      driver.destack_dispatcher
-        driver.update_prompt('')
+          driver.update_prompt('')
       end
-    
+
       driver.enstack_dispatcher(Target)
-      driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
+      if driver.interface.targetid.length > 1
+        driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
+      else
+        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
+      end
     end
   end
   
@@ -287,13 +290,16 @@ class Core
     if not driver.interface.setofflinetarget(args[0]).nil?
       if (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
-
 	      driver.destack_dispatcher
-        driver.update_prompt('')
+          driver.update_prompt('')
       end
     
       driver.enstack_dispatcher(Target)
-      driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
+      if driver.interface.targetid.length > 1
+        driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
+      else
+        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
+      end
     end  
     
   end

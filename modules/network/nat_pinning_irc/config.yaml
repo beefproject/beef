@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        irc_nat_pinning:
+            enable: true
+            category: "Network"
+            name: "IRC NAT Pinning" 
+            description: "Attempts to open closed ports on statefull firewalls and attempts to create pinholes on NAT-devices.  The firewall/NAT-device must support IRC connection tracking. BeEF will automatically bind a socket on port 6667 (IRC). Then you can connect to the victims public IP on that port.  For more information, please refer to: <a href='http://samy.pl/natpin/'>http://samy.pl/natpin/</a> ."
+            authors: ["Bart Leppens"]
+            target:
+                working: ["FF"]

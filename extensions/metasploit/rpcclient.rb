@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -43,6 +33,57 @@ module Metasploit
 				 :ssl_version => @config['ssl_version'] ,
 				 :context => {}
  			}
+			#auto start msfrpcd
+			if (@config['auto_msfrpcd'] || false)
+				launch_msf = ''
+				@config['msf_path'].each do |path|
+					if File.exist?(path['path'] + 'msfrpcd')
+						launch_msf = path['path'] + 'msfrpcd'
+						print_info 'Found msfrpcd: ' + launch_msf
+					end
+				end
+				if (launch_msf.length > 0)
+					msf_url = ''
+					argssl = ''
+					if not opts[:ssl]
+						argssl = '-S'
+						msf_url = 'http://'
+					else
+						msf_url = 'https://'	
+					end
+
+					msf_url += opts[:host] + ':' + opts[:port].to_s() + opts[:uri]
+				
+					child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
+				
+					print_info 'Attempt to start msfrpcd, this may take a while. PID: ' + child.pid.to_s
+
+					#Give daemon time to launch
+					#poll and giveup after timeout 
+					retries = @config['auto_msfrpcd_timeout']
+					uri = URI(msf_url)
+					http = Net::HTTP.new(uri.host, uri.port)
+
+					if opts[:ssl]
+						http.use_ssl = true
+					end
+					if not @config['ssl_verify']
+						http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+					end
+					headers = {
+    						'Content-Type' => "binary/message-pack"
+					}
+					path = uri.path.empty? ? "/" : uri.path
+					begin
+						sleep 1
+						code = http.head(path, headers).code.to_i
+					rescue Exception
+						retry if (retries -= 1) > 0
+					end
+				else
+					print_error 'Please add a custom path for msfrpcd to the config-file.'
+				end
+			end	
 			super(opts)
 	    end
     

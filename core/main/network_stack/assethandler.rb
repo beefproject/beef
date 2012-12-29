@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Core
@@ -29,6 +19,7 @@ module Handlers
     # Starts the AssetHandler instance
     def initialize
       @allocations = {}
+      @sockets = {}
       @http_server = BeEF::Core::Server.instance
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
@@ -57,6 +48,60 @@ module Handlers
         @http_server.unmount(url)
         @http_server.remap
         print_info "Url [" + url + "] unmounted"
+    end
+
+    # use it like: bind_socket("irc","0.0.0.0",6667)
+    def bind_socket(name, host, port)
+      if @sockets[name] != nil
+        print_error "Bind Socket [#{name}] is already listening on [#{host}:#{port}]."
+      else
+        t = Thread.new {
+          server = TCPServer.new(host,port)
+          loop do
+            Thread.start(server.accept) do |client|
+              data = ""
+              recv_length = 1024
+              threshold = 1024 * 512
+              while (tmp = client.recv(recv_length))
+                data += tmp
+                break if tmp.length < recv_length || tmp.length == recv_length
+                # 512 KB max of incoming data
+                break if data > threshold
+              end
+              if  data.size > threshold
+                print_error "More than 512 KB of data incoming for Bind Socket [#{name}]. For security purposes client connection is closed, and data not saved."
+              else
+                @sockets[name] = {'thread' => t, 'data' => data}
+                print_info "Bind Socket [#{name}] received [#{data.size}] bytes of data."
+                print_debug "Bind Socket [#{name}] received:\n#{data}"
+              end
+              client.close
+            end
+          end
+        }
+        print_info "Bind socket [#{name}] listening on [#{host}:#{port}]."
+      end
+    end
+
+    def get_socket_data(name)
+      data = nil
+      if @sockets[name] != nil
+        data = @sockets[name]['data']
+      else
+        print_error "Bind Socket [#{name}] does not exists."
+      end
+      data
+    end
+
+    def unbind_socket(name)
+        t = @sockets[name]['thread']
+        if t.alive?
+          print_debug "Thread to be killed: #{t}"
+          Thread.kill(t)
+          print_info "Bind Socket [#{name}] killed."
+        else
+          print_info "Bind Socket [#{name}] ALREADY killed."
+        end
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated

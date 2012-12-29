@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
   module Core
@@ -34,6 +24,9 @@ module BeEF
         end
 
         def setup()
+          print_debug "[INIT] Processing Browser Details..."
+          config = BeEF::Core::Configuration.instance
+
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
           (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
@@ -116,6 +109,14 @@ module BeEF
             BD.set(session_id, 'OsName', os_name)
           else
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
+          end
+
+          # get and store the hardware name
+          hw_name = get_param(@data['results'], 'Hardware')
+          if BeEF::Filters.is_valid_hwname?(hw_name)
+            BD.set(session_id, 'Hardware', hw_name)
+          else
+            self.err_msg "Invalid hardware name returned from the hook browser's initial connection."
           end
 
           # get and store the date
@@ -222,6 +223,14 @@ module BeEF
             self.err_msg "Invalid value for HasFlash returned from the hook browser's initial connection."
           end
 
+          # get and store the yes|no value for HasPhonegap
+          has_phonegap = get_param(@data['results'], 'HasPhonegap')
+          if BeEF::Filters.is_valid_yes_no?(has_phonegap)
+            BD.set(session_id, 'HasPhonegap', has_phonegap)
+          else
+            self.err_msg "Invalid value for HasPhonegap returned from the hook browser's initial connection."
+          end
+
           # get and store the yes|no value for HasGoogleGears
           has_googlegears = get_param(@data['results'], 'HasGoogleGears')
           if BeEF::Filters.is_valid_yes_no?(has_googlegears)
@@ -263,23 +272,29 @@ module BeEF
           end
 
           # log a few info of newly hooked zombie in the console
-          print_info "New Hooked Browser [ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
+          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
 
 
           # Call autorun modules
-          autorun = []
-          BeEF::Core::Configuration.instance.get('beef.module').each { |k, v|
-            if v.has_key?('autorun') and v['autorun'] == true
-              if BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name}) == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-                BeEF::Module.execute(k, session_id)
-                autorun.push(k)
-              else
-                print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser #{zombie.ip}"
+          if config.get('beef.autorun.enable')
+            autorun = []
+            BeEF::Core::Configuration.instance.get('beef.module').each { |k, v|
+              if v.has_key?('autorun') and v['autorun'] == true
+                target_status = BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name})
+                if target_status == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
+                  BeEF::Module.execute(k, session_id)
+                  autorun.push(k)
+                elsif target_status == BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY and config.get('beef.autorun.allow_user_notify')
+                  BeEF::Module.execute(k, session_id)
+                  autorun.push(k)
+                else
+                  print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
+                end
               end
+            }
+            if autorun.length > 0
+              print_info "Autorun executed[#{autorun.join(', ')}] against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
             end
-          }
-          if autorun.length > 0
-            print_info "Autorun executed: #{autorun.join(', ')} against Hooked browser #{zombie.ip}"
           end
         end
 

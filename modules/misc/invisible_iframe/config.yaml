@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        invisible_iframe:
+            enable: true
+            category: "Misc"
+            name: "Create Invisible Iframe"
+            description: "Creates an invisible iframe."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

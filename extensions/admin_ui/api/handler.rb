@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -32,12 +22,19 @@ module API
       # retrieve the configuration class instance
       configuration = BeEF::Core::Configuration.instance
       
-      # registers the http controllers for the AdminUI extensions
-      Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each { |http_module|
+      # registers the http controllers used by BeEF core (authentication, logs, modules and panel)
+      Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each do |http_module|
         require http_module
         mod_name = File.basename http_module, '.rb'
         beef_server.mount("/ui/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
-      }
+      end
+
+      # registers the http controllers used by BeEF extensions (requester, proxy, xssrays, etc..)
+      Dir["#{$root_dir}/extensions/**/controllers/*.rb"].each do |http_module|
+        require http_module
+        mod_name = File.basename http_module, '.rb'
+        beef_server.mount("/ui/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
+      end
       
       # mount the folder were we store static files (javascript, css, images) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'

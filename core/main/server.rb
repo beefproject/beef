@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 
 module BeEF
@@ -48,7 +38,8 @@ module BeEF
             'beef_public' => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_dns' => @configuration.get('beef.http.dns'),
-            'beef_hook' => @configuration.get('beef.http.hook_file')
+            'beef_hook' => @configuration.get('beef.http.hook_file'),
+            'beef_proto' => @configuration.get('beef.http.https.enable') == true ? "https" : "http"
         }
       end
 
@@ -61,9 +52,9 @@ module BeEF
         raise Exception::TypeError, '"url" needs to be a string' if not url.string?
 
         if args == nil
-          mounts[url] = http_handler_class
+          @mounts[url] = http_handler_class
         else
-          mounts[url] = http_handler_class, *args
+          @mounts[url] = http_handler_class, *args
         end
         print_debug("Server: mounted handler '#{url}'")
       end
@@ -108,6 +99,13 @@ module BeEF
               @configuration.get('beef.http.host'),
               @configuration.get('beef.http.port'),
               @rack_app)
+
+          if @configuration.get('beef.http.https.enable') == true
+            @http_server.ssl = true
+            @http_server.ssl_options = {:private_key_file => $root_dir + "/" + @configuration.get('beef.http.https.key'),
+                                      :cert_chain_file => $root_dir + "/" + @configuration.get('beef.http.https.cert'),
+                                      :verify_peer => false}
+          end
         end
       end
 

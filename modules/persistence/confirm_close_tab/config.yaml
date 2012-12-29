@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        confirm_close_tab:
+            enable: true
+            category: "Persistence"
+            name: "Confirm Close Tab"
+            description: "Shows a confirm dialog to the user when he tries to close a tab. If he click yes, re-display the confirm dialog. Doesn't work on Opera < 12"
+            authors: ["antisnatchor"]
+            target:
+                user_notify: ["ALL"]
+                not_working: ["O"]

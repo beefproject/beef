@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -28,7 +18,7 @@ class Target
     begin
       driver.interface.getcommands.each { |folder|
         folder['children'].each { |command|
-          @@commands << folder['text'] + "/" + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
+          @@commands << folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
         }
       }
     rescue
@@ -73,9 +63,9 @@ class Target
     
     driver.interface.getcommands.each { |folder|
       folder['children'].each { |command|
-        tbl << [command['id'].to_s,
-                folder['text'] + "/" + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
-                command['status'],
+        tbl << [command['id'].to_i,
+                folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
+                command['status'].gsub(/^Verified /,""),
                 driver.interface.getcommandresponses(command['id']).length] #TODO
       }
     }
@@ -159,7 +149,12 @@ class Target
     
     driver.enstack_dispatcher(Command) if driver.dispatched_enstacked(Command) == false
     
-    driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] / "+driver.interface.cmd['Name']+" ")
+    if driver.interface.targetid.length > 1
+      driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] / "+driver.interface.cmd['Name']+" ")
+    else
+      driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] / "+driver.interface.cmd['Name']+" ")
+    end
+
   end
   
   def cmd_select_help(*args)

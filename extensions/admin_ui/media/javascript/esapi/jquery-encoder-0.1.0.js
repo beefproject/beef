@@ -21,7 +21,7 @@ encoded+=': ';}
 for(var i=0;i<input.length;i++){var ch=input.charAt(i),cc=input.charCodeAt(i);if(!ch.match(/[a-zA-Z0-9]/)&&$.inArray(ch,immune)<0){var hex=cc.toString(16);var pad='000000'.substr((hex.length));encoded+='\\'+pad+hex;}else{encoded+=ch;}}
 return encoded;},encodeForURL:function(input,attr){hasBeenInitialized=true;var encoded='';if(attr){if(attr.match(/^[A-Za-z\-0-9]{1,}$/)){encoded+=$.encoder.canonicalize(attr).toLowerCase();}else{throw"Illegal Attribute Name Specified";}
 encoded+='="';}
-encoded+=encodeURIComponent(input);encoded+=attr?'"':'';return encoded;},encodeForJavascript:function(input){hasBeenInitialized=true;if(!immune)immune=default_immune['js'];var encoded='';for(var i=0;i<input.length;i++){var ch=input.charAt(i),cc=input.charCodeAt(i);if($.inArray(ch,immune)>=0||hex[cc]==null){encoded+=ch;continue;}
+encoded+=encodeURIComponent(input);encoded+=attr?'"':'';return encoded;},encodeForJavascript:function(input){hasBeenInitialized=true;immune=default_immune['js'];var encoded='';for(var i=0;i<input.length;i++){var ch=input.charAt(i),cc=input.charCodeAt(i);if($.inArray(ch,immune)>=0||hex[cc]==null){encoded+=ch;continue;}
 var temp=cc.toString(16),pad;if(cc<256){pad='00'.substr(temp.length);encoded+='\\x'+pad+temp.toUpperCase();}else{pad='0000'.substr(temp.length);encoded+='\\u'+pad+temp.toUpperCase();}}
 return encoded;},canonicalize:function(input,strict){hasBeenInitialized=true;if(input===null)return null;var out=input,cycle_out=input;var decodeCount=0,cycles=0;var codecs=[new HTMLEntityCodec(),new PercentCodec(),new CSSCodec()];while(true){cycle_out=out;for(var i=0;i<codecs.length;i++){var new_out=codecs[i].decode(out);if(new_out!=out){decodeCount++;out=new_out;}}
 if(cycle_out==out){break;}

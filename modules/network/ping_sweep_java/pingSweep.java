@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
 import java.applet.Applet;
 import java.io.IOException;
 import java.net.InetAddress;

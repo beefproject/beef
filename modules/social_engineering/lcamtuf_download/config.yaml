@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+       lcamtuf_download:
+            enable: true
+            category: "Social Engineering"
+            name: "Lcamtuf Download"
+            description: "This module will attempt to execute a lcamtuf download.  The file will be served with an alternative <i>Content-Disposition: attachment</i> header.  For more information please refer to <a href='http://lcamtuf.blogspot.co.uk/2012/05/yes-you-can-have-fun-with-downloads.html'>http://lcamtuf.blogspot.co.uk/2012/05/yes-you-can-have-fun-with-downloads.html</a> ."
+            authors: ["Bart Leppens"]
+            target:
+                 user_notify: ["FF", "C"]
+                 not_working: ["IE", "O"]

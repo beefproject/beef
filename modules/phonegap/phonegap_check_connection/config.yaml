@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+#   phonegap
+#
+beef:
+    module:
+        phonegap_check_connection:
+            enable: true
+            category: "Phonegap"
+            name: "Check connection"
+            description: "Find out connection type e.g. Wifi, 3G.."
+            authors: ["mh"]
+            target:
+                working: ["All"]

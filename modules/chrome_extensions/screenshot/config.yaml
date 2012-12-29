@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        screenshot:
+            enable: true
+            category: "Chrome Extensions"
+            name: "Screenshot"
+            description: "Screenshots current tab the user is in, screenshot returned as base64d data for a dataurl"
+            authors: ["mh"]
+            target:
+                working: ["C"]
+                not_working: ["All"]

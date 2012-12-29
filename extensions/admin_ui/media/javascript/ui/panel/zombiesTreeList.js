@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*
  * The zombie panel located on the left hand side of the interface.
  */
@@ -36,6 +27,7 @@ zombiesTreeList = function(id) {
 	//the tree node that contains the list of online hooked browsers
 	this.online_hooked_browsers_treenode = this.root.appendChild(
         new Ext.tree.TreeNode({
+            qtip: "Online hooked browsers",
             text:'Online Browsers',
             cls:'online-zombies-node',
             expanded:true
@@ -45,6 +37,7 @@ zombiesTreeList = function(id) {
 	//the tree node that contains the list of offline hooked browsers
 	this.offline_hooked_browsers_treenode = this.root.appendChild(
         new Ext.tree.TreeNode({
+            qtip: "Offline hooked browsers",
             text:'Offline Browsers',
             cls:'offline-zombies-node',
             expanded:false
@@ -183,7 +176,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	 */
     addZombie: function(hooked_browser, online, checkbox) {
 		var hb_id, mother_node, node;
-		
+
 		if(online) {
 			hb_id = 'zombie-online-' + hooked_browser.session;
 			mother_node = this.online_hooked_browsers_treenode;
@@ -193,7 +186,9 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		}
 		var exists = this.getNodeById(hb_id);
 		if(exists) return;
-		
+
+		hooked_browser.qtip = hooked_browser.balloon_text;
+
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
 			this.online_hooked_browsers_array.push(hooked_browser);
@@ -216,7 +211,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
         
 		//creates a new node for that hooked browser
 		node = new Ext.tree.TreeNode(hooked_browser);
-		
+
 		//creates a sub-branch for that HB if necessary
 		mother_node = this.addSubFolder(mother_node, hooked_browser[this.tree_configuration['sub-branch']], checkbox);
 		
@@ -253,6 +248,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			sub_folder_node = new Ext.tree.TreeNode({
 				id: 'sub-folder-'+folder,
 				text: folder,
+				qtip: "Browsers hooked on "+folder,
 				checked: ((checkbox) ? false : null),
 				type: this.tree_configuration["sub-branch"]
 				});

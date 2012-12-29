@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -28,6 +18,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def initialize
     super({
       'paths' => {
+        '/getRestfulApiToken.json'          => method(:get_restful_api_token),
         '/select/commandmodules/all.json'   => method(:select_all_command_modules),
         '/select/commandmodules/tree.json'  => method(:select_command_modules_tree),
         '/select/commandmodule.json'        => method(:select_command_module),
@@ -42,6 +33,17 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     })
     
     @session = BeEF::Extension::AdminUI::Session.instance
+  end
+
+  # @note Returns the RESTful api key. Authenticated call, so callable only
+  # from the admin UI after successful authentication (cookie).
+  # -> http://127.0.0.1:3000/ui/modules/getRestfulApiToken.json
+  # response
+  # <- {"token":"800679edbb59976935d7673924caaa9e99f55c32"}
+  def get_restful_api_token
+     @body = {
+         'token' => BeEF::Core::Configuration.instance.get("beef.api_token")
+     }.to_json
   end
   
   # Returns a JSON array containing the summary for a selected zombie.
@@ -136,13 +138,28 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # set and add the return values for the os name
     os_name = BD.get(zombie_session, 'OsName')
-    if not host_name.nil?
+    if not os_name.nil?
       encoded_os_name = CGI.escapeHTML(os_name)
       encoded_os_name_hash = { 'OS Name' => encoded_os_name }
 
       page_name_row = {
         'category' => 'Host',
         'data' => encoded_os_name_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the return values for the hardware name
+    hw_name = BD.get(zombie_session, 'Hardware')
+    if not hw_name.nil?
+      encoded_hw_name = CGI.escapeHTML(hw_name)
+      encoded_hw_name_hash = { 'Hardware' => encoded_hw_name }
+
+      page_name_row = {
+        'category' => 'Host',
+        'data' => encoded_hw_name_hash,
         'from' => 'Initialization'
       }
 
@@ -325,6 +342,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       page_name_row = {
         'category' => 'Browser',
         'data' => encoded_has_flash_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
+    # set and add the yes|no value for hasPhonegap
+    has_phonegap = BD.get(zombie_session, 'hasPhonegap')
+    if not has_phonegap.nil?
+      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
+      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_phonegap_hash,
         'from' => 'Initialization'
       }
 
@@ -549,12 +581,15 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # append the number of command modules so the branch name results in: "<category name> (num)"
     parent.each {|command_module_branch|
       if command_module_branch.is_a?(Hash) and command_module_branch.has_key?('children')
-        num_of_command_modules = command_module_branch['children'].length
-        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
-
+        num_of_subs = 0
         command_module_branch['children'].each {|c|
+          #add in the submodules and subtract 1 for the folder node
+          num_of_subs+=c['children'].length-1 if c.has_key?('children')
           retitle_recursive_tree([c]) if c.has_key?('cls') and c['cls'] == 'folder'
         }
+        num_of_command_modules = command_module_branch['children'].length + num_of_subs
+        command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
+
       end
     }
   end
