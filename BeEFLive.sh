@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'home/beef/doc/COPYING' for copying permission
 #
@@ -21,7 +21,7 @@ echo "======================================"
 echo "          BeEF Live CD   "
 echo "======================================"
 echo ""
-echo "Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net"
+echo "Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net"
 echo "Browser Exploitation Framework (BeEF) - http://beefproject.com"
 echo "See the file 'home/beef/doc/COPYING' for copying permission"
 echo ""
