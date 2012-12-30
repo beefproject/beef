@@ -99,12 +99,38 @@ fi
 echo -n "Start BeEF (y/N)? "
 read var
 
-if [ $var = "y" ] ; then
-	echo ""
+#
+# function to allow beef to run in the background
+#
+run_beef() {
+    echo ""
 	echo "Starting BeEF..";
 	
-	cd /opt/beef
+	cd /opt/beef/
 	ruby beef -x
+}
+
+if [ $var = "y" ] ; then
+	run_beef &
+	sleep 5
 fi
+
+#
+# Prompt the user if they would like start sqlmap using beef as proxy
+#
+
+echo ""
+echo -n "Start sqlMAP with BeEF Proxy? (y/N)? "
+read var
+
+if [ $var = "y" ] ; then
+	echo ""
+	echo "sqlMAP can now be run using the --proxy command set to the BeEF Proxy: http://127.0.0.1:6789 starting the wizard to demo with:"
+	echo "python /opt/sqlmap/sqlmap.py --proxy http://127.0.0.1:6789 --wizard"
+	sleep 5
+	python /opt/sqlmap/sqlmap.py --proxy http://127.0.0.1:6789 --wizard
+fi
+
+
 
 
