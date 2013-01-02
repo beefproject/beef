@@ -147,6 +147,8 @@ function get_module_details(id,token){
             mod = data;
         }
     });
+    //add module id which is not returned by the RESTful API
+    mod['id'] = id;
     return mod;
 }
 
@@ -155,6 +157,7 @@ function process_module_opts(mod){
        'mod_id': mod['id'],
        'mod_input':[]
     };
+    console.log("mod_id: " + mod['id']);
    var opts = mod['options'];
    var label='ui_label';
    var type = 'type';
