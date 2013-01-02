@@ -135,7 +135,7 @@ function get_rest_token(){
 
 function get_module_details(id,token){
     var mod = null;
-    var url = "http://127.0.0.1:3000/api/modules/"+id+"?token="+token;
+    var url = "/api/modules/"+id+"?token="+token;
     $jwterm.ajax({
         contentType: 'application/json',
         dataType: 'json',
@@ -182,8 +182,7 @@ function process_module_opts(mod){
 }
 
 function send_modules(token,module_data){
-    //TODO: Fix hardcoded api url
-    var url = "http://127.0.0.1:3000/api/modules/multi_module"+"?token="+token;
+    var url = "/api/modules/multi_module"+"?token="+token;
     var payload = Ext.encode(module_data);
     $jwterm.ajax({
         contentType: 'application/json',
