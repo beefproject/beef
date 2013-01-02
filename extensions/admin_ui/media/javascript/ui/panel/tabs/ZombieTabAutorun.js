@@ -212,7 +212,7 @@ ZombieTab_Autorun = function(zombie) {
         border: true,
         width: 250,
         minSize: 250,
-        maxSize: 500,
+        maxSize: 500
     });
 
     var list_panel = new Ext.Panel({
@@ -222,7 +222,7 @@ ZombieTab_Autorun = function(zombie) {
         border: true,
         width: 190,
         minSize: 190,
-        maxSize: 500,
+        maxSize: 500
     });
 
     var command_module_tree = new Ext.tree.TreePanel({
@@ -352,7 +352,7 @@ ZombieTab_Autorun = function(zombie) {
         layoutConfig:{align:'stretch'},
         region: 'center',
         selModel:Ext.tree.MultiSelectionModel,
-        items:[command_module_tree,details_panel],
+        items:[command_module_tree,details_panel]
     });
 };
 
