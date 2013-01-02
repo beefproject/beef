@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2006-2012 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'home/beef/doc/COPYING' for copying permission
 #
@@ -9,7 +9,8 @@
 #
 # This is the auto startup script for the BeEF Live CD. 
 # IT SHOULD ONLY BE RUN ON THE LIVE CD
-# Download LiveCD here: https://github.com/beefproject/beef/downloads
+# Download LiveCD here: http://beefproject.com/BeEFLive1.2.iso
+# MD5 (BeEFLive1.2.iso) = 1bfba0942a3270ee977ceaeae5a6efd2
 #
 # This script contains a few fixes to make BeEF play nicely with the way  
 # remastersys creates the live cd distributable as well as generating host keys 
