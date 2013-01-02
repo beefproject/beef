@@ -179,8 +179,8 @@ function process_module_opts(mod){
            input[type] = type_val;
            mod_json['mod_input'].push(input);
        }
-   return mod_json;
    }
+   return mod_json;
 }
 
 function send_modules(token,module_data){
@@ -259,17 +259,12 @@ ZombieTab_Autorun = function(zombie) {
                     Ext.each(sel_nodes,function(item){
                         var id = item.id;
                         var module = get_module_details(id,token);
-                        var mod_json = {
-                            'mod_id': id,
-                            'mod_input':[]
-                        };
-
                         module = process_module_opts(module);
                         mods_to_send['modules'].push(module);
                     });
                     send_modules(token,mods_to_send);
-                }
-                else {
+                }else {
+                    //TODO: handle this case
                 }
          }})],
          loader: new Ext.tree.TreeLoader({
@@ -339,7 +334,6 @@ ZombieTab_Autorun = function(zombie) {
                     });
                     node.collapse();
                 }
-
             }
         }
     });
