@@ -111,7 +111,7 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
         input_field.setDisabled(true);
 
     form.add(input_field);
-};
+}
 
 function get_rest_token(){
     var token = "";
@@ -157,7 +157,6 @@ function process_module_opts(mod){
        'mod_id': mod['id'],
        'mod_input':[]
     };
-    console.log("mod_id: " + mod['id']);
    var opts = mod['options'];
    var label='ui_label';
    var type = 'type';
@@ -173,7 +172,7 @@ function process_module_opts(mod){
            input = {};
            key = opts[i]['name'];
            value = opts[i]['value'];
-           type_val = opts[i]['type']
+           type_val = opts[i]['type'];
            label_val = opts[i][label];
            input[key]=value;
            input[label]=label_val;
@@ -355,7 +354,7 @@ ZombieTab_Autorun = function(zombie) {
         selModel:Ext.tree.MultiSelectionModel,
         items:[command_module_tree,details_panel],
     });
-}
+};
 
 Ext.extend(ZombieTab_Autorun, Ext.Panel, {
     listeners: {close: function(panel) {}}
