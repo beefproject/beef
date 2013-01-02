@@ -113,26 +113,6 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
     form.add(input_field);
 }
 
-function get_rest_token(){
-    var token = "";
-    var url = "/ui/modules/getRestfulApiToken.json";
-    $jwterm.ajax({
-        contentType: 'application/json',
-        dataType: 'json',
-        type: 'GET',
-        url: url,
-        async: false,
-        processData: false,
-        success: function(data){
-            token = data.token;
-        },
-        error: function(){
-            console.log("Error getting RESTful API token");
-        }
-    });
-    return token;
-}
-
 function get_module_details(id,token){
     var mod = null;
     var url = "/api/modules/"+id+"?token="+token;
@@ -203,7 +183,7 @@ function send_modules(token,module_data){
     /* Creates the same tree as the command module list*/
 ZombieTab_Autorun = function(zombie) {
 
-    var token = get_rest_token();
+    var token = beefwui.get_rest_token();
 
     var details_panel = new Ext.FormPanel({
         id: "zombie-autorun_details"+zombie.session,

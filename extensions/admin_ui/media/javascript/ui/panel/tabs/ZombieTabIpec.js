@@ -19,27 +19,6 @@ ZombieTab_IpecTab = function(zombie) {
         autoscroll: true
 	});
 
-    function get_rest_token(){
-        var token = "";
-        var url = "/ui/modules/getRestfulApiToken.json";
-        $jwterm.ajax({
-            contentType: 'application/json',
-            dataType: 'json',
-            type: 'GET',
-            url: url,
-            async: false,
-            processData: false,
-            success: function(data){
-                token = data.token;
-                console.log(token);
-            },
-            error: function(){
-                console.log("Error getting RESTful API token");
-            }
-        });
-        return token;
-    }
-
     function get_module_id(name, token){
         var id = "";
         var url = "/api/modules/search/" + name + "?token=" + token;
@@ -115,7 +94,7 @@ ZombieTab_IpecTab = function(zombie) {
                 var cmd = tokens.join(' '); //needed in case of commands with options
                 cmd = cmd.replace(/\\/g, '\\\\'); //needed to prevent JS errors (\ need to be escaped)
 
-                var token = get_rest_token();
+                var token = beefwui.get_rest_token();
                 var mod_id = get_module_id("BeEF_bind_shell", token);
 
                 var uri = "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token;
@@ -148,7 +127,7 @@ ZombieTab_IpecTab = function(zombie) {
 
                 if(command_id != null){
 
-                    var token = get_rest_token();
+                    var token = beefwui.get_rest_token();
                     var mod_id = get_module_id("BeEF_bind_shell", token);
 
                     var uri_results = "/api/modules/" + zombie.session + "/" + mod_id + "/"
