@@ -50,7 +50,7 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
             input_field = new Ext.form.Hidden(input_def);
             break;
         case 'label':
-            input_def['fieldLabel'] = ''
+            input_def['fieldLabel'] = '';
             input_def['html'] = input['html'];
             input_field = new Ext.form.Label(input_def);
             break;
@@ -161,7 +161,7 @@ function process_module_opts(mod){
    var label='ui_label';
    var type = 'type';
    var type_val;
-   var label_val
+   var label_val;
    var value;
    var type;
    var key = value = label = type_val = "";
