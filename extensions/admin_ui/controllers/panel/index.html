@@ -13,12 +13,16 @@
 	<%= script_tag 'ext-base.js' %>
 	<%= script_tag 'ext-all.js' %>
 	<%= script_tag 'ext-beef.js' %>
+
 	<!-- jQuery encoder (ESAPI way) -->
 	<%= script_tag 'esapi/jquery-1.6.4.min.js' %>
 	<%= script_tag 'esapi/Class.create.js' %>
 	<%= script_tag 'esapi/jquery-encoder-0.1.0.js' %>
 	<script type="text/javascript" language="JavaScript">var $jEncoder = jQuery.noConflict();</script>
-	<!--/ jQuery encoder (ESAPI way) -->
+
+    <!-- BeEF Web UI common functions-->
+    <%= script_tag 'ui/common/beef_common.js' %>
+
 	<%= script_tag 'ux/TabCloseMenu.js' %>
 	<%= script_tag 'ux/StatusBar.js' %>
 	<%= script_tag 'ux/PagingStore.js' %>
