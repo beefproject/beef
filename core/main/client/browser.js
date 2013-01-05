@@ -10,31 +10,31 @@
  * Basic browser functions.
  */
 beef.browser = {
-	
+
 	/**
 	 * Returns the user agent that the browser is claiming to be.
 	 * @example: beef.browser.getBrowserReportedName()
 	 */
-	getBrowserReportedName: function() {						
+	getBrowserReportedName: function() {
 		return navigator.userAgent;
 	},
-	
+
 	/**
 	 * Returns true if IE6.
 	 * @example: beef.browser.isIE6()
 	 */
-	isIE6: function() {						
+	isIE6: function() {
 		return !window.XMLHttpRequest && !window.globalStorage;
 	},
-	
+
 	/**
 	 * Returns true if IE7.
 	 * @example: beef.browser.isIE7()
 	 */
-	isIE7: function() {						
+	isIE7: function() {
 		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !window.getComputedStyle && !window.globalStorage && !document.documentMode;
 	},
-	
+
 	/**
 	 * Returns true if IE8.
 	 * @example: beef.browser.isIE8()
@@ -42,7 +42,7 @@ beef.browser = {
 	isIE8: function() {
 		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !window.performance;
 	},
-	
+
 	/**
 	 * Returns true if IE9.
 	 * @example: beef.browser.isIE9()
@@ -50,7 +50,7 @@ beef.browser = {
 	isIE9: function() {
 		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
 	},
-	
+
 	/**
 	 *
 	 * Returns true if IE10.
@@ -68,7 +68,7 @@ beef.browser = {
 	isIE: function() {
 		return this.isIE6() || this.isIE7() || this.isIE8() || this.isIE9() || this.isIE10();
 	},
-	
+
 	/**
 	 * Returns true if FF2.
 	 * @example: beef.browser.isFF2()
@@ -76,7 +76,7 @@ beef.browser = {
 	isFF2: function() {
 		return !!window.globalStorage && !window.postMessage;
 	},
-	
+
 	/**
 	 * Returns true if FF3.
 	 * @example: beef.browser.isFF3()
@@ -84,7 +84,7 @@ beef.browser = {
 	isFF3: function() {
 		return !!window.globalStorage && !!window.postMessage && !JSON.parse;
 	},
-	
+
 	/**
 	 * Returns true if FF3.5.
 	 * @example: beef.browser.isFF3_5()
@@ -92,7 +92,7 @@ beef.browser = {
 	isFF3_5: function() {
 		return !!window.globalStorage && !!JSON.parse && !window.FileReader;
 	},
-	
+
 	/**
 	 * Returns true if FF3.6.
 	 * @example: beef.browser.isFF3_6()
@@ -108,7 +108,7 @@ beef.browser = {
 	isFF4: function() {
 		return !!window.globalStorage && !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/4\./) != null;
 	},
-	
+
 	/**
 	 * Returns true if FF5.
 	 * @example: beef.browser.isFF5()
@@ -228,7 +228,7 @@ beef.browser = {
 	isS4: function() {
 		return (window.navigator.userAgent.match(/ Version\/4\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
 	},
-	
+
 	/**
 	 * Returns true if Safari 5.xx
 	 * @example: beef.browser.isS5()
@@ -244,7 +244,7 @@ beef.browser = {
 	isS6: function() {
 		return (window.navigator.userAgent.match(/ Version\/6\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
 	},
-	
+
 	/**
 	 * Returns true if Safari.
 	 * @example: beef.browser.isS()
@@ -260,7 +260,7 @@ beef.browser = {
 	isC5: function() {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==5)?true:false);
 	},
-		
+
 	/**
 	 * Returns true if Chrome 6.
 	 * @example: beef.browser.isC6()
@@ -284,7 +284,7 @@ beef.browser = {
 	isC8: function() {
 		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==8)?true:false);
 	},
-	
+
 	/**
 	 * Returns true if Chrome 9.
 	 * @example: beef.browser.isC9()
@@ -292,7 +292,7 @@ beef.browser = {
 	isC9: function() {
 		return (!!window.chrome && !!window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==9)?true:false);
 	},
-	
+
 	/**
 	 * Returns true if Chrome 10.
 	 * @example: beef.browser.isC10()
@@ -308,7 +308,7 @@ beef.browser = {
 	isC11: function() {
 		return (!!window.chrome && !window.webkitPerformance) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==11)?true:false);
 	},
-	
+
 	/**
 	 * Returns true if Chrome 12.
 	 * @example: beef.browser.isC12()
@@ -460,7 +460,7 @@ beef.browser = {
 	isO: function() {
 		return this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11() || this.isO12();
 	},
-		
+
 	/**
 	 * Returns the type of browser being used.
 	 * @example: beef.browser.type().IE6
@@ -468,7 +468,7 @@ beef.browser = {
 	 * @example: beef.browser.type().O
 	 */
 	type: function() {
-		
+
 		return {
 			C5:	this.isC5(), 	// Chrome 5
 			C6:	this.isC6(), 	// Chrome 6
@@ -531,7 +531,7 @@ beef.browser = {
 			S:	this.isS()	// Safari any version
 		}
 	},
-	 
+
 	/**
 	 * Returns the type of browser being used.
 	 * @return: {String} User agent software and version.
@@ -539,7 +539,7 @@ beef.browser = {
 	 * @example: beef.browser.getBrowserVersion()
 	 */
 	getBrowserVersion: function() {
-				
+
 		if (this.isC5())	{ return '5'  }; 	// Chrome 5
 		if (this.isC6())	{ return '6'  }; 	// Chrome 6
 		if (this.isC7())	{ return '7'  }; 	// Chrome 7
@@ -597,7 +597,7 @@ beef.browser = {
 
 		return 'UNKNOWN';				// Unknown UA
 	},
-	
+
 	/**
 	 * Returns the type of user agent by hooked browser.
 	 * @return: {String} User agent software.
@@ -605,7 +605,7 @@ beef.browser = {
 	 * @example: beef.browser.getBrowserName()
 	 */
 	getBrowserName: function() {
-				
+
 		if (this.isC())		{ return 'C' }; 	// Chrome any version
 		if (this.isFF())	{ return 'FF'};		// Firefox any version
 		if (this.isIE())	{ return 'IE'};		// Internet Explorer any version
@@ -613,7 +613,7 @@ beef.browser = {
 		if (this.isS())		{ return 'S' };		// Safari any version
 		return 'UN';					// Unknown UA
 	},
-	
+
 	/**
 	 * Checks if the zombie has flash installed and enabled.
 	 * @return: {Boolean} true or false.
@@ -622,7 +622,7 @@ beef.browser = {
 	 */
 	hasFlash: function() {
 		if (!this.type().IE) {
-			return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]); 
+			return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
 		} else {
 			flash_versions = 11;
 			flash_installed = false;
@@ -683,7 +683,7 @@ beef.browser = {
 	 */
 	hasCors: function() {
 		if ('withCredentials' in new XMLHttpRequest())
-			return true;	
+			return true;
 		else if (typeof XDomainRequest !== "undefined")
 			return true;
 		else
@@ -726,7 +726,7 @@ beef.browser = {
 			return false;
 		}
 	},
-	
+
 	/**
 	 * Checks if the zombie has VBScript enabled.
 	 * @return: {Boolean} true or false.
@@ -740,7 +740,7 @@ beef.browser = {
 			return false;
 		}
 	},
-	
+
 	/**
 	 * Returns the list of plugins installed in the browser.
 	 */
@@ -778,20 +778,20 @@ beef.browser = {
 		// Return results
 		return results;
 	},
-	
+
 	/**
 	 * Returns a list of plugins detected by IE. This is a hack because IE doesn't
-	 * support navigator.plugins 
+	 * support navigator.plugins
 	 */
      getPluginsIE: function() {
         var results = '';
         var plugins = {'AdobePDF6':{
-            'control':'PDF.PdfCtrl', 
+            'control':'PDF.PdfCtrl',
             'return': function(control) {
                 version = control.getVersions().split(',');
                 version = version[0].split('=');
                 return 'Acrobat Reader v'+parseFloat(version[1]);
-            }}, 
+            }},
             'AdobePDF7':{
             'control':'AcroPDF.PDF',
             'return': function(control) {
@@ -851,10 +851,10 @@ beef.browser = {
 
 	/**
 	 * Returns zombie screen size and color depth.
-	 */	
+	 */
 	getScreenSize: function() {
 		return {
-			width: window.screen.width, 
+			width: window.screen.width,
 			height: window.screen.height,
 			colordepth: window.screen.colorDepth
 			}
@@ -863,7 +863,7 @@ beef.browser = {
 	/**
 	 * Returns zombie browser window size.
 	 * @from: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
-	 */	
+	 */
 	getWindowSize: function() {
 		  var myWidth = 0, myHeight = 0;
 		  if( typeof( window.innerWidth ) == 'number' ) {
@@ -884,13 +884,13 @@ beef.browser = {
 			  height: myHeight
 		  }
 	},
-	
+
 	/**
 	 * Construct hash from browser details. This function is used to grab the browser details during the hooking process
-	 */	
+	 */
 	getDetails: function() {
 		var details = new Array();
-		
+
 		var browser_name = beef.browser.getBrowserName();
 		var browser_version = beef.browser.getBrowserVersion();
 		var browser_reported_name = beef.browser.getBrowserReportedName();
@@ -903,7 +903,7 @@ beef.browser = {
 		var browser_plugins = beef.browser.getPlugins();
 		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
-		var hw_name = beef.hardware.getName();
+		var hw_name = beef.hardware.getMobileName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_size = beef.browser.getScreenSize();
@@ -947,7 +947,7 @@ beef.browser = {
 
 		return details;
 	},
-	
+
 	/**
 	 * Returns array of results, whether or not the target zombie has visited the specified URL
 	 */
@@ -970,7 +970,7 @@ beef.browser = {
 				a.href = u;
 				ifdoc.body.appendChild(a);
 				var width = null;
-				(a.currentStyle) ? width = a.currentStyle['width'] : width = ifdoc.defaultView.getComputedStyle(a, null).getPropertyValue("width"); 
+				(a.currentStyle) ? width = a.currentStyle['width'] : width = ifdoc.defaultView.getComputedStyle(a, null).getPropertyValue("width");
 				if (width == '0px') {
 					success = true;
 				}
@@ -979,7 +979,7 @@ beef.browser = {
 			}
 		}
 		beef.dom.removeElement(iframe);
-		if (results.length == 0) 
+		if (results.length == 0)
 		{
 			return false;
 		}
@@ -1136,7 +1136,7 @@ beef.browser = {
 		return deferredObject.promise();
 
 	}
-	
+
 };
 
 beef.regCmp('beef.browser');
