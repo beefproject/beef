@@ -21,7 +21,7 @@ module BeEF
             beef_js_path = "#{$root_dir}/core/main/client/"
 
             # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
-            ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js)
+            ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js lib/mdetect.js)
 
             # @note BeEF libraries: need Eruby evaluation and obfuscation
             beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js net/cors.js are.js)
@@ -102,7 +102,7 @@ module BeEF
 
             if config.get("beef.extension.evasion.enable")
               evasion = BeEF::Extension::Evasion::Evasion.instance
-              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate + @hook) 
+              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate + @hook)
             else
               @final_hook = ext_js_to_not_obfuscate + @hook
             end
