@@ -5,14 +5,15 @@
 #
 # More info:
 #	http://blog.kotowicz.net/2012/02/intro-to-chrome-addons-hacking.html
+#	http://jeremiahgrossman.blogspot.fr/2006/08/i-know-what-youve-got-firefox.html
 #
-class Detect_chrome_extensions < BeEF::Core::Command
+class Detect_extensions < BeEF::Core::Command
 
   def post_execute
     content = {}
     content['extension'] = @datastore['extension']
     save content
   end
-  
+
 end
 
