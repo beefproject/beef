@@ -9,7 +9,7 @@ beef:
             enable: true
             name: 'Evasion'
             authors: ["antisnatchor"]
-            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js","lib/mdetect.js"]
+            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js", "lib/mdetect.js"]
             scramble_variables: true
             scramble_cookies: true
             scramble:

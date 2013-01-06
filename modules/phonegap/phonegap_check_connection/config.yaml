@@ -10,8 +10,8 @@ beef:
         phonegap_check_connection:
             enable: true
             category: "Phonegap"
-            name: "Check connection"
-            description: "Find out connection type e.g. Wifi, 3G.."
+            name: "Check Connection"
+            description: "Find out the network connection type e.g. Wifi, 3G."
             authors: ["mh"]
             target:
                 working: ["All"]

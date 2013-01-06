@@ -21,7 +21,7 @@ class Avant_steal_history < BeEF::Core::Command
 		
 
 		return [
-			{'name' => 'cId', 'ui_label' => 'Command ID:', 'value' => '60003', 'type' => 'textarea', 'width' => '400px', 'height' => '25px' }
+			{'name' => 'cId', 'ui_label' => 'Command ID', 'value' => '60003', 'type' => 'textarea', 'width' => '400px', 'height' => '25px' }
 		]
 
 	end
