@@ -218,7 +218,7 @@ beef.browser = {
 	 * @example: beef.browser.isFF18()
 	 */
 	isFF18: function() {
-		return !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/18\./) != null;
+		return !!window.devicePixelRatio && !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/18\./) != null;
 	},
 
 	/**
