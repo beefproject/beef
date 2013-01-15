@@ -28,6 +28,7 @@ require './extensions/tc_requester'
 require './extensions/tc_event_logger'
 require './tc_grep'
 require './tc_filesystem'
+require './tc_jools'
 
 class TS_BeefTests
   def self.suite
@@ -53,6 +54,7 @@ class TS_BeefTests
     suite << TC_Hackverter.suite
     suite << TC_EventLogger.suite
 	suite << TC_Hooks.suite
+    suite << TC_Jools.suite
 
     return suite
   end

