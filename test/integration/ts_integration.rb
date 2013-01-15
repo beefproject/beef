@@ -15,6 +15,7 @@ require 'selenium/webdriver'
 require './check_environment' # Basic log in and log out tests
 require './tc_debug_modules' # RESTful API tests (as well as debug modules)
 require './tc_login' # Basic log in and log out tests
+require './tc_jools' # Basic tests for jools
 
 class TS_BeefIntegrationTests
   def self.suite
@@ -23,6 +24,7 @@ class TS_BeefIntegrationTests
     suite << TC_CheckEnvironment.suite
     #suite << TC_DebugModules.suite
     suite << TC_login.suite
+    suite << TC_Jools.suite
 
     return suite
   end
