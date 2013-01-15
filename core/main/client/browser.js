@@ -666,7 +666,42 @@ beef.browser = {
                 return false;
             }
         }
-        else return true;
+        else
+        {
+            function testUsingActiveX(n) {
+                var p = "JavaWebStart.isInstalled." + n + ".0";
+                if (typeof ActiveXObject == "undefined" || !ActiveXObject) {
+                    g("[testUsingActiveX()] Browser claims to be IE, but no ActiveXObject object?");
+                    return false
+                }
+                try {
+                    return (new ActiveXObject(p) != null)
+                } catch (o) {
+                    return false
+                }
+            }
+
+            if (testUsingActiveX("1.7.0")) {
+                return true;
+            } else {
+                if (testUsingActiveX("1.6.0")) {
+                    return true;
+                } else {
+                    if (testUsingActiveX("1.5.0")) {
+                        return true;
+                    } else {
+                        if (testUsingActiveX("1.4.2")) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+
+        }
 
 	},
 
