@@ -63,7 +63,7 @@ class TC_login < Test::Unit::TestCase
     attacker = BeefTest.new_attacker
     victim = BeefTest.new_victim
 
-    sleep 2.0
+    sleep 5.0
 
     attacker.has_content?(VICTIM_DOMAIN)
     attacker.has_content?('127.0.0.1')
