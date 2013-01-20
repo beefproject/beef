@@ -24,6 +24,11 @@ module Handlers
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
 
+    # Binds a redirector to a mount point
+    # @param [String] target The target for the redirector
+    # @param [String] path An optional URL path to mount the redirector to (can be nil for a random path)
+    # @return [String] URL Path of the redirector
+    # @todo This function, similar to bind(), should accept a hooked browser session to limit the mounted file to a certain session etc.
     def bind_redirect(target, path=nil)
       url = build_url(path,nil)
       @allocations[url] = {'target' => target}

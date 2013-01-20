@@ -9,6 +9,7 @@ module BeEF
       module Handlers
 
         # @note Redirector is used as a Rack app for mounting HTTP redirectors, instead of content
+        # @todo Add new options to specify what kind of redirect you want to achieve
         class Redirector
 
 	        @target = "" 	
