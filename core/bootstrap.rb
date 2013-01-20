@@ -24,6 +24,7 @@ require 'core/main/handlers/browserdetails'
 
 # @note Include the network stack
 require 'core/main/network_stack/handlers/dynamicreconstruction'
+require 'core/main/network_stack/handlers/redirector'
 require 'core/main/network_stack/assethandler'
 require 'core/main/network_stack/api'
 

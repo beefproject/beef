@@ -9,6 +9,7 @@ require '../common/ts_common'
 
 require './core/filter/tc_base'
 require './core/filter/tc_command'
+require './core/main/network_stack/handlers/redirector'
 require './core/tc_loader'
 require './core/tc_core'
 require './core/tc_api'
@@ -53,6 +54,7 @@ class TS_BeefTests
     suite << TC_Hackverter.suite
     suite << TC_EventLogger.suite
 	suite << TC_Hooks.suite
+    suite << TC_Redirector.suite
 
     return suite
   end

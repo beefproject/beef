@@ -24,6 +24,15 @@ module Handlers
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
 
+    def bind_redirect(target, path=nil)
+      url = build_url(path,nil)
+      @allocations[url] = {'target' => target}
+      @http_server.mount(url,BeEF::Core::NetworkStack::Handlers::Redirector.new(target))
+      @http_server.remap
+      print_info "Redirector to [" + target + "] bound to url [" + url + "]"
+      url
+    end
+
     # Binds a file to a mount point
     # @param [String] file File path to asset
     # @param [String] path URL path to mount the asset to (can be nil for random path)
