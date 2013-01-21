@@ -81,7 +81,7 @@ while true; do
 		echo "[5] Enable BeEF in background mode           [Currently Disabled]"
 	fi
 	
-	if [ "$bac" = "1" ] ; then
+	if [ "$sqlm" = "1" ] ; then
 		echo "[6] Disable sqlMap demo                      [Currently Enabled]"
 	else
 		echo "[6] Enable sqlMap demo                       [Currently Disabled]"
