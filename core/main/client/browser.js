@@ -413,12 +413,20 @@ beef.browser = {
         return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==23)?true:false);
     },
 
+    /**
+     * Returns true if Chrome 24.
+     * @example: beef.browser.isC24()
+     */
+    isC24: function() {
+        return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10)==24)?true:false);
+    },
+
 	/**
 	 * Returns true if Chrome.
 	 * @example: beef.browser.isC()
 	 */
 	isC: function() {
-		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23();
+		return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16()|| this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23() || this.isC24();
 	},
 
 	/**
@@ -497,6 +505,7 @@ beef.browser = {
 			C21:	this.isC21(),	// Chrome 21
 			C22:	this.isC22(),	// Chrome 22
             C23:	this.isC23(),	// Chrome 23
+            C24:	this.isC24(),	// Chrome 24
 			C:	this.isC(), 	// Chrome any version
 
 			FF2:	this.isFF2(),	// Firefox 2
@@ -568,6 +577,7 @@ beef.browser = {
 		if (this.isC21())	{ return '21' };	// Chrome 21
 		if (this.isC22())   { return '22' };    // Chrome 22
         if (this.isC23())   { return '23' };    // Chrome 23
+        if (this.isC24())   { return '24' };    // Chrome 24
 
         if (this.isFF2())	{ return '2'  };	// Firefox 2
 		if (this.isFF3())	{ return '3'  };	// Firefox 3
