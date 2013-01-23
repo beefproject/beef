@@ -67,8 +67,13 @@ disable_msf() {
 # function to exit cleanly
 #
 # trap ctrl-c and call close_bash()
-trap close_bash INT
+trap close_bash_t INT
 
+close_bash_t() {
+	# beef would have quit
+	back_running="0"
+	close_bash
+}
 close_bash() {
 	echo ""	
 	echo "Are you sure you want to exit the LiveCD? (y/N): "
@@ -77,8 +82,6 @@ close_bash() {
 		disable_msf
 		exit
 	else		
-		# beef would have quit
-		back_running="0"
 		show_menu
 	fi
 }
@@ -86,8 +89,7 @@ close_bash() {
 # set default values
 bac="0"
 
-# show user menu
-show_menu
+
 
 #
 # User Menu Loop
@@ -274,7 +276,7 @@ show_menu() {
 				sleep 5
 				echo ""
 				echo "BeEF is running in the background, returning to the menu or running something else now..."
-				sleep 5
+				sleep 15
 				back_running="1"
 				#
 				# If the user has enabled it start sqlmap using beef as proxy
@@ -298,6 +300,8 @@ show_menu() {
 	done
 }
 
+# show user menu
+show_menu
 
 
 
