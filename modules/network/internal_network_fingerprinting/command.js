@@ -202,7 +202,11 @@ beef.execute(function() {
 	new Array(
 		"Glassfish Server",
 		"4848","http",false,
-		"/theme/com/sun/webui/jsf/suntheme/images/login/gradlogsides.jpg", 1, 200)
+		"/theme/com/sun/webui/jsf/suntheme/images/login/gradlogsides.jpg", 1, 200),
+	new Array(
+		"pfSense",
+		"443","https",false,
+		"/themes/pfsense_ng/images/logo.gif",200,56)
 	);
 
 	// for each ip
