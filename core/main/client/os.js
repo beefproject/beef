@@ -47,6 +47,9 @@ beef.os = {
 	isWin7: function() {
 		return (this.ua.match('(Windows NT 6.1)|(Windows NT 7.0)')) ? true : false;
 	},
+	isWin8: function() {
+		return (this.ua.match('(Windows NT 6.2)')) ? true : false;
+	},
 	
 	isOpenBSD: function() {
 		return (this.ua.indexOf('OpenBSD') != -1) ? true : false;
@@ -116,6 +119,7 @@ beef.os = {
 		if(this.isWinServer2003()) return 'Windows Server 2003';
 		if(this.isWinVista()) return 'Windows Vista';
 		if(this.isWin7()) return 'Windows 7';
+		if(this.isWin8()) return 'Windows 8';
 
 		//Nokia
 		if(this.isNokia()) {
