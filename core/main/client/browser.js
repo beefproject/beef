@@ -48,7 +48,7 @@ beef.browser = {
 	 * @example: beef.browser.isIE9()
 	 */
 	isIE9: function() {
-		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
 	},
 
 	/**
@@ -56,9 +56,8 @@ beef.browser = {
 	 * Returns true if IE10.
 	 * @example: beef.browser.isIE10()
 	 */
-	 // placeholder
 	isIE10: function() {
-		return false;
+		return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
 	},
 
 	/**
