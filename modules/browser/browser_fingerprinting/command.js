@@ -35,6 +35,7 @@ beef.execute(function() {
 		new Array("Firefox","7+","resource:///chrome/browser/content/browser/aboutHome-snippet1.png"),
 		new Array("Firefox","8+","resource:///chrome/browser/skin/classic/aero/browser/Toolbar-inverted.png"),
 		new Array("Internet Explorer","5-6","res://shdoclc.dll/pagerror.gif"),
+		new Array("Internet Explorer","7-9","res://ieframe.dll/ielogo.png"),
 		new Array("Internet Explorer","7+","res://ieframe.dll/info_48.png")
 	);
 
