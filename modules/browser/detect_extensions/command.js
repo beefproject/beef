@@ -1086,15 +1086,24 @@ beef.execute(function() {
                         for (var i=0; i<chrome_extensions.length; i++) {
                                 detect_chrome_extension(chrome_extensions[i][0], chrome_extensions[i][1]);
                         }
-                } catch(e) {}
+                } catch(e) {
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed');
+                }
         } else if(beef.browser.isFF()) {
                 try {
                         for (var i in firefox_extensions) {
                                 detect_firefox_extension(firefox_extensions[i], i);
                         }
-                } catch(e) {}
-        } else {
-        };
+                } catch(e) {
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed');
+                }
+        } else if(beef.browser.isIE()) {
+                try {
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions is not supported');
+                } catch(e) {
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions failed');
+                }
+        }
 
 });
 

@@ -8,8 +8,8 @@ beef:
         detect_extensions:
             enable: true
             category: "Browser"
-            name: "Detect Chrome/Firefox Extensions"
-            description: "This module detects Extensions in Chrome and Firefox "
+            name: "Detect Extensions"
+            description: "This module detects extensions installed in Google Chrome and Mozilla Firefox."
             authors: ["koto", "bcoles", "nbblrr"]
             target:
                 working:
