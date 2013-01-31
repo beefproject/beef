@@ -1014,7 +1014,7 @@ beef.browser = {
 	 * Returns boolean value depending on whether the browser support ActiveX
 	 */
 	hasActiveX: function() {
-		return (typeof(window.ActiveXObject) != "undefined");
+		return !!window.ActiveXObject;
 	},
 
 	/**
