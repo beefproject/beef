@@ -12,6 +12,7 @@ module Constants
   module Hardware
 
     HW_UNKNOWN_IMG        = 'pc.png'
+	HW_VM_IMG             = 'vm.png'
 	HW_IPHONE_UA_STR      = 'iPhone'
  	HW_IPHONE_IMG         = 'iphone.jpg'
 	HW_IPAD_UA_STR	      = 'iPad'
