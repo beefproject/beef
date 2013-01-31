@@ -965,7 +965,7 @@ beef.browser = {
 		var browser_plugins = beef.browser.getPlugins();
 		var date_stamp = new Date().toString();
 		var os_name = beef.os.getName();
-		var hw_name = beef.hardware.getMobileName();
+		var hw_name = beef.hardware.getName();
 		var system_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
 		var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {if (value == true) return value; else if (typeof value == 'object') return value; else return;});
 		var screen_size = beef.browser.getScreenSize();

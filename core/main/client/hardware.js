@@ -8,6 +8,12 @@ beef.hardware = {
 
 	ua: navigator.userAgent,
 
+	isVirtualMachine: function() {
+		var result = false;
+		if (screen.width % 2 || screen.height % 2) result = true;
+		return result;
+	},
+
 	isNokia: function() {
 		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
 	},
@@ -36,13 +42,13 @@ beef.hardware = {
          * Returns true if the browser is on a Mobile Phone
          * @return: {Boolean} true or false
          *
-         * @example: if(beef.browser.isMobilePhone()) { ... }
+         * @example: if(beef.hardware.isMobilePhone()) { ... }
          **/
         isMobilePhone: function() {
             return DetectMobileQuick();
         },
 
-	getMobileName: function() {
+	getName: function() {
                 var ua = navigator.userAgent.toLowerCase();
                 if(DetectIphone())              { return "iPhone"};
                 if(DetectIpod())                { return "iPod Touch"};
@@ -78,11 +84,12 @@ beef.hardware = {
                 if(DetectSonyMylo())            { return "Sony Mylo"};
                 if(DetectAmazonSilk())          { return "Kindle Fire"};
                 if(DetectKindle())              { return "Kindle"};
-                if(DetectSonyPlaystation())                 { return "Playstation" };
+                if(DetectSonyPlaystation())                 { return "Playstation"};
                 if(ua.search(deviceNintendoDs) > -1)        { return "Nintendo DS"};
                 if(ua.search(deviceWii) > -1)               { return "Nintendo Wii"};
                 if(ua.search(deviceNintendo) > -1)          { return "Nintendo"};
                 if(DetectXbox())                            { return "Xbox"};
+                if(this.isVirtualMachine())                 { return "Virtual Machine"};
 
 		return 'Unknown';
 	}
