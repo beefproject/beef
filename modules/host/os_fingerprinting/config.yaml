@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        os_fingerprinting:
+            enable: true
+            category: "Host"
+            name: "Fingerprint Operating System"
+            description: "This module attempts to fingerprint the Windows Operating System version using the 'res' protocol handler for Internet Explorer. It loads images from DLLs specific to different versions of Windows. This method does not rely on JavaScript objects which may have been modified by the user or browser compatibility mode."
+            authors: ["bcoles"]
+            target:
+                working: IE
+                not_working: ALL
