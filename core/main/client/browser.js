@@ -976,7 +976,7 @@ beef.browser = {
 		var has_phonegap = (beef.browser.hasPhonegap())? "Yes" : "No";
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
 		var has_web_socket=(beef.browser.hasWebSocket())? "Yes":"No";
-		var has_activex = (typeof(window.ActiveXObject) != "undefined") ? "Yes":"No";
+		var has_activex = (beef.browser.hasActiveX())? "Yes":"No";
 		var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie"))? "Yes":"No";
 		var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie"))? "Yes":"No";
 
@@ -1008,6 +1008,13 @@ beef.browser = {
 		if(has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 
 		return details;
+	},
+
+	/**
+	 * Returns boolean value depending on whether the browser support ActiveX
+	 */
+	hasActiveX: function() {
+		return (typeof(window.ActiveXObject) != "undefined");
 	},
 
 	/**
