@@ -8,10 +8,27 @@ beef.hardware = {
 
 	ua: navigator.userAgent,
 
+	cpuType: function() {
+		// IE
+		if ((typeof navigator.cpuClass != 'undefined')) {
+			cpu = navigator.cpuClass;
+			if (cpu == "x86")   return "32-bit";
+			if (cpu == "68K")   return "Motorola 68K":
+			if (cpu == "PPC")   return "Motorola PPC";
+			if (cpu == "Alpha") return "Digital";
+			if (this.ua.match('Win64; IA64') return "64-bit (Intel)";
+			if (this.ua.match('Win64; x64')  return "64-bit (AMD)";
+		// Firefox
+        } else if ((typeof navigator.oscpu != 'undefined' {
+			if (navigator.oscpu.match('WOW64|x64|x86_64)') return "64-bit";
+		}
+		if (navigator.platform.toLowerCase() == "win64") return "64-bit"
+		return "32-bit";
+	},
+
 	isVirtualMachine: function() {
-		var result = false;
-		if (screen.width % 2 || screen.height % 2) result = true;
-		return result;
+		if (screen.width % 2 || screen.height % 2) return true;
+		return false;
 	},
 
 	isNokia: function() {
