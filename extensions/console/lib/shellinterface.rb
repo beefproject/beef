@@ -455,13 +455,13 @@ class ShellInterface
     end
     
     # set and add the System Platform
-    system_platform = BD.get(self.targetsession, 'SystemPlatform')
+    system_platform = BD.get(self.targetsession, 'BrowserPlatform')
     if not system_platform.nil?
       encoded_system_platform = CGI.escapeHTML(system_platform)
-      encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
+      encoded_system_platform_hash = { 'Browser Platform' => encoded_system_platform }
 
       page_name_row = {
-        'category' => 'Host',
+        'category' => 'Browser',
         'data' => encoded_system_platform_hash,
         'from' => 'Initialization'
       }

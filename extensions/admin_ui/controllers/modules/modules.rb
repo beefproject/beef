@@ -240,14 +240,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add the System Platform
-    system_platform = BD.get(zombie_session, 'SystemPlatform')
+    # set and add the Browser Platform
+    system_platform = BD.get(zombie_session, 'BrowserPlatform')
     if not system_platform.nil?
       encoded_system_platform = CGI.escapeHTML(system_platform)
       encoded_system_platform_hash = { 'System Platform' => encoded_system_platform }
 
       page_name_row = {
-        'category' => 'Host',
+        'category' => 'Browser',
         'data' => encoded_system_platform_hash,
         'from' => 'Initialization'
       }

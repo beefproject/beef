@@ -168,11 +168,11 @@ module BeEF
           end
 
           # get and store the system platform
-          system_platform = get_param(@data['results'], 'SystemPlatform')
+          system_platform = get_param(@data['results'], 'BrowserPlatform')
           if BeEF::Filters.is_valid_system_platform?(system_platform)
-            BD.set(session_id, 'SystemPlatform', system_platform)
+            BD.set(session_id, 'BrowserPlatform', system_platform)
           else
-            self.err_msg "Invalid system platform returned from the hook browser's initial connection."
+            self.err_msg "Invalid browser platform returned from the hook browser's initial connection."
           end
 
           # get and store the hooked browser type
