@@ -9,7 +9,7 @@ beef.os = {
 	ua: navigator.userAgent,
 
 	isWin311: function() {
-		return (this.ua.match('(Win16')) ? true : false;
+		return (this.ua.match('(Win16)')) ? true : false;
 	},
 	
 	isWinNT4: function() {
@@ -28,7 +28,7 @@ beef.os = {
 	},
 	
 	isWinME: function() {
-		return (this.ua.match('(Windows ME)|(Win 9x 4.90')) ? true : false;
+		return (this.ua.match('(Windows ME)|(Win 9x 4.90)')) ? true : false;
 	},
 	
 	isWin2000: function() {
