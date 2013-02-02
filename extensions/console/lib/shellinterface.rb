@@ -454,7 +454,7 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
     
-    # set and add the System Platform
+    # set and add the Browser Platform
     system_platform = BD.get(self.targetsession, 'BrowserPlatform')
     if not system_platform.nil?
       encoded_system_platform = CGI.escapeHTML(system_platform)
