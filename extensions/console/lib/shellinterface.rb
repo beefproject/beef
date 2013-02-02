@@ -617,6 +617,21 @@ class ShellInterface
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+    # set and add the yes|no value for HasSilverlight
+    has_silverlight = BD.get(zombie_session, 'HasSilverlight')
+    if not has_silverlight.nil?
+      encoded_has_silverlight = CGI.escapeHTML(has_silverlight)
+      encoded_has_silverlight_hash = { 'Has Silverlight' => encoded_has_silverlight }
+
+      page_name_row = {
+        'category' => 'Browser',
+        'data' => encoded_has_silverlight_hash,
+        'from' => 'Initialization'
+      }
+
+      summary_grid_hash['results'].push(page_name_row) # add the row
+    end
+
     # set and add the value for CPU
     cpu_type = BD.get(zombie_session, 'CPU')
     if not cpu_type.nil?

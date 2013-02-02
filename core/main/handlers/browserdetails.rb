@@ -255,6 +255,14 @@ module BeEF
             self.err_msg "Invalid value for HasActiveX returned from the hook browser's initial connection."
           end
 
+          # get and store the yes|no value for HasSilverlight
+          has_silverlight = get_param(@data['results'], 'HasSilverlight')
+          if BeEF::Filters.is_valid_yes_no?(has_silverlight)
+            BD.set(session_id, 'HasSilverlight', has_silverlight)
+          else
+            self.err_msg "Invalid value for Silverlight returned from the hook browser's initial connection."
+          end
+
           # get and store the value for CPU
           cpu_type = get_param(@data['results'], 'CPU')
           if !cpu_type.nil?

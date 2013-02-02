@@ -988,6 +988,7 @@ return !!window.devicePixelRatio && !!window.history.replaceState && window.navi
 		var has_googlegears=(beef.browser.hasGoogleGears())? "Yes":"No";
 		var has_web_socket=(beef.browser.hasWebSocket())? "Yes":"No";
 		var has_activex = (beef.browser.hasActiveX())? "Yes":"No";
+		var has_silverlight = (beef.browser.hasSilverlight())? "Yes":"No";
 		var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie"))? "Yes":"No";
 		var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie"))? "Yes":"No";
 
@@ -1016,6 +1017,7 @@ return !!window.devicePixelRatio && !!window.history.replaceState && window.navi
 		if(has_web_socket) details['HasWebSocket'] = has_web_socket
 		if(has_googlegears) details['HasGoogleGears'] = has_googlegears
 		if(has_activex) details['HasActiveX'] = has_activex;
+		if(has_silverlight) details['HasSilverlight'] = has_silverlight;
 		if(has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
 		if(has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 
@@ -1023,10 +1025,30 @@ return !!window.devicePixelRatio && !!window.history.replaceState && window.navi
 	},
 
 	/**
-	 * Returns boolean value depending on whether the browser support ActiveX
+	 * Returns boolean value depending on whether the browser supports ActiveX
 	 */
 	hasActiveX: function() {
 		return !!window.ActiveXObject;
+	},
+
+	/**
+	 * Returns boolean value depending on whether the browser supports Silverlight
+	 */
+	hasSilverlight: function() {
+		var result = false;
+
+		try {
+			if (beef.browser.isIE()) {
+				var slControl = new ActiveXObject('AgControl.AgControl');
+				result = true;
+			} else if (navigator.plugins["Silverlight Plug-In"]) {
+				result = true;
+			}
+		} catch (e) {
+			result = false;
+		}
+
+		return result;
 	},
 
 	/**
