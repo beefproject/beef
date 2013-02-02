@@ -7,9 +7,9 @@
 beef.os = {
 
 	ua: navigator.userAgent,
-	
+
 	isWin311: function() {
-		return (this.ua.indexOf("Win16") != -1) ? true : false;
+		return (this.ua.match('(Win16')) ? true : false;
 	},
 	
 	isWinNT4: function() {
@@ -19,17 +19,24 @@ beef.os = {
 	isWin95: function() {
 		return (this.ua.match('(Windows 95)|(Win95)|(Windows_95)')) ? true : false;
 	},
+	isWinCE: function() {
+		return (this.ua.match('(Windows CE)')) ? true : false;
+	},
 	
 	isWin98: function() {
 		return (this.ua.match('(Windows 98)|(Win98)')) ? true : false;
 	},
 	
 	isWinME: function() {
-		return (this.ua.indexOf('Windows ME') != -1) ? true : false;
+		return (this.ua.match('(Windows ME)|(Win 9x 4.90')) ? true : false;
 	},
 	
 	isWin2000: function() {
 		return (this.ua.match('(Windows NT 5.0)|(Windows 2000)')) ? true : false;
+	},
+
+	isWin2000SP1: function() {
+		return (this.ua.match('Windows NT 5.01 ')) ? true : false;
 	},
 	
 	isWinXP: function() {
@@ -47,6 +54,7 @@ beef.os = {
 	isWin7: function() {
 		return (this.ua.match('(Windows NT 6.1)|(Windows NT 7.0)')) ? true : false;
 	},
+
 	isWin8: function() {
 		return (this.ua.match('(Windows NT 6.2)')) ? true : false;
 	},
@@ -106,20 +114,26 @@ beef.os = {
 	isBeOS: function() {
 		return (this.ua.match('BeOS')) ? true : false;
 	},
+
+	isWindows: function() {
+		return this.isWin311() || this.isWinNT4() || this.isWinCE() || this.isWin95() || this.isWin98() || this.isWinME() || this.isWin2000() || this.isWin2000SP1() || this.isWinXP() || this.isWinServer2003() || this.isWinVista() || this.isWin7() || this.isWin8() || this.isWinPhone();
+	},
 	
 	getName: function() {
-		//windows
-		if(this.isWin311()) return 'Windows 3.11';
-		if(this.isWinNT4()) return 'Windows NT 4';
-		if(this.isWin95()) return 'Windows 95';
-		if(this.isWin98()) return 'Windows 98';
-		if(this.isWinME()) return 'Windows Millenium';
-		if(this.isWin2000()) return 'Windows 2000';
-		if(this.isWinXP()) return 'Windows XP';
+		//Windows
+		if(this.isWin311())        return 'Windows 3.11';
+		if(this.isWinNT4())        return 'Windows NT 4';
+		if(this.isWinCE())         return 'Windows CE';
+		if(this.isWin95())         return 'Windows 95';
+		if(this.isWin98())         return 'Windows 98';
+		if(this.isWinME())         return 'Windows Millenium';
+		if(this.isWin2000())       return 'Windows 2000';
+		if(this.isWin2000SP1())    return 'Windows 2000 SP1';
+		if(this.isWinXP())         return 'Windows XP';
 		if(this.isWinServer2003()) return 'Windows Server 2003';
-		if(this.isWinVista()) return 'Windows Vista';
-		if(this.isWin7()) return 'Windows 7';
-		if(this.isWin8()) return 'Windows 8';
+		if(this.isWinVista())      return 'Windows Vista';
+		if(this.isWin7())          return 'Windows 7';
+		if(this.isWin8())          return 'Windows 8';
 
 		//Nokia
 		if(this.isNokia()) {
