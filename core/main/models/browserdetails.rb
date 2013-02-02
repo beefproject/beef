@@ -105,6 +105,7 @@ module Models
       ua_string = get(session_id, 'BrowserReportedName')
       hardware  = get(session_id, 'Hardware')
       return BeEF::Core::Constants::Hardware::HW_VM_IMG if hardware =~ /Virtual Machine/
+      return BeEF::Core::Constants::Hardware::HW_LAPTOP_IMG if hardware =~ /Laptop/
       return BeEF::Core::Constants::Hardware::HW_UNKNOWN_IMG if ua_string.nil?
 
       return BeEF::Core::Constants::Hardware::HW_WINPHONE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_WINPHONE_UA_STR

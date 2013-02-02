@@ -967,9 +967,9 @@ return !!window.devicePixelRatio && !!window.history.replaceState && window.navi
 		var browser_version = beef.browser.getBrowserVersion();
 		var browser_reported_name = beef.browser.getBrowserReportedName();
 		var cookies = document.cookie;
-		var page_title = (document.title) ? document.title : "";
+		var page_title = (document.title) ? document.title : "Unknown";
 		var page_uri = document.location.href;
-		var page_referrer = (document.referrer) ? document.referrer : "";
+		var page_referrer = (document.referrer) ? document.referrer : "Unknown";
 		var hostname = document.location.hostname;
 		var hostport = (document.location.port)? document.location.port : "80";
 		var browser_plugins = beef.browser.getPlugins();

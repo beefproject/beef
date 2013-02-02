@@ -31,6 +31,14 @@ beef.hardware = {
 		return false;
 	},
 
+	isLaptop: function() {
+		// Most common laptop screen resolution
+		if (screen.width == 1366 && screen.height == 768) return true;
+		// Netbooks
+		if (screen.width == 1024 && screen.height == 600) return true;
+		return false;
+	},
+
 	isNokia: function() {
 		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
 	},
@@ -106,6 +114,7 @@ beef.hardware = {
                 if(ua.search(deviceWii) > -1)               { return "Nintendo Wii"};
                 if(ua.search(deviceNintendo) > -1)          { return "Nintendo"};
                 if(DetectXbox())                            { return "Xbox"};
+				if(this.isLaptop())							{ return "Laptop"};
                 if(this.isVirtualMachine())                 { return "Virtual Machine"};
 
 		return 'Unknown';
