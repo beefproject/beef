@@ -255,6 +255,14 @@ module BeEF
             self.err_msg "Invalid value for HasActiveX returned from the hook browser's initial connection."
           end
 
+          # get and store the value for CPU
+          cpu_type = get_param(@data['results'], 'CPU')
+          if !cpu_type.nil?
+            BD.set(session_id, 'CPU', cpu_type)
+          else
+            self.err_msg "Invalid value for CPU returned from the hook browser's initial connection."
+          end
+
           # get and store whether the browser has session cookies enabled
           has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
           if BeEF::Filters.is_valid_yes_no?(has_session_cookies)

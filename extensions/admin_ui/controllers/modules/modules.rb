@@ -408,6 +408,21 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       summary_grid_hash['results'].push(page_name_row) # add the row
     end
 
+	# set and add the value for CPU
+	cpu_type = BD.get(zombie_session, 'CPU')
+	if not cpu_type.nil?
+	  encoded_cpu_type = CGI.escapeHTML(cpu_type)
+	  encoded_cpu_type_hash = { 'CPU' => encoded_cpu_type }
+
+	  page_name_row = {
+	    'category' => 'Host',
+	    'data' => encoded_cpu_type_hash,
+	    'from' => 'Initialization'
+	  }
+
+	  summary_grid_hash['results'].push(page_name_row) # add the row
+	end
+
     # set and add the return values for hasSessionCookies
     has_session_cookies = BD.get(zombie_session, 'hasSessionCookies')
     if not has_session_cookies.nil?
