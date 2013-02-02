@@ -672,6 +672,44 @@ return !!window.devicePixelRatio && !!window.history.replaceState && window.navi
 	},
 
 	/**
+	 * Checks if the zombie has the QuickTime plugin installed.
+	 * @return: {Boolean} true or false.
+	 *
+	 * @example: if ( beef.browser.hasQuickTime() ) { ... }
+	 */
+	hasQuickTime: function() {
+		
+		var quicktime = false;
+		
+		// Not Internet Explorer
+		if ( !this.type().IE ) {
+			
+			for ( i=0; i < navigator.plugins.length; i++ ) {
+				
+				if ( navigator.plugins[i].name.indexOf("QuickTime") >= 0 ) {
+					quicktime = true;
+				}
+				
+			}
+		
+		// Internet Explorer
+		} else {
+			
+			try {
+				
+				var qt_test = new ActiveXObject('QuickTime.QuickTime');
+				
+			} catch (e) { }
+			
+			if ( qt_test ) { quicktime = true; }
+			
+		}
+		
+		return quicktime;
+		
+	},
+
+	/**
 	 * Checks if the zombie has Java enabled.
  	 * @return: {Boolean} true or false.
 	 *
