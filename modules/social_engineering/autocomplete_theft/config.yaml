@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        steal_autocomplete:
+            enable: true
+            category: "Social Engineering"
+            name: "Steal Autocomplete"
+            description: "This module steals autocomplete values from Firefox. The user must press the up or down arrow keys twice, followed by the left or right arrow key, in order to steal autocomplete information.<br/>Hint: Try convincing the user to enter the Konami code (Up, Up, Down, Down, Left, Right, Left, Right, B, A, Enter)."
+            authors: ["Stefano Di Paola", "bcoles"]
+            target:
+                working: ["FF"]
+                not_working: ["ALL"]
