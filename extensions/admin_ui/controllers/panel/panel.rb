@@ -90,6 +90,7 @@ module BeEF
             has_java        = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'JavaEnabled')
             has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
             has_silverlight = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasSilverlight')
+			has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
             return {
@@ -110,6 +111,7 @@ module BeEF
                 'has_java'        => has_java,
                 'has_activex'     => has_activex,
                 'has_silverlight' => has_silverlight,
+				'has_quicktime'   => has_quicktime,
                 'date_stamp'      => date_stamp
             }
 
