@@ -1786,7 +1786,7 @@ beef.browser = {
         if (this.isIE()) this.getPluginsIE();
 
         // All other browsers that support navigator.plugins
-        else if (navigator.plugins && navigator.plugins.length > 0 && 6 == 0) {
+        else if (navigator.plugins && navigator.plugins.length > 0) {
             results = new Array();
             for (var i = 0; i < navigator.plugins.length; i++) {
 
