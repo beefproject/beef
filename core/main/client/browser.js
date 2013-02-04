@@ -2075,6 +2075,7 @@ beef.browser = {
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
         var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
+		var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
         var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
 
@@ -2104,6 +2105,7 @@ beef.browser = {
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears
         if (has_activex) details['HasActiveX'] = has_activex;
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
+		if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
         if (has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 
