@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Persistence"
             name: "Confirm Close Tab"
-            description: "Shows a confirm dialog to the user when he tries to close a tab. If he click yes, re-display the confirm dialog. Doesn't work on Opera < 12"
+            description: "Shows a confirm dialog to the user when he tries to close a tab. If he click yes, re-display the confirm dialog. Doesn't work on Opera < 12. In Chrome you can't keep opening confirm dialogs."
             authors: ["antisnatchor"]
             target:
                 user_notify: ["ALL"]

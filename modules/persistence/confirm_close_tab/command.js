@@ -22,6 +22,7 @@ beef.execute(function() {
             if (e.stopPropagation) {
                 e.stopPropagation();
                 e.preventDefault();
+                e.returnValue = "There is currently a request to the server pending. You will lose recent changes by navigating away.";
             }
         }
 
