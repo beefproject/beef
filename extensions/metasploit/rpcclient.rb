@@ -56,7 +56,7 @@ module Metasploit
 
 					msf_url += opts[:host] + ':' + opts[:port].to_s() + opts[:uri]
 					if msf_os.eql? "win"
-						print_info 'BeEF auto-connect with  metasploit is currently not supported on MS Windows.'
+						print_info 'Metasploit auto-launch is currently not supported in BeEF on MS Windows.'
 					else	
 						child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
 				
