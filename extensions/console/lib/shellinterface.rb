@@ -43,7 +43,7 @@ class ShellInterface
     self.cmd = {}
   end
 
-  # This is a *modified* replica of select_command_modules_tree from extensions/admin_ui/controllers/modules/modules.rb
+  # @note Get commands. This is a *modified* replica of select_command_modules_tree from extensions/admin_ui/controllers/modules/modules.rb
   def getcommands
     
     return if self.targetid.nil?
@@ -263,8 +263,10 @@ class ShellInterface
           return "Verified Unknown"
       end
   end
-  
-  #Yoinked from the UI panel - we really need to centralise all this stuff and encapsulate it away??
+
+  # @note Returns a JSON array containing the summary for a selected zombie.
+  # Yoinked from the UI panel -
+  # we really need to centralise all this stuff and encapsulate it away.
   def select_zombie_summary
     
     return if self.targetsession.nil?
@@ -275,408 +277,81 @@ class ShellInterface
       'results' => []
     }
 
-    # set and add the return values for the page title
-    page_title = BD.get(self.targetsession, 'PageTitle') 
-    if not page_title.nil?
-      encoded_page_title = CGI.escapeHTML(page_title)
-      encoded_page_title_hash = { 'Page Title' => encoded_page_title }
-      
-      page_name_row = {
-        'category' => 'Hooked Page',
-        'data' => encoded_page_title_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
+    # zombie properties
+    # in the form of: category, UI label, value
+    zombie_properties = [
+
+        # Browser
+        ['Browser', 'Browser Name',       'BrowserName'],
+        ['Browser', 'Browser Version',    'BrowserVersion'],
+        ['Browser', 'Browser UA String',  'BrowserReportedName'],
+        ['Browser', 'Browser Platform',   'BrowserPlatform'],
+        ['Browser', 'Browser Plugins',    'BrowserPlugins'],
+        ['Browser', 'Window Size',        'WindowSize'],
+
+        # Browser Components
+        ['Browser Components', 'Flash',              'HasFlash'],
+        ['Browser Components', 'Java',               'JavaEnabled'],
+        ['Browser Components', 'VBScript',           'VBScriptEnabled'],
+        ['Browser Components', 'PhoneGap',           'HasPhonegap'],
+        ['Browser Components', 'Google Gears',       'HasGoogleGears'],
+        ['Browser Components', 'Silverlight',        'HasSilverlight'],
+        ['Browser Components', 'Web Sockets',        'HasWebSocket'],
+        ['Browser Components', 'QuickTime',          'HasQuickTime'],
+        ['Browser Components', 'ActiveX',            'HasActiveX'],
+        ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
+        ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
+
+        # Hooked Page
+        ['Hooked Page', 'Page Title',    'PageTitle'],
+        ['Hooked Page', 'Page URI',      'PageURI'],
+        ['Hooked Page', 'Page Referrer', 'PageReferrer'],
+        ['Hooked Page', 'Host Name/IP',  'HostName'],
+        ['Hooked Page', 'Cookies',       'Cookies'],
+
+        # Host
+        ['Host', 'Date',             'DateStamp'],
+        ['Host', 'Operating System', 'OsName'],
+        ['Host', 'Hardware',         'Hardware'],
+        ['Host', 'CPU',              'CPU'],
+        ['Host', 'Screen Size',      'ScreenSize']
+    ]
+
+    # set and add the return values for each browser property
+    # in the form of: category, UI label, value
+    zombie_properties.each do |p|
+
+      case p[2]
+        when "BrowserName"
+          data   = BeEF::Core::Constants::Browsers.friendly_name(BD.get(zombie_session, p[2]))
+
+        when "ScreenSize"
+          screen_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+          width  = screen_size_hash['width']
+          height = screen_size_hash['height']
+          cdepth = screen_size_hash['colordepth']
+          data   = "Width: #{width}, Height: #{height}, Colour Depth: #{cdepth}"
+
+        when "WindowSize"
+          window_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+          width  = window_size_hash['width']
+          height = window_size_hash['height']
+          data   = "Width: #{width}, Height: #{height}"
+        else
+          data   = BD.get(zombie_session, p[2]) 
+      end
+
+      # add property to summary hash
+      if not data.nil?
+        summary_grid_hash['results'].push({
+          'category' => p[0],
+          'data'     => { p[1] => CGI.escapeHTML("#{data}") },
+          'from'     => 'Initialization'
+        })
+      end
+
     end
 
-    # set and add the return values for the page uri
-    page_uri = BD.get(self.targetsession, 'PageURI')
-    if not page_uri.nil?
-      encoded_page_uri = CGI.escapeHTML(page_uri)
-      encoded_page_uri_hash = { 'Page URI' => encoded_page_uri }
-
-      page_name_row = {
-        'category' => 'Hooked Page',
-        'data' => encoded_page_uri_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for the page referrer
-    page_referrer = BD.get(self.targetsession, 'PageReferrer')
-    if not page_referrer.nil?
-      encoded_page_referrer = CGI.escapeHTML(page_referrer)
-      encoded_page_referrer_hash = { 'Page Referrer' => encoded_page_referrer }
-
-      page_name_row = {
-        'category' => 'Hooked Page',
-        'data' => encoded_page_referrer_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for the host name
-    host_name = BD.get(self.targetsession, 'HostName') 
-    if not host_name.nil?
-      encoded_host_name = CGI.escapeHTML(host_name)
-      encoded_host_name_hash = { 'Hostname/IP' => encoded_host_name }
-    
-      page_name_row = {
-        'category' => 'Hooked Page',
-        'data' => encoded_host_name_hash,
-        'from' => 'Initialization'
-      }
-    
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-    
-	# set and add the return values for the date
-    date_stamp = BD.get(self.targetsession, 'DateStamp')
-    if not date_stamp.nil?
-      encoded_date_stamp = CGI.escapeHTML(date_stamp)
-      encoded_date_stamp_hash = { 'Date' => encoded_date_stamp }
-
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_date_stamp_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for the os name
-    os_name = BD.get(self.targetsession, 'OsName')
-    if not os_name.nil?
-      encoded_os_name = CGI.escapeHTML(os_name)
-      encoded_os_name_hash = { 'OS Name' => encoded_os_name }
-
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_os_name_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for the os name
-    hw_name = BD.get(self.targetsession, 'Hardware')
-    if not hw_name.nil?
-      encoded_hw_name = CGI.escapeHTML(hw_name)
-      encoded_hw_name_hash = { 'Hardware' => encoded_hw_name }
-
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_hw_name_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for the browser name
-    browser_name = BD.get(self.targetsession, 'BrowserName') 
-    if not browser_name.nil?
-      friendly_browser_name = BeEF::Core::Constants::Browsers.friendly_name(browser_name)
-      browser_name_hash = { 'Browser Name' => friendly_browser_name }
-
-      browser_name_row = {
-        'category' => 'Browser',
-        'data' => browser_name_hash,
-        'from' => 'Initialization'
-      }
-    
-      summary_grid_hash['results'].push(browser_name_row) # add the row
-    end
-    
-    # set and add the return values for the browser version
-    browser_version = BD.get(self.targetsession, 'BrowserVersion') 
-    if not browser_version.nil?
-      encoded_browser_version = CGI.escapeHTML(browser_version)
-      browser_version_hash = { 'Browser Version' => encoded_browser_version }
-
-      browser_version_row = {
-        'category' => 'Browser',
-         'data' => browser_version_hash,
-        'from' => 'Initialization'
-      }
-    
-      summary_grid_hash['results'].push(browser_version_row) # add the row
-    end
-    
-    # set and add the return values for the browser ua string
-    browser_uastring = BD.get(self.targetsession, 'BrowserReportedName')
-    if not browser_uastring.nil?
-      browser_uastring_hash = { 'Browser UA String' => browser_uastring }
-
-      browser_uastring_row = {
-        'category' => 'Browser',
-         'data' => browser_uastring_hash,
-        'from' => 'Initialization'
-      }
-    
-      summary_grid_hash['results'].push(browser_uastring_row) # add the row
-    end
-    
-    # set and add the list of cookies
-    cookies = BD.get(self.targetsession, 'Cookies')
-    if not cookies.nil? and not cookies.empty?
-      encoded_cookies = CGI.escapeHTML(cookies)
-      encoded_cookies_hash = { 'Cookies' => encoded_cookies }
-      
-      page_name_row = {
-        'category' => 'Hooked Page',
-        'data' => encoded_cookies_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-    
-    # set and add the list of plugins installed in the browser
-    browser_plugins = BD.get(self.targetsession, 'BrowserPlugins')
-    if not browser_plugins.nil? and not browser_plugins.empty?
-      encoded_browser_plugins = CGI.escapeHTML(browser_plugins)
-      encoded_browser_plugins_hash = { 'Browser Plugins' => encoded_browser_plugins }
-      
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_browser_plugins_hash,
-        'from' => 'Initialization'
-      }
-      
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-    
-    # set and add the Browser Platform
-    system_platform = BD.get(self.targetsession, 'BrowserPlatform')
-    if not system_platform.nil?
-      encoded_system_platform = CGI.escapeHTML(system_platform)
-      encoded_system_platform_hash = { 'Browser Platform' => encoded_system_platform }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_system_platform_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the zombie screen size and color depth
-    screen_size = BD.get(self.targetsession, 'ScreenSize')
-    if not screen_size.nil?
-      
-      screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-      width = screen_size_hash['width']
-      height = screen_size_hash['height']
-      colordepth = screen_size_hash['colordepth']
-
-      # construct the string to be displayed in the details tab
-      encoded_screen_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s + ", Colour Depth: " + colordepth.to_s)
-      encoded_screen_size_hash = { 'Screen Size' => encoded_screen_size }
-      
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_screen_size_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the zombie browser window size
-    window_size = BD.get(self.targetsession, 'WindowSize')
-    if not window_size.nil?
-
-      window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-      width = window_size_hash['width']
-      height = window_size_hash['height']
-
-      # construct the string to be displayed in the details tab
-      encoded_window_size = CGI.escapeHTML("Width: "+width.to_s + ", Height: " + height.to_s)
-      encoded_window_size_hash = { 'Window Size' => encoded_window_size }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_window_size_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for JavaEnabled
-    java_enabled = BD.get(self.targetsession, 'JavaEnabled')
-    if not java_enabled.nil?
-      encoded_java_enabled = CGI.escapeHTML(java_enabled)
-      encoded_java_enabled_hash = { 'Java Enabled' => encoded_java_enabled }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_java_enabled_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for VBScriptEnabled
-    vbscript_enabled = BD.get(self.targetsession, 'VBScriptEnabled')
-    if not vbscript_enabled.nil?
-      encoded_vbscript_enabled = CGI.escapeHTML(vbscript_enabled)
-      encoded_vbscript_enabled_hash = { 'VBScript Enabled' => encoded_vbscript_enabled }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_vbscript_enabled_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasFlash
-    has_flash = BD.get(self.targetsession, 'HasFlash')
-    if not has_flash.nil?
-      encoded_has_flash = CGI.escapeHTML(has_flash)
-      encoded_has_flash_hash = { 'Has Flash' => encoded_has_flash }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_flash_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasPhonegap
-    has_phonegap = BD.get(self.targetsession, 'HasPhonegap')
-    if not has_phonegap.nil?
-      encoded_has_phonegap = CGI.escapeHTML(has_phonegap)
-      encoded_has_phonegap_hash = { 'Has Phonegap' => encoded_has_phonegap }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_phonegap_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasGoogleGears
-    has_googlegears = BD.get(self.targetsession, 'HasGoogleGears')
-    if not has_googlegears.nil?
-      encoded_has_googlegears = CGI.escapeHTML(has_googlegears)
-      encoded_has_googlegears_hash = { 'Has GoogleGears' => encoded_has_googlegears }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_googlegears_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasWebSocket
-    has_web_socket = BD.get(self.targetsession, 'HasWebSocket')
-    if not has_web_socket.nil?
-      encoded_has_web_socket = CGI.escapeHTML(has_web_socket)
-      encoded_has_web_socket_hash = { 'Has GoogleGears' => encoded_has_web_socket }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_web_socket_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasActiveX
-    has_activex = BD.get(self.targetsession, 'HasActiveX')
-    if not has_activex.nil?
-      encoded_has_activex = CGI.escapeHTML(has_activex)
-      encoded_has_activex_hash = { 'Has ActiveX' => encoded_has_activex }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_activex_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the yes|no value for HasSilverlight
-    has_silverlight = BD.get(zombie_session, 'HasSilverlight')
-    if not has_silverlight.nil?
-      encoded_has_silverlight = CGI.escapeHTML(has_silverlight)
-      encoded_has_silverlight_hash = { 'Has Silverlight' => encoded_has_silverlight }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_silverlight_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the value for CPU
-    cpu_type = BD.get(zombie_session, 'CPU')
-    if not cpu_type.nil?
-      encoded_cpu_type = CGI.escapeHTML(cpu_type)
-      encoded_cpu_type_hash = { 'CPU' => encoded_cpu_type }
-
-      page_name_row = {
-        'category' => 'Host',
-        'data' => encoded_cpu_type_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for hasSessionCookies
-    has_session_cookies = BD.get(self.targetsession, 'hasSessionCookies')
-    if not has_session_cookies.nil?
-      encoded_has_session_cookies = CGI.escapeHTML(has_session_cookies)
-      encoded_has_session_cookies_hash = { 'Session Cookies' => encoded_has_session_cookies }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_session_cookies_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
-
-    # set and add the return values for hasPersistentCookies
-    has_persistent_cookies = BD.get(self.targetsession, 'hasPersistentCookies')
-    if not has_persistent_cookies.nil?
-      encoded_has_persistent_cookies = CGI.escapeHTML(has_persistent_cookies)
-      encoded_has_persistent_cookies_hash = { 'Persistent Cookies' => encoded_has_persistent_cookies }
-
-      page_name_row = {
-        'category' => 'Browser',
-        'data' => encoded_has_persistent_cookies_hash,
-        'from' => 'Initialization'
-      }
-
-      summary_grid_hash['results'].push(page_name_row) # add the row
-    end
- 
     summary_grid_hash
   end
   
