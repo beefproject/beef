@@ -260,7 +260,15 @@ module BeEF
           if BeEF::Filters.is_valid_yes_no?(has_silverlight)
             BD.set(session_id, 'HasSilverlight', has_silverlight)
           else
-            self.err_msg "Invalid value for Silverlight returned from the hook browser's initial connection."
+            self.err_msg "Invalid value for HasSilverlight returned from the hook browser's initial connection."
+          end
+
+          # get and store the yes|no value for HasQuickTime
+          has_quicktime = get_param(@data['results'], 'HasQuickTime')
+          if BeEF::Filters.is_valid_yes_no?(has_quicktime)
+            BD.set(session_id, 'HasQuickTime', has_quicktime)
+          else
+            self.err_msg "Invalid value for HasQuickTime returned from the hook browser's initial connection."
           end
 
           # get and store the value for CPU
