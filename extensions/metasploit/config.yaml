@@ -25,7 +25,7 @@ beef:
             ssl_verify: true
             callback_host: "127.0.0.1"
             autopwn_url: "autopwn"
-            auto_msfrpcd: true
+            auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
             msf_path: [ 
               {os: 'osx', path: '/opt/local/msf/'},
