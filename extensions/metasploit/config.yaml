@@ -33,6 +33,6 @@ beef:
               {os: 'bt5r3', path: '/opt/metasploit/msf3/'},
               {os: 'bt5', path: '/opt/framework3/msf3/'},
               {os: 'backbox', path: '/opt/metasploit3/msf3/'},
-              {os: 'win', path: 'c:\metasploit\msf3\'},
+              {os: 'win', path: 'c:\\metasploit-framework\\'},
               {os: 'custom', path: ''}
             ]
