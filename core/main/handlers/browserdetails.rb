@@ -279,6 +279,14 @@ module BeEF
             self.err_msg "Invalid value for CPU returned from the hook browser's initial connection."
           end
 
+          # get and store the value for TouchEnabled
+          touch_enabled = get_param(@data['results'], 'TouchEnabled')
+          if BeEF::Filters.is_valid_yes_no?(touch_enabled)
+            BD.set(session_id, 'TouchEnabled', touch_enabled)
+          else
+            self.err_msg "Invalid value for TouchEnabled returned from the hook browser's initial connection."
+          end
+
           # get and store whether the browser has session cookies enabled
           has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
           if BeEF::Filters.is_valid_yes_no?(has_session_cookies)

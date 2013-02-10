@@ -26,6 +26,11 @@ beef.hardware = {
 		return "32-bit";
 	},
 
+	isTouchEnabled: function() {
+		if ('ontouchstart' in document) return true;
+		return false;
+	},
+
 	isVirtualMachine: function() {
 		if (screen.width % 2 || screen.height % 2) return true;
 		return false;
