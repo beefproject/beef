@@ -98,7 +98,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Host', 'Operating System', 'OsName'],
         ['Host', 'Hardware',         'Hardware'],
         ['Host', 'CPU',              'CPU'],
-        ['Host', 'Screen Size',      'ScreenSize']
+        ['Host', 'Screen Size',      'ScreenSize'],
+        ['Host', 'Touch Screen',     'TouchEnabled']
     ]
 
     # set and add the return values for each browser property
