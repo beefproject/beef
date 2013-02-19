@@ -793,14 +793,19 @@ this.waitForSwf = function(i)
 
 this.evercookie_cookie = function(name, value)
 {
-	if (typeof(value) != "undefined")
-	{
-		// expire the cookie first
-		document.cookie = name + '=; expires=Mon, 20 Sep 2010 00:00:00 UTC; path=/';
-		document.cookie = name + '=' + value + '; expires=Tue, 31 Dec 2030 00:00:00 UTC; path=/';
-	}
-	else
-		return this.getFromStr(name, document.cookie);
+    try{
+        if (typeof(value) != "undefined")
+        {
+            // expire the cookie first
+            document.cookie = name + '=; expires=Mon, 20 Sep 2010 00:00:00 UTC; path=/';
+            document.cookie = name + '=' + value + '; expires=Tue, 31 Dec 2030 00:00:00 UTC; path=/';
+        }
+        else
+            return this.getFromStr(name, document.cookie);
+    }catch(e){
+        // the hooked domain is using HttpOnly, so we must set the hook ID in a different way.
+        // evercookie_userdata and evercookie_window will be used in this case.
+    }
 };
 
 // get value from param-like string (eg, "x=y&name=VALUE")
