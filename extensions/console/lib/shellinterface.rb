@@ -8,14 +8,14 @@ module Extension
 module Console
 
 class ShellInterface
-  
+
   BD = BeEF::Core::Models::BrowserDetails
-  
+
   def initialize(config)
     self.config = config
     self.cmd = {}
   end
-  
+
   def settarget(id)
     begin
       self.targetsession = BeEF::Core::Models::HookedBrowser.first(:id => id).session
@@ -25,7 +25,7 @@ class ShellInterface
       return nil
     end
   end
-  
+
   def setofflinetarget(id)
     begin
       self.targetsession = BeEF::Core::Models::HookedBrowser.first(:id => id).session
@@ -35,7 +35,7 @@ class ShellInterface
       return nil
     end
   end
-  
+
   def cleartarget
     self.targetsession = nil
     self.targetip = nil
@@ -45,9 +45,9 @@ class ShellInterface
 
   # @note Get commands. This is a *modified* replica of select_command_modules_tree from extensions/admin_ui/controllers/modules/modules.rb
   def getcommands
-    
+
     return if self.targetid.nil?
-    
+
     tree = []
     BeEF::Modules.get_categories.each { |c|
         if c[-1,1] != "/"
@@ -104,39 +104,39 @@ class ShellInterface
         update_command_module_tree(tree, dyn_mod_category, "Verified Unknown", command_mod_name,dyn_mod.id)
        }
     end
-    
-    # sort the parent array nodes 
+
+    # sort the parent array nodes
     tree.sort! {|a,b| a['text'] <=> b['text']}
-  
+
     # sort the children nodes by status
     tree.each {|x| x['children'] =
       x['children'].sort_by {|a| a['status']}
     }
-    
+
     # append the number of command modules so the branch name results in: "<category name> (num)"
     #tree.each {|command_module_branch|
     #  num_of_command_modules = command_module_branch['children'].length
     #  command_module_branch['text'] = command_module_branch['text'] + " (" + num_of_command_modules.to_s() + ")"
     #}
-    
+
     # return a JSON array of hashes
     tree
   end
-  
+
   def setcommand(id)
     key = BeEF::Module.get_key_by_database_id(id.to_i)
-    
+
     self.cmd['id'] = id
     self.cmd['Name'] = self.config.get("beef.module.#{key}.name")
     self.cmd['Description'] = self.config.get("beef.module.#{key}.description")
     self.cmd['Category'] = self.config.get("beef.module.#{key}.category")
     self.cmd['Data'] = BeEF::Module.get_options(key)
   end
-  
+
   def clearcommand
     self.cmd = {}
   end
-  
+
   def setparam(param,value)
     self.cmd['Data'].each do |data|
       if data['name'] == param
@@ -145,12 +145,12 @@ class ShellInterface
       end
     end
   end
-  
+
   def getcommandresponses(cmdid = self.cmd['id'])
-    
+
     commands = []
     i = 0
-    
+
     BeEF::Core::Models::Command.all(:command_module_id => cmdid, :hooked_browser_id => self.targetid).each do |command|
       commands.push({
         'id' => i,
@@ -160,10 +160,10 @@ class ShellInterface
       })
       i+=1
     end
-    
+
     commands
   end
-  
+
   def getindividualresponse(cmdid)
     results = []
     begin
@@ -175,26 +175,26 @@ class ShellInterface
     end
     results
   end
-  
+
   def executecommand
     definition = {}
     options = {}
     options.store("zombie_session", self.targetsession.to_s)
     options.store("command_module_id", self.cmd['id'])
-    
+
     if not self.cmd['Data'].nil?
       self.cmd['Data'].each do |key|
         options.store("txt_"+key['name'].to_s,key['value'])
       end
     end
-    
-    options.keys.each {|param| 
+
+    options.keys.each {|param|
       definition[param[4..-1]] = options[param]
       oc = BeEF::Core::Models::OptionCache.first_or_create(:name => param[4..-1])
       oc.value = options[param]
 	    oc.save
     }
-    
+
     mod_key = BeEF::Module.get_key_by_database_id(self.cmd['id'])
     # Hack to rework the old option system into the new option system
     def2 = []
@@ -207,7 +207,7 @@ class ShellInterface
     else
       return false
     end
-    
+
     #Old method
     #begin
     #  BeEF::Core::Models::Command.new(  :data => definition.to_json,
@@ -218,10 +218,10 @@ class ShellInterface
     #rescue
     #  return false
     #end
-    
+
     #return true
   end
-  
+
   def update_command_module_tree(tree, cmd_category, cmd_status, cmd_name, cmd_id)
 
       # construct leaf node for the command module tree
@@ -240,7 +240,7 @@ class ShellInterface
         end
       }
   end
-  
+
   def get_command_module_status(mod)
       hook_session_id = self.targetsession
       if hook_session_id == nil
@@ -250,7 +250,7 @@ class ShellInterface
         'browser' => BD.get(hook_session_id, 'BrowserName'),
         'ver' => BD.get(hook_session_id, 'BrowserVersion'),
         'os' => [BD.get(hook_session_id, 'OsName')]})
-      
+
         when BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
           return "Verified Not Working"
         when BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY
@@ -268,12 +268,12 @@ class ShellInterface
   # Yoinked from the UI panel -
   # we really need to centralise all this stuff and encapsulate it away.
   def select_zombie_summary
-    
+
     return if self.targetsession.nil?
 
     # init the summary grid
     summary_grid_hash = {
-      'success' => 'true', 
+      'success' => 'true',
       'results' => []
     }
 
@@ -299,6 +299,7 @@ class ShellInterface
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
+        ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
@@ -340,7 +341,7 @@ class ShellInterface
           height = window_size_hash['height']
           data   = "Width: #{width}, Height: #{height}"
         else
-          data   = BD.get(zombie_session, p[2]) 
+          data   = BD.get(zombie_session, p[2])
       end
 
       # add property to summary hash
@@ -356,14 +357,14 @@ class ShellInterface
 
     summary_grid_hash
   end
-  
+
   attr_reader :targetsession
   attr_reader :targetid
   attr_reader :targetip
   attr_reader :cmd
-  
+
   protected
-  
+
   attr_writer :targetsession
   attr_writer :targetid
   attr_writer :targetip
