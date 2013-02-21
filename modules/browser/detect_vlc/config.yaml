@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_vlc:
+            enable: true
+            category: "Browser"
+            name: "Detect VLC"
+            description: "This module will check if the browser has VLC plugin."
+            authors: ["nbblrr"]
+            target:
+                working: ["IE", "FF", "C"]
