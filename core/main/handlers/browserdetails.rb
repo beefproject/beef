@@ -270,13 +270,21 @@ module BeEF
           else
             self.err_msg "Invalid value for HasQuickTime returned from the hook browser's initial connection."
           end
-          
+
           # get and store the yes|no value for HasRealPlayer
           has_realplayer = get_param(@data['results'], 'HasRealPlayer')
           if BeEF::Filters.is_valid_yes_no?(has_realplayer)
             BD.set(session_id, 'HasRealPlayer', has_realplayer)
           else
             self.err_msg "Invalid value for HasRealPlayer returned from the hook browser's initial connection."
+          end
+
+          # get and store the yes|no value for HasVLC
+          has_vlc = get_param(@data['results'], 'HasVLC')
+          if BeEF::Filters.is_valid_yes_no?(has_vlc)
+            BD.set(session_id, 'HasVLC', has_vlc)
+          else
+            self.err_msg "Invalid value for HasVLC returned from the hook browser's initial connection."
           end
 
           # get and store the value for CPU

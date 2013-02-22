@@ -7,14 +7,14 @@ module BeEF
 module Extension
 module AdminUI
 module Controllers
-  
+
 #
 #
 #
 class Modules < BeEF::Extension::AdminUI::HttpController
-  
+
   BD = BeEF::Core::Models::BrowserDetails
-  
+
   def initialize
     super({
       'paths' => {
@@ -31,7 +31,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         '/commandmodule/reexecute'          => method(:reexecute_command_module)
       }
     })
-    
+
     @session = BeEF::Extension::AdminUI::Session.instance
   end
 
@@ -45,11 +45,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
          'token' => BeEF::Core::Configuration.instance.get("beef.api_token")
      }.to_json
   end
-  
+
   # Returns a JSON array containing the summary for a selected zombie.
   def select_zombie_summary
 
-    # get the zombie 
+    # get the zombie
     zombie_session = @params['zombie_session'] || nil
     (print_error "Zombie session is nil";return) if zombie_session.nil?
     zombie = BeEF::Core::Models::HookedBrowser.first(:session => zombie_session)
@@ -57,7 +57,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # init the summary grid
     summary_grid_hash = {
-      'success' => 'true', 
+      'success' => 'true',
       'results' => []
     }
 
@@ -83,6 +83,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
+        ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
@@ -124,7 +125,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
           height = window_size_hash['height']
           data   = "Width: #{width}, Height: #{height}"
         else
-          data   = BD.get(zombie_session, p[2]) 
+          data   = BD.get(zombie_session, p[2])
       end
 
       # add property to summary hash
@@ -138,7 +139,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     end
 
-    @body = summary_grid_hash.to_json  
+    @body = summary_grid_hash.to_json
   end
 
   # Returns the list of all command_modules in a JSON format
@@ -262,10 +263,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   #Recursive function to sort all the parent's children
   def sort_recursive_tree(parent)
     # sort the children nodes by status and name
-    parent.each {|x| 
+    parent.each {|x|
       #print_info "Sorting: " + x['children'].to_s
       if x.is_a?(Hash) and x.has_key?('children')
-        x['children'] = x['children'].sort_by {|a| 
+        x['children'] = x['children'].sort_by {|a|
           fldr = a['cls'] ? a['cls'] : 'zzzzz'
           "#{fldr}#{a['status']}#{a['text']}"
         }
@@ -349,20 +350,20 @@ class Modules < BeEF::Extension::AdminUI::HttpController
          update_command_module_tree(tree, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
        }
     end
-      
-    # sort the parent array nodes 
+
+    # sort the parent array nodes
     tree.sort! {|a,b| a['text'] <=> b['text']}
-    
+
     sort_recursive_tree(tree)
 
     retitle_recursive_tree(tree)
-    
 
-      
+
+
     # return a JSON array of hashes
     @body = tree.to_json
   end
-  
+
   # Returns the inputs definition of an command_module.
   def select_command_module
     command_module_id = @params['command_module_id'] || nil
@@ -377,7 +378,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
        @body = command_modules2json([key])
     end
   end
-  
+
   # Returns the list of commands for an command_module
   def select_command_module_commands
     commands = []
@@ -392,32 +393,32 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     nonce = @params['nonce'] || nil
     (print_error "nonce is nil";return) if nonce.nil?
     (print_error "nonce incorrect";return) if @session.get_nonce != nonce
-    
+
     # get the browser id
     zombie = Z.first(:session => zombie_session)
     (print_error "Zombie is nil";return) if zombie.nil?
     zombie_id = zombie.id
     (print_error "Zombie id is nil";return) if zombie_id.nil?
-      
+
     C.all(:command_module_id => command_module_id, :hooked_browser_id => zombie_id).each do |command|
       commands.push({
-        'id' => i, 
-        'object_id' => command.id, 
-        'creationdate' => Time.at(command.creationdate.to_i).strftime("%Y-%m-%d %H:%M").to_s, 
+        'id' => i,
+        'object_id' => command.id,
+        'creationdate' => Time.at(command.creationdate.to_i).strftime("%Y-%m-%d %H:%M").to_s,
         'label' => command.label
         })
       i+=1
     end
-      
+
     @body = {
-      'success' => 'true', 
+      'success' => 'true',
       'commands' => commands}.to_json
-      
+
   end
-  
+
   # Attaches an command_module to a zombie.
   def attach_command_module
-    
+
     definition = {}
 
     # get params
@@ -429,8 +430,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     nonce = @params['nonce'] || nil
     (print_error "nonce is nil";return) if nonce.nil?
     (print_error "nonce incorrect";return) if @session.get_nonce != nonce
-    
-    @params.keys.each {|param| 
+
+    @params.keys.each {|param|
       (print_error "invalid key param string";return) if not BeEF::Filters.has_valid_param_chars?(param)
       (print_error "first char is num";return) if BeEF::Filters.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
@@ -449,10 +450,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     exec_results = BeEF::Module.execute(mod_key, zombie_session, def2)
     @body = (exec_results != nil) ? '{success: true}' : '{success: false}'
   end
-  
+
   # Re-execute an command_module to a zombie.
   def reexecute_command_module
-    
+
     # get params
     command_id = @params['command_id'] || nil
     (print_error "Command id is nil";return) if command_id.nil?
@@ -462,15 +463,15 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     nonce = @params['nonce'] || nil
     (print_error "nonce is nil";return) if nonce.nil?
     (print_error "nonce incorrect";return) if @session.get_nonce != nonce
-    
+
     command.instructions_sent = false
     command.save
-    
+
     @body = '{success : true}'
   end
 
   def attach_dynamic_command_module
-    
+
     definition = {}
 
     # get params
@@ -482,8 +483,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     nonce = @params['nonce'] || nil
     (print_error "nonce is nil";return) if nonce.nil?
     (print_error "nonce incorrect";return) if @session.get_nonce != nonce
-    
-    @params.keys.each {|param| 
+
+    @params.keys.each {|param|
       (print_error "invalid key param string";return) if not BeEF::Filters.has_valid_param_chars?(param)
       (print_error "first char is num";return) if BeEF::Filters.first_char_is_num?(param)
       definition[param[4..-1]] = params[param]
@@ -525,11 +526,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
 
   end
-  
+
   # Returns the results of a command
   def select_command_results
     results = []
-    
+
     # get params
     command_id = @params['command_id']|| nil
     (print_error "Command id is nil";return) if command_id.nil?
@@ -539,24 +540,24 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # get command_module
     command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
     (print_error "command_module is nil";return) if command_module.nil?
-    
+
     resultsdb = BeEF::Core::Models::Result.all(:command_id => command_id)
     (print_error "Command id result is nil";return) if resultsdb.nil?
-    
+
     resultsdb.each{ |result| results.push({'date' => result.date, 'data' => JSON.parse(result.data)}) }
-    
+
     @body = {
-      'success'             => 'true', 
+      'success'             => 'true',
       'command_module_name' => command_module.name,
       'command_module_id'   => command_module.id,
       'results'             => results}.to_json
 
   end
-  
+
   # Returns the definition of a command.
   # In other words it returns the command that was used to command_module a zombie.
   def select_command
-    
+
     # get params
     command_id = @params['command_id'] || nil
     (print_error "Command id is nil";return) if command_id.nil?
@@ -573,9 +574,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       command_module_name = command_module.name
       e = BeEF::Core::Command.const_get(command_module_name.capitalize).new(command_module_name)
     end
-            
+
     @body = {
-      'success' => 'true', 
+      'success' => 'true',
       'command_module_name'  => command_module_name,
       'command_module_id'    => command_module.id,
       'data'                 => BeEF::Module.get_options(command_module_name),
@@ -583,9 +584,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     }.to_json
 
   end
-  
+
   private
-  
+
   # Takes a list of command_modules and returns them as a JSON array
   def command_modules2json(command_modules)
     command_modules_json = {}
@@ -601,7 +602,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         command_modules_json[i] = h
         i += 1
     end
-    
+
     if not command_modules_json.empty?
       return {'success' => 'true', 'command_modules' => command_modules_json}.to_json
     else
@@ -612,15 +613,15 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   # return the input requred for the module in JSON format
   def dynamic_modules2json(id)
     command_modules_json = {}
-    
+
     mod = BeEF::Core::Models::CommandModule.first(:id => id)
 
     # if the module id is not in the database return false
     return {'success' => 'false'}.to_json if(not mod)
-    
+
     # the path will equal Dynamic/<type> and this will get just the type
 		dynamic_type = mod.path.split("/").last
-		
+
     e = BeEF::Modules::Commands.const_get(dynamic_type.capitalize).new
     e.update_info(mod.id)
     e.update_data()
@@ -647,7 +648,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     return {'success' => 'true', 'command_modules' => payload_options_json}.to_json
 
   end
-  
+
 end
 
 end

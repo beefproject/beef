@@ -911,15 +911,15 @@ beef.browser = {
 
             // Internet Explorer
         } else {
-	
+
 			var definedControls = [
 			    'RealPlayer',
 				'rmocx.RealPlayer G2 Control',
 			    'rmocx.RealPlayer G2 Control.1',
 			    'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
-			    'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'			    
+			    'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
 				];
-			
+
 			for (var i = 0; i < definedControls.length; i++) {
 
             	try {
@@ -937,6 +937,28 @@ beef.browser = {
 
         return realplayer;
 
+    },
+
+    /**
+     *  Checks if VLC is installed
+     *  @return: {Boolean} true or false
+     **/
+    hasVLC:function() {
+        var vlc = false ;
+        if(!this.type().IE) {
+            for (i = 0; i < navigator.plugins.length; i++) {
+                if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
+                    vlc = true;
+                }
+            }
+        } else {
+            try {
+                control = new ActiveXObject("VideoLAN.VLCPlugin.2");
+                vlc = true ;
+                } catch(e) {
+                }
+        };
+        return vlc ;
     },
 
     /**
@@ -2126,8 +2148,9 @@ beef.browser = {
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
         var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
-		var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
-		var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
+        var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
+        var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
+        var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
         try{
             var cookies = document.cookie;
             var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
@@ -2169,8 +2192,9 @@ beef.browser = {
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears
         if (has_activex) details['HasActiveX'] = has_activex;
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
-		if (has_quicktime) details['HasQuickTime'] = has_quicktime;
-		if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
+        if (has_quicktime) details['HasQuickTime'] = has_quicktime;
+        if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
+        if (has_vlc) details['HasVLC'] = has_vlc ;
 
         return details;
     },
