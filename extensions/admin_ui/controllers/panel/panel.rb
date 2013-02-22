@@ -113,8 +113,9 @@ module BeEF
                 'has_java'        => has_java,
                 'has_activex'     => has_activex,
                 'has_silverlight' => has_silverlight,
-				        'has_quicktime'   => has_quicktime,
-				        'has_realplayer'  => has_realplayer,
+                'has_quicktime'   => has_quicktime,
+                'has_vlc'         => has_vlc,
+                'has_realplayer'  => has_realplayer,
                 'date_stamp'      => date_stamp
             }
 
