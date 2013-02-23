@@ -13,4 +13,4 @@ beef:
             authors: ["gcattani"]
             target:
                 working: ["All"]
-                not_working: ["None"]
+                not_working: ["All"]
