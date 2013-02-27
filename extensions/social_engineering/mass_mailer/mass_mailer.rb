@@ -22,13 +22,12 @@ module BeEF
           @helo = @config.get("#{@config_prefix}.helo")
           @auth = @config.get("#{@config_prefix}.auth")
           @password = @config.get("#{@config_prefix}.password")
-          @from = @config.get("#{@config_prefix}.from")
         end
 
         # tos_hash is an Hash like:
         # 'antisnatchor@gmail.com' => 'Michele'
         # 'ciccio@pasticcio.com' => 'Ciccio'
-        def send_email(template, fromname, subject, link, linktext, tos_hash)
+        def send_email(template, fromname, fromaddr, subject, link, linktext, tos_hash)
           # create new SSL context and disable CA chain validation
           if @config.get("#{@config_prefix}.use_tls")
             @ctx = OpenSSL::SSL::SSLContext.new
@@ -38,7 +37,7 @@ module BeEF
 
           n = tos_hash.size
           x = 1
-          print_info "Sending #{n} mail(s) from [#{@from}] - name [#{fromname}] using template [#{template}]:"
+          print_info "Sending #{n} mail(s) from [#{fromaddr}] - name [#{fromname}] using template [#{template}]:"
           print_info "subject: #{subject}"
           print_info "link: #{link}"
           print_info "linktext: #{linktext}"
@@ -50,17 +49,17 @@ module BeEF
           if @config.get("#{@config_prefix}.use_auth")
             smtp.start(@helo, @auth, @password, :login) do |smtp|
               tos_hash.each do |to, name|
-                message = compose_email(fromname, to, name, subject, link, linktext, template)
-                smtp.send_message(message, @from, to)
+                message = compose_email(fromname, fromaddr, to, name, subject, link, linktext, template)
+                smtp.send_message(message, fromaddr, to)
                 print_info "Mail #{x}/#{n} to [#{to}] sent."
                 x += 1
               end
             end
           else
-            smtp.start(@helo, @from) do |smtp|
+            smtp.start(@helo, @auth) do |smtp|
               tos_hash.each do |to, name|
-                message = compose_email(fromname, to, name, subject, link, linktext, template)
-                smtp.send_message(message, @from, to)
+                message = compose_email(fromname, fromaddr, to, name, subject, link, linktext, template)
+                smtp.send_message(message, fromaddr, to)
                 print_info "Mail #{x}/#{n} to [#{to}] sent."
                 x += 1
               end
@@ -68,14 +67,14 @@ module BeEF
           end
         end
 
-        def compose_email(fromname, to, name, subject, link, linktext, template)
+        def compose_email(fromname, fromaddr, to, name, subject, link, linktext, template)
           begin
             msg_id = random_string(50)
             boundary = "------------#{random_string(24)}"
             rel_boundary = "------------#{random_string(24)}"
 
 
-            header = email_headers(@from, fromname, @user_agent, to, subject, msg_id, boundary)
+            header = email_headers(fromaddr, fromname, @user_agent, to, subject, msg_id, boundary)
             plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain", template), boundary)
             rel_header = email_related(rel_boundary)
             html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html", template),rel_boundary)

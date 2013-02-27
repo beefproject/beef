@@ -23,7 +23,6 @@ beef:
                 helo: "gmail.com" # this is usually the domain name
                 auth: "youruser@gmail.com"
                 password: "yourpass"
-                from: "fromemail@gmail.com"
                 # available templates
                 templates:
                     default:
