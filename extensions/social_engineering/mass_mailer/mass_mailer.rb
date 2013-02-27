@@ -20,8 +20,9 @@ module BeEF
           @host = @config.get("#{@config_prefix}.host")
           @port = @config.get("#{@config_prefix}.port")
           @helo = @config.get("#{@config_prefix}.helo")
-          @from = @config.get("#{@config_prefix}.from")
+          @auth = @config.get("#{@config_prefix}.auth")
           @password = @config.get("#{@config_prefix}.password")
+          @from = @config.get("#{@config_prefix}.from")
         end
 
         # tos_hash is an Hash like:
@@ -47,7 +48,7 @@ module BeEF
           smtp.enable_starttls(@ctx) unless @config.get("#{@config_prefix}.use_tls") == false
 
           if @config.get("#{@config_prefix}.use_auth")
-            smtp.start(@helo, @from, @password, :login) do |smtp|
+            smtp.start(@helo, @auth, @password, :login) do |smtp|
               tos_hash.each do |to, name|
                 message = compose_email(fromname, to, name, subject, link, linktext, template)
                 smtp.send_message(message, @from, to)
@@ -68,32 +69,38 @@ module BeEF
         end
 
         def compose_email(fromname, to, name, subject, link, linktext, template)
-           msg_id = random_string(50)
-           boundary = "------------#{random_string(24)}"
-           rel_boundary = "------------#{random_string(24)}"
+          begin
+            msg_id = random_string(50)
+            boundary = "------------#{random_string(24)}"
+            rel_boundary = "------------#{random_string(24)}"
 
-           header = email_headers(@from, fromname, @user_agent, to, subject, msg_id, boundary)
-           plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain", template), boundary)
-           rel_header = email_related(rel_boundary)
-           html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html", template),rel_boundary)
 
-           images = ""
-           @config.get("#{@config_prefix}.templates.#{template}.images").each do |image|
-             images += email_add_image(image, "#{@templates_dir}#{template}/#{image}",rel_boundary)
-           end
+            header = email_headers(@from, fromname, @user_agent, to, subject, msg_id, boundary)
+            plain_body = email_plain_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.plain", template), boundary)
+            rel_header = email_related(rel_boundary)
+            html_body = email_html_body(parse_template(name, link, linktext, "#{@templates_dir}#{template}/mail.html", template),rel_boundary)
 
-           attachments = ""
-           if @config.get("#{@config_prefix}.templates.#{template}.attachments") != nil
-             @config.get("#{@config_prefix}.templates.#{template}.attachments").each do |attachment|
-               attachments += email_add_attachment(attachment, "#{@templates_dir}#{template}/#{attachment}",rel_boundary)
-             end
-           end
+            images = ""
+            @config.get("#{@config_prefix}.templates.#{template}.images").each do |image|
+              images += email_add_image(image, "#{@templates_dir}#{template}/#{image}",rel_boundary)
+            end
 
-           close = email_close(boundary)
+            attachments = ""
+            if @config.get("#{@config_prefix}.templates.#{template}.attachments") != nil
+              @config.get("#{@config_prefix}.templates.#{template}.attachments").each do |attachment|
+                 attachments += email_add_attachment(attachment, "#{@templates_dir}#{template}/#{attachment}",rel_boundary)
+              end
+            end
 
-           message = header + plain_body + rel_header + html_body + images + attachments + close
-           print_debug "Raw Email content:\n #{message}"
-           message
+            close = email_close(boundary)
+          rescue Exception => e
+            print_error "Error constructing email."
+            raise
+          end
+
+          message = header + plain_body + rel_header + html_body + images + attachments + close
+          print_debug "Raw Email content:\n #{message}"
+          message
         end
 
         def email_headers(from, fromname, user_agent, to, subject, msg_id, boundary)
