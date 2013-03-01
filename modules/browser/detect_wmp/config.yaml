@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_wmp:
+            enable: true
+            category: "Browser"
+            name: "Detect Windows Media Player"
+            description: "This module will check if the browser has the Windows Media Player plugin installed."
+            authors: ["gcattani"]
+            target:
+                working: ["All"]

@@ -32,6 +32,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var has_silverlight    = zombie_array[index]["has_silverlight"];
 		var has_quicktime      = zombie_array[index]["has_quicktime"];
 		var has_realplayer     = zombie_array[index]["has_realplayer"];
+		var has_wmp			   = zombie_array[index]["has_wmp"];
 		var date_stamp         = zombie_array[index]["date_stamp"];
 
 		text = "<img src='/ui/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
@@ -39,21 +40,22 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		text+= "<img src='/ui/media/images/icons/"+escape(hw_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text+= ip;
 
-		balloon_text = "IP: "                  + ip;
-		balloon_text+= "<br/>Browser: "        + browser_name + " " + browser_version;
-		balloon_text+= "<br/>System: "         + os_name;
-		balloon_text+= "<br/>Hardware: "       + hw_name;
-		balloon_text+= "<br/>Domain: "         + domain + ":" + port;
-		balloon_text+= "<br/>Flash: "          + has_flash;
-                balloon_text+= "<br/>Java: "           + has_java;
-                balloon_text+= "<br/>Web Sockets: "    + has_web_sockets;
-		balloon_text+= "<br/>ActiveX: "        + has_activex;
-		balloon_text+= "<br/>Silverlight: "    + has_silverlight;
-		balloon_text+= "<br/>QuickTime: "      + has_quicktime;
-                balloon_text+= "<br/>VLC: "            + has_vlc;
-		balloon_text+= "<br/>RealPlayer: "     + has_realplayer;
-		balloon_text+= "<br/>Google Gears: "   + has_googlegears;
-		balloon_text+= "<br/>Date: "           + date_stamp;
+		balloon_text = "IP: "                       + ip;
+		balloon_text+= "<br/>Browser: "             + browser_name + " " + browser_version;
+		balloon_text+= "<br/>System: "              + os_name;
+		balloon_text+= "<br/>Hardware: "            + hw_name;
+		balloon_text+= "<br/>Domain: "              + domain + ":" + port;
+		balloon_text+= "<br/>Flash: "               + has_flash;
+        balloon_text+= "<br/>Java: "                + has_java;
+        balloon_text+= "<br/>Web Sockets: "         + has_web_sockets;
+		balloon_text+= "<br/>ActiveX: "             + has_activex;
+		balloon_text+= "<br/>Silverlight: "         + has_silverlight;
+		balloon_text+= "<br/>QuickTime: "           + has_quicktime;
+        balloon_text+= "<br/>VLC: "                 + has_vlc;
+		balloon_text+= "<br/>RealPlayer: "          + has_realplayer;
+		balloon_text+= "<br/>Windows MediaPlayer: " + has_wmp;
+		balloon_text+= "<br/>Google Gears: "        + has_googlegears;
+		balloon_text+= "<br/>Date: "                + date_stamp;
 
 		var new_zombie = {
 			'id'           : index,
