@@ -278,6 +278,14 @@ module BeEF
           else
             self.err_msg "Invalid value for HasRealPlayer returned from the hook browser's initial connection."
           end
+          
+          # get and store the yes|no value for HasWMP
+          has_wmp = get_param(@data['results'], 'HasWMP')
+          if BeEF::Filters.is_valid_yes_no?(has_wmp)
+            BD.set(session_id, 'HasWMP', has_wmp)
+          else
+            self.err_msg "Invalid value for HasWMP returned from the hook browser's initial connection."
+          end
 
           # get and store the yes|no value for HasVLC
           has_vlc = get_param(@data['results'], 'HasVLC')
