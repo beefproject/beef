@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        Detect_toolbars:
+        detect_vlc:
             enable: true
             category: "Browser"
-            name: "Detect Toolbars"
-            description: "Detects which browser toolbars are installed."
-            authors: ["gcattani"]
+            name: "Detect VLC"
+            description: "This module will check if the browser has VLC plugin."
+            authors: ["nbblrr"]
             target:
-                working: ["All"]
+                working: ["IE", "FF", "C"]

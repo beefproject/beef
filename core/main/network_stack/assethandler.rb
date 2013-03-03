@@ -38,6 +38,24 @@ module Handlers
       url
     end
 
+    # Binds raw HTTP to a mount point
+    # @param [Integer] status HTTP status code to return
+    # @param [String] headers HTTP headers as a JSON string to return
+    # @param [String] body HTTP body to return
+    # @param [String] path URL path to mount the asset to TODO (can be nil for random path)
+    # @todo @param [Integer] count The amount of times the asset can be accessed before being automatically unbinded (-1 = unlimited)
+    def bind_raw(status, header, body, path=nil, count=-1)
+      url = build_url(path,nil)
+      @allocations[url] = {}
+      @http_server.mount(
+        url,
+        BeEF::Core::NetworkStack::Handlers::Raw.new(status, header, body)
+      )
+      @http_server.remap
+      print_info "Raw HTTP bound to url [" + url + "]"
+      url
+    end
+
     # Binds a file to a mount point
     # @param [String] file File path to asset
     # @param [String] path URL path to mount the asset to (can be nil for random path)

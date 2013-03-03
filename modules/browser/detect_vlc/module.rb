@@ -3,5 +3,12 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+class Detect_vlc < BeEF::Core::Command
 
-0.4.4.3-alpha
+	def post_execute
+		content = {}
+		content['vlc'] = @datastore['vlc']
+		save content
+	end
+
+end

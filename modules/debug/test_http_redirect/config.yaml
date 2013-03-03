@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        Detect_toolbars:
+        test_http_redirect:
             enable: true
-            category: "Browser"
-            name: "Detect Toolbars"
-            description: "Detects which browser toolbars are installed."
-            authors: ["gcattani"]
+            category: "Debug"
+            name: "Test HTTP Redirect"
+            description: "Test the HTTP 'redirect' handler."
+            authors: ["bcoles"]
             target:
-                working: ["All"]
+                 working: ["All"]

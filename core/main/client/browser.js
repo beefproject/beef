@@ -225,15 +225,23 @@ beef.browser = {
      * @example: beef.browser.isFF19()
      */
     isFF19:function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && window.navigator.userAgent.match(/Firefox\/19\./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && window.navigator.userAgent.match(/Firefox\/19\./) != null;
     },
+
+	/**
+	 * Returns true if FF20
+	 * @example: beef.browser.isFF20()
+	 */
+	isFF20:function () {
+		return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && window.navigator.userAgent.match(/Firefox\/20\./) != null;
+	},
 
     /**
      * Returns true if FF.
      * @example: beef.browser.isFF()
      */
     isFF:function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20();
     },
 
     /**
@@ -544,6 +552,7 @@ beef.browser = {
             FF17:this.isFF17(), // Firefox 17
             FF18:this.isFF18(), // Firefox 18
             FF19:this.isFF19(), // Firefox 19
+			FF20:this.isFF20(), // Firefox 20
             FF:this.isFF(), // Firefox any version
 
             IE6:this.isIE6(), // Internet Explorer 6
@@ -739,6 +748,10 @@ beef.browser = {
             return '19'
         }
         ;    // Firefox 19
+		if (this.isFF20()) {
+			return '20'
+		}
+		;	// Firefox 20
 
         if (this.isIE6()) {
             return '6'
@@ -923,15 +936,15 @@ beef.browser = {
 
             // Internet Explorer
         } else {
-	
+
 			var definedControls = [
 			    'RealPlayer',
 				'rmocx.RealPlayer G2 Control',
 			    'rmocx.RealPlayer G2 Control.1',
 			    'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
-			    'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'			    
+			    'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
 				];
-			
+
 			for (var i = 0; i < definedControls.length; i++) {
 
             	try {
@@ -949,6 +962,28 @@ beef.browser = {
 
         return realplayer;
 
+    },
+
+    /**
+     *  Checks if VLC is installed
+     *  @return: {Boolean} true or false
+     **/
+    hasVLC:function() {
+        var vlc = false ;
+        if(!this.type().IE) {
+            for (i = 0; i < navigator.plugins.length; i++) {
+                if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
+                    vlc = true;
+                }
+            }
+        } else {
+            try {
+                control = new ActiveXObject("VideoLAN.VLCPlugin.2");
+                vlc = true ;
+                } catch(e) {
+                }
+        };
+        return vlc ;
     },
 
     /**
@@ -2138,8 +2173,9 @@ beef.browser = {
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
         var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
-		var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
-		var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
+        var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
+        var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
+        var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
         try{
             var cookies = document.cookie;
             var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
@@ -2181,8 +2217,9 @@ beef.browser = {
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears
         if (has_activex) details['HasActiveX'] = has_activex;
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
-		if (has_quicktime) details['HasQuickTime'] = has_quicktime;
-		if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
+        if (has_quicktime) details['HasQuickTime'] = has_quicktime;
+        if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
+        if (has_vlc) details['HasVLC'] = has_vlc ;
 
         return details;
     },
