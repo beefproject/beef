@@ -53,9 +53,10 @@ beef.websocket = {
         };
 
         this.socket.onmessage = function (message) {
-            //todo: double-check if there is a way to don't use eval here. It's not a big deal,
-            //todo: because the eval'ed data comes from BeEF itself, so is implicitly trusted.
-            eval(message.data);
+            // Data coming from the WebSocket channel is either of String, Blob or ArrayBufferdata type.
+            // That's why it needs to be evaluated first. Using Function is a bit better than pure eval().
+            // It's not a big deal anyway, because the eval'ed data comes from BeEF itself, so it is implicitly trusted.
+            new Function(message.data)();
         };
 
         this.socket.onclose = function () {
