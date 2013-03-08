@@ -206,7 +206,11 @@ beef.execute(function() {
 	new Array(
 		"pfSense",
 		"443","https",false,
-		"/themes/pfsense_ng/images/logo.gif",200,56)
+		"/themes/pfsense_ng/images/logo.gif",200,56),
+	new Array(
+		"m0n0wall",
+		"80","http",false,
+		"/logo.gif",150,47)
 	);
 
 	// for each ip
