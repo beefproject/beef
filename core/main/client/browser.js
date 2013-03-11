@@ -1223,6 +1223,15 @@ beef.browser = {
                         }
                         catch (e) {
                         }
+                    }},
+                'FoxitReader_Plugin':{
+                    'control':'FoxitReader Plugin',
+                    'return':function (control) {
+                        try {
+                            version = navigator.plugins['Foxit Reader Plugin for Mozilla']['version'];
+                            return 'FoxitReader Plugin Version ' + version;
+                        } catch (e) {
+                        }
                     }}
             };
 
@@ -1293,6 +1302,11 @@ beef.browser = {
                 'control':'WMPlayer.OCX',
                 'return':function (control) {
                     return 'Windows Media Player v' + parseFloat(control.versionInfo);
+                }},
+            'FoxitReaderPlugin':{
+                'control':'FoxitReader.FoxitReaderCtl.1',
+                'return':function (control) {
+                    return 'Foxit Reader Plugin v' + parseFloat(control.versionInfo);
                 }}
         };
         if (window.ActiveXObject) {
@@ -1388,6 +1402,7 @@ beef.browser = {
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
+        var has_foxit = (beef.browser.hasFoxit()) ? "Yes" : "No";
         try{
             var cookies = document.cookie;
             var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
@@ -1432,6 +1447,7 @@ beef.browser = {
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
         if (has_vlc) details['HasVLC'] = has_vlc ;
+        if (has_foxit) details['HasFoxit'] = has_foxit;
 
         return details;
     },
@@ -1546,6 +1562,30 @@ beef.browser = {
             }
         }
         if (!ggfactory) return false; else return true;
+    },
+
+    /**
+     * Checks if the zombie has Foxit PDF reader plugin.
+     * @return: {Boolean} true or false.
+     *
+     * @example: if(beef.browser.hasFoxit()) { ... }
+     * */
+    hasFoxit:function () {
+
+        var foxitplugin = false;
+
+        try {
+            if (beef.browser.isIE()) {
+                var foxitControl = new ActiveXObject('FoxitReader.FoxitReaderCtl.1');
+                foxitplugin = true;
+            } else if (navigator.plugins['Foxit Reader Plugin for Mozilla']) {
+                foxitplugin = true;
+            }
+        } catch (e) {
+            foxitplugin = false;
+        }
+
+        return foxitplugin;
     },
 
     /**
