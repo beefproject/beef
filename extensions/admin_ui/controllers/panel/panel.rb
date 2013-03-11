@@ -93,6 +93,7 @@ module BeEF
             has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
             has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
             has_vlc         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasVLC')
+            has_foxit       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFoxit')
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
             return {
@@ -115,6 +116,7 @@ module BeEF
                 'has_silverlight' => has_silverlight,
                 'has_quicktime'   => has_quicktime,
                 'has_vlc'         => has_vlc,
+                'has_foxit'       => has_foxit,
                 'has_realplayer'  => has_realplayer,
                 'date_stamp'      => date_stamp
             }

@@ -239,6 +239,14 @@ module BeEF
             self.err_msg "Invalid value for HasGoogleGears returned from the hook browser's initial connection."
           end
 
+          # get and store the yes|no value for HasFoxit
+          has_foxit = get_param(@data['results'], 'HasFoxit')
+          if BeEF::Filters.is_valid_yes_no?(has_foxit)
+            BD.set(session_id, 'HasFoxit', has_foxit)
+          else
+            self.err_msg "Invalid value for HasFoxit returned from the hook browser's initial connection."
+          end
+
           # get and store the yes|no value for HasWebSocket
           has_web_socket = get_param(@data['results'], 'HasWebSocket')
           if BeEF::Filters.is_valid_yes_no?(has_web_socket)
