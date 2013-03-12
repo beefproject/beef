@@ -13,11 +13,11 @@ class Fake_flash_update < BeEF::Core::Command
     return [
         {'name' =>'image', 'description' =>'Location of image for the update prompt', 'ui_label'=>'Splash image', 'value' => image},
         {'name' =>'payload_root', 'description' =>'BeEF (Payload) root path', 'ui_label'=>'BeEF (Payload) root path', 'value' => payload_root},
+        {'name' =>'chrome_store_uri', 'description' =>'Chrome WebStore Extension URI', 'ui_label'=>'Chrome WebStore Extension URI', 'value' => ""},
         { 'name' => 'payload', 'type' => 'combobox', 'ui_label' => 'Payload', 'store_type' => 'arraystore',
           'store_fields' => ['payload'], 'store_data' => [['Chrome_Extension'],['Firefox_Extension']],
           'valueField' => 'payload', 'displayField' => 'payload', 'mode' => 'local', 'autoWidth' => true
         }
-
     ]
   end
   

