@@ -300,6 +300,7 @@ class ShellInterface
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
         ['Browser Components', 'VLC',                'HasVLC'],
+        ['Browser Components', 'Foxit',              'HasFoxit'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
