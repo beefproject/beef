@@ -57,7 +57,7 @@ module Handlers
         # @note Check for a change in zombie IP and log an event
         if config.get('beef.http.use_x_forward_for') == true
           if hooked_browser.ip != request.env["HTTP_X_FORWARDED_FOR"]
-            BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.env["HTTP_X_FORWARDED_FOR"]}","#{hook
+            BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.env["HTTP_X_FORWARDED_FOR"]}")
             hooked_browser.ip = request.env["HTTP_X_FORWARDED_FOR"]
           end
         else
