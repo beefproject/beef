@@ -83,6 +83,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
+        ['Browser Components', 'Windows Media Player','HasWMP'],
         ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'Foxit Reader',       'HasFoxit'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],

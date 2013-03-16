@@ -964,6 +964,47 @@ beef.browser = {
 
     },
 
+	/**
+	 * Checks if the zombie has the Windows Media Player plugin installed.
+	 * @return: {Boolean} true or false.
+	 *
+	 * @example: if ( beef.browser.hasWMP() ) { ... }
+	 */
+	hasWMP:function () {
+
+	    var wmp = false;
+
+	    // Not Internet Explorer
+	    if (!this.type().IE) {
+
+	        for (i = 0; i < navigator.plugins.length; i++) {
+
+	            if (navigator.plugins[i].name.indexOf("Windows Media Player") >= 0) {
+	                wmp = true;
+	            }
+
+	        }
+
+	    // Internet Explorer
+	    } else {
+
+	        try {
+
+	            var wmp_test = new ActiveXObject('WMPlayer.OCX');
+
+	        } catch (e) {
+	        }
+
+	        if (wmp_test) {
+	            wmp = true;
+	        }
+
+	    }
+
+	    return wmp;
+
+	},
+
     /**
      *  Checks if VLC is installed
      *  @return: {Boolean} true or false
@@ -1401,6 +1442,7 @@ beef.browser = {
         var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
+        var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No"; 
         var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
         var has_foxit = (beef.browser.hasFoxit()) ? "Yes" : "No";
         try{
@@ -1446,7 +1488,8 @@ beef.browser = {
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
-        if (has_vlc) details['HasVLC'] = has_vlc ;
+        if (has_wmp) details['HasWMP'] = has_wmp;
+        if (has_vlc) details['HasVLC'] = has_vlc;
         if (has_foxit) details['HasFoxit'] = has_foxit;
 
         return details;

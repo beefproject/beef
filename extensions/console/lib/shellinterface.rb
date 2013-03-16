@@ -299,6 +299,7 @@ class ShellInterface
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
+        ['Browser Components', 'Windows Media Player','HasWMP'], 
         ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'Foxit',              'HasFoxit'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
