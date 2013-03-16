@@ -66,6 +66,12 @@ module BeEF
             hook_session_config = BeEF::Core::Server.instance.to_h
 
             # @note if http_host="0.0.0.0" in config ini, use the host requested by client
+            unless hook_session_config['beef_public'].nil?
+              if hook_session_config['beef_host'] != hook_session_config['beef_public']
+                hook_session_config['beef_host'] = hook_session_config['beef_public']
+                hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_host']}/, hook_session_config['beef_public'])
+              end
+            end
             if hook_session_config['beef_host'].eql? "0.0.0.0"
               hook_session_config['beef_host'] = req_host
               hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
