@@ -52,7 +52,7 @@ module Events
         when 'click'
           result = "#{event['time']}s - [Mouse Click] x: #{event['x']} y:#{event['y']} > #{event['target']}"
         when 'focus'
-          result = "#{event['time']}s - [Focus] Browser has regained focus."
+          result = "#{event['time']}s - [Focus] Browser window has regained focus."
         when 'copy'
           result = "#{event['time']}s - [User Copied Text] \"#{event['data']}\""
         when 'cut'
@@ -60,7 +60,7 @@ module Events
         when 'paste'
           result = "#{event['time']}s - [User Pasted Text] \"#{event['data']}\""
         when 'blur'
-          result = "#{event['time']}s - [Blur] Browser has lost focus."
+          result = "#{event['time']}s - [Blur] Browser window has lost focus."
         when 'keys'
           result = "#{event['time']}s - [User Typed] \"#{event['data']}\" > #{event['target']}"
         when 'submit'

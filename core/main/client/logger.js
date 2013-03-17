@@ -50,6 +50,7 @@ beef.logger = {
 	 */
 	start: function() {
 
+		beef.browser.hookChildFrames();
 		this.running = true;
 		var d = new Date();
 		this.time = d.getTime();
