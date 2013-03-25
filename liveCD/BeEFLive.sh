@@ -9,8 +9,8 @@
 #
 # This is the auto startup script for the BeEF Live CD. 
 # IT SHOULD ONLY BE RUN ON THE LIVE CD
-# Download LiveCD here: http://beefproject.com/BeEFLive1.2.iso
-# MD5 (BeEFLive1.2.iso) = 1bfba0942a3270ee977ceaeae5a6efd2
+# Download LiveCD here: http://downloads.beefproject.com/BeEFLive1.4.iso
+# MD5 (BeEFLive1.4.iso) = 5167450078ef5e9b8d146113cd4ba67c
 #
 # This script contains a few fixes to make BeEF play nicely with the way  
 # remastersys creates the live cd distributable as well as generating host keys 
