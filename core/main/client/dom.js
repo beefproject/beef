@@ -179,6 +179,23 @@ beef.dom = {
 	},
 
 	/**
+	 * Rewrites all links matched by selector to url, leveraging Bilawal Hameed's hidden click event overwriting.
+	 * http://bilaw.al/2013/03/17/hacking-the-a-tag-in-100-characters.html
+	 * @param: {String} url: the url to be rewritten
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteLinksClickEvents: function(url, selector) {
+		var sel = (selector == null) ? 'a' : selector;
+		return $j(sel).each(function() {
+			if ($j(this).attr('href') != null)
+			{
+				$j(this).click(function() {this.href=url});
+			}
+		}).length;
+	},
+
+	/**
      * Parse all links in the page matched by the selector, replacing old_protocol with new_protocol (ex.:https with http)
 	 * @param: {String} old_protocol: the old link protocol to be rewritten
 	 * @param: {String} new_protocol: the new link protocol to be written
