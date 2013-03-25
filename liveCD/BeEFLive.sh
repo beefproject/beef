@@ -117,6 +117,8 @@ show_menu() {
 		f1="/etc/ssh/ssh_host_rsa_key"
 		if [ -f $f1 ] ; then
 			echo "[1] Disable SSH                              [Currently Enabled]"
+			echo -ne "                                             beef@"
+			ifconfig | awk -F "[: ]+" '/inet addr:/ { if ($4 != "127.0.0.1") print $4 }'
 		else 
 			echo "[1] Enable SSH                               [Currently Disabled]"
 		fi
