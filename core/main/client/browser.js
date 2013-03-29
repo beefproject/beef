@@ -858,10 +858,10 @@ beef.browser = {
             try {
                 // append hook script
                 self.frames[i].document.body.appendChild(script);
-                console.log("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
+                //console.log("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
             } catch (e) {
                 // warn on cross-domain
-                console.log("Hooking frame failed");
+                //console.log("Hooking frame failed");
             }
         }
     },
