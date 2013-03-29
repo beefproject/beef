@@ -18,10 +18,10 @@ DataGrid = function(url, page, base) {
         storeId: 'myStore',
         baseParams: this.base,
         idProperty: 'id',
-        fields: ['id','type','event','date'],
+        fields: ['id','type','event','date','hooked_browser_id'],
         totalProperty: 'count',
         remoteSort: false,
-        sortInfo: {field: "date", direction: "DESC"}
+        sortInfo: {field: "id", direction: "DESC"}
     });
 
     this.bbar = new Ext.PagingToolbar({
@@ -35,9 +35,10 @@ DataGrid = function(url, page, base) {
     this.columns = [{
 			id: 'log-id',
 			header: 'Id',
-			hidden: true,
+			hidden: false,
 			dataIndex: 'id',
-			sortable: false
+			sortable: true,
+			width: 20
 		}, {
 			id: 'log-type',
 			header: "Type",
@@ -61,6 +62,12 @@ DataGrid = function(url, page, base) {
 			width: 80,
 			renderer:  $jEncoder.encoder.encodeForHTML(this.formatDate),
 			sortable:true
+		}, {
+			id: 'log-browser',
+			header: "Browser ID",
+			dataIndex: 'hooked_browser_id',
+			sortable: true,
+			width: 35
     }];
 
     DataGrid.superclass.constructor.call(this, {
@@ -78,7 +85,7 @@ DataGrid = function(url, page, base) {
 		
 		listeners: {
 			afterrender: function(datagrid) {
-				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"date", dir:"DESC"}});
+				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"id", dir:"DESC"}});
 			}
 		}
     });
