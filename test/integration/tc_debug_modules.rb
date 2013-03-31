@@ -170,7 +170,7 @@ class TC_DebugModules < Test::Unit::TestCase
     data = JSON.parse(result['0']['data'])['data']
     assert_not_nil data
     assert_equal 200, JSON.parse(data)["status_code"]
-    assert JSON.parse(data)["response_body"].include?("However you should still be capable of accessing it\n\t\tusing the Requester")
+    assert JSON.parse(data)["port_status"].include?("open")
 
   end
 end

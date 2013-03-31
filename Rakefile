@@ -76,10 +76,10 @@ end
 @beef_process_id = nil;
 
 task :beef_start => 'beef' do
-  printf "Starting BeEF (wait 10 seconds)..."
+  printf "Starting BeEF (wait a few seconds)..."
   @beef_process_id = IO.popen("ruby ./beef -x 2> /dev/null", "w+")
-  delays = [2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
-  delays.each do |i| # delay for 10 seconds
+  delays = [3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  delays.each do |i| # delay for a few seconds
     printf '.'
     sleep (i)
   end
