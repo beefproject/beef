@@ -42,18 +42,38 @@ Ext.onReady(function() {
  * This event updater retrieves updates every 8 seconds. Those updates
  * are then pushed to various managers (i.e. the zombie manager).
  */
+var lastpoll = new Date().getTime();
+
 Ext.TaskMgr.start({
 	run: function() {
 		Ext.Ajax.request({
 			url: '/ui/panel/hooked-browser-tree-update.json',
 			method: 'POST',
 			success: function(response) {
-				var updates = Ext.util.JSON.decode(response.responseText);
+				var updates;
+				try {
+					updates = Ext.util.JSON.decode(response.responseText);
+				} catch (e) {
+					//The framework has probably been reset and you're actually logged out
+					var hr = document.getElementById("header-right");
+					hr.innerHTML = "You appear to be logged out. <a href='/ui/panel/'>Login</a>";
+				}
 				var distributed_engine_rules = (updates['ditributed-engine-rules']) ? updates['ditributed-engine-rules'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;
 				
 				if(zombiesManager && hooked_browsers) {
 					zombiesManager.updateZombies(hooked_browsers, distributed_engine_rules);
+				}
+				lastpoll = new Date().getTime();
+				var hr = document.getElementById("header-right");
+				hr.innerHTML = "";
+			},
+			failure: function(response) {
+				var timenow = new Date().getTime();
+
+				if ((timenow - lastpoll) > 60000) {
+					var hr = document.getElementById("header-right");
+					hr.innerHTML = "Framework is down";
 				}
 			}
 		});

@@ -5,11 +5,22 @@
  */
 
 #header .right-menu {
+	width: 300px;
 	float: right;
-	margin: 10px;
+	margin: 3px 3px 0 4px;
 	word-spacing: 5px;
 	font: 11px arial, tahoma, verdana, helvetica;
 	color:#000;
+}
+
+#header .left-menu {
+	width: 300px;
+	float: left;
+	margin: 10px 4px 0 20px;
+	word-spacing: 5px;
+	font: 11px arial, tahoma, verdana, helvetica;
+	font-weight: bolder;
+	color:red;
 }
 
 #header a:link,
