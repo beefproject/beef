@@ -76,6 +76,30 @@ beef.dom = {
 		
 		return iframe;
 	},
+
+	/**
+	 * Returns the highest current z-index
+	 * @param: {Boolean} whether to return an associative array with the height AND the ID of the element
+	 * @return: {Integer} Highest z-index in the DOM
+	 * OR
+	 * @return: {Hash} A hash with the height and the ID of the highest element in the DOM {'height': INT, 'elem': STRING}
+	 */
+	getHighestZindex: function(include_id) {
+		var highest = {'height':0, 'elem':''};
+		$j('*').each(function() {
+			var current_high = parseInt($j(this).css("zIndex"),10);
+			if (current_high > highest.height) {
+				highest.height = current_high;
+				highest.elem = $j(this).attr('id');
+			}
+		});
+
+		if (include_id) {
+			return highest;
+		} else {
+			return highest.height;
+		}
+	},
 	
 	/**
      * Create and iFrame element. In case it's create with POST method, the iFrame is automatically added to the DOM and submitted.
@@ -96,7 +120,7 @@ beef.dom = {
 			params['src'] = '';
 		}
 		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles); }
-		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, styles); $j('body').css({'padding':'0px', 'margin':'0px'}); }
+		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px', 'z-index':beef.dom.getHighestZindex()+1}, styles); $j('body').css({'padding':'0px', 'margin':'0px'}); }
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
 		
 		if (form_submit && form_action)
