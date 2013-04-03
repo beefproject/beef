@@ -10,6 +10,6 @@ beef:
             category: ["Browser", "Hooked Domain"]
             name: "Replace Component (Deface)"
             description: "Overwrite a particular component of the hooked page."
-            authors: ["antisnatchor","xntrik"]
+            authors: ["antisnatchor", "xntrik"]
             target:
                 user_notify: ['ALL']
