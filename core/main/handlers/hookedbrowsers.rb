@@ -51,13 +51,18 @@ module Handlers
 
       # @note is a known browser so send instructions 
       else       
+        # @note Check if we haven't seen this browser for a while, log an event if we haven't
+        if (Time.new.to_i - hooked_browser.lastseen.to_i) > 60
+          BeEF::Core::Logger.instance.register('Zombie',"#{hooked_browser.ip} appears to have come back online","#{hooked_browser.id}")
+        end
+
         # @note record the last poll from the browser
         hooked_browser.lastseen = Time.new.to_i
         
         # @note Check for a change in zombie IP and log an event
         if config.get('beef.http.use_x_forward_for') == true
           if hooked_browser.ip != request.env["HTTP_X_FORWARDED_FOR"]
-            BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.env["HTTP_X_FORWARDED_FOR"]}")
+            BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.env["HTTP_X_FORWARDED_FOR"]}","#{hooked_browser.id}")
             hooked_browser.ip = request.env["HTTP_X_FORWARDED_FOR"]
           end
         else
