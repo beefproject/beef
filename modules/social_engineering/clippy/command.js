@@ -281,7 +281,7 @@ Clippy.prototype.findHomeBase = function(selector) {
 		div.style.width = "300px";
 		div.style.height = "300px";
 		div.style.backgroundColor = "transparent";
-		div.style.position = "absolute";
+		div.style.position = "fixed";
 		div.style.bottom = "0";
 		div.style.right = "0";
 		
