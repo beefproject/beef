@@ -5,7 +5,7 @@
 #
 beef:
     module:
-        wb:
+        webcam_permission_check:
             enable: true
             category: "Browser"
             name: "Webcam Permission Check"
