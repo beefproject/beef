@@ -392,7 +392,7 @@ beef.dom = {
             }
             content += "</object>";
         }
-        if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO()) {
+        if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO() || beef.browser.isFF()) {
 
             if (codebase != null) {
                 content = "" +
@@ -411,24 +411,25 @@ beef.dom = {
             }
             content += "</applet>";
         }
-        if (beef.browser.isFF()) {
-            if (codebase != null) {
-                content = "" +
-                    "<embed id='" + id + "' code='" + code + "' " +
-                    "type='application/x-java-applet' codebase='" + codebase + "' " +
-                    "height='0' width='0' name='" + name + "'>";
-            } else {
-                content = "" +
-                    "<embed id='" + id + "' code='" + code + "' " +
-                    "type='application/x-java-applet' archive='" + archive + "' " +
-                    "height='0' width='0' name='" + name + "'>";
-            }
-
-            if (params != null) {
-                content += beef.dom.parseAppletParams(params);
-            }
-            content += "</embed>";
-        }
+        // For some reasons JavaPaylod is not working if the applet is attached to the DOM with the embed tag rather than the applet tag.
+//        if (beef.browser.isFF()) {
+//            if (codebase != null) {
+//                content = "" +
+//                    "<embed id='" + id + "' code='" + code + "' " +
+//                    "type='application/x-java-applet' codebase='" + codebase + "' " +
+//                    "height='0' width='0' name='" + name + "'>";
+//            } else {
+//                content = "" +
+//                    "<embed id='" + id + "' code='" + code + "' " +
+//                    "type='application/x-java-applet' archive='" + archive + "' " +
+//                    "height='0' width='0' name='" + name + "'>";
+//            }
+//
+//            if (params != null) {
+//                content += beef.dom.parseAppletParams(params);
+//            }
+//            content += "</embed>";
+//        }
         $j('body').append(content);
     },
 
