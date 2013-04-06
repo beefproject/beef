@@ -119,8 +119,15 @@ beef.dom = {
 			var form_action = params['src'];
 			params['src'] = '';
 		}
-		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles); }
-		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px', 'z-index':beef.dom.getHighestZindex()+1}, styles); $j('body').css({'padding':'0px', 'margin':'0px'}); }
+		if (type == 'hidden') {
+			css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles);
+		} else if (type == 'fullscreen') {
+			css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px', 'z-index':beef.dom.getHighestZindex()+1}, styles);
+			$j('body').css({'padding':'0px', 'margin':'0px'});
+		} else {
+			css = styles;
+			$j('body').css({'padding':'0px', 'margin':'0px'});
+		}
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
 		
 		if (form_submit && form_action)
@@ -151,6 +158,75 @@ beef.dom = {
             }
         });
     },
+
+    /**
+     * Load a full screen div that is black, or, transparent
+     * @param: {Boolean} vis: whether or not you want the screen dimmer enabled or not
+     * @param: {Hash} options: a collection of options to customise how the div is configured, as follows:
+     *         opacity:0-100         // Lower number = less grayout higher = more of a blackout
+     *           // By default this is 70 
+     *         zindex: #             // HTML elements with a higher zindex appear on top of the gray out
+     *           // By default this will use beef.dom.getHighestZindex to always go to the top
+     *         bgcolor: (#xxxxxx)    // Standard RGB Hex color code
+     *           // By default this is #000000
+     */
+	grayOut: function(vis, options) {
+	  // in any order.  Pass only the properties you need to set.
+	  var options = options || {};
+	  var zindex = options.zindex || beef.dom.getHighestZindex()+1;
+	  var opacity = options.opacity || 70;
+	  var opaque = (opacity / 100);
+	  var bgcolor = options.bgcolor || '#000000';
+	  var dark=document.getElementById('darkenScreenObject');
+	  if (!dark) {
+	    // The dark layer doesn't exist, it's never been created.  So we'll
+	    // create it here and apply some basic styles.
+	    // If you are getting errors in IE see: http://support.microsoft.com/default.aspx/kb/927917
+	    var tbody = document.getElementsByTagName("body")[0];
+	    var tnode = document.createElement('div');           // Create the layer.
+	        tnode.style.position='absolute';                 // Position absolutely
+	        tnode.style.top='0px';                           // In the top
+	        tnode.style.left='0px';                          // Left corner of the page
+	        tnode.style.overflow='hidden';                   // Try to avoid making scroll bars            
+	        tnode.style.display='none';                      // Start out Hidden
+	        tnode.id='darkenScreenObject';                   // Name it so we can find it later
+	    tbody.appendChild(tnode);                            // Add it to the web page
+	    dark=document.getElementById('darkenScreenObject');  // Get the object.
+	  }
+	  if (vis) {
+	    // Calculate the page width and height 
+	    if( document.body && ( document.body.scrollWidth || document.body.scrollHeight ) ) {
+	        var pageWidth = document.body.scrollWidth+'px';
+	        var pageHeight = document.body.scrollHeight+'px';
+	    } else if( document.body.offsetWidth ) {
+	      var pageWidth = document.body.offsetWidth+'px';
+	      var pageHeight = document.body.offsetHeight+'px';
+	    } else {
+	       var pageWidth='100%';
+	       var pageHeight='100%';
+	    }
+	    //set the shader to cover the entire page and make it visible.
+	    dark.style.opacity=opaque;
+	    dark.style.MozOpacity=opaque;
+	    dark.style.filter='alpha(opacity='+opacity+')';
+	    dark.style.zIndex=zindex;
+	    dark.style.backgroundColor=bgcolor;
+	    dark.style.width= pageWidth;
+	    dark.style.height= pageHeight;
+	    dark.style.display='block';
+	  } else {
+	     dark.style.display='none';
+	  }
+	},
+
+	/**
+	 * Remove all external and internal stylesheets from the current page - sometimes prior to socially engineering,
+	 *  or, re-writing a document this is useful.
+	 */
+	removeStylesheets: function() {
+		$j('link[rel=stylesheet]').remove();
+		$j('style').remove();
+	},
 	
 	/**
      * Create a form element with the specified parameters, appending it to the DOM if append == true
