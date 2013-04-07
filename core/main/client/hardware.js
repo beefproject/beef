@@ -126,4 +126,4 @@ beef.hardware = {
 	}
 };
 
-beef.regCmp('beef.net.hardware');
+beef.regCmp('beef.hardware');
