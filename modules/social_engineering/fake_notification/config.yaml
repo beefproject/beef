@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fake_notification:
+            enable: true
+            category: "Social Engineering"
+            name: "Fake Notification"
+            description: "Displays a fake notification at the top of the screen, similar to those presented in IE."
+            authors: ["xntrik"]
+            target:
+                user_notify: ['ALL']
