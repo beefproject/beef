@@ -445,11 +445,19 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome 26.
+     * @example: beef.browser.isC26()
+     */
+    isC26:function () {
+        return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 26) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome.
      * @example: beef.browser.isC()
      */
     isC:function () {
-        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23() || this.isC24() || this.isC25();
+        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23() || this.isC24() || this.isC25() || this.isC26();
     },
 
     /**
@@ -530,6 +538,7 @@ beef.browser = {
             C23:this.isC23(), // Chrome 23
             C24:this.isC24(), // Chrome 24
             C25:this.isC25(), // Chrome 25
+            C26:this.isC26(), // Chrome 26
             C:this.isC(), // Chrome any version
 
             FF2:this.isFF2(), // Firefox 2
@@ -667,7 +676,11 @@ beef.browser = {
         if (this.isC25()) {
             return '25'
         }
-        ;
+        ;    // Chrome 25
+        if (this.isC26()) {
+            return '26'
+        }
+        ;    // Chrome 26
         if (this.isFF2()) {
             return '2'
         }
