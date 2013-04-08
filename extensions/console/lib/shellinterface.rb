@@ -310,7 +310,7 @@ class ShellInterface
         ['Hooked Page', 'Page Title',    'PageTitle'],
         ['Hooked Page', 'Page URI',      'PageURI'],
         ['Hooked Page', 'Page Referrer', 'PageReferrer'],
-        ['Hooked Page', 'Host Name/IP',  'HostName'],
+        ['Hooked Page', 'Hook Host',  'HostName'],
         ['Hooked Page', 'Cookies',       'Cookies'],
 
         # Host
@@ -328,22 +328,22 @@ class ShellInterface
 
       case p[2]
         when "BrowserName"
-          data   = BeEF::Core::Constants::Browsers.friendly_name(BD.get(zombie_session, p[2]))
+          data   = BeEF::Core::Constants::Browsers.friendly_name(BD.get(self.targetsession.to_s, p[2])).to_s
 
         when "ScreenSize"
-          screen_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+          screen_size_hash = JSON.parse(BD.get(self.targetsession.to_s, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
           width  = screen_size_hash['width']
           height = screen_size_hash['height']
           cdepth = screen_size_hash['colordepth']
           data   = "Width: #{width}, Height: #{height}, Colour Depth: #{cdepth}"
 
         when "WindowSize"
-          window_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+          window_size_hash = JSON.parse(BD.get(self.targetsession.to_s, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
           width  = window_size_hash['width']
           height = window_size_hash['height']
           data   = "Width: #{width}, Height: #{height}"
         else
-          data   = BD.get(zombie_session, p[2])
+          data   = BD.get(self.targetsession, p[2])
       end
 
       # add property to summary hash

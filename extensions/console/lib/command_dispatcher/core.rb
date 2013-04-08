@@ -141,13 +141,14 @@ class Core
         [
           'Id',
           'IP',
+          'Hook Host',
           'Browser',
           'OS',
           'Hardware'
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName')+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
+      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"HostName").to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion').to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
     end
     
     puts "\n"
@@ -174,12 +175,14 @@ class Core
         [
           'Id',
           'IP',
+          'Hook Host',
           'Browser',
-          'OS'
+          'OS',
+          'Hardware'
         ])
     
     BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName')+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName')]
+      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"HostName").to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion').to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
     end
     
     puts "\n"
@@ -327,7 +330,12 @@ class Core
         driver.run_single("offline")
       when 'commands'
         if driver.dispatched_enstacked(Target)
+          if args[1] == "-s" and not args[2].nil?
+           driver.run_single("commands #{args[1]} #{args[2]}")
+           return
+         else
           driver.run_single("commands")
+        end
         else
           print_error("You aren't targeting a zombie yet")
         end

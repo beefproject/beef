@@ -41,7 +41,7 @@ class Command
     }
       
     print_line("Module name: " + driver.interface.cmd['Name'])
-    print_line("Module category: " + driver.interface.cmd['Category'])
+    print_line("Module category: " + driver.interface.cmd['Category'].to_s)
     print_line("Module description: " + driver.interface.cmd['Description'])
     print_line("Module parameters:") if not driver.interface.cmd['Data'].length == 0
 
@@ -119,6 +119,7 @@ class Command
         ])
 
     if args[0] == nil
+      lastcmdid = nil
       driver.interface.getcommandresponses.each do |resp|
         indiresp = driver.interface.getindividualresponse(resp['object_id'])
         respout = ""
@@ -126,6 +127,7 @@ class Command
           respout = "No response yet"
         else
           respout = Time.at(indiresp[0]['date'].to_i).to_s
+          lastcmdid = resp['object_id']
         end
         tbl << [resp['object_id'].to_s, resp['creationdate'], respout]
       end
@@ -133,6 +135,16 @@ class Command
       puts "\n"
       puts "List of responses for this command module:\n"
       puts tbl.to_s + "\n"
+
+      if not lastcmdid.nil?
+        resp = driver.interface.getindividualresponse(lastcmdid)
+        puts "\n"
+        print_line("The last response [" + lastcmdid.to_s + "] was retrieved: " + Time.at(resp[0]['date'].to_i).to_s)
+        print_line("Response:")
+        resp.each do |op|
+          print_line(op['data']['data'].to_s)
+        end
+      end
     else
       output = driver.interface.getindividualresponse(args[0])
       if output.nil?
