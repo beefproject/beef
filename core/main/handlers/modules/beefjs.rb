@@ -80,8 +80,9 @@ module BeEF
             # @note set the XHR-polling timeout
             hook_session_config['xhr_poll_timeout'] = config.get("beef.http.xhr_poll_timeout")
 
-            # @note set the hook file path
+            # @note set the hook file path and BeEF's cookie name
             hook_session_config['hook_file'] = config.get("beef.http.hook_file")
+            hook_session_config['hook_session_name'] = config.get("beef.http.hook_session_name")
 
             # @note if http_port <> public_port in config ini, use the public_port
             unless hook_session_config['beef_public_port'].nil?

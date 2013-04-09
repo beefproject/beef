@@ -13,7 +13,8 @@
  * and will have a new session id. The new session id will need to know
  * the brwoser details. So sendback the browser details again.
  */
-BEEFHOOK = beef.session.get_hook_session_id();
+
+beef.session.get_hook_session_id();
 
 if (beef.pageIsLoaded) {
     beef.net.browser_details();

