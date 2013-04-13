@@ -10,9 +10,18 @@ module CommandDispatcher
   
 class Command
   include BeEF::Extension::Console::CommandDispatcher
+
+  @@params = []
   
   def initialize(driver)
     super
+    begin 
+      driver.interface.cmd['Data'].each{|data|
+        @@params << data['name']
+      }
+    rescue
+      return
+    end
   end
   
   def commands
@@ -46,7 +55,11 @@ class Command
     print_line("Module parameters:") if not driver.interface.cmd['Data'].length == 0
 
     driver.interface.cmd['Data'].each{|data|
-      print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'])
+      if data['type'].eql?("combobox")
+        print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'] + " (Options include: " + data['store_data'].to_s + ")")
+      else
+        print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'])
+      end
     } if not driver.interface.cmd['Data'].nil?
   end
   
@@ -79,6 +92,16 @@ class Command
   def cmd_param_help(*args)
     print_status("Sets parameters for the current modules. Run \"cmdinfo\" to see the parameter values")
     print_status("  Usage: param <paramname> <paramvalue>")
+  end
+
+  def cmd_param_tabs(str,words)
+    return if words.length > 1
+
+    if @@params == ""
+      #nothing prepopulated?
+    else
+      return @@params
+    end
   end
   
   def cmd_execute(*args)
