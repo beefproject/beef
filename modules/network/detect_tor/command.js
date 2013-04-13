@@ -14,7 +14,9 @@ beef.execute(function() {
 	img.setAttribute("style","visibility:hidden");
 	img.setAttribute("width","0");
 	img.setAttribute("height","0");
-	img.src = 'http://dige6xxwpt2knqbv.onion/wink.gif';
+	//img.src = 'http://dige6xxwpt2knqbv.onion/wink.gif';
+	//img.src = 'http://xycpusearchon2mc.onion/deeplogo.jpg'
+	img.src = '<%= @tor_resource %>';
 	img.id = 'torimg';
 	img.setAttribute("attr","start");
 	img.onerror = function() {
