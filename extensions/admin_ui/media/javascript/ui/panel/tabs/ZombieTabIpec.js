@@ -33,7 +33,7 @@ ZombieTab_IpecTab = function(zombie) {
                 id = data.id;
             },
             error: function(){
-                console.log("Error getting module id.");
+                beef.debug("Error getting module id.");
             }
         });
         return id;
@@ -110,11 +110,11 @@ ZombieTab_IpecTab = function(zombie) {
                     async: false,
                     processData: false,
                     success: function(data){
-                        console.log("data: " + data.command_id);
+                        beef.debug("data: " + data.command_id);
                         result = "Command [" + data.command_id + "] sent successfully";
                     },
                     error: function(){
-                        console.log("Error sending command");
+                        beef.debug("Error sending command");
                         return "Error sending command";
                     }
                 });
@@ -142,13 +142,13 @@ ZombieTab_IpecTab = function(zombie) {
                         processData: false,
                         success: function(data){
                             $jwterm.each(data, function(i){
-                                console.log("result [" + i +"]: " + $jwterm.parseJSON(data[i].data).data);
+                                beef.debug("result [" + i +"]: " + $jwterm.parseJSON(data[i].data).data);
                                 results += $jwterm.parseJSON(data[i].data).data;
                             });
 
                         },
                         error: function(){
-                            console.log("Error sending command");
+                            beef.debug("Error sending command");
                             return "Error sending command";
                         }
                     });

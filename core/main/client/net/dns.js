@@ -43,7 +43,7 @@ beef.net.dns = {
 
 		// sends a DNS request
 		sendQuery = function(query) {
-			//console.log("Requesting: "+query);
+			//beef.debug("Requesting: "+query);
 			var img = new Image;
 			img.src = "http://"+query;
 			img.onload = function() { dom.removeChild(this); }

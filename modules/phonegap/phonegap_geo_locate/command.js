@@ -27,7 +27,7 @@ beef.execute(function() {
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        console.log('code: '    + error.code    + '\n' +
+        beef.debug('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
     }
 

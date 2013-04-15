@@ -291,7 +291,7 @@ Clippy.prototype.findHomeBase = function(selector) {
 	
 	}
 	
-	console.log(ref);
+	beef.debug(ref);
 	
 	return ref;
 }

@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        test_beef_debug:
+            enable: true
+            category: "Debug"
+            name: "Test beef.debug()"
+            description: "Test the 'beef.debug()' function. This function wraps 'console.log()'"
+            authors: ["bcoles"]
+            target:
+                 working: ["All"]
+                 not_working: ["IE"]

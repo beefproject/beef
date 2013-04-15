@@ -32,7 +32,7 @@ window.onpopstate = function (event) {
             try {
                 callback(event);
             } catch (e) {
-                console.log("window.onpopstate - couldn't execute callback: " + e.message);
+                beef.debug("window.onpopstate - couldn't execute callback: " + e.message);
             }
             return false;
         }
@@ -47,7 +47,7 @@ window.onclose = function (event) {
             try {
                 callback(event);
             } catch (e) {
-                console.log("window.onclose - couldn't execute callback: " + e.message);
+                beef.debug("window.onclose - couldn't execute callback: " + e.message);
             }
             return false;
         }

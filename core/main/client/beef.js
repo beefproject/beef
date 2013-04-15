@@ -31,7 +31,20 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		
 		// An array containing all the BeEF JS components.
 		components: new Array(),
-		
+
+                /**
+                 * Adds a function to display debug messages (wraps console.log())
+                 * @param: {string} the debug string to return
+                 */
+                debug: function(msg) {
+                    if (typeof console == "object" && typeof console.log == "function") {
+                        console.log(msg);
+                    } else {
+                        // TODO: maybe add a callback to BeEF server for debugging purposes
+                        //window.alert(msg);
+                    }
+                },
+
 		/**
 		 * Adds a function to execute.
 		 * @param: {Function} the function to execute.
