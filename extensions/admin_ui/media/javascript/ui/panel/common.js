@@ -251,8 +251,14 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 							for(index in record.data.data) {
 								result = record.data.data[index];
 								index = index.toString().replace('_', ' ');
-                                //output escape everything, but allow the <br> tag for better rendering.
-								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
+								//Check if the data is the image parameter and that it's a base64 encoded png.
+                                if ($jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>').substring(0,28) == "image=data:image/png;base64,") {
+                                	//Lets display the image. // Does this introduce issues? Or, does the encoding keep this sound?
+                                	html += String.format('<img src="{0}" /><br>', $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>').substring(6));
+                                } else {
+	                                //output escape everything, but allow the <br> tag for better rendering.
+									html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
+								}
 							}
 							
 							html += '</p>';
