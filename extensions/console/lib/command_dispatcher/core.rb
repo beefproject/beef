@@ -286,12 +286,21 @@ class Core
       offlinezombies << zombie.id
     end
     
-    if not offlinezombies.include?(args[0].to_i)
-      print_status("Browser does not appear to be offline..")
-      return false
-    end
+    targets = args[0].split(',')
+    targets.each {|t|
+        if not offlinezombies.include?(t.to_i)
+          print_status("Browser [id:"+t.to_s+"] does not appear to be offline.")
+          return false
+        end
+    #print_status("Adding browser [id:"+t.to_s+"] to target list.")
+    }
+
+    # if not offlinezombies.include?(args[0].to_i)
+    #   print_status("Browser does not appear to be offline..")
+    #   return false
+    # end
     
-    if not driver.interface.setofflinetarget(args[0]).nil?
+    if not driver.interface.setofflinetarget(targets).nil?
       if (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
 	      driver.destack_dispatcher
@@ -302,7 +311,7 @@ class Core
       if driver.interface.targetid.length > 1
         driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
       else
-        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.to_s+"] ")
+        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
       end
     end  
     
