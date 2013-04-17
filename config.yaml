@@ -91,6 +91,10 @@ beef:
 
     crypto_default_value_length: 80
 
+    # Enable client-side debugging
+    client:
+        debug: false
+
     # You may override default extension configuration parameters here
     extension:
         requester:

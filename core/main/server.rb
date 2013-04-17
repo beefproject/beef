@@ -34,16 +34,17 @@ module BeEF
 
       def to_h
         {
-            'beef_version' => VERSION,
-            'beef_url' => @url,
+            'beef_version'  => VERSION,
+            'beef_url'      => @url,
             'beef_root_dir' => @root_dir,
-            'beef_host' => @configuration.get('beef.http.host'),
-            'beef_port' => @configuration.get('beef.http.port'),
-            'beef_public' => @configuration.get('beef.http.public'),
+            'beef_host'     => @configuration.get('beef.http.host'),
+            'beef_port'     => @configuration.get('beef.http.port'),
+            'beef_public'   => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
-            'beef_dns' => @configuration.get('beef.http.dns'),
-            'beef_hook' => @configuration.get('beef.http.hook_file'),
-            'beef_proto' => @configuration.get('beef.http.https.enable') == true ? "https" : "http"
+            'beef_dns'      => @configuration.get('beef.http.dns'),
+            'beef_hook'     => @configuration.get('beef.http.hook_file'),
+            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? "https" : "http",
+            'client_debug'  => @configuration.get("beef.client.debug")
         }
       end
 

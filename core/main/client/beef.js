@@ -37,6 +37,7 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
                  * @param: {string} the debug string to return
                  */
                 debug: function(msg) {
+                    if (!<%= @client_debug %>) return;
                     if (typeof console == "object" && typeof console.log == "function") {
                         console.log(msg);
                     } else {
