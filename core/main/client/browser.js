@@ -871,10 +871,10 @@ beef.browser = {
             try {
                 // append hook script
                 self.frames[i].document.body.appendChild(script);
-                //beef.debug("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
+                beef.debug("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
             } catch (e) {
                 // warn on cross-domain
-                //beef.debug("Hooking frame failed");
+                beef.debug("Hooking frame failed");
             }
         }
     },

