@@ -10,7 +10,7 @@ beef:
             category: "Browser"
             name: "Get Visited Domains"
             description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done by Michal Zalewski at http://lcamtuf.coredump.cx/cachetime/"
-            authors: ["@keith55", "quentin"]
+            authors: ["@keith55","oxplot","quentin"]
             target:
                 working: ["FF", "IE", "O"]
                 not_working: ["C", "S"]
