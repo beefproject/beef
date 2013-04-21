@@ -9,11 +9,9 @@
 # Gems only required on Windows, or with specific Windows issues
 if RUBY_PLATFORM.downcase.include?("mswin") || RUBY_PLATFORM.downcase.include?("mingw")
   gem "win32console"
-  gem "eventmachine", "1.0.0.beta.4.1"
-else
-  gem "eventmachine", "0.12.10"
 end
 
+gem "eventmachine", "1.0.3"
 gem "thin"
 gem "sinatra", "1.3.2"
 gem "em-websocket", "~> 0.3.6"
