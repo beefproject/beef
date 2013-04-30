@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        test_return_image:
+            enable: true
+            category: "Debug"
+            name: "Return Image"
+            description: "This module will test returning a PNG image as a base64 encoded string. The image should be rendered in the BeEF web interface."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
