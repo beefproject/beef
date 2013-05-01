@@ -93,6 +93,15 @@ module BeEF
           end
 
           # @note If CORS are enabled, expose the appropriate headers
+          # this apparently duplicate code is needed to reply to preflight OPTIONS requests, which need to respond with a 200
+          if request.request_method == 'OPTIONS' && config.get("beef.http.restful_api.allow_cors")
+            allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
+            headers "Access-Control-Allow-Origin" => allowed_domains,
+                    "Access-Control-Allow-Methods" => "POST, GET"
+            halt 200
+          end
+
+          # @note If CORS are enabled, expose the appropriate headers
           if config.get("beef.http.restful_api.allow_cors")
             allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
             headers "Access-Control-Allow-Origin" => allowed_domains,
