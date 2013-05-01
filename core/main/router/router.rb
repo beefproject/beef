@@ -81,15 +81,22 @@ module BeEF
             case type
               when "apache"
                 headers "Server" => "Apache/2.2.3 (CentOS)",
-                        "Content-Type" => "text/html"
+                        "Content-Type" => "text/html; charset=UTF-8"
 
               when "iis"
                 headers "Server" => "Microsoft-IIS/6.0",
                         "X-Powered-By" => "ASP.NET",
-                        "Content-Type" => "text/html"
+                        "Content-Type" => "text/html; charset=UTF-8"
               else
                 print_error "You have and error in beef.http.web_server_imitation.type! Supported values are: apache, iis."
             end
+          end
+
+          # @note If CORS are enabled, expose the appropriate headers
+          if config.get("beef.http.restful_api.allow_cors")
+            allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
+            headers "Access-Control-Allow-Origin" => allowed_domains,
+                    "Access-Control-Allow-Methods" => "POST, GET"
           end
         end
 
