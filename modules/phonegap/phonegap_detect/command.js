@@ -17,7 +17,8 @@ beef.execute(function() {
         + " cordova api: " + device.cordova
         + " platform: " + device.platform
         + " uuid: " + device.uuid
-        + " version: " + device.version;
+        + " version: " + device.version
+	+ " model: " + device.model;
     } catch(e) {
         phonegap_details = "unable to detect phonegap";
     }
