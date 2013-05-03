@@ -1082,8 +1082,9 @@ beef.browser = {
      */
     hasPhonegap:function () {
         var result = false;
+        
         try {
-            if (!!device.phonegap) result = true; else result = false;
+            if (!!device.phonegap || !!device.cordova) result = true; else result = false;
         }
         catch (e) {
             result = false;
