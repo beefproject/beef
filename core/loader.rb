@@ -15,6 +15,7 @@ require 'ipaddr'
 require 'base64'
 require 'xmlrpc/client'
 require 'openssl'
+require 'rubydns'
 
 # @note Include the filters
 require 'core/filters'

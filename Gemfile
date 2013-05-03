@@ -26,6 +26,7 @@ gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
 gem "msfrpc-client"
+gem "rubydns"
 
 # notifications
 gem "twitter"
