@@ -75,6 +75,7 @@ case config.get("beef.database.driver")
     DataMapper.setup(:default,
                      :adapter => config.get("beef.database.driver"),
                      :host => config.get("beef.database.db_host"),
+                     :port => config.get("beef.database.db_port"),
                      :username => config.get("beef.database.db_user"),
                      :password => config.get("beef.database.db_passwd"),
                      :database => config.get("beef.database.db_name"),

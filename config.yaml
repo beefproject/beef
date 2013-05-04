@@ -78,6 +78,7 @@ beef:
 
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
+        db_port: 5432
         db_name: "beef"
         db_user: "beef"
         db_passwd: "beef123"
