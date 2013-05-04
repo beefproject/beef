@@ -17,3 +17,6 @@ module DNS
 end
 end
 end
+
+require 'extensions/dns/api'
+require 'extensions/dns/dns'
