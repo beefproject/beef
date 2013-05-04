@@ -14,6 +14,7 @@ end
 gem "eventmachine", "1.0.3"
 gem "thin"
 gem "sinatra", "1.4.2"
+gem "rack", "1.5.2"
 gem "em-websocket", "~> 0.3.6"
 gem "jsmin", "~> 1.0.1"
 gem "ansi"
