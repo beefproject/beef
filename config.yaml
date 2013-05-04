@@ -118,3 +118,5 @@ beef:
                 enable: false
         ipec:
             enable: true
+        dns:
+            enable: true
