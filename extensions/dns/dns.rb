@@ -15,7 +15,7 @@ module DNS
       @address = address
       @port = port
 
-      run_server
+      EventMachine::next_tick { run_server }
     end
 
     def run_server
