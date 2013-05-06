@@ -27,7 +27,9 @@ beef:
         # if running behind a nat set the public ip address here
         #public: ""
         #public_port: "" # port setting is experimental
-        dns: "localhost"
+        # DNS
+        dns_host: "localhost"
+        dns_port: 53
         panel_path: "/ui/panel"
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
@@ -56,7 +58,7 @@ beef:
         https:
             enable: false
             # In production environments, be sure to use a valid certificate signed for the value
-            # used in beef.http.dns (the domain name of the server where you run BeEF)
+            # used in beef.http.dns_host (the domain name of the server where you run BeEF)
             key: "beef_key.pem"
             cert: "beef_cert.pem"
 
