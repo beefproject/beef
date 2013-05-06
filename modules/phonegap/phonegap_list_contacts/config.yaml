@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+#   phonegap
+#
+beef:
+    module:
+        phonegap_list_contacts:
+            enable: true
+            category: "Phonegap"
+            name: "List Contacts"
+            description: "Examine device contacts."
+            authors: ["staregate"]
+            target:
+                working: ["All"]
