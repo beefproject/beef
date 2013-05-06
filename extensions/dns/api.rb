@@ -20,9 +20,12 @@ module API
       address = config.get('beef.extension.dns.address')
       port    = config.get('beef.extension.dns.port')
 
-      Thread.new { BeEF::Extension::DNS::DNS.new(address, port) }
+      Thread.new do
+        sleep 2
+        BeEF::Extension::DNS::DNS.new(address, port)
+      end
 
-      print_info "DNS server: #{address}:#{port}"
+      print_info "DNS Server: #{address}:#{port}"
     end
 
   end
