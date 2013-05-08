@@ -9,19 +9,23 @@ module DNS
 
   class DNS
 
+    include Singleton
+
     UPSTREAM = RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
 
-    def initialize(address, port)
-      @address = address
-      @port = port
+    #def initialize(address, port)
+      #@address = address
+      #@port = port
 
-      EventMachine::next_tick { run_server }
-    end
+      #EventMachine::next_tick { run_server }
+    #end
 
-    def run_server
-      RubyDNS::run_server(:listen => [[:udp, @address, @port]]) do
-        otherwise do |transaction|
-          transaction.passthrough!(UPSTREAM)
+    def run_server(address, port)
+      EventMachine::next_tick do
+        RubyDNS::run_server(:listen => [[:udp, address, port]]) do
+          otherwise do |transaction|
+            transaction.passthrough!(UPSTREAM)
+          end
         end
       end
     end
