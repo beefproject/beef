@@ -19,5 +19,9 @@ class Logger
     print_error "DNS Server: #{msg}"
   end
 
+  def warn(msg)
+    print_error "DNS Server: #{msg}"
+  end
+
 end
 
