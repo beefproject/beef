@@ -16,9 +16,9 @@ module RubyDNS
 
       options[:listen].each do |spec|
         if spec[0] == :udp
-          EventMachine.open_datagram_socket(spec[1], spec[2], UDPHandler, server)
+          @signature = EventMachine.open_datagram_socket(spec[1], spec[2], UDPHandler, server)
         elsif spec[0] == :tcp
-          EventMachine.start_server(spec[1], spec[2], TCPHandler, server)
+          @signature = EventMachine.start_server(spec[1], spec[2], TCPHandler, server)
         end
       end
 
@@ -26,6 +26,10 @@ module RubyDNS
     end
 
     server.fire(:stop)
+  end
+
+  def self.stop_server
+    EventMachine.stop_server(@signature)
   end
 
   class Transaction
