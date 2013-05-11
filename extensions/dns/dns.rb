@@ -16,16 +16,6 @@ module DNS
         RubyDNS::run_server(:listen => [[:udp, address, port]]) do
           upstream = RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
 
-          BeEF::Core::Models::DNS.each do |record|
-            name  = record.name
-            type  = BeEF::Extension::DNS::DNS.parse_type(record.type)
-            value = record.value
-
-            match(name, type) do |transaction|
-              transaction.respond!(value)
-            end
-          end
-
           otherwise do |transaction|
             transaction.passthrough!(upstream)
           end
@@ -34,28 +24,21 @@ module DNS
     end
 
     def add_rule(name, type, value)
-      d = BeEF::Core::Models::DNS.new(
-        :name  => name,
-        :type  => type,
-        :value => value
-      ).save
+      catch(:match) do
+        BeEF::Core::Models::DNS.each do |rule|
+          n = rule.name
+          t = rule.type
+          v = rule.value
 
-      type = BeEF::Extension::DNS::DNS.parse_type(type)
+          throw :match if [n, t, v] == [name, type, value]
+        end
 
-      RubyDNS::stop_server
-      run_server
-    end
-
-    # XXX Why must this be a class method? As a private instance method,
-    #     it throws NoMethodError.
-    def self.parse_type(type)
-      resolv = 'Resolv::DNS::Resource'
-
-      if type =~ /(A|AAAA|SRV|WKS)/
-        resolv += '::IN'
+        BeEF::Core::Models::DNS.create(
+          :name  => name,
+          :type  => type,
+          :value => value
+        )
       end
-
-      eval "#{resolv}::#{type}"
     end
 
   end
