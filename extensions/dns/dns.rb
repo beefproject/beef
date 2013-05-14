@@ -90,14 +90,6 @@ module DNS
       eval "Resolv::DNS::Resource::IN::#{type}"
     end
 
-    # Convenience method for generating proper server responses
-    def parse_response(type, value)
-      response = 'value.to_s'
-      response = 'Resolv::DNS::Name.create(value)' if type =~ /(CNAME|NS|PTR)/
-      
-      eval response
-    end
-
   end
 
 end
