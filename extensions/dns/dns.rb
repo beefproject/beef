@@ -14,7 +14,8 @@ module DNS
     # @!method instance
     #   Returns the singleton instance.
     def initialize
-      @server  = nil
+      @lock = Mutex.new
+      @server = nil
       @next_id = 0
     end
 
@@ -59,9 +60,11 @@ module DNS
     # @see #remove_rule
     # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction
     def add_rule(pattern, type, &block)
-      @next_id += 1
-      @server.match(@next_id, pattern, type, block)
-      @next_id
+      @lock.synchronize do
+        @next_id += 1
+        @server.match(@next_id, pattern, type, block)
+        @next_id
+      end
     end
 
     # Removes the given DNS rule. Any future queries for it will be passed through.
@@ -69,8 +72,10 @@ module DNS
     # @param id [Integer] id returned from {#add_rule}
     # @see #add_rule
     def remove_rule(id)
-      @server.remove_rule(id)
-      @next_id -= 1
+      @lock.synchronize do
+        @server.remove_rule(id)
+        @next_id -= 1
+      end
     end
 
     # Loads all rules from the database at server startup
