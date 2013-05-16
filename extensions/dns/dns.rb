@@ -28,7 +28,6 @@ module DNS
         RubyDNS::run_server(:listen => [[:udp, address, port]]) do
           server = self
           BeEF::Extension::DNS::DNS.instance.instance_eval { @server = server }
-          BeEF::Extension::DNS::DNS.instance.load_rules
 
           # Pass unmatched queries upstream to root nameservers
           otherwise do |transaction|

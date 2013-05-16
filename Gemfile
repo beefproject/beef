@@ -27,6 +27,7 @@ gem "erubis"
 gem "dm-migrations"
 gem "msfrpc-client"
 gem "rubydns"
+gem "sourcify"
 
 # notifications
 gem "twitter"

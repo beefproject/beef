@@ -11,11 +11,11 @@ module Models
 
     include DataMapper::Resource
 
-    property :name,  String
-    property :type,  String
-    property :value, String
+    storage_names[:default] = 'extensions_dns'
 
-    property :id, Serial, :key => true
+    property :id, Serial
+    property :pattern, Object
+    property :block, Text
 
   end
 
