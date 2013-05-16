@@ -31,8 +31,6 @@ module RubyDNS
 
   class Server
 
-    attr_accessor :rules
-
     class Rule
 
       attr_accessor :id
