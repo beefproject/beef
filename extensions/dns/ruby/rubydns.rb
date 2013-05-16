@@ -48,12 +48,12 @@ module RubyDNS
     def match(id, *pattern, block)
       catch :match do
         # Check if rule is already present
-        BeEF::Core::Models::DNS.each { |rule| throw :match if rule.id == id }
+        BeEF::Core::Models::DNS::Rule.each { |rule| throw :match if rule.id == id }
 
         @rules << Rule.new(id, pattern, block)
 
         # Add new rule to database
-        BeEF::Core::Models::DNS.create(
+        BeEF::Core::Models::DNS::Rule.create(
           :id => id,
           :pattern => pattern,
           :block => block.to_source
@@ -66,7 +66,7 @@ module RubyDNS
       @rules.delete_if { |rule| rule.id == id }
 
       begin
-        BeEF::Core::Models::DNS.get!(id).destroy
+        BeEF::Core::Models::DNS::Rule.get!(id).destroy
       rescue DataMapper::ObjectNotFoundError => e
         @logger.error(e.message)
       end
@@ -74,7 +74,7 @@ module RubyDNS
 
     # New method that loads all rules from the database at server startup
     def load_rules
-      BeEF::Core::Models::DNS.each do |rule|
+      BeEF::Core::Models::DNS::Rule.each do |rule|
         id = rule.id
         pattern = rule.pattern
         block = eval rule.block
