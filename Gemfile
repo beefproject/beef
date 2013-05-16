@@ -33,6 +33,7 @@ gem "dm-migrations"
 gem "msfrpc-client"
 gem "rubyzip", "~> 1.0.0"
 gem "rubydns"
+gem "sourcify"
 
 # notifications
 gem "twitter", ">= 5.0.0"

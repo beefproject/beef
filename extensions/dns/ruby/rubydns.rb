@@ -3,10 +3,6 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-
-require 'rubygems'
-require 'rubydns'
-
 module RubyDNS
 
   # Behaves exactly the same, except without any logger output
@@ -26,6 +22,7 @@ module RubyDNS
         end
       end
 
+      server.load_rules
       server.fire(:start)
     end
 
@@ -51,12 +48,41 @@ module RubyDNS
 
     # Now uses an 'id' parameter to uniquely identify rules
     def match(id, *pattern, block)
-      @rules << Rule.new(id, pattern, block)
+      catch :match do
+        # Check if rule is already present
+        BeEF::Core::Models::DNS.each { |rule| throw :match if rule.id == id }
+
+        @rules << Rule.new(id, pattern, block)
+
+        # Add new rule to database
+        BeEF::Core::Models::DNS.create(
+          :id => id,
+          :pattern => pattern,
+          :block => block.to_source
+        )
+      end
     end
 
     # New method that removes a rule given its id
     def remove_rule(id)
       @rules.delete_if { |rule| rule.id == id }
+
+      begin
+        BeEF::Core::Models::DNS.get!(id).destroy
+      rescue DataMapper::ObjectNotFoundError => e
+        @logger.error(e.message)
+      end
+    end
+
+    # New method that loads all rules from the database at server startup
+    def load_rules
+      BeEF::Core::Models::DNS.each do |rule|
+        id = rule.id
+        pattern = rule.pattern
+        block = eval rule.block
+
+        @rules << Rule.new(id, pattern, block)
+      end
     end
 
   end
@@ -72,9 +98,9 @@ module RubyDNS
         raise ArgumentError, "Could not instantiate resource #{resource_class}!"
       end
 			
-      @server.logger.debug "Resource class: #{resource_class.inspect}"
+      @server.logger.debug("Resource class: #{resource_class.inspect}")
       resource = resource_class.new(*data)
-      @server.logger.debug "Resource: #{resource.inspect}"
+      @server.logger.debug("Resource: #{resource.inspect}")
 			
       append!(resource, options)
     end
