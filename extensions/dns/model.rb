@@ -6,12 +6,13 @@
 module BeEF
 module Core
 module Models
+module DNS
 
-  class DNS
+  class Rule
 
     include DataMapper::Resource
 
-    storage_names[:default] = 'extensions_dns'
+    storage_names[:default] = 'extension_dns_rules'
 
     property :id, Serial
     property :pattern, Object
@@ -19,6 +20,7 @@ module Models
 
   end
 
+end
 end
 end
 end
