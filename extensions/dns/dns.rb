@@ -77,18 +77,6 @@ module DNS
       end
     end
 
-    # Loads all rules from the database at server startup
-    def load_rules
-      # TODO Load rules from database
-    end
-
-    private
-
-    # Convenience method for fully-qualifying Resolv::DNS::Resource::IN types
-    def parse_type(type)
-      eval "Resolv::DNS::Resource::IN::#{type}"
-    end
-
   end
 
 end
