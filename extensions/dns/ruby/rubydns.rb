@@ -55,7 +55,8 @@ module RubyDNS
         # Add new rule to database
         BeEF::Core::Models::DNS::Rule.create(
           :id => id,
-          :pattern => pattern,
+          :pattern => pattern[0],
+          :type => pattern[1],
           :block => block.to_source
         )
       end
