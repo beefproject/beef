@@ -20,5 +20,6 @@ end
 
 require 'extensions/dns/api'
 require 'extensions/dns/dns'
-require 'extensions/dns/ruby'
 require 'extensions/dns/model'
+require 'extensions/dns/rest/dns'
+require 'extensions/dns/ruby'
