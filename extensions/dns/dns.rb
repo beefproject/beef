@@ -77,6 +77,34 @@ module DNS
       end
     end
 
+    # Returns an AoH representing the entire current DNS ruleset where each element is a
+    # hash with the following keys:
+    #
+    # * <code>:id</code>
+    # * <code>:pattern</code>
+    # * <code>:type</code>
+    # * <code>:block</code>
+    #
+    # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
+    def get_rules
+      @lock.synchronize do
+        result = []
+
+        BeEF::Core::Models::DNS::Rule.each do |rule|
+          element = {}
+
+          element[:id] = rule.id
+          element[:pattern] = rule.pattern
+          element[:type] = rule.type
+          element[:block] = rule.block
+
+          result << element
+        end
+
+        result
+      end
+    end
+
   end
 
 end

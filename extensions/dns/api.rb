@@ -10,10 +10,19 @@ module API
 
   module NameserverHandler
 
-    BeEF::API::Registrar.instance.register(BeEF::Extension::DNS::API::NameserverHandler,
-                                           BeEF::API::Server,
-                                           'pre_http_start')
+    BeEF::API::Registrar.instance.register(
+      BeEF::Extension::DNS::API::NameserverHandler,
+      BeEF::API::Server,
+      'pre_http_start'
+    )
 
+    BeEF::API::Registrar.instance.register(
+      BeEF::Extension::DNS::API::NameserverHandler,
+      BeEF::API::Server,
+      'mount_handler'
+    )
+
+    # Begins main DNS server run-loop at BeEF startup
     def self.pre_http_start(http_hook_server)
       config = BeEF::Core::Configuration.instance
 
@@ -26,6 +35,11 @@ module API
       end
 
       print_info "DNS Server: #{address}:#{port}"
+    end
+
+    # Mounts handler for processing RESTful API calls
+    def self.mount_handler(beef_server)
+      beef_server.mount('/api/dns', BeEF::Extension::DNS::DNSRest.new)
     end
 
   end
