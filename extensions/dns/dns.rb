@@ -7,23 +7,35 @@ module BeEF
 module Extension
 module DNS
 
+  # This class is responsible for providing a DNS nameserver that can be dynamically
+  # configured by other modules and extensions. It is particularly useful for
+  # performing DNS spoofing, hijacking, tunneling, etc.
+  #
+  # Only a single instance will exist during runtime (known as the "singleton pattern").
+  # This makes it easier to coordinate actions across the various BeEF systems.
   class DNS
 
     include Singleton
 
     # @!method instance
-    #   Returns the singleton instance.
+    #  Returns the singleton instance. Use this in place of {#initialize}.
+
+    # @note This method cannot be invoked! Use {#instance} instead.
+    # @see #instance
     def initialize
       @lock = Mutex.new
       @server = nil
       @next_id = 0
     end
 
-    # Starts the DNS server run-loop.
+    # Starts the main DNS server run-loop.
+    #
+    # @note This method will not return. It is recommended that it be invoked inside a
+    #       separate thread.
     #
     # @param address [String] interface address server should run on
     # @param port [Integer] desired server port number
-    def run_server(address, port)
+    def run_server(address = '0.0.0.0', port = 5300)
       EventMachine::next_tick do
         RubyDNS::run_server(:listen => [[:udp, address, port]]) do
           server = self
@@ -52,9 +64,10 @@ module DNS
     # @param pattern [String, Regexp] query pattern to recognize
     # @param type [Resolv::DNS::Resource::IN] resource record type (e.g. A, CNAME, NS, etc.)
     #
-    # @yieldparam [RubyDNS::Transaction] details of query question and response
+    # @yield callback to invoke when pattern is matched
+    # @yieldparam transaction [RubyDNS::Transaction] details of query question and response
     #
-    # @return [Integer] unique id for use with {#remove_rule}
+    # @return [Integer] unique identifier for use with {#remove_rule}
     #
     # @see #remove_rule
     # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction
@@ -77,8 +90,9 @@ module DNS
       end
     end
 
-    # Returns an AoH representing the entire current DNS ruleset where each element is a
-    # hash with the following keys:
+    # Returns an AoH representing the entire current DNS ruleset.
+    #
+    # Each element is a hash with the following keys:
     #
     # * <code>:id</code>
     # * <code>:pattern</code>
