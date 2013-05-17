@@ -77,7 +77,7 @@ module RubyDNS
     def load_rules
       BeEF::Core::Models::DNS::Rule.each do |rule|
         id = rule.id
-        pattern = rule.pattern
+        pattern = [rule.pattern, rule.type]
         block = eval rule.block
 
         @rules << Rule.new(id, pattern, block)
