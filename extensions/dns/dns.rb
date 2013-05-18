@@ -17,11 +17,11 @@ module DNS
 
     include Singleton
 
-    # @!method instance
+    # @!method self.instance
     #  Returns the singleton instance. Use this in place of {#initialize}.
 
-    # @note This method cannot be invoked! Use {#instance} instead.
-    # @see #instance
+    # @note This method cannot be invoked! Use {.instance} instead.
+    # @see ::instance
     def initialize
       @lock = Mutex.new
       @server = nil
@@ -100,7 +100,7 @@ module DNS
     # * <code>:block</code>
     #
     # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
-    def get_rules
+    def get_ruleset
       @lock.synchronize do
         result = []
 
@@ -116,6 +116,17 @@ module DNS
         end
 
         result
+      end
+    end
+
+    # Retrieves a specific rule given its id
+    #
+    # @param id [Integer] unique identifier for rule
+    #
+    # @return [Hash] hash representation of rule
+    def get_rule(id)
+      @lock.synchronize do
+        @server.get_rule(id)
       end
     end
 

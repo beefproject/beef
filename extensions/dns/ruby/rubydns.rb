@@ -84,6 +84,24 @@ module RubyDNS
       end
     end
 
+    # New method that returns a hash representing the given rule
+    def get_rule(id)
+      result = {}
+
+      begin
+        rule = BeEF::Core::Models::DNS::Rule.get!(id)
+
+        result[:id] = rule.id
+        result[:pattern] = rule.pattern
+        result[:type] = rule.type
+        result[:block] = rule.block
+      rescue DataMapper::ObjectNotFoundError => e
+        @logger.error(e.message)
+      end
+
+      result
+    end
+
   end
 
   class Transaction
