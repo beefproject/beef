@@ -26,6 +26,7 @@ module DNS
 
     # Returns the entire current DNS ruleset
     get '/rules' do
+      result = {}
       result[:rules] = BeEF::Extension::DNS::DNS.instance.get_ruleset
       result.to_json
     end

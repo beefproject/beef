@@ -84,6 +84,24 @@ module RubyDNS
       end
     end
 
+    # New method that returns the entire DNS ruleset as an AoH
+    def get_ruleset
+      result = []
+
+      BeEF::Core::Models::DNS::Rule.each do |rule|
+        element = {}
+
+        element[:id] = rule.id
+        element[:pattern] = rule.pattern
+        element[:type] = rule.type
+        element[:block] = rule.block
+
+        result << element
+      end
+
+      result
+    end
+
     # New method that returns a hash representing the given rule
     def get_rule(id)
       result = {}
