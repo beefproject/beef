@@ -102,20 +102,7 @@ module DNS
     # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
     def get_ruleset
       @lock.synchronize do
-        result = []
-
-        BeEF::Core::Models::DNS::Rule.each do |rule|
-          element = {}
-
-          element[:id] = rule.id
-          element[:pattern] = rule.pattern
-          element[:type] = rule.type
-          element[:block] = rule.block
-
-          result << element
-        end
-
-        result
+        @server.get_ruleset
       end
     end
 
