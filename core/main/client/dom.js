@@ -476,11 +476,11 @@ beef.dom = {
      * @params: {String} rport: remote port
      * @params: {String} commands: protocol commands to be executed by the remote host:port service
      */
-    createIframeIpecForm: function(rhost, rport, commands){
+    createIframeIpecForm: function(rhost, rport, path, commands){
         var iframeIpec = beef.dom.createInvisibleIframe();
 
         var formIpec = document.createElement('form');
-        formIpec.setAttribute('action',  'http://'+rhost+':'+rport+'/index.html');
+        formIpec.setAttribute('action',  'http://'+rhost+':'+rport+path);
         formIpec.setAttribute('method',  'POST');
         formIpec.setAttribute('enctype', 'multipart/form-data');
 
