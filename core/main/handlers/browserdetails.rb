@@ -255,6 +255,14 @@ module BeEF
             self.err_msg "Invalid value for HasWebSocket returned from the hook browser's initial connection."
           end
 
+          # get and store the yes|no value for HasWebRTC
+          has_webrtc = get_param(@data['results'], 'HasWebRTC')
+          if BeEF::Filters.is_valid_yes_no?(has_webrtc)
+            BD.set(session_id, 'HasWebRTC', has_webrtc)
+          else
+            self.err_msg "Invalid value for HasWebRTC returned from the hook browser's initial connection."
+          end
+
           # get and store the yes|no value for HasActiveX
           has_activex = get_param(@data['results'], 'HasActiveX')
           if BeEF::Filters.is_valid_yes_no?(has_activex)

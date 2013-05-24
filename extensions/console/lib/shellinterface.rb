@@ -302,6 +302,7 @@ class ShellInterface
         ['Browser Components', 'Windows Media Player','HasWMP'], 
         ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'Foxit',              'HasFoxit'],
+        ['Browser Components', 'WebRTC',             'HasWebRTC'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
@@ -310,7 +311,7 @@ class ShellInterface
         ['Hooked Page', 'Page Title',    'PageTitle'],
         ['Hooked Page', 'Page URI',      'PageURI'],
         ['Hooked Page', 'Page Referrer', 'PageReferrer'],
-        ['Hooked Page', 'Hook Host',  'HostName'],
+        ['Hooked Page', 'Hook Host',     'HostName'],
         ['Hooked Page', 'Cookies',       'Cookies'],
 
         # Host

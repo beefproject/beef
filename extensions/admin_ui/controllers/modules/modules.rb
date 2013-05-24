@@ -86,6 +86,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Windows Media Player','HasWMP'],
         ['Browser Components', 'VLC',                'HasVLC'],
         ['Browser Components', 'Foxit Reader',       'HasFoxit'],
+        ['Browser Components', 'WebRTC',             'HasWebRTC'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],

