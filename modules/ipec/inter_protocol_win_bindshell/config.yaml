@@ -9,8 +9,8 @@ beef:
             enable: true
             category: "IPEC"
             name: "Bindshell (Windows)"
-            description: "Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening Windows shell bound on the target specified in the 'Target Address' input field. <br><br>The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet."
+            description: "Using Inter-Protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening Windows shell bound on the target specified in the 'Target Address' input field.<br/><br/>The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.<br/><br/>The results of the commands are not returned to BeEF.<br/><br/>Note: ampersands are required to seperate commands."
             authors: ["bcoles", "wade"]
             target:
-                working: ["FF"]
-                not_working: ["C", "S", "O", "IE"]
+                working: ["FF", "C"]
+                not_working: ["S", "O", "IE"]
