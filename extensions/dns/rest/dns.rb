@@ -89,7 +89,23 @@ module DNS
         print_error e.message
         halt 400
       rescue Exception => e
-        print_error "Invalid JSON input passed to endpoint /api/dns/rule"
+        print_error 'Invalid JSON input passed to endpoint /api/dns/rule'
+        halt 400
+      end
+    end
+
+    # Removes a rule given its id
+    delete '/rule/:id' do
+      begin
+        id = params[:id]
+
+        unless BeEF::Filters.alphanums_only?(id)
+          raise StandardError, 'Invalid id passed to endpoint /api/dns/rule/:id'
+        end
+
+        BeEF::Extension::DNS::DNS.instance.remove_rule(id)
+      rescue StandardError => e
+        print_error e.message
         halt 400
       end
     end
