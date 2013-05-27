@@ -25,7 +25,6 @@ module DNS
     def initialize
       @lock = Mutex.new
       @server = nil
-      @next_id = 0
     end
 
     # Starts the main DNS server run-loop.
@@ -73,9 +72,7 @@ module DNS
     # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction
     def add_rule(pattern, type, &block)
       @lock.synchronize do
-        @next_id += 1
-        @server.match(@next_id, pattern, type, block)
-        @next_id
+        return @server.match(pattern, type, block)
       end
     end
 
@@ -86,7 +83,6 @@ module DNS
     def remove_rule(id)
       @lock.synchronize do
         @server.remove_rule(id)
-        @next_id -= 1
       end
     end
 

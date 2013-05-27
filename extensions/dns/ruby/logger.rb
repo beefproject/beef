@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-# Overrives the logger used by RubyDNS to use BeEF's print_info() and friends
+# Overrives the logger used by RubyDNS to use BeEF's {#print_info} and friends.
 class Logger
 
   def debug(msg)
