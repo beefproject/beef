@@ -14,10 +14,10 @@ module DNS
 
     storage_names[:default] = 'extension_dns_rules'
 
-    property :id, Serial       # Unique identifier
-    property :pattern, Object  # Query pattern
-    property :type, Object     # Resource type
-    property :block, Text      # Associated callback
+    property :id, String, :key => true  # Unique identifier
+    property :pattern, Object           # Query pattern
+    property :type, Object              # Resource type
+    property :block, Text               # Associated callback
 
   end
 
