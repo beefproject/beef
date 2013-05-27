@@ -37,12 +37,12 @@ module DNS
         id = params[:id]
 
         unless BeEF::Filters.alphanums_only?(id)
-          raise StandardError, 'Invalid id passed to endpoint /api/dns/rule/:id'
+          raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
         result = BeEF::Extension::DNS::DNS.instance.get_rule(id)
         result.to_json
-      rescue StandardError => e
+      rescue InvalidJsonError => e
         print_error e.message
         halt 400
       end
@@ -66,11 +66,11 @@ module DNS
           rescue => e; end
 
           if type.superclass != Resolv::DNS::Resource
-            raise StandardError, 'Invalid resource type given in "type" key'
+            raise InvalidJsonError, 'Invalid "type" key passed to endpoint /api/dns/rule'
           end
 
           unless BeEF::Filters.is_non_empty_string?(block)
-            raise StandardError, 'Invalid code block given in "block" key'
+            raise InvalidJsonError, 'Invalid "block" key passed to endpoint /api/dns/rule'
           end
 
           id = ''
@@ -85,7 +85,7 @@ module DNS
           result['id'] = id
           result.to_json
         end
-      rescue StandardError => e
+      rescue InvalidJsonError => e
         print_error e.message
         halt 400
       rescue Exception => e
@@ -100,14 +100,25 @@ module DNS
         id = params[:id]
 
         unless BeEF::Filters.alphanums_only?(id)
-          raise StandardError, 'Invalid id passed to endpoint /api/dns/rule/:id'
+          raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
         BeEF::Extension::DNS::DNS.instance.remove_rule(id)
-      rescue StandardError => e
+      rescue InvalidJsonError => e
         print_error e.message
         halt 400
       end
+    end
+
+    # Raised when invalid JSON input is passed to an /api/dns handler.
+    class InvalidJsonError < StandardError
+
+      DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/dns handler'
+
+      def initialize(message = nil)
+        super(message || DEFAULT_MESSAGE)
+      end
+
     end
 
   end
