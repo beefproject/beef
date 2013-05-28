@@ -17,7 +17,7 @@ beef.execute(function() {
 	img.setAttribute("style","visibility:hidden");
 	img.setAttribute("width","0");
 	img.setAttribute("height","0");
-	img.src = 'https://mail.google.com/mail/photos/static/AD34hIiQyJTs5FhsJ1mhFdK9wx4OZU2AgLNZLBbk2zMHYPUfs-ZzXPLq2s2vdBmgnJ6SoUCeBbFnjRlPUDXw860gsEDSKPrhBJYDgDBCd7g36x2tuBQc0TM?'+ new Date();
+	img.src = 'https://mail.google.com/mail/photos/img/photos/public/AIbEiAIAAABDCKa_hYq24u2WUyILdmNhcmRfcGhvdG8qKDI1ODFkOGViM2I5ZjUwZmZlYjE3MzQ2YmQyMjAzMjFlZTU3NjEzOTYwAZwSCm_MMUDjh599IgoA2muEmEZD?'+ new Date();
 	img.id = 'gmailimg';
 	img.setAttribute("attr","start");
 	img.onerror = function() {
