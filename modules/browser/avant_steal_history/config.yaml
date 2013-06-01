@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Get Visited URLs (Avant Browser)"
-            description: "Invoke AFRunCommand() privileged function. The integer 60003 is passed by default to dump the Avant Browser history."
+            description: "This module attempts to retrieve a user's browser history by invoking the 'AFRunCommand()' privileged function.<br/><br/>Note: Avant Browser in Firefox engine mode only."
             authors: ["Roberto Suggi Liverani"]
             target:
-                working: ["ALL"]
+                working: ["FF"]
