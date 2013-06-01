@@ -28,6 +28,14 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Iceweasel.
+     * @example: beef.browser.isI()
+     */
+    isI:function () {
+        return window.navigator.userAgent.match(/Iceweasel\/\d+\.\d/) != null;
+    },
+
+    /**
      * Returns true if IE6.
      * @example: beef.browser.isIE6()
      */
