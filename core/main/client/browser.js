@@ -20,6 +20,14 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Avant Browser.
+     * @example: beef.browser.isA()
+     */
+    isA:function () {
+        return window.navigator.userAgent.match(/Avant TriCore/) != null;
+    },
+
+    /**
      * Returns true if IE6.
      * @example: beef.browser.isIE6()
      */
