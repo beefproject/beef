@@ -11,7 +11,7 @@
 # identifiers to rules, rule removal, and more.
 #
 # The core functionality of BeEF's DNS server is implemented here, whereas
-# BeEF::Extension::DNS::Server is simply a small wrapper around it.
+# BeEF::Extension::Dns::Server is simply a small wrapper around it.
 #
 # @see http://rubydoc.info/gems/rubydns/frames
 module RubyDNS
@@ -69,7 +69,7 @@ module RubyDNS
                       end
 
           # Break out and return id if rule is already present
-          BeEF::Core::Models::DNS::Rule.each do |rule|
+          BeEF::Core::Models::Dns::Rule.each do |rule|
             if pattern[0] == rule.pattern &&
                pattern[1] == rule.type &&
                block_src  == rule.block
@@ -89,7 +89,7 @@ module RubyDNS
             @rules << Rule.new(id, pattern, block)
           end
 
-          BeEF::Core::Models::DNS::Rule.create(
+          BeEF::Core::Models::Dns::Rule.create(
             :id => id,
             :pattern => pattern[0],
             :type => pattern[1],
@@ -114,7 +114,7 @@ module RubyDNS
       @rules.delete_if { |rule| rule.id == id }
 
       begin
-        BeEF::Core::Models::DNS::Rule.get!(id).destroy
+        BeEF::Core::Models::Dns::Rule.get!(id).destroy
       rescue DataMapper::ObjectNotFoundError => e
         @logger.error(e.message)
       end
@@ -122,7 +122,7 @@ module RubyDNS
 
     # New method that loads all rules from the database at server startup
     def load_rules
-      BeEF::Core::Models::DNS::Rule.each do |rule|
+      BeEF::Core::Models::Dns::Rule.each do |rule|
         id = rule.id
         pattern = [rule.pattern, rule.type]
         block = eval rule.block
@@ -135,7 +135,7 @@ module RubyDNS
     def get_ruleset
       result = []
 
-      BeEF::Core::Models::DNS::Rule.each do |rule|
+      BeEF::Core::Models::Dns::Rule.each do |rule|
         element = {}
 
         element[:id] = rule.id
@@ -154,7 +154,7 @@ module RubyDNS
       result = {}
 
       begin
-        rule = BeEF::Core::Models::DNS::Rule.get!(id)
+        rule = BeEF::Core::Models::Dns::Rule.get!(id)
 
         result[:id] = rule.id
         result[:pattern] = rule.pattern
@@ -175,7 +175,7 @@ module RubyDNS
         id = BeEF::Core::Crypto.secure_token.byteslice(0..6)
 
         # Make sure id isn't already in use
-        BeEF::Core::Models::DNS::Rule.each { |rule| throw StandardError if id == rule.id }
+        BeEF::Core::Models::Dns::Rule.each { |rule| throw StandardError if id == rule.id }
       rescue StandardError
         retry
       end

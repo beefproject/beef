@@ -5,10 +5,10 @@
 #
 module BeEF
 module Extension
-module DNS
+module Dns
 
   # This class handles the routing of RESTful API requests that query BeEF's DNS server
-  class DNSRest < BeEF::Core::Router::Router
+  class DnsRest < BeEF::Core::Router::Router
 
     # Filters out bad requests before performing any routing
     before do
@@ -27,7 +27,7 @@ module DNS
     # Returns the entire current DNS ruleset
     get '/rules' do
       result = {}
-      result[:rules] = BeEF::Extension::DNS::Server.instance.get_ruleset
+      result[:rules] = BeEF::Extension::Dns::Server.instance.get_ruleset
       result.to_json
     end
 
@@ -40,7 +40,7 @@ module DNS
           raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
-        result = BeEF::Extension::DNS::Server.instance.get_rule(id)
+        result = BeEF::Extension::Dns::Server.instance.get_rule(id)
         result.to_json
       rescue InvalidJsonError => e
         print_error e.message
@@ -87,7 +87,7 @@ module DNS
           block_src = format_response(type, response)
 
           # Bypass #add_rule so that 'block_src' can be passed as a String
-          BeEF::Extension::DNS::Server.instance.instance_eval do
+          BeEF::Extension::Dns::Server.instance.instance_eval do
             id = @server.match(pattern, type_obj, block_src)
           end
 
@@ -114,7 +114,7 @@ module DNS
           raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
-        BeEF::Extension::DNS::Server.instance.remove_rule(id)
+        BeEF::Extension::Dns::Server.instance.remove_rule(id)
       rescue InvalidJsonError => e
         print_error e.message
         halt 400
