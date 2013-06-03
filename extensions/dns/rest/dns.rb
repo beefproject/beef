@@ -54,30 +54,41 @@ module DNS
         body = JSON.parse(request.body.read)
 
         pattern = body['pattern']
-        type = eval body['type']
-        block = body['block']
+        type = body['type']
+        response = body['response']
 
         # Validate required JSON keys
-        unless [pattern, type, block].include?(nil)
+        unless [pattern, type, response].include?(nil)
           # Determine whether 'pattern' is a String or Regexp
           begin
             pattern_test = eval pattern
             pattern = pattern_test if pattern_test.class == Regexp
           rescue => e; end
 
-          if type.superclass != Resolv::DNS::Resource
-            raise InvalidJsonError, 'Invalid "type" key passed to endpoint /api/dns/rule'
+          if response.class == Array
+              if response.length == 0
+                raise InvalidJsonError, 'Empty "reponse" key passed to endpoint /api/dns/rule'
+              end
+          else
+            raise InvalidJsonError, 'Non-array "reponse" key passed to endpoint /api/dns/rule'
           end
 
-          unless BeEF::Filters.is_non_empty_string?(block)
-            raise InvalidJsonError, 'Invalid "block" key passed to endpoint /api/dns/rule'
+          unless BeEF::Filters.is_non_empty_string?(pattern)
+            raise InvalidJsonError, 'Empty "pattern" key passed to endpoint /api/dns/rule'
+          end
+
+          unless BeEF::Filters.is_non_empty_string?(type)
+            raise InvalidJsonError, 'Empty "type" key passed to endpoint /api/dns/rule'
           end
 
           id = ''
 
-          # Bypass #add_rule so that 'block' can be passed as a String
+          type_obj  = eval "Resolv::DNS::Resource::IN::#{type}"
+          block_src = format_response(type, response)
+
+          # Bypass #add_rule so that 'block_src' can be passed as a String
           BeEF::Extension::DNS::DNS.instance.instance_eval do
-            id = @server.match(pattern, type, block)
+            id = @server.match(pattern, type_obj, block_src)
           end
 
           result = {}
@@ -89,8 +100,8 @@ module DNS
         print_error e.message
         halt 400
       rescue Exception => e
-        print_error 'Invalid JSON input passed to endpoint /api/dns/rule'
-        halt 400
+        print_error "Internal error while adding DNS rule (#{e.message})"
+        halt 500
       end
     end
 
@@ -108,6 +119,78 @@ module DNS
         print_error e.message
         halt 400
       end
+    end
+
+    private
+
+    # Generates a formatted string representation of the callback to invoke as a response.
+    #
+    # @param [String] type resource record type (e.g. A, CNAME, NS, etc.)
+    # @param [Array] rdata record data to include in response
+    #
+    # @return [String] string representation of response callback
+    def format_response(type, rdata)
+      src = "proc { |t| t.respond!(%s) }"
+
+      src % case type
+            when 'A'
+              data = { :address => rdata[0] }
+              "'%<address>s'" % data
+            when 'AAAA'
+              data = { :address => rdata[0] }
+              "'%<address>s'" % data
+            when 'CNAME'
+              data = { :cname => rdata[0] }
+              "Resolv::DNS::Name.create('%<cname>s')" % data
+            when 'HINFO'
+              data = { :cpu => rdata[0], :os => rdata[1] }
+              "'%<cpu>s', '%<os>s'" % data
+            when 'MINFO'
+              data = { :rmailbx => rdata[0], :emailbx => rdata[1] }
+
+              "Resolv::DNS::Name.create('%<rmailbx>s'), " \
+              "Resolv::DNS::Name.create('%<emailbx>s')" % data
+            when 'MX'
+              data = { :preference => rdata[0], :exchange => rdata[1] }
+              "'%<preference>d', Resolv::DNS::Name.create('%<exchange>s')" % data
+            when 'NS'
+              data = { :nsdname => rdata[0] }
+              "Resolv::DNS::Name.create('%<nsdname>s')" % data
+            when 'PTR'
+              data = { :ptrdname => rdata[0] }
+              "Resolv::DNS::Name.create('%<ptrdname>s')" % data
+            when 'SOA'
+              data = {
+                :mname   => rdata[0],
+                :rname   => rdata[1],
+                :serial  => rdata[2],
+                :refresh => rdata[3],
+                :retry   => rdata[4],
+                :expire  => rdata[5],
+                :minimum => rdata[6]
+              }
+
+              "Resolv::DNS::Name.create('%<mname>s'), " \
+              "Resolv::DNS::Name.create('%<rname>s'), " \
+              "%<serial>d, " \
+              "%<refresh>d, " \
+              "%<retry>d, " \
+              "%<expire>d, " \
+              "%<minimum>d" % data
+            when 'TXT'
+              data = { :txtdata => rdata[0] }
+              "'%<txtdata>s'" % data
+            when 'WKS'
+              data = {
+                :address  => rdata[0],
+                :protocol => rdata[1],
+                :bitmap   => rdata[2]
+              }
+
+              "'%<address>s', %<protocol>d, %<bitmap>d" % data
+            else
+              raise InvalidJsonError, 'Unknown "type" key passed to endpoint /api/dns/rule'
+            end
     end
 
     # Raised when invalid JSON input is passed to an /api/dns handler.
