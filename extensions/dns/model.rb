@@ -6,7 +6,7 @@
 module BeEF
 module Core
 module Models
-module DNS
+module Dns
 
   class Rule
 

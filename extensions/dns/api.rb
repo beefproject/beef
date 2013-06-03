@@ -5,19 +5,19 @@
 #
 module BeEF
 module Extension
-module DNS
+module Dns
 module API
 
   module NameserverHandler
 
     BeEF::API::Registrar.instance.register(
-      BeEF::Extension::DNS::API::NameserverHandler,
+      BeEF::Extension::Dns::API::NameserverHandler,
       BeEF::API::Server,
       'pre_http_start'
     )
 
     BeEF::API::Registrar.instance.register(
-      BeEF::Extension::DNS::API::NameserverHandler,
+      BeEF::Extension::Dns::API::NameserverHandler,
       BeEF::API::Server,
       'mount_handler'
     )
@@ -30,7 +30,7 @@ module API
       port    = config.get('beef.extension.dns.port')
 
       Thread.new do
-        dns = BeEF::Extension::DNS::Server.instance
+        dns = BeEF::Extension::Dns::Server.instance
         dns.run_server(address, port)
       end
 
@@ -39,7 +39,7 @@ module API
 
     # Mounts handler for processing RESTful API calls
     def self.mount_handler(beef_server)
-      beef_server.mount('/api/dns', BeEF::Extension::DNS::DNSRest.new)
+      beef_server.mount('/api/dns', BeEF::Extension::Dns::DnsRest.new)
     end
 
   end

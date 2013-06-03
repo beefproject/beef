@@ -5,7 +5,7 @@
 #
 module BeEF
 module Extension
-module DNS
+module Dns
 
   extend BeEF::API::Extension
 

@@ -5,7 +5,7 @@
 #
 module BeEF
 module Extension
-module DNS
+module Dns
 
   # This class is responsible for providing a DNS nameserver that can be dynamically
   # configured by other modules and extensions. It is particularly useful for
@@ -38,7 +38,7 @@ module DNS
       EventMachine.next_tick do
         RubyDNS.run_server(:listen => [[:udp, address, port]]) do
           server = self
-          BeEF::Extension::DNS::Server.instance.instance_eval { @server = server }
+          BeEF::Extension::Dns::Server.instance.instance_eval { @server = server }
 
           # Pass unmatched queries upstream to root nameservers
           otherwise do |transaction|
@@ -54,7 +54,7 @@ module DNS
     #
     # @example Adds an A record for foobar.com with the value 1.2.3.4
     #
-    #   dns = BeEF::Extension::DNS::Server.instance
+    #   dns = BeEF::Extension::Dns::Server.instance
     #
     #   id = dns.add_rule('foobar.com', Resolv::DNS::Resource::IN::A) do |transaction|
     #     transaction.respond!('1.2.3.4')
