@@ -27,7 +27,7 @@ module DNS
     # Returns the entire current DNS ruleset
     get '/rules' do
       result = {}
-      result[:rules] = BeEF::Extension::DNS::DNS.instance.get_ruleset
+      result[:rules] = BeEF::Extension::DNS::Server.instance.get_ruleset
       result.to_json
     end
 
@@ -40,7 +40,7 @@ module DNS
           raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
-        result = BeEF::Extension::DNS::DNS.instance.get_rule(id)
+        result = BeEF::Extension::DNS::Server.instance.get_rule(id)
         result.to_json
       rescue InvalidJsonError => e
         print_error e.message
@@ -87,7 +87,7 @@ module DNS
           block_src = format_response(type, response)
 
           # Bypass #add_rule so that 'block_src' can be passed as a String
-          BeEF::Extension::DNS::DNS.instance.instance_eval do
+          BeEF::Extension::DNS::Server.instance.instance_eval do
             id = @server.match(pattern, type_obj, block_src)
           end
 
@@ -99,7 +99,7 @@ module DNS
       rescue InvalidJsonError => e
         print_error e.message
         halt 400
-      rescue Exception => e
+      rescue StandardError => e
         print_error "Internal error while adding DNS rule (#{e.message})"
         halt 500
       end
@@ -114,7 +114,7 @@ module DNS
           raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
         end
 
-        BeEF::Extension::DNS::DNS.instance.remove_rule(id)
+        BeEF::Extension::DNS::Server.instance.remove_rule(id)
       rescue InvalidJsonError => e
         print_error e.message
         halt 400
@@ -130,67 +130,71 @@ module DNS
     #
     # @return [String] string representation of response callback
     def format_response(type, rdata)
-      src = "proc { |t| t.respond!(%s) }"
+      src = 'proc { |t| t.respond!(%s) }'
 
-      src % case type
-            when 'A'
-              data = { :address => rdata[0] }
-              "'%<address>s'" % data
-            when 'AAAA'
-              data = { :address => rdata[0] }
-              "'%<address>s'" % data
-            when 'CNAME'
-              data = { :cname => rdata[0] }
-              "Resolv::DNS::Name.create('%<cname>s')" % data
-            when 'HINFO'
-              data = { :cpu => rdata[0], :os => rdata[1] }
-              "'%<cpu>s', '%<os>s'" % data
-            when 'MINFO'
-              data = { :rmailbx => rdata[0], :emailbx => rdata[1] }
+      args = case type
+             when 'A'
+               data = { :address => rdata[0] }
+               sprintf "'%<address>s'", data
+             when 'AAAA'
+               data = { :address => rdata[0] }
+               sprintf "'%<address>s'", data
+             when 'CNAME'
+               data = { :cname => rdata[0] }
+               sprintf "Resolv::DNS::Name.create('%<cname>s')", data
+             when 'HINFO'
+               data = { :cpu => rdata[0], :os => rdata[1] }
+               sprintf "'%<cpu>s', '%<os>s'", data
+             when 'MINFO'
+               data = { :rmailbx => rdata[0], :emailbx => rdata[1] }
 
-              "Resolv::DNS::Name.create('%<rmailbx>s'), " \
-              "Resolv::DNS::Name.create('%<emailbx>s')" % data
-            when 'MX'
-              data = { :preference => rdata[0], :exchange => rdata[1] }
-              "'%<preference>d', Resolv::DNS::Name.create('%<exchange>s')" % data
-            when 'NS'
-              data = { :nsdname => rdata[0] }
-              "Resolv::DNS::Name.create('%<nsdname>s')" % data
-            when 'PTR'
-              data = { :ptrdname => rdata[0] }
-              "Resolv::DNS::Name.create('%<ptrdname>s')" % data
-            when 'SOA'
-              data = {
-                :mname   => rdata[0],
-                :rname   => rdata[1],
-                :serial  => rdata[2],
-                :refresh => rdata[3],
-                :retry   => rdata[4],
-                :expire  => rdata[5],
-                :minimum => rdata[6]
-              }
+               sprintf "Resolv::DNS::Name.create('%<rmailbx>s'), " +
+                       "Resolv::DNS::Name.create('%<emailbx>s')",
+                       data
+             when 'MX'
+               data = { :preference => rdata[0], :exchange => rdata[1] }
+               sprintf "'%<preference>d', Resolv::DNS::Name.create('%<exchange>s')", data
+             when 'NS'
+               data = { :nsdname => rdata[0] }
+               sprintf "Resolv::DNS::Name.create('%<nsdname>s')", data
+             when 'PTR'
+               data = { :ptrdname => rdata[0] }
+               sprintf "Resolv::DNS::Name.create('%<ptrdname>s')", data
+             when 'SOA'
+               data = {
+                 :mname   => rdata[0],
+                 :rname   => rdata[1],
+                 :serial  => rdata[2],
+                 :refresh => rdata[3],
+                 :retry   => rdata[4],
+                 :expire  => rdata[5],
+                 :minimum => rdata[6]
+               }
 
-              "Resolv::DNS::Name.create('%<mname>s'), " \
-              "Resolv::DNS::Name.create('%<rname>s'), " \
-              "%<serial>d, " \
-              "%<refresh>d, " \
-              "%<retry>d, " \
-              "%<expire>d, " \
-              "%<minimum>d" % data
-            when 'TXT'
-              data = { :txtdata => rdata[0] }
-              "'%<txtdata>s'" % data
-            when 'WKS'
-              data = {
-                :address  => rdata[0],
-                :protocol => rdata[1],
-                :bitmap   => rdata[2]
-              }
+               sprintf "Resolv::DNS::Name.create('%<mname>s'), " +
+                       "Resolv::DNS::Name.create('%<rname>s'), " +
+                       '%<serial>d, ' +
+                       '%<refresh>d, ' +
+                       '%<retry>d, ' +
+                       '%<expire>d, ' +
+                       '%<minimum>d',
+                       data
+             when 'TXT'
+               data = { :txtdata => rdata[0] }
+               sprintf "'%<txtdata>s'", data
+             when 'WKS'
+               data = {
+                 :address  => rdata[0],
+                 :protocol => rdata[1],
+                 :bitmap   => rdata[2]
+               }
 
-              "'%<address>s', %<protocol>d, %<bitmap>d" % data
-            else
-              raise InvalidJsonError, 'Unknown "type" key passed to endpoint /api/dns/rule'
-            end
+               sprintf "'%<address>s', %<protocol>d, %<bitmap>d", data
+             else
+               raise InvalidJsonError, 'Unknown "type" key passed to endpoint /api/dns/rule'
+             end
+
+      sprintf(src, args)
     end
 
     # Raised when invalid JSON input is passed to an /api/dns handler.

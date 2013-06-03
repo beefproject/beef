@@ -30,7 +30,7 @@ module API
       port    = config.get('beef.extension.dns.port')
 
       Thread.new do
-        dns = BeEF::Extension::DNS::DNS.instance
+        dns = BeEF::Extension::DNS::Server.instance
         dns.run_server(address, port)
       end
 

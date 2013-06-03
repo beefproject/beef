@@ -11,9 +11,9 @@ module DNS
 
   @short_name  = 'dns'
   @full_name   = 'DNS Server'
-  @description = 'A configurable DNS nameserver for performing DNS spoofing, ' \
+  @description = 'A configurable DNS nameserver for performing DNS spoofing, ' +
                  'hijacking, and other related attacks against hooked zombies'
-  
+
 end
 end
 end

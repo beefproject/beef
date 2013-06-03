@@ -13,7 +13,7 @@ module DNS
   #
   # Only a single instance will exist during runtime (known as the "singleton pattern").
   # This makes it easier to coordinate actions across the various BeEF systems.
-  class DNS
+  class Server
 
     include Singleton
 
@@ -35,10 +35,10 @@ module DNS
     # @param address [String] interface address server should run on
     # @param port [Integer] desired server port number
     def run_server(address = '0.0.0.0', port = 5300)
-      EventMachine::next_tick do
-        RubyDNS::run_server(:listen => [[:udp, address, port]]) do
+      EventMachine.next_tick do
+        RubyDNS.run_server(:listen => [[:udp, address, port]]) do
           server = self
-          BeEF::Extension::DNS::DNS.instance.instance_eval { @server = server }
+          BeEF::Extension::DNS::Server.instance.instance_eval { @server = server }
 
           # Pass unmatched queries upstream to root nameservers
           otherwise do |transaction|
@@ -54,7 +54,7 @@ module DNS
     #
     # @example Adds an A record for foobar.com with the value 1.2.3.4
     #
-    #   dns = BeEF::Extension::DNS::DNS.instance
+    #   dns = BeEF::Extension::DNS::Server.instance
     #
     #   id = dns.add_rule('foobar.com', Resolv::DNS::Resource::IN::A) do |transaction|
     #     transaction.respond!('1.2.3.4')
