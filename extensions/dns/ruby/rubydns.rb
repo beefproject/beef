@@ -63,7 +63,7 @@ module RubyDNS
       catch :match do
         begin
           # Sourcify block (already a string only for RESTful API calls)
-          block_src = case block.class.name
+          block_src = case block
                       when String then block
                       when Proc   then block.to_source
                       end
