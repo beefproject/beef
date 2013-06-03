@@ -11,7 +11,7 @@
 # identifiers to rules, rule removal, and more.
 #
 # The core functionality of BeEF's DNS server is implemented here, whereas
-# BeEF::Extension::DNS::DNS is simply a small wrapper around it.
+# BeEF::Extension::DNS::Server is simply a small wrapper around it.
 #
 # @see http://rubydoc.info/gems/rubydns/frames
 module RubyDNS
@@ -20,7 +20,7 @@ module RubyDNS
   def self.run_server(options = {}, &block)
     server = RubyDNS::Server.new(&block)
 
-    options[:listen] ||= [[:udp, "0.0.0.0", 53], [:tcp, "0.0.0.0", 53]]
+    options[:listen] ||= [[:udp, '0.0.0.0', 53], [:tcp, '0.0.0.0', 53]]
 
     EventMachine.run do
       server.fire(:setup)
@@ -70,9 +70,9 @@ module RubyDNS
 
           # Break out and return id if rule is already present
           BeEF::Core::Models::DNS::Rule.each do |rule|
-            if pattern[0] == rule.pattern \
-                && pattern[1] == rule.type \
-                && block_src == rule.block
+            if pattern[0] == rule.pattern &&
+               pattern[1] == rule.type &&
+               block_src  == rule.block
 
               id = rule.id
               throw :match
@@ -81,6 +81,7 @@ module RubyDNS
 
           id = generate_id
 
+          # FIXME Use block
           case block.class.name
           when String
             @rules << Rule.new(id, pattern, eval(block_src))
@@ -171,7 +172,7 @@ module RubyDNS
     # New method that generates a unique id for a rule
     def generate_id
       begin
-        id = BeEF::Core::Crypto::secure_token.byteslice(0..6)
+        id = BeEF::Core::Crypto.secure_token.byteslice(0..6)
 
         # Make sure id isn't already in use
         BeEF::Core::Models::DNS::Rule.each { |rule| throw StandardError if id == rule.id }
@@ -190,15 +191,15 @@ module RubyDNS
     def respond!(*data)
       options = data.last.kind_of?(Hash) ? data.pop : {}
       resource_class = options[:resource_class] || @resource_class
-			
+
       if resource_class == nil
         raise ArgumentError, "Could not instantiate resource #{resource_class}!"
       end
-			
+
       @server.logger.debug("Resource class: #{resource_class.inspect}")
       resource = resource_class.new(*data)
       @server.logger.debug("Resource: #{resource.inspect}")
-			
+
       append!(resource, options)
     end
 
