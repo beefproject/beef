@@ -27,6 +27,7 @@ require './extensions/tc_hooks'
 require './extensions/tc_proxy'
 require './extensions/tc_requester'
 require './extensions/tc_event_logger'
+require './extensions/tc_dns'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -55,6 +56,7 @@ class TS_BeefTests
     suite << TC_EventLogger.suite
 	suite << TC_Hooks.suite
     suite << TC_Redirector.suite
+    suite << TC_Dns.suite
 
     return suite
   end
