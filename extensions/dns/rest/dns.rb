@@ -46,12 +46,12 @@ module Dns
         id = params[:id]
 
         unless BeEF::Filters.alphanums_only?(id)
-          raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
+          raise InvalidParamError, 'Invalid "id" parameter passed to endpoint /api/dns/rule/:id'
         end
 
         result = BeEF::Extension::Dns::Server.instance.get_rule(id)
         result.to_json
-      rescue InvalidJsonError => e
+      rescue InvalidParamError => e
         print_error e.message
         halt 400
       rescue StandardError => e
@@ -123,11 +123,11 @@ module Dns
         id = params[:id]
 
         unless BeEF::Filters.alphanums_only?(id)
-          raise InvalidJsonError, 'Invalid id passed to endpoint /api/dns/rule/:id'
+          raise InvalidParamError, 'Invalid "id" parameter passed to endpoint /api/dns/rule/:id'
         end
 
         BeEF::Extension::Dns::Server.instance.remove_rule(id)
-      rescue InvalidJsonError => e
+      rescue InvalidParamError => e
         print_error e.message
         halt 400
       rescue StandardError => e
@@ -216,6 +216,17 @@ module Dns
     class InvalidJsonError < StandardError
 
       DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/dns handler'
+
+      def initialize(message = nil)
+        super(message || DEFAULT_MESSAGE)
+      end
+
+    end
+
+    # Raised when an invalid named parameter is passed to an /api/dns handler.
+    class InvalidParamError < StandardError
+
+      DEFAULT_MESSAGE = 'Invalid parameter passed to /api/dns handler'
 
       def initialize(message = nil)
         super(message || DEFAULT_MESSAGE)
