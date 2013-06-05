@@ -25,10 +25,14 @@ module Dns
     end
 
     # Returns the entire current DNS ruleset
-    get '/rules' do
+    get '/ruleset' do
       begin
+        ruleset = BeEF::Extension::Dns::Server.instance.get_ruleset
+        count = ruleset.length
+
         result = {}
-        result[:rules] = BeEF::Extension::Dns::Server.instance.get_ruleset
+        result[:count] = count
+        result[:ruleset] = ruleset
         result.to_json
       rescue StandardError => e
         print_error "Internal error while retrieving DNS ruleset (#{e.message})"
