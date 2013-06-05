@@ -15,8 +15,8 @@ module Dns
       config = BeEF::Core::Configuration.instance
 
       # Require a valid API token from a valid IP address
-      error 401 unless params[:token] == config.get('beef.api_token')
-      halt  401 unless BeEF::Core::Rest.permitted_source?(request.ip)
+      halt 401 unless params[:token] == config.get('beef.api_token')
+      halt 403 unless BeEF::Core::Rest.permitted_source?(request.ip)
 
       headers 'Content-Type' => 'application/json; charset=UTF-8',
               'Pragma' => 'no-cache',
