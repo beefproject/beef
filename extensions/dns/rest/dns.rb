@@ -26,9 +26,14 @@ module Dns
 
     # Returns the entire current DNS ruleset
     get '/rules' do
-      result = {}
-      result[:rules] = BeEF::Extension::Dns::Server.instance.get_ruleset
-      result.to_json
+      begin
+        result = {}
+        result[:rules] = BeEF::Extension::Dns::Server.instance.get_ruleset
+        result.to_json
+      rescue StandardError => e
+        print_error "Internal error while retrieving DNS ruleset (#{e.message})"
+        halt 500
+      end
     end
 
     # Returns a specific rule given its id
@@ -45,6 +50,9 @@ module Dns
       rescue InvalidJsonError => e
         print_error e.message
         halt 400
+      rescue StandardError => e
+        print_error "Internal error while retrieving DNS rule with id #{id} (#{e.message})"
+        halt 500
       end
     end
 
@@ -118,6 +126,9 @@ module Dns
       rescue InvalidJsonError => e
         print_error e.message
         halt 400
+      rescue StandardError => e
+        print_error "Internal error while removing DNS rule with id #{id} (#{e.message})"
+        halt 500
       end
     end
 
