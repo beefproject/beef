@@ -140,8 +140,8 @@ module RubyDNS
 
         element[:id] = rule.id
         element[:pattern] = rule.pattern
-        element[:type] = rule.type
-        element[:block] = rule.block
+        element[:type] = rule.type.to_s.split('::')[-1]
+        element[:response] = parse_response(rule.block)
 
         result << element
       end
@@ -158,8 +158,8 @@ module RubyDNS
 
         result[:id] = rule.id
         result[:pattern] = rule.pattern
-        result[:type] = rule.type
-        result[:block] = rule.block
+        result[:type] = rule.type.to_s.split('::')[-1]
+        result[:response] = parse_response(rule.block)
       rescue DataMapper::ObjectNotFoundError => e
         @logger.error(e.message)
       end
@@ -181,6 +181,32 @@ module RubyDNS
       end
 
       id
+    end
+
+    # New method that parses response callback and returns RDATA as an array
+    def parse_response(block)
+      # Extract response arguments into an array
+      args = /(?<=respond!\().*(?=\))/.match(block).to_s.split(/,\s*/)
+
+      result = []
+
+      # Determine whether each argument is a domain name, integer, or IP address
+      args.each do |elem|
+        arg = nil
+
+        if /Name\.create\((.*)\)/.match(elem)
+          arg = $1
+        else
+          int_test = elem.to_i
+          arg = (int_test != 0 ? int_test : elem)
+        end
+
+        arg.gsub!('"', '') unless arg.is_a?(Integer)
+
+        result << arg
+      end
+
+      result
     end
 
   end

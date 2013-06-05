@@ -93,7 +93,7 @@ module Dns
     # * <code>:id</code>
     # * <code>:pattern</code>
     # * <code>:type</code>
-    # * <code>:block</code>
+    # * <code>:response</code>
     #
     # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
     def get_ruleset
