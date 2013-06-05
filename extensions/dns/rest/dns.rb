@@ -126,7 +126,9 @@ module Dns
           raise InvalidParamError, 'Invalid "id" parameter passed to endpoint /api/dns/rule/:id'
         end
 
-        BeEF::Extension::Dns::Server.instance.remove_rule(id)
+        result = {}
+        result[:success] = BeEF::Extension::Dns::Server.instance.remove_rule(id)
+        result.to_json
       rescue InvalidParamError => e
         print_error e.message
         halt 400
