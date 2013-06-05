@@ -127,7 +127,7 @@ module Dns
         end
 
         result = {}
-        result[:success] = BeEF::Extension::Dns::Server.instance.remove_rule(id)
+        result['success'] = BeEF::Extension::Dns::Server.instance.remove_rule(id)
         result.to_json
       rescue InvalidParamError => e
         print_error e.message
