@@ -79,6 +79,9 @@ module Dns
     # Removes the given DNS rule. Any future queries for it will be passed through.
     #
     # @param id [Integer] id returned from {#add_rule}
+    #
+    # @return [Boolean] true on success, false on failure
+    #
     # @see #add_rule
     def remove_rule(id)
       @lock.synchronize do

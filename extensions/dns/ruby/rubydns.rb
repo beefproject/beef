@@ -44,7 +44,6 @@ module RubyDNS
 
     class Rule
 
-      # XXX Can this be removed?
       attr_accessor :id
 
       # Now uses an 'id' parameter to uniquely identify rules
@@ -109,15 +108,13 @@ module RubyDNS
       id
     end
 
-    # New method that removes a rule given its id
+    # New method that removes a rule given its id and returns boolean result
     def remove_rule(id)
       @rules.delete_if { |rule| rule.id == id }
 
-      begin
-        BeEF::Core::Models::Dns::Rule.get!(id).destroy
-      rescue DataMapper::ObjectNotFoundError => e
-        @logger.error(e.message)
-      end
+      rule = BeEF::Core::Models::Dns::Rule.get(id)
+
+      rule != nil ? rule.destroy : false
     end
 
     # New method that loads all rules from the database at server startup
