@@ -95,8 +95,8 @@ module Dns
 
           id = ''
 
-          type_obj  = eval "Resolv::DNS::Resource::IN::#{type}"
           block_src = format_response(type, response)
+          type_obj  = eval "Resolv::DNS::Resource::IN::#{type}"
 
           # Bypass #add_rule so that 'block_src' can be passed as a String
           BeEF::Extension::Dns::Server.instance.instance_eval do
