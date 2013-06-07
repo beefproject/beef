@@ -16,6 +16,7 @@ require './check_environment' # Basic log in and log out tests
 require './tc_debug_modules' # RESTful API tests (as well as debug modules)
 require './tc_login' # Basic log in and log out tests
 require './tc_jools' # Basic tests for jools
+require './tc_dns_rest' # Basic tests for DNS RESTful API interface
 
 class TS_BeefIntegrationTests
   def self.suite
@@ -25,6 +26,7 @@ class TS_BeefIntegrationTests
     suite << TC_login.suite
     suite << TC_DebugModules.suite
     suite << TC_Jools.suite
+    suite << TC_DnsRest.suite
 
     return suite
   end
