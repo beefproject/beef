@@ -170,7 +170,7 @@ module Dns
                        data
              when 'MX'
                data = { :preference => rdata[0], :exchange => rdata[1] }
-               sprintf "'%<preference>d', Resolv::DNS::Name.create('%<exchange>s')", data
+               sprintf "%<preference>d, Resolv::DNS::Name.create('%<exchange>s')", data
              when 'NS'
                data = { :nsdname => rdata[0] }
                sprintf "Resolv::DNS::Name.create('%<nsdname>s')", data
