@@ -26,7 +26,7 @@ class TC_DnsRest < Test::Unit::TestCase
 
   end
 
-  def test_1_add_rule
+  def test_1_add_rule_good
     pattern = 'foo.bar'
     type = 'A'
     dns_response = ['1.2.3.4']
@@ -44,6 +44,50 @@ class TC_DnsRest < Test::Unit::TestCase
 
     assert(result['success'])
     assert(result['id'])
+  end
+
+  def test_2_add_rule_bad
+    pattern = ''
+    type = 'A'
+    dns_response = ['1.1.1.1']
+
+    hash = {:pattern => pattern, :type => type, :response => dns_response}
+
+    # Test that an empty "pattern" key returns 400
+    assert_raise RestClient::BadRequest do
+      rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                      hash.to_json,
+                                      @@headers)
+    end
+
+    hash['pattern'] = 'foo.bar.baz'
+    hash['type'] = ''
+
+    # Test that an empty "type" key returns 400
+    assert_raise RestClient::BadRequest do
+      rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                      hash.to_json,
+                                      @@headers)
+    end
+
+    hash['type'] = 'A'
+    hash['response'] = []
+
+    # Test that an empty "response" key returns 400
+    assert_raise RestClient::BadRequest do
+      rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                      hash.to_json,
+                                      @@headers)
+    end
+
+    hash['response'] = 42
+
+    # Test that a non-array "response" key returns 400
+    assert_raise RestClient::BadRequest do
+      rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                      hash.to_json,
+                                      @@headers)
+    end
   end
 
 end
