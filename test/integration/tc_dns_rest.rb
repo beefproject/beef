@@ -107,4 +107,132 @@ class TC_DnsRest < Test::Unit::TestCase
     end
   end
 
+  # OPTIMIZE: Can this be refactored somehow?
+  # TODO: Use BeEF::Core::Configuration to get address and port values.
+
+  # Tests each supported RR type
+  def test_3_add_rule_types
+    pattern = 'be.ef'
+    type = 'AAAA'
+    dns_response = ['2001:db8:ac10:fe01::']
+
+    hash = {'pattern' => pattern, 'type' => type, 'response' => dns_response}
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    hash.to_json,
+                                    @@headers)
+
+    check_response(rest_response)
+
+    # Test AAAA type
+    regex = %r{
+      ^be\.ef\.\t+
+      \d+\t+
+      IN\t+
+      #{hash['type']}\t+
+      #{hash['response'][0]}$
+    }x
+
+    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
+    assert_match(regex, dig_output)
+
+    hash['type'] = 'CNAME'
+    hash['response'] = ['fe.eb.']
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    hash.to_json,
+                                    @@headers)
+
+    check_response(rest_response)
+
+    # Test CNAME type
+    regex = %r{
+      ^be\.ef\.\t+
+      \d+\t+
+      IN\t+
+      #{hash['type']}\t+
+      #{hash['response'][0]}$
+    }x
+
+    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
+    assert_match(regex, dig_output)
+
+    hash['type'] = 'HINFO'
+    hash['response'] = ['M6800', 'VMS']
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    hash.to_json,
+                                    @@headers)
+
+    check_response(rest_response)
+
+    # Test HINFO type
+    regex = %r{
+      ^be\.ef\.\t+
+      \d+\t+
+      IN\t+
+      #{hash['type']}\t+
+      "#{hash['response'][0]}"\s+
+      "#{hash['response'][1]}"$
+    }x
+
+    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
+    assert_match(regex, dig_output)
+
+    hash['type'] = 'MINFO'
+    hash['response'] = ['rmail.be.ef.', 'email.be.ef.']
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    hash.to_json,
+                                    @@headers)
+
+    check_response(rest_response)
+
+    # Test MINFO type
+    regex = %r{
+      ^be\.ef\.\t+
+      \d+\t+
+      IN\t+
+      #{hash['type']}\t+
+      #{hash['response'][0]}\s+
+      #{hash['response'][1]}$
+    }x
+
+    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
+    assert_match(regex, dig_output)
+
+    hash['type'] = 'MX'
+    hash['response'] = [10, 'mail.be.ef.']
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    hash.to_json,
+                                    @@headers)
+
+    check_response(rest_response)
+
+    # Test MX type
+    regex = %r{
+      ^be\.ef\.\t+
+      \d+\t+
+      IN\t+
+      #{hash['type']}\t+
+      #{hash['response'][0]}\s+
+      #{hash['response'][1]}$
+    }x
+
+    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
+    assert_match(regex, dig_output)
+
+  end
+
+  def check_response(response)
+    assert_not_nil(response.body)
+    assert_equal(200, response.code)
+
+    result = JSON.parse(response.body)
+
+    assert(result['success'])
+    assert(result['id'])
+  end
+
 end
