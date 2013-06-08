@@ -38,7 +38,7 @@ class TC_DnsRest < Test::Unit::TestCase
                                     @@headers)
 
     # Test that adding a new rule works properly
-    check_response(rest_response)
+    check_rest_response(rest_response)
 
     result = JSON.parse(rest_response.body)
     first_id = result['id']
@@ -48,7 +48,7 @@ class TC_DnsRest < Test::Unit::TestCase
                                     @@headers)
 
     # Test that adding an existing rule returns its id
-    check_response(rest_response)
+    check_rest_response(rest_response)
 
     result = JSON.parse(rest_response.body)
     second_id = result['id']
@@ -100,168 +100,124 @@ class TC_DnsRest < Test::Unit::TestCase
     end
   end
 
-  # OPTIMIZE: Can this be refactored somehow?
-  # TODO: Use BeEF::Core::Configuration to get address and port values.
-
   # Tests each supported RR type
   def test_3_add_rule_types
     pattern = 'be.ef'
     type = 'AAAA'
-    dns_response = ['2001:db8:ac10:fe01::']
-
-    hash = {'pattern' => pattern, 'type' => type, 'response' => dns_response}
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    response = ['2001:db8:ac10:fe01::']
 
     # Test AAAA type
+    rule = {'pattern' => pattern, 'type' => type, 'response' => response}
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'CNAME'
-    hash['response'] = ['fe.eb.']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test CNAME type
+    rule['type'] = 'CNAME'
+    rule['response'] = ['fe.eb.']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'HINFO'
-    hash['response'] = ['M6800', 'VMS']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test HINFO type
+    rule['type'] = 'HINFO'
+    rule['response'] = ['M6800', 'VMS']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      "#{hash['response'][0]}"\s+
-      "#{hash['response'][1]}"$
+      #{rule['type']}\t+
+      "#{rule['response'][0]}"\s+
+      "#{rule['response'][1]}"$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'MINFO'
-    hash['response'] = ['rmail.be.ef.', 'email.be.ef.']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test MINFO type
+    rule['type'] = 'MINFO'
+    rule['response'] = ['rmail.be.ef.', 'email.be.ef.']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}\s+
-      #{hash['response'][1]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}\s+
+      #{rule['response'][1]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'MX'
-    hash['response'] = [10, 'mail.be.ef.']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test MX type
+    rule['type'] = 'MX'
+    rule['response'] = [10, 'mail.be.ef.']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}\s+
-      #{hash['response'][1]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}\s+
+      #{rule['response'][1]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'NS'
-    hash['response'] = ['ns.be.ef.']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test NS type
+    rule['type'] = 'NS'
+    rule['response'] = ['ns.be.ef.']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'PTR'
-    hash['response'] = ['4.3.2.1.in-addr.arpa.']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test PTR type
+    rule['type'] = 'PTR'
+    rule['response'] = ['4.3.2.1.in-addr.arpa.']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}$
+      #{rule['type']}\t+
+      #{rule['response'][0]}$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
-    hash['type'] = 'SOA'
-    hash['response'] = [
-      "ns.#{hash['pattern']}.",
-      "mail.#{hash['pattern']}.",
+    # Test SOA type
+    rule['type'] = 'SOA'
+    rule['response'] = [
+      "ns.#{rule['pattern']}.",
+      "mail.#{rule['pattern']}.",
       2012031500,
       10800,
       3600,
@@ -269,78 +225,71 @@ class TC_DnsRest < Test::Unit::TestCase
       3600
     ]
 
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
-
-    # Test SOA type
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
+      #{rule['type']}\t+
       .*
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'TXT'
-    hash['response'] = ['When in doubt, use brute force!']
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test TXT type
+    rule['type'] = 'TXT'
+    rule['response'] = ['b33f_is_s0_l33t']
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      "#{hash['response'][0].gsub!(' ', '\s')}"$
+      #{rule['type']}\t+
+      "#{rule['response'][0]}"$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'WKS'
-    hash['response'] = ['9.9.9.9', 6, 0]
-
-    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    hash.to_json,
-                                    @@headers)
-
-    check_response(rest_response)
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test WKS type
+    rule['type'] = 'WKS'
+    rule['response'] = ['9.9.9.9', 6, 0]
+
     regex = %r{
-      ^#{hash['pattern']}\.\t+
+      ^#{rule['pattern']}\.\t+
       \d+\t+
       IN\t+
-      #{hash['type']}\t+
-      #{hash['response'][0]}\s
+      #{rule['type']}\t+
+      #{rule['response'][0]}\s
       0\s5\s6$
     }x
 
-    dig_output = `dig @localhost -p 5300 -t #{hash['type']} #{hash['pattern']}`
-    assert_match(regex, dig_output)
-
-    hash['type'] = 'BeEF'
+    add_rule(rule)
+    check_dns_response(regex, rule['type'], rule['pattern'])
 
     # Test that an invalid RR returns 400
+    rule['type'] = 'BeEF'
+
     assert_raise RestClient::BadRequest do
       rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                      hash.to_json,
+                                      rule.to_json,
                                       @@headers)
     end
   end
 
-  def check_response(response)
+  private
+
+  # Adds a new DNS rule
+  def add_rule(params)
+    response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    params.to_json,
+                                    @@headers)
+
+    check_rest_response(response)
+  end
+
+  # Standard assertions for verifying response from RESTful API
+  def check_rest_response(response)
     assert_not_nil(response.body)
     assert_equal(200, response.code)
 
@@ -348,6 +297,14 @@ class TC_DnsRest < Test::Unit::TestCase
 
     assert(result['success'])
     assert(result['id'])
+  end
+
+  # TODO: Use BeEF::Core::Configuration to get address and port values.
+
+  # Compares output of dig command against regex
+  def check_dns_response(regex, type, pattern)
+    dig_output = `dig @localhost -p 5300 -t #{type} #{pattern}`
+    assert_match(regex, dig_output)
   end
 
 end
