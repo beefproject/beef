@@ -26,6 +26,7 @@ class TC_DnsRest < Test::Unit::TestCase
 
   end
 
+  # Tests POST /api/dns/rule handler with valid input
   def test_1_add_rule_good
     pattern = 'foo.bar'
     type = 'A'
@@ -37,7 +38,6 @@ class TC_DnsRest < Test::Unit::TestCase
                                     json,
                                     @@headers)
 
-    # Test that adding a new rule works properly
     check_rest_response(rest_response)
 
     result = JSON.parse(rest_response.body)
@@ -47,7 +47,7 @@ class TC_DnsRest < Test::Unit::TestCase
                                     json,
                                     @@headers)
 
-    # Test that adding an existing rule returns its id
+    # Verify that adding an existing rule returns its id
     check_rest_response(rest_response)
 
     result = JSON.parse(rest_response.body)
@@ -56,6 +56,7 @@ class TC_DnsRest < Test::Unit::TestCase
     assert_equal(first_id, second_id)
   end
 
+  # Tests POST /api/dns/rule handler with invalid input
   def test_2_add_rule_bad
     pattern = ''
     type = 'A'
@@ -100,7 +101,7 @@ class TC_DnsRest < Test::Unit::TestCase
     end
   end
 
-  # Tests each supported RR type
+  # Tests POST /api/dns/rule handler with each supported RR type
   def test_3_add_rule_types
     pattern = 'be.ef'
     type = 'AAAA'
@@ -275,6 +276,35 @@ class TC_DnsRest < Test::Unit::TestCase
                                       rule.to_json,
                                       @@headers)
     end
+  end
+
+  # Tests GET /api/dns/rule/:id handler
+  def test_4_get_rule_good
+    pattern = 'wheres.the.beef'
+    type = 'A'
+    dns_response = ['4.2.4.2']
+
+    json = {:pattern => pattern, :type => type, :response => dns_response}.to_json
+
+    rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
+                                    json,
+                                    @@headers)
+
+    check_rest_response(rest_response)
+    result = JSON.parse(rest_response.body)
+    id = result['id']
+
+    rest_response = RestClient.get("#{RESTAPI_DNS}/rule/#{id}", :params => {:token => @@token})
+
+    assert_not_nil(rest_response.body)
+    assert_equal(200, rest_response.code)
+
+    result = JSON.parse(rest_response.body)
+
+    assert_equal(id, result['id'])
+    assert_equal(pattern, result['pattern'])
+    assert_equal(type, result['type'])
+    assert_equal(dns_response, result['response'])
   end
 
   private
