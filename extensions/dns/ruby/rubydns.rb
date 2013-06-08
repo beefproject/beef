@@ -198,7 +198,7 @@ module RubyDNS
           arg = (int_test != 0 ? int_test : elem)
         end
 
-        arg.gsub!('"', '') unless arg.is_a?(Integer)
+        arg.gsub!(/['"]/, '') unless arg.is_a?(Integer)
 
         result << arg
       end
