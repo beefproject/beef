@@ -38,14 +38,9 @@ class TC_DnsRest < Test::Unit::TestCase
                                     @@headers)
 
     # Test that adding a new rule works properly
-    assert_not_nil(rest_response.body)
-    assert_equal(200, rest_response.code)
+    check_response(rest_response)
 
     result = JSON.parse(rest_response.body)
-
-    assert(result['success'])
-    assert(result['id'])
-
     first_id = result['id']
 
     rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
@@ -53,13 +48,11 @@ class TC_DnsRest < Test::Unit::TestCase
                                     @@headers)
 
     # Test that adding an existing rule returns its id
-    assert_not_nil(rest_response.body)
-    assert_equal(200, rest_response.code)
+    check_response(rest_response)
 
     result = JSON.parse(rest_response.body)
     second_id = result['id']
 
-    assert(result['success'])
     assert_equal(first_id, second_id)
   end
 
@@ -339,7 +332,7 @@ class TC_DnsRest < Test::Unit::TestCase
 
     hash['type'] = 'BeEF'
 
-    # Test invalid RR
+    # Test that an invalid RR returns 400
     assert_raise RestClient::BadRequest do
       rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
                                       hash.to_json,
