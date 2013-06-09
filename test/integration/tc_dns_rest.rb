@@ -278,7 +278,7 @@ class TC_DnsRest < Test::Unit::TestCase
     end
   end
 
-  # Tests GET /api/dns/rule/:id handler
+  # Tests GET /api/dns/rule/:id handler with valid input
   def test_4_get_rule_good
     pattern = 'wheres.the.beef'
     type = 'A'
@@ -305,6 +305,21 @@ class TC_DnsRest < Test::Unit::TestCase
     assert_equal(pattern, result['pattern'])
     assert_equal(type, result['type'])
     assert_equal(dns_response, result['response'])
+  end
+
+  # Tests GET /api/dns/rule/:id handler with invalid input
+  def test_4_get_rule_bad
+    id = 42
+
+    assert_raise RestClient::ResourceNotFound do
+      response = RestClient.get("#{RESTAPI_DNS}/rule/#{id}", :params => {:token => @@token})
+    end
+
+    id = '(*_*)'
+
+    assert_raise RestClient::BadRequest do
+      RestClient.get("#{RESTAPI_DNS}/rule/#{id}", :params => {:token => @@token})
+    end
   end
 
   private

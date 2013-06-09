@@ -50,6 +50,8 @@ module Dns
         end
 
         result = BeEF::Extension::Dns::Server.instance.get_rule(id)
+        halt 404 if result.length == 0
+
         result.to_json
       rescue InvalidParamError => e
         print_error e.message
