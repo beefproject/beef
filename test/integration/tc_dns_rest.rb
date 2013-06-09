@@ -322,6 +322,24 @@ class TC_DnsRest < Test::Unit::TestCase
     end
   end
 
+  # Tests GET /api/dns/ruleset handler
+  def test_4_get_ruleset
+    rest_response = RestClient.get("#{RESTAPI_DNS}/ruleset", :params => {:token => @@token})
+
+    assert_not_nil(rest_response.body)
+    assert_equal(200, rest_response.code)
+
+    result = JSON.parse(rest_response.body)
+    assert_equal(15, result['count'])
+
+    result['ruleset'].each do |rule|
+      assert(rule['id'])
+      assert(rule['pattern'])
+      assert(rule['type'])
+      assert(rule['response'].length != 0)
+    end
+  end
+
   private
 
   # Adds a new DNS rule
