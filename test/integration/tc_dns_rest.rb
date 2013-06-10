@@ -22,6 +22,20 @@ class TC_DnsRest < Test::Unit::TestCase
 
       result  = JSON.parse(response.body)
       @@token = result['token']
+
+      $root_dir = '../../'
+      $:.unshift($root_dir)
+
+      require 'core/loader'
+
+      BeEF::Core::Configuration.new(File.join($root_dir, 'config.yaml'))
+      BeEF::Core::Configuration.instance.load_extensions_config
+
+      @@config = BeEF::Core::Configuration.instance
+    end
+
+    def shutdown
+      $root_dir = nil
     end
 
   end
@@ -362,11 +376,12 @@ class TC_DnsRest < Test::Unit::TestCase
     assert(result['id'])
   end
 
-  # TODO: Use BeEF::Core::Configuration to get address and port values.
-
   # Compares output of dig command against regex
   def check_dns_response(regex, type, pattern)
-    dig_output = `dig @localhost -p 5300 -t #{type} #{pattern}`
+    address = @@config.get('beef.extension.dns.address')
+    port    = @@config.get('beef.extension.dns.port')
+
+    dig_output = `dig @#{address} -p #{port} -t #{type} #{pattern}`
     assert_match(regex, dig_output)
   end
 
