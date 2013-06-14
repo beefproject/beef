@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_bitdefender2012:
+            enable: true
+            category: "Host"
+            name: "Detect Bit Defender 2012"
+            description: "This module detect the javascript code automatically included by Bitdefender 2012"
+            authors: ["nbblrr"]
+            target:
+                working: ["ALL"]
