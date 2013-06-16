@@ -421,11 +421,27 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 19.
+     * @example: beef.browser.isC19iOS()
+     */
+    isC19iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 19) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome 20.
      * @example: beef.browser.isC20()
      */
     isC20:function () {
         return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 20) ? true : false);
+    },
+
+    /**
+     * Returns true if Chrome for iOS 20.
+     * @example: beef.browser.isC20iOS()
+     */
+    isC20iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 20) ? true : false);
     },
 
     /**
@@ -437,11 +453,27 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 21.
+     * @example: beef.browser.isC21iOS()
+     */
+    isC21iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 21) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome 22.
      * @example: beef.browser.isC22()
      */
     isC22:function () {
         return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 22) ? true : false);
+    },
+
+    /**
+     * Returns true if Chrome for iOS 22.
+     * @example: beef.browser.isC22iOS()
+     */
+    isC22iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 22) ? true : false);
     },
 
     /**
@@ -453,11 +485,27 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 23.
+     * @example: beef.browser.isC23iOS()
+     */
+    isC23iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 23) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome 24.
      * @example: beef.browser.isC24()
      */
     isC24:function () {
         return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 24) ? true : false);
+    },
+
+    /**
+     * Returns true if Chrome for iOS 24.
+     * @example: beef.browser.isC24iOS()
+     */
+    isC24iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 24) ? true : false);
     },
 
     /**
@@ -469,11 +517,27 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 25.
+     * @example: beef.browser.isC25iOS()
+     */
+    isC25iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 25) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome 26.
      * @example: beef.browser.isC26()
      */
     isC26:function () {
         return (!!window.chrome && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 26) ? true : false);
+    },
+
+    /**
+     * Returns true if Chrome for iOS 26.
+     * @example: beef.browser.isC26iOS()
+     */
+    isC26iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 26) ? true : false);
     },
 
     /**
@@ -485,6 +549,14 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 27.
+     * @example: beef.browser.isC27iOS()
+     */
+    isC27iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 27) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome 28.
      * @example: beef.browser.isC28()
      */
@@ -493,11 +565,19 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Chrome for iOS 28.
+     * @example: beef.browser.isC28iOS()
+     */
+    isC28iOS:function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 28) ? true : false);
+    },
+
+    /**
      * Returns true if Chrome.
      * @example: beef.browser.isC()
      */
     isC:function () {
-        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC20() || this.isC21() || this.isC22() || this.isC23() || this.isC24() || this.isC25() || this.isC26() || this.isC27() || this.isC28();
+        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC19iOS() || this.isC20() || this.isC20iOS() || this.isC21() || this.isC21iOS() || this.isC22() || this.isC22iOS() || this.isC23() || this.isC23iOS() || this.isC24() || this.isC24iOS() || this.isC25() || this.isC25iOS() || this.isC26() || this.isC26iOS() || this.isC27() || this.isC27iOS() || this.isC28() || this.isC28iOS();
     },
 
     /**
@@ -572,15 +652,25 @@ beef.browser = {
             C17:this.isC17(), // Chrome 17
             C18:this.isC18(), // Chrome 18
             C19:this.isC19(), // Chrome 19
+            C19iOS:this.isC19iOS(), // Chrome 19 on iOS
             C20:this.isC20(), // Chrome 20
+            C20iOS:this.isC20iOS(), // Chrome 20 on iOS
             C21:this.isC21(), // Chrome 21
+            C21iOS:this.isC21iOS(), // Chrome 21 on iOS
             C22:this.isC22(), // Chrome 22
+            C22iOS:this.isC22iOS(), // Chrome 22 on iOS
             C23:this.isC23(), // Chrome 23
+            C23iOS:this.isC23iOS(), // Chrome 23 on iOS
             C24:this.isC24(), // Chrome 24
+            C24iOS:this.isC24iOS(), // Chrome 24 on iOS
             C25:this.isC25(), // Chrome 25
+            C25iOS:this.isC25iOS(), // Chrome 25 on iOS
             C26:this.isC26(), // Chrome 26
+            C26iOS:this.isC26iOS(), // Chrome 26 on iOS
             C27:this.isC27(), // Chrome 27
+            C27iOS:this.isC27iOS(), // Chrome 27 on iOS
             C28:this.isC28(), // Chrome 28
+            C28iOS:this.isC28iOS(), // Chrome 28 on iOS
             C:this.isC(), // Chrome any version
 
             FF2:this.isFF2(), // Firefox 2
@@ -696,42 +786,82 @@ beef.browser = {
             return '19'
         }
         ;	// Chrome 19
+        if (this.isC19iOS()) {
+            return '19'
+        }
+        ;   // Chrome 19 for iOS
         if (this.isC20()) {
             return '20'
         }
         ;	// Chrome 20
+        if (this.isC20iOS()) {
+            return '20'
+        }
+        ;   // Chrome 20 for iOS
         if (this.isC21()) {
             return '21'
         }
         ;	// Chrome 21
+        if (this.isC21iOS()) {
+            return '21'
+        }
+        ;   // Chrome 21 for iOS
         if (this.isC22()) {
             return '22'
         }
         ;    // Chrome 22
+        if (this.isC22iOS()) {
+            return '22'
+        }
+        ;   // Chrome 22 for iOS
         if (this.isC23()) {
             return '23'
         }
         ;    // Chrome 23
+        if (this.isC23iOS()) {
+            return '23'
+        }
+        ;   // Chrome 23 for iOS
         if (this.isC24()) {
             return '24'
         }
         ;    // Chrome 24
+        if (this.isC24iOS()) {
+            return '24'
+        }
+        ;   // Chrome 24 for iOS
         if (this.isC25()) {
             return '25'
         }
         ;    // Chrome 25
+        if (this.isC25iOS()) {
+            return '25'
+        }
+        ;   // Chrome 25 for iOS
         if (this.isC26()) {
             return '26'
         }
         ;    // Chrome 26
+        if (this.isC26iOS()) {
+            return '26'
+        }
+        ;   // Chrome 26 for iOS
         if (this.isC27()) {
             return '27'
         }
         ;    // Chrome 27
+        if (this.isC27iOS()) {
+            return '27'
+        }
+        ;   // Chrome 27 for iOS
         if (this.isC28()) {
             return '28'
         }
         ;    // Chrome 28
+        if (this.isC28iOS()) {
+            return '28'
+        }
+        ;   // Chrome 28 for iOS
         if (this.isFF2()) {
             return '2'
         }
