@@ -1095,6 +1095,47 @@ beef.browser = {
     },
 
     /**
+     * Checks if the zombie has the Unity Web Player plugin installed.
+     * @return: {Boolean} true or false.
+     *
+     * @example: if ( beef.browser.hasUnity() ) { ... }
+     */
+    hasUnity:function () {
+
+        var unity = false;
+
+        // Not Internet Explorer
+        if (!this.type().IE) {
+	
+			if (navigator.mimeTypes["application/vnd.unity"].enabledPlugin &&
+	            navigator.plugins &&
+				navigator.plugins["Unity Player"]) {
+					
+					unity = true;
+					
+				}
+
+            // Internet Explorer
+        } else {
+
+            try {
+
+                var qt_test = new ActiveXObject('UnityWebPlayer.UnityWebPlayer.1');
+
+            } catch (e) {
+            }
+
+            if (qt_test) {
+                unity = true;
+            }
+
+        }
+
+        return unity;
+
+    },
+
+    /**
      * Checks if the zombie has the QuickTime plugin installed.
      * @return: {Boolean} true or false.
      *
@@ -1545,6 +1586,11 @@ beef.browser = {
                     version = control.getVariable('$version').substring(4);
                     return 'Flash Player v' + version.replace(/,/g, ".");
                 }},
+		    'Unity':{
+                'control':'UnityWebPlayer.UnityWebPlayer.1',
+                'return':function (control) {
+                    return 'Unity Web Player';
+                }},
             'Quicktime':{
                 'control':'QuickTime.QuickTime',
                 'return':function (control) {
@@ -1658,6 +1704,7 @@ beef.browser = {
         var java_enabled     = (beef.browser.javaEnabled()) ?     "Yes" : "No";
         var vbscript_enabled = (beef.browser.hasVBScript()) ?     "Yes" : "No";
         var has_flash        = (beef.browser.hasFlash()) ?        "Yes" : "No";
+        var has_unity        = (beef.browser.hasUnity()) ?        "Yes" : "No";
         var has_phonegap     = (beef.browser.hasPhonegap()) ?     "Yes" : "No";
         var has_googlegears  = (beef.browser.hasGoogleGears()) ?  "Yes" : "No";
         var has_web_socket   = (beef.browser.hasWebSocket()) ?    "Yes" : "No";
@@ -1705,6 +1752,7 @@ beef.browser = {
         if (java_enabled) details['JavaEnabled'] = java_enabled;
         if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled;
         if (has_flash) details['HasFlash'] = has_flash;
+		if (has_unity) details['HasUnity'] = has_unity;
         if (has_phonegap) details['HasPhonegap'] = has_phonegap;
         if (has_web_socket) details['HasWebSocket'] = has_web_socket;
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
