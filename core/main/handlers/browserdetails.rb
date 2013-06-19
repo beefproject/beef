@@ -222,6 +222,14 @@ module BeEF
           else
             self.err_msg "Invalid value for HasFlash returned from the hook browser's initial connection."
           end
+          
+          # get and store the yes|no value for HasUnity
+          has_unity = get_param(@data['results'], 'HasUnity')
+          if BeEF::Filters.is_valid_yes_no?(has_unity)
+            BD.set(session_id, 'HasUnity', has_unity)
+          else
+            self.err_msg "Invalid value for HasUnity returned from the hook browser's initial connection."
+          end
 
           # get and store the yes|no value for HasPhonegap
           has_phonegap = get_param(@data['results'], 'HasPhonegap')
