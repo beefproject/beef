@@ -11,10 +11,14 @@ class TC_Dns < Test::Unit::TestCase
   class << self
 
     def startup
-      $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '../../../'))
+      $root_dir = '../../../'
+      $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), $root_dir))
 
       require 'core/loader'
-      require 'extensions/dns/extension'
+      require 'extensions/dns/extension.rb'
+
+      BeEF::Core::Configuration.new(File.join($root_dir, 'config.yaml'))
+      BeEF::Core::Configuration.instance.load_extensions_config
 
       config = BeEF::Core::Configuration.instance
 
