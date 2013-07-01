@@ -75,7 +75,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
         # Browser Components
         ['Browser Components', 'Flash',              'HasFlash'],
-        ['Browser Components', 'Unity Web Player',   'HasUnity'],
         ['Browser Components', 'Java',               'JavaEnabled'],
         ['Browser Components', 'VBScript',           'VBScriptEnabled'],
         ['Browser Components', 'PhoneGap',           'HasPhonegap'],
