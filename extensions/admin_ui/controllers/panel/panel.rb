@@ -85,7 +85,6 @@ module BeEF
             hw_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'Hardware')
             domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
             has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
-            has_unity       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasUnity')
             has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
             has_googlegears = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasGoogleGears')
             has_java        = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'JavaEnabled')
@@ -112,7 +111,6 @@ module BeEF
                 'hw_icon'         => hw_icon,
                 'hw_name'         => hw_name,
                 'has_flash'       => has_flash,
-                'has_unity'       => has_unity,
                 'has_web_sockets' => has_web_sockets,
                 'has_googlegears' => has_googlegears,
                 'has_java'        => has_java,
