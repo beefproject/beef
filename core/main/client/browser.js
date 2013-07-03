@@ -262,10 +262,26 @@ beef.browser = {
 
     /**
      * Returns true if FF22
-     * @example: beef.browser.isFF21()
+     * @example: beef.browser.isFF22()
      */
     isFF22:function () {
         return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && window.navigator.userAgent.match(/Firefox\/22\./) != null;
+    },
+
+    /**
+     * Returns true if FF23
+     * @example: beef.browser.isFF23()
+     */
+    isFF23:function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && window.navigator.userAgent.match(/Firefox\/23\./) != null;
+    },
+
+    /**
+     * Returns true if FF24
+     * @example: beef.browser.isFF24()
+     */
+    isFF24:function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && window.navigator.userAgent.match(/Firefox\/24\./) != null;
     },
 
     /**
@@ -273,7 +289,7 @@ beef.browser = {
      * @example: beef.browser.isFF()
      */
     isFF:function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24();
     },
 
     /**
@@ -704,6 +720,8 @@ beef.browser = {
             FF20:this.isFF20(), // Firefox 20
             FF21:this.isFF21(), // Firefox 21
             FF22:this.isFF22(), // Firefox 22
+            FF22:this.isFF23(), // Firefox 23
+            FF22:this.isFF24(), // Firefox 24
             FF:this.isFF(), // Firefox any version
 
             IE6:this.isIE6(), // Internet Explorer 6
@@ -958,10 +976,20 @@ beef.browser = {
         if (this.isFF21()) {
             return '21'
         }
-        ;    // Firefox 22
+        ;    // Firefox 21
         if (this.isFF22()) {
             return '22'
-        };
+        }
+        ;   // Firefox 22
+        if (this.isFF23()) {
+            return '23'
+        }
+        ;   // Firefox 23
+        if (this.isFF24()) {
+            return '24'
+        }
+        ;   // Firefox 24
+
         if (this.isIE6()) {
             return '6'
         }
