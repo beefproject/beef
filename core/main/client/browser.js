@@ -1098,7 +1098,7 @@ beef.browser = {
                 beef.debug("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
             } catch (e) {
                 // warn on cross-domain
-                beef.debug("Hooking frame failed");
+                beef.debug("Hooking child frame failed: "+e.message);
             }
         }
     },
@@ -1113,7 +1113,7 @@ beef.browser = {
         if (!this.type().IE) {
             return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
         } else {
-            flash_versions = 11;
+            flash_versions = 12;
             flash_installed = false;
 
             if (window.ActiveXObject) {
@@ -1125,10 +1125,10 @@ beef.browser = {
                         }
                     }
                     catch (e) {
+                        beef.debug("Creating Flash ActiveX object failed: "+e.message);
                     }
                 }
             }
-            ;
             return flash_installed;
         }
     },
@@ -1154,7 +1154,7 @@ beef.browser = {
 
             }
 
-            // Internet Explorer
+        // Internet Explorer
         } else {
 
             try {
@@ -1162,6 +1162,7 @@ beef.browser = {
                 var qt_test = new ActiveXObject('QuickTime.QuickTime');
 
             } catch (e) {
+                beef.debug("Creating QuickTime ActiveX object failed: "+e.message);
             }
 
             if (qt_test) {
@@ -1174,7 +1175,7 @@ beef.browser = {
 
     },
 
-	/**
+    /**
      * Checks if the zombie has the RealPlayer plugin installed.
      * @return: {Boolean} true or false.
      *
@@ -1195,30 +1196,30 @@ beef.browser = {
 
             }
 
-            // Internet Explorer
+        // Internet Explorer
         } else {
 
-			var definedControls = [
-			    'RealPlayer',
-				'rmocx.RealPlayer G2 Control',
-			    'rmocx.RealPlayer G2 Control.1',
-			    'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
-			    'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
-				];
+            var definedControls = [
+              'RealPlayer',
+              'rmocx.RealPlayer G2 Control',
+              'rmocx.RealPlayer G2 Control.1',
+              'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
+              'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
+            ];
 
-			for (var i = 0; i < definedControls.length; i++) {
+            for (var i = 0; i < definedControls.length; i++) {
 
             	try {
-
-                	var rp_test = new ActiveXObject(definedControls[i]);
-
+                    var rp_test = new ActiveXObject(definedControls[i]);
             	} catch (e) {
+                    beef.debug("Creating RealPlayer ActiveX object failed: "+e.message);
             	}
 
-            	if ( rp_test ) {
-                	realplayer = true;
-            	}
-			}
+                if ( rp_test ) {
+                    realplayer = true;
+            	
+                }
+            }
         }
 
         return realplayer;
@@ -1254,6 +1255,7 @@ beef.browser = {
 	            var wmp_test = new ActiveXObject('WMPlayer.OCX');
 
 	        } catch (e) {
+                    beef.debug("Creating WMP ActiveX object failed: "+e.message);
 	        }
 
 	        if (wmp_test) {
@@ -1282,10 +1284,11 @@ beef.browser = {
             try {
                 control = new ActiveXObject("VideoLAN.VLCPlugin.2");
                 vlc = true ;
-                } catch(e) {
-                }
-        };
-        return vlc ;
+            } catch(e) {
+                    beef.debug("Creating VLC ActiveX object failed: "+e.message);
+            }
+        }
+        return vlc;
     },
 
     /**
