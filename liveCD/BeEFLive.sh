@@ -189,6 +189,8 @@ show_menu() {
 			 git stash
 			 git pull
 			 msf="0"
+			 # check for new bundle requirements and update
+		     bundle update
 		fi
 		
 		#
