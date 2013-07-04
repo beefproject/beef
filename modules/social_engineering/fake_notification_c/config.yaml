@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fake_notification_c:
+            enable: true
+            category: "Social Engineering"
+            name: "Fake Notification Bar (Chrome)"
+            description: "Displays a fake notification bar at the top of the screen, similar to those presented in Chrome. If the user clicks the notification they will be prompted to download the file specified below."
+            authors: ["xntrik", "bcoles"]
+            target:
+                user_notify: ['ALL']
