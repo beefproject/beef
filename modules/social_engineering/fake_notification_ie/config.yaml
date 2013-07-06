@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        fake_notification:
+        fake_notification_ie:
             enable: true
             category: "Social Engineering"
-            name: "Fake Notification"
-            description: "Displays a fake notification at the top of the screen, similar to those presented in IE."
+            name: "Fake Notification Bar (IE)"
+            description: "Displays a fake notification bar at the top of the screen, similar to those presented in IE."
             authors: ["xntrik"]
             target:
                 user_notify: ['ALL']

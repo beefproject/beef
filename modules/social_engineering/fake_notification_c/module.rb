@@ -3,14 +3,15 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Fake_notification < BeEF::Core::Command
+class Fake_notification_c < BeEF::Core::Command
 
   def self.options
     return [
+      {'name' => 'url', 'ui_label' => 'URL', 'value' => 'http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe', 'width'=>'150px'},
       { 'name' => 'notification_text',
         'description' => 'Text displayed in the notification bar',
-        'ui_label' => 'Text displayed in the notification bar',
-        'value' => "This website wants to run the following applet: \\'Java\\' from \\'Microsoft Inc\\'. To continue using this website you must accept the following security popup"
+        'ui_label' => 'Notification text',
+        'value' => "Additional plugins are required to display all the media on this page."
       }
     ]
   end
