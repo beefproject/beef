@@ -68,6 +68,7 @@ module BeEF
                       }
           zombie.httpheaders = @http_headers.to_json
           zombie.save
+          #puts "HTTP Headers: #{zombie.httpheaders}"
 
           # add a log entry for the newly hooked browser
           BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port.to_s}", "#{zombie.id}")
@@ -77,6 +78,56 @@ module BeEF
             BD.set(session_id, 'BrowserName', browser_name)
           else
             self.err_msg "Invalid browser name returned from the hook browser's initial connection."
+          end
+
+          # detect browser proxy
+          using_proxy = false
+          [
+            'CLIENT_IP',
+            'FORWARDED_FOR',
+            'FORWARDED',
+            'FORWARDED_FOR_IP',
+            'PROXY_CONNECTION',
+            'PROXY_AUTHENTICATE',
+            'X_FORWARDED',
+            'X_FORWARDED_FOR',
+            'VIA'
+          ].each do |header|
+            unless JSON.parse(zombie.httpheaders)[header].nil?
+              using_proxy = true
+              break
+            end
+          end
+
+          # retrieve proxy client IP
+          proxy_clients = []
+          [
+            'CLIENT_IP',
+            'FORWARDED_FOR',
+            'FORWARDED',
+            'FORWARDED_FOR_IP',
+            'X_FORWARDED',
+            'X_FORWARDED_FOR'
+          ].each do |header|
+            proxy_clients << "#{JSON.parse(zombie.httpheaders)[header]}" unless JSON.parse(zombie.httpheaders)[header].nil?
+          end
+
+          # retrieve proxy server
+          proxy_server = JSON.parse(zombie.httpheaders)['VIA'] unless JSON.parse(zombie.httpheaders)['VIA'].nil?
+
+          # store and log proxy details
+          if using_proxy == true
+            BD.set(session_id, 'UsingProxy', "#{using_proxy}")
+            proxy_log_string = "#{zombie.ip} is using a proxy"
+            unless proxy_clients.nil?
+              BD.set(session_id, 'ProxyClient', "#{proxy_clients.sort.uniq.join(',')}")
+              proxy_log_string += " [client: #{proxy_clients.sort.uniq.join(',')}]"
+            end
+            unless proxy_server.nil?
+              BD.set(session_id, 'ProxyServer', "#{proxy_server}")
+              proxy_log_string += " [server: #{proxy_server}]"
+            end
+            BeEF::Core::Logger.instance.register('Zombie', "#{proxy_log_string}", "#{zombie.id}")
           end
 
           # get and store browser version
