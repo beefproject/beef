@@ -24,15 +24,13 @@ module API
 
     # Begins main DNS server run-loop at BeEF startup
     def self.pre_http_start(http_hook_server)
-      config = BeEF::Core::Configuration.instance
+      dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
 
-      address = config.get('beef.extension.dns.address')
-      port    = config.get('beef.extension.dns.port')
+      address = dns_config['address']
+      port    = dns_config['port']
 
-      Thread.new do
-        dns = BeEF::Extension::Dns::Server.instance
-        dns.run_server(address, port)
-      end
+      dns = BeEF::Extension::Dns::Server.instance
+      dns.run_server(address, port)
 
       print_info "DNS Server: #{address}:#{port}"
     end
