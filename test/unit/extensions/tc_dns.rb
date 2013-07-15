@@ -47,11 +47,11 @@ class TC_Dns < Test::Unit::TestCase
   def test_3_interface
     @@dns = BeEF::Extension::Dns::Server.instance
 
-    assert(@@dns.respond_to?('run_server'))
-    assert(@@dns.respond_to?('add_rule'))
-    assert(@@dns.respond_to?('remove_rule'))
-    assert(@@dns.respond_to?('get_ruleset'))
-    assert(@@dns.respond_to?('get_rule'))
+    assert_respond_to(@@dns, :run_server)
+    assert_respond_to(@@dns, :add_rule)
+    assert_respond_to(@@dns, :remove_rule)
+    assert_respond_to(@@dns, :get_ruleset)
+    assert_respond_to(@@dns, :get_rule)
   end
 
   # Starts DNS server (does not test anything)
