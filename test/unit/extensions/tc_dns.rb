@@ -68,13 +68,12 @@ class TC_Dns < Test::Unit::TestCase
     id = nil
     same_id = nil
 
-    domain   = 'foo.bar'
     response = '1.2.3.4'
 
     # Add a new rule normally
     assert_nothing_raised do
-      id = @@dns.add_rule(domain, IN::A) do |transaction|
-        transaction.respond!(response)
+      id = @@dns.add_rule('foo.bar', IN::A) do |transaction|
+        transaction.respond!('1.2.3.4')
       end
     end
 
@@ -83,13 +82,37 @@ class TC_Dns < Test::Unit::TestCase
 
     # Attempt to add an existing rule
     assert_nothing_raised do
-      same_id = @@dns.add_rule(domain, IN::A) do |transaction|
-        transaction.respond!(response)
+      same_id = @@dns.add_rule('foo.bar', IN::A) do |transaction|
+        transaction.respond!('1.2.3.4')
       end
     end
 
     assert_not_nil(same_id)
     assert_equal(same_id, id)
+  end
+
+  # Tests retrieval of DNS rules
+  def test_6_get_rule
+    id = @@dns.add_rule('be.ef', IN::A) do |transaction|
+      transaction.respond!('1.1.1.1')
+    end
+
+    rule = @@dns.get_rule(id)
+
+    assert(rule.has_key?(:id))
+    assert(rule.has_key?(:pattern))
+    assert(rule.has_key?(:type))
+    assert(rule.has_key?(:response))
+
+    assert_equal(id, rule[:id])
+    assert_equal('be.ef', rule[:pattern])
+    assert_equal('A', rule[:type])
+
+    response = rule[:response]
+
+    assert_equal(Array, response.class)
+    assert(response.length > 0)
+    assert_equal('1.1.1.1', response[0])
   end
 
 end
