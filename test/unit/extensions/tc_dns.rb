@@ -42,4 +42,15 @@ class TC_Dns < Test::Unit::TestCase
     assert(@@dns_config.has_key?('port'))
   end
 
+  # Verifies public interface
+  def test_2_interface
+    @@dns = BeEF::Extension::Dns::Server.instance
+
+    assert(@@dns.respond_to?('run_server'))
+    assert(@@dns.respond_to?('add_rule'))
+    assert(@@dns.respond_to?('remove_rule'))
+    assert(@@dns.respond_to?('get_ruleset'))
+    assert(@@dns.respond_to?('get_rule'))
+  end
+
 end
