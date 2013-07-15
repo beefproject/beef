@@ -31,6 +31,7 @@ class TC_Dns < Test::Unit::TestCase
 
   end
 
+  # Connects to in-memory database (does not test anything)
   def test_1_database
     DataMapper.setup(:default, 'sqlite3::memory:')
     DataMapper.auto_migrate!
@@ -51,6 +52,44 @@ class TC_Dns < Test::Unit::TestCase
     assert(@@dns.respond_to?('remove_rule'))
     assert(@@dns.respond_to?('get_ruleset'))
     assert(@@dns.respond_to?('get_rule'))
+  end
+
+  # Starts DNS server (does not test anything)
+  def test_4_run_server
+    address = @@dns_config['address']
+    port    = @@dns_config['port']
+
+    @@dns.run_server(address, port)
+    sleep(3)
+  end
+
+  # Tests procedure for adding new DNS rules
+  def test_5_add_rule
+    id = nil
+    same_id = nil
+
+    domain   = 'foo.bar'
+    response = '1.2.3.4'
+
+    # Add a new rule normally
+    assert_nothing_raised do
+      id = @@dns.add_rule(domain, IN::A) do |transaction|
+        transaction.respond!(response)
+      end
+    end
+
+    assert_not_nil(id)
+    assert_equal(7, id.length)
+
+    # Attempt to add an existing rule
+    assert_nothing_raised do
+      same_id = @@dns.add_rule(domain, IN::A) do |transaction|
+        transaction.respond!(response)
+      end
+    end
+
+    assert_not_nil(same_id)
+    assert_equal(same_id, id)
   end
 
 end
