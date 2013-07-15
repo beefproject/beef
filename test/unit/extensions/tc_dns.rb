@@ -36,8 +36,10 @@ class TC_Dns < Test::Unit::TestCase
     DataMapper.auto_migrate!
   end
 
-  def test_nothing
-    assert(true)
+  # Checks for required settings in config file
+  def test_1_config
+    assert(@@dns_config.has_key?('address'))
+    assert(@@dns_config.has_key?('port'))
   end
 
 end
