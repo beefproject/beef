@@ -27,24 +27,22 @@ module Dns
       @server = nil
     end
 
-    # Starts the main DNS server run-loop.
-    #
-    # @note This method will not return. It is recommended that it be invoked inside a
-    #       separate thread.
+    # Starts the main DNS server run-loop in a new thread.
     #
     # @param address [String] interface address server should run on
     # @param port [Integer] desired server port number
     def run_server(address = '0.0.0.0', port = 5300)
-      EventMachine.next_tick do
-        RubyDNS.run_server(:listen => [[:udp, address, port]]) do
-          server = self
-          BeEF::Extension::Dns::Server.instance.instance_eval { @server = server }
+      @lock.synchronize do
+        Thread.new do
+          # @note Calling #sleep is a quick fix that prevents race conditions
+          #       with WebSockets. A better solution is needed; perhaps a
+          #       global EventMachine mutex.
+          sleep(1)
 
-          # Pass unmatched queries upstream to root nameservers
-          otherwise do |transaction|
-            transaction.passthrough!(
-              RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
-            )
+          if EventMachine.reactor_running?
+            EventMachine.next_tick { run_server_block(address, port) }
+          else
+            run_server_block(address, port)
           end
         end
       end
@@ -71,9 +69,7 @@ module Dns
     # @see #remove_rule
     # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction
     def add_rule(pattern, type, &block)
-      @lock.synchronize do
-        return @server.match(pattern, type, block)
-      end
+      @lock.synchronize { @server.match(pattern, type, block) }
     end
 
     # Removes the given DNS rule. Any future queries for it will be passed through.
@@ -84,9 +80,7 @@ module Dns
     #
     # @see #add_rule
     def remove_rule(id)
-      @lock.synchronize do
-        @server.remove_rule(id)
-      end
+      @lock.synchronize { @server.remove_rule(id) }
     end
 
     # Returns an AoH representing the entire current DNS ruleset.
@@ -100,9 +94,7 @@ module Dns
     #
     # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
     def get_ruleset
-      @lock.synchronize do
-        @server.get_ruleset
-      end
+      @lock.synchronize { @server.get_ruleset }
     end
 
     # Retrieves a specific rule given its id
@@ -111,8 +103,26 @@ module Dns
     #
     # @return [Hash] hash representation of rule
     def get_rule(id)
-      @lock.synchronize do
-        @server.get_rule(id)
+      @lock.synchronize { @server.get_rule(id) }
+    end
+
+    private
+
+    # Common code needed by {#run_server} to start DNS server.
+    #
+    # @param address [String] interface address server should run on
+    # @param port [Integer] desired server port number
+    def run_server_block(address, port)
+      RubyDNS.run_server(:listen => [[:udp, address, port]]) do
+        server = self
+        BeEF::Extension::Dns::Server.instance.instance_eval { @server = server }
+
+        # Pass unmatched queries upstream to root nameservers
+        otherwise do |transaction|
+          transaction.passthrough!(
+            RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
+          )
+        end
       end
     end
 
