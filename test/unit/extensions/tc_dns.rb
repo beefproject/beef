@@ -8,39 +8,36 @@ require 'resolv'
 
 class TC_Dns < Test::Unit::TestCase
 
+  IN = Resolv::DNS::Resource::IN
+
   class << self
 
     def startup
-      $root_dir = '../../../'
-      $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), $root_dir))
+      $root_dir = '../../'
+      $:.unshift(File.expand_path($root_dir))
 
-      require 'core/loader'
-      require 'extensions/dns/extension.rb'
+      require 'extensions/dns/extension'
 
       BeEF::Core::Configuration.new(File.join($root_dir, 'config.yaml'))
-      BeEF::Core::Configuration.instance.load_extensions_config
-
       config = BeEF::Core::Configuration.instance
+      config.load_extensions_config
 
-      @@address = config.get('beef.extension.dns.address')
-      @@port    = config.get('beef.extension.dns.port')
+      @@dns_config = config.get('beef.extension.dns')
+    end
 
-      Thread.new do
-        dns = BeEF::Extension::Dns::Server.instance
-        dns.run_server(@@address, @@port)
-      end
+    def shutdown
+      $root_dir = nil
     end
 
   end
 
-  def test_add_rule
-    dns = BeEF::Extension::Dns::Server.instance
+  def setup
+    DataMapper.setup(:default, 'sqlite3::memory:')
+    DataMapper.auto_migrate!
+  end
 
-    id = dns.add_rule('foo.bar', Resolv::DNS::Resource::IN::A) do |transaction|
-      transaction.respond!('1.2.3.4')
-    end
-
-    assert_not_nil(id)
+  def test_nothing
+    assert(true)
   end
 
 end
