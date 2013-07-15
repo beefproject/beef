@@ -31,19 +31,19 @@ class TC_Dns < Test::Unit::TestCase
 
   end
 
-  def setup
+  def test_1_database
     DataMapper.setup(:default, 'sqlite3::memory:')
     DataMapper.auto_migrate!
   end
 
   # Checks for required settings in config file
-  def test_1_config
+  def test_2_config
     assert(@@dns_config.has_key?('address'))
     assert(@@dns_config.has_key?('port'))
   end
 
   # Verifies public interface
-  def test_2_interface
+  def test_3_interface
     @@dns = BeEF::Extension::Dns::Server.instance
 
     assert(@@dns.respond_to?('run_server'))
