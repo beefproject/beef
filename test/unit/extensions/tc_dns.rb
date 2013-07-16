@@ -106,13 +106,16 @@ class TC_Dns < Test::Unit::TestCase
     assert_not_nil(id =~ /^\h{7}$/)
   end
 
-  # Tests retrieval of DNS rules
-  def test_6_get_rule
+  # Tests retrieval of valid DNS rules
+  def test_8_get_rule_good
     id = @@dns.add_rule('be.ef', IN::A) do |transaction|
       transaction.respond!('1.1.1.1')
     end
 
     rule = @@dns.get_rule(id)
+
+    assert_equal(Hash, rule.class)
+    assert(rule.length > 0)
 
     assert(rule.has_key?(:id))
     assert(rule.has_key?(:pattern))
@@ -125,9 +128,24 @@ class TC_Dns < Test::Unit::TestCase
 
     response = rule[:response]
 
-    assert_equal(Array, response.class)
+    assert(response.class == Array)
     assert(response.length > 0)
     assert_equal('1.1.1.1', response[0])
   end
+
+  # Tests retrieval of invalid DNS rules
+  def test_9_get_rule_bad
+    rule = @@dns.get_rule(42)
+
+    assert_equal(Hash, rule.class)
+    assert(rule.length == 0)
+  end
+
+end
+
+# Suppresses unnecessary output from RubyDNS
+module Kernel
+
+  def puts(*args); end
 
 end
