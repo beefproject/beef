@@ -63,14 +63,10 @@ class TC_Dns < Test::Unit::TestCase
     sleep(3)
   end
 
-  # Tests procedure for adding new DNS rules
-  def test_5_add_rule
+  # Tests procedure for properly adding new DNS rules
+  def test_5_add_rule_good
     id = nil
-    same_id = nil
 
-    response = '1.2.3.4'
-
-    # Add a new rule normally
     assert_nothing_raised do
       id = @@dns.add_rule('foo.bar', IN::A) do |transaction|
         transaction.respond!('1.2.3.4')
@@ -78,17 +74,36 @@ class TC_Dns < Test::Unit::TestCase
     end
 
     assert_not_nil(id)
-    assert_equal(7, id.length)
+  end
 
-    # Attempt to add an existing rule
+  # Tests that adding existing rules returns current id
+  def test_6_add_rule_bad
+    id = nil
+    same_id = nil
+
     assert_nothing_raised do
-      same_id = @@dns.add_rule('foo.bar', IN::A) do |transaction|
-        transaction.respond!('1.2.3.4')
+      id = @@dns.add_rule('j.random.hacker', IN::A) do |transaction|
+        transaction.respond!('4.2.4.2')
       end
     end
 
-    assert_not_nil(same_id)
-    assert_equal(same_id, id)
+    assert_nothing_raised do
+      same_id = @@dns.add_rule('j.random.hacker', IN::A) do |transaction|
+        transaction.respond!('4.2.4.2')
+      end
+    end
+
+    assert_equal(id, same_id)
+  end
+
+  # Verifies the proper format for rule identifiers
+  def test_7_id_format
+    id = @@dns.add_rule('dead.beef', IN::A) do |transaction|
+      transaction.respond!('2.2.2.2')
+    end
+
+    assert_equal(7, id.length)
+    assert_not_nil(id =~ /^\h{7}$/)
   end
 
   # Tests retrieval of DNS rules
