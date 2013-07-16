@@ -32,19 +32,19 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Connects to in-memory database (does not test anything)
-  def test_1_database
+  def test_01_database
     DataMapper.setup(:default, 'sqlite3::memory:')
     DataMapper.auto_migrate!
   end
 
   # Checks for required settings in config file
-  def test_2_config
+  def test_02_config
     assert(@@dns_config.has_key?('address'))
     assert(@@dns_config.has_key?('port'))
   end
 
   # Verifies public interface
-  def test_3_interface
+  def test_03_interface
     @@dns = BeEF::Extension::Dns::Server.instance
 
     assert_respond_to(@@dns, :run_server)
@@ -55,7 +55,7 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Starts DNS server (does not test anything)
-  def test_4_run_server
+  def test_04_run_server
     address = @@dns_config['address']
     port    = @@dns_config['port']
 
@@ -64,7 +64,7 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Tests procedure for properly adding new DNS rules
-  def test_5_add_rule_good
+  def test_05_add_rule_good
     id = nil
 
     assert_nothing_raised do
@@ -77,7 +77,7 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Tests that adding existing rules returns current id
-  def test_6_add_rule_bad
+  def test_06_add_rule_bad
     id = nil
     same_id = nil
 
@@ -97,7 +97,7 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Verifies the proper format for rule identifiers
-  def test_7_id_format
+  def test_07_id_format
     id = @@dns.add_rule('dead.beef', IN::A) do |transaction|
       transaction.respond!('2.2.2.2')
     end
@@ -107,7 +107,7 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Tests retrieval of valid DNS rules
-  def test_8_get_rule_good
+  def test_08_get_rule_good
     id = @@dns.add_rule('be.ef', IN::A) do |transaction|
       transaction.respond!('1.1.1.1')
     end
@@ -134,11 +134,28 @@ class TC_Dns < Test::Unit::TestCase
   end
 
   # Tests retrieval of invalid DNS rules
-  def test_9_get_rule_bad
+  def test_09_get_rule_bad
     rule = @@dns.get_rule(42)
 
     assert_equal(Hash, rule.class)
     assert(rule.length == 0)
+  end
+
+  # Tests the removal of existing DNS rules
+  def test_10_remove_rule_good
+    id = @@dns.add_rule('hack.the.gibson', IN::A) do |transaction|
+      transaction.respond!('1.9.9.5')
+    end
+
+    removed = @@dns.remove_rule(id)
+
+    assert(removed)
+  end
+
+  # Tests the removal of unknown DNS rules
+  def test_11_remove_rule_bad
+    removed = @@dns.remove_rule(42)
+    assert(!removed)
   end
 
 end
