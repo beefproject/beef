@@ -50,8 +50,9 @@ class TC_Dns < Test::Unit::TestCase
     assert_respond_to(@@dns, :run_server)
     assert_respond_to(@@dns, :add_rule)
     assert_respond_to(@@dns, :remove_rule)
-    assert_respond_to(@@dns, :get_ruleset)
     assert_respond_to(@@dns, :get_rule)
+    assert_respond_to(@@dns, :get_ruleset)
+    assert_respond_to(@@dns, :remove_ruleset)
   end
 
   # Starts DNS server (does not test anything)
