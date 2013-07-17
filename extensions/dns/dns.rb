@@ -83,6 +83,15 @@ module Dns
       @lock.synchronize { @server.remove_rule(id) }
     end
 
+    # Retrieves a specific rule given its id
+    #
+    # @param id [Integer] unique identifier for rule
+    #
+    # @return [Hash] hash representation of rule
+    def get_rule(id)
+      @lock.synchronize { @server.get_rule(id) }
+    end
+
     # Returns an AoH representing the entire current DNS ruleset.
     #
     # Each element is a hash with the following keys:
@@ -97,13 +106,13 @@ module Dns
       @lock.synchronize { @server.get_ruleset }
     end
 
-    # Retrieves a specific rule given its id
+    # Clears the entire DNS ruleset.
     #
-    # @param id [Integer] unique identifier for rule
+    # Requests made after doing so will be passed through to the root nameservers.
     #
-    # @return [Hash] hash representation of rule
-    def get_rule(id)
-      @lock.synchronize { @server.get_rule(id) }
+    # @return [Boolean] true on success, false on failure
+    def remove_ruleset
+      @lock.synchronize { @server.remove_ruleset }
     end
 
     private
