@@ -128,7 +128,7 @@ class TC_Dns < Test::Unit::TestCase
 
     response = rule[:response]
 
-    assert(response.class == Array)
+    assert_equal(Array, response.class)
     assert(response.length > 0)
     assert_equal('1.1.1.1', response[0])
   end
@@ -138,7 +138,7 @@ class TC_Dns < Test::Unit::TestCase
     rule = @@dns.get_rule(42)
 
     assert_equal(Hash, rule.class)
-    assert(rule.length == 0)
+    assert_equal(0, rule.length)
   end
 
   # Tests the removal of existing DNS rules
@@ -156,6 +156,29 @@ class TC_Dns < Test::Unit::TestCase
   def test_11_remove_rule_bad
     removed = @@dns.remove_rule(42)
     assert(!removed)
+  end
+
+  # Tests the retrieval of the entire DNS ruleset
+  def test_12_get_ruleset
+    ruleset = @@dns.get_ruleset
+    ruleset.sort! {|a, b| a[:pattern] <=> b[:pattern] }
+
+    assert_equal(Array, ruleset.class)
+    assert_equal(4, ruleset.length)
+
+    check_rule(ruleset[0], {:pattern => 'be.ef', :type => 'A', :response => '1.1.1.1'})
+    check_rule(ruleset[1], {:pattern => 'dead.beef', :type => 'A', :response => '2.2.2.2'})
+    check_rule(ruleset[2], {:pattern => 'foo.bar', :type => 'A', :response => '1.2.3.4'})
+    check_rule(ruleset[3], {:pattern => 'j.random.hacker', :type => 'A', :response => '4.2.4.2'})
+  end
+
+  private
+
+  # Compares each key in hash 'rule' with the respective key in hash 'expected'
+  def check_rule(rule, expected = {})
+    assert_equal(expected[:pattern], rule[:pattern])
+    assert_equal(expected[:type], rule[:type])
+    assert_equal(expected[:response], rule[:response][0])
   end
 
 end
