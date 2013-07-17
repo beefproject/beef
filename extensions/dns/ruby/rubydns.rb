@@ -55,6 +55,17 @@ module RubyDNS
 
     end
 
+    # New method that loads all rules from the database at server startup
+    def load_rules
+      BeEF::Core::Models::Dns::Rule.each do |rule|
+        id = rule.id
+        pattern = [rule.pattern, rule.type]
+        block = eval rule.block
+
+        @rules << Rule.new(id, pattern, block)
+      end
+    end
+
     # Now includes BeEF database support and checks for already present rules
     def match(*pattern, block)
       id = ''
@@ -117,15 +128,22 @@ module RubyDNS
       rule != nil ? rule.destroy : false
     end
 
-    # New method that loads all rules from the database at server startup
-    def load_rules
-      BeEF::Core::Models::Dns::Rule.each do |rule|
-        id = rule.id
-        pattern = [rule.pattern, rule.type]
-        block = eval rule.block
+    # New method that returns a hash representing the given rule
+    def get_rule(id)
+      result = {}
 
-        @rules << Rule.new(id, pattern, block)
+      begin
+        rule = BeEF::Core::Models::Dns::Rule.get!(id)
+
+        result[:id] = rule.id
+        result[:pattern] = rule.pattern
+        result[:type] = rule.type.to_s.split('::')[-1]
+        result[:response] = parse_response(rule.block)
+      rescue DataMapper::ObjectNotFoundError => e
+        @logger.error(e.message)
       end
+
+      result
     end
 
     # New method that returns the entire DNS ruleset as an AoH
@@ -146,22 +164,10 @@ module RubyDNS
       result
     end
 
-    # New method that returns a hash representing the given rule
-    def get_rule(id)
-      result = {}
-
-      begin
-        rule = BeEF::Core::Models::Dns::Rule.get!(id)
-
-        result[:id] = rule.id
-        result[:pattern] = rule.pattern
-        result[:type] = rule.type.to_s.split('::')[-1]
-        result[:response] = parse_response(rule.block)
-      rescue DataMapper::ObjectNotFoundError => e
-        @logger.error(e.message)
-      end
-
-      result
+    # New method that removes the entire DNS ruleset
+    def remove_ruleset
+      @rules = []
+      BeEF::Core::Models::Dns::Rule.destroy
     end
 
     private

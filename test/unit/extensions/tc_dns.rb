@@ -155,6 +155,7 @@ class TC_Dns < Test::Unit::TestCase
   # Tests the removal of unknown DNS rules
   def test_11_remove_rule_bad
     removed = @@dns.remove_rule(42)
+
     assert(!removed)
   end
 
@@ -170,6 +171,15 @@ class TC_Dns < Test::Unit::TestCase
     check_rule(ruleset[1], {:pattern => 'dead.beef', :type => 'A', :response => '2.2.2.2'})
     check_rule(ruleset[2], {:pattern => 'foo.bar', :type => 'A', :response => '1.2.3.4'})
     check_rule(ruleset[3], {:pattern => 'j.random.hacker', :type => 'A', :response => '4.2.4.2'})
+  end
+
+  # Tests the removal of the entire DNS ruleset
+  def test_13_remove_ruleset
+    removed = @@dns.remove_ruleset
+    ruleset = @@dns.get_ruleset
+
+    assert(removed)
+    assert_equal(0, ruleset.length)
   end
 
   private
