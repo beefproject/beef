@@ -189,7 +189,8 @@ module RubyDNS
     # New method that parses response callback and returns RDATA as an array
     def parse_response(block)
       # Extract response arguments into an array
-      args = /(?<=respond!\().*(?=\))/.match(block).to_s.split(/,\s*/)
+      methods = '(respond|failure)'
+      args = /(?<=\.#{methods}!\().*(?=\))/.match(block).to_s.split(/,\s*/)
 
       result = []
 
@@ -199,6 +200,8 @@ module RubyDNS
 
         if /Name\.create\((.*)\)/.match(elem)
           arg = $1
+        elsif /:(NoError|FormErr|ServFail|NXDomain|NotImp|Refused|NotAuth)/.match(elem)
+          arg = $1.upcase
         else
           int_test = elem.to_i
           arg = (int_test != 0 ? int_test : elem)

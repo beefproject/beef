@@ -183,6 +183,65 @@ class TC_Dns < Test::Unit::TestCase
     assert_equal(0, ruleset.length)
   end
 
+  # Tests each supported type of query failure
+  def test_14_failure_types
+    begin
+      id = @@dns.add_rule('noerror.beef.com', IN::A) do |transaction|
+        transaction.failure!(:NoError)
+      end
+
+      check_failure_status(id, :NoError)
+    end
+
+    begin
+      id = @@dns.add_rule('formerr.beef.com', IN::A) do |transaction|
+        transaction.failure!(:FormErr)
+      end
+
+      check_failure_status(id, :FormErr)
+    end
+
+    begin
+      id = @@dns.add_rule('servfail.beef.com', IN::A) do |transaction|
+        transaction.failure!(:ServFail)
+      end
+
+      check_failure_status(id, :ServFail)
+    end
+
+    begin
+      id = @@dns.add_rule('nxdomain.beef.com', IN::A) do |transaction|
+        transaction.failure!(:NXDomain)
+      end
+
+      check_failure_status(id, :NXDomain)
+    end
+
+    begin
+      id = @@dns.add_rule('notimp.beef.com', IN::A) do |transaction|
+        transaction.failure!(:NotImp)
+      end
+
+      check_failure_status(id, :NotImp)
+    end
+
+    begin
+      id = @@dns.add_rule('refused.beef.com', IN::A) do |transaction|
+        transaction.failure!(:Refused)
+      end
+
+      check_failure_status(id, :Refused)
+    end
+
+    begin
+      id = @@dns.add_rule('notauth.beef.com', IN::A) do |transaction|
+        transaction.failure!(:NotAuth)
+      end
+
+      check_failure_status(id, :NotAuth)
+    end
+  end
+
   private
 
   # Compares each key in hash 'rule' with the respective key in hash 'expected'
@@ -190,6 +249,24 @@ class TC_Dns < Test::Unit::TestCase
     assert_equal(expected[:pattern], rule[:pattern])
     assert_equal(expected[:type], rule[:type])
     assert_equal(expected[:response], rule[:response][0])
+  end
+
+  # Compares output of dig command against regex
+  def check_dns_response(regex, type, pattern)
+    address = @@dns_config['address']
+    port    = @@dns_config['port']
+
+    dig_output = `dig @#{address} -p #{port} -t #{type} #{pattern}`
+    assert_match(regex, dig_output)
+  end
+
+  # Confirms that a query for the rule given in 'id' returns a 'type' failure status
+  def check_failure_status(id, type)
+    rule   = @@dns.get_rule(id)
+    status = type.to_s.force_encoding('UTF-8').upcase
+
+    assert_equal(status, rule[:response][0])
+    check_dns_response(/status: #{status}/, rule[:type], rule[:pattern])
   end
 
 end
