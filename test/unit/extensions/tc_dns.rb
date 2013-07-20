@@ -55,13 +55,16 @@ class TC_Dns < Test::Unit::TestCase
     assert_respond_to(@@dns, :remove_ruleset)
   end
 
-  # Starts DNS server (does not test anything)
+  # Tests that DNS server runs correctly on desired address and port
   def test_04_run_server
     address = @@dns_config['address']
     port    = @@dns_config['port']
 
     @@dns.run_server(address, port)
     sleep(3)
+
+    assert_equal(address, @@dns.address)
+    assert_equal(port, @@dns.port)
   end
 
   # Tests procedure for properly adding new DNS rules
@@ -251,22 +254,14 @@ class TC_Dns < Test::Unit::TestCase
     assert_equal(expected[:response], rule[:response][0])
   end
 
-  # Compares output of dig command against regex
-  def check_dns_response(regex, type, pattern)
-    address = @@dns_config['address']
-    port    = @@dns_config['port']
-
-    dig_output = `dig @#{address} -p #{port} -t #{type} #{pattern}`
-    assert_match(regex, dig_output)
-  end
-
   # Confirms that a query for the rule given in 'id' returns a 'type' failure status
   def check_failure_status(id, type)
     rule   = @@dns.get_rule(id)
     status = type.to_s.force_encoding('UTF-8').upcase
-
     assert_equal(status, rule[:response][0])
-    check_dns_response(/status: #{status}/, rule[:type], rule[:pattern])
+
+    dig_output = `dig @#{@@dns.address} -p #{@@dns.port} -t #{rule[:type]} #{rule[:pattern]}`
+    assert_match(/status: #{status}/, dig_output)
   end
 
 end
