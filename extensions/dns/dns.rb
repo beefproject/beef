@@ -17,6 +17,8 @@ module Dns
 
     include Singleton
 
+    attr_reader :address, :port
+
     # @!method self.instance
     #  Returns the singleton instance. Use this in place of {#initialize}.
 
@@ -32,6 +34,9 @@ module Dns
     # @param address [String] interface address server should run on
     # @param port [Integer] desired server port number
     def run_server(address = '0.0.0.0', port = 5300)
+      @address = address
+      @port = port
+
       @lock.synchronize do
         Thread.new do
           # @note Calling #sleep is a quick fix that prevents race conditions
@@ -40,9 +45,9 @@ module Dns
           sleep(1)
 
           if EventMachine.reactor_running?
-            EventMachine.next_tick { run_server_block(address, port) }
+            EventMachine.next_tick { run_server_block(@address, @port) }
           else
-            run_server_block(address, port)
+            run_server_block(@address, @port)
           end
         end
       end
