@@ -69,22 +69,42 @@ class TC_Dns < Test::Unit::TestCase
 
   # Tests procedure for properly adding new DNS rules
   def test_05_add_rule_good
-    id = nil
+    id1 = nil
+    id2 = nil
 
     assert_nothing_raised do
-      id = @@dns.add_rule('foo.bar', IN::A) do |transaction|
+      id1 = @@dns.add_rule('foo.bar', IN::A) do |transaction|
         transaction.respond!('1.2.3.4')
       end
     end
 
-    assert_not_nil(id)
+    assert_not_nil(id1)
+
+    assert_nothing_raised do
+      id2 = @@dns.add_rule(%r{i\.(love|hate)\.beef\.com?}, IN::A) do |transaction|
+        transaction.respond!('9.9.9.9')
+      end
+    end
+
+    assert_not_nil(id2)
+
+    domain1 = 'i.hate.beef.com'
+    domain2 = 'i.love.beef.com'
+    domain3 = 'i.love.beef.co'
+    domain4 = 'i.love.beef.co'
+
+    [domain1, domain2, domain3, domain4].each do |domain|
+      regex = /^#{domain}\.\t+\d+\t+IN\t+A\t+9\.9\.9\.9$/
+      check_dns_response(regex, 'A', domain)
+    end
   end
 
-  # Tests that adding existing rules returns current id
+  # Tests addition of new rules with invalid parameters
   def test_06_add_rule_bad
     id = nil
     same_id = nil
 
+    # Add the same rule twice
     assert_nothing_raised do
       id = @@dns.add_rule('j.random.hacker', IN::A) do |transaction|
         transaction.respond!('4.2.4.2')
@@ -98,6 +118,13 @@ class TC_Dns < Test::Unit::TestCase
     end
 
     assert_equal(id, same_id)
+
+    # Use /.../ literal syntax to throw Sourcify exception
+    assert_raise do
+      id = @@dns.add_rule(/.*/, IN::A) do |transaction|
+        transaction.respond!('5.1.5.0')
+      end
+    end
   end
 
   # Verifies the proper format for rule identifiers
@@ -169,12 +196,16 @@ class TC_Dns < Test::Unit::TestCase
     ruleset.sort! {|a, b| a[:pattern] <=> b[:pattern] }
 
     assert_equal(Array, ruleset.class)
-    assert_equal(4, ruleset.length)
+    assert_equal(5, ruleset.length)
 
-    check_rule(ruleset[0], {:pattern => 'be.ef', :type => 'A', :response => '1.1.1.1'})
-    check_rule(ruleset[1], {:pattern => 'dead.beef', :type => 'A', :response => '2.2.2.2'})
-    check_rule(ruleset[2], {:pattern => 'foo.bar', :type => 'A', :response => '1.2.3.4'})
-    check_rule(ruleset[3], {:pattern => 'j.random.hacker', :type => 'A', :response => '4.2.4.2'})
+    check_rule(ruleset[0], {:pattern=>'(?-mix:i\\.(love|hate)\\.beef\\.com?)',
+                            :type => 'A',
+                            :response => '9.9.9.9'})
+
+    check_rule(ruleset[1], {:pattern => 'be.ef', :type => 'A', :response => '1.1.1.1'})
+    check_rule(ruleset[2], {:pattern => 'dead.beef', :type => 'A', :response => '2.2.2.2'})
+    check_rule(ruleset[3], {:pattern => 'foo.bar', :type => 'A', :response => '1.2.3.4'})
+    check_rule(ruleset[4], {:pattern => 'j.random.hacker', :type => 'A', :response => '4.2.4.2'})
   end
 
   # Tests the removal of the entire DNS ruleset
@@ -260,8 +291,13 @@ class TC_Dns < Test::Unit::TestCase
     status = type.to_s.force_encoding('UTF-8').upcase
     assert_equal(status, rule[:response][0])
 
-    dig_output = `dig @#{@@dns.address} -p #{@@dns.port} -t #{rule[:type]} #{rule[:pattern]}`
-    assert_match(/status: #{status}/, dig_output)
+    check_dns_response(/status: #{status}/, rule[:type], rule[:pattern])
+  end
+
+  # Compares output of dig command against regex
+  def check_dns_response(regex, type, pattern)
+    dig_output = `dig @#{@@dns.address} -p #{@@dns.port} -t #{type} #{pattern}`
+    assert_match(regex, dig_output)
   end
 
 end

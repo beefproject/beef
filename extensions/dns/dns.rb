@@ -66,10 +66,14 @@ module Dns
     # @param pattern [String, Regexp] query pattern to recognize
     # @param type [Resolv::DNS::Resource::IN] resource record type (e.g. A, CNAME, NS, etc.)
     #
+    # @note When parameter 'pattern' is a literal Regexp object, it must NOT be passed
+    #       using the /.../ literal syntax. Instead use either %r{...} or Regexp::new.
+    #       This does not apply if 'pattern' is a variable.
+    #
     # @yield callback to invoke when pattern is matched
     # @yieldparam transaction [RubyDNS::Transaction] details of query question and response
     #
-    # @return [Integer] unique identifier for use with {#remove_rule}
+    # @return [String] unique 7-digit hex identifier for use with {#remove_rule}
     #
     # @see #remove_rule
     # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction

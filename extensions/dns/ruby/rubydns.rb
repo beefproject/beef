@@ -62,6 +62,9 @@ module RubyDNS
         pattern = [rule.pattern, rule.type]
         block = eval rule.block
 
+        regex = pattern[0]
+        pattern[0] = Regexp.new(regex) if regex =~ /^\(\?-mix:/
+
         @rules << Rule.new(id, pattern, block)
       end
     end
@@ -101,7 +104,7 @@ module RubyDNS
 
           BeEF::Core::Models::Dns::Rule.create(
             :id => id,
-            :pattern => pattern[0],
+            :pattern => pattern[0].to_s,
             :type => pattern[1],
             :block => block_src
           )
