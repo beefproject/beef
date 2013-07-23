@@ -94,8 +94,7 @@ module RubyDNS
 
           id = generate_id
 
-          # FIXME Use block
-          case block.class.name
+          case block
           when String
             @rules << Rule.new(id, pattern, eval(block_src))
           when Proc
