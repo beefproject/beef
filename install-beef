@@ -5,6 +5,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
+set -e
+
 clear
 echo "======================================"
 echo "          BeEF Installer   "
