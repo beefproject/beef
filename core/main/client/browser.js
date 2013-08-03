@@ -1298,7 +1298,14 @@ beef.browser = {
      * @example: if(beef.browser.javaEnabled()) { ... }
      */
     javaEnabled:function () {
-        return false;
+        //Use of deployJava defined in deployJava.js (Oracle java deployment toolkit)
+        versionJRE = deployJava.getJREs();
+
+        if(versionJRE != '')
+            return true;
+         else
+            return false;
+
     },
 
     /**
@@ -1342,33 +1349,35 @@ beef.browser = {
      */
     hasJava:function () {
 
-        // Check if Java is enabled
-        if (!beef.browser.javaEnabled()) {
-            return false;
-        }
+        return beef.browser.javaEnabled();
 
-        // This is a temporary fix as this does not work on Safari and Chrome
-        // Chrome requires manual user intervention even with unsigned applets.
-        // Safari requires a few seconds to load the applet.
-        if (beef.browser.isC() || beef.browser.isS()) {
-            return true;
-        }
-
-        // Inject an unsigned java applet to double check if the Java
-        // plugin is working fine.
-        try {
-            var applet_archive = 'http://' + beef.net.host + ':' + beef.net.port + '/demos/checkJava.jar';
-            var applet_id = 'checkJava';
-            var applet_name = 'checkJava';
-            var output;
-            beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava',
-                null, applet_archive, null);
-            output = document.Microsoft_Corporation.getInfo();
-            beef.dom.detachApplet('checkJava');
-            return output = 1;
-        } catch (e) {
-            return false;
-        }
+//        // Check if Java is enabled
+//        if (!beef.browser.javaEnabled()) {
+//            return false;
+//        }
+//
+//        // This is a temporary fix as this does not work on Safari and Chrome
+//        // Chrome requires manual user intervention even with unsigned applets.
+//        // Safari requires a few seconds to load the applet.
+//        if (beef.browser.isC() || beef.browser.isS()) {
+//            return true;
+//        }
+//
+//        // Inject an unsigned java applet to double check if the Java
+//        // plugin is working fine.
+//        try {
+//            var applet_archive = 'http://' + beef.net.host + ':' + beef.net.port + '/demos/checkJava.jar';
+//            var applet_id = 'checkJava';
+//            var applet_name = 'checkJava';
+//            var output;
+//            beef.dom.attachApplet(applet_id, 'Microsoft_Corporation', 'checkJava',
+//                null, applet_archive, null);
+//            output = document.Microsoft_Corporation.getInfo();
+//            beef.dom.detachApplet('checkJava');
+//            return output = 1;
+//        } catch (e) {
+//            return false;
+//        }
     },
 
     /**
