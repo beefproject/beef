@@ -9,8 +9,9 @@ class Play_sound < BeEF::Core::Command
   def self.options
 
     configuration = BeEF::Core::Configuration.instance
+    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
 
-    sound_file_url = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/sound.wav"
+    sound_file_url = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/sound.wav"
 
     return [{
       'name' => 'sound_file_uri', 

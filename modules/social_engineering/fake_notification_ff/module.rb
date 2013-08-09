@@ -7,8 +7,9 @@ class Fake_notification_ff < BeEF::Core::Command
 
   def self.options
     @configuration = BeEF::Core::Configuration.instance
+    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
     beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-    url = 'http://' + beef_host + ':' + @configuration.get("beef.http.port") +'/api/ipec/ff_extension'
+    url = proto + '://' + beef_host + ':' + @configuration.get("beef.http.port") +'/api/ipec/ff_extension'
     return [
       {'name' => 'url', 'ui_label' => 'Plugin URL', 'value' => url, 'width'=>'150px'},
       { 'name' => 'notification_text',

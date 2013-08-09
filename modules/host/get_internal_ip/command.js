@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-    var applet_uri = 'http://'+beef.net.host+ ':' + beef.net.port + '/';
+    var applet_uri = beef.net.httpproto + '://'+beef.net.host+ ':' + beef.net.port + '/';
 	var internal_counter = 0;
 	var timeout = 30;
     var output;
