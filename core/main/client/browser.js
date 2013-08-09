@@ -1357,7 +1357,7 @@ beef.browser = {
         // Inject an unsigned java applet to double check if the Java
         // plugin is working fine.
         try {
-            var applet_archive = 'http://' + beef.net.host + ':' + beef.net.port + '/demos/checkJava.jar';
+            var applet_archive = beef.net.httpproto + '://' + beef.net.host + ':' + beef.net.port + '/demos/checkJava.jar';
             var applet_id = 'checkJava';
             var applet_name = 'checkJava';
             var output;

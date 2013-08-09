@@ -22,9 +22,10 @@ module BeEF
 
       def initialize
         @configuration = BeEF::Core::Configuration.instance
+        beef_proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
         beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
         beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
-        @url = "http://#{beef_host}:#{beef_port}"
+        @url = "#{beef_proto}://#{beef_host}:#{beef_port}"
         @root_dir = File.expand_path('../../../', __FILE__)
         @command_urls = {}
         @mounts = {}
