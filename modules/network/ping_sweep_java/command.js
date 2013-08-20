@@ -15,7 +15,7 @@ beef.execute(function() {
     var internal_counter = 0;
     var firstMsgSent = false;
 
-    beef.dom.attachApplet('pingSweep', 'pingSweep', 'pingSweep', "http://"+beef.net.host+":"+beef.net.port+"/", null, [{'ipRange':ipRange, 'timeout':timeout}]);
+    beef.dom.attachApplet('pingSweep', 'pingSweep', 'pingSweep', beef.net.httpproto+"://"+beef.net.host+":"+beef.net.port+"/", null, [{'ipRange':ipRange, 'timeout':timeout}]);
 
 		function waituntilok() {
 			try {

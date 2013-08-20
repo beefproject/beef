@@ -9,7 +9,8 @@ class Clickjacking < BeEF::Core::Command
 	def self.options
 
 		configuration = BeEF::Core::Configuration.instance
-		uri = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/clickjacking/clickjack_victim.html"
+		proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
+		uri = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/clickjacking/clickjack_victim.html"
 
 		return [
 		{'name' => 'iFrameSrc', 'ui_label'=>'iFrame Src', 'type' => 'textarea', 'value' => uri, 'width' => '400px', 'height' => '50px'},

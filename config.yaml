@@ -6,7 +6,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.4.4.7-alpha'
+    version: '0.4.4.8-alpha'
     debug: false
 
     restrictions:
@@ -44,7 +44,7 @@ beef:
         # Prefer WebSockets over XHR-polling when possible.
         websocket:
           enable: false
-          secure: true # use WebSocketSecure work only on https domain and whit https support enabled in BeEF
+          secure: true # use 'WebSocketSecure' works only on HTTPS domains and with HTTPS support enabled in BeEF
           port: 61985 # WS: good success rate through proxies
           secure_port: 61986 # WSSecure
           ws_poll_timeout: 1000 # poll BeEF every second

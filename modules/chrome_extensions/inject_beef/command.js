@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-        var beefHookUri = "http://" + beef.net.host + ":" + beef.net.port + beef.net.hook;
+        var beefHookUri = beef.net.httpproto + "://" + beef.net.host + ":" + beef.net.port + beef.net.hook;
 
         chrome.windows.getAll({"populate" : true}, function(windows) {
 			for(i in windows) {

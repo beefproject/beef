@@ -7,8 +7,9 @@ class Fake_flash_update < BeEF::Core::Command
   
   def self.options
     configuration = BeEF::Core::Configuration.instance
-    payload_root = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}"
-    image = "http://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/adobe_flash_update.png"
+    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
+    payload_root = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}"
+    image = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/adobe_flash_update.png"
 
     return [
         {'name' =>'image', 'description' =>'Location of image for the update prompt', 'ui_label'=>'Splash image', 'value' => image},
