@@ -1,0 +1,26 @@
+beef:
+    module:
+        spyder_eye:
+            enable: true
+            category: "Browser"
+            name: "Spyder eye"
+            description: "This module takes a picture of the victim's browser."
+            authors: ["preth00nker"]
+            target:
+                working:
+                    IE:
+                        min_ver: 9
+                        max_ver: latest
+                    FF:
+                        min_ver: 3
+                        max_ver: latest
+                    C:
+                        min_ver: 1
+                        max_ver: latest
+                    S:
+                        min_ver: 6
+                        max_ver: latest3
+                    O:
+                        min_ver: 12
+                        max_ver: latest
+                not_working: ["All"]
