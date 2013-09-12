@@ -241,7 +241,8 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 				viewConfig: {
 					forceFit:true
 				},
-				
+
+			// render command responses
 		        columns:[new Ext.grid.RowNumberer({width: 20}), {
 			            dataIndex: 'date',
 			            sortable: false,
@@ -249,21 +250,27 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 							html = String.format("<div style='color:#385F95;text-align:right;'>{0}</div>", value);
 							html += '<p>';
 							for(index in record.data.data) {
-								result = $jEncoder.encoder.encodeForHTML(record.data.data[index]).replace(/&lt;br&gt;/g,'<br>');
-								index = index.toString().replace('_', ' ');
-								// Check if the data is the image parameter and that it's a base64 encoded png.
-								if (result.substring(0,28) == "image=data:image/png;base64,") {
-									// Lets display the image
+								result = record.data.data[index];
+								index  = index.toString().replace('_', ' ');
+
+								// Check for a base64 encoded image
+								var header = "image=data:image/(jpg|png);base64,";
+								var re = new RegExp(header, "");
+								if (result.match(re)) {
+
+									// Render the image
 									try {
-										base64_data = window.atob(result.substring(29,result.length));
-										html += String.format('<img src="{0}" /><br>', result.substring(6));
+										var img = result.replace(/[\r\n]/g, '');
+										base64_data = window.atob(img.replace(re, ''));
+										html += String.format('<img src="{0}" /><br>', img.replace(/^image=/, ''));
 									} catch(e) {
-										beef.debug("Received invalid base64 encoded image string: "+e.toString());
+										console.log("Received invalid base64 encoded image string: "+e.toString());
 										html += String.format('<b>{0}</b>: {1}<br>', index, result);
 									}
+
+								// output escape everything else, but allow the <br> tag for better rendering.
 								} else {
-									// output escape everything, but allow the <br> tag for better rendering.
-									html += String.format('<b>{0}</b>: {1}<br>', index, result);
+									html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
 								}
 							}
 
