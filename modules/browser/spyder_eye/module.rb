@@ -12,14 +12,20 @@ class Spyder_eye < BeEF::Core::Command
 
   def post_execute 
     content = {}
-    content['results'] = @datastore['results']
+    content['results'] = @datastore['results'] if not @datastore['results'].nil?
     save content
-    #I would prefer use common logger but I haven't find the way to do it
-    # print "---------[ preth00nker says ]----------\n"
-      print_status("Browser screenshot saved to './beef/"+"SeO_"+@datastore['cid']+".png'\n")
-    #e.g. BeEF::Core::Logger.instance.register("spyder eye"," look for your file in ./beef/"+"SeO_"+@datastore['cid']+".png")
-    File.open("SeO_"+@datastore['cid']+'.png', 'wb') do |file| 
-      file.write(Base64.decode64( content['results'] ) ) 
+
+    # save screenshot file
+    begin
+      filename = "screenshot_#{Integer(@datastore['cid'])}.png"
+      File.open(filename, 'wb') do |file|
+        data = @datastore['results'].gsub(/^image=data:image\/(png|jpg);base64,/, "")
+        file.write(Base64.decode64(data))
+      end
+      print_info("Browser screenshot saved to '#{filename}'")
+      BeEF::Core::Logger.instance.register("Zombie", "Browser screenshot saved to '#{filename}'")
+    rescue Exception => e
+      print_error("Could not write screenshot file '#{filename}' - Exception: #{e.message}")
     end
 
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/html2canvas.js')
