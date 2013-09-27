@@ -72,3 +72,6 @@ To get started, simply execute beef and follow the instructions:
 
        $ ./beef
 
+On windows use
+
+      $ ruby beef
