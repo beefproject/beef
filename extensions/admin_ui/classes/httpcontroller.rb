@@ -40,8 +40,12 @@ module AdminUI
     def run(request, response)
       @request = request
       @params = request.params
-      @session = BeEF::Extension::AdminUI::Session.instance      
-      auth_url = '/ui/authentication'
+      @session = BeEF::Extension::AdminUI::Session.instance
+      config = BeEF::Core::Configuration.instance
+
+      # Web UI base path, like http://beef_domain/<bp>/panel
+      @bp = config.get "beef.http.web_ui_basepath"
+      auth_url = "#{@bp}/authentication"
       
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
@@ -78,19 +82,23 @@ module AdminUI
 
     end
 
-    # Constructs a redirect script
-    def script_redirect(location) "<script> document.location=\"#{location}\"</script>" end
-    
-    # Constructs a html script tag
-    def script_tag(filename) "<script src=\"#{$url}/ui/media/javascript/#{filename}\" type=\"text/javascript\"></script>" end
-    
+    # Constructs a html script tag (from media/javascript directory)
+    def script_tag(filename) "<script src=\"#{$url}#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>" end
+
+    # Constructs a html script tag (from media/javascript-min directory)
+    def script_tag_min(filename) "<script src=\"#{$url}#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>" end
+
     # Constructs a html stylesheet tag
-    def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}/ui/media/css/#{filename}\" type=\"text/css\" />" end
+    def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />" end
 
     # Constructs a hidden html nonce tag
     def nonce_tag 
       @session = BeEF::Extension::AdminUI::Session.instance
       "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"" + @session.get_nonce + "\"/>"
+    end
+
+    def base_path
+      "#{@bp}"
     end
 
     private

@@ -12,47 +12,8 @@
 
 	<%= script_tag 'ext-base.js' %>
 	<%= script_tag 'ext-all.js' %>
-	<%= script_tag 'ext-beef.js' %>
-
-	<!-- jQuery encoder (ESAPI way) -->
-	<%= script_tag 'esapi/jquery-1.6.4.min.js' %>
-	<%= script_tag 'esapi/Class.create.js' %>
-	<%= script_tag 'esapi/jquery-encoder-0.1.0.js' %>
-	<script type="text/javascript" language="JavaScript">var $jEncoder = jQuery.noConflict();</script>
-
-    <!-- BeEF Web UI common functions-->
-    <%= script_tag 'ui/common/beef_common.js' %>
-
-	<%= script_tag 'ux/TabCloseMenu.js' %>
-	<%= script_tag 'ux/StatusBar.js' %>
-	<%= script_tag 'ux/PagingStore.js' %>
-
-	<%= script_tag 'ui/panel/common.js' %>
-	<%= script_tag 'ui/panel/DistributedEngine.js' %>
-	<%= script_tag 'ui/panel/PanelStatusBar.js' %>
-
-	<%= script_tag 'ui/panel/tabs/ZombieTabDetails.js' %>
-	<%= script_tag 'ui/panel/tabs/ZombieTabLogs.js' %>
-	<%= script_tag 'ui/panel/tabs/ZombieTabCommands.js' %>
-	<%= script_tag 'ui/panel/tabs/ZombieTabRider.js' %>
-	<%= script_tag 'ui/panel/tabs/ZombieTabXssRays.js' %>
-
-    <%= script_tag 'wterm/wterm.jquery.js' %>
+    <%= script_tag_min 'web_ui_all.js' %>
     <%= stylesheet_tag 'wterm.css' %>
-    <script type="text/javascript" language="JavaScript">var $jwterm = jQuery.noConflict();</script>
-    <%= script_tag 'ui/panel/tabs/ZombieTabIpec.js' %>
-    <%= script_tag 'ui/panel/tabs/ZombieTabAutorun.js' %>
-    <%= script_tag 'ui/panel/PanelViewer.js' %>
-	<%= script_tag 'ui/panel/DataGrid.js' %>
-	<%= script_tag 'ui/panel/MainPanel.js' %>
-	<%= script_tag 'ui/panel/ZombieTab.js' %>
-	<%= script_tag 'ui/panel/ZombieTabs.js' %>
-	<%= script_tag 'ui/panel/zombiesTreeList.js' %>
-	<%= script_tag 'ui/panel/ZombiesMgr.js' %>
-	<%= script_tag 'ui/panel/Logout.js' %>
-	<%= script_tag 'ui/panel/WelcomeTab.js' %>
-	<!-- <%= script_tag 'ui/panel/HackVertorTab.js' %> -->
-
 	<%= stylesheet_tag 'ext-all.css' %>
 	<%= stylesheet_tag 'base.css' %>
 </head>
@@ -63,7 +24,7 @@
 		<div class="left-menu" id="header-right">
 		</div>
 		<div class="right-menu">
-			<img src="/ui/media/images/favicon.ico" alt="BeEF" title="BeEF" /> 
+			<img src="<%= base_path %>/media/images/favicon.ico" alt="BeEF" title="BeEF" />
 			BeEF <%= BeEF::Core::Configuration.instance.get('beef.version') %> | 
 			<a id='do-submit-bug-menu' href='https://github.com/beefproject/beef/issues/new' target='_blank'>Submit Bug</a> | 
 			<a id='do-logout-menu' href='#'>Logout</a>

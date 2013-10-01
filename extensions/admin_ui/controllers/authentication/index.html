@@ -9,7 +9,7 @@
 	
 	<%= script_tag 'ext-base.js' %>
 	<%= script_tag 'ext-all.js' %>
-	<%= script_tag 'ui/authentication.js' %>
+    <%= script_tag_min 'web_ui_auth.js' %>
 	
 	<%= stylesheet_tag 'ext-all.css' %>
 	
@@ -31,6 +31,6 @@
 </head>
 
 <body>
-	<div id="centered"><img id="beef-logo" src="/ui/media/images/beef.png" alt="BeEF - The Browser Exploitation Framework" /></div>
+	<div id="centered"><img id="beef-logo" src="<%= base_path %>/media/images/beef.png" alt="BeEF - The Browser Exploitation Framework" /></div>
 </body>
 </html>

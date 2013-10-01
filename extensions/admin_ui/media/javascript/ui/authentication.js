@@ -12,7 +12,7 @@ Ext.onReady(function() {
 		login_form.getForm().submit({
 
 			success: function() {
-				window.location.href = '/ui/panel'
+				window.location.href = "<%= @base_path %>/panel"
 			}, 
 			failure: function() {
 				if(Ext.get('loginError') == null) {

@@ -20,7 +20,7 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
          */
         get_rest_token: function() {
             if(this.rest_token.length == 0){
-                var url = "/ui/modules/getRestfulApiToken.json";
+                var url = "<%= @base_path %>/modules/getRestfulApiToken.json";
                 jQuery.ajax({
                     contentType: 'application/json',
                     dataType: 'json',

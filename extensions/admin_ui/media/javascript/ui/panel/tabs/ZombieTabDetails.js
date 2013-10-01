@@ -10,7 +10,7 @@
 ZombieTab_DetailsTab = function(zombie) {
 	
 	var store_summary = new Ext.data.GroupingStore({
-			url: '/ui/modules/select/zombie_summary.json',
+			url: '<%= @base_path %>/modules/select/zombie_summary.json',
 			baseParams: {zombie_session: zombie.session} ,
 			reader: new Ext.data.JsonReader({
 					root: 'results'

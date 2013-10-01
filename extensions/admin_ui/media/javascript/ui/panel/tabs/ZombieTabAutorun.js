@@ -248,7 +248,7 @@ ZombieTab_Autorun = function(zombie) {
                 }
          }})],
          loader: new Ext.tree.TreeLoader({
-                dataUrl: '/ui/modules/select/commandmodules/tree.json',
+                dataUrl: '<%= @base_path %>/modules/select/commandmodules/tree.json',
                 baseParams: {zombie_session: zombie.session},
                 createNode: function(attr) {
                 if(attr.checked == null){attr.checked = false;}

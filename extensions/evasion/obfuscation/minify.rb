@@ -6,7 +6,7 @@
 module BeEF
   module Extension
     module Evasion
-      require 'jsmin'
+      require 'uglifier'
       class Minify
         include Singleton
 
@@ -15,7 +15,7 @@ module BeEF
         end
 
         def execute(input, config)
-          input = JSMin.minify(input)
+          input = Uglifier.compile(input)
           print_debug "[OBFUSCATION - MINIFIER] Javascript has been minified"
           input
         end

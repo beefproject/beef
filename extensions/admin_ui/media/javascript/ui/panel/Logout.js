@@ -10,12 +10,12 @@ DoLogout = function() {
 	
 	after_logout = function() {
 		// will redirect the UA to the login
-		window.location.href = '/ui/panel'		
+		window.location.href = '<%= @base_path %>/panel'
 	}
 	
 	button.on('click', function(){
 		Ext.Ajax.request({
-			url: '/ui/authentication/logout',
+			url: '<%= @base_path %>/authentication/logout',
 			method: 'POST',
 		    params: 'nonce=' + Ext.get("nonce").dom.value,
 			success: after_logout,

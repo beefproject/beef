@@ -12,7 +12,7 @@ WelcomeTab = function() {
 
     welcome = " \
               <div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' > \
-              <p><img src='/ui/media/images/beef.jpg' alt='BeEF - The Browser Exploitation Framework' /></p><br /> \
+              <p><img src='<%= @base_path %>/media/images/beef.jpg' alt='BeEF - The Browser Exploitation Framework' /></p><br /> \
               <p>Official website: <a href='http://beefproject.com/'>http://beefproject.com/</a></p><br />\
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Getting Started</span></p><br />\
               <p>Welcome to BeEF!</p><br /> \

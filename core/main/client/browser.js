@@ -1325,11 +1325,11 @@ beef.browser = {
      */
     javaEnabled:function () {
         //Use of deployJava defined in deployJava.js (Oracle java deployment toolkit)
-        versionJRE = deployJava.getJREs();
+        // versionJRE = deployJava.getJREs();
 
-        if(versionJRE != '')
-            return true;
-         else
+        // if(versionJRE != '')
+        //     return true;
+        //  else
             return false;
 
     },

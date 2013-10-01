@@ -30,7 +30,7 @@ beef:
         # DNS
         dns_host: "localhost"
         dns_port: 53
-        panel_path: "/ui/panel"
+        web_ui_basepath: "/ui"
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"

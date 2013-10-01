@@ -111,7 +111,7 @@ function get_dynamic_payload_details(payload, zombie) {
 	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod_id').value
 	Ext.Ajax.request({
 		loadMask: true,
-		url: '/ui/modules/select/commandmodule.json',
+		url: '/<%= @base_path %>/modules/select/commandmodule.json',
 		method: 'POST',
 		params: 'command_module_id=' + modid  + '&' + 'payload_name=' + payload,
 		success: function(resp) {
@@ -146,7 +146,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 	panel.removeAll();
 	
 	Ext.Ajax.request({
-		url: '/ui/modules/select/command.json',
+		url: '<%= @base_path %>/modules/select/command.json',
 		method: 'POST',
 		params: 'command_id=' + command_id,
 		loadMask: true,
@@ -159,7 +159,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 			}
 			
 			var form = new Ext.form.FormPanel({
-				url: '/ui/modules/commandmodule/reexecute',
+				url: '<%= @base_path %>/modules/commandmodule/reexecute',
 				id: 'form-command-module-zombie-'+zombie.session,
 				border: false,
 				labelWidth: 75,
@@ -208,7 +208,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 			});
 			
 			var grid_store = new Ext.data.JsonStore({
-				url: '/ui/modules/select/command_results.json?command_id='+command_id,
+				url: '<%= @base_path %>/modules/select/command_results.json?command_id='+command_id,
 				storeId: 'command-results-store-zombie-'+zombie.session,
 		        root: 'results',
 				remoteSort: false,
@@ -320,7 +320,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 	} else {
 		Ext.Ajax.request({
 			loadMask: true,
-			url: '/ui/modules/select/commandmodule.json',
+			url: '<%= @base_path %>/modules/select/commandmodule.json',
 			method: 'POST',
 			params: 'command_module_id=' + command_module_id,
 			success: function(resp) {
@@ -331,9 +331,9 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					return;
 				}
 
-				var submiturl = '/ui/modules/commandmodule/new';
+				var submiturl = '<%= @base_path %>/modules/commandmodule/new';
 				if(module.dynamic){
-					submiturl = '/ui/modules/commandmodule/dynamicnew';
+					submiturl = '<%= @base_path %>/modules/commandmodule/dynamicnew';
 				}
 				
 				module = module.command_modules[1];

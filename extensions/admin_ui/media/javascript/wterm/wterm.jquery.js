@@ -422,3 +422,6 @@
   };
 
 })( jQuery );
+
+
+var $jwterm = jQuery.noConflict();

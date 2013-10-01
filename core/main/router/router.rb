@@ -114,6 +114,7 @@ module BeEF
         # @note Default root page
         get "/" do
           if config.get("beef.http.web_server_imitation.enable")
+            bp = config.get "beef.http.web_ui_basepath"
             type = config.get("beef.http.web_server_imitation.type")
             case type
               when "apache"
@@ -209,7 +210,7 @@ module BeEF
                     "<h2>If you are the website administrator:</h2>" +
                     "<p>You may now add content to the directory <tt>/var/www/html/</tt>. Note that until you do so, people visiting your website will see this page and not your content. To prevent this page from ever being used, follow the instructions in the file <tt>/etc/httpd/conf.d/welcome.conf</tt>.</p>" +
                     "<p>You are free to use the images below on Apache and CentOS Linux powered HTTP servers.  Thanks for using Apache and CentOS!</p>" +
-                    "<p><a href=\"http://httpd.apache.org/\"><img src=\"/ui/media/images/icons/apache_pb.gif\" alt=\"[ Powered by Apache ]\"/></a> <a href=\"http://www.centos.org/\"><img src=\"/ui/media/images/icons/powered_by_rh.png\" alt=\"[ Powered by CentOS Linux ]\" width=\"88\" height=\"31\" /></a></p>" +
+                    "<p><a href=\"http://httpd.apache.org/\"><img src=\"#{bp}/media/images/icons/apache_pb.gif\" alt=\"[ Powered by Apache ]\"/></a> <a href=\"http://www.centos.org/\"><img src=\"#{bp}/media/images/icons/powered_by_rh.png\" alt=\"[ Powered by CentOS Linux ]\" width=\"88\" height=\"31\" /></a></p>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -234,7 +235,7 @@ module BeEF
                     "<table>" +
                     "<tr>" +
                     "<td ID=tableProps width=70 valign=top align=center>" +
-                    "<img ID=pagerrorImg src=\"/ui/media/images/icons/pagerror.gif\" width=36 height=48>" +
+                    "<img ID=pagerrorImg src=\"#{bp}/media/images/icons/pagerror.gif\" width=36 height=48>" +
                     "<td ID=tablePropsWidth width=400>" +
                     "<h1 ID=errortype style=\"font:14pt/16pt verdana; color:#4e4e4e\">" +
                     "<P ID=Comment1><!--Problem--><P ID=\"errorText\">Under Construction</h1>" +

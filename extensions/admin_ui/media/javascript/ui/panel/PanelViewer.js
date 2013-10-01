@@ -47,7 +47,7 @@ var lastpoll = new Date().getTime();
 Ext.TaskMgr.start({
 	run: function() {
 		Ext.Ajax.request({
-			url: '/ui/panel/hooked-browser-tree-update.json',
+			url: '<%= @base_path %>/panel/hooked-browser-tree-update.json',
 			method: 'POST',
 			success: function(response) {
 				var updates;
@@ -56,7 +56,7 @@ Ext.TaskMgr.start({
 				} catch (e) {
 					//The framework has probably been reset and you're actually logged out
 					var hr = document.getElementById("header-right");
-					hr.innerHTML = "You appear to be logged out. <a href='/ui/panel/'>Login</a>";
+					hr.innerHTML = "You appear to be logged out. <a href='<%= @base_path %>/panel/'>Login</a>";
 				}
 				var distributed_engine_rules = (updates['ditributed-engine-rules']) ? updates['ditributed-engine-rules'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;

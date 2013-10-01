@@ -19,7 +19,7 @@ ZombieTab_Commands = function(zombie) {
 
 	var command_module_grid = new Ext.grid.GridPanel({
 		store: new Ext.data.JsonStore({
-				url: '/ui/modules/commandmodule/commands.json',
+				url: '<%= @base_path %>/modules/commandmodule/commands.json',
 				params: {  // insert the nonce with the form
 						nonce: Ext.get ("nonce").dom.value
 				},
@@ -107,7 +107,7 @@ ZombieTab_Commands = function(zombie) {
 		rootVisible: false,
 		root: {nodeType: 'async'},
 		loader: new Ext.tree.TreeLoader({
-          dataUrl: '/ui/modules/select/commandmodules/tree.json',
+          dataUrl: '<%= @base_path %>/modules/select/commandmodules/tree.json',
           baseParams: {zombie_session: zombie.session},
           listeners:{
             beforeload: function(treeloader, node, callback) {

@@ -23,7 +23,7 @@ ZombieTab_XssRaysTab = function(zombie) {
 
      var xssrays_logs_store = new Ext.ux.data.PagingJsonStore({
         storeId: 'xssrays-logs-store-zombie-' + zombie.session,
-        url: '/ui/xssrays/zombie.json',
+        url: '/<%= @base_path %>/xssrays/zombie.json',
         remoteSort: false,
         autoDestroy: true,
         autoLoad: false,
@@ -94,7 +94,7 @@ ZombieTab_XssRaysTab = function(zombie) {
 		var form = new Ext.FormPanel({
 			title: 'Scan settings',
 			id: 'xssrays-config-form-zombie'+zombie.session,
-			url: '/ui/xssrays/createNewScan',
+			url: '<%= @base_path %>/xssrays/createNewScan',
             labelWidth: 230,
 			border: false,
 			padding: '3px 5px 0 5px',

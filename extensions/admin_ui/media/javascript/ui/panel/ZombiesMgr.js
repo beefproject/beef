@@ -37,9 +37,9 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var has_realplayer     = zombie_array[index]["has_realplayer"];
 		var date_stamp         = zombie_array[index]["date_stamp"];
 
-		text = "<img src='/ui/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
-		text+= "<img src='/ui/media/images/icons/"+escape(os_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
-		text+= "<img src='/ui/media/images/icons/"+escape(hw_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text = "<img src='<%= @base_path %>/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text+= "<img src='<%= @base_path %>/media/images/icons/"+escape(os_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
+		text+= "<img src='<%= @base_path %>/media/images/icons/"+escape(hw_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text+= ip;
 
 		balloon_text = "IP: "                  + ip;
