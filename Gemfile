@@ -16,8 +16,11 @@ gem "thin"
 gem "sinatra", "1.4.2"
 gem "rack", "1.5.2"
 gem "em-websocket", "~> 0.3.6"
-gem "jsmin", "~> 1.0.1"
 gem "uglifier", "~> 2.2.1"
+# install https://github.com/cowboyd/therubyracer if the OS is != than OSX
+if !RUBY_PLATFORM.downcase.include?("darwin")
+  gem "therubyracer", "~> 0.12.0"
+end
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
 gem "dm-core"
