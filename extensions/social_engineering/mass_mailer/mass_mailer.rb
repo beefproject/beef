@@ -56,7 +56,7 @@ module BeEF
               end
             end
           else
-            smtp.start(@helo, @auth) do |smtp|
+            smtp.start(@helo) do |smtp|
               tos_hash.each do |to, name|
                 message = compose_email(fromname, fromaddr, to, name, subject, link, linktext, template)
                 smtp.send_message(message, fromaddr, to)
