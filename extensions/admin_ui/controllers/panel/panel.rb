@@ -87,14 +87,12 @@ module BeEF
             has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
             has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
             has_googlegears = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasGoogleGears')
-            has_java        = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'JavaEnabled')
             has_webrtc      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebRTC')
             has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
             has_silverlight = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasSilverlight')
             has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
             has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
             has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP') 
-            has_vlc         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasVLC')
             has_foxit       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFoxit')
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
@@ -113,13 +111,11 @@ module BeEF
                 'has_flash'       => has_flash,
                 'has_web_sockets' => has_web_sockets,
                 'has_googlegears' => has_googlegears,
-                'has_java'        => has_java,
                 'has_webrtc'      => has_webrtc,
                 'has_activex'     => has_activex,
                 'has_silverlight' => has_silverlight,
                 'has_quicktime'   => has_quicktime,
                 'has_wmp'         => has_wmp,
-                'has_vlc'         => has_vlc,
                 'has_foxit'       => has_foxit,
                 'has_realplayer'  => has_realplayer,
                 'date_stamp'      => date_stamp

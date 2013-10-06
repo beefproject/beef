@@ -250,14 +250,6 @@ module BeEF
             self.err_msg "Invalid window size returned from the hook browser's initial connection."
           end
 
-          # get and store the yes|no value for JavaEnabled
-          java_enabled = get_param(@data['results'], 'JavaEnabled')
-          if BeEF::Filters.is_valid_yes_no?(java_enabled)
-            BD.set(session_id, 'JavaEnabled', java_enabled)
-          else
-            self.err_msg "Invalid value for JavaEnabled returned from the hook browser's initial connection."
-          end
-
           # get and store the yes|no value for VBScriptEnabled
           vbscript_enabled = get_param(@data['results'], 'VBScriptEnabled')
           if  BeEF::Filters.is_valid_yes_no?(vbscript_enabled)
@@ -352,14 +344,6 @@ module BeEF
             BD.set(session_id, 'HasWMP', has_wmp)
           else
             self.err_msg "Invalid value for HasWMP returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasVLC
-          has_vlc = get_param(@data['results'], 'HasVLC')
-          if BeEF::Filters.is_valid_yes_no?(has_vlc)
-            BD.set(session_id, 'HasVLC', has_vlc)
-          else
-            self.err_msg "Invalid value for HasVLC returned from the hook browser's initial connection."
           end
 
           # get and store the value for CPU

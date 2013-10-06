@@ -1731,7 +1731,6 @@ beef.browser = {
         });
         var screen_size      = beef.browser.getScreenSize();
         var window_size      = beef.browser.getWindowSize();
-        var java_enabled     = (beef.browser.javaEnabled()) ?     "Yes" : "No";
         var vbscript_enabled = (beef.browser.hasVBScript()) ?     "Yes" : "No";
         var has_flash        = (beef.browser.hasFlash()) ?        "Yes" : "No";
         var has_phonegap     = (beef.browser.hasPhonegap()) ?     "Yes" : "No";
@@ -1743,7 +1742,6 @@ beef.browser = {
         var has_quicktime    = (beef.browser.hasQuickTime()) ?    "Yes" : "No";
         var has_realplayer   = (beef.browser.hasRealPlayer()) ?   "Yes" : "No";
         var has_wmp          = (beef.browser.hasWMP()) ?          "Yes" : "No"; 
-        var has_vlc          = (beef.browser.hasVLC()) ?          "Yes" : "No";
         var has_foxit        = (beef.browser.hasFoxit()) ?        "Yes" : "No";
         try{
             var cookies = document.cookie;
@@ -1778,7 +1776,6 @@ beef.browser = {
         if (browser_type) details['BrowserType'] = browser_type;
         if (screen_size) details['ScreenSize'] = screen_size;
         if (window_size) details['WindowSize'] = window_size;
-        if (java_enabled) details['JavaEnabled'] = java_enabled;
         if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled;
         if (has_flash) details['HasFlash'] = has_flash;
         if (has_phonegap) details['HasPhonegap'] = has_phonegap;
@@ -1790,7 +1787,6 @@ beef.browser = {
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
         if (has_wmp) details['HasWMP'] = has_wmp;
-        if (has_vlc) details['HasVLC'] = has_vlc;
         if (has_foxit) details['HasFoxit'] = has_foxit;
 
         return details;
