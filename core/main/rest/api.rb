@@ -37,12 +37,19 @@ module BeEF
         end
       end
 
+      module RegisterServerHandler
+        def self.mount_handler(server)
+          server.mount('/api/server', BeEF::Core::Rest::Server.new)
+        end
+      end
+
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHooksHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterModulesHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterCategoriesHandler, BeEF::API::Server, 'mount_handler')
 
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterLogsHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterAdminHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterServerHandler, BeEF::API::Server, 'mount_handler')
 
       #
       # Check the source IP is within the permitted subnet

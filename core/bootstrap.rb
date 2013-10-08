@@ -45,6 +45,7 @@ require 'core/main/rest/handlers/modules'
 require 'core/main/rest/handlers/categories'
 require 'core/main/rest/handlers/logs'
 require 'core/main/rest/handlers/admin'
+require 'core/main/rest/handlers/server'
 require 'core/main/rest/api'
 
 ## @note Include Websocket
