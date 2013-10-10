@@ -384,7 +384,8 @@ beef.dom = {
 
             if (codebase != null) {
                 content += "<param name='codebase' value='" + codebase + "' />"
-            }else{
+            }
+            if (archive != null){
                 content += "<param name='archive' value='" + archive + "' />";
             }
             if (params != null) {
