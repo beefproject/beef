@@ -1936,6 +1936,30 @@ beef.browser = {
     },
 
     /**
+     * Returns the page head HTML
+     **/ 
+    getPageHead:function () {
+      var html_head;
+      try {
+        html_head = document.head.innerHTML.toString();
+      } catch (e) {
+      }
+      return html_head;
+    },
+
+    /**
+     * Returns the page body HTML
+     **/
+    getPageBody:function() {
+      var html_body;
+      try {
+        html_body = document.body.innerHTML.toString();
+      } catch (e) {
+      }
+      return html_body;
+    },
+
+    /**
      * Dynamically changes the favicon: works in Firefox, Chrome and Opera
      **/
     changeFavicon:function (favicon_url) {
