@@ -12,7 +12,7 @@ class Lcamtuf_download < BeEF::Core::Command
       'name' => 'real_file_uri', 
       'description' => 'The web accessible URI for the real file.',
       'ui_label' => 'Real File Path',
-      'value' => 'http://get.adobe.com/flashplayer/download/?installer=Flash_Player_11_for_Internet_Explorer_(64_bit)&os=Windows%207&browser_type=MSIE&browser_dist=OEM&d=Google_Toolbar_7.0&PID=4166869',
+      'value' => 'http://get.adobe.com/flashplayer/',
       'width' => '300px' 
       },
       {
