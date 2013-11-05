@@ -285,11 +285,19 @@ beef.browser = {
     },
 
     /**
+     * Returns true if FF25
+     * @example: beef.browser.isFF25()
+     */
+    isFF25:function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && window.navigator.userAgent.match(/Firefox\/25\./) != null;
+    },
+
+    /**
      * Returns true if FF.
      * @example: beef.browser.isFF()
      */
     isFF:function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25();
     },
 
     /**
@@ -756,8 +764,9 @@ beef.browser = {
             FF20:this.isFF20(), // Firefox 20
             FF21:this.isFF21(), // Firefox 21
             FF22:this.isFF22(), // Firefox 22
-            FF22:this.isFF23(), // Firefox 23
-            FF22:this.isFF24(), // Firefox 24
+            FF23:this.isFF23(), // Firefox 23
+            FF24:this.isFF24(), // Firefox 24
+            FF25:this.isFF25(), // Firefox 25
             FF:this.isFF(), // Firefox any version
 
             IE6:this.isIE6(), // Internet Explorer 6
@@ -1041,6 +1050,10 @@ beef.browser = {
             return '24'
         }
         ;   // Firefox 24
+        if (this.isFF25()) {
+            return '25'
+        }
+        ;   // Firefox 25
 
         if (this.isIE6()) {
             return '6'
