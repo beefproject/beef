@@ -10,6 +10,6 @@ beef:
             category: "Social Engineering"
             name: "Fake LastPass"
             description: "Displays a fake LastPass user dialog."
-            authors: ["xntrik"]
+            authors: ["xntrik", "gcattani"]
             target:
                 user_notify: ['ALL']
