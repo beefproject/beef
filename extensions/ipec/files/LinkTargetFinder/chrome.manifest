@@ -1,0 +1,8 @@
+content     linktargetfinder    chrome/content/
+content     linktargetfinder    chrome/content/ contentaccessible=yes
+overlay chrome://browser/content/browser.xul chrome://linktargetfinder/content/browser.xul
+
+locale	linktargetfinder	en-US	locale/en-US/
+
+skin	linktargetfinder	classic/1.0	skin/
+style	chrome://global/content/customizeToolbar.xul	chrome://linktargetfinder/skin/skin.css

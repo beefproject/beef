@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -23,17 +13,43 @@ module Qrcode
     
     def self.pre_http_start(http_hook_server)
       require 'uri'
-      
+
+      fullurls = []
+      partialurls = []
+
       configuration = BeEF::Core::Configuration.instance
-      BeEF::Core::Console::Banners.interfaces.each do |int|
-        print_success "QRCode images available for interface: #{int}"
+
+      configuration.get("beef.extension.qrcode.target").each do |target|
+        if target.lines.grep(/^https?:\/\//i).size > 0
+          fullurls << target
+        else
+          partialurls << target
+        end
+      end
+
+      if fullurls.size > 0
+        print_success "Custom QRCode images available:"
         data = ""
-        configuration.get("beef.extension.qrcode.target").each do |target|
-          url = "http://#{int}:#{configuration.get("beef.http.port")}#{target}"
-          url = URI.escape(url,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+        fullurls.each do |target|
+          url = URI.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
           data += "https://chart.googleapis.com/chart?cht=qr&chs=#{configuration.get("beef.extension.qrcode.qrsize")}&chl=#{url}\n"
         end
         print_more data
+
+      end
+      
+      if partialurls.size > 0
+        BeEF::Core::Console::Banners.interfaces.each do |int|
+          next if int == "localhost" or int == "127.0.0.1"
+          print_success "QRCode images available for interface: #{int}"
+          data = ""
+          partialurls.each do |target|
+            url = "http://#{int}:#{configuration.get("beef.http.port")}#{target}"
+            url = URI.escape(url,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+            data += "https://chart.googleapis.com/chart?cht=qr&chs=#{configuration.get("beef.extension.qrcode.qrsize")}&chl=#{url}\n"
+          end
+          print_more data
+        end
       end
     end  
     

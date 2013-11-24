@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        link_rewrite_tel:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Replace HREFs (TEL)"
+            description: "This module will rewrite all the href attributes of telephone links (ie, tel:5558585) to call a number of your choice."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

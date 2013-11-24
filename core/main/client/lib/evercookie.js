@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*
  * evercookie 0.4 (10/13/2010) -- extremely persistent cookies
  *
@@ -802,14 +793,19 @@ this.waitForSwf = function(i)
 
 this.evercookie_cookie = function(name, value)
 {
-	if (typeof(value) != "undefined")
-	{
-		// expire the cookie first
-		document.cookie = name + '=; expires=Mon, 20 Sep 2010 00:00:00 UTC; path=/';
-		document.cookie = name + '=' + value + '; expires=Tue, 31 Dec 2030 00:00:00 UTC; path=/';
-	}
-	else
-		return this.getFromStr(name, document.cookie);
+    try{
+        if (typeof(value) != "undefined")
+        {
+            // expire the cookie first
+            document.cookie = name + '=; expires=Mon, 20 Sep 2010 00:00:00 UTC; path=/';
+            document.cookie = name + '=' + value + '; expires=Tue, 31 Dec 2030 00:00:00 UTC; path=/';
+        }
+        else
+            return this.getFromStr(name, document.cookie);
+    }catch(e){
+        // the hooked domain is using HttpOnly, so we must set the hook ID in a different way.
+        // evercookie_userdata and evercookie_window will be used in this case.
+    }
 };
 
 // get value from param-like string (eg, "x=y&name=VALUE")

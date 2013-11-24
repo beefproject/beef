@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
 require 'test/unit'
 require '../common/test_constants'
 require '../common/beef_test'
@@ -58,7 +63,7 @@ class TC_login < Test::Unit::TestCase
     attacker = BeefTest.new_attacker
     victim = BeefTest.new_victim
 
-    sleep 2.0
+    sleep 5.0
 
     attacker.has_content?(VICTIM_DOMAIN)
     attacker.has_content?('127.0.0.1')

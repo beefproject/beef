@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 
 module BeEF
@@ -91,21 +81,40 @@ module BeEF
             case type
               when "apache"
                 headers "Server" => "Apache/2.2.3 (CentOS)",
-                        "Content-Type" => "text/html"
+                        "Content-Type" => "text/html; charset=UTF-8"
 
               when "iis"
                 headers "Server" => "Microsoft-IIS/6.0",
                         "X-Powered-By" => "ASP.NET",
-                        "Content-Type" => "text/html"
+                        "Content-Type" => "text/html; charset=UTF-8"
               else
                 print_error "You have and error in beef.http.web_server_imitation.type! Supported values are: apache, iis."
             end
+          end
+
+          # @note If CORS are enabled, expose the appropriate headers
+          # this apparently duplicate code is needed to reply to preflight OPTIONS requests, which need to respond with a 200
+          # and be able to handle requests with a JSON content-type
+          if request.request_method == 'OPTIONS' && config.get("beef.http.restful_api.allow_cors")
+            allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
+            headers "Access-Control-Allow-Origin" => allowed_domains,
+                    "Access-Control-Allow-Methods" => "POST, GET",
+                    "Access-Control-Allow-Headers" => "Content-Type"
+            halt 200
+          end
+
+          # @note If CORS are enabled, expose the appropriate headers
+          if config.get("beef.http.restful_api.allow_cors")
+            allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
+            headers "Access-Control-Allow-Origin" => allowed_domains,
+                    "Access-Control-Allow-Methods" => "POST, GET"
           end
         end
 
         # @note Default root page
         get "/" do
           if config.get("beef.http.web_server_imitation.enable")
+            bp = config.get "beef.http.web_ui_basepath"
             type = config.get("beef.http.web_server_imitation.type")
             case type
               when "apache"
@@ -201,7 +210,7 @@ module BeEF
                     "<h2>If you are the website administrator:</h2>" +
                     "<p>You may now add content to the directory <tt>/var/www/html/</tt>. Note that until you do so, people visiting your website will see this page and not your content. To prevent this page from ever being used, follow the instructions in the file <tt>/etc/httpd/conf.d/welcome.conf</tt>.</p>" +
                     "<p>You are free to use the images below on Apache and CentOS Linux powered HTTP servers.  Thanks for using Apache and CentOS!</p>" +
-                    "<p><a href=\"http://httpd.apache.org/\"><img src=\"/ui/media/images/icons/apache_pb.gif\" alt=\"[ Powered by Apache ]\"/></a> <a href=\"http://www.centos.org/\"><img src=\"/ui/media/images/icons/powered_by_rh.png\" alt=\"[ Powered by CentOS Linux ]\" width=\"88\" height=\"31\" /></a></p>" +
+                    "<p><a href=\"http://httpd.apache.org/\"><img src=\"#{bp}/media/images/icons/apache_pb.gif\" alt=\"[ Powered by Apache ]\"/></a> <a href=\"http://www.centos.org/\"><img src=\"#{bp}/media/images/icons/powered_by_rh.png\" alt=\"[ Powered by CentOS Linux ]\" width=\"88\" height=\"31\" /></a></p>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -226,7 +235,7 @@ module BeEF
                     "<table>" +
                     "<tr>" +
                     "<td ID=tableProps width=70 valign=top align=center>" +
-                    "<img ID=pagerrorImg src=\"/ui/media/images/icons/pagerror.gif\" width=36 height=48>" +
+                    "<img ID=pagerrorImg src=\"#{bp}/media/images/icons/pagerror.gif\" width=36 height=48>" +
                     "<td ID=tablePropsWidth width=400>" +
                     "<h1 ID=errortype style=\"font:14pt/16pt verdana; color:#4e4e4e\">" +
                     "<P ID=Comment1><!--Problem--><P ID=\"errorText\">Under Construction</h1>" +

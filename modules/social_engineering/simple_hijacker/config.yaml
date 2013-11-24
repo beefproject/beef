@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        simple_hijacker:
+            enable: true
+            category: "Social Engineering"
+            name: "Simple Hijacker"
+            description: "Hijack clicks on links to display what you want."
+            templates: ["credential", "confirmbox", "amazon", "chromecertbeggar", "chromecertbeggar2"]
+            authors: ["gallypette"]
+            target:
+                user_notify: ['ALL']

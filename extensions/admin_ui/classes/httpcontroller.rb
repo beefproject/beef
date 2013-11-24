@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -50,8 +40,12 @@ module AdminUI
     def run(request, response)
       @request = request
       @params = request.params
-      @session = BeEF::Extension::AdminUI::Session.instance      
-      auth_url = '/ui/authentication'
+      @session = BeEF::Extension::AdminUI::Session.instance
+      config = BeEF::Core::Configuration.instance
+
+      # Web UI base path, like http://beef_domain/<bp>/panel
+      @bp = config.get "beef.http.web_ui_basepath"
+      auth_url = "#{@bp}/authentication"
       
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
@@ -88,19 +82,23 @@ module AdminUI
 
     end
 
-    # Constructs a redirect script
-    def script_redirect(location) "<script> document.location=\"#{location}\"</script>" end
-    
-    # Constructs a html script tag
-    def script_tag(filename) "<script src=\"#{$url}/ui/media/javascript/#{filename}\" type=\"text/javascript\"></script>" end
-    
+    # Constructs a html script tag (from media/javascript directory)
+    def script_tag(filename) "<script src=\"#{$url}#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>" end
+
+    # Constructs a html script tag (from media/javascript-min directory)
+    def script_tag_min(filename) "<script src=\"#{$url}#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>" end
+
     # Constructs a html stylesheet tag
-    def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}/ui/media/css/#{filename}\" type=\"text/css\" />" end
+    def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />" end
 
     # Constructs a hidden html nonce tag
     def nonce_tag 
       @session = BeEF::Extension::AdminUI::Session.instance
       "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"" + @session.get_nonce + "\"/>"
+    end
+
+    def base_path
+      "#{@bp}"
     end
 
     private

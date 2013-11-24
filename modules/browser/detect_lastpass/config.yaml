@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_lastpass:
+            enable: true
+            category: "Browser"
+            name: "Detect LastPass"
+            description: "This module checks if the LastPass extension is installed and active."
+            authors: ["xntrik"]
+            target:
+                 not_working: ["IE"]
+                 working: ["All"]

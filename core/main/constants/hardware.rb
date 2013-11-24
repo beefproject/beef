@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 
 module BeEF
@@ -22,6 +12,8 @@ module Constants
   module Hardware
 
     HW_UNKNOWN_IMG        = 'pc.png'
+	HW_VM_IMG             = 'vm.png'
+	HW_LAPTOP_IMG         = 'laptop.png'
 	HW_IPHONE_UA_STR      = 'iPhone'
  	HW_IPHONE_IMG         = 'iphone.jpg'
 	HW_IPAD_UA_STR	      = 'iPad'
@@ -42,8 +34,8 @@ module Constants
 	HW_HTC_IMG            = 'htc.ico'
 	HW_MOTOROLA_UA_STR    = 'motorola'
 	HW_MOTOROLA_IMG       = 'motorola.png'
-	HW_GOOGLE_UA_STR      = 'Nexus One'
-	HE_GOOGLE_IM          = 'nexus.png'
+	HW_GOOGLE_UA_STR      = 'Nexus'
+	HW_GOOGLE_IMG         = 'nexus.png'
 	HW_ERICSSON_UA_STR    = 'Ericsson'
 	HW_ERICSSON_IMG       = 'sony_ericsson.png'
 	HW_ALL_UA_STR         = 'All'

@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        deface_web_page_component:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Replace Component (Deface)"
+            description: "Overwrite a particular component of the hooked page."
+            authors: ["antisnatchor", "xntrik"]
+            target:
+                user_notify: ['ALL']

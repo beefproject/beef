@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -28,7 +18,7 @@ class Target
     begin
       driver.interface.getcommands.each { |folder|
         folder['children'].each { |command|
-          @@commands << folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
+          @@commands << folder['text'].gsub(/\s/,"_") + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
         }
       }
     rescue
@@ -50,17 +40,29 @@ class Target
   
   @@bare_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ])
+
+  @@commands_opts = Rex::Parser::Arguments.new(
+    "-h" => [ false, "Help."],
+    "-s" => [ false, "<search term>"],
+    "-r" => [ false, "List modules which have responses against them only"])
   
   def cmd_commands(*args)
+
+    searchstring = nil
+    responly = nil
     
-    @@bare_opts.parse(args) {|opt, idx, val|
+    @@commands_opts.parse(args) {|opt, idx, val|
       case opt
         when "-h"
           cmd_commands_help
           return false
+        when "-s"
+          searchstring = args[1].downcase if not args[1].nil?
+        when "-r"
+          responly = true
         end
     }
-    
+
     tbl = Rex::Ui::Text::Table.new(
       'Columns' =>
         [
@@ -73,10 +75,29 @@ class Target
     
     driver.interface.getcommands.each { |folder|
       folder['children'].each { |command|
-        tbl << [command['id'].to_i,
-                folder['text'] + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_"),
+
+        cmdstring = folder['text'].gsub(/\s/,"_") + command['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
+
+        if not searchstring.nil?
+          if not cmdstring.downcase.index(searchstring).nil?
+            tbl << [command['id'].to_i,
+                cmdstring,
                 command['status'].gsub(/^Verified /,""),
                 driver.interface.getcommandresponses(command['id']).length] #TODO
+          end
+        elsif not responly.nil?
+             tbl << [command['id'].to_i,
+                cmdstring,
+                command['status'].gsub(/^Verified /,""),
+                driver.interface.getcommandresponses(command['id']).length] if driver.interface.getcommandresponses(command['id']).length.to_i > 0
+
+        else 
+         tbl << [command['id'].to_i,
+            cmdstring,
+            command['status'].gsub(/^Verified /,""),
+            driver.interface.getcommandresponses(command['id']).length] #TODO
+        end
+
       }
     }
     
@@ -88,6 +109,9 @@ class Target
   
   def cmd_commands_help(*args)
     print_status("List command modules for this target")
+    print_line("Usage: commands [options]")
+    print_line
+    print @@commands_opts.usage()
   end
   
   def cmd_info(*args)
@@ -143,7 +167,7 @@ class Target
     else
       driver.interface.getcommands.each { |x|
         x['children'].each { |y|
-          if args[0].chomp == x['text']+"/"+y['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
+          if args[0].chomp == x['text'].gsub(/\s/,"_")+y['text'].gsub(/[-\(\)]/,"").gsub(/\W+/,"_")
             modid = y['id']
           end
         }

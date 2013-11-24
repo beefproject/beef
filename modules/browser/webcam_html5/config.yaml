@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        webcam_html5:
+            enable: true
+            category: "Browser"
+            name: "Webcam HTML5"
+            description: "This module will leverage HTML5s WebRTC to capture webcam images. Only tested in Chrome, and it will display a dialog to ask if the user wants to enable their webcam."
+            authors: ["xntrik"]
+            target:
+                 user_notify: ["C"]
+                 unknown: ["All"]

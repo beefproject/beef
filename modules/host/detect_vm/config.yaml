@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_virtualization:
+            enable: true
+            category: "Host"
+            name: "Detect Virtual Machine"
+            description: "This module uses the host screen resolution as a cheap and easy method to check if the browser is running in a virtual environment.<br/><br/>Unusual screen resolutions, such as those used by wide screen televisions or hand-held devices, may result in false negative results."
+            authors: ["Jeremiah Grossman", "bcoles"]
+            target:
+                 working: ["All"]

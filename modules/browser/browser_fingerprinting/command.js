@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 beef.execute(function() {
 
 	var browser_type = new Array;
@@ -43,7 +34,12 @@ beef.execute(function() {
 		new Array("Firefox","4+","resource:///chrome/browser/skin/classic/browser/Geolocation-16.png"),
 		new Array("Firefox","7+","resource:///chrome/browser/content/browser/aboutHome-snippet1.png"),
 		new Array("Firefox","8+","resource:///chrome/browser/skin/classic/aero/browser/Toolbar-inverted.png"),
+		new Array("Firefox","9+","resource:///chrome/browser/skin/classic/aero/browser/identity.png"),
+		new Array("Firefox","10+","chrome://browser/skin/sync-128.png"),
+		new Array("Firefox","13+","chrome://browser/content/abouthome/noise.png"),
+		new Array("Firefox","18+","resource:///chrome/browser/skin/classic/aero/browser/webRTC-shareDevice-16.png"),
 		new Array("Internet Explorer","5-6","res://shdoclc.dll/pagerror.gif"),
+		new Array("Internet Explorer","7-9","res://ieframe.dll/ielogo.png"),
 		new Array("Internet Explorer","7+","res://ieframe.dll/info_48.png")
 	);
 

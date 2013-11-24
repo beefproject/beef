@@ -1,0 +1,1 @@
+This is a temp directory where the Firefox extension will be built.

@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_form_values:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Get Form Values"
+            description: "This module retrieves the name, type, and value of all input fields for all forms on the page."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]

@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 /*
  * The request Tab panel for the selected zombie.
  * Loaded in /ui/panel/index.html
@@ -41,7 +32,7 @@ ZombieTab_Requester = function(zombie) {
 		title: 'Proxy',
 		layout: 'fit',
 		padding: '10 10 10 10',
-                html: "<p style='font:11px tahoma,arial,helvetica,sans-serif'>The Tunneling Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". Each request sent through the Proxy is recorded in the History panel in the Rider tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</p>",
+                html: "<div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' ><p style='font:11px tahoma,arial,helvetica,sans-serif'>The Tunneling Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\".</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/proxy.png'></p><p>The proxy runs on localhost port 6789 by default. Each request sent through the Proxy is recorded in the History panel in the Rider tab. Click a history item to view the HTTP headers and HTML source of the HTTP response.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/history.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>To manually forge an arbitrary HTTP request use the \"Forge Request\" tab from the Rider tab.</p><p style='margin: 10 0 10 0'><img src='<%= @base_path %>/media/images/help/forge.png'></p><p style='font:11px tahoma,arial,helvetica,sans-serif'>For more information see: <a href=\"https://github.com/beefproject/beef/wiki/Tunneling\">https://github.com/beefproject/beef/wiki/Tunneling</a></p></div>",
 		listeners: {
 			activate: function(proxy_panel) {
 				// to do: refresh list of hooked browsers
@@ -65,7 +56,7 @@ ZombieTab_Requester = function(zombie) {
 	 ********************************************/
 	var history_panel_store = new Ext.ux.data.PagingJsonStore({
 		storeId: 'requester-history-store-zombie-'+zombie.session,
-		url: '/ui/requester/history.json',
+		url: '<%= @base_path %>/requester/history.json',
 		remoteSort: false,
 		autoDestroy: true,
 		autoLoad: false,
@@ -178,7 +169,7 @@ ZombieTab_Requester = function(zombie) {
 		
 		listeners: {
 			activate: function(history_panel) {
-				history_panel.items.items[0].store.reload({params:{url:'/ui/requester/history.json'}});
+				history_panel.items.items[0].store.reload({params:{url:'<%= @base_path %>/requester/history.json'}});
 			}
 		}
 	});
@@ -199,7 +190,7 @@ ZombieTab_Requester = function(zombie) {
 		var form = new Ext.FormPanel({
 			title: 'Forge Raw HTTP Request',
 			id: 'requester-request-form-zombie'+zombie.session,
-			url: '/ui/requester/send',
+			url: '<%= @base_path %>/requester/send',
 			hideLabels : true,
 			border: false,
 			padding: '3px 5px 0 5px',
@@ -260,7 +251,7 @@ ZombieTab_Requester = function(zombie) {
 		bar.update_sending('Getting response...');
 		
 		Ext.Ajax.request({
-			url: '/ui/requester/response.json',
+			url: '<%= @base_path %>/requester/response.json',
 			loadMask: true,
 			
 			params: {

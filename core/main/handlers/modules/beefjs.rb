@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
   module Core
@@ -31,15 +21,17 @@ module BeEF
             beef_js_path = "#{$root_dir}/core/main/client/"
 
             # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
-            ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js)
+            ext_js_sub_files = %w(lib/jquery-1.5.2.min.js lib/evercookie.js lib/json2.js lib/jools.min.js lib/mdetect.js)
 
+            # @note BeEF libraries: need Eruby evaluation and obfuscation
+            beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js net/cors.js are.js)
             # @note Load websocket library only if WS server is enabled in config.yaml
-            if config.get("beef.http.websocket.enable") == false
-              # @note BeEF libraries: need Eruby evaluation and obfuscation                                                                                                                           #antisnatchor: leave timeout.js as the last one!
-              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js are.js timeout.js)
-            else                                                                                                                                                                                                   #antisnatchor: leave timeout.js as the last one!
-              beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js websocket.js are.js timeout.js)
+            if config.get("beef.http.websocket.enable") == true
+              beef_js_sub_files << "websocket.js"
             end
+
+            # @note antisnatchor: leave timeout.js as the last one!
+            beef_js_sub_files << "timeout.js"
 
             ext_js_to_obfuscate = ''
             ext_js_to_not_obfuscate = ''
@@ -74,10 +66,23 @@ module BeEF
             hook_session_config = BeEF::Core::Server.instance.to_h
 
             # @note if http_host="0.0.0.0" in config ini, use the host requested by client
+            unless hook_session_config['beef_public'].nil?
+              if hook_session_config['beef_host'] != hook_session_config['beef_public']
+                hook_session_config['beef_host'] = hook_session_config['beef_public']
+                hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_host']}/, hook_session_config['beef_public'])
+              end
+            end
             if hook_session_config['beef_host'].eql? "0.0.0.0"
               hook_session_config['beef_host'] = req_host
               hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
             end
+
+            # @note set the XHR-polling timeout
+            hook_session_config['xhr_poll_timeout'] = config.get("beef.http.xhr_poll_timeout")
+
+            # @note set the hook file path and BeEF's cookie name
+            hook_session_config['hook_file'] = config.get("beef.http.hook_file")
+            hook_session_config['hook_session_name'] = config.get("beef.http.hook_session_name")
 
             # @note if http_port <> public_port in config ini, use the public_port
             unless hook_session_config['beef_public_port'].nil?
@@ -94,7 +99,7 @@ module BeEF
             if config.get("beef.http.websocket.enable")
               hook_session_config['websocket_secure'] = config.get("beef.http.websocket.secure")
               hook_session_config['websocket_port'] = config.get("beef.http.websocket.port")
-              hook_session_config['websocket_timer'] = config.get("beef.http.websocket.alive_timer")
+              hook_session_config['ws_poll_timeout'] = config.get("beef.http.websocket.ws_poll_timeout")
               hook_session_config['websocket_sec_port']= config.get("beef.http.websocket.secure_port")
             end
 
@@ -104,8 +109,7 @@ module BeEF
 
             if config.get("beef.extension.evasion.enable")
               evasion = BeEF::Extension::Evasion::Evasion.instance
-              @hook = evasion.add_bootstrapper + evasion.obfuscate(@hook)
-              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate) + @hook
+              @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate + @hook)
             else
               @final_hook = ext_js_to_not_obfuscate + @hook
             end

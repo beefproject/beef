@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -51,36 +41,35 @@ module Events
       events = @data['results']
 
       # push events to logger
-      if (events.kind_of?(Array))
         logger = BeEF::Core::Logger.instance
-        events.each{|e|
-            logger.register('Event', parse(e), zombie.id)
-        }
-      end
-
+        events.each do |key,value|
+            logger.register('Event', parse(value), zombie.id)
+        end
     end
 
     def parse(event)
-        case event['type']
-            when 'click'
-                return event['time'].to_s+'s - [Mouse Click] x: '+event['x'].to_s+' y:'+event['y'].to_s+' > '+event['target'].to_s
-            when 'focus'
-                return event['time'].to_s+'s - [Focus] Browser has regained focus.'
-			when 'copy'
-				return event['time'].to_s+'s - [User Copied Text] "'+event['data'].to_s+'"'
-			when 'cut'
-				return event['time'].to_s+'s - [User Cut Text] "'+event['data'].to_s+'"'
-			when 'paste'
-				return event['time'].to_s+'s - [User Pasted Text] "'+event['data'].to_s+'"'
-            when 'blur'
-                return event['time'].to_s+'s - [Blur] Browser has lost focus.'
-            when 'keys'
-                return event['time'].to_s+'s - [User Typed] "'+event['data'].to_s+'" > '+event['target'].to_s
-			when 'submit'
-				return event['time'].to_s+'s - [Form Submitted] '+event['data'].to_s+' > '+event['target'].to_s
-        end
-        print_debug '[EVENTS] Event handler has received an unknown event'
-        return 'Unknown event'
+      case event['type']
+        when 'click'
+          result = "#{event['time']}s - [Mouse Click] x: #{event['x']} y:#{event['y']} > #{event['target']}"
+        when 'focus'
+          result = "#{event['time']}s - [Focus] Browser window has regained focus."
+        when 'copy'
+          result = "#{event['time']}s - [User Copied Text] \"#{event['data']}\""
+        when 'cut'
+          result = "#{event['time']}s - [User Cut Text] \"#{event['data']}\""
+        when 'paste'
+          result = "#{event['time']}s - [User Pasted Text] \"#{event['data']}\""
+        when 'blur'
+          result = "#{event['time']}s - [Blur] Browser window has lost focus."
+        when 'keys'
+          result = "#{event['time']}s - [User Typed] \"#{event['data']}\" > #{event['target']}"
+        when 'submit'
+          result = "#{event['time']}s - [Form Submitted] \"#{event['data']}\" > #{event['target']}"
+        else
+          print_debug '[EVENTS] Event handler has received an unknown event'
+          result = "#{event['time']}s - Unknown event"
+      end
+      result
     end
     
   end

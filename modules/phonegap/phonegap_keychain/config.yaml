@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+#   Phonegap_keychain
+#
+beef:
+    module:
+        phonegap_keychain:
+            enable: true
+            category: "Phonegap"
+            name: "Keychain"
+            description: "Read/CreateUpdate/Delete Keychain Elements"
+            authors: ["staregate"]
+            target:
+                working: ["All"]

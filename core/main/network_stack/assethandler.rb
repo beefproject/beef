@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Core
@@ -32,6 +22,38 @@ module Handlers
       @sockets = {}
       @http_server = BeEF::Core::Server.instance
       @root_dir = File.expand_path('../../../../', __FILE__)
+    end
+
+    # Binds a redirector to a mount point
+    # @param [String] target The target for the redirector
+    # @param [String] path An optional URL path to mount the redirector to (can be nil for a random path)
+    # @return [String] URL Path of the redirector
+    # @todo This function, similar to bind(), should accept a hooked browser session to limit the mounted file to a certain session etc.
+    def bind_redirect(target, path=nil)
+      url = build_url(path,nil)
+      @allocations[url] = {'target' => target}
+      @http_server.mount(url,BeEF::Core::NetworkStack::Handlers::Redirector.new(target))
+      @http_server.remap
+      print_info "Redirector to [" + target + "] bound to url [" + url + "]"
+      url
+    end
+
+    # Binds raw HTTP to a mount point
+    # @param [Integer] status HTTP status code to return
+    # @param [String] headers HTTP headers as a JSON string to return
+    # @param [String] body HTTP body to return
+    # @param [String] path URL path to mount the asset to TODO (can be nil for random path)
+    # @todo @param [Integer] count The amount of times the asset can be accessed before being automatically unbinded (-1 = unlimited)
+    def bind_raw(status, header, body, path=nil, count=-1)
+      url = build_url(path,nil)
+      @allocations[url] = {}
+      @http_server.mount(
+        url,
+        BeEF::Core::NetworkStack::Handlers::Raw.new(status, header, body)
+      )
+      @http_server.remap
+      print_info "Raw HTTP bound to url [" + url + "]"
+      url
     end
 
     # Binds a file to a mount point
@@ -63,7 +85,7 @@ module Handlers
     # use it like: bind_socket("irc","0.0.0.0",6667)
     def bind_socket(name, host, port)
       if @sockets[name] != nil
-        print_error "Thread [#{name}] is already listening on [#{host}:#{port}]."
+        print_error "Bind Socket [#{name}] is already listening on [#{host}:#{port}]."
       else
         t = Thread.new {
           server = TCPServer.new(host,port)
@@ -71,24 +93,47 @@ module Handlers
             Thread.start(server.accept) do |client|
               data = ""
               recv_length = 1024
+              threshold = 1024 * 512
               while (tmp = client.recv(recv_length))
                 data += tmp
                 break if tmp.length < recv_length || tmp.length == recv_length
+                # 512 KB max of incoming data
+                break if data > threshold
+              end
+              if  data.size > threshold
+                print_error "More than 512 KB of data incoming for Bind Socket [#{name}]. For security purposes client connection is closed, and data not saved."
+              else
+                @sockets[name] = {'thread' => t, 'data' => data}
+                print_info "Bind Socket [#{name}] received [#{data.size}] bytes of data."
+                print_debug "Bind Socket [#{name}] received:\n#{data}"
               end
               client.close
-              print_debug "Bind Socket on Thread [#{name}] received:\n#{data}"
             end
           end
         }
-        @sockets[name] = t
-        print_info "Thread [#{name}] listening on [#{host}:#{port}]."
+        print_info "Bind socket [#{name}] listening on [#{host}:#{port}]."
       end
     end
 
+    def get_socket_data(name)
+      data = nil
+      if @sockets[name] != nil
+        data = @sockets[name]['data']
+      else
+        print_error "Bind Socket [#{name}] does not exists."
+      end
+      data
+    end
+
     def unbind_socket(name)
-      t = @sockets[name]
-      Thread.kill(t)
-      print_info "Thread [#{name}] killed."
+        t = @sockets[name]['thread']
+        if t.alive?
+          print_debug "Thread to be killed: #{t}"
+          Thread.kill(t)
+          print_info "Bind Socket [#{name}] killed."
+        else
+          print_info "Bind Socket [#{name}] ALREADY killed."
+        end
     end
 
     # Builds a URL based on the path and extension, if neither are passed a random URL will be generated

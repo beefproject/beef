@@ -1,0 +1,22 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_extensions:
+            enable: true
+            category: "Browser"
+            name: "Detect Extensions"
+            description: "This module detects extensions installed in Google Chrome and Mozilla Firefox."
+            authors: ["koto", "bcoles", "nbblrr"]
+            target:
+                working:
+                    FF:
+                        min_ver: 1
+                        max_ver: latest
+                    C:
+                        min_ver: 1
+                        max_ver: 18
+                not_working: ["All"]

@@ -1,0 +1,31 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        spyder_eye:
+            enable: true
+            category: "Browser"
+            name: "Spyder Eye"
+            description: "This module takes a picture of the victim's browser window."
+            authors: ["preth00nker"]
+            target:
+                working:
+                    IE:
+                        min_ver: 9
+                        max_ver: latest
+                    FF:
+                        min_ver: 3
+                        max_ver: latest
+                    C:
+                        min_ver: 1
+                        max_ver: latest
+                    S:
+                        min_ver: 6
+                        max_ver: latest
+                    O:
+                        min_ver: 12
+                        max_ver: latest
+                not_working: ["All"]

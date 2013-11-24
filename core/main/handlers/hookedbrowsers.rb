@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Core
@@ -61,13 +51,25 @@ module Handlers
 
       # @note is a known browser so send instructions 
       else       
+        # @note Check if we haven't seen this browser for a while, log an event if we haven't
+        if (Time.new.to_i - hooked_browser.lastseen.to_i) > 60
+          BeEF::Core::Logger.instance.register('Zombie',"#{hooked_browser.ip} appears to have come back online","#{hooked_browser.id}")
+        end
+
         # @note record the last poll from the browser
         hooked_browser.lastseen = Time.new.to_i
         
         # @note Check for a change in zombie IP and log an event
-        if hooked_browser.ip != request.ip
-          BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.ip}","#{hooked_browser.id}")
-          hooked_browser.ip = request.ip
+        if config.get('beef.http.use_x_forward_for') == true
+          if hooked_browser.ip != request.env["HTTP_X_FORWARDED_FOR"]
+            BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.env["HTTP_X_FORWARDED_FOR"]}","#{hooked_browser.id}")
+            hooked_browser.ip = request.env["HTTP_X_FORWARDED_FOR"]
+          end
+        else
+          if hooked_browser.ip != request.ip
+           BeEF::Core::Logger.instance.register('Zombie',"IP address has changed from #{hooked_browser.ip} to #{request.ip}","#{hooked_browser.id}")
+           hooked_browser.ip = request.ip
+          end
         end
       
         hooked_browser.count!

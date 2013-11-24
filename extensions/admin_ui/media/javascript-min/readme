@@ -1,0 +1,2 @@
+This directory will contain minified JavaScript files used by the Web UI.
+Those files are excluded from the GIT report through the .gitignore file.

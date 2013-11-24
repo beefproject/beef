@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_internal_ip_webrtc:
+            enable: true
+            category: "Host"
+            name: "Get Internal IP WebRTC"
+            description: "Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC Peer-to-Peer connection framework. Code from http://net.ipcalf.com/"
+            authors: ["xntrik", "@natevw"]
+            target:
+                 working: ["C", "FF"]
+                 unknown: ["All"]

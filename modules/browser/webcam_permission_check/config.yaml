@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        webcam_permission_check:
+            enable: true
+            category: "Browser"
+            name: "Webcam Permission Check"
+            description: "This module will check to see if the user has allowed the BeEF domain (or all domains) to access the Camera and Mic with Flash. This module is transparent and should not be detected by the user (ie. no popup requesting permission will appear)"
+            authors: ["@bw_z"]
+            target:
+                 working: ["All"]

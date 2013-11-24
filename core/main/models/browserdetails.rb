@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Core
@@ -90,6 +80,7 @@ module Models
       
       return BeEF::Core::Constants::Os::OS_UNKNOWN_IMG if ua_string.nil?
       return BeEF::Core::Constants::Os::OS_WINDOWS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_WINDOWS_UA_STR
+      return BeEF::Core::Constants::Os::OS_ANDROID_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_ANDROID_UA_STR
       return BeEF::Core::Constants::Os::OS_LINUX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_LINUX_UA_STR
       return BeEF::Core::Constants::Os::OS_QNX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_QNX_UA_STR
       return BeEF::Core::Constants::Os::OS_BEOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BEOS_UA_STR
@@ -101,7 +92,6 @@ module Models
       return BeEF::Core::Constants::Os::OS_MAEMO_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_MAEMO_UA_STR
       return BeEF::Core::Constants::Os::OS_MAC_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_MAC_UA_STR
       return BeEF::Core::Constants::Os::OS_BLACKBERRY_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BLACKBERRY_UA_STR
-      return BeEF::Core::Constants::Os::OS_ANDROID_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_ANDROID_UA_STR
     
       BeEF::Core::Constants::Os::OS_UNKNOWN_IMG
     end
@@ -113,7 +103,9 @@ module Models
     def self.hw_icon(session_id)
 
       ua_string = get(session_id, 'BrowserReportedName')
-
+      hardware  = get(session_id, 'Hardware')
+      return BeEF::Core::Constants::Hardware::HW_VM_IMG if hardware =~ /Virtual Machine/
+      return BeEF::Core::Constants::Hardware::HW_LAPTOP_IMG if hardware =~ /Laptop/
       return BeEF::Core::Constants::Hardware::HW_UNKNOWN_IMG if ua_string.nil?
 
       return BeEF::Core::Constants::Hardware::HW_WINPHONE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_WINPHONE_UA_STR

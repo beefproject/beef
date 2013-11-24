@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 
 DataGrid = function(url, page, base) {
     this.page = page;
@@ -27,10 +18,10 @@ DataGrid = function(url, page, base) {
         storeId: 'myStore',
         baseParams: this.base,
         idProperty: 'id',
-        fields: ['id','type','event','date'],
+        fields: ['id','type','event','date','hooked_browser_id'],
         totalProperty: 'count',
         remoteSort: false,
-        sortInfo: {field: "date", direction: "DESC"}
+        sortInfo: {field: "id", direction: "DESC"}
     });
 
     this.bbar = new Ext.PagingToolbar({
@@ -44,16 +35,17 @@ DataGrid = function(url, page, base) {
     this.columns = [{
 			id: 'log-id',
 			header: 'Id',
-			hidden: true,
+			hidden: false,
 			dataIndex: 'id',
-			sortable: false
+			sortable: true,
+			width: 20
 		}, {
 			id: 'log-type',
 			header: "Type",
 			dataIndex: 'type',
 			sortable: true,
 			width: 60,
-			renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+			renderer: function(value) {
 				return "<b>" + $jEncoder.encoder.encodeForHTML(value) + "</b>";
 			}
 		}, {
@@ -62,7 +54,9 @@ DataGrid = function(url, page, base) {
 			dataIndex: 'event',
 			sortable:true,
 			width: 420,
-			renderer: $jEncoder.encoder.encodeForHTML(this.formatTitle)
+			renderer: function(value){
+                return $jEncoder.encoder.encodeForHTML(value);
+            }
 		}, {
 			id: 'log-date',
 			header: "Date",
@@ -70,6 +64,12 @@ DataGrid = function(url, page, base) {
 			width: 80,
 			renderer:  $jEncoder.encoder.encodeForHTML(this.formatDate),
 			sortable:true
+		}, {
+			id: 'log-browser',
+			header: "Browser ID",
+			dataIndex: 'hooked_browser_id',
+			sortable: true,
+			width: 35
     }];
 
     DataGrid.superclass.constructor.call(this, {
@@ -87,7 +87,7 @@ DataGrid = function(url, page, base) {
 		
 		listeners: {
 			afterrender: function(datagrid) {
-				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"date", dir:"DESC"}});
+				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"id", dir:"DESC"}});
 			}
 		}
     });

@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+ * Browser Exploitation Framework (BeEF) - http://beefproject.com
+ * See the file 'doc/COPYING' for copying permission
+ */
+
+#link-target-finder-toolbar-button {
+	list-style-image: url("chrome://linktargetfinder/skin/toolbar-large.png");
+}
+
+#link-target-finder-status-bar-icon {
+	width: 83px;
+	margin: 0 5px;
+}
+
+.link-target-finder-selected {
+	outline: 2px solid red !important;
+}

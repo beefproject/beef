@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 var zombie_execute_button_text = 'Execute'
 var zombie_reexecute_button_text = 'Re-execute'
 var re_execute_command_title = 'Re-execute command'
@@ -120,7 +111,7 @@ function get_dynamic_payload_details(payload, zombie) {
 	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod_id').value
 	Ext.Ajax.request({
 		loadMask: true,
-		url: '/ui/modules/select/commandmodule.json',
+		url: '/<%= @base_path %>/modules/select/commandmodule.json',
 		method: 'POST',
 		params: 'command_module_id=' + modid  + '&' + 'payload_name=' + payload,
 		success: function(resp) {
@@ -155,7 +146,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 	panel.removeAll();
 	
 	Ext.Ajax.request({
-		url: '/ui/modules/select/command.json',
+		url: '<%= @base_path %>/modules/select/command.json',
 		method: 'POST',
 		params: 'command_id=' + command_id,
 		loadMask: true,
@@ -168,7 +159,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 			}
 			
 			var form = new Ext.form.FormPanel({
-				url: '/ui/modules/commandmodule/reexecute',
+				url: '<%= @base_path %>/modules/commandmodule/reexecute',
 				id: 'form-command-module-zombie-'+zombie.session,
 				border: false,
 				labelWidth: 75,
@@ -217,7 +208,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 			});
 			
 			var grid_store = new Ext.data.JsonStore({
-				url: '/ui/modules/select/command_results.json?command_id='+command_id,
+				url: '<%= @base_path %>/modules/select/command_results.json?command_id='+command_id,
 				storeId: 'command-results-store-zombie-'+zombie.session,
 		        root: 'results',
 				remoteSort: false,
@@ -250,7 +241,8 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 				viewConfig: {
 					forceFit:true
 				},
-				
+
+			// render command responses
 		        columns:[new Ext.grid.RowNumberer({width: 20}), {
 			            dataIndex: 'date',
 			            sortable: false,
@@ -259,11 +251,29 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 							html += '<p>';
 							for(index in record.data.data) {
 								result = record.data.data[index];
-								index = index.toString().replace('_', ' ');
-                                //output escape everything, but allow the <br> tag for better rendering.
-								html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
+								index  = index.toString().replace('_', ' ');
+
+								// Check for a base64 encoded image
+								var header = "image=data:image/(jpg|png);base64,";
+								var re = new RegExp(header, "");
+								if (result.match(re)) {
+
+									// Render the image
+									try {
+										var img = result.replace(/[\r\n]/g, '');
+										base64_data = window.atob(img.replace(re, ''));
+										html += String.format('<img src="{0}" /><br>', img.replace(/^image=/, ''));
+									} catch(e) {
+										console.log("Received invalid base64 encoded image string: "+e.toString());
+										html += String.format('<b>{0}</b>: {1}<br>', index, result);
+									}
+
+								// output escape everything else, but allow the <br> tag for better rendering.
+								} else {
+									html += String.format('<b>{0}</b>: {1}<br>', index, $jEncoder.encoder.encodeForHTML(result).replace(/&lt;br&gt;/g,'<br>'));
+								}
 							}
-							
+
 							html += '</p>';
 							return html;
 						}
@@ -310,7 +320,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 	} else {
 		Ext.Ajax.request({
 			loadMask: true,
-			url: '/ui/modules/select/commandmodule.json',
+			url: '<%= @base_path %>/modules/select/commandmodule.json',
 			method: 'POST',
 			params: 'command_module_id=' + command_module_id,
 			success: function(resp) {
@@ -321,9 +331,9 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					return;
 				}
 
-				var submiturl = '/ui/modules/commandmodule/new';
+				var submiturl = '<%= @base_path %>/modules/commandmodule/new';
 				if(module.dynamic){
-					submiturl = '/ui/modules/commandmodule/dynamicnew';
+					submiturl = '<%= @base_path %>/modules/commandmodule/dynamicnew';
 				}
 				
 				module = module.command_modules[1];

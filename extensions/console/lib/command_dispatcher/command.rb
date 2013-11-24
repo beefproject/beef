@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Extension
@@ -20,9 +10,18 @@ module CommandDispatcher
   
 class Command
   include BeEF::Extension::Console::CommandDispatcher
+
+  @@params = []
   
   def initialize(driver)
     super
+    begin 
+      driver.interface.cmd['Data'].each{|data|
+        @@params << data['name']
+      }
+    rescue
+      return
+    end
   end
   
   def commands
@@ -51,12 +50,16 @@ class Command
     }
       
     print_line("Module name: " + driver.interface.cmd['Name'])
-    print_line("Module category: " + driver.interface.cmd['Category'])
+    print_line("Module category: " + driver.interface.cmd['Category'].to_s)
     print_line("Module description: " + driver.interface.cmd['Description'])
     print_line("Module parameters:") if not driver.interface.cmd['Data'].length == 0
 
     driver.interface.cmd['Data'].each{|data|
-      print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'])
+      if data['type'].eql?("combobox")
+        print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'] + " (Options include: " + data['store_data'].to_s + ")")
+      else
+        print_line(data['name'] + " => \"" + data['value'].to_s + "\" # " + data['ui_label'])
+      end
     } if not driver.interface.cmd['Data'].nil?
   end
   
@@ -89,6 +92,16 @@ class Command
   def cmd_param_help(*args)
     print_status("Sets parameters for the current modules. Run \"cmdinfo\" to see the parameter values")
     print_status("  Usage: param <paramname> <paramvalue>")
+  end
+
+  def cmd_param_tabs(str,words)
+    return if words.length > 1
+
+    if @@params == ""
+      #nothing prepopulated?
+    else
+      return @@params
+    end
   end
   
   def cmd_execute(*args)
@@ -129,6 +142,7 @@ class Command
         ])
 
     if args[0] == nil
+      lastcmdid = nil
       driver.interface.getcommandresponses.each do |resp|
         indiresp = driver.interface.getindividualresponse(resp['object_id'])
         respout = ""
@@ -136,6 +150,7 @@ class Command
           respout = "No response yet"
         else
           respout = Time.at(indiresp[0]['date'].to_i).to_s
+          lastcmdid = resp['object_id']
         end
         tbl << [resp['object_id'].to_s, resp['creationdate'], respout]
       end
@@ -143,6 +158,16 @@ class Command
       puts "\n"
       puts "List of responses for this command module:\n"
       puts tbl.to_s + "\n"
+
+      if not lastcmdid.nil?
+        resp = driver.interface.getindividualresponse(lastcmdid)
+        puts "\n"
+        print_line("The last response [" + lastcmdid.to_s + "] was retrieved: " + Time.at(resp[0]['date'].to_i).to_s)
+        print_line("Response:")
+        resp.each do |op|
+          print_line(op['data']['data'].to_s)
+        end
+      end
     else
       output = driver.interface.getindividualresponse(args[0])
       if output.nil?

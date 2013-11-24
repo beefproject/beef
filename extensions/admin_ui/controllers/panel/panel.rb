@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
   module Extension
@@ -86,37 +76,49 @@ module BeEF
           # create a hash of simple hooked browser details
           def get_simple_hooked_browser_hash(hooked_browser)
 
-            browser_name = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserName')
+            browser_name    = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserName')
             browser_version = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserVersion')
-            browser_icon = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
-            os_icon = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
-            os_name = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'OsName')
-            hw_icon = BeEF::Core::Models::BrowserDetails.hw_icon(hooked_browser.session)
-            hw_name = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'Hardware')
-            domain = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
-            has_flash = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
+            browser_icon    = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
+            os_icon         = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
+            os_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'OsName')
+            hw_icon         = BeEF::Core::Models::BrowserDetails.hw_icon(hooked_browser.session)
+            hw_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'Hardware')
+            domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
+            has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
             has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
             has_googlegears = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasGoogleGears')
-            has_java = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'JavaEnabled')
-            date_stamp = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
+            has_webrtc      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebRTC')
+            has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
+            has_silverlight = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasSilverlight')
+            has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
+            has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
+            has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP') 
+            has_foxit       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFoxit')
+            date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
             return {
-                'session' => hooked_browser.session,
-                'ip' => hooked_browser.ip,
-                'domain' => domain,
-                'port' => hooked_browser.port.to_s,
-                'browser_name' => browser_name,
+                'session'         => hooked_browser.session,
+                'ip'              => hooked_browser.ip,
+                'domain'          => domain,
+                'port'            => hooked_browser.port.to_s,
+                'browser_name'    => browser_name,
                 'browser_version' => browser_version,
-                'browser_icon' => browser_icon,
-                'os_icon' => os_icon,
-                'os_name' => os_name,
-                'hw_icon' => hw_icon,
-                'hw_name' => hw_name,
-                'has_flash' => has_flash,
+                'browser_icon'    => browser_icon,
+                'os_icon'         => os_icon,
+                'os_name'         => os_name,
+                'hw_icon'         => hw_icon,
+                'hw_name'         => hw_name,
+                'has_flash'       => has_flash,
                 'has_web_sockets' => has_web_sockets,
                 'has_googlegears' => has_googlegears,
-                'has_java' => has_java,
-                'date_stamp' => date_stamp
+                'has_webrtc'      => has_webrtc,
+                'has_activex'     => has_activex,
+                'has_silverlight' => has_silverlight,
+                'has_quicktime'   => has_quicktime,
+                'has_wmp'         => has_wmp,
+                'has_foxit'       => has_foxit,
+                'has_realplayer'  => has_realplayer,
+                'date_stamp'      => date_stamp
             }
 
           end

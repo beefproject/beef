@@ -1,62 +1,64 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 # BeEF Configuration file
 
 beef:
-    version: '0.4.3.7-alpha'
+    version: '0.4.4.9-alpha'
     debug: false
 
     restrictions:
-        # subnet of browser ip addresses that can hook to the framework 
+        # subnet of browser ip addresses that can hook to the framework
         permitted_hooking_subnet: "0.0.0.0/0"
-        # subnet of browser ip addresses that can connect to the UI 
+        # subnet of browser ip addresses that can connect to the UI
         # permitted_ui_subnet: "127.0.0.1/32"
         permitted_ui_subnet: "0.0.0.0/0"
-    
+
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
         port: "3000"
+        # Decrease this setting up to 1000 if you want more responsiveness when sending modules and retrieving results.
+        # It's not advised to decrease it with tons of hooked browsers (more than 50),
+        # because it might impact performance. Also, enable WebSockets is generally better.
+        xhr_poll_timeout: 5000
         # if running behind a nat set the public ip address here
         #public: ""
         #public_port: "" # port setting is experimental
-        dns: "localhost"
-        panel_path: "/ui/panel"
+        # DNS
+        dns_host: "localhost"
+        dns_port: 53
+        web_ui_basepath: "/ui"
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
 
+        # Allow one or multiple domains to access the RESTful API using CORS
+        # For multiple domains use: "http://browserhacker.com, http://domain2.com"
+        restful_api:
+            allow_cors: false
+            cors_allowed_domains: "http://browserhacker.com"
+
         # Prefer WebSockets over XHR-polling when possible.
         websocket:
           enable: false
-          secure: true # use WebSocketSecure work only on https domain and whit https support enabled in BeEF
+          secure: true # use 'WebSocketSecure' works only on HTTPS domains and with HTTPS support enabled in BeEF
           port: 61985 # WS: good success rate through proxies
-          secure_port: 61986 # WSS
-          alive_timer: 1000 # poll BeEF every second
+          secure_port: 61986 # WSSecure
+          ws_poll_timeout: 1000 # poll BeEF every second
 
         # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
         web_server_imitation:
-            enable: false
+            enable: true
             type: "apache" #supported: apache, iis
 
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
             # In production environments, be sure to use a valid certificate signed for the value
-            # used in beef.http.dns (the domain name of the server where you run BeEF)
+            # used in beef.http.dns_host (the domain name of the server where you run BeEF)
             key: "beef_key.pem"
             cert: "beef_cert.pem"
 
@@ -65,13 +67,20 @@ beef:
         # README.databases file
 
         # supported DBs: sqlite, mysql, postgres
+        # NOTE: you must change the Gemfile adding a gem require line like:
+        #   gem "dm-postgres-adapter"
+        # or
+        #   gem "dm-mysql-adapter"
+        # if you want to switch drivers from sqlite to postgres (or mysql).
+        # Finally, run a 'bundle install' command and start BeEF.
         driver: "sqlite"
 
         # db_file is only used for sqlite
         db_file: "beef.db"
-        
+
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
+        db_port: 5432
         db_name: "beef"
         db_user: "beef"
         db_passwd: "beef123"
@@ -82,18 +91,33 @@ beef:
         user:   "beef"
         passwd: "beef"
 
+    # Autorun modules as soon the browser is hooked.
+    # NOTE: only modules with target type 'working' or 'user_notify' can be run automatically.
+    autorun:
+        enable: true
+        # set this to FALSE if you don't want to allow auto-run execution for modules with target->user_notify
+        allow_user_notify: true
+
     crypto_default_value_length: 80
+
+    # Enable client-side debugging
+    client:
+        debug: false
 
     # You may override default extension configuration parameters here
     extension:
         requester:
-            enable: true 
+            enable: true
         proxy:
-            enable: true 
+            enable: true
         metasploit:
             enable: false
-        console:
-            shell:
-                enable: false
+        social_engineering:
+            enable: true
         evasion:
             enable: false
+        console:
+             shell:
+                enable: false
+        ipec:
+            enable: true

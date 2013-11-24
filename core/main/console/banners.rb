@@ -1,17 +1,7 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 module BeEF
 module Core
@@ -40,12 +30,13 @@ module Banners
     def print_welcome_msg
         config = BeEF::Core::Configuration.instance
         version = config.get('beef.version')
-        print_info "Browser Exploitation Framework (BeEF)"
-        data =  "Version #{version}\n"
-        data += "Website http://beefproject.com\n"
-        data += "Run 'beef -h' for basic help.\n"
-        data += "Run 'git pull' to update to the latest revision."
+        print_info "Browser Exploitation Framework (BeEF) #{version}"
+        data = "Twit: @beefproject\n"
+        data += "Site: http://beefproject.com\n"
+        data += "Blog: http://blog.beefproject.com\n"
+        data += "Wiki: https://github.com/beefproject/beef/wiki\n"
         print_more data
+        print_info "Project Creator: " + "Wade Alcorn".red + " (@WadeAlcorn)"
     end
 
     #
@@ -95,7 +86,7 @@ module Banners
         print_success "running on network interface: #{host}"
         beef_host = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
         data = "Hook URL: #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.hook_file")}\n"
-        data += "UI URL:   #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.panel_path")}\n"
+        data += "UI URL:   #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.web_ui_basepath")}/panel\n"
         
         print_more data
       end
@@ -106,13 +97,12 @@ module Banners
     #
     def print_loaded_extensions
       extensions = BeEF::Extensions.get_loaded
-      print_info "#{extensions.size} extensions loaded:"
+      print_info "#{extensions.size} extensions enabled."
       output = ''
-      
-      
-      extensions.each do |key,ext|
-        output += "#{ext['name']}\n"
-      end
+
+      #extensions.each do |key,ext|
+      #  output += "#{ext['name']}\n"
+      #end
       
       print_more output
     end

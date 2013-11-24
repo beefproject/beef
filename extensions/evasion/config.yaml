@@ -1,29 +1,19 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
 beef:
     extension:
         evasion:
-            enable: true 
+            enable: true
             name: 'Evasion'
             authors: ["antisnatchor"]
-            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js"]
+            exclude_core_js: ["lib/jquery-1.5.2.min.js", "lib/json2.js", "lib/jools.min.js", "lib/mdetect.js"]
             scramble_variables: true
             scramble_cookies: true
             scramble:
               beef: "beef"
               Beef: "Beef"
               evercookie: "evercookie"
-            chain: ["scramble", "minify"]
+            chain: ["scramble", "minify", "base_64", "whitespace"]

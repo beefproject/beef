@@ -1,18 +1,9 @@
 //
-//   Copyright 2012 Wade Alcorn wade@bindshell.net
+// Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
+
 beef.execute(function() {
 
 	var facebookresult = "";
@@ -26,7 +17,7 @@ beef.execute(function() {
 	img.setAttribute("style","visibility:hidden");
 	img.setAttribute("width","0");
 	img.setAttribute("height","0");
-	img.src = 'https://mail.google.com/mail/photos/static/AD34hIiQyJTs5FhsJ1mhFdK9wx4OZU2AgLNZLBbk2zMHYPUfs-ZzXPLq2s2vdBmgnJ6SoUCeBbFnjRlPUDXw860gsEDSKPrhBJYDgDBCd7g36x2tuBQc0TM?'+ new Date();
+	img.src = 'https://mail.google.com/mail/photos/img/photos/public/AIbEiAIAAABDCKa_hYq24u2WUyILdmNhcmRfcGhvdG8qKDI1ODFkOGViM2I5ZjUwZmZlYjE3MzQ2YmQyMjAzMjFlZTU3NjEzOTYwAZwSCm_MMUDjh599IgoA2muEmEZD?'+ new Date();
 	img.id = 'gmailimg';
 	img.setAttribute("attr","start");
 	img.onerror = function() {

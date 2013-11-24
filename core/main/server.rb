@@ -1,18 +1,12 @@
 #
-#   Copyright 2012 Wade Alcorn wade@bindshell.net
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
 #
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-#
+
+# Remove Thin 'Server' response header
+Thin.send :remove_const, :SERVER
+Thin::SERVER = nil
 
 module BeEF
   module Core
@@ -28,9 +22,10 @@ module BeEF
 
       def initialize
         @configuration = BeEF::Core::Configuration.instance
+        beef_proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
         beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
         beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
-        @url = "http://#{beef_host}:#{beef_port}"
+        @url = "#{beef_proto}://#{beef_host}:#{beef_port}"
         @root_dir = File.expand_path('../../../', __FILE__)
         @command_urls = {}
         @mounts = {}
@@ -40,16 +35,18 @@ module BeEF
 
       def to_h
         {
-            'beef_version' => VERSION,
-            'beef_url' => @url,
+            'beef_version'  => VERSION,
+            'beef_url'      => @url,
             'beef_root_dir' => @root_dir,
-            'beef_host' => @configuration.get('beef.http.host'),
-            'beef_port' => @configuration.get('beef.http.port'),
-            'beef_public' => @configuration.get('beef.http.public'),
+            'beef_host'     => @configuration.get('beef.http.host'),
+            'beef_port'     => @configuration.get('beef.http.port'),
+            'beef_public'   => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
-            'beef_dns' => @configuration.get('beef.http.dns'),
-            'beef_hook' => @configuration.get('beef.http.hook_file'),
-            'beef_proto' => @configuration.get('beef.http.https.enable') == true ? "https" : "http"
+            'beef_dns_host' => @configuration.get('beef.http.dns_host'),
+            'beef_dns_port' => @configuration.get('beef.http.dns_port'),
+            'beef_hook'     => @configuration.get('beef.http.hook_file'),
+            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? "https" : "http",
+            'client_debug'  => @configuration.get("beef.client.debug")
         }
       end
 
@@ -62,9 +59,9 @@ module BeEF
         raise Exception::TypeError, '"url" needs to be a string' if not url.string?
 
         if args == nil
-          mounts[url] = http_handler_class
+          @mounts[url] = http_handler_class
         else
-          mounts[url] = http_handler_class, *args
+          @mounts[url] = http_handler_class, *args
         end
         print_debug("Server: mounted handler '#{url}'")
       end

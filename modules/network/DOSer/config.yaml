@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        doser:
+            enable: true
+            category: "Network"
+            name: "DOSer"
+            description: "Do infinite GET or POST requests to a target, spawning a WebWorker in order to don't slow down the hooked page. If the browser doesn't support WebWorkers, the module will not run."
+            authors: ["antisnatchor"]
+            target:
+                working: ["ALL"]

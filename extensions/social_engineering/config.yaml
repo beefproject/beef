@@ -1,0 +1,48 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    extension:
+        social_engineering:
+            enable: true 
+            name: 'Social Engineering'
+            authors: ["antisnatchor"]
+            web_cloner:
+                # NOTE: you must have 'wget' in your PATH
+                add_beef_hook: true
+                user_agent: "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"
+            mass_mailer:
+                # NOTE: you must have 'file' in your PATH
+                user_agent: "Microsoft-MacOutlook/12.12.0.111556"
+                host: "smtp.gmail.com"
+                port: 587
+                use_auth: true
+                use_tls: true
+                helo: "gmail.com" # this is usually the domain name
+                auth: "youruser@gmail.com"
+                password: "yourpass"
+                # available templates
+                templates:
+                    default:
+                       # images are by default inline, so if you want to attach something, see 'attachments' below
+                       images: ["beef_logo.png"]
+                       images_cids:
+                          cid1: "beef_logo.png"
+                       attachments: ["beef_attachment.pdf"]
+                    edfenergy:
+                       # my-account.edfenergy.com_mod is an example of a modified page (manually modified in order to
+                       # intercept POST requests) to be served with the web_cloner using use_existing = true
+                       images: ["corner-tl.png", "main.png", "edf_logo.png", "promo-corner-left.png", "promo-corner-right-arrow.png", "promo-reflection.png", "2012.png", "corner-bl.png", "corner-br.png", "bottom-border.png"]
+                       images_cids:
+                          cid1: "corner-tl.png"
+                          cid2:  "main.png"
+                          cid3:  "edf_logo.png"
+                          cid4:  "promo-corner-left.png"
+                          cid5:  "promo-corner-right-arrow.png"
+                          cid6:  "promo-reflection.png"
+                          cid7:  "2012.png"
+                          cid8:  "corner-bl.png"
+                          cid9:  "corner-br.png"
+                          cid10: "bottom-border.png"
