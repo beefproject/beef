@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        cross_site_faxing:
+            enable: true
+            category: "IPEC"
+            name: "Cross-Site Faxing (XSF)"
+            description: "Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will send a message to ActiveFax RAW server socket (3000 by default) on the target specified in the 'Target Address' input field.  This module can send a FAX to a (premium) faxnumber via the ActiveFax Server.<br /><br />The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet."
+            authors: ["Bart Leppens"]
+            target:
+                working: ["all"]
