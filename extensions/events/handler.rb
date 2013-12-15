@@ -62,7 +62,14 @@ module Events
         when 'blur'
           result = "#{event['time']}s - [Blur] Browser window has lost focus."
         when 'keys'
-          result = "#{event['time']}s - [User Typed] \"#{event['data']}\" > #{event['target']}"
+          print_debug "+++++++++++++++++ Key mods: #{event['mods']}"
+          print_debug "EventData: #{event['data']}"
+          if event['mods'].size > 0
+            print_debug "Event has mods"
+            result = "#{event['time']}s - [User Typed] #{event['data']} - (Mods debug) #{event['mods']}"
+          else
+            result = "#{event['time']}s - [User Typed] #{event['data']}"
+          end
         when 'submit'
           result = "#{event['time']}s - [Form Submitted] \"#{event['data']}\" > #{event['target']}"
         else

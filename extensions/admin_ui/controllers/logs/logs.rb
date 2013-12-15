@@ -59,6 +59,7 @@ class Logs < BeEF::Extension::AdminUI::HttpController
     output = '{success: false}'
 
     logs.each do |log|
+      print_debug "UI(log/.zombie.json) call: #{log.event.to_s}"
       logs_json << {
         'id' => log.id.to_i,
         'date' => log.date.to_s,
