@@ -9,7 +9,7 @@ beef:
             enable: true
             category: ["Browser", "Hooked Domain"]
             name: "Get Form Values"
-            description: "This module retrieves the name, type, and value of all input fields for all forms on the page."
+            description: "This module retrieves the name, type, and value of all input fields on the page."
             authors: ["bcoles"]
             target:
                 working: ["ALL"]

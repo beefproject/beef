@@ -7,7 +7,7 @@ class Get_form_values < BeEF::Core::Command
 
 	def post_execute
 		content = {}
-		content['form_data'] = @datastore['form_data']
+		content['result'] = @datastore['result']
 		save content
 	end
 
