@@ -31,7 +31,7 @@ module BeEF
             local_file = data['local_file']
             BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(local_file, mount)
             status 200
-          rescue Exception => e
+          rescue => e
             error 400
           end
         end

@@ -72,7 +72,7 @@ module Readline
          buff = RbReadline.readline(prompt)
       rescue ::Interrupt
          raise $!
-      rescue Exception => e
+      rescue => e
          buff = nil
          RbReadline.rl_cleanup_after_signal()
          RbReadline.rl_deprep_terminal()

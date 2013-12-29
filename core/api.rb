@@ -155,7 +155,7 @@ module BeEF
                 if not result == nil
                   data << {:api_id => mod[:id], :data => result}
                 end
-              rescue Exception => e
+              rescue => e
                 print_error "API Fire Error: #{e.message} in #{mod.to_s}.#{method.to_s}()"
               end
             end

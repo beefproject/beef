@@ -104,7 +104,7 @@ module Metasploit
 		ret = nil
 		begin
 			ret = super(meth,*args)
-		rescue Exception => e
+		rescue => e
 			return nil
 		end
 		ret
@@ -190,7 +190,7 @@ module Metasploit
       			get_lock()
 			begin
 				res = self.call('module.execute','exploit',exploit,opts)
-			rescue Exception => e
+			rescue => e
 				print_error "Exploit failed for #{exploit} \n"
         			release_lock()
 				return false
@@ -219,7 +219,7 @@ module Metasploit
       			get_lock()
 			begin
 				res = self.call('module.execute','auxiliary','server/browser_autopwn',opts)
-			rescue Exception => e
+			rescue => e
 				print_error "Failed to launch autopwn\n"
         			release_lock()
 				return false

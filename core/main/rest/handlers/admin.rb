@@ -52,7 +52,7 @@ module BeEF
                 "token" => "#{config.get('beef.api_token')}"
               }.to_json
             end
-          rescue Exception => e
+          rescue => e
             error 400
           end
         end

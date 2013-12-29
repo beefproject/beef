@@ -24,7 +24,7 @@ class Spyder_eye < BeEF::Core::Command
       end
       print_info("Browser screenshot saved to '#{filename}'")
       BeEF::Core::Logger.instance.register("Zombie", "Browser screenshot saved to '#{filename}'")
-    rescue Exception => e
+    rescue => e
       print_error("Could not write screenshot file '#{filename}' - Exception: #{e.message}")
     end
 

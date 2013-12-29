@@ -149,7 +149,7 @@ module BeEF
             data.each{|k,v| options.push({'name' => k, 'value' => v})}
             exec_results = BeEF::Module.execute(modk, params[:session], options)
             exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
-          rescue Exception => e
+          rescue => e
             print_error "Invalid JSON input for module '#{params[:mod_id]}'"
             error 400 # Bad Request
           end
@@ -203,7 +203,7 @@ module BeEF
               end
             end
             results.to_json
-          rescue Exception => e
+          rescue => e
             print_error "Invalid JSON input passed to endpoint /api/modules/multi"
             error 400 # Bad Request
           end
@@ -265,7 +265,7 @@ module BeEF
               }
             end
             results.to_json
-          rescue Exception => e
+          rescue => e
             print_error "Invalid JSON input passed to endpoint /api/modules/multi"
             error 400 # Bad Request
           end

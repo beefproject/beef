@@ -38,7 +38,7 @@ module BeEF
             begin                                                                                                                      #,"--background"
               IO.popen(["wget", "#{url}","-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}","--no-check-certificate"], 'r+') do |wget_io| end
               success = true
-            rescue Exception => e
+            rescue => e
               print_error "Errors executing wget: #{e}"
               print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
             end
@@ -154,7 +154,7 @@ module BeEF
               end
             end
             print_info "Page can be framed: [#{result}]"
-          rescue Exception => e
+          rescue => e
             result = false
             print_error "Unable to determine if page can be framed. Page can be framed: [#{result}]"
             print_debug e

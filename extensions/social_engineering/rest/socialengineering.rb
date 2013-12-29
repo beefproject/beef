@@ -57,7 +57,7 @@ module BeEF
               end
             end
 
-          rescue Exception => e
+          rescue => e
             print_error "Invalid JSON input passed to endpoint /api/seng/clone_page"
             error 400 # Bad Request
           end
@@ -108,7 +108,7 @@ module BeEF
                 halt 401
               end
             end
-          rescue Exception => e
+          rescue => e
             print_error "Invalid JSON input passed to endpoint /api/seng/send_emails"
             error 400
           end
@@ -116,7 +116,7 @@ module BeEF
           begin
             mass_mailer = BeEF::Extension::SocialEngineering::MassMailer.instance
             mass_mailer.send_email(template, fromname, fromaddr, subject, link, linktext, recipients)
-          rescue Exception => e
+          rescue => e
             print_error "Invalid mailer configuration"
             error 400
           end

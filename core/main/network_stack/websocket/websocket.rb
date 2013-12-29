@@ -94,7 +94,7 @@ module BeEF
           #              execute(msg_hash)
           #            end
           #          }
-          #        rescue Exception => e
+          #        rescue => e
           #          print_error "WebSocket-secured error: #{e}"
           #        end
           #      end
@@ -150,7 +150,7 @@ module BeEF
           #            execute(msg_hash)
           #          end
           #        }
-          #      rescue Exception => e
+          #      rescue => e
           #        print_error "WebSocket error: #{e}"
           #      end
           #    end
@@ -203,7 +203,7 @@ module BeEF
                       execute(msg_hash)
                     end
                   }
-                rescue Exception => e
+                rescue => e
                   print_error "WebSocket error: #{e}"
                 end
               end

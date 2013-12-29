@@ -92,7 +92,7 @@ module BeEF
             end
 
             close = email_close(boundary)
-          rescue Exception => e
+          rescue => e
             print_error "Error constructing email."
             raise
           end

@@ -29,7 +29,7 @@ module BeEF
           # set default value if key? does not exist
           @config.default = nil
           @@config = config
-        rescue Exception => e
+        rescue => e
           print_error "Fatal Error: cannot load configuration file"
           print_debug e
         end
@@ -44,7 +44,7 @@ module BeEF
           return nil if not File.exists?(file)
           raw = File.read(file)
           return YAML.load(raw)
-        rescue Exception => e
+        rescue => e
           print_debug "Unable to load '#{file}' #{e}"
           return nil
         end
