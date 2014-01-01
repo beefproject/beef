@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -43,7 +43,7 @@ module BeEF
             # todo antisnatchor: remove this gsub crap adding some hook packing.
             if config.get("beef.http.websocket.enable") && ws.getsocket(hb.session)
               content = File.read(find_beefjs_component_path 'beef.net.xssrays').gsub('//
-              //   Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+              //   Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
               //   Browser Exploitation Framework (BeEF) - http://beefproject.com
               //   See the file \'doc/COPYING\' for copying permission
               //', "")
