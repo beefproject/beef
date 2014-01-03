@@ -7,7 +7,10 @@
 
 beef:
     version: '0.4.4.9-alpha'
+    # More verbose messages (server-side)
     debug: false
+    # More verbose messages (client-side)
+    client_debug: false
 
     restrictions:
         # subnet of browser ip addresses that can hook to the framework
@@ -99,10 +102,6 @@ beef:
         allow_user_notify: true
 
     crypto_default_value_length: 80
-
-    # Enable client-side debugging
-    client:
-        debug: false
 
     # You may override default extension configuration parameters here
     extension:
