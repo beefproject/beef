@@ -292,7 +292,9 @@ beef.net = {
 
         // check if same domain or cross domain
         var cross_domain = true;
-
+        if(domain == "undefined" || path == "undefined"){
+            return;
+        }
         if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks
            if(document.location.port == "" || document.location.port == null){
                cross_domain = !(port == "80" || port == "443");
@@ -300,7 +302,6 @@ beef.net = {
               if (document.location.port == port) cross_domain = false;
            }
         }
-
         // build the url
         var url = "";
         if (path.indexOf("http://") != -1 || path.indexOf("https://") != -1) {
@@ -420,7 +421,11 @@ beef.net = {
                         response.was_timedout = true;
                         response.response_body = "ERROR: Timed out\n";
                         response.port_status = "closed";
-                    } else if (textStatus == "parsererror") {
+                    /*
+                    * With IE we need to explicitely sey the dataType to "script",
+                    * so there will be always parse-errors if the content is != javascript
+                    * */
+                    } else if (textStatus == "parsererror" && !beef.browser.isIE()) {
                         response.port_status = "not-http";
                     } else {
                         response.port_status = "open";

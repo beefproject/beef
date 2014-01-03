@@ -19,8 +19,7 @@ beef.net.requester = {
 	handler: "requester",
 	
 	send: function(requests_array) {
-
-        for (i in requests_array) {
+        for(var i=0; i<requests_array.length; i++){
             request = requests_array[i];
 
             beef.net.forge_request('http', request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
@@ -32,8 +31,6 @@ beef.net.requester = {
                                            response_headers: res.headers});
                                        }
                                  );
-
-
         }
     }
 };

