@@ -29,6 +29,7 @@ module BeEF
               command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
             else
               key = BeEF::Module.get_key_by_database_id(command.command_module_id)
+              (print_error "Could not find command module with ID #{command.command_module_id}"; return) if key.nil?
               command_module = BeEF::Core::Command.const_get(config.get("beef.module.#{key}.class")).new(key)
             end
 
