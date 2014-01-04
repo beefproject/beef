@@ -15,12 +15,19 @@ module Customhook
       @params = @request.query_string
       @response = Rack::Response.new(body=[], 200, header={})
       config = BeEF::Core::Configuration.instance
-
       eruby = Erubis::FastEruby.new(File.read(File.dirname(__FILE__)+'/html/index.html'))
+      config.get("beef.extension.customhook.hooks").each do |h|
+        path = config.get("beef.extension.customhook.hooks.#{h.first}.path")
+        if path == "#{env['REQUEST_URI']}"
+          print_info "[Custom Hook] Handling request for custom hook mounted at '#{path}'"
+          @body << eruby.evaluate({
+            'customhook_target' => config.get("beef.extension.customhook.hooks.#{h.first}.target"),
+            'customhook_title'  => config.get("beef.extension.customhook.hooks.#{h.first}.title")
+          })
+          break
+        end
+      end
 
-      @body << eruby.evaluate({'customhook_target' => config.get("beef.extension.customhook.customhook_target"),
-        'customhook_title' => config.get("beef.extension.customhook.customhook_title")})
-      
       @response = Rack::Response.new(
             body = [@body],
             status = 200,

@@ -7,8 +7,17 @@ beef:
     extension:
         customhook:
             enable: false
-            name: 'Custom Hook Point with iFrame Impersonation'
-            customhook_path: "/yougotchipmunked"
-            customhook_target: "http://www.chipmunks.com"
-            customhook_title: "Alvin and the Chipmunks.."
-
+            name: 'Custom Hook Points with iFrame Impersonation'
+            hooks:
+                changeme:
+                    path: "/changeme"
+                    target: "http://example.com"
+                    title: "Change Me!"
+                beef:
+                    path: "/beef"
+                    target: "http://beefproject.com"
+                    title: "BeEF - The Browser Exploitation Framework Project"
+                yougotchipmunked:
+                    path: "/yougotchipmunked"
+                    target: "http://www.chipmunks.com"
+                    title: "Alvin and the Chipmunks.."
