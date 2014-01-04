@@ -14,12 +14,13 @@ class Phonegap_persistence < BeEF::Core::Command
     proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
     beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
     beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    hook_file = @configuration.get("beef.http.hook_file")
 
     return [{
       'name' => 'hook_url',
       'description' => 'The URL of your BeEF hook',
       'ui_label'=>'Hook URL',
-      'value' => proto + '://'+beef_host+':'+beef_port+'/hook.js',
+      'value' => proto + '://'+beef_host+':'+beef_port+hook_file,
       'width' => '300px'
     }]
   end
