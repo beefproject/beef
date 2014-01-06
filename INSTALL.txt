@@ -35,9 +35,6 @@ Installation
 
 	  Other than that, you also need TheRubyRacer. As it's painful to install it on Windows, you can download 2 pre-compiled V8 DLLs and 2 gems from https://github.com/hiranpeiris/therubyracer_for_windows.
 
-      After both the SQLite and V8 DLLs are in the Ruby bin directory, and the 2 gems related to TheRubyRacer are installed, you can proceed with "bundle install".
-      
-
    3. Prerequisites (Linux)
 
       !!! This must be done PRIOR to running the bundle install command !!!
@@ -46,8 +43,8 @@ Installation
 
       3.0. sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
       3.1. install rvm from rvm.beginrescueend.com, this takes care of the various incompatable and conflicting ruby packages that are required
-      3.2. rvm install 1.9.2
-      3.3. rvm use 1.9.2
+      3.2. rvm install 1.9.3-p484
+      3.3. rvm use 1.9.3
 	  
    4. Prerequisites (Mac OSX)
    
@@ -56,15 +53,15 @@ Installation
       - Ruby 1.9
       	To install RVM and Ruby 1.9.3 on Mac OS:  
       	$ bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile 
-      	$ rvm install 1.9.3-p0 --with-gcc=clang
+      	$ rvm install 1.9.3-p484
 		$ rvm use 1.9.3
       
 
    5. Install instructions
    
-      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/zipball/master or cloning the GIT repo git@github.com:beefproject/beef.git
+      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/archive/master.zip or cloning the GIT repo https://github.com/beefproject/beef.git
 
-	  Navigate to the ruby source directory and run:
+	  Enter into the newly created BeEF directory, and type:
 
 	  bundle install
 
@@ -74,4 +71,4 @@ Installation
 
       Simply run:
 
-      ./beef
+      ./beef -x
