@@ -26,10 +26,16 @@ Installation
 
       
    2. Prerequisites (Windows)
+
+      !!! This must be done PRIOR to running the bundle install command !!!
       
       Windows requires the sqlite.dll.  Simply grab the zip file below and extract it to your Ruby bin directory:
 
 	  http://www.sqlite.org/sqlitedll-3_7_0_1.zip
+
+	  Other than that, you also need TheRubyRacer. As it's painful to install it on Windows, you can download 2 pre-compiled V8 DLLs and 2 gems from https://github.com/hiranpeiris/therubyracer_for_windows.
+
+      After both the SQLite and V8 DLLs are in the Ruby bin directory, and the 2 gems related to TheRubyRacer are installed, you can proceed with "bundle install".
       
 
    3. Prerequisites (Linux)
