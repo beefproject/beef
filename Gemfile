@@ -6,20 +6,20 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-# Gems only required on Windows, or with specific Windows issues
-if RUBY_PLATFORM.downcase.include?("mswin") || RUBY_PLATFORM.downcase.include?("mingw")
-  gem "win32console"
-end
-
 gem "eventmachine", "1.0.3"
 gem "thin"
 gem "sinatra", "1.4.2"
 gem "rack", "1.5.2"
 gem "em-websocket", "~> 0.3.6"
 gem "uglifier", "~> 2.2.1"
-# install https://github.com/cowboyd/therubyracer if the OS is != than OSX
-if !RUBY_PLATFORM.downcase.include?("darwin")
-  gem "therubyracer", "~> 0.12.0"
+if RUBY_PLATFORM.downcase.include?("mswin") || RUBY_PLATFORM.downcase.include?("mingw")
+  # make sure you install this gem following https://github.com/hiranpeiris/therubyracer_for_windows
+  gem "therubyracer", "~> 0.11.0beta1"
+  gem "execjs"
+  gem "win32console"
+elsif !RUBY_PLATFORM.downcase.include?("darwin")
+  gem "therubyracer"
+  gem "execjs"
 end
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
