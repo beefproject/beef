@@ -35,7 +35,7 @@ Requirements
 ------------
 
 * OSX 10.5.0 or higher, Modern Linux, Windows XP or higher
-* [Ruby](http://rubylang.org) 1.9.2 RVM or higher
+* [Ruby](http://rubylang.org) 1.9.2 or higher
 * [SQLite](http://sqlite.org) 3.x
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 
@@ -45,7 +45,8 @@ Quick Start
 
 __The following is for the impatient.__ 
 
-For full installation details (including on Microsoft Windows), please refer to INSTALL.txt. 
+For full installation details (including on Microsoft Windows), please refer to INSTALL.txt.
+We also have a Wiki page at https://github.com/beefproject/beef/wiki/Installation
 
        $ curl https://raw.github.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
 
