@@ -37,22 +37,7 @@ Requirements
 * OSX 10.5.0 or higher, Modern Linux, Windows XP or higher
 * [Ruby](http://rubylang.org) 1.9.2 RVM or higher
 * [SQLite](http://sqlite.org) 3.x
-* The following GEMS: 
-   - bundler 
-   - thin
-   - Sinatra 
-   - ANSI 
-   - TERM-ANSIcolor 
-   - dm-core 
-   - json 
-   - data_objects 
-   - dm-sqlite-adapter 
-   - parseconfig 
-   - erubis 
-   - dm-migrations 
-   - msfrpc-client 
-   - eventmachine
-   - win32console (Windows Only)
+* The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 
 
 Quick Start
