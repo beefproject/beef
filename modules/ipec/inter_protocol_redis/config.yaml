@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        inter_protocol_redis:
+            enable: true
+            category: "IPEC"
+            name: "Redis"
+            description: "Using Inter-Protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening Redis daemon on the target specified in the 'Target Address' input field.<br/><br/>The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.<br/><br/>The results of the Redis commands are not returned to BeEF.<br/><br/>Note: Use '\\n' to seperate Redis commands and '\\\\n' for new lines."
+            authors: ["bcoles"]
+            target:
+                working: ["FF", "C"]
+                not_working: ["IE"]
+                unknown: ["S", "O"]
