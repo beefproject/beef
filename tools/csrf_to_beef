@@ -2,7 +2,7 @@
 ################################################################################
 # CSRF to BeEF module tool                                                     #
 # TODO:                                                                        #
-# * support xhr / multipart form data                                          #
+# * support xhr                                                                #
 # * support CORS requests                                                      #
 # * add proper character encoding                                              #
 ################################################################################
@@ -126,7 +126,7 @@ beef.execute(function() {
   var target_url = '<%= @target_url %>'; 
   var timeout = 15;
 
-  var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, "#{method}",
+  var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, "#{method}", "#{enctype}",
       [
 #{options_js}
       ]);
@@ -178,7 +178,7 @@ def main fname, mname
           target_url = v
         when 'method'
           method = v
-        when 'enctype'   # not used
+        when 'enctype'
           enctype = v
         end
       end
