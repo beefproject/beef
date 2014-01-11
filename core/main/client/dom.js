@@ -446,15 +446,17 @@ beef.dom = {
      * Create an invisible iFrame with a form inside, and submit it. Useful for XSRF attacks delivered via POST requests.
      * @params: {String} action: the form action attribute, where the request will be sent.
      * @params: {String} method: HTTP method, usually POST.
+     * @params: {String} enctype: form encoding type
      * @params: {Array} inputs: an array of inputs to be added to the form (type, name, value).
      *         example: [{'type':'hidden', 'name':'1', 'value':''} , {'type':'hidden', 'name':'2', 'value':'3'}]
      */
-    createIframeXsrfForm: function(action, method, inputs){
+    createIframeXsrfForm: function(action, method, enctype, inputs){
         var iframeXsrf = beef.dom.createInvisibleIframe();
 
         var formXsrf = document.createElement('form');
-        formXsrf.setAttribute('action', action);
-        formXsrf.setAttribute('method', method);
+        formXsrf.setAttribute('action',  action);
+        formXsrf.setAttribute('method',  method);
+        formXsrf.setAttribute('enctype', enctype);
 
         var input = null;
         for (i in inputs){
