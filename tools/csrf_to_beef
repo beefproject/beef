@@ -81,8 +81,8 @@ end
 class ModuleFile
   def generate class_name, target_url, options
     options_rb = ""
-    options.each do |input_name,input_value|
-      options_rb += "      { 'name' => '#{input_name}', 'ui_label' => '#{input_name}', 'value' => '#{input_value}' },\n"
+    options.to_enum.with_index(1).each do |input, input_index|
+      options_rb += "      { 'name' => 'input_#{input_index}', 'ui_label' => '#{input[0]}', 'value' => '#{input[1]}' },\n"
     end
     return <<-EOF
 #
@@ -112,8 +112,8 @@ end
 class CommandFile
   def generate class_name, method, enctype, options
     options_js = ""
-    options.each do |input_name,input_value|
-      options_js += "        {'type':'hidden', 'name':'#{input_name}', 'value':'#{input_value}' },\n"
+    options.to_enum.with_index(1).each do |input, input_index|
+      options_js += "        {'type':'hidden', 'name':'#{input.first}', 'value':'<%= @input_#{input_index} %>' },\n"
     end
     return <<-EOF
 //
