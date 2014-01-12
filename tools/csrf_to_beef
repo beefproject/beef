@@ -5,7 +5,7 @@
 # * support xhr                                                                #
 # * support multipart file upload                                              #
 # * support CORS requests                                                      #
-# * add proper character encoding                                              #
+# * support character encoding                                                 #
 ################################################################################
 $VERBOSE = false
 $VERSION = '0.0.1'
@@ -14,7 +14,17 @@ require 'uri'
 require 'getoptlong'
 require 'fileutils'
 
-# usage
+#
+# @note Ruby version check
+#
+if RUBY_VERSION < '1.9'
+  puts "Ruby version " + RUBY_VERSION + " is not supported. Please use Ruby 1.9 or later."
+  exit 1
+end
+
+#
+# @note usage
+#
 def usage
   puts "CSRF to BeEF module tool"
   puts "[*] Generate a BeEF module using a CSRF PoC from Burp Suite."
@@ -23,17 +33,59 @@ def usage
 end
 usage if ARGV.size < 3
 
-# get args
+#
+# @note get args
+#
 mname = nil
 fname = nil
 opts = GetoptLong.new(
   [ '-h', '--help',    GetoptLong::NO_ARGUMENT ],
   [ '-v', '--verbose', GetoptLong::NO_ARGUMENT ],
   [ '-n', '--name',    GetoptLong::REQUIRED_ARGUMENT ],
-  [ '-f', '--file',    GetoptLong::REQUIRED_ARGUMENT ],
+  [ '-f', '--file',    GetoptLong::REQUIRED_ARGUMENT ]
 )
 
-# handle args
+#
+# @note Add color to String object
+#
+class String
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
+  end
+  { :red    => 31,
+    :green  => 32,
+    :yellow => 33,
+    :blue   => 34,
+    :pink   => 35,
+    :cyan   => 36,
+    :white  => 37
+  }.each {|color,code|
+    define_method(color) { colorize(code) }
+  }
+end
+
+#
+# @note handle output
+#
+def print_status(msg='')
+  puts '[*] '.blue + msg
+end
+def print_error(msg='')
+  puts '[!] '.red + "Error: #{msg}"
+end
+def print_good(msg='')
+  puts '[+] '.green + msg
+end
+def print_warning(msg='')
+  puts '[!] '.yellow + "Warning: #{msg}"
+end
+def print_debug(msg='')
+  puts "#{msg}" if $VERBOSE
+end
+
+#
+# @note handle args
+#
 opts.each do |opt, arg|
   case opt
   when '-f','--file'
@@ -47,15 +99,17 @@ opts.each do |opt, arg|
   end
 end
 if fname.nil?
-  puts "[!] '--file' argument is required. (-h for help)"
+  print_error "'--file' argument is required. (-h for help)"
   exit 1
 end
 if mname.nil?
-  puts "[!] '--name' argument is required. (-h for help)"
+  print_error "'--name' argument is required. (-h for help)"
   exit 1
 end
 
-# Module configuration file 'config.yaml'
+#
+# @note Module configuration file 'config.yaml'
+#
 class ConfigFile
   def generate class_name
     return <<-EOF
@@ -78,7 +132,9 @@ EOF
   end
 end
 
-# Module class file 'module.rb'
+#
+# @note Module class file 'module.rb'
+#
 class ModuleFile
   def generate class_name, target_url, options
     options_rb = ""
@@ -109,7 +165,9 @@ EOF
   end
 end
 
-# Module javascript command file 'command.js'
+#
+# @note Module javascript command file 'command.js'
+#
 class CommandFile
   def generate class_name, method, enctype, options
     options_js = ""
@@ -144,21 +202,29 @@ EOF
   end
 end
 
+#
+# @note main
+#
 def main fname, mname
   # validate class name
   class_name = mname.gsub(/[^\w]/, '_').downcase
 
   # read PoC file
-  puts "[*] Reading PoC from '#{fname}'"
-  f   = File.open(fname) or die "[!] Unable to open '#{fname}' file."
-  html = f.readlines()
+  print_status "Reading PoC from '#{fname}'"
+  begin
+    f    = File.open(fname)
+    html = f.readlines()
+  rescue => e
+    print_error "Could not read PoC file - #{e.message}"
+    exit 1
+  end
 
   # parse PoC file
   if    html.to_s =~ /var xhr = new XMLHttpRequest/
-    puts "[!] Error: Could not parse PoC file - XMLHttpRequest is not yet supported."
+    print_error "Could not parse PoC file - XMLHttpRequest is not yet supported."
     exit 1
   elsif html.to_s !~ /<form/
-    puts "[!] Error: Could not parse PoC file - unrecognized format."
+    print_error "Could not parse PoC file - unrecognized format."
     exit 1
   end
 
@@ -201,31 +267,31 @@ def main fname, mname
   end
 
   # write module directory
-  puts "[*] Making directory '#{class_name}'"
+  print_status "Making directory '#{class_name}'"
   unless File.directory?(class_name)
     FileUtils.mkdir_p(class_name)
   end
 
   # generate module config file and write 'config.yaml'
-  puts "[*] Generating module config file '#{class_name}/config.yaml'"
+  print_status "Generating module config file '#{class_name}/config.yaml'"
   cfg_file = ConfigFile.new.generate(class_name)
-  puts cfg_file if $VERBOSE
+  print_debug cfg_file
   File.open("#{class_name}/config.yaml", 'w') { |file| file.write(cfg_file) }
 
   # generate module class file and write 'module.rb'
-  puts "[*] Generating module class file '#{class_name}/module.rb'"
+  print_status "Generating module class file '#{class_name}/module.rb'"
   mod_file = ModuleFile.new.generate(class_name, target_url, options)
-  puts mod_file if $VERBOSE
+  print_debug mod_file
   File.open("#{class_name}/module.rb", 'w') { |file| file.write(mod_file) }
 
   # generate module javacript file and write 'command.js'
-  puts "[*] Generating module javascript file '#{class_name}/command.js'"
+  print_status "Generating module javascript file '#{class_name}/command.js'"
   com_file = CommandFile.new.generate(class_name, method, enctype, options)
-  puts com_file if $VERBOSE
+  print_debug com_file
   File.open("#{class_name}/command.js", 'w') { |file| file.write(com_file) }
 
-  puts "[+] Complete!"
-  puts "[*] Now copy the '#{class_name}' directory to the BeEF 'modules/exploits/' directory."
+  print_good "Complete!"
+  print_status "Now copy the '#{class_name}' directory to the BeEF 'modules/exploits/' directory."
 
 end
 
