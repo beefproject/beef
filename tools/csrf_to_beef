@@ -3,6 +3,7 @@
 # CSRF to BeEF module tool                                                     #
 # TODO:                                                                        #
 # * support xhr                                                                #
+# * support multipart file upload                                              #
 # * support CORS requests                                                      #
 # * add proper character encoding                                              #
 ################################################################################
@@ -17,7 +18,7 @@ require 'fileutils'
 def usage
   puts "CSRF to BeEF module tool"
   puts "[*] Generate a BeEF module using a CSRF PoC from Burp Suite."
-  puts "[*] Usage:   ./csrf_to_beef --file poc.html --name [MODULE NAME]"
+  puts "[*] Usage: ./csrf_to_beef --file sample.html --name [MODULE NAME]"
   exit 1
 end
 usage if ARGV.size < 3
@@ -145,10 +146,7 @@ end
 
 def main fname, mname
   # validate class name
-  # TODO fix this
-  class_name = mname.gsub(/[^\w\s_-]+/, '')
-            .gsub(/(^|\b\s)\s+($|\s?\b)/, '\\1\\2')
-            .gsub(/\s+/, '_').downcase
+  class_name = mname.gsub(/[^\w]/, '_').downcase
 
   # read PoC file
   puts "[*] Reading PoC from '#{fname}'"
