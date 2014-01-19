@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        overflow_cookiejar:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Overflow Cookie Jar"
+            description: "This module attempts to perform John Wilander's CookieJar overflow.  He demonstrated this in his <a href='https://www.owasp.org/index.php/OWASP_1-Liner'>Owasp 1-liner project</a>.  With this module, cookies that have the HTTPOnly-flag and/or HTTPS-flag can be wiped.  You can try to recreate these cookies afterwards as normal cookies."
+            authors: ["Bart Leppens"]
+            target:
+                working: ["S","C","FF","IE"]
