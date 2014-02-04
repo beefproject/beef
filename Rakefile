@@ -32,14 +32,6 @@ task :integration => ["install"] do
   Rake::Task['beef_stop'].invoke
 end
 
-# TODO: Remove task before comitting
-desc "Run DNS integration tests"
-task :dns_rest do
-  Rake::Task['beef_start'].invoke
-  sh "cd test/integration; ruby -W0 ts_dns_rest.rb"
-  Rake::Task['beef_stop'].invoke
-end
-
 desc "Run integration unit tests"
 task :unit => ["install"] do
   sh "cd test/unit;ruby -W0 ts_unit.rb"
