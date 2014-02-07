@@ -141,7 +141,7 @@ class TC_DebugModules < Test::Unit::TestCase
   # Test debug module "Test_network_request" using the RESTful API
   def test_return_network_request
 
-    # Test same-domain request (response code and content of secret_page.html)
+    # Test same-origin request (response code and content of secret_page.html)
     response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_test_network}?token=#{@@token}",
                                 #override only a few parameters, the other ones will have default values from modules's module.rb definition
                                {"domain" => ATTACK_DOMAIN, "port" => "3000", "path" => "/demos/secret_page.html"}.to_json,

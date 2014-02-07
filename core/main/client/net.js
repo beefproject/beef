@@ -71,7 +71,7 @@ beef.net = {
     response: function () {
         this.status_code = null;        // 500, 404, 200, 302
         this.status_text = null;        // success, timeout, error, ...
-        this.response_body = null;      // "<html>…." if not a cross domain request
+        this.response_body = null;      // "<html>…." if not a cross-origin request
         this.port_status = null;        // tcp port is open, closed or not http
         this.was_cross_domain = null;   // true or false
         this.was_timedout = null;       // the user specified timeout was reached
