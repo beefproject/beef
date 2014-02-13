@@ -64,7 +64,7 @@ beef.browser = {
      * @example: beef.browser.isIE9()
      */
     isIE9:function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
     },
 
     /**
@@ -77,11 +77,20 @@ beef.browser = {
     },
 
     /**
+     *
+     * Returns true if IE11.
+     * @example: beef.browser.isIE11()
+     */
+    isIE11:function () {
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined" && typeof document.selection === "undefined" && typeof document.createStyleSheet === "undefined" && typeof window.createPopup === "undefined" && typeof window.XDomainRequest === "undefined";
+    },
+
+    /**
      * Returns true if IE.
      * @example: beef.browser.isIE()
      */
     isIE:function () {
-        return this.isIE6() || this.isIE7() || this.isIE8() || this.isIE9() || this.isIE10();
+        return this.isIE6() || this.isIE7() || this.isIE8() || this.isIE9() || this.isIE10() || this.isIE11();
     },
 
     /**
@@ -810,6 +819,7 @@ beef.browser = {
             IE8:this.isIE8(), // Internet Explorer 8
             IE9:this.isIE9(), // Internet Explorer 9
             IE10:this.isIE10(), // Internet Explorer 10
+            IE11:this.isIE11(), // Internet Explorer 11
             IE:this.isIE(), // Internet Explorer any version
 
             O9_52:this.isO9_52(), // Opera 9.50 through 9.52
@@ -1127,6 +1137,10 @@ beef.browser = {
             return '10'
         }
         ;	// Internet Explorer 10
+        if (this.isIE11()) {
+            return '11'
+        }
+        ;   // Internet Explorer 11
 
         if (this.isS4()) {
             return '4'
