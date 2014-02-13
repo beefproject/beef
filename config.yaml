@@ -38,8 +38,8 @@ beef:
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
 
-        # Allow one or multiple domains to access the RESTful API using CORS
-        # For multiple domains use: "http://browserhacker.com, http://domain2.com"
+        # Allow one or multiple origins to access the RESTful API using CORS
+        # For multiple origins use: "http://browserhacker.com, http://domain2.com"
         restful_api:
             allow_cors: false
             cors_allowed_domains: "http://browserhacker.com"

@@ -1228,7 +1228,7 @@ beef.browser = {
                 self.frames[i].document.body.appendChild(script);
                 beef.debug("Hooked child frame [src:"+self.frames[i].window.location.href+"]");
             } catch (e) {
-                // warn on cross-domain
+                // warn on cross-origin
                 beef.debug("Hooking child frame failed: "+e.message);
             }
         }
@@ -2068,7 +2068,7 @@ beef.browser = {
 
     /**
      *  A function that gets the max number of simultaneous connections the
-     *  browser can make per domain, or globally on all domains.
+     *  browser can make per origin, or globally on all origin.
      *
      *  This code is based on research from browserspy.dk
      *
