@@ -34,7 +34,7 @@ gem "msfrpc-client"
 gem "rubyzip", "~> 1.0.0"
 
 # notifications
-gem "twitter"
+gem "twitter", ">= 5.0.0"
 
 if ENV['BEEF_TEST']
 # for running unit tests

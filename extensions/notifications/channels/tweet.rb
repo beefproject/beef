@@ -21,7 +21,7 @@ module Channels
       @config = BeEF::Core::Configuration.instance
 
       # configure the Twitter client
-      Twitter.configure do |config|
+      client = Twitter::REST::Client.new do |config|
         config.consumer_key       = @config.get('beef.extension.notifications.twitter.consumer_key')
         config.consumer_secret    = @config.get('beef.extension.notifications.twitter.consumer_secret')
         config.oauth_token    = @config.get('beef.extension.notifications.twitter.oauth_token')
@@ -29,7 +29,7 @@ module Channels
       end
 
       begin
-        Twitter.direct_message_create(username, message)
+        client.direct_message_create(username, message)
       rescue
         print "Twitter send failed, verify tokens have Read/Write/DM acceess..\n"
       end
