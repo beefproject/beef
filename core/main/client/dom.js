@@ -111,14 +111,17 @@ beef.dom = {
 	 * @param: {Function} a callback function to fire once the iFrame has loaded
 	 * @return: {Object} the inserted iFrame
 	 */
-	createIframe: function(type, method, params, styles, onload) {
+	createIframe: function(type, params, styles, onload) {
 		var css = {};
-		var form_submit = (method.toLowerCase() == 'post') ? true : false; 
+
+
+		/*var form_submit = (method.toLowerCase() == 'post') ? true : false; 
 		if (form_submit && params['src'])
 		{
 			var form_action = params['src'];
 			params['src'] = '';
-		}
+		}*/
+
 		if (type == 'hidden') {
 			css = $j.extend(true, {'border':'none', 'width':'1px', 'height':'1px', 'display':'none', 'visibility':'hidden'}, styles);
 		} else if (type == 'fullscreen') {
@@ -130,13 +133,15 @@ beef.dom = {
 		}
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
 		
-		if (form_submit && form_action)
+	   /*	
+        if (form_submit && form_action)
 		{
 			var id = beef.dom.generateID();
 			$j(iframe).attr({'id': id, 'name':id});
 			var form = beef.dom.createForm({'action':form_action, 'method':'get', 'target':id}, false);
 			$j(form).prependTo('body').submit();
 		}
+        */
 		return iframe;
 	},
 
