@@ -4,7 +4,5 @@ custom-config.yaml
 .DS_Store
 .gitignore
 .rvmrc
-beef.sublime-project
-beef.sublime-workspace
 
 *.lock
