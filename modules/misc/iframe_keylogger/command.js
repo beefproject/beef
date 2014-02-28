@@ -20,7 +20,7 @@ beef.execute(function() {
     }
 
     // creates the overlay 100% width/height iFrame
-    overlay = beef.dom.createIframe('fullscreen', 'get', {'src':"<%= @iFrameSrc %>", 'id':"overlayiframe", 'name':"overlayiframe"}, {}, null);
+    overlay = beef.dom.createIframe('fullscreen', {'src':"<%= @iFrameSrc %>", 'id':"overlayiframe", 'name':"overlayiframe"}, {}, null);
 
     if(beef.browser.isIE()){
        // listen for keypress events on the iFrame
