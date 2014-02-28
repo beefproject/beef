@@ -4,7 +4,7 @@
  * See the file 'doc/COPYING' for copying permission
  */
 
-  beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+  beef.dom.createIframe('fullscreen', {'src':$j(this).attr('href')}, {}, null);
 	$j(document).attr('title', $j(this).html());
 	document.body.scroll = 'no';
 	document.documentElement.style.overflow = 'hidden';
