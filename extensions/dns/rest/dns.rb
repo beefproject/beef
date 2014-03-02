@@ -71,12 +71,20 @@ module BeEF
             type = body['type']
             response = body['response']
 
+            valid_types = ["A", "AAAA", "CNAME", "HINFO", "MINFO", "MX", "NS", "PTR", "SOA", "TXT", "WKS"]
+
             # Validate required JSON keys
             unless [pattern, type, response].include?(nil)
               # Determine whether 'pattern' is a String or Regexp
               begin
-                pattern_test = eval pattern
-                pattern = pattern_test if pattern_test.class == Regexp
+                # antisnatchor: UNSAFE EVAL!!! RCE
+                #pattern_test = eval pattern
+                #pattern = pattern_test if pattern_test.class == Regexp
+
+                # if pattern is a Regexp, then create a new Regexp object
+                if %r{\A/(.*)/([mix]*)\z} =~ pattern
+                  pattern = Regexp.new(pattern)
+                end
               rescue => e;
               end
 
@@ -92,13 +100,15 @@ module BeEF
                 raise InvalidJsonError, 'Empty "pattern" key passed to endpoint /api/dns/rule'
               end
 
-              unless BeEF::Filters.is_non_empty_string?(type)
-                raise InvalidJsonError, 'Empty "type" key passed to endpoint /api/dns/rule'
+              unless BeEF::Filters.is_non_empty_string?(type) && BeEF::Filters.alphanums_only?(type) && valid_types.include?(type)
+                raise InvalidJsonError, 'Wrong "type" key passed to endpoint /api/dns/rule'
               end
 
               id = ''
 
               block_src = format_response(type, response)
+
+              # antisnatchor: would be unsafe eval, but I added 2 validations before (alpha-num only and list of valid types)
               type_obj = eval "Resolv::DNS::Resource::IN::#{type}"
 
               # Bypass #add_rule so that 'block_src' can be passed as a String
