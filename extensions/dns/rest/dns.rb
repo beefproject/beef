@@ -90,10 +90,10 @@ module BeEF
 
               if response.class == Array
                 if response.length == 0
-                  raise InvalidJsonError, 'Empty "reponse" key passed to endpoint /api/dns/rule'
+                  raise InvalidJsonError, 'Empty "response" key passed to endpoint /api/dns/rule'
                 end
               else
-                raise InvalidJsonError, 'Non-array "reponse" key passed to endpoint /api/dns/rule'
+                raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
               end
 
               unless BeEF::Filters.is_non_empty_string?(pattern)

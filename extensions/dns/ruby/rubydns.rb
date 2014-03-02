@@ -60,6 +60,7 @@ module RubyDNS
       BeEF::Core::Models::Dns::Rule.each do |rule|
         id = rule.id
         pattern = [rule.pattern, rule.type]
+        #TODO antisnatchor: potentially unsafe (although input is from data already stored in the databse)
         block = eval rule.block
 
         regex = pattern[0]
@@ -98,6 +99,7 @@ module RubyDNS
 
           case block
             when String
+              #TODO antisnatchor: potentially unsafe (make sure block_src is safe or change this logic)
               @rules << Rule.new(id, pattern, eval(block_src))
             when Proc
               @rules << Rule.new(id, pattern, block)

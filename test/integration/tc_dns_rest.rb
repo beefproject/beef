@@ -381,6 +381,7 @@ class TC_DnsRest < Test::Unit::TestCase
     address = @@config.get('beef.extension.dns.address')
     port = @@config.get('beef.extension.dns.port')
 
+    #TODO antisnatchor: dangerous, replace with IO.open([param_array]) as in web_cloner.rb
     dig_output = `dig @#{address} -p #{port} -t #{type} #{pattern}`
     assert_match(regex, dig_output)
   end

@@ -31,7 +31,7 @@ gem "parseconfig"
 gem "erubis"
 gem "dm-migrations"
 gem "msfrpc-client"
-gem "rubyzip", "~> 1.0.0"
+gem "rubyzip", ">= 1.0.0"
 gem "rubydns"
 gem "sourcify"
 

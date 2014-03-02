@@ -18,8 +18,9 @@ module BeEF
   end
 end
 
-require 'extensions/dns/api'
-require 'extensions/dns/dns'
-require 'extensions/dns/model'
-require 'extensions/dns/rest/dns'
-require 'extensions/dns/ruby'
+#TODO antisnatchor: uncomment this when code will be stable
+#require 'extensions/dns/api'
+#require 'extensions/dns/dns'
+#require 'extensions/dns/model'
+#require 'extensions/dns/rest/dns'
+#require 'extensions/dns/ruby'
