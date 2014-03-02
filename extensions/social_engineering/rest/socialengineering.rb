@@ -102,14 +102,14 @@ module BeEF
               halt 401
             end
 
-            if (link =~ URI::regexp).nil?#invalid URI
+            if (link =~ URI::regexp).nil? #invalid URI
               print_error "Invalid link or linktext"
               halt 401
             end
 
             recipients = body["recipients"][0]
 
-            recipients.each do |email,name|
+            recipients.each do |email, name|
               if !/\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/.match(email) || name.nil?
                 print_error "Email [#{email}] or name [#{name}] are not valid/null."
                 halt 401

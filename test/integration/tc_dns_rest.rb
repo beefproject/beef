@@ -20,7 +20,7 @@ class TC_DnsRest < Test::Unit::TestCase
                                  json,
                                  @@headers)
 
-      result  = JSON.parse(response.body)
+      result = JSON.parse(response.body)
       @@token = result['token']
 
       $root_dir = '../../'
@@ -231,13 +231,13 @@ class TC_DnsRest < Test::Unit::TestCase
     # Test SOA type
     rule['type'] = 'SOA'
     rule['response'] = [
-      "ns.#{rule['pattern']}.",
-      "mail.#{rule['pattern']}.",
-      2012031500,
-      10800,
-      3600,
-      604800,
-      3600
+        "ns.#{rule['pattern']}.",
+        "mail.#{rule['pattern']}.",
+        2012031500,
+        10800,
+        3600,
+        604800,
+        3600
     ]
 
     regex = %r{
@@ -359,8 +359,8 @@ class TC_DnsRest < Test::Unit::TestCase
   # Adds a new DNS rule
   def add_rule(params)
     response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
-                                    params.to_json,
-                                    @@headers)
+                               params.to_json,
+                               @@headers)
 
     check_rest_response(response)
   end
@@ -379,7 +379,7 @@ class TC_DnsRest < Test::Unit::TestCase
   # Compares output of dig command against regex
   def check_dns_response(regex, type, pattern)
     address = @@config.get('beef.extension.dns.address')
-    port    = @@config.get('beef.extension.dns.port')
+    port = @@config.get('beef.extension.dns.port')
 
     dig_output = `dig @#{address} -p #{port} -t #{type} #{pattern}`
     assert_match(regex, dig_output)

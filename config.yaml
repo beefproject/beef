@@ -121,4 +121,4 @@ beef:
         ipec:
             enable: true
         dns:
-            enable: true
+            enable: false

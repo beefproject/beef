@@ -22,7 +22,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
                                  json,
                                  @@headers)
 
-      result  = JSON.parse(response.body)
+      result = JSON.parse(response.body)
       @@token = result['token']
 
       $root_dir = '../../'
@@ -51,12 +51,12 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     json = {:url => url, :mount => mount, :dns_spoof => dns_spoof}.to_json
 
     response = RestClient.post("#{RESTAPI_SENG}/clone_page?token=#{@@token}",
-                                    json,
-                                    @@headers)
+                               json,
+                               @@headers)
 
     check_response(response)
 
-    ip = Socket.ip_address_list.detect {|i| !(i.ipv4_loopback? || i.ipv6_loopback?)}
+    ip = Socket.ip_address_list.detect { |i| !(i.ipv4_loopback? || i.ipv6_loopback?) }
     domain = url.gsub(%r{^http://}, '')
 
     regex = %r{
@@ -69,7 +69,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
     # Send DNS request to server to verify that a new rule was added
     dns_address = @@config.get('beef.extension.dns.address')
-    dns_port    = @@config.get('beef.extension.dns.port')
+    dns_port = @@config.get('beef.extension.dns.port')
 
     dig_output = `dig @#{dns_address} -p #{dns_port} -t A #{domain}`
     assert_match(regex, dig_output)

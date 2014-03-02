@@ -58,7 +58,7 @@ class TC_Dns < Test::Unit::TestCase
   # Tests that DNS server runs correctly on desired address and port
   def test_04_run_server
     address = @@dns_config['address']
-    port    = @@dns_config['port']
+    port = @@dns_config['port']
 
     @@dns.run_server(address, port)
     sleep(3)
@@ -193,12 +193,12 @@ class TC_Dns < Test::Unit::TestCase
   # Tests the retrieval of the entire DNS ruleset
   def test_12_get_ruleset
     ruleset = @@dns.get_ruleset
-    ruleset.sort! {|a, b| a[:pattern] <=> b[:pattern] }
+    ruleset.sort! { |a, b| a[:pattern] <=> b[:pattern] }
 
     assert_equal(Array, ruleset.class)
     assert_equal(5, ruleset.length)
 
-    check_rule(ruleset[0], {:pattern=>'(?-mix:i\\.(love|hate)\\.beef\\.com?)',
+    check_rule(ruleset[0], {:pattern => '(?-mix:i\\.(love|hate)\\.beef\\.com?)',
                             :type => 'A',
                             :response => '9.9.9.9'})
 
@@ -287,7 +287,7 @@ class TC_Dns < Test::Unit::TestCase
 
   # Confirms that a query for the rule given in 'id' returns a 'type' failure status
   def check_failure_status(id, type)
-    rule   = @@dns.get_rule(id)
+    rule = @@dns.get_rule(id)
     status = type.to_s.force_encoding('UTF-8').upcase
     assert_equal(status, rule[:response][0])
 
@@ -305,6 +305,8 @@ end
 # Suppresses unnecessary output from RubyDNS
 module Kernel
 
-  def puts(*args); end
+  def puts(*args)
+    ;
+  end
 
 end

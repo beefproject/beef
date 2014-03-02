@@ -4,18 +4,18 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module Dns
+  module Extension
+    module Dns
 
-  extend BeEF::API::Extension
+      extend BeEF::API::Extension
 
-  @short_name  = 'dns'
-  @full_name   = 'DNS Server'
-  @description = 'A configurable DNS nameserver for performing DNS spoofing, ' +
-                 'hijacking, and other related attacks against hooked zombies'
+      @short_name = 'dns'
+      @full_name = 'DNS Server'
+      @description = 'A configurable DNS nameserver for performing DNS spoofing, ' +
+          'hijacking, and other related attacks against hooked browsers.'
 
-end
-end
+    end
+  end
 end
 
 require 'extensions/dns/api'

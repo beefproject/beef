@@ -4,24 +4,24 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Core
-module Models
-module Dns
+  module Core
+    module Models
+      module Dns
 
-  class Rule
+        class Rule
 
-    include DataMapper::Resource
+          include DataMapper::Resource
 
-    storage_names[:default] = 'extension_dns_rules'
+          storage_names[:default] = 'extension_dns_rules'
 
-    property :id, String, :key => true  # Unique identifier
-    property :pattern, Object           # Query pattern
-    property :type, Object              # Resource type
-    property :block, Text               # Associated callback
+          property :id, String, :key => true # Unique identifier
+          property :pattern, Object # Query pattern
+          property :type, Object # Resource type
+          property :block, Text # Associated callback
 
+        end
+
+      end
+    end
   end
-
-end
-end
-end
 end

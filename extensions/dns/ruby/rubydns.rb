@@ -49,7 +49,7 @@ module RubyDNS
       # Now uses an 'id' parameter to uniquely identify rules
       def initialize(id, pattern, callback)
         @id = id
-        @pattern  = pattern
+        @pattern = pattern
         @callback = callback
       end
 
@@ -77,15 +77,17 @@ module RubyDNS
         begin
           # Sourcify block (already a string only for RESTful API calls)
           block_src = case block
-                      when String then block
-                      when Proc   then block.to_source
+                        when String then
+                          block
+                        when Proc then
+                          block.to_source
                       end
 
           # Break out and return id if rule is already present
           BeEF::Core::Models::Dns::Rule.each do |rule|
             if pattern[0] == rule.pattern &&
-               pattern[1] == rule.type &&
-               block_src  == rule.block
+                pattern[1] == rule.type &&
+                block_src == rule.block
 
               id = rule.id
               throw :match
@@ -95,23 +97,23 @@ module RubyDNS
           id = generate_id
 
           case block
-          when String
-            @rules << Rule.new(id, pattern, eval(block_src))
-          when Proc
-            @rules << Rule.new(id, pattern, block)
+            when String
+              @rules << Rule.new(id, pattern, eval(block_src))
+            when Proc
+              @rules << Rule.new(id, pattern, block)
           end
 
           BeEF::Core::Models::Dns::Rule.create(
-            :id => id,
-            :pattern => pattern[0].to_s,
-            :type => pattern[1],
-            :block => block_src
+              :id => id,
+              :pattern => pattern[0].to_s,
+              :type => pattern[1],
+              :block => block_src
           )
         rescue Sourcify::CannotHandleCreatedOnTheFlyProcError,
-               Sourcify::CannotParseEvalCodeError,
-               Sourcify::MultipleMatchingProcsPerLineError,
-               Sourcify::NoMatchingProcError,
-               Sourcify::ParserInternalError
+            Sourcify::CannotParseEvalCodeError,
+            Sourcify::MultipleMatchingProcsPerLineError,
+            Sourcify::NoMatchingProcError,
+            Sourcify::ParserInternalError
 
           @logger.error "Failed to sourcify block for DNS rule '#{id}'"
           raise
