@@ -296,6 +296,7 @@ class TC_Dns < Test::Unit::TestCase
 
   # Compares output of dig command against regex
   def check_dns_response(regex, type, pattern)
+    #TODO antisnatchor: dangerous, replace with IO.open([param_array]) as in web_cloner.rb
     dig_output = `dig @#{@@dns.address} -p #{@@dns.port} -t #{type} #{pattern}`
     assert_match(regex, dig_output)
   end
