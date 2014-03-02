@@ -8,14 +8,14 @@ task :default => ["quick"]
 
 desc "Run quick tests"
 task :quick do
-  Rake::Task['unit'].invoke                 # run unit tests
+  Rake::Task['unit'].invoke # run unit tests
 end
 
 desc "Run all tests"
 task :all do
-  Rake::Task['integration'].invoke          # run integration tests
-  Rake::Task['unit'].invoke                 # run unit tests
-  Rake::Task['msf'].invoke                  # run msf tests
+  Rake::Task['integration'].invoke # run integration tests
+  Rake::Task['unit'].invoke # run unit tests
+  Rake::Task['msf'].invoke # run msf tests
 end
 
 desc "Run automated tests (for Jenkins)"
@@ -38,16 +38,16 @@ task :unit => ["install"] do
 end
 
 desc "Run MSF unit tests"
-task :msf => ["install", "msf_install"]  do
+task :msf => ["install", "msf_install"] do
   Rake::Task['msf_update'].invoke
   Rake::Task['msf_start'].invoke
   sh "cd test/thirdparty/msf/unit/;ruby -W0 ts_metasploit.rb"
   Rake::Task['msf_stop'].invoke
 end
 
-task :install do
-  sh "export BEEF_TEST=true"
-end
+#task :install do
+#  sh "export BEEF_TEST=true"
+#end
 
 ################################
 # X11 set up
@@ -57,7 +57,7 @@ end
 task :xserver_start do
   printf "Starting X11 Server (wait 10 seconds)..."
   @xserver_process_id = IO.popen("/usr/bin/Xvfb :0 -screen 0 1024x768x24 2> /dev/null", "w+")
-  delays = [2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
+  delays = [2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 10 seconds
     printf '.'
     sleep (i) # increase the . display rate
@@ -78,7 +78,7 @@ end
 task :beef_start => 'beef' do
   printf "Starting BeEF (wait a few seconds)..."
   @beef_process_id = IO.popen("ruby ./beef -x 2> /dev/null", "w+")
-  delays = [3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  delays = [10, 10, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   delays.each do |i| # delay for a few seconds
     printf '.'
     sleep (i)
@@ -99,7 +99,7 @@ end
 task :msf_start => '/tmp/msf-test/msfconsole' do
   printf "Starting MSF (wait 45 seconds)..."
   @msf_process_id = IO.popen("/tmp/msf-test/msfconsole -r test/thirdparty/msf/unit/BeEF.rc 2> /dev/null", "w+")
-  delays = [10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
+  delays = [10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 45 seconds
     printf '.'
     sleep (i) # increase the . display rate
@@ -116,7 +116,7 @@ task :msf_install => '/tmp/msf-test/msfconsole' do
   # Handled by the 'test/msf-test/msfconsole' task.
 end
 
-task :msf_update  => '/tmp/msf-test/msfconsole' do
+task :msf_update => '/tmp/msf-test/msfconsole' do
   sh "cd /tmp/msf-test;git pull"
 end
 
@@ -159,10 +159,10 @@ task :cde do
   Rake::Task['cde_beef_start'].invoke
   Rake::Task['beef_stop'].invoke
   puts "\nCleaning Up...\n";
-  sleep (2);	
+  sleep (2);
   sh "rm -rf CDE";
   puts "\nCDE Package Created...\n";
- end
+end
 
 ################################
 # CDE/BeEF environment set up
@@ -172,7 +172,7 @@ task :cde do
 task :cde_beef_start => 'beef' do
   printf "Starting CDE BeEF (wait 10 seconds)..."
   @beef_process_id = IO.popen("./CDE/cde ruby beef -x 2> /dev/null", "w+")
-  delays = [2, 2, 1, 1, 1, 0.5, 0.5 , 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
+  delays = [2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 10 seconds
     printf '.'
     sleep (i)
