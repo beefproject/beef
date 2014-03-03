@@ -136,9 +136,30 @@ module BeEF
             BeEF::Extension::Dns::Server.instance.instance_eval { @server = server }
 
             # Pass unmatched queries upstream to root nameservers
+            server = []
+            dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
+            unless dns_config['upstream'].nil?
+              dns_config['upstream'].each do |server|
+                if server[1].nil? or server[2].nil?
+                  print_error "Invalid server '#{server[1]}:#{server[2]}' specified for upstream DNS server."
+                  next
+                elsif server[0] == 'tcp'
+                  servers << [:tcp, server[1], server[2]]
+                elsif server[0] == 'udp'
+                  servers << [:udp, server[1], server[2]]
+                else
+                  print_error "Invalid protocol '#{server[0]}' specified for upstream DNS server."
+                end
+              end
+            end
+            if servers.empty?
+              print_debug "No upstream DNS servers specified. Using '8.8.8.8'"
+              servers << [:tcp, '8.8.8.8', 53]
+              servers << [:udp, '8.8.8.8', 53]
+            end
             otherwise do |transaction|
               transaction.passthrough!(
-                  RubyDNS::Resolver.new([[:udp, '8.8.8.8', 53], [:tcp, '8.8.8.8', 53]])
+                  RubyDNS::Resolver.new servers
               )
             end
           end

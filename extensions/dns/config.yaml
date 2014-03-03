@@ -11,3 +11,5 @@ beef:
             authors: ['soh_cah_toa']
             address: '127.0.0.1'
             port: 5300
+            upstream:
+                [['tcp', '8.8.8.8', 53], ['udp', '8.8.8.8', 53]]

@@ -33,6 +33,28 @@ module BeEF
             dns.run_server(address, port)
 
             print_info "DNS Server: #{address}:#{port}"
+            servers = []
+            unless dns_config['upstream'].nil?
+              dns_config['upstream'].each do |server|
+                if server[1].nil? or server[2].nil?
+                  next
+                end
+                if server[0] == 'tcp'
+                  servers << ['tcp', server[1], server[2]]
+                elsif server[0] == 'udp'
+                  servers << ['udp', server[1], server[2]]
+                end
+              end
+            end
+            if servers.empty?
+              servers << ['tcp', '8.8.8.8', 53]
+              servers << ['udp', '8.8.8.8', 53]
+            end
+            upstream_servers = ''
+            servers.each do |server|
+              upstream_servers << "Upstream server: #{server[1]}:#{server[2]} (#{server[0]})\n"
+            end
+            print_more upstream_servers
           end
 
           # Mounts handler for processing RESTful API calls
