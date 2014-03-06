@@ -1819,6 +1819,7 @@ beef.browser = {
         var browser_name = beef.browser.getBrowserName();
         var browser_version = beef.browser.getBrowserVersion();
         var browser_reported_name = beef.browser.getBrowserReportedName();
+        var browser_language = beef.browser.getBrowserLanguage();
         var page_title = (document.title) ? document.title : "Unknown";
         var page_uri = (document.location.href) ? document.location.href : "Unknown";
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
@@ -1866,6 +1867,7 @@ beef.browser = {
         if (browser_name) details['BrowserName'] = browser_name;
         if (browser_version) details['BrowserVersion'] = browser_version;
         if (browser_reported_name) details['BrowserReportedName'] = browser_reported_name;
+        if (browser_language) details['BrowserLanguage'] = browser_language;
         if (page_title) details['PageTitle'] = page_title;
         if (page_uri) details['PageURI'] = page_uri;
         if (page_referrer) details['PageReferrer'] = page_referrer;
@@ -2090,6 +2092,17 @@ beef.browser = {
      **/
     changePageTitle: function (title) {
         document.title = title;
+    },
+
+    /**
+     * Get the browser language
+     */
+    getBrowserLanguage: function(){
+        var l = 'Unknown';
+        try{
+          l = window.navigator.userLanguage || window.navigator.language;
+        }catch(e){}
+        return l;
     },
 
     /**

@@ -146,6 +146,10 @@ module BeEF
             self.err_msg "Invalid browser string returned from the hook browser's initial connection."
           end
 
+          # get and store browser language
+          browser_lang = get_param(@data['results'], 'BrowserLanguage')
+          BD.set(session_id, 'BrowserLanguage', browser_lang)
+
           # get and store the cookies
           cookies = get_param(@data['results'], 'Cookies')
           if BeEF::Filters.is_valid_cookies?(cookies)

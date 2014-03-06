@@ -285,6 +285,7 @@ class ShellInterface
         ['Browser', 'Browser Name',       'BrowserName'],
         ['Browser', 'Browser Version',    'BrowserVersion'],
         ['Browser', 'Browser UA String',  'BrowserReportedName'],
+        ['Browser', 'Browser Language',   'BrowserLanguage'],
         ['Browser', 'Browser Platform',   'BrowserPlatform'],
         ['Browser', 'Browser Plugins',    'BrowserPlugins'],
         ['Browser', 'Window Size',        'WindowSize'],
