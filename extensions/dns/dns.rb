@@ -29,6 +29,14 @@ module BeEF
           @server = nil
         end
 
+        def set_server(server)
+          @server = server
+        end
+
+        def get_server
+          @server
+        end
+
         # Starts the main DNS server run-loop in a new thread.
         #
         # @param address [String] interface address server should run on
@@ -36,21 +44,12 @@ module BeEF
         def run_server(address = '0.0.0.0', port = 5300)
           @address = address
           @port = port
-
-          @lock.synchronize do
             Thread.new do
-              # @note Calling #sleep is a quick fix that prevents race conditions
-              #       with WebSockets. A better solution is needed; perhaps a
-              #       global EventMachine mutex.
-              sleep(1)
+              sleep(2)
 
-              if EventMachine.reactor_running?
-                EventMachine.next_tick { run_server_block(@address, @port) }
-              else
-                run_server_block(@address, @port)
-              end
+              # antisnatchor: RubyDNS is already implemented with EventMachine 
+              run_server_block(@address, @port)
             end
-          end
         end
 
         # Adds a new DNS rule or "resource record". Does nothing if rule is already present.
@@ -132,11 +131,7 @@ module BeEF
         # @param port [Integer] desired server port number
         def run_server_block(address, port)
           RubyDNS.run_server(:listen => [[:udp, address, port]]) do
-            server = self
-            BeEF::Extension::Dns::Server.instance.instance_eval { @server = server }
-
             # Pass unmatched queries upstream to root nameservers
-            server = []
             dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
             unless dns_config['upstream'].nil?
               dns_config['upstream'].each do |server|

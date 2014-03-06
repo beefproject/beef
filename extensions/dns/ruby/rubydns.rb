@@ -20,6 +20,8 @@ module RubyDNS
   def self.run_server(options = {}, &block)
     server = RubyDNS::Server.new(&block)
 
+    BeEF::Extension::Dns::Server.instance.set_server(server)
+
     options[:listen] ||= [[:udp, '0.0.0.0', 53], [:tcp, '0.0.0.0', 53]]
 
     EventMachine.run do
@@ -60,7 +62,8 @@ module RubyDNS
       BeEF::Core::Models::Dns::Rule.each do |rule|
         id = rule.id
         pattern = [rule.pattern, rule.type]
-        #TODO antisnatchor: potentially unsafe (although input is from data already stored in the databse)
+        # antisnatchor: this would be unsafe, but input gets validated in extensions/dns/rest/dns.rb (lines 95 to 105)
+        # in this case input comes from the DB, but that data stored in the DB was originally coming from the now safe code
         block = eval rule.block
 
         regex = pattern[0]
@@ -97,9 +100,13 @@ module RubyDNS
 
           id = generate_id
 
+          if @rules == nil
+            @rules = []
+          end
+
           case block
             when String
-              #TODO antisnatchor: potentially unsafe (make sure block_src is safe or change this logic)
+              # antisnatchor: this would be unsafe, but input gets validated in extensions/dns/rest/dns.rb (lines 95 to 105)
               @rules << Rule.new(id, pattern, eval(block_src))
             when Proc
               @rules << Rule.new(id, pattern, block)

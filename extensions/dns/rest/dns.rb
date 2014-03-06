@@ -77,10 +77,6 @@ module BeEF
             unless [pattern, type, response].include?(nil)
               # Determine whether 'pattern' is a String or Regexp
               begin
-                # antisnatchor: UNSAFE EVAL!!! RCE
-                #pattern_test = eval pattern
-                #pattern = pattern_test if pattern_test.class == Regexp
-
                 # if pattern is a Regexp, then create a new Regexp object
                 if %r{\A/(.*)/([mix]*)\z} =~ pattern
                   pattern = Regexp.new(pattern)
@@ -96,6 +92,18 @@ module BeEF
                 raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
               end
 
+              safe_response = true
+              response.each do |ip|
+                unless BeEF::Filters.is_valid_ip?(ip)
+                  safe_response = false
+                  break
+                end
+              end
+
+              unless safe_response
+                raise InvalidJsonError, 'Invalid IP in "response" key passed to endpoint /api/dns/rule'
+              end
+
               unless BeEF::Filters.is_non_empty_string?(pattern)
                 raise InvalidJsonError, 'Empty "pattern" key passed to endpoint /api/dns/rule'
               end
@@ -105,16 +113,13 @@ module BeEF
               end
 
               id = ''
-
               block_src = format_response(type, response)
 
               # antisnatchor: would be unsafe eval, but I added 2 validations before (alpha-num only and list of valid types)
+              # Now it's safe
               type_obj = eval "Resolv::DNS::Resource::IN::#{type}"
 
-              # Bypass #add_rule so that 'block_src' can be passed as a String
-              BeEF::Extension::Dns::Server.instance.instance_eval do
-                id = @server.match(pattern, type_obj, block_src)
-              end
+              id = BeEF::Extension::Dns::Server.instance.get_server.match(pattern, type_obj, block_src)
 
               result = {}
               result['success'] = true
