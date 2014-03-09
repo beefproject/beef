@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_page_html_iframe:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Get Page and iframe HTML"
+            description: "This module will retrieve the HTML from the current page and any iframes (that have the same origin)."
+            authors: ["bcoles","kxynos"]
+            target:
+                working: ["ALL"]
