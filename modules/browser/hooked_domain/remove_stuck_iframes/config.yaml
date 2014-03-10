@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        remove_stuck_iframes:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Remove stuck iframe"
+            description: "This module will remove any stuck iframes (beware it will remove all of them on that node!)."
+            authors: ["kxynos"]
+            target:
+                working: ["ALL"]
