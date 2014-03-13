@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "User Interface Abuse (IE 9/10)"
-            description: "This module is based on Rosario Valotta research (https://sites.google.com/site/tentacoloviola/). The executable to be run needs to be signed (best thing is signing it with Symantec EV-SSL). You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt. The victim is tricked to press [TAB]+R (IE 9) or simply R (IE 10), which are keyboard shortcuts for the modeless dialog option 'Run'. Depending on the browser language, the modeless dialog shortcuts are different. For example, R for English, E for Italian. In order to achieve such behavior, a fake captcha is displayed."
+            description: "This module is based on Rosario Valotta research (https://sites.google.com/site/tentacoloviola/).<br> The executable to be run needs to be signed (best thing is signing it with Symantec EV-SSL) and me served same-origin from BeEF. You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt.<br>  The victim is tricked to press [TAB]+R (IE 9) or simply R (IE 10), which are keyboard shortcuts for the modeless dialog option 'Run'. Depending on the browser language, the modeless dialog shortcuts are different. For example, R for English, E for Italian. In order to achieve such behavior, a fake captcha is displayed."
             authors: ["Rosario Valotta", "antisnatchor"]
             target:
                 working: ["IE"]
