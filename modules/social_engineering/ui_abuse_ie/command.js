@@ -89,9 +89,7 @@ beef.execute(function() {
 //            }
 //        }
 
-        if(beef.browser.isIE9()){
-            document.body.onclick = function(){spawnPopunder();};
-        }else if(beef.browser.isIE10()){
+        if(beef.browser.isIE9() || beef.browser.isIE10()){
             document.body.onclick = function(){
                 spawnPopunder();
 
