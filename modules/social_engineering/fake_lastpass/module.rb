@@ -15,7 +15,7 @@ class Fake_lastpass < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/xsmall.png','/lp/xsmall','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/create_small.png','/lp/create_small','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/icon.png','/lp/icon','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/jquery-1.5.2.min.js','/lp/jquery','js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/jquery-1.11.0.min.js','/lp/jquery','js')
   end
   
   #
