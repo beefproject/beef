@@ -327,29 +327,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     if(dynamic_modules != nil)
          all_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
          all_modules.each{|dyn_mod|
-         next if !dyn_mod.path.split('/').first.match(/^Dynamic/)
-
-         hook_session_id = @params['zombie_session'] || nil
-         (print_error "hook_session_id is nil";return) if hook_session_id.nil?
-
-          dyn_mod_name = dyn_mod.path.split('/').last
-          dyn_mod_category = nil
-          if(dyn_mod_name == "Msf")
-             dyn_mod_category = "Metasploit"
-          else
-             # future dynamic modules...
-          end
-
-          print_debug ("Loading Dynamic command module: category [#{dyn_mod_category}] - name [#{dyn_mod.name.to_s}]")
-          command_mod = BeEF::Modules::Commands.const_get(dyn_mod_name.capitalize).new
-          command_mod.session_id = hook_session_id
-          command_mod.update_info(dyn_mod.id)
-          command_mod_name = command_mod.info['Name'].downcase
-
-          # create url path and file for the command module icon
-          #command_module_status = set_command_module_status(command_mod)
-          command_module_status = BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-          command_module_icon_path = set_command_module_icon(command_mod)
+         next if !dyn_mod.path.split('/')[1].match(/^metasploit/)
+         command_mod_name = dyn_mod["name"]
+         dyn_mod_category = "Metasploit"
+         command_module_status = set_command_module_status(command_mod_name)
+         command_module_icon_path = set_command_module_icon(command_module_status)
 
          update_command_module_tree(tree, dyn_mod_category, command_module_icon_path, command_module_status, command_mod_name,dyn_mod.id)
        }

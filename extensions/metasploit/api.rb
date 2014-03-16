@@ -48,6 +48,27 @@ module BeEF
                     #m.split('/')[0...-1].each{|c|
                     #    categories.push(c.capitalize)
                     #}
+
+                    if m_details['description'] =~ /Java|JVM|flash|Adobe/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY => ["ALL"]}
+                    elsif m_details['description'] =~ /IE|Internet\s+Explorer/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ["IE"]}
+                    elsif m_details['description'] =~ /Firefox/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ["FF"]}
+                    elsif m_details['description'] =~ /Chrome/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ["C"]}
+                    elsif m_details['description'] =~ /Safari/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ["S"]}
+                    elsif m_details['description'] =~ /Opera/i
+                      target_browser = {BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ["O"]}
+                    end
+                    #TODO:
+                    #  - Add support for detection of target OS
+                    #  - Add support for detection of target services (e.g. java, flash, silverlight, ...etc)
+                    #  - Add support for multiple target browsers as currently only 1 browser will match or all
+
+
+
                     msf_module_config[key] = {
                         'enable'=> true,
                         'msf'=> true,
@@ -57,7 +78,8 @@ module BeEF
                         'description'=> m_details['description'],
                         'authors'=> m_details['references'],
                         'path'=> path,
-                        'class'=> 'Msf_module'
+                        'class'=> 'Msf_module',
+                        'target'=> target_browser
                     }
                     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [key])
                     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [key, nil])
