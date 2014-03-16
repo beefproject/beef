@@ -7,7 +7,7 @@ beef:
     module:
         firefox_extension_dropper:
             enable: true
-            category: ["Exploits", "Local Host"]
+            category: ["Social Engineering"]
             name: "Firefox Extension (Dropper)"
             description: "Create on the fly a malicious Firefox extension that embeds a dropper you can specify (add it to the 'dropper' directory). <br/><br/> The extension is based on the original work from Michael Schierl and his Metasploit module."
             authors: ["antisnatchor"]

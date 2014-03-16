@@ -7,7 +7,7 @@ beef:
     module:
         firefox_extension_reverse_shell:
             enable: true
-            category: ["Exploits", "Local Host"]
+            category: ["Social Engineering"]
             name: "Firefox Extension (Reverse Shell)"
             description: "Create on the fly a malicious Firefox extension that makes a reverse shell connection to a specified host:port.<br/><br/>The extension is based on the original work from Michael Schierl and his Metasploit module, and joev's Firefox payloads for Metasploit."
             authors: ["antisnatchor", "bcoles"]
