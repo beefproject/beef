@@ -320,6 +320,7 @@ class ShellInterface
         ['Host', 'Operating System', 'OsName'],
         ['Host', 'Hardware',         'Hardware'],
         ['Host', 'CPU',              'CPU'],
+        ['Host', 'Default Browser',  'DefaultBrowser'],
         ['Host', 'Screen Size',      'ScreenSize'],
         ['Host', 'Touch Screen',     'TouchEnabled']
     ]

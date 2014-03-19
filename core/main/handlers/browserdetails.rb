@@ -166,6 +166,10 @@ module BeEF
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
           end
 
+          # get and store default browser
+          default_browser = get_param(@data['results'], 'DefaultBrowser')
+          BD.set(session_id, 'DefaultBrowser', default_browser)
+
           # get and store the hardware name
           hw_name = get_param(@data['results'], 'Hardware')
           if BeEF::Filters.is_valid_hwname?(hw_name)
