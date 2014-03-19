@@ -40,7 +40,8 @@ beef.execute(function() {
 		new Array("Firefox","18+","resource:///chrome/browser/skin/classic/aero/browser/webRTC-shareDevice-16.png"),
 		new Array("Internet Explorer","5-6","res://shdoclc.dll/pagerror.gif"),
 		new Array("Internet Explorer","7-9","res://ieframe.dll/ielogo.png"),
-		new Array("Internet Explorer","7+","res://ieframe.dll/info_48.png")
+		new Array("Internet Explorer","7+", "res://ieframe.dll/info_48.png"),
+        new Array("Internet Explorer","10+","res://ieframe.dll/immersivelogo.png")
 	);
 
 	for (var i=0; i<fingerprints.length; i++) {
