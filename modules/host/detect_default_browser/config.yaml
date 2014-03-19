@@ -7,10 +7,10 @@ beef:
     module:
         detect_default_browser:
             enable: true
-            category: "Browser"
+            category: "Host"
             name: "Detect Default Browser"
             description: "This module detects which browser is configured as the default web browser."
-            authors: ["unsticky", "bcoles"]
+            authors: ["unsticky"]
             target:
                  working: ["IE"]
                  not_working: ["All"]
