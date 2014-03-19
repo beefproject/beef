@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_hp:
+            enable: true
+            category: "Host"
+            name: "Detect Hewlett-Packard"
+            description: "This module attempts to detect software installed by default on HP systems. It uses the 'res' protocol handler which works only on Internet Explorer."
+            authors: ["bcoles"]
+            target:
+                working: ["IE"]
+                not_working: ["ALL"]
