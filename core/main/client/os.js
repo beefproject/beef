@@ -8,6 +8,24 @@ beef.os = {
 
 	ua: navigator.userAgent,
 
+	/**
+	  * Detect default browser (IE only)
+	  * Written by unsticky
+	  * http://ha.ckers.org/blog/20070319/detecting-default-browser-in-ie/
+	  */
+	getDefaultBrowser: function() {
+		var mt = document.mimeType;
+		var result = "Unknown"
+		if (mt) {
+			if (mt == "Safari Document")       result = "Safari";
+			if (mt == "Firefox HTML Document") result = "Firefox";
+			if (mt == "Chrome HTML Document")  result = "Chrome";
+			if (mt == "HTML Document")         result = "Internet Explorer";
+			if (mt == "Opera Web Document")    result = "Opera";
+		}
+		return result;
+	},
+
 	isWin311: function() {
 		return (this.ua.match('(Win16)')) ? true : false;
 	},
