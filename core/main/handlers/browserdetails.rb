@@ -119,7 +119,7 @@ module BeEF
           if using_proxy == true
             BD.set(session_id, 'UsingProxy', "#{using_proxy}")
             proxy_log_string = "#{zombie.ip} is using a proxy"
-            unless proxy_clients.nil?
+            unless proxy_clients.empty?
               BD.set(session_id, 'ProxyClient', "#{proxy_clients.sort.uniq.join(',')}")
               proxy_log_string += " [client: #{proxy_clients.sort.uniq.join(',')}]"
             end
