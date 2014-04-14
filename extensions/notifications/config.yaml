@@ -8,6 +8,8 @@ beef:
         notifications:
             enable: false 
             name: Notifications
+            # Make sure you do 'gem install twitter' before enabling this feature. Leaving the twitter gem
+            # in the Gemfile causes dependency issues, and this twitter feature isn't used much anyway.
             twitter:
               enable: false
               consumer_key: app_consumer_key
