@@ -72,6 +72,9 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser', 'Browser Language',   'BrowserLanguage'],
         ['Browser', 'Browser Platform',   'BrowserPlatform'],
         ['Browser', 'Browser Plugins',    'BrowserPlugins'],
+        ['Browser', 'Using Proxy',        'UsingProxy'],
+        ['Browser', 'Proxy Client',       'ProxyClient'],
+        ['Browser', 'Proxy Server',       'ProxyServer'],
         ['Browser', 'Window Size',        'WindowSize'],
 
         # Browser Components

@@ -10,7 +10,7 @@ class Pretty_theft < BeEF::Core::Command
     proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
     logo_uri = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/ui/media/images/beef.png"
     return [
-		{'name' => 'choice', 'type' => 'combobox', 'ui_label' => 'Dialog Type', 'store_type' => 'arraystore', 'store_fields' => ['choice'], 'store_data' => [['Facebook'],['LinkedIn'],['YouTube'],['Yammer'],['Generic']], 'valueField' => 'choice', 'value' => 'Facebook', editable: false, 'displayField' => 'choice', 'mode' => 'local', 'autoWidth' => true },
+		{'name' => 'choice', 'type' => 'combobox', 'ui_label' => 'Dialog Type', 'store_type' => 'arraystore', 'store_fields' => ['choice'], 'store_data' => [['Facebook'],['LinkedIn'],['Windows'],['YouTube'],['Yammer'],['Generic']], 'valueField' => 'choice', 'value' => 'Facebook', editable: false, 'displayField' => 'choice', 'mode' => 'local', 'autoWidth' => true },
        		
 		{'name' => 'backing', 'type' => 'combobox', 'ui_label' => 'Backing', 'store_type' => 'arraystore', 'store_fields' => ['backing'], 'store_data' => [['Grey'],['Clear']], 'valueField' => 'backing', 'value' => 'Grey', editable: false, 'displayField' => 'backing', 'mode' => 'local', 'autoWidth' => true },
 
