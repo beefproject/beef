@@ -16,6 +16,18 @@ def print_info(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'.blue+' '+s
 end
 
+# Function used to print information to the console (wraps print_info)
+# @param [String] s String to be printed
+def print_status(s)
+  print_info(s)
+end
+
+# Function used to print warning information
+# @param [String] s String to be printed
+def print_warning(s)
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.yellow+' '+s.to_s
+end
+
 # Function used to print debug information
 # @param [String] s String to be printed
 # @note This function will only print messages if the debug flag is set to true
@@ -30,6 +42,12 @@ end
 # @param [String] s String to be printed
 def print_success(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'.green+' '+s
+end
+
+# Function used to print successes to the console (wraps print_success)
+# @param [String] s String to be printed
+def print_good(s)
+  print_success(s)
 end
 
 # Print multiple lines with decoration split by the return character
