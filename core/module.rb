@@ -17,21 +17,21 @@ module BeEF
     # @param [String] mod module key
     # @return [Boolean] if the module key is enabled in BeEF's configuration
     def self.is_enabled(mod)
-      return (self.is_present(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.enable') == true)
+      return (self.is_present(mod) and BeEF::Core::Configuration.instance.get("beef.module.#{mod}.enable") == true)
     end
 
     # Checks to see if the module reports that it has loaded through the configuration
     # @param [String] mod module key
     # @return [Boolean] if the module key is loaded in BeEF's configuration
     def self.is_loaded(mod)
-      return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get('beef.module.'+mod.to_s+'.loaded') == true)
+      return (self.is_enabled(mod) and BeEF::Core::Configuration.instance.get("beef.module.#{mod}.loaded") == true)
     end
 
     # Returns module class definition
     # @param [String] mod module key
     # @return [Class] the module class
     def self.get_definition(mod)
-      return BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{mod.to_s}.class"))
+      return BeEF::Core::Command.const_get(BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class"))
     end
 
     # Gets all module options
@@ -83,19 +83,20 @@ module BeEF
       # API call for pre-soft-load module
       BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
       config = BeEF::Core::Configuration.instance
-      if not config.get("beef.module.#{mod}.loaded")
-        if File.exists?($root_dir+"/"+config.get('beef.module.'+mod+'.path')+'/module.rb')
-          BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.class', mod.capitalize)
-          self.parse_targets(mod)
-          print_debug "Soft Load module: '#{mod}'"
-          # API call for post-soft-load module
-          BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
-          return true
-        else
-          print_debug "Unable to locate module file: #{config.get('beef.module.'+mod+'.path')}module.rb"
+      mod_str = "beef.module.#{mod}"
+      if not config.get("#{mod_str}.loaded")
+        if not File.exists?("#{$root_dir}/#{config.get("#{mod_str}.path")}/module.rb")
+          print_debug "Unable to locate module file: #{config.get("#{mod_str}.path")}/module.rb"
+          return false
         end
-        print_error "Unable to load module '#{mod}'"
+        BeEF::Core::Configuration.instance.set("#{mod_str}.class", mod.capitalize)
+        self.parse_targets(mod)
+        print_debug "Soft Load module: '#{mod}'"
+        # API call for post-soft-load module
+        BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
+        return true
       end
+      print_error "Unable to load module '#{mod}'"
       return false
     end
 
@@ -109,28 +110,29 @@ module BeEF
       # API call for pre-hard-load module
       BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
       config = BeEF::Core::Configuration.instance
-      if self.is_enabled(mod)
-        begin
-          require config.get("beef.module.#{mod}.path")+'module.rb'
-          if self.exists?(config.get("beef.module.#{mod}.class"))
-            # start server mount point
-            BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
-            BeEF::Core::Configuration.instance.set("beef.module.#{mod}.mount", "/command/#{mod}.js")
-            BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', true)
-            print_debug "Hard Load module: '#{mod.to_s}'"
-            # API call for post-hard-load module
-            BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
-            return true
-          else
-            print_error "Hard loaded module '#{mod.to_s}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"
-          end
-        rescue => e
-          BeEF::Core::Configuration.instance.set('beef.module.'+mod+'.loaded', false)
-          print_error "There was a problem loading the module '#{mod.to_s}'"
-          print_debug "Hard load module syntax error: #{e.to_s}"
+      if not self.is_enabled(mod)
+        print_error "Hard load attempted on module '#{mod}' that is not enabled."
+        return false
+      end
+      mod_str = "beef.module.#{mod}"
+      begin
+        require config.get("#{mod_str}.path")+'module.rb'
+        if self.exists?(config.get("#{mod_str}.class"))
+          # start server mount point
+          BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
+          BeEF::Core::Configuration.instance.set("#{mod_str}.mount", "/command/#{mod}.js")
+          BeEF::Core::Configuration.instance.set("#{mod_str}.loaded", true)
+          print_debug "Hard Load module: '#{mod}'"
+          # API call for post-hard-load module
+          BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
+          return true
+        else
+          print_error "Hard loaded module '#{mod}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"
         end
-      else
-        print_error "Hard load attempted on module '#{mod.to_s}' that is not enabled."
+      rescue => e
+        BeEF::Core::Configuration.instance.set("#{mod_str}.loaded", false)
+        print_error "There was a problem loading the module '#{mod}'"
+        print_debug "Hard load module syntax error: #{e}"
       end
       return false
     end
@@ -184,112 +186,113 @@ module BeEF
     #   4+ = As above but with extra parameters.
     #   Please note this rating system has no correlation to the return constant value BeEF::Core::Constants::CommandModule::*
     def self.support(mod, opts)
-      target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
-      if target_config and opts.kind_of? Hash
-        if opts.key?('browser')
-          results = []
-          target_config.each{|k,m|
-            m.each{|v|
-              case v
-                when String
-                  if opts['browser'] == v
-                    # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-                    #   rating += 1
-                    # end
-                    results << {'rating' => 2, 'const' => k}
-                  end
-                when Hash
-                  if opts['browser'] == v.keys.first or v.keys.first == BeEF::Core::Constants::Browsers::ALL
-                    subv = v[v.keys.first]
-                    rating = 1
-                    #version check
-                    if opts.key?('ver')
-                      if subv.key?('min_ver')
-                        if subv['min_ver'].kind_of? Fixnum and opts['ver'].to_i >= subv['min_ver']
-                          rating += 1
-                        else
-                          break
-                        end
-                      end
-                      if subv.key?('max_ver')
-                        if (subv['max_ver'].kind_of? Fixnum and opts['ver'].to_i <= subv['max_ver']) or subv['max_ver'] == "latest"
-                          rating += 1
-                        else
-                          break
-                        end
-                      end
-                    end
-                    # os check
-                    if opts.key?('os') and subv.key?('os')
-                      match = false
-                      opts['os'].each{|o|
-                        case subv['os']
-                          when String
-                            if o == subv['os']
-                              rating += 1
-                              match = true
-                            elsif subv['os'] == BeEF::Core::Constants::Os::OS_ALL_UA_STR
-                              match = true
-                            end
-                          when Array
-                            subv['os'].each{|p|
-                              if o == p
-                                rating += 1
-                                match = true
-                              elsif p == BeEF::Core::Constants::Os::OS_ALL_UA_STR
-                                match = true
-                              end
-                            }
-                        end
-                      }
-                      if not match
-                        break
-                      end
-                    end
-                    if rating > 0
-                      # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-                      #   rating += 1
-                      # end
-                      results << {'rating' => rating, 'const' => k}
-                    end
-                  end
-              end
-              if v == BeEF::Core::Constants::Browsers::ALL
-                rating = 1
-                if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-                  rating = 1
-                end
-                results << {'rating' => rating, 'const' => k}
-              end
-            }
-          }
-          if results.count > 0
-            result = {}
-            results.each {|r|
-              if result == {}
-                result = {'rating' => r['rating'], 'const' => r['const']}
-              else
-                if r['rating'] > result['rating']
-                  result = {'rating' => r['rating'], 'const' => r['const']}
-                end
-              end
-            }
-            return result['const']
-          else
-            return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
-          end
-        else
-          print_error "BeEF::Module.support() was passed a hash without a valid browser constant"
-        end
+      target_config = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.target")
+      if not target_config or not opts.kind_of? Hash
+        return nil
       end
-      return nil
+      if not opts.key?('browser')
+        print_error "BeEF::Module.support() was passed a hash without a valid browser constant"
+        return nil
+      end
+      results = []
+      target_config.each{|k,m|
+        m.each{|v|
+          case v
+            when String
+              if opts['browser'] == v
+                # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+                #   rating += 1
+                # end
+                results << {'rating' => 2, 'const' => k}
+              end
+            when Hash
+              if opts['browser'] == v.keys.first or v.keys.first == BeEF::Core::Constants::Browsers::ALL
+                subv = v[v.keys.first]
+                rating = 1
+                #version check
+                if opts.key?('ver')
+                  if subv.key?('min_ver')
+                    if subv['min_ver'].kind_of? Fixnum and opts['ver'].to_i >= subv['min_ver']
+                      rating += 1
+                    else
+                      break
+                    end
+                  end
+                  if subv.key?('max_ver')
+                    if (subv['max_ver'].kind_of? Fixnum and opts['ver'].to_i <= subv['max_ver']) or subv['max_ver'] == "latest"
+                      rating += 1
+                    else
+                      break
+                    end
+                  end
+                end
+                # os check
+                if opts.key?('os') and subv.key?('os')
+                  match = false
+                  opts['os'].each{|o|
+                    case subv['os']
+                      when String
+                        if o == subv['os']
+                          rating += 1
+                          match = true
+                        elsif subv['os'] == BeEF::Core::Constants::Os::OS_ALL_UA_STR
+                          match = true
+                        end
+                      when Array
+                        subv['os'].each{|p|
+                          if o == p
+                            rating += 1
+                            match = true
+                          elsif p == BeEF::Core::Constants::Os::OS_ALL_UA_STR
+                            match = true
+                          end
+                        }
+                    end
+                  }
+                  if not match
+                    break
+                  end
+                end
+                if rating > 0
+                  # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+                  #   rating += 1
+                  # end
+                  results << {'rating' => rating, 'const' => k}
+                end
+              end
+          end
+          if v == BeEF::Core::Constants::Browsers::ALL
+            rating = 1
+            if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
+              rating = 1
+            end
+            results << {'rating' => rating, 'const' => k}
+          end
+        }
+      }
+      if results.count > 0
+        result = {}
+        results.each {|r|
+          if result == {}
+            result = {'rating' => r['rating'], 'const' => r['const']}
+          else
+            if r['rating'] > result['rating']
+              result = {'rating' => r['rating'], 'const' => r['const']}
+            end
+          end
+        }
+        return result['const']
+      else
+        return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
+      end
     end
 
     # Translates module target configuration
     # @note Takes the user defined target configuration and replaces it with equivalent a constant based generated version
     # @param [String] mod module key
     def self.parse_targets(mod)
-      target_config = BeEF::Core::Configuration.instance.get('beef.module.'+mod+'.target')
+      mod_str = "beef.module.#{mod}"
+      target_config = BeEF::Core::Configuration.instance.get("#{mod_str}.target")
       if target_config
         targets = {}
         target_config.each{|k,v|
@@ -331,11 +334,11 @@ module BeEF
               end
             end
           rescue NameError
-            print_error "Module \"#{mod}\" configuration has invalid target status defined \"#{k}\""
+            print_error "Module '#{mod}' configuration has invalid target status defined '#{k}'"
           end
         }
-        BeEF::Core::Configuration.instance.clear("beef.module.#{mod}.target")
-        BeEF::Core::Configuration.instance.set("beef.module.#{mod}.target", targets)
+        BeEF::Core::Configuration.instance.clear("#{mod_str}.target")
+        BeEF::Core::Configuration.instance.set("#{mod_str}.target", targets)
       end
     end
 
@@ -351,7 +354,7 @@ module BeEF
             browser = BeEF::Core::Constants::Browsers.const_get(v.upcase)
           end
         rescue NameError
-          print_error "Could not identify browser target specified as \"#{v}\""
+          print_error "Could not identify browser target specified as '#{v}'"
         end
       else
         print_error "Invalid datatype passed to BeEF::Module.match_target_browser()"
@@ -407,7 +410,7 @@ module BeEF
             os = BeEF::Core::Constants::Os.const_get("OS_#{v.upcase}_UA_STR")
           end
         rescue NameError
-          print_error "Could not identify OS target specified as \"#{v}\""
+          print_error "Could not identify OS target specified as '#{v}'"
         end
       else
         print_error "Invalid datatype passed to BeEF::Module.match_target_os()"
