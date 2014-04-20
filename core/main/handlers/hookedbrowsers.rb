@@ -47,7 +47,7 @@ module Handlers
         # @note generate the instructions to hook the browser
         host_name = request.host
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
-        build_beefjs!(host_name)
+        build_beefjs!(host_name, request.port)
 
       # @note is a known browser so send instructions 
       else       
