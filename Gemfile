@@ -40,6 +40,7 @@ gem "msfrpc-client"        # Metasploit Integration extension
 gem "rubyzip", ">= 1.0.0"
 gem "rubydns"              # DNS extension
 gem "sourcify"
+gem "geoip"                # geolocation support
 
 # For running unit tests
 if ENV['BEEF_TEST']

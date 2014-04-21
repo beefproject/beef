@@ -68,7 +68,7 @@ module BeEF
                       }
           zombie.httpheaders = @http_headers.to_json
           zombie.save
-          #puts "HTTP Headers: #{zombie.httpheaders}"
+          #print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
 
           # add a log entry for the newly hooked browser
           BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port.to_s}", "#{zombie.id}")
@@ -78,6 +78,36 @@ module BeEF
             BD.set(session_id, 'BrowserName', browser_name)
           else
             self.err_msg "Invalid browser name returned from the hook browser's initial connection."
+          end
+
+          # geolocation
+          if config.get('beef.geoip.enable')
+            require 'geoip'
+            geoip_file = config.get('beef.geoip.database')
+            if File.exists? geoip_file
+              geoip = GeoIP.new(geoip_file).city(zombie.ip)
+              if geoip.nil?
+                print_debug "[INIT] Geolocation failed - No results for IP address '#{zombie.ip}'"
+              else
+                #print_debug "[INIT] Geolocation results: #{geoip}"
+                BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", "#{zombie.id}")
+                BD.set(session_id, 'LocationCity',          "#{geoip['city_name']}")
+                BD.set(session_id, 'LocationCountry',       "#{geoip['country_name']}")
+                BD.set(session_id, 'LocationCountryCode2',  "#{geoip['country_code2']}")
+                BD.set(session_id, 'LocationCountryCode3',  "#{geoip['country_code3']}")
+                BD.set(session_id, 'LocationContinentCode', "#{geoip['continent_code']}")
+                BD.set(session_id, 'LocationPostCode',      "#{geoip['postal_code']}")
+                BD.set(session_id, 'LocationLatitude',      "#{geoip['latitude']}")
+                BD.set(session_id, 'LocationLongitude',     "#{geoip['longitude']}")
+                BD.set(session_id, 'LocationDMACode',       "#{geoip['dma_code']}")
+                BD.set(session_id, 'LocationAreaCode',      "#{geoip['area_code']}")
+                BD.set(session_id, 'LocationTimezone',      "#{geoip['timezone']}")
+                BD.set(session_id, 'LocationRegionName',    "#{geoip['real_region_name']}")
+              end
+            else
+              print_error "[INIT] Geolocation failed - Could not find MaxMind GeoIP database '#{geoip_file}'"
+              print_more  "Download: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
+            end
           end
 
           # detect browser proxy

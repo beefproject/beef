@@ -103,6 +103,13 @@ beef:
 
     crypto_default_value_length: 80
 
+    # IP Geolocation
+    # Requires MaxMind database
+    # curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    geoip:
+      enable: false
+      database: '/opt/GeoIP/GeoLiteCity.dat'
+
     # You may override default extension configuration parameters here
     extension:
         requester:

@@ -95,6 +95,20 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
 
+        # Geolocation
+        ['Location', 'City',          'LocationCity'],
+        ['Location', 'Country',       'LocationCountry'],
+        ['Location', 'CountryCode2',  'LocationCountryCode2'],
+        ['Location', 'CountryCode3',  'LocationCountryCode3'],
+        ['Location', 'Continent',     'LocationContinentCode'],
+        ['Location', 'Post Code',     'LocationPostCode'],
+        ['Location', 'Latitude',      'LocationLatitude'],
+        ['Location', 'Longitude',     'LocationLongitude'],
+        ['Location', 'DMA Code',      'LocationDMACode'],
+        ['Location', 'Area Code',     'LocationAreaCode'],
+        ['Location', 'Timezone',      'LocationTimezone'],
+        ['Location', 'Region',        'LocationRegionName'],
+
         # Hooked Page
         ['Hooked Page', 'Page Title',    'PageTitle'],
         ['Hooked Page', 'Page URI',      'PageURI'],
