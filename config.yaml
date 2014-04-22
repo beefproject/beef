@@ -11,29 +11,44 @@ beef:
     debug: false
     # More verbose messages (client-side)
     client_debug: false
+    # Used for generating secure tokens
+    crypto_default_value_length: 80
 
+    # Interface / IP restrictions
     restrictions:
-        # subnet of browser ip addresses that can hook to the framework
+        # subnet of IP addresses that can hook to the framework
         permitted_hooking_subnet: "0.0.0.0/0"
-        # subnet of browser ip addresses that can connect to the UI
-        # permitted_ui_subnet: "127.0.0.1/32"
+        # subnet of IP addresses that can connect to the admin UI
+        #permitted_ui_subnet: "127.0.0.1/32"
         permitted_ui_subnet: "0.0.0.0/0"
 
+    # HTTP server
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
         port: "3000"
-        # Decrease this setting up to 1000 if you want more responsiveness when sending modules and retrieving results.
-        # It's not advised to decrease it with tons of hooked browsers (more than 50),
-        # because it might impact performance. Also, enable WebSockets is generally better.
+
+        # Decrease this setting to 1,000 (ms) if you want more responsiveness
+        #  when sending modules and retrieving results.
+        # NOTE: A poll timeout of less than 5,000 (ms) might impact performance
+        #  when hooking lots of browsers (50+).
+        # Enabling WebSockets is generally better (beef.websocket.enable)
         xhr_poll_timeout: 5000
-        # if running behind a nat set the public ip address here
-        #public: ""
-        #public_port: "" # port setting is experimental
+
+        # Reverse Proxy / NAT
+        # If BeEF is running behind a reverse proxy or NAT
+        #  set the public hostname and port here
+        #public: ""      # public hostname/IP address
+        #public_port: "" # experimental
+
         # DNS
         dns_host: "localhost"
         dns_port: 53
+
+        # Web Admin user interface URI
         web_ui_basepath: "/ui"
+
+        # Hook
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
         session_cookie_name: "BEEFSESSION"
@@ -46,11 +61,13 @@ beef:
 
         # Prefer WebSockets over XHR-polling when possible.
         websocket:
-          enable: false
-          secure: true # use 'WebSocketSecure' works only on HTTPS domains and with HTTPS support enabled in BeEF
-          port: 61985 # WS: good success rate through proxies
-          secure_port: 61986 # WSSecure
-          ws_poll_timeout: 1000 # poll BeEF every second
+            enable: false
+            port: 61985 # WS: good success rate through proxies
+            # Use encrypted 'WebSocketSecure'
+            # NOTE: works only on HTTPS domains and with HTTPS support enabled in BeEF
+            secure: true
+            secure_port: 61986 # WSSecure
+            ws_poll_timeout: 1000 # poll BeEF every second
 
         # Imitate a specified web server (default root page, 404 default error page, 'Server' HTTP response header)
         web_server_imitation:
@@ -89,7 +106,8 @@ beef:
         db_passwd: "beef123"
         db_encoding: "UTF-8"
 
-    # Credentials to authenticate in BeEF. Used by both the RESTful API and the Admin_UI extension
+    # Credentials to authenticate in BeEF.
+    # Used by both the RESTful API and the Admin_UI extension
     credentials:
         user:   "beef"
         passwd: "beef"
@@ -98,17 +116,16 @@ beef:
     # NOTE: only modules with target type 'working' or 'user_notify' can be run automatically.
     autorun:
         enable: true
-        # set this to FALSE if you don't want to allow auto-run execution for modules with target->user_notify
+        # set this to TRUE if you want to allow auto-run execution for modules with target->user_notify
         allow_user_notify: true
 
-    crypto_default_value_length: 80
-
     # IP Geolocation
-    # Requires MaxMind database
-    # curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    # NOTE: requires MaxMind database:
+    #   curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    #   gunzip GeoLiteCity.dat.gz && mkdir /opt/GeoIP && mv GeoLiteCity.dat /opt/GeoIP
     geoip:
-      enable: false
-      database: '/opt/GeoIP/GeoLiteCity.dat'
+        enable: false
+        database: '/opt/GeoIP/GeoLiteCity.dat'
 
     # You may override default extension configuration parameters here
     extension:
