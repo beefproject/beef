@@ -66,6 +66,15 @@ module BeEF
                     "and search for topics titled <b>Web Site Setup</b>, <b>Common Administrative Tasks</b>, and <b>About Custom Error Messages</b>.</li>" +
                     "</ul>" +
                     "</TD></TR></TABLE></BODY></HTML>"
+              when "nginx"
+                #response body
+                "<html>\n"+
+                    "<head><title>404 Not Found</title></head>\n" +
+                    "<body bgcolor=\"white\">\n" +
+                    "<center><h1>404 Not Found</h1></center>\n" +
+                    "<hr><center>nginx</center>\n" +
+                    "</body>\n" +
+                    "</html>\n"
               else
                 "Not Found."
             end
@@ -87,12 +96,15 @@ module BeEF
                 headers "Server" => "Microsoft-IIS/6.0",
                         "X-Powered-By" => "ASP.NET",
                         "Content-Type" => "text/html; charset=UTF-8"
+              when "nginx"
+                headers "Server" => "nginx",
+                        "Content-Type" => "text/html"
               else
-                print_error "You have and error in beef.http.web_server_imitation.type! Supported values are: apache, iis."
+                print_error "You have an error in beef.http.web_server_imitation.type! Supported values are: apache, iis, nginx."
             end
           end
 
-          # @note If CORS are enabled, expose the appropriate headers
+          # @note If CORS is enabled, expose the appropriate headers
           # this apparently duplicate code is needed to reply to preflight OPTIONS requests, which need to respond with a 200
           # and be able to handle requests with a JSON content-type
           if request.request_method == 'OPTIONS' && config.get("beef.http.restful_api.allow_cors")
@@ -103,7 +115,7 @@ module BeEF
             halt 200
           end
 
-          # @note If CORS are enabled, expose the appropriate headers
+          # @note If CORS is enabled, expose the appropriate headers
           if config.get("beef.http.restful_api.allow_cors")
             allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
             headers "Access-Control-Allow-Origin" => allowed_domains,
@@ -255,6 +267,30 @@ module BeEF
                     "</table>" +
                     "</body>" +
                     "</html>"
+              when "nginx"
+                "<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "<title>Welcome to nginx!</title>\n" +
+                    "<style>\n" +
+                    "    body {\n" +
+                    "        width: 35em;\n" +
+                    "        margin: 0 auto;\n" +
+                    "        font-family: Tahoma, Verdana, Arial, sans-serif;\n" +
+                    "    }\n" +
+                    "</style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "<h1>Welcome to nginx!</h1>\n" +
+                    "<p>If you see this page, the nginx web server is successfully installed and\n" +
+                    "working. Further configuration is required.</p>\n\n" +
+                    "<p>For online documentation and support please refer to\n" +
+                    "<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\n" +
+                    "Commercial support is available at\n" +
+                    "<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n" +
+                    "<p><em>Thank you for using nginx.</em></p>\n" +
+                    "</body>\n" +
+                    "</html>\n"
               else
                 ""
             end
