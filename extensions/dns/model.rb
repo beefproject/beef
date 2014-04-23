@@ -18,7 +18,7 @@ module BeEF
           property :pattern, Object, :required => true
           property :resource, Object, :required => true
           property :response, Object, :required => true
-          property :callback, String, :required => true
+          property :callback, Object, :required => true
 
           # Hooks the model's "save" event. Generates a rule identifier and callback.
           before :save do |rule|
