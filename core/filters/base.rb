@@ -99,13 +99,47 @@ module Filters
     only?("a-zA-Z0-9", str)
   end
         
-  # Check if valid ip address string
+  # Checks if string is a valid IPv4 address
   # @param [String] ip String for testing
-  # @return [Boolean] If the string is a valid IP address
-  # @note only IPv4 compliant
-  def self.is_valid_ip?(ip)
-    return false if not is_non_empty_string?(ip)
-    return true if ip =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
+  # @return [Boolean] If the string is a valid IPv4 address
+  def self.is_valid_ipv4?(ip)
+    return false unless is_non_empty_string?(ip)
+    return true if ip =~ /^((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])$/
+    false
+  end
+
+  # Checks if string is a valid IPv6 address
+  # @param [String] ip string for testing
+  # @return [Boolean] If the string is a valid IPv6 address
+  def self.is_valid_ipv6?(ip)
+    return false unless is_non_empty_string?(ip)
+    return true if ip =~ /^(([0-9a-f]{1,4}:){7,7}[0-9a-f]{1,4}|
+      ([0-9a-f]{1,4}:){1,7}:|
+      ([0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|
+      ([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}|
+      ([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}|
+      ([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}|
+      ([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}|
+      [0-9a-f]{1,4}:((:[0-9a-f]{1,4}){1,6})|
+      :((:[0-9a-f]{1,4}){1,7}|:)|
+      fe80:(:[0-9a-f]{0,4}){0,4}%[0-9a-z]{1,}|
+      ::(ffff(:0{1,4}){0,1}:){0,1}
+      ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
+      (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
+      ([0-9a-f]{1,4}:){1,4}:
+      ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
+      (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/ix
+    false
+  end
+
+  # Checks if string is a valid domain name
+  # @param [String] domain string for testing
+  # @return [Boolean] If the string is a valid domain name
+  # @note Only validates the string format. It does not check for a valid TLD since ICANN's list of
+  #       TLD's is not static.
+  def self.is_valid_domain?(domain)
+    return false unless is_non_empty_string?(domain)
+    return true if domain =~ /^[0-9a-z-]+(\.[0-9a-z-]+)*(\.[a-z]{2,})$/i
     false
   end
 
