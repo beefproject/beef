@@ -39,6 +39,23 @@ module Core
       config.set('beef.api_token', token)
       token
     end
+
+    # Generates a unique identifier for DNS rules.
+    #
+    # @return [String] 8-character hex identifier
+    def self.dns_rule_id
+      id = nil
+      length = 4
+
+      begin
+        id = OpenSSL::Random.random_bytes(length).unpack('H*')[0]
+        BeEF::Core::Models::Dns::Rule.each { |rule| throw StandardError if id == rule.id }
+      rescue StandardError
+        retry
+      end
+
+      id.to_s
+    end
   
   end
 end

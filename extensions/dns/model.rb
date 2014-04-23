@@ -23,7 +23,7 @@ module BeEF
           # Hooks the model's "save" event. Generates a rule identifier and callback.
           before :save do |rule|
             rule.callback = validate_response(rule.resource, rule.response)
-            rule.id = generate_id
+            rule.id = BeEF::Core::Crypto.dns_rule_id
           end
 
         private
@@ -35,13 +35,6 @@ module BeEF
           # @return [String] string representation of callback that can safely be eval'd
           def validate_response(resource, response)
             "t.respond!('1.1.1.1')"
-          end
-
-          # Generates a unique identifier for use as a primary key.
-          #
-          # @return [String] 8-character hex identifier
-          def generate_id
-            '42'
           end
 
         end
