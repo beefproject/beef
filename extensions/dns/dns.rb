@@ -22,6 +22,39 @@ module BeEF
           @lock = Mutex.new
         end
 
+        # Adds a new DNS rule. If the rule already exists, its current ID is returned.
+        #
+        # @example Adds an A record for browserhacker.com with the IP address 1.2.3.4
+        #
+        #   dns = BeEF::Extension::Dns::Server.instance
+        #
+        #   id = dns.add_rule(
+        #     :pattern  => 'browserhacker.com',
+        #     :resource => Resolv::DNS::Resource::IN::A,
+        #     :response => '1.2.3.4'
+        #   )
+        #
+        # @param rule [Hash] hash representation of rule
+        # @option rule [String, Regexp] :pattern match criteria
+        # @option rule [Resolv::DNS::Resource::IN] :resource resource record type
+        # @option rule [String, Array] :response server response
+        #
+        # @return [String] unique 8-digit hex identifier
+        def add_rule(rule = {})
+          @lock.synchronize do
+            # Temporarily disable warnings regarding IGNORECASE flag
+            verbose = $VERBOSE
+            $VERBOSE = nil
+            pattern = Regexp.new(rule[:pattern], Regexp::IGNORECASE)
+            $VERBOSE = verbose
+
+            BeEF::Core::Models::Dns::Rule.first_or_create(
+              { :resource => rule[:resource], :pattern => pattern.source },
+              { :response => rule[:response] }
+            ).id
+          end
+        end
+
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
         # sends back its associated response.
         #
