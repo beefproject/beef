@@ -129,4 +129,4 @@ beef:
             enable: true
         # this is still experimental, we're working on it..
         dns:
-            enable: false
+            enable: true
