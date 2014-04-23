@@ -72,7 +72,7 @@ module BeEF
         # @param id [String] rule identifier
         #
         # @return [Boolean] true if rule was removed, otherwise false
-        def remove_rule(id)
+        def remove_rule!(id)
           @lock.synchronize do
             rule = BeEF::Core::Models::Dns::Rule.get(id)
             rule.nil? ? false : rule.destroy
@@ -96,7 +96,7 @@ module BeEF
         # Removes the entire DNS ruleset.
         #
         # @return [Boolean] true if ruleset was destroyed, otherwise false
-        def remove_ruleset
+        def remove_ruleset!
           @lock.synchronize { BeEF::Core::Models::Dns::Rule.destroy }
         end
 
