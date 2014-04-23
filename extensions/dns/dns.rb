@@ -108,7 +108,32 @@ module BeEF
         # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
         def process(name, resource, transaction)
           @lock.synchronize do
-            transaction.respond!('1.1.1.1')
+	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)}"
+
+            catch (:done) do
+              # Find rules matching the requested resource class
+              resources = BeEF::Core::Models::Dns::Rule.all(:resource => resource)
+              throw :done if resources.length == 0
+
+              # Narrow down search by finding a matching pattern
+              resources.each do |rule|
+                pattern = Regexp.new(rule.pattern)
+
+                if name =~ pattern
+                  print_debug "Found matching DNS rule (id: #{rule.id} response: #{rule.response})"
+                  Proc.new { |t| eval(rule.callback) }.call(transaction)
+                  throw :done
+                end
+              end
+
+              # When no match is found, query upstream servers (if enabled)
+              if @otherwise
+                print_debug "No match found, querying upstream servers"
+                @otherwise.call(transaction)
+              else
+                print_debug "Failed to handle DNS request for #{name}"
+              end
+            end
           end
         end
 
@@ -122,10 +147,19 @@ module BeEF
           hash = {}
           hash[:id] = rule.id
           hash[:pattern] = rule.pattern
-          hash[:resource] = rule.resource
+          hash[:resource] = format_resource(rule.resource)
           hash[:response] = rule.response
 
           hash
+        end
+
+        # Helper method that formats the given resource class in a human-readable format.
+        #
+        # @param resource [Resolv::DNS::Resource::IN] resource class
+        #
+        # @return [String] resource name stripped of any module/class names
+        def format_resource(resource)
+          /::(\w+)$/.match(resource.name)[1]
         end
 
       end
