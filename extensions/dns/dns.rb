@@ -93,6 +93,13 @@ module BeEF
           @lock.synchronize { BeEF::Core::Models::Dns::Rule.collect { |rule| to_hash(rule) } }
         end
 
+        # Removes the entire DNS ruleset.
+        #
+        # @return [Boolean] true if ruleset was destroyed, otherwise false
+        def remove_ruleset
+          @lock.synchronize { BeEF::Core::Models::Dns::Rule.destroy }
+        end
+
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
         # sends back its associated response.
         #
