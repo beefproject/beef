@@ -20,6 +20,7 @@ module BeEF
         def initialize
           super()
           @lock = Mutex.new
+          @database = BeEF::Core::Models::Dns::Rule
         end
 
         # Adds a new DNS rule. If the rule already exists, its current ID is returned.
@@ -48,7 +49,7 @@ module BeEF
             pattern = Regexp.new(rule[:pattern], Regexp::IGNORECASE)
             $VERBOSE = verbose
 
-            BeEF::Core::Models::Dns::Rule.first_or_create(
+            @database.first_or_create(
               { :resource => rule[:resource], :pattern => pattern.source },
               { :response => rule[:response] }
             ).id
@@ -62,7 +63,7 @@ module BeEF
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
-            rule = BeEF::Core::Models::Dns::Rule.get(id)
+            rule = @database.get(id)
             rule.nil? ? {} : to_hash(rule)
           end
         end
@@ -74,7 +75,7 @@ module BeEF
         # @return [Boolean] true if rule was removed, otherwise false
         def remove_rule!(id)
           @lock.synchronize do
-            rule = BeEF::Core::Models::Dns::Rule.get(id)
+            rule = @database.get(id)
             rule.nil? ? false : rule.destroy
           end
         end
@@ -90,14 +91,14 @@ module BeEF
         #
         # @return [Array<Hash>] DNS ruleset (empty array if no rules are currently defined)
         def get_ruleset
-          @lock.synchronize { BeEF::Core::Models::Dns::Rule.collect { |rule| to_hash(rule) } }
+          @lock.synchronize { @database.collect { |rule| to_hash(rule) } }
         end
 
         # Removes the entire DNS ruleset.
         #
         # @return [Boolean] true if ruleset was destroyed, otherwise false
         def remove_ruleset!
-          @lock.synchronize { BeEF::Core::Models::Dns::Rule.destroy }
+          @lock.synchronize { @database.destroy }
         end
 
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
@@ -112,7 +113,7 @@ module BeEF
 
             catch (:done) do
               # Find rules matching the requested resource class
-              resources = BeEF::Core::Models::Dns::Rule.all(:resource => resource)
+              resources = @database.all(:resource => resource)
               throw :done if resources.length == 0
 
               # Narrow down search by finding a matching pattern
