@@ -55,6 +55,27 @@ module BeEF
           end
         end
 
+        # Retrieves a specific rule given its identifier.
+        #
+        # @param id [Integer] unique identifier for rule
+        #
+        # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
+        def get_rule(id)
+          @lock.synchronize do
+            rule = BeEF::Core::Models::Dns::Rule.get(id)
+            hash = {}
+
+            unless rule.nil?
+              hash[:id] = rule.id
+              hash[:pattern] = rule.pattern
+              hash[:resource] = rule.resource
+              hash[:response] = rule.response
+            end
+
+            hash
+          end
+        end
+
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
         # sends back its associated response.
         #
