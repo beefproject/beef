@@ -34,32 +34,11 @@ module BeEF
           #
           # @return [String] string representation of callback that can safely be eval'd
           def validate_response(resource, response)
-            domain_regex = /^[0-9a-z-]+(\.[0-9a-z-]+)*(\.[a-z]{2,})$/i
             sym_regex = /^:?(NoError|FormErr|ServFail|NXDomain|NotImp|Refused|NotAuth)$/i
-
-            ipv4_regex = /^((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
-              (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])$/x
-
-            ipv6_regex = /^(([0-9a-f]{1,4}:){7,7}[0-9a-f]{1,4}|
-              ([0-9a-f]{1,4}:){1,7}:|
-              ([0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|
-              ([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}|
-              ([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}|
-              ([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}|
-              ([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}|
-              [0-9a-f]{1,4}:((:[0-9a-f]{1,4}){1,6})|
-              :((:[0-9a-f]{1,4}){1,7}|:)|
-              fe80:(:[0-9a-f]{0,4}){0,4}%[0-9a-z]{1,}|
-              ::(ffff(:0{1,4}){0,1}:){0,1}
-              ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
-              (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
-              ([0-9a-f]{1,4}:){1,4}:
-              ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
-              (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/ix
 
             begin
               src = if resource == Resolv::DNS::Resource::IN::A
-                if response.is_a?(String) && response =~ ipv4_regex
+                if response.is_a?(String) && BeEF::Filters.is_valid_ipv4?(response)
                   sprintf "t.respond!('%s')", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -68,7 +47,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'A' unless r =~ ipv4_regex
+                    raise InvalidDnsResponseError, 'A' unless BeEF::Filters.is_valid_ipv4?(r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -77,7 +56,7 @@ module BeEF
                   raise InvalidDnsResponseError, 'A'
                 end
               elsif resource == Resolv::DNS::Resource::IN::AAAA
-                if response.is_a?(String) && response =~ ipv6_regex
+                if response.is_a?(String) && BeEF::Filters.is_valid_ipv6(response)
                   sprintf "t.respond!('%s')", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -86,7 +65,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'AAAA' unless r =~ ipv6_regex
+                    raise InvalidDnsResponseError, 'AAAA' unless BeEF::Filters.is_valid_ipv6(r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -95,7 +74,7 @@ module BeEF
                   raise InvalidDnsResponseError, 'AAAA'
                 end
               elsif resource == Resolv::DNS::Resource::IN::CNAME
-                if response.is_a?(String) && response =~ domain_regex
+                if response.is_a?(String) && BeEF::Filters.is_valid_domain?(response)
                   sprintf "t.respond!(Resolv::DNS::Name.create('%s'))", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -114,7 +93,7 @@ module BeEF
                 end
               elsif resource == Resolv::DNS::Resource::IN::MINFO
                 if response.is_a?(Array)
-                  response.each { |r| raise InvalidDnsResponseError, 'MINFO' unless r.is_a?(String) && r =~ domain_regex }
+                  response.each { |r| raise InvalidDnsResponseError, 'MINFO' unless r.is_a?(String) && BeEF::Filters.is_valid_domain?(r) }
 
                   data = { :rmailbx => response[0], :emailbx => response[1] }
 
@@ -128,8 +107,7 @@ module BeEF
                 end
               elsif resource == Resolv::DNS::Resource::IN::MX
                 if response[0].is_a?(Integer) &&
-                    response[1].is_a?(String) &&
-                    response[1] =~ domain_regex
+                    BeEF::Filters.is_valid_domain?(response[1])
 
                   data = { :preference => response[0], :exchange => response[1] }
                   sprintf "t.respond!(%<preference>d, Resolv::DNS::Name.create('%<exchange>s'))", data
@@ -139,7 +117,7 @@ module BeEF
                   raise InvalidDnsResponseError, 'MX'
                 end
               elsif resource == Resolv::DNS::Resource::IN::NS
-                if response.is_a?(String) && response =~ domain_regex
+                if response.is_a?(String) && BeEF::Filters.is_valid_domain?(response)
                   sprintf "t.respond!(Resolv::DNS::Name.create('%s'))", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -148,7 +126,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'NS' unless r =~ ipv4_regex
+                    raise InvalidDnsResponseError, 'NS' unless BeEF::Filters.is_valid_ipv4?(r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -157,7 +135,7 @@ module BeEF
                   raise InvalidDnsResponseError, 'NS'
                 end
               elsif resource == Resolv::DNS::Resource::IN::PTR
-                if response.is_a?(String) && response =~ domain_regex
+                if response.is_a?(String) && BeEF::Filters.is_valid_domain?(response)
                   sprintf "t.respond!(Resolv::DNS::Name.create('%s'))", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -166,10 +144,8 @@ module BeEF
                 end
               elsif resource == Resolv::DNS::Resource::IN::SOA
                 if response.is_a?(Array)
-                  unless response[0].is_a?(String) &&
-                      response[0] =~ domain_regex &&
-                      response[1].is_a?(String) &&
-                      response[1] =~ domain_regex &&
+                  unless BeEF::Filters.is_valid_domain?(response[0]) &&
+                      BeEF::Filters.is_valid_domain?(response[1]) &&
                       response[2].is_a?(Integer) &&
                       response[3].is_a?(Integer) &&
                       response[4].is_a?(Integer) &&
@@ -212,8 +188,7 @@ module BeEF
                 end
               elsif resource == Resolv::DNS::Resource::IN::WKS
                 if response.is_a?(Array)
-                  unless resource[0].is_a?(String) &&
-                      resource[0] =~ ipv4_regex &&
+                  unless BeEF::Filters.is_valid_ipv4?(resource[0]) &&
                       resource[1].is_a?(Integer) &&
                       resource[2].is_a?(Integer)
                     raise InvalidDnsResponseError, 'WKS' unless resource.is_a?(String)
