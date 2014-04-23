@@ -57,22 +57,13 @@ module BeEF
 
         # Retrieves a specific rule given its identifier.
         #
-        # @param id [Integer] unique identifier for rule
+        # @param id [String] unique identifier for rule
         #
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
             rule = BeEF::Core::Models::Dns::Rule.get(id)
-            hash = {}
-
-            unless rule.nil?
-              hash[:id] = rule.id
-              hash[:pattern] = rule.pattern
-              hash[:resource] = rule.resource
-              hash[:response] = rule.response
-            end
-
-            hash
+            rule.nil? ? {} : to_hash(rule)
           end
         end
 
@@ -88,6 +79,20 @@ module BeEF
           end
         end
 
+        # Returns an AoH representing the entire current DNS ruleset.
+        #
+        # Each element is a hash with the following keys:
+        #
+        # * <code>:id</code>
+        # * <code>:pattern</code>
+        # * <code>:resource</code>
+        # * <code>:response</code>
+        #
+        # @return [Array<Hash>] DNS ruleset (empty array if no rules are currently defined)
+        def get_ruleset
+          @lock.synchronize { BeEF::Core::Models::Dns::Rule.collect { |rule| to_hash(rule) } }
+        end
+
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
         # sends back its associated response.
         #
@@ -98,6 +103,22 @@ module BeEF
           @lock.synchronize do
             transaction.respond!('1.1.1.1')
           end
+        end
+
+      private
+        # Helper method that converts a DNS rule to a hash.
+        #
+        # @param rule [BeEF::Core::Models::Dns::Rule] rule to be converted
+        #
+        # @return [Hash] hash representation of DNS rule
+        def to_hash(rule)
+          hash = {}
+          hash[:id] = rule.id
+          hash[:pattern] = rule.pattern
+          hash[:resource] = rule.resource
+          hash[:response] = rule.response
+
+          hash
         end
 
       end
