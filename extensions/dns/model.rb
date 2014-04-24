@@ -38,7 +38,7 @@ module BeEF
 
             begin
               src = if resource == Resolv::DNS::Resource::IN::A
-                if response.is_a?(String) && BeEF::Filters.is_valid_ipv4?(response)
+                if response.is_a?(String) && BeEF::Filters.is_valid_ip?(:ipv4, response)
                   sprintf "t.respond!('%s')", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -47,7 +47,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'A' unless BeEF::Filters.is_valid_ipv4?(r)
+                    raise InvalidDnsResponseError, 'A' unless BeEF::Filters.is_valid_ip?(:ipv4, r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -56,7 +56,7 @@ module BeEF
                   raise InvalidDnsResponseError, 'A'
                 end
               elsif resource == Resolv::DNS::Resource::IN::AAAA
-                if response.is_a?(String) && BeEF::Filters.is_valid_ipv6(response)
+                if response.is_a?(String) && BeEF::Filters.is_valid_ip?(:ipv6, response)
                   sprintf "t.respond!('%s')", response
                 elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                   sprintf "t.fail!(:%s)", response.to_sym
@@ -65,7 +65,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'AAAA' unless BeEF::Filters.is_valid_ipv6(r)
+                    raise InvalidDnsResponseError, 'AAAA' unless BeEF::Filters.is_valid_ip?(:ipv6, r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -126,7 +126,7 @@ module BeEF
                   str2 = ''
 
                   response.each do |r|
-                    raise InvalidDnsResponseError, 'NS' unless BeEF::Filters.is_valid_ipv4?(r)
+                    raise InvalidDnsResponseError, 'NS' unless BeEF::Filters.is_valid_domain?(r)
                     str2 << sprintf(str1, r)
                   end
 
@@ -188,7 +188,7 @@ module BeEF
                 end
               elsif resource == Resolv::DNS::Resource::IN::WKS
                 if response.is_a?(Array)
-                  unless BeEF::Filters.is_valid_ipv4?(resource[0]) &&
+                  unless BeEF::Filters.is_valid_ip?(resource[0]) &&
                       resource[1].is_a?(Integer) &&
                       resource[2].is_a?(Integer)
                     raise InvalidDnsResponseError, 'WKS' unless resource.is_a?(String)

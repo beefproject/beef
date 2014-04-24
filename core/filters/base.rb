@@ -5,7 +5,7 @@
 #
 module BeEF
 module Filters
-  
+
   # Check if the string is not empty and not nil
   # @param [String] str String for testing
   # @return [Boolean] Whether the string is not empty
@@ -24,7 +24,7 @@ module Filters
     regex = Regexp.new('[^' + chars + ']')
     regex.match(str).nil?
   end
-        
+
   # Check if one or more characters in 'chars' are in 'str'
   # @param [String] chars List of characters to match
   # @param [String] str String for testing
@@ -33,7 +33,7 @@ module Filters
     regex = Regexp.new(chars)
     not regex.match(str).nil?
   end
-        
+
   # Check for null char
   # @param [String] str String for testing
   # @return [Boolean] If the string has a null character
@@ -98,38 +98,48 @@ module Filters
     return false if not is_non_empty_string?(str)
     only?("a-zA-Z0-9", str)
   end
-        
-  # Checks if string is a valid IPv4 address
-  # @param [String] ip String for testing
-  # @return [Boolean] If the string is a valid IPv4 address
-  def self.is_valid_ipv4?(ip)
-    return false unless is_non_empty_string?(ip)
-    return true if ip =~ /^((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])$/
-    false
-  end
 
-  # Checks if string is a valid IPv6 address
-  # @param [String] ip string for testing
-  # @return [Boolean] If the string is a valid IPv6 address
-  def self.is_valid_ipv6?(ip)
-    return false unless is_non_empty_string?(ip)
-    return true if ip =~ /^(([0-9a-f]{1,4}:){7,7}[0-9a-f]{1,4}|
-      ([0-9a-f]{1,4}:){1,7}:|
-      ([0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|
-      ([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}|
-      ([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}|
-      ([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}|
-      ([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}|
-      [0-9a-f]{1,4}:((:[0-9a-f]{1,4}){1,6})|
-      :((:[0-9a-f]{1,4}){1,7}|:)|
-      fe80:(:[0-9a-f]{0,4}){0,4}%[0-9a-z]{1,}|
-      ::(ffff(:0{1,4}){0,1}:){0,1}
-      ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
-      (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
-      ([0-9a-f]{1,4}:){1,4}:
-      ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
-      (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/ix
-    false
+  # @overload self.is_valid_ip?(version, ip)
+  #   Checks if the given string is a valid IP address
+  #   @param [Symbol] version IP version (either <code>:ipv4</code> or <code>:ipv6</code>)
+  #   @param [String] ip string to be tested
+  #   @return [Boolean] true if the string is a valid IP address, otherwise false
+  #
+  # @overload self.is_valid_ip?(ip)
+  #   Checks if the given string is either a valid IPv4 or IPv6 address
+  #   @param [String] ip string to be tested
+  #   @return [Boolean] true if the string is a valid IPv4 or IPV6 address, otherwise false
+  def self.is_valid_ip?(version = :both, ip)
+    valid = false
+
+    if is_non_empty_string?(ip)
+      valid = case version.inspect.downcase
+        when /^:ipv4$/
+          ip =~ /^((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
+            (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])$/x
+        when /^:ipv6$/
+          ip =~ /^(([0-9a-f]{1,4}:){7,7}[0-9a-f]{1,4}|
+            ([0-9a-f]{1,4}:){1,7}:|
+            ([0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|
+            ([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}|
+            ([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}|
+            ([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}|
+            ([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}|
+            [0-9a-f]{1,4}:((:[0-9a-f]{1,4}){1,6})|
+            :((:[0-9a-f]{1,4}){1,7}|:)|
+            fe80:(:[0-9a-f]{0,4}){0,4}%[0-9a-z]{1,}|
+            ::(ffff(:0{1,4}){0,1}:){0,1}
+            ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
+            (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
+            ([0-9a-f]{1,4}:){1,4}:
+            ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}
+            (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/ix
+        when /^:both$/
+          is_valid_ip?(:ipv4, ip) || is_valid_ip?(:ipv6, ip)
+      end ? true : false
+    end
+
+    valid
   end
 
   # Checks if string is a valid domain name
@@ -172,6 +182,6 @@ module Filters
     return false if str.length > 200
     true
   end
-  
+
 end
 end
