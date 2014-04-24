@@ -22,7 +22,7 @@ module Filters
   def self.is_valid_browsertype?(str)
     return false if not is_non_empty_string?(str)
     return false if str.length < 10
-    return false if str.length > 250
+    return false if str.length > 500 #CxF - had to increase this because the Chrome detection JSON String is getting bigger.
     return false if has_non_printable_char?(str)
     true
   end
