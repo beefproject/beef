@@ -1479,7 +1479,7 @@ beef.browser = {
     },
 
     /**
-     * Checks if the Phonegap API is available from the hooked domain.
+     * Checks if the Phonegap API is available from the hooked origin.
      * @return: {Boolean} true or false.
      *
      * @example: if(beef.browser.hasPhonegap()) { ... }
@@ -1871,9 +1871,9 @@ beef.browser = {
             if (has_session_cookies) details['hasSessionCookies'] = has_session_cookies;
             if (has_persistent_cookies) details['hasPersistentCookies'] = has_persistent_cookies;
         } catch (e) {
-            // the hooked domain is using HttpOnly. EverCookie is persisting the BeEF hook in a different way,
+            // the hooked origin is using HttpOnly. EverCookie is persisting the BeEF hook in a different way,
             // and there is no reason to read cookies at this point
-            details['Cookies'] = "Cookies can't be read. The hooked domain is most probably using HttpOnly.";
+            details['Cookies'] = "Cookies can't be read. The hooked origin is most probably using HttpOnly.";
             details['hasSessionCookies'] = "No";
             details['hasPersistentCookies'] = "No";
         }
@@ -2146,9 +2146,8 @@ beef.browser = {
         if (scope == 'PER_DOMAIN')
             testUrl = "http://browserspy.dk/connections.php?img=1&amp;random=";
         else
-        // The token will be replaced by a different number with each request(different domain).
+        // The token will be replaced by a different number with each request (different origin).
             testUrl = "http://<token>.browserspy.dk/connections.php?img=1&amp;random=";
-
 
         var imagesLoaded = 0;			// Number of responding images before timeout.
         var imagesRequested = 0;		// Number of requested images.
