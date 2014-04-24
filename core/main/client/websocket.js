@@ -20,7 +20,7 @@ beef.websocket = {
 
     /**
      * Initialize the WebSocket client object.
-     * Note: use WebSocketSecure only if the hooked domain is under https.
+     * Note: use WebSocketSecure only if the hooked origin is under https.
      * Mixed-content in WS is quite different from a non-WS context.
      */
     init:function () {
