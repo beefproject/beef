@@ -63,8 +63,14 @@ module BeEF
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
-            rule = @database.get(id)
-            rule.nil? ? {} : to_hash(rule)
+            if BeEF::Filters.hexs_only?(id) &&
+                !BeEF::Filters.has_null?(id) &&
+                !BeEF::Filters.has_non_printable_char?(id) &&
+                id.length == 8
+
+              rule = @database.get(id)
+              rule.nil? ? {} : to_hash(rule)
+            end
           end
         end
 
