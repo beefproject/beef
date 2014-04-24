@@ -49,12 +49,11 @@ class TC_Dns < Test::Unit::TestCase
   def test_03_interface
     @@dns = BeEF::Extension::Dns::Server.instance
 
-    assert_respond_to(@@dns, :run_server)
     assert_respond_to(@@dns, :add_rule)
-    assert_respond_to(@@dns, :remove_rule)
     assert_respond_to(@@dns, :get_rule)
+    assert_respond_to(@@dns, :remove_rule!)
     assert_respond_to(@@dns, :get_ruleset)
-    assert_respond_to(@@dns, :remove_ruleset)
+    assert_respond_to(@@dns, :remove_ruleset!)
   end
 
   # Tests that DNS server runs correctly on desired address and port
