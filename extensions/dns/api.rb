@@ -72,8 +72,7 @@ module BeEF
           #
           # @param beef_server [BeEF::Core::Server] HTTP server instance
           def self.mount_handler(beef_server)
-            # @todo Uncomment when RESTful API is DNS 2.0 compliant.
-            #beef_server.mount('/api/dns', BeEF::Extension::Dns::DnsRest.new)
+            beef_server.mount('/api/dns', BeEF::Extension::Dns::DnsRest.new)
           end
 
         end

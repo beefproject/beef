@@ -22,5 +22,4 @@ require 'extensions/dns/api'
 require 'extensions/dns/dns'
 require 'extensions/dns/logger'
 require 'extensions/dns/model'
-# @todo Uncomment when RESTful API is DNS 2.0 compliant.
-#require 'extensions/dns/rest/dns'
+require 'extensions/dns/rest/dns'

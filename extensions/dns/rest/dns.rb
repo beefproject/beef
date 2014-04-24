@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -45,14 +45,11 @@ module BeEF
           begin
             id = params[:id]
 
-            unless BeEF::Filters.alphanums_only?(id)
-              raise InvalidParamError, 'Invalid "id" parameter passed to endpoint /api/dns/rule/:id'
-            end
+            rule = BeEF::Extension::Dns::Server.instance.get_rule(id)
+            raise InvalidParamError, 'id' if rule.nil?
+            halt 404 if rule.empty?
 
-            result = BeEF::Extension::Dns::Server.instance.get_rule(id)
-            halt 404 if result.length == 0
-
-            result.to_json
+            rule.to_json
           rescue InvalidParamError => e
             print_error e.message
             halt 400
@@ -68,58 +65,26 @@ module BeEF
             body = JSON.parse(request.body.read)
 
             pattern = body['pattern']
-            type = body['type']
+            resource = body['resource']
             response = body['response']
 
-            valid_types = ["A", "AAAA", "CNAME", "HINFO", "MINFO", "MX", "NS", "PTR", "SOA", "TXT", "WKS"]
+            valid_resources = ["A", "AAAA", "CNAME", "HINFO", "MINFO", "MX", "NS", "PTR", "SOA", "TXT", "WKS"]
 
             # Validate required JSON keys
-            unless [pattern, type, response].include?(nil)
-              # Determine whether 'pattern' is a String or Regexp
-              begin
-                # if pattern is a Regexp, then create a new Regexp object
-                if %r{\A/(.*)/([mix]*)\z} =~ pattern
-                  pattern = Regexp.new(pattern)
-                end
-              rescue => e;
-              end
-
-              if response.class == Array
-                if response.length == 0
-                  raise InvalidJsonError, 'Empty "response" key passed to endpoint /api/dns/rule'
-                end
+            unless [pattern, resource, response].include?(nil)
+              if response.is_a?(Array)
+                raise InvalidJsonError, 'Empty "response" key passed to endpoint /api/dns/rule' if response.empty?
               else
                 raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
               end
 
-              safe_response = true
-              response.each do |ip|
-                unless BeEF::Filters.is_valid_ip?(ip)
-                  safe_response = false
-                  break
-                end
-              end
+              raise InvalidJsonError, 'Wrong "resource" key passed to endpoint /api/dns/rule' unless valid_resources.include?(resource)
 
-              unless safe_response
-                raise InvalidJsonError, 'Invalid IP in "response" key passed to endpoint /api/dns/rule'
-              end
-
-              unless BeEF::Filters.is_non_empty_string?(pattern)
-                raise InvalidJsonError, 'Empty "pattern" key passed to endpoint /api/dns/rule'
-              end
-
-              unless BeEF::Filters.is_non_empty_string?(type) && BeEF::Filters.alphanums_only?(type) && valid_types.include?(type)
-                raise InvalidJsonError, 'Wrong "type" key passed to endpoint /api/dns/rule'
-              end
-
-              id = ''
-              block_src = format_response(type, response)
-
-              # antisnatchor: would be unsafe eval, but I added 2 validations before (alpha-num only and list of valid types)
-              # Now it's safe
-              type_obj = eval "Resolv::DNS::Resource::IN::#{type}"
-
-              id = BeEF::Extension::Dns::Server.instance.get_server.match(pattern, type_obj, block_src)
+              id = BeEF::Extension::Dns::Server.instance.add_rule(
+                :pattern => pattern,
+                :resource => eval("Resolv::DNS::Resource::IN::#{resource}"),
+                :response => response
+              )
 
               result = {}
               result['success'] = true
@@ -135,13 +100,14 @@ module BeEF
           end
         end
 
+=begin
         # Removes a rule given its id
         delete '/rule/:id' do
           begin
             id = params[:id]
 
             unless BeEF::Filters.alphanums_only?(id)
-              raise InvalidParamError, 'Invalid "id" parameter passed to endpoint /api/dns/rule/:id'
+              raise InvalidParamError, 'id'
             end
 
             result = {}
@@ -231,6 +197,7 @@ module BeEF
 
           sprintf(src, args)
         end
+=end
 
         # Raised when invalid JSON input is passed to an /api/dns handler.
         class InvalidJsonError < StandardError
@@ -249,7 +216,9 @@ module BeEF
           DEFAULT_MESSAGE = 'Invalid parameter passed to /api/dns handler'
 
           def initialize(message = nil)
-            super(message || DEFAULT_MESSAGE)
+            str = "Invalid \"%s\" parameter passed to /api/dns handler"
+            message = sprintf str, message unless message.nil?
+            super(message)
           end
 
         end
