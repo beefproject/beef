@@ -8,8 +8,8 @@ beef:
         browser_fingerprinting:
             enable: true
             category: "Browser"
-            name: "Fingerprint Browser"
-            description: "This module attempts to fingerprint the browser type and version using URI handlers unique to Safari, Internet Explorer and Mozilla Firefox. This method does not rely on JavaScript objects which may have been modified by the user or browser compatibility mode."
+            name: "Fingerprint Browser (PoC)"
+            description: "This module attempts to fingerprint the browser type and version using URI protocol handlers unique to Safari, Internet Explorer and Mozilla Firefox."
             authors: ["bcoles"]
             target:
                 working: ["IE", "FF", "S"]
