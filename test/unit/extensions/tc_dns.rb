@@ -56,17 +56,7 @@ class TC_Dns < Test::Unit::TestCase
     assert_respond_to(@@dns, :remove_ruleset!)
   end
 
-  # Tests that DNS server runs correctly on desired address and port
-  def test_04_run_server
-    address = @@dns_config['address']
-    port = @@dns_config['port']
-
-    @@dns.run_server(address, port)
-    sleep(3)
-
-    assert_equal(address, @@dns.address)
-    assert_equal(port, @@dns.port)
-  end
+  # @todo Decrement test numbers starting here.
 
   # Tests procedure for properly adding new DNS rules
   def test_05_add_rule_good
