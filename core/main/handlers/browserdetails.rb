@@ -306,7 +306,7 @@ module BeEF
 
           # get and store the value for CPU
           cpu_type = get_param(@data['results'], 'CPU')
-          if !cpu_type.nil?
+          if BeEF::Filters.is_valid_cpu?(cpu_type)
             BD.set(session_id, 'CPU', cpu_type)
           else
             self.err_msg "Invalid value for CPU returned from the hook browser's initial connection."
