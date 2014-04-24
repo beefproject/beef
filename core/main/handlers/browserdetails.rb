@@ -288,100 +288,20 @@ module BeEF
             self.err_msg "Invalid window size returned from the hook browser's initial connection."
           end
 
-          # get and store the yes|no value for VBScriptEnabled
-          vbscript_enabled = get_param(@data['results'], 'VBScriptEnabled')
-          if  BeEF::Filters.is_valid_yes_no?(vbscript_enabled)
-            BD.set(session_id, 'VBScriptEnabled', vbscript_enabled)
-          else
-            self.err_msg "Invalid value for VBScriptEnabled returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasFlash
-          has_flash = get_param(@data['results'], 'HasFlash')
-          if BeEF::Filters.is_valid_yes_no?(has_flash)
-            BD.set(session_id, 'HasFlash', has_flash)
-          else
-            self.err_msg "Invalid value for HasFlash returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasPhonegap
-          has_phonegap = get_param(@data['results'], 'HasPhonegap')
-          if BeEF::Filters.is_valid_yes_no?(has_phonegap)
-            BD.set(session_id, 'HasPhonegap', has_phonegap)
-          else
-            self.err_msg "Invalid value for HasPhonegap returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasGoogleGears
-          has_googlegears = get_param(@data['results'], 'HasGoogleGears')
-          if BeEF::Filters.is_valid_yes_no?(has_googlegears)
-            BD.set(session_id, 'HasGoogleGears', has_googlegears)
-          else
-            self.err_msg "Invalid value for HasGoogleGears returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasFoxit
-          has_foxit = get_param(@data['results'], 'HasFoxit')
-          if BeEF::Filters.is_valid_yes_no?(has_foxit)
-            BD.set(session_id, 'HasFoxit', has_foxit)
-          else
-            self.err_msg "Invalid value for HasFoxit returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasWebSocket
-          has_web_socket = get_param(@data['results'], 'HasWebSocket')
-          if BeEF::Filters.is_valid_yes_no?(has_web_socket)
-            BD.set(session_id, 'HasWebSocket', has_web_socket)
-          else
-            self.err_msg "Invalid value for HasWebSocket returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasWebRTC
-          has_webrtc = get_param(@data['results'], 'HasWebRTC')
-          if BeEF::Filters.is_valid_yes_no?(has_webrtc)
-            BD.set(session_id, 'HasWebRTC', has_webrtc)
-          else
-            self.err_msg "Invalid value for HasWebRTC returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasActiveX
-          has_activex = get_param(@data['results'], 'HasActiveX')
-          if BeEF::Filters.is_valid_yes_no?(has_activex)
-            BD.set(session_id, 'HasActiveX', has_activex)
-          else
-            self.err_msg "Invalid value for HasActiveX returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasSilverlight
-          has_silverlight = get_param(@data['results'], 'HasSilverlight')
-          if BeEF::Filters.is_valid_yes_no?(has_silverlight)
-            BD.set(session_id, 'HasSilverlight', has_silverlight)
-          else
-            self.err_msg "Invalid value for HasSilverlight returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasQuickTime
-          has_quicktime = get_param(@data['results'], 'HasQuickTime')
-          if BeEF::Filters.is_valid_yes_no?(has_quicktime)
-            BD.set(session_id, 'HasQuickTime', has_quicktime)
-          else
-            self.err_msg "Invalid value for HasQuickTime returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasRealPlayer
-          has_realplayer = get_param(@data['results'], 'HasRealPlayer')
-          if BeEF::Filters.is_valid_yes_no?(has_realplayer)
-            BD.set(session_id, 'HasRealPlayer', has_realplayer)
-          else
-            self.err_msg "Invalid value for HasRealPlayer returned from the hook browser's initial connection."
-          end
-
-          # get and store the yes|no value for HasWMP
-          has_wmp = get_param(@data['results'], 'HasWMP')
-          if BeEF::Filters.is_valid_yes_no?(has_wmp)
-            BD.set(session_id, 'HasWMP', has_wmp)
-          else
-            self.err_msg "Invalid value for HasWMP returned from the hook browser's initial connection."
+          # get and store the yes|no value for browser components
+          components = [
+            'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
+            'HasFoxit', 'HasWebSocket', 'HasWebRTC', 'HasActiveX',
+            'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
+            'hasSessionCookies', 'hasPersistentCookies'
+          ]
+          components.each do |k|
+            v = get_param(@data['results'], k)
+            if BeEF::Filters.is_valid_yes_no?(v)
+              BD.set(session_id, k, v)
+            else
+              self.err_msg "Invalid value for #{k} returned from the hook browser's initial connection."
+            end
           end
 
           # get and store the value for CPU
@@ -398,22 +318,6 @@ module BeEF
             BD.set(session_id, 'TouchEnabled', touch_enabled)
           else
             self.err_msg "Invalid value for TouchEnabled returned from the hook browser's initial connection."
-          end
-
-          # get and store whether the browser has session cookies enabled
-          has_session_cookies = get_param(@data['results'], 'hasSessionCookies')
-          if BeEF::Filters.is_valid_yes_no?(has_session_cookies)
-            BD.set(session_id, 'hasSessionCookies', has_session_cookies)
-          else
-            self.err_msg "Invalid value for hasSessionCookies returned from the hook browser's initial connection."
-          end
-
-          # get and store whether the browser has persistent cookies enabled
-          has_persistent_cookies = get_param(@data['results'], 'hasPersistentCookies')
-          if BeEF::Filters.is_valid_yes_no?(has_persistent_cookies)
-            BD.set(session_id, 'hasPersistentCookies', has_persistent_cookies)
-          else
-            self.err_msg "Invalid value for hasPersistentCookies returned from the hook browser's initial connection."
           end
 
           # log a few info of newly hooked zombie in the console
