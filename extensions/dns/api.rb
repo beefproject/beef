@@ -29,9 +29,9 @@ module BeEF
             dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
             dns = BeEF::Extension::Dns::Server.instance
 
-            protocol = dns_config['protocol'].to_sym
-            address = dns_config['address']
-            port = dns_config['port']
+            protocol = dns_config['protocol'].to_sym rescue :udp
+            address = dns_config['address'] || '127.0.0.1'
+            port = dns_config['port'] || 5300
             interfaces = [[protocol, address, port]]
 
             Thread.new { EventMachine.next_tick { dns.run(:listen => interfaces) } }
