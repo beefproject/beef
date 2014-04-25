@@ -63,11 +63,7 @@ module BeEF
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
-            if BeEF::Filters.hexs_only?(id) &&
-                !BeEF::Filters.has_null?(id) &&
-                !BeEF::Filters.has_non_printable_char?(id) &&
-                id.length == 8
-
+            if is_valid_id?(id)
               rule = @database.get(id)
               rule.nil? ? {} : to_hash(rule)
             end
@@ -81,8 +77,10 @@ module BeEF
         # @return [Boolean] true if rule was removed, otherwise false
         def remove_rule!(id)
           @lock.synchronize do
-            rule = @database.get(id)
-            rule.nil? ? false : rule.destroy
+            if is_valid_id?(id)
+              rule = @database.get(id)
+              rule.nil? ? false : rule.destroy
+            end
           end
         end
 
@@ -158,6 +156,18 @@ module BeEF
           hash[:response] = rule.response
 
           hash
+        end
+
+        # Verifies that the given ID is valid.
+        #
+        # @param id [String] identifier to validate
+        #
+        # @return [Boolean] true if ID is valid, otherwise false
+        def is_valid_id?(id)
+          BeEF::Filters.hexs_only?(id) &&
+            !BeEF::Filters.has_null?(id) &&
+            !BeEF::Filters.has_non_printable_char?(id) &&
+            id.length == 8
         end
 
         # Helper method that formats the given resource class in a human-readable format.
