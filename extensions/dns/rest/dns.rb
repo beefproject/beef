@@ -12,6 +12,7 @@ module BeEF
 
         # Filters out bad requests before performing any routing
         before do
+          @dns ||= BeEF::Extension::Dns::Server.instance
           config = BeEF::Core::Configuration.instance
 
           # Require a valid API token from a valid IP address
@@ -27,7 +28,7 @@ module BeEF
         # Returns the entire current DNS ruleset
         get '/ruleset' do
           begin
-            ruleset = BeEF::Extension::Dns::Server.instance.get_ruleset
+            ruleset = @dns.get_ruleset
             count = ruleset.length
 
             result = {}
@@ -45,7 +46,7 @@ module BeEF
           begin
             id = params[:id]
 
-            rule = BeEF::Extension::Dns::Server.instance.get_rule(id)
+            rule = @dns.get_rule(id)
             raise InvalidParamError, 'id' if rule.nil?
             halt 404 if rule.empty?
 
@@ -80,7 +81,7 @@ module BeEF
 
               raise InvalidJsonError, 'Wrong "resource" key passed to endpoint /api/dns/rule' unless valid_resources.include?(resource)
 
-              id = BeEF::Extension::Dns::Server.instance.add_rule(
+              id = @dns.add_rule(
                 :pattern => pattern,
                 :resource => eval("Resolv::DNS::Resource::IN::#{resource}"),
                 :response => response
@@ -105,7 +106,7 @@ module BeEF
           begin
             id = params[:id]
 
-            removed = BeEF::Extension::Dns::Server.instance.remove_rule!(id)
+            removed = @dns.remove_rule!(id)
             raise InvalidParamError, 'id' if removed.nil?
 
             result = {}
