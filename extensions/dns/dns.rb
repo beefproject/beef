@@ -113,15 +113,19 @@ module BeEF
         # @option options [Array<Array>] :listen local interfaces to listen on
         def run(options = {})
           @lock.synchronize do
-            upstream = options[:upstream]
-            listen = options[:listen]
+            Thread.new do
+              EventMachine.next_tick do
+                upstream = options[:upstream] || nil
+                listen = options[:listen] || nil
 
-            unless upstream.nil? || upstream.empty?
-              resolver = RubyDNS::Resolver.new(upstream)
-              @otherwise = Proc.new { |t| t.passthrough!(resolver) }
+                if upstream
+                  resolver = RubyDNS::Resolver.new(upstream)
+                  @otherwise = Proc.new { |t| t.passthrough!(resolver) }
+                end
+
+                super(:listen => listen)
+              end
             end
-
-            super(:listen => listen)
           end
         end
 

@@ -49,7 +49,7 @@ module BeEF
               end
             end
 
-            Thread.new { EventMachine.next_tick { dns.run(:upstream => servers, :listen => interfaces) } }
+            dns.run(:upstream => servers, :listen => interfaces)
 
             print_info "DNS Server: #{address}:#{port} (#{protocol})"
             print_more upstream_servers
