@@ -34,38 +34,25 @@ module BeEF
             port = dns_config['port'] || 5300
             interfaces = [[protocol, address, port]]
 
-            Thread.new { EventMachine.next_tick { dns.run(:listen => interfaces) } }
-
-            print_info "DNS Server: #{address}:#{port} (#{protocol})"
-
-            # @todo Upstream servers are not yet supported. Uncomment this section when they are.
-=begin
             servers = []
+            upstream_servers = ''
 
-            unless dns_config['upstream'].nil?
+            unless dns_config['upstream'].nil? || dns_config['upstream'].empty?
               dns_config['upstream'].each do |server|
-                next if server[1].nil? or server[2].nil?
+                up_protocol = server[0].downcase
+                up_address = server[1]
+                up_port = server[2]
 
-                if server[0] == 'tcp'
-                  servers << ['tcp', server[1], server[2]]
-                elsif server[0] == 'udp'
-                  servers << ['udp', server[1], server[2]]
-                end
+                next if [up_protocol, up_address, up_port].include?(nil)
+                servers << [up_protocol.to_sym, up_address, up_port] if up_protocol =~ /^(tcp|udp)$/
+                upstream_servers << "Upstream Server: #{up_address}:#{up_port} (#{up_port})\n"
               end
             end
 
-            if servers.empty?
-              servers << ['tcp', '8.8.8.8', 53]
-              servers << ['udp', '8.8.8.8', 53]
-            end
+            Thread.new { EventMachine.next_tick { dns.run(:upstream => servers, :listen => interfaces) } }
 
-            upstream_servers = ''
-            servers.each do |server|
-              upstream_servers << "Upstream Server: #{server[1]}:#{server[2]} (#{server[0]})\n"
-            end
-
+            print_info "DNS Server: #{address}:#{port} (#{protocol})"
             print_more upstream_servers
-=end
           end
 
           # Mounts the handler for processing DNS RESTful API requests.

@@ -105,6 +105,26 @@ module BeEF
           @lock.synchronize { @database.destroy }
         end
 
+        # Starts the DNS server.
+        #
+        # @param options [Hash] server configuration options
+        # @option options [Array<Array>] :upstream upstream DNS servers (if ommitted, unresolvable
+        #   requests return NXDOMAIN)
+        # @option options [Array<Array>] :listen local interfaces to listen on
+        def run(options = {})
+          @lock.synchronize do
+            upstream = options[:upstream]
+            listen = options[:listen]
+
+            unless upstream.nil? || upstream.empty?
+              resolver = RubyDNS::Resolver.new(upstream)
+              @otherwise = Proc.new { |t| t.passthrough!(resolver) }
+            end
+
+            super(:listen => listen)
+          end
+        end
+
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
         # sends back its associated response.
         #
@@ -131,12 +151,12 @@ module BeEF
                 end
               end
 
-              # When no match is found, query upstream servers (if enabled)
               if @otherwise
                 print_debug "No match found, querying upstream servers"
                 @otherwise.call(transaction)
               else
-                print_debug "Failed to handle DNS request for #{name}"
+                print_debug "No match found, sending NXDOMAIN response"
+                transaction.fail!(:NXDomain)
               end
             end
           end
