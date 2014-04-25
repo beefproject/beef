@@ -100,18 +100,16 @@ module BeEF
           end
         end
 
-=begin
         # Removes a rule given its id
         delete '/rule/:id' do
           begin
             id = params[:id]
 
-            unless BeEF::Filters.alphanums_only?(id)
-              raise InvalidParamError, 'id'
-            end
+            removed = BeEF::Extension::Dns::Server.instance.remove_rule!(id)
+            raise InvalidParamError, 'id' if removed.nil?
 
             result = {}
-            result['success'] = BeEF::Extension::Dns::Server.instance.remove_rule(id)
+            result['success'] = removed
             result.to_json
           rescue InvalidParamError => e
             print_error e.message
@@ -121,83 +119,6 @@ module BeEF
             halt 500
           end
         end
-
-        private
-
-        # Generates a formatted string representation of the callback to invoke as a response.
-        #
-        # @param [String] type resource record type (e.g. A, CNAME, NS, etc.)
-        # @param [Array] rdata record data to include in response
-        #
-        # @return [String] string representation of response callback
-        def format_response(type, rdata)
-          src = 'proc { |t| t.respond!(%s) }'
-
-          args = case type
-                   when 'A'
-                     data = {:address => rdata[0]}
-                     sprintf "'%<address>s'", data
-                   when 'AAAA'
-                     data = {:address => rdata[0]}
-                     sprintf "'%<address>s'", data
-                   when 'CNAME'
-                     data = {:cname => rdata[0]}
-                     sprintf "Resolv::DNS::Name.create('%<cname>s')", data
-                   when 'HINFO'
-                     data = {:cpu => rdata[0], :os => rdata[1]}
-                     sprintf "'%<cpu>s', '%<os>s'", data
-                   when 'MINFO'
-                     data = {:rmailbx => rdata[0], :emailbx => rdata[1]}
-
-                     sprintf "Resolv::DNS::Name.create('%<rmailbx>s'), " +
-                                 "Resolv::DNS::Name.create('%<emailbx>s')",
-                             data
-                   when 'MX'
-                     data = {:preference => rdata[0], :exchange => rdata[1]}
-                     sprintf "%<preference>d, Resolv::DNS::Name.create('%<exchange>s')", data
-                   when 'NS'
-                     data = {:nsdname => rdata[0]}
-                     sprintf "Resolv::DNS::Name.create('%<nsdname>s')", data
-                   when 'PTR'
-                     data = {:ptrdname => rdata[0]}
-                     sprintf "Resolv::DNS::Name.create('%<ptrdname>s')", data
-                   when 'SOA'
-                     data = {
-                         :mname => rdata[0],
-                         :rname => rdata[1],
-                         :serial => rdata[2],
-                         :refresh => rdata[3],
-                         :retry => rdata[4],
-                         :expire => rdata[5],
-                         :minimum => rdata[6]
-                     }
-
-                     sprintf "Resolv::DNS::Name.create('%<mname>s'), " +
-                                 "Resolv::DNS::Name.create('%<rname>s'), " +
-                                 '%<serial>d, ' +
-                                 '%<refresh>d, ' +
-                                 '%<retry>d, ' +
-                                 '%<expire>d, ' +
-                                 '%<minimum>d',
-                             data
-                   when 'TXT'
-                     data = {:txtdata => rdata[0]}
-                     sprintf "'%<txtdata>s'", data
-                   when 'WKS'
-                     data = {
-                         :address => rdata[0],
-                         :protocol => rdata[1],
-                         :bitmap => rdata[2]
-                     }
-
-                     sprintf "'%<address>s', %<protocol>d, %<bitmap>d", data
-                   else
-                     raise InvalidJsonError, 'Unknown "type" key passed to endpoint /api/dns/rule'
-                 end
-
-          sprintf(src, args)
-        end
-=end
 
         # Raised when invalid JSON input is passed to an /api/dns handler.
         class InvalidJsonError < StandardError
