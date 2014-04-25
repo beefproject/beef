@@ -113,7 +113,7 @@ module BeEF
         # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
         def process(name, resource, transaction)
           @lock.synchronize do
-	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)}"
+	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
 
             catch (:done) do
               # Find rules matching the requested resource class
