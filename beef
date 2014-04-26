@@ -58,6 +58,11 @@ unless BeEF::Core::Console::CommandLine.parse[:ws_port].empty?
   config.set('beef.http.websocket.port', BeEF::Core::Console::CommandLine.parse[:ws_port])
 end
 
+# @note Check if interactive was specified from the command line, therefore override the extension to enable
+if BeEF::Core::Console::CommandLine.parse[:interactive] == true
+  config.set('beef.extension.console.shell.enable',true)
+end
+
 # @note Prints BeEF welcome message
 BeEF::Core::Console::Banners.print_welcome_msg
 

@@ -18,6 +18,7 @@ module BeEF
         @options[:ext_config] = ""
         @options[:port] = ""
         @options[:ws_port] = ""
+        @options[:interactive] = false
 
 
         @already_parsed = false
@@ -53,6 +54,10 @@ module BeEF
 
               opts.on('-w', '--wsport WS_PORT', 'Change the default BeEF WebSocket listening port') do |ws_port|
                 @options[:ws_port] = ws_port
+              end
+
+              opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
+                @options[:interactive] = true
               end
             end
 
