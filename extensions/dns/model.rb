@@ -25,7 +25,7 @@ module BeEF
             begin
               validate_pattern(rule.pattern)
               rule.callback = format_callback(rule.resource, rule.response)
-            rescue InvalidDnsPatternError, InvalidDnsResourceError, InvalidDnsResponseError => e
+            rescue InvalidDnsPatternError, UnknownDnsResourceError, InvalidDnsResponseError => e
               print_error e.message
               throw :halt
             end
