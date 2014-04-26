@@ -45,7 +45,7 @@ module BeEF
 
                 next if [up_protocol, up_address, up_port].include?(nil)
                 servers << [up_protocol.to_sym, up_address, up_port] if up_protocol =~ /^(tcp|udp)$/
-                upstream_servers << "Upstream Server: #{up_address}:#{up_port} (#{up_port})\n"
+                upstream_servers << "Upstream Server: #{up_address}:#{up_port} (#{up_protocol})\n"
               end
             end
 
