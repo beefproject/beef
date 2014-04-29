@@ -167,14 +167,6 @@ module BeEF
               else
                 raise InvalidDnsResponseError, 'SOA'
               end
-            elsif resource == Resolv::DNS::Resource::IN::TXT
-              if resource.is_a?(String)
-                sprintf "t.respond!('%s')", response
-              elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
-                sprintf "t.fail!(:%s)", response.to_sym
-              else
-                raise InvalidDnsResponseError, 'TXT'
-              end
             elsif resource == Resolv::DNS::Resource::IN::WKS
               if response.is_a?(Array)
                 unless BeEF::Filters.is_valid_ip?(resource[0]) &&
