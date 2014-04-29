@@ -149,7 +149,7 @@ module Filters
   #       TLD's is not static.
   def self.is_valid_domain?(domain)
     return false unless is_non_empty_string?(domain)
-    return true if domain =~ /^[0-9a-z-]+(\.[0-9a-z-]+)*(\.[a-z]{2,})$/i
+    return true if domain =~ /^[0-9a-z-]+(\.[0-9a-z-]+)*(\.[a-z]{2,}).?$/i
     false
   end
 
