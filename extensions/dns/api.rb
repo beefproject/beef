@@ -52,7 +52,7 @@ module BeEF
             dns.run(:upstream => servers, :listen => interfaces)
 
             print_info "DNS Server: #{address}:#{port} (#{protocol})"
-            print_more upstream_servers
+            print_more upstream_servers unless upstream_servers.empty?
           end
 
           # Mounts the handler for processing DNS RESTful API requests.
