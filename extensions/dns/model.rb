@@ -94,30 +94,6 @@ module BeEF
               else
                 raise InvalidDnsResponseError, 'CNAME'
               end
-            elsif resource == Resolv::DNS::Resource::IN::HINFO
-              if response.is_a?(Array)
-                response.each { |r| raise InvalidDnsResponseError, 'HINFO' unless r.is_a?(String) }
-                data = { :cpu => response[0], :os => response[1] }
-                sprintf "t.respond!('%<cpu>s', '%<os>s')", data
-              elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
-                sprintf "t.fail!(:%s)", response.to_sym
-              else
-                raise InvalidDnsResponseError, 'HINFO'
-              end
-            elsif resource == Resolv::DNS::Resource::IN::MINFO
-              if response.is_a?(Array)
-                response.each { |r| raise InvalidDnsResponseError, 'MINFO' unless r.is_a?(String) && BeEF::Filters.is_valid_domain?(r) }
-
-                data = { :rmailbx => response[0], :emailbx => response[1] }
-
-                sprintf "t.respond!(Resolv::DNS::Name.create('%<rmailbx>s'), " +
-                        "Resolv::DNS::Name.create('%<emailbx>s'))",
-                        data
-              elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
-                sprintf "t.fail!(:%s)", response.to_sym
-              else
-                raise InvalidDnsResponseError, 'MINFO'
-              end
             elsif resource == Resolv::DNS::Resource::IN::MX
               if response[0].is_a?(Integer) &&
                   BeEF::Filters.is_valid_domain?(response[1])
