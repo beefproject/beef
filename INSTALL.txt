@@ -51,8 +51,8 @@ Installation
       - XCode: provides the sqlite support BeEF needs
       
       - Ruby 1.9
-      	To install RVM and Ruby 1.9.3 on Mac OS:  
-      	$ bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile 
+      	To install RVM and Ruby 1.9.3 on Mac OS:
+      	$ bash -s stable < <(curl -Ls https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile
       	$ rvm install 1.9.3-p484
 		$ rvm use 1.9.3
       
