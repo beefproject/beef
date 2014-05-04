@@ -109,7 +109,7 @@ module BeEF
 
           if @configuration.get('beef.http.https.enable') == true
             openssl_version = OpenSSL::OPENSSL_VERSION
-            if openssl_version =~ / 1\.0\.1([a-f])/
+            if openssl_version =~ / 1\.0\.1([a-f])? /
               print_warning "Warning: #{openssl_version} is vulnerable to Heartbleed (CVE-2014-0160)."
               print_more "Upgrade OpenSSL to version 1.0.1g or newer."
             end

@@ -6,7 +6,7 @@
 
 /*
  Sometimes there are timing issues and looks like beef_init
- is not called at all (always in cross-domain situations,
+ is not called at all (always in cross-origin situations,
  for example calling the hook with jquery getScript,
  or sometimes with event handler injections).
 

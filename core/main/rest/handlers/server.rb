@@ -35,6 +35,10 @@ module BeEF
             error 400
           end
         end
+
+        get '/version' do
+          { 'version' => config.get('beef.version') }.to_json
+        end
       end
     end
   end

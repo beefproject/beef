@@ -12,7 +12,7 @@ beef.net.cors = {
     },
 
     /**
-     * Make a cross-domain request using CORS
+     * Make a cross-origin request using CORS
      *
      * @param method {String} HTTP verb ('GET', 'POST', 'DELETE', etc.)
      * @param url {String} url

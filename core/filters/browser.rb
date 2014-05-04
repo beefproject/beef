@@ -12,7 +12,7 @@ module Filters
   def self.is_valid_browsername?(str)
     return false if not is_non_empty_string?(str)
     return false if str.length > 2
-    return false if has_non_printable_char?(str)  
+    return false if has_non_printable_char?(str)
     true
   end
 
@@ -22,7 +22,7 @@ module Filters
   def self.is_valid_browsertype?(str)
     return false if not is_non_empty_string?(str)
     return false if str.length < 10
-    return false if str.length > 250
+    return false if str.length > 500 #CxF - had to increase this because the Chrome detection JSON String is getting bigger.
     return false if has_non_printable_char?(str)
     true
   end
@@ -32,7 +32,7 @@ module Filters
   # @return [Boolean] If the string has valid Operating System name characters
   def self.is_valid_osname?(str)
     return false if not is_non_empty_string?(str)
-    return false if has_non_printable_char?(str) 
+    return false if has_non_printable_char?(str)
     return false if str.length < 2
     true
   end
@@ -52,7 +52,7 @@ module Filters
   # @return [Boolean] If the string has valid browser version characters
   def self.is_valid_browserversion?(str)
     return false if not is_non_empty_string?(str)
-    return false if has_non_printable_char?(str)  
+    return false if has_non_printable_char?(str)
     return true if str.eql? "UNKNOWN"
     return false if not nums_only?(str) and not is_valid_float?(str)  
     return false if str.length > 10      
@@ -64,7 +64,7 @@ module Filters
   # @return [Boolean] If the string has valid browser / ua string characters
   def self.is_valid_browserstring?(str)
     return false if not is_non_empty_string?(str)
-    return false if has_non_printable_char?(str)    
+    return false if has_non_printable_char?(str)
     return false if str.length > 300      
     true
   end
@@ -73,7 +73,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid cookie characters
   def self.is_valid_cookies?(str)
-    return false if has_non_printable_char?(str)    
+    return false if has_non_printable_char?(str)
     return false if str.length > 2000
     true
   end
@@ -82,7 +82,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid screen size characters
   def self.is_valid_screen_size?(str)
-    return false if has_non_printable_char?(str)    
+    return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
   end
@@ -91,7 +91,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid window size characters
   def self.is_valid_window_size?(str)
-    return false if has_non_printable_char?(str)    
+    return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
   end
@@ -109,6 +109,16 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid date stamp characters
   def self.is_valid_date_stamp?(str)
+    return false if has_non_printable_char?(str)
+    return false if str.length > 200
+    true
+  end
+
+  # Verify the CPU type string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid CPU type characters
+  def self.is_valid_cpu?(str)
+    return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
