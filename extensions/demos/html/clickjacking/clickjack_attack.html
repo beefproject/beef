@@ -9,6 +9,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<title>You have been p0wned</title>
+	<!-- TODO: load these locally -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
 
@@ -110,11 +111,7 @@ font-size:20px;
 </head>
 <body>
 <!-- BeEF hook call -->
-<script type="text/javascript">
-	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '/hook.js" type="text/javascript"><\/script>';
-	document.write(commandModuleStr);
-</script>
-
+<script type="text/javascript" src="/hook.js"></script>
 
 <div class="wrapper">
 	<div class="quotes">
