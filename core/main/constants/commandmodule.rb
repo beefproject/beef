@@ -7,7 +7,7 @@
 module BeEF
 module Core
 module Constants
-  
+
   module CommandModule
 
 
@@ -17,9 +17,9 @@ module Constants
     VERIFIED_USER_NOTIFY =  2
     VERIFIED_NOT_WORKING =  3
 
-    
+
   end
-  
+
 end
 end
 end

@@ -11,8 +11,8 @@
 	"popup": "index.html"
   },
   "permissions": [
-	"tabs", 
-	"http://*/*", 
+	"tabs",
+	"http://*/*",
 	"https://*/*"
   ]
 }

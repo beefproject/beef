@@ -21,4 +21,3 @@ def Kernel.system(args)
   puts "For security reasons the Kernel.system method is not accepted in the Browser Exploitation Framework code base."
   exit
 end
-

@@ -333,4 +333,3 @@ ZombieTab_Autorun = function(zombie) {
 Ext.extend(ZombieTab_Autorun, Ext.Panel, {
     listeners: {close: function(panel) {}}
 });
-

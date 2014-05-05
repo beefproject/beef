@@ -13,11 +13,11 @@ echo "          BeEF Installer   "
 echo "======================================"
 echo ""
 
-echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and it's dependencies." 
-echo "" 
+echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and it's dependencies."
+echo ""
 echo "In rare cases, this may lead to unexpected behaviour or package conflicts on some systems."
 echo ""
-read -p  "Are you sure you wish to continue (Y/n)? " 
+read -p  "Are you sure you wish to continue (Y/n)? "
 if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" == "n" ] ; then
 	 exit;
 fi
@@ -47,17 +47,17 @@ if [ "$OS" == "Darwin" ]; then
 	rvm use 1.9.3-p0
 	echo ""
 	echo "Downloading BeEF.."
-	
+
 	git clone git://github.com/beefproject/beef.git
 	cd beef
-	
+
 	echo ""
 	echo "Installing Ruby Gems.."
 	bundle install
 	OK="yes"
-	
+
 	./beef
-	
+
 	echo ""
 	echo "=========================================="
 	echo "          Install Complete"
@@ -65,13 +65,13 @@ if [ "$OS" == "Darwin" ]; then
 	echo "                  $ ./beef     "
 	echo "=========================================="
 	echo ""
-		
+
 fi
 
 if [ "$Distro" == "Debian" ]; then
 	echo "Debian/Ubuntu Detected"
 	echo "Installing Prerequisite Packages.."
-	sudo apt-get update 
+	sudo apt-get update
 	sudo apt-get install curl git
 
 
@@ -95,8 +95,8 @@ source $HOME/.rvm/scripts/rvm
 	echo "Installing Ruby Gems"
 	gem install bundler
 	bundle install
-	
-	
+
+
 	./beef
 
 	OK="yes"
@@ -122,16 +122,16 @@ if [ "$Distro" == "RedHat" ]; then
 	rvm install 1.9.2 --with-openssl-dir=$rvm_path/usr
 	source ~/.rvm/scripts/rvm
 	rvm use 1.9.2 --default
-	
+
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
 	cd beef
-	
+
 	gem install bundler
 	bundle
-	
+
 	source ~/.bash_profile
-	
+
 	./beef
 
 	OK="yes"
@@ -140,12 +140,12 @@ if [ "$Distro" == "RedHat" ]; then
 	echo "          Install Complete"
 	echo "=========================================="
 	echo ""
-		
+
 fi
 
-if [ "$OK" == "yes" ]; then		
+if [ "$OK" == "yes" ]; then
 echo ""
-else 
+else
 	echo ""
 	echo "======================================="
 	echo "          Install Failed"
@@ -155,9 +155,3 @@ else
 	echo "======================================="
 	echo ""
 fi
-
-
-
-
-
-

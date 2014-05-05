@@ -6,26 +6,26 @@
 
 /*!
  * @literal object: beef.browser.cookie
- * 
- * Provides fuctions for working with cookies. 
+ *
+ * Provides fuctions for working with cookies.
  * Several functions adopted from http://techpatterns.com/downloads/javascript_cookies.php
  * Original author unknown.
- * 
+ *
  */
 beef.browser.cookie = {
-	
-		setCookie: function (name, value, expires, path, domain, secure) 
+
+		setCookie: function (name, value, expires, path, domain, secure)
 		{
-	
+
 			var today = new Date();
 			today.setTime( today.getTime() );
-	
+
 			if ( expires )
 			{
 				expires = expires * 1000 * 60 * 60 * 24;
 			}
 			var expires_date = new Date( today.getTime() + (expires) );
-	
+
 			document.cookie = name + "=" +escape( value ) +
 				( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) +
 				( ( path ) ? ";path=" + path : "" ) +
@@ -33,14 +33,14 @@ beef.browser.cookie = {
 				( ( secure ) ? ";secure" : "" );
 		},
 
-		getCookie: function(name) 
+		getCookie: function(name)
 		{
 			var a_all_cookies = document.cookie.split( ';' );
 			var a_temp_cookie = '';
 			var cookie_name = '';
 			var cookie_value = '';
 			var b_cookie_found = false;
-			
+
 			for ( i = 0; i < a_all_cookies.length; i++ )
 			{
 				a_temp_cookie = a_all_cookies[i].split( '=' );
@@ -64,14 +64,14 @@ beef.browser.cookie = {
 			}
 		},
 
-		deleteCookie: function (name, path, domain) 
+		deleteCookie: function (name, path, domain)
 		{
 			if ( this.getCookie(name) ) document.cookie = name + "=" +
 			( ( path ) ? ";path=" + path : "") +
 			( ( domain ) ? ";domain=" + domain : "" ) +
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 		},
-		
+
 		hasSessionCookies: function (name)
 		{
 			var name = name || "cookie";
@@ -81,7 +81,7 @@ beef.browser.cookie = {
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');
 			return cookiesEnabled;
-			
+
 		},
 
 		hasPersistentCookies: function (name)
@@ -93,9 +93,9 @@ beef.browser.cookie = {
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');
 			return cookiesEnabled;
-			
-		}	
-					
+
+		}
+
 };
 
 beef.regCmp('beef.browser.cookie');

@@ -31,4 +31,3 @@ module BeEF
 
   end
 end
-

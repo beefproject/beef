@@ -16,32 +16,32 @@ class Webcam < BeEF::Core::Command
        no_of_pictures = 20
        interval = 1000
        return [
-           {'name' => 'social_engineering_title', 
+           {'name' => 'social_engineering_title',
             'description' => 'The title that is shown to the victim.',
             'ui_label' => 'Social Engineering Title',
             'value' => social_engineering_title,
             'width' => '100px' }, {
-            'name' => 'social_engineering_text', 
+            'name' => 'social_engineering_text',
            'description' => 'The social engineering text you want to show to convince the user to click the Allow button.',
            'ui_label' => 'Social Engineering Text',
            'value' => social_engineering_text,
            'width' => '300px',
            'type' => 'textarea' }, {
-           'name' => 'no_of_pictures', 
+           'name' => 'no_of_pictures',
            'description' => 'The number of pictures you want to take after the victim clicked "allow".',
            'ui_label' => 'Number of pictures',
            'value' => no_of_pictures,
            'width' => '100px' }, {
-            'name' => 'interval', 
+            'name' => 'interval',
             'description' => 'The interval in which pictures are taken.',
             'ui_label' => 'Interval to take pictures (ms)',
             'value' => interval,
             'width' => '100px' }
            ]
   end
-  
-  
-	def post_execute 
+
+
+	def post_execute
 		content = {}
 		content["result"] = @datastore["result"] if not @datastore["result"].nil?
 		content["picture"] = @datastore["picture"] if not @datastore["picture"].nil?

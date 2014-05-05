@@ -54,8 +54,8 @@ module Filters
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return true if str.eql? "UNKNOWN"
-    return false if not nums_only?(str) and not is_valid_float?(str)  
-    return false if str.length > 10      
+    return false if not nums_only?(str) and not is_valid_float?(str)
+    return false if str.length > 10
     true
   end
 
@@ -65,10 +65,10 @@ module Filters
   def self.is_valid_browserstring?(str)
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
-    return false if str.length > 300      
+    return false if str.length > 300
     true
   end
-  
+
   # Verify the cookies are valid
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid cookie characters
@@ -139,5 +139,5 @@ module Filters
     end
   end
 
-end  
+end
 end

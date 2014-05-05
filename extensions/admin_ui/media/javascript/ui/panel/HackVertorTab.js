@@ -152,4 +152,4 @@ HackVertorTab = function() {
 
 };
 
-Ext.extend(HackVertorTab,Ext.Panel, {}); 
+Ext.extend(HackVertorTab,Ext.Panel, {});

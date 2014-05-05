@@ -40,11 +40,3 @@ end
 
 # RESTful api endpoints
 require 'extensions/ipec/rest/ipec'
-
-
-
-
-
-
-
-

@@ -17,5 +17,3 @@ beef.execute(function() {
     }
     beef.dom.detachApplet('getGPSLocation');
 });
-
-

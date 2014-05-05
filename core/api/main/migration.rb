@@ -6,7 +6,7 @@
 module BeEF
 module API
   module Migration
-    
+
     # @note Defined API Paths
     API_PATHS = {
         'migrate_commands' => :migrate_commands
@@ -14,8 +14,8 @@ module API
 
     # Fired just after the migration process
     def migrate_commands; end
-    
+
   end
-  
+
 end
 end

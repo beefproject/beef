@@ -772,7 +772,7 @@ beef.browser = {
     isC36iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 36) ? true : false);
     },
-    
+
 
     /**
      * Returns true if Chrome.
@@ -889,7 +889,7 @@ beef.browser = {
             C35iOS: this.isC35iOS(), // Chrome 35 on iOS
             C36: this.isC36(), // Chrome 36
             C36iOS: this.isC36iOS(), // Chrome 36 on iOS
-            
+
             C: this.isC(), // Chrome any version
 
             FF2: this.isFF2(), // Firefox 2

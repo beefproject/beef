@@ -10,9 +10,9 @@ class Link_rewrite_tel < BeEF::Core::Command
       { 'ui_label'=>'Number', 'name'=>'tel_number', 'description' => 'New telephone number', 'value'=>'5558585', 'width'=>'200px' }
     ]
   end
-  
+
   def post_execute
     save({'result' => @datastore['result']})
   end
-  
+
 end

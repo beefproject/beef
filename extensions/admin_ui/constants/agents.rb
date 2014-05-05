@@ -7,10 +7,10 @@ module BeEF
 module Extension
 module AdminUI
 module Constants
-  
+
   # The User Agent strings for browser detection
   module Agents
-  
+
     AGENT_UNKNOWN_IMG     = 'unknown.png'
   	AGENT_FIREFOX_UA_STR  = 'Firefox'
   	AGENT_FIREFOX_IMG     = 'firefox.png'
@@ -26,9 +26,9 @@ module Constants
   	AGENT_CHROME_IMG      = 'chrome.png'
     AGENT_OPERA_UA_STR    = 'Opera'
   	AGENT_OPERA_IMG       = 'opera.ico'
-  
+
   end
-  
+
 end
 end
 end

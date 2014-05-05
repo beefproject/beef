@@ -4,9 +4,9 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-beef.execute(function() {	
+beef.execute(function() {
 	var maliciousurl = '<%= @malicious_file_uri %>';
-	var realurl = '<%= @real_file_uri %>';	
+	var realurl = '<%= @real_file_uri %>';
 	var w;
 	var once = '<%= @do_once %>';
 

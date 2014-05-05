@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Events
-    
+
   #
   # The http handler that manages the Events.
   #
@@ -23,9 +23,9 @@ module Events
     # Sets up event logging
     #
     def setup()
-      
+
       # validates the hook token
-      beef_hook = @data['beefhook'] || nil 
+      beef_hook = @data['beefhook'] || nil
       if beef_hook.nil?
         print_error "[EVENTS] beef_hook is null"
         return
@@ -37,7 +37,7 @@ module Events
         print_error "[EVENTS] Invalid beef hook id: the hooked browser cannot be found in the database"
         return
       end
-     
+
       events = @data['results']
 
       # push events to logger
@@ -78,9 +78,9 @@ module Events
       end
       result
     end
-    
+
   end
-  
+
 end
 end
 end

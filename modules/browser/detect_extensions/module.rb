@@ -16,4 +16,3 @@ class Detect_extensions < BeEF::Core::Command
   end
 
 end
-

@@ -4,11 +4,11 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_wireless_keys < BeEF::Core::Command
-  
+
 	def pre_send
 		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_wireless_keys/wirelessZeroConfig.jar','/wirelessZeroConfig','jar')
 	end
-  
+
 	def post_execute
 		content = {}
 		content['result'] = @datastore['result'].to_s
@@ -20,6 +20,5 @@ class Get_wireless_keys < BeEF::Core::Command
 		BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults)
 		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/wirelessZeroConfig.jar')
 	end
-  
-end
 
+end

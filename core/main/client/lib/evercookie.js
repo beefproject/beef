@@ -36,12 +36,12 @@
  *
  * USAGE:
 
-	var ec = new evercookie();	
-	
+	var ec = new evercookie();
+
 	// set a cookie "id" to "12345"
 	// usage: ec.set(key, value)
 	ec.set("id", "12345");
-	
+
 	// retrieve a cookie called "id" (simply)
 	ec.get("id", function(value) { alert("Cookie value is " + value) });
 
@@ -64,7 +64,7 @@
 	// we look for "candidates" based off the number of "cookies" that
 	// come back matching since it's possible for mismatching cookies.
 	// the best candidate is very-very-likely the correct one
-	
+
 */
 
 /* to turn off CSS history knocking, set _ec_history to 0 */
@@ -76,15 +76,15 @@ function _ec_dump(arr, level)
 {
 	var dumped_text = "";
 	if(!level) level = 0;
-	
+
 	//The padding given at the beginning of the line.
 	var level_padding = "";
 	for(var j=0;j<level+1;j++) level_padding += "    ";
-	
-	if(typeof(arr) == 'object') { //Array/Hashes/Objects 
+
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects
 		for(var item in arr) {
 			var value = arr[item];
-			
+
 			if(typeof(value) == 'object') { //If it is an array,
 				dumped_text += level_padding + "'" + item + "' ...\n";
 				dumped_text += _ec_dump(value,level+1);
@@ -162,7 +162,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 {
 	if (typeof self._evercookie == 'undefined')
 		self = this;
-	
+
 	if (typeof i == 'undefined')
 		i = 0;
 
@@ -182,7 +182,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 		self._ec.globalData		= self.evercookie_global_storage(name, value);
 		self._ec.sessionData	= self.evercookie_session_storage(name, value);
 		self._ec.windowData		= self.evercookie_window(name, value);
-	
+
 		if (_ec_history)
 			self._ec.historyData = self.evercookie_history(name, value);
 	}
@@ -199,7 +199,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
         )
 			setTimeout(function() { self._evercookie(name, cb, value, i, dont_reset) }, 300);
 	}
-	
+
 	// when reading data, we need to wait for swf, db, silverlight and png
 	else
 	{
@@ -226,14 +226,14 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 			// get just the piece of data we need from swf
 			self._ec.lsoData = self.getFromStr(name, _global_lso);
 			_global_lso = undefined;
-            
+
 			// get just the piece of data we need from silverlight
 			self._ec.slData = self.getFromStr(name, _global_isolated);
 			_global_isolated = undefined;
 
 			var tmpec = self._ec;
 			self._ec = {};
-			
+
 			// figure out which is the best candidate
 			var candidates = new Array();
 			var bestnum = 0;
@@ -246,7 +246,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 						candidates[tmpec[item]] = typeof candidates[tmpec[item]] == 'undefined' ? 1 : candidates[tmpec[item]] + 1;
 				}
 			}
-			
+
 			for (var item in candidates)
 			{
 				if (candidates[item] > bestnum)
@@ -255,7 +255,7 @@ this._evercookie = function(name, cb, value, i, dont_reset)
 					candidate = item;
 				}
 			}
-			
+
 			// reset cookie everywhere
 			if (typeof dont_reset == "undefined" || dont_reset != 1)
 				self.set(name, candidate);
@@ -301,7 +301,7 @@ this.evercookie_cache = function(name, value)
 	{
 		// make sure we have evercookie session defined first
 		document.cookie = 'evercookie_cache=' + value;
-		
+
 		// evercookie_cache.php handles caching
 		var img = new Image();
 		img.style.visibility = 'hidden';
@@ -334,7 +334,7 @@ this.evercookie_etag = function(name, value)
 	{
 		// make sure we have evercookie session defined first
 		document.cookie = 'evercookie_etag=' + value;
-		
+
 		// evercookie_etag.php handles etagging
 		var img = new Image();
 		img.style.visibility = 'hidden';
@@ -391,7 +391,7 @@ this.evercookie_png = function(name, value)
 		{
 			// make sure we have evercookie session defined first
 			document.cookie = 'evercookie_png=' + value;
-			
+
 			// evercookie_png.php handles the hard part of generating the image
 			// based off of the http cookie and returning it cached
 			var img = new Image();
@@ -408,7 +408,7 @@ this.evercookie_png = function(name, value)
 			context.width = 200;
 			context.height = 1;
 			var ctx = context.getContext('2d');
-			
+
 			// interestingly enough, we want to erase our evercookie
 			// http cookie so the php will force a cached response
 			var origvalue = this.getFromStr('evercookie_png', document.cookie);
@@ -418,7 +418,7 @@ this.evercookie_png = function(name, value)
 			img.style.visibility = 'hidden';
 			img.style.position = 'absolute';
 			img.src = 'evercookie_png.php?name=' + name;
-			
+
 			img.onload = function()
 			{
 				// put our cookie back
@@ -441,7 +441,7 @@ this.evercookie_png = function(name, value)
 					if (pix[i+2] == 0) break;
 					self._ec.pngData += String.fromCharCode(pix[i+2]);
 				}
-			}	
+			}
 		}
 	}
 };
@@ -466,7 +466,7 @@ this.evercookie_database_storage = function(name, value)
 	try
 	{
 		if (window.openDatabase)
-		{		
+		{
 			var database = window.openDatabase("sqlite_evercookie", "", "evercookie", 1024 * 1024);
 
 			if (typeof(value) != "undefined")
@@ -476,7 +476,7 @@ this.evercookie_database_storage = function(name, value)
 						"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 						"name TEXT NOT NULL, " +
 						"value TEXT NOT NULL, " +
-						"UNIQUE (name)" + 
+						"UNIQUE (name)" +
 					")", [], function (tx, rs) { }, function (tx, err) { });
 
 					tx.executeSql("INSERT OR REPLACE INTO cache(name, value) VALUES(?, ?)", [name, value],
@@ -531,17 +531,17 @@ this.evercookie_global_storage = function(name, value)
 this.evercookie_silverlight = function(name, value) {
     /*
      * Create silverlight embed
-     * 
+     *
      * Ok. so, I tried doing this the proper dom way, but IE chokes on appending anything in object tags (including params), so this
      * is the best method I found. Someone really needs to find a less hack-ish way. I hate the look of this shit.
     */
         var source = "evercookie.xap";
         var minver = "4.0.50401.0";
-        
+
         var initParam = "";
         if(typeof(value) != "undefined")
             initParam = '<param name="initParams" value="'+name+'='+value+'" />';
-        
+
         var html =
         '<object data="data:application/x-silverlight-2," type="application/x-silverlight-2" id="mysilverlight" width="0" height="0">' +
             initParam +
@@ -694,7 +694,7 @@ this.evercookie_history = function(name, value)
 	// - is special
 	var baseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=-";
 	var baseElems = baseStr.split("");
-	
+
 	// sorry google.
 	var url = 'http://www.google.com/evercookie/cache/' + this.getHost() + '/' + name;
 
@@ -745,7 +745,7 @@ this.evercookie_history = function(name, value)
 					}
 				}
 			}
-			
+
 			// lolz
 			return this.decode(val);
 		}
@@ -813,7 +813,7 @@ this.getFromStr = function(name, text)
 {
 	if (typeof text != 'string')
 		return;
-		
+
 	var nameEQ = name + "=";
 	var ca = text.split(/[;&]/);
 	for (var i = 0; i < ca.length; i++)
@@ -864,7 +864,7 @@ this.fromHex = function(str)
     return r;
 };
 
-/* 
+/*
  * css history knocker (determine what sites your visitors have been to)
  *
  * originally by Jeremiah Grossman
@@ -887,11 +887,11 @@ this.hasVisited = function(url)
 			this.no_color =
 				this._getRGB("http://samy-was-here-"+Math.floor(Math.random()*9999999)+"rand.com");
 	}
-	
+
 	// did we give full url?
 	if (url.indexOf('https:') == 0 || url.indexOf('http:') == 0)
 		return this._testURL(url, this.no_color);
-		
+
 	// if not, just test a few diff types	if (exact)
 	return	this._testURL("http://" + url, this.no_color) ||
 		this._testURL("https://" + url, this.no_color) ||
@@ -979,7 +979,7 @@ function onSilverlightLoad(sender, args) {
 /*
 function onSilverlightError(sender, args) {
     _global_isolated = "";
-    
+
 }*/
 function onSilverlightError(sender, args) {
     _global_isolated = "";

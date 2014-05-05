@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Test_return_image < BeEF::Core::Command
-  
+
   def post_execute
     content = {}
     content['image'] = @datastore['image']

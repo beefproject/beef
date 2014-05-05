@@ -6,7 +6,7 @@
 beef:
     extension:
         notifications:
-            enable: false 
+            enable: false
             name: Notifications
             # Make sure you do 'gem install twitter' before enabling this feature. Leaving the twitter gem
             # in the Gemfile causes dependency issues, and this twitter feature isn't used much anyway.
@@ -16,7 +16,7 @@ beef:
               consumer_secret: app_consumer_secret
               oauth_token: your_oauth_token_for_this_app
               oauth_token_secret: your_oauth_token_secret_for_this_app
-              target_username: 
+              target_username:
             email:
               enable: false
               from_address: sender_email_address

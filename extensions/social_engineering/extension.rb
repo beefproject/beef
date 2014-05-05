@@ -36,11 +36,3 @@ require 'extensions/social_engineering/models/interceptor'
 
 # RESTful api endpoints
 require 'extensions/social_engineering/rest/socialengineering'
-
-
-
-
-
-
-
-

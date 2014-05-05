@@ -10,5 +10,5 @@ class Grab_google_contacts < BeEF::Core::Command
     content['Return'] = @datastore['return']
     save content
   end
-  
+
 end

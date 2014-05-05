@@ -152,7 +152,7 @@ sb.setStatus({
      * argument into <code>{@link #showBusy}</code>.
      */
     busyIconCls : 'x-status-busy',
-	
+
 	//BEEF ADDED
 	errorIconCls : 'x-status-error',
 	validIconCls : 'x-status-valid',
@@ -437,7 +437,7 @@ statusBar.setStatus({
         });
         return this.setStatus(o);
     },
-	
+
 	showValid : function(o){
         if(typeof o == 'string'){
             o = {text:o};

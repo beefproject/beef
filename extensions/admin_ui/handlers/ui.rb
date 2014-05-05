@@ -11,7 +11,7 @@ module BeEF
 module Extension
 module AdminUI
 module Handlers
-  
+
   class UI
 
     #
@@ -37,14 +37,14 @@ module Handlers
           )
 
     end
-    
+
     private
 
     @request
     @response
 
   end
-  
+
 end
 end
 end

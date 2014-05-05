@@ -5,12 +5,12 @@
 #
 #
 # Port Scanner Module - javier.marcos
-# Scan ports in a given hostname, using WebSockets CORS and HTTP with img tags. 
+# Scan ports in a given hostname, using WebSockets CORS and HTTP with img tags.
 # It uses the three methods to avoid blocked ports or Same Origin Policy.
 
 
 class Port_scanner < BeEF::Core::Command
-  
+
   def self.options
     return [
         {'name' => 'ipHost', 'ui_label' => 'Scan IP or Hostname', 'value' => '192.168.1.10'},
@@ -21,7 +21,7 @@ class Port_scanner < BeEF::Core::Command
         {'name' => 'debug', 'ui_label' => 'Debug', 'value' => 'false'}
     ]
   end
-  
+
   def post_execute
     content = {}
     content['port'] =@datastore['port'] if not @datastore['port'].nil?

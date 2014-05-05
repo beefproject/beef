@@ -6,17 +6,17 @@
 module BeEF
 module Extension
 module Requester
-  
+
   module RegisterHttpHandler
-    
+
     BeEF::API::Registrar.instance.register(BeEF::Extension::Requester::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
-    
+
     # We register the http handler for the requester.
     # This http handler will retrieve the http responses for all requests
     def self.mount_handler(beef_server)
       beef_server.mount('/requester', BeEF::Extension::Requester::Handler)
     end
-    
+
   end
 
   module RegisterPreHookCallback
@@ -29,7 +29,7 @@ module Requester
     end
 
   end
-  
+
 end
 end
 end

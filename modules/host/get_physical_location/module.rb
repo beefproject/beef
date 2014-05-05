@@ -14,7 +14,7 @@ class Get_physical_location < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_physical_location/getGPSLocation.jar', '/getGPSLocation', 'jar')
   end
 
-  def post_execute        
+  def post_execute
     results = @datastore['results'].to_s
     results = results.gsub("location_info=","")
 
@@ -37,4 +37,3 @@ class Get_physical_location < BeEF::Core::Command
   end
 
 end
-

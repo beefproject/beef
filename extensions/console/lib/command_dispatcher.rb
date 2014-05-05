@@ -9,15 +9,15 @@ module Console
 
 module CommandDispatcher
   include Rex::Ui::Text::DispatcherShell::CommandDispatcher
-  
+
   def initialize(driver)
     super
-    
+
     self.driver = driver
   end
-  
+
   attr_accessor :driver
-  
+
 end
 
 end end end

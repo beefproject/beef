@@ -46,7 +46,7 @@ class TC_Metasploit < Test::Unit::TestCase
 
   #
   # Verify that the config file has required information
-  # 
+  #
   def test_config
     load_config
     assert(@config.key?('user'))

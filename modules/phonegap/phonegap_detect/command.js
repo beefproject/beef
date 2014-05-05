@@ -12,7 +12,7 @@ beef.execute(function() {
 
     try {
         phonegap_details = ""
-        + " name: " + device.name 
+        + " name: " + device.name
         + " phonegap api: " + device.phonegap
         + " cordova api: " + device.cordova
         + " platform: " + device.platform

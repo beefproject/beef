@@ -4,19 +4,19 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Fake_flash_update < BeEF::Core::Command
-  
+
   def pre_send
-    
+
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_flash_update/img/eng.png', '/adobe/flash_update', 'png')
-    
+
   end
-  
+
   def self.options
-    
+
     configuration = BeEF::Core::Configuration.instance
-    
+
     proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-    
+
     image = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/adobe/flash_update.png"
 
     return [
@@ -28,15 +28,15 @@ class Fake_flash_update < BeEF::Core::Command
             'value' => "https://github.com/beefproject/beef/archive/master.zip"}
     ]
   end
-  
+
   def post_execute
-    
+
     content = {}
     content['result'] = @datastore['result']
     save content
-    
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/adobe/flash_update.png')   
-        
+
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/adobe/flash_update.png')
+
   end
-  
+
 end

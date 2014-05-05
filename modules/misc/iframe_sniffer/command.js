@@ -17,9 +17,9 @@ beef.execute(function() {
 
   var resultList = [];
   var resultString = '';
- 
+
   //check if the leakyframe library is loaded
-  //if not add it to the DOM 
+  //if not add it to the DOM
   if (typeof LeakyFrame !== 'function'){
     var leakyscript = document.createElement('script');
 
@@ -30,13 +30,13 @@ beef.execute(function() {
   }
 
   var timeout = 100;
-  
+
   //give the DOM some time to load the library
   poll = function(){
     setTimeout(function(){
-      timeout--; 
+      timeout--;
         if (typeof LeakyFrame === 'function') {
-          new LeakyFrame(inputURL, 
+          new LeakyFrame(inputURL,
             function(frame){
               //check each anchor
               for (var anchor = 0; anchor < arrayOfAnchorsToCheck.length; anchor++){
@@ -49,7 +49,7 @@ beef.execute(function() {
               }
               frame.remove();
 
-              //create the resultstring	
+              //create the resultstring
               for (var i = 0; i < resultList.length; i++){
                 resultString = resultString + '#' + arrayOfAnchorsToCheck[i] + ' ' + resultList[i] + '; ';
               }
@@ -68,4 +68,3 @@ beef.execute(function() {
 
   poll();
 });
-

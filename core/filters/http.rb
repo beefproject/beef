@@ -3,9 +3,9 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-module BeEF  
+module BeEF
 module Filters
-  
+
   # Verify the hostname string is valid
   # @param [String] str String for testing
   # @return [Boolean] If the string is a valid hostname
@@ -15,7 +15,7 @@ module Filters
     return false if str.length > 255
     return false if (str =~ /^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/).nil?
     return false if not (str =~ /\.\./).nil?
-    return false if not (str =~ /\-\-/).nil?      
+    return false if not (str =~ /\-\-/).nil?
     true
   end
 
@@ -45,7 +45,7 @@ module Filters
     host_str.gsub!(/[\r]+/,"")
     return true if "Host:".eql?(host_str)
     false
-  end 
+  end
 
   def normalize_path(path)
     print_error "abnormal path `#{path}'" if path[0] != ?/

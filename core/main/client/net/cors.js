@@ -39,7 +39,7 @@ beef.net.cors = {
                     if (!!callback) {
                         if (!!response) {
                             callback(response);
-                        } else { 
+                        } else {
                             callback('ERROR: No Response. CORS requests may be denied for this resource.')
                         }
                     }
@@ -74,4 +74,3 @@ beef.net.cors = {
 };
 
 beef.regCmp('beef.net.cors');
-

@@ -6,12 +6,12 @@
 module BeEF
 module Extension
 module Customhook
-  
+
   module RegisterHttpHandlers
-    
+
     BeEF::API::Registrar.instance.register(BeEF::Extension::Customhook::RegisterHttpHandlers, BeEF::API::Server, 'mount_handler')
     BeEF::API::Registrar.instance.register(BeEF::Extension::Customhook::RegisterHttpHandlers, BeEF::API::Server, 'pre_http_start')
-    
+
     def self.mount_handler(beef_server)
       configuration = BeEF::Core::Configuration.instance
       configuration.get("beef.extension.customhook.hooks").each do |h|

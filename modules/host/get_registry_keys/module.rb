@@ -28,6 +28,5 @@ HKLM\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0\\Identifier'
 		content['fail'] = 'No data was returned.' if content.empty?
 		save content
 	end
-  
-end
 
+end

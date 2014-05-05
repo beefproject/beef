@@ -12,6 +12,6 @@ class Phonegap_check_connection < BeEF::Core::Command
     content = {}
     content['result'] = @datastore['result']
     save content
-  end 
-  
+  end
+
 end

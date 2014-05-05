@@ -10,11 +10,11 @@ module Models
   # Store the rays details, basically verified XSS vulnerabilities
   #
   class Xssraysdetail
-  
+
     include DataMapper::Resource
-    
+
     storage_names[:default] = 'extension_xssrays_details'
-    
+
     property :id, Serial
 
     # The hooked browser id
@@ -31,7 +31,7 @@ module Models
 
     belongs_to :xssraysscan
   end
-  
+
 end
 end
 end

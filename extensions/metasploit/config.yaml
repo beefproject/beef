@@ -29,7 +29,7 @@ beef:
             autopwn_url: "autopwn"
             auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
-            msf_path: [ 
+            msf_path: [
               {os: 'osx', path: '/opt/local/msf/'},
               {os: 'livecd', path: '/opt/metasploit-framework/'},
               {os: 'bt5r3', path: '/opt/metasploit/msf3/'},

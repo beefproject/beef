@@ -14,7 +14,7 @@
 #   limitations under the License.
 #
 class Read_gmail < BeEF::Core::Command
-  
+
   #
   # This method is being called when a zombie sends some
   # data back to the framework.

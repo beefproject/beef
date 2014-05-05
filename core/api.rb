@@ -181,4 +181,3 @@ require 'core/api/main/network_stack/assethandler.rb'
 require 'core/api/main/server'
 require 'core/api/main/server/hook'
 require 'core/api/main/configuration'
-

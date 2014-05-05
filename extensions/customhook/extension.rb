@@ -6,15 +6,15 @@
 module BeEF
 module Extension
 module Customhook
-  
+
   extend BeEF::API::Extension
-  
+
   @short_name = 'customhook'
-  
+
   @full_name = 'Custom Hook Point with iFrame Impersonation'
-  
+
   @description = 'An auto-hook and full-screen iframe - demonstrating extension creation and social engineering attacks'
-  
+
 end
 end
 end

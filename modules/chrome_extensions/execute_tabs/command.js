@@ -15,4 +15,3 @@ beef.execute(function() {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'Not inside of a Chrome Extension');
 	}
 });
-

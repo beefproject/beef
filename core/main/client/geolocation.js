@@ -61,7 +61,7 @@ beef.geolocation = {
     getGeolocation: function (command_url, command_id){
 
         if (!navigator.geolocation) {
-	        beef.net.send(command_url, command_id, "latitude=NOT_ENABLED&longitude=NOT_ENABLED&geoLocEnabled=False");	
+	        beef.net.send(command_url, command_id, "latitude=NOT_ENABLED&longitude=NOT_ENABLED&geoLocEnabled=False");
 			return;
 		}
         beef.debug("[geolocation.js] navigator.geolocation.getCurrentPosition");

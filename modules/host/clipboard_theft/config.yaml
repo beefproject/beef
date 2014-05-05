@@ -12,7 +12,7 @@ beef:
             description: "Retrieves the clipboard contents. This module will work automatically with Internet Explorer 6.x however Internet Explorer 7.x will prompt the user and ask for permission to access the clipboard."
             authors: ["bcoles"]
             target:
-                working: 
+                working:
                     IE:
                         min_ver: 6
                         max_ver: 6
@@ -21,4 +21,3 @@ beef:
                         min_ver: 7
                         max_ver: 7
                 not_working: ["All"]
-

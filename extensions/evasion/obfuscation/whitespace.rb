@@ -12,7 +12,7 @@ module BeEF
         def need_bootstrap
           true
         end
-        
+
         def get_bootstrap
         # the decode function is in plain text - called IE-spacer - because trolling is always a good idea
         decode_function =
@@ -47,8 +47,8 @@ function IE_spacer(css_space) {
           input
         end
 
-        def encode(input)                 
-          output = input.unpack('B*') 
+        def encode(input)
+          output = input.unpack('B*')
           output = output.to_s.gsub(/[\["01\]]/, '[' => '', '"' => '', ']' => '',  '0' => "\t", '1' => ' ')
           output
         end

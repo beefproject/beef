@@ -10,11 +10,11 @@ module Models
   # Table stores the http requests and responses from the requester.
   #
   class Http
-  
+
     include DataMapper::Resource
-    
+
     storage_names[:default] = 'extension_requester_http'
-    
+
     property :id, Serial
 
     # The hooked browser id
@@ -67,7 +67,7 @@ module Models
     property :request_date, DateTime, :lazy => false
 
   end
-  
+
 end
 end
 end

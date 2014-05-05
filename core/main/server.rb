@@ -94,7 +94,7 @@ module BeEF
 
         if not @http_server
 
-          # Set the logging level of Thin to match the config 
+          # Set the logging level of Thin to match the config
           Thin::Logging.silent = true
           if @configuration.get('beef.http.debug') == true
             Thin::Logging.silent = false

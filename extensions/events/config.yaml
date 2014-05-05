@@ -6,6 +6,5 @@
 beef:
     extension:
         events:
-            enable: true 
+            enable: true
             name: 'Events'
-

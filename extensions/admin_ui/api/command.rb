@@ -7,14 +7,14 @@ module BeEF
 module Extension
 module AdminUI
 module API
-  
+
   module CommandExtension
-    
+
     extend BeEF::API::Command
-    
+
     include BeEF::Core::Constants::Browsers
     include BeEF::Core::Constants::CommandModule
-    
+
     #
     # Get the browser detail from the database.
     #
@@ -24,7 +24,7 @@ module API
       bd.get(@session_id, key)
     end
   end
-  
+
 end
 end
 end

@@ -14,4 +14,3 @@ beef:
             target:
                 working: ["FF", "S"]
                 not_working: ["C"]
-

@@ -8,18 +8,18 @@ PanelViewer = {};
 var mainPanel, zombiesTreeLists, zombieTabs, zombiesManager;
 
 Ext.onReady(function() {
-	
+
 	Ext.QuickTips.init();
 
 	zombiesTreeLists = {
 		'basic' : new zombiesTreeList('basic'),
 		'requester' : new zombiesTreeList('requester')
 	};
-	
+
 	zombieTabs = new ZombieTabs(zombiesTreeLists);
 	zombiesManager = new ZombiesMgr(zombiesTreeLists);
 	mainPanel = new MainPanel();
-	
+
 	var viewport = new Ext.Viewport({
         layout:'border',
         items:[
@@ -32,7 +32,7 @@ Ext.onReady(function() {
 			mainPanel
          ]
     });
-	
+
 	new DoLogout();
 });
 
@@ -60,7 +60,7 @@ Ext.TaskMgr.start({
 				}
 				var distributed_engine_rules = (updates['ditributed-engine-rules']) ? updates['ditributed-engine-rules'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;
-				
+
 				if(zombiesManager && hooked_browsers) {
 					zombiesManager.updateZombies(hooked_browsers, distributed_engine_rules);
 				}
@@ -78,6 +78,6 @@ Ext.TaskMgr.start({
 			}
 		});
 	},
-	
+
 	interval: 8000
 });

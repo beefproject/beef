@@ -32,4 +32,3 @@ beef.execute(function() {
 	setTimeout('parse_results();', 2000);
 
 });
-

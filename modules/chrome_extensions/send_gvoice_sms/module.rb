@@ -19,5 +19,5 @@ class Send_gvoice_sms < BeEF::Core::Command
     content['Status'] = @datastore['status']
     save content
   end
-  
+
 end

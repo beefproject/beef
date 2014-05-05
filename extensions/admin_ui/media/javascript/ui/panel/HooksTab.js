@@ -65,4 +65,4 @@ HooksTab = function() {
 
 };
 
-Ext.extend(HooksTab,Ext.Panel, {}); 
+Ext.extend(HooksTab,Ext.Panel, {});

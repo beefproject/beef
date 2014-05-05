@@ -21,4 +21,3 @@ class Mobilesafari_address_spoofing < BeEF::Core::Command
 	end
 
 end
-

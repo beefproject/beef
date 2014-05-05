@@ -31,7 +31,7 @@ DataGrid = function(url, page, base) {
         displayMsg: 'Displaying logs {0} - {1} of {2}',
         emptyMsg: 'No logs to display'
     });
-	
+
     this.columns = [{
 			id: 'log-id',
 			header: 'Id',
@@ -84,7 +84,7 @@ DataGrid = function(url, page, base) {
         viewConfig: {
             forceFit:true
         },
-		
+
 		listeners: {
 			afterrender: function(datagrid) {
 				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"id", dir:"DESC"}});

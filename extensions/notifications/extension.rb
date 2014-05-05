@@ -6,13 +6,13 @@
 module BeEF
 module Extension
 module Notifications
-  
+
   extend BeEF::API::Extension
-  
+
   @short_name = 'notifications'
   @full_name = 'Notifications'
   @description = 'Generates external notifications for events in BeEF'
-  
+
 end
 end
 end

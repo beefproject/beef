@@ -5,7 +5,7 @@
 #
 module BeEF
 module Filters
-    
+
   # Check if the string is a valid path from a HTTP request
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid path characters
@@ -21,7 +21,7 @@ module Filters
   # @return [Boolean] If the string is a valid command id
   def self.is_valid_command_id?(str)
     return false if not is_non_empty_string?(str)
-    return false if not nums_only?(str)   
+    return false if not nums_only?(str)
     true
   end
 
@@ -30,7 +30,7 @@ module Filters
   # @return [Boolean] If the string has valid hook session id characters
   def self.is_valid_hook_session_id?(str)
     return false if not is_non_empty_string?(str)
-    return false if not has_valid_key_chars?(str) 
+    return false if not has_valid_key_chars?(str)
     true
   end
 
@@ -39,7 +39,7 @@ module Filters
   # @return [Boolean] If the string has valid command module datastore key characters
   def self.is_valid_command_module_datastore_key?(str)
     return false if not is_non_empty_string?(str)
-    return false if not has_valid_key_chars?(str)      
+    return false if not has_valid_key_chars?(str)
     true
   end
 

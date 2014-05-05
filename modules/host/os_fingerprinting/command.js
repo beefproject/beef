@@ -41,4 +41,3 @@ beef.execute(function() {
 	setTimeout('parse_os_details();', 2000);
 
 });
-

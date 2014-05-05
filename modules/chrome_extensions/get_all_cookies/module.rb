@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_all_cookies < BeEF::Core::Command
- 
+
  def self.options
 
     return [
@@ -17,5 +17,5 @@ class Get_all_cookies < BeEF::Core::Command
     content['Return'] = @datastore['return']
     save content
   end
-  
+
 end

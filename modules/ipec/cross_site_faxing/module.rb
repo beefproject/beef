@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Cross_site_faxing < BeEF::Core::Command
-  
+
   def self.options
     return [
 	{'name'=>'ip', 'ui_label' => 'Target Address', 'value' => 'localhost'},

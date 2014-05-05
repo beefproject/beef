@@ -50,7 +50,7 @@ module Models
       command = first(:id => command_id.to_i, :hooked_browser_id => hooked_browser_id) || nil
       raise Exception::TypeError, "command is nil" if command.nil?
 
-      # @note create the entry for the results 
+      # @note create the entry for the results
       command.results.new(:hooked_browser_id => hooked_browser_id, :data => result.to_json, :date => Time.now.to_i)
       command.save
 

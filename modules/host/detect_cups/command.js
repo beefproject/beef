@@ -22,4 +22,3 @@ beef.execute(function() {
 	dom.appendChild(img);
 
 });
-

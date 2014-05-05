@@ -6,10 +6,9 @@
 beef:
     extension:
         console:
-            enable: true 
+            enable: true
             name: 'Console'
             shell:
                 enable: true
                 historyfolder: '~/.beef/'
                 historyfile: 'history'
-

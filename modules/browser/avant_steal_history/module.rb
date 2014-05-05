@@ -18,7 +18,7 @@ class Avant_steal_history < BeEF::Core::Command
 	def self.options
 
 		configuration = BeEF::Core::Configuration.instance
-		
+
 
 		return [
 			{'name' => 'cId', 'ui_label' => 'Command ID', 'value' => '60003', 'type' => 'textarea', 'width' => '400px', 'height' => '25px' }

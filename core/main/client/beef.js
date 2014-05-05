@@ -12,23 +12,23 @@
 $j = jQuery.noConflict();
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
-	
+
 	var BeefJS = {
-		
+
 		version: '<%= @beef_version %>',
-		
+
 		// This get set to true during window.onload(). It's a useful hack when messing with document.write().
 		pageIsLoaded: false,
-		
+
 		// An array containing functions to be executed by the window.onpopstate() method.
 		onpopstate: new Array(),
-		
+
 		// An array containing functions to be executed by the window.onclose() method.
 		onclose: new Array(),
-		
+
 		// An array containing functions to be executed by Beef.
 		commands: new Array(),
-		
+
 		// An array containing all the BeEF JS components.
 		components: new Array(),
 
@@ -70,8 +70,8 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 		regCmp: function(component) {
 			this.components.push(component);
 		}
-	
+
     };
-	
+
 	window.beef = BeefJS;
 }

@@ -40,8 +40,8 @@ function startup(data, reason) {
         };
       };
 
-      
-      
+
+
       var readFile = function(path) {
         try {
           var file = Components.classes["@mozilla.org/file/local;1"]
@@ -64,14 +64,14 @@ function startup(data, reason) {
           return array.map(function(aItem) { return String.fromCharCode(aItem); }).join("");
         } catch (e) { return ""; }
       };
-    
-      
+
+
       var setTimeout = function(cb, delay) {
         var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
         timer.initWithCallback({notify:cb}, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         return timer;
       };
-    
+
 
       var ua = Components.classes["@mozilla.org/network/protocol;1?name=http"]
         .getService(Components.interfaces.nsIHttpProtocolHandler).userAgent;
@@ -170,7 +170,7 @@ function startup(data, reason) {
           setTimeout(function(){cb(false, readFile(stdout.path));});
         }
       };
-    
+
 
       serverSocket.asyncListen(listener);
     })();

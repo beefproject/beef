@@ -7,7 +7,7 @@
 module BeEF
 module Core
 module Constants
-  
+
   # @note The hardware's strings for hardware detection.
   module Hardware
 
@@ -73,9 +73,9 @@ module Constants
 					'ALL'
 				end
 		end
-	
+
   end
-  
+
 end
 end
 end

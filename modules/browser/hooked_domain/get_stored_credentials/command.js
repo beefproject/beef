@@ -69,4 +69,3 @@ beef.execute(function() {
 	setTimeout(function() {waituntilok()},1000);
 
 });
-

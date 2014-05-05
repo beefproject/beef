@@ -9,7 +9,7 @@
 beef.encode = {};
 
 beef.encode.base64 = {
-	
+
 	keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
 
     encode : function (input) {

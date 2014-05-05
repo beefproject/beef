@@ -10,7 +10,7 @@
  * Provides functionality to manipulate the DOM.
  */
 beef.dom = {
-	
+
 	/**
 	 * Generates a random ID for HTML elements
 	 * @param: {String} prefix: a custom prefix before the random id. defaults to "beef-"
@@ -18,8 +18,8 @@ beef.dom = {
 	 */
 	generateID: function(prefix) {
 		return ((prefix == null) ? 'beef-' : prefix)+Math.floor(Math.random()*99999);
-	},	
-		
+	},
+
 	/**
 	 * Creates a new element but does not append it to the DOM.
 	 * @param: {String} the name of the element.
@@ -28,16 +28,16 @@ beef.dom = {
 	 */
 	createElement: function(type, attributes) {
 		var el = document.createElement(type);
-		
+
 		for(index in attributes) {
 			if(typeof attributes[index] == 'string') {
 				el.setAttribute(index, attributes[index]);
 			}
 		}
-		
+
 		return el;
 	},
-	
+
 	/**
 	 * Removes element from the DOM.
 	 * @param: {String or DOM Object} the target element to be removed.
@@ -51,7 +51,7 @@ beef.dom = {
 			el.parentNode.removeChild(el);
 		} catch (e) { }
 	},
-	
+
 	/**
 	 * Tests if the object is a DOM element.
 	 * @param: {Object} the DOM element.
@@ -60,7 +60,7 @@ beef.dom = {
 	isDOMElement: function(obj) {
 		return (obj.nodeType) ? true : false;
 	},
-	
+
 	/**
 	 * Creates an invisible iframe on the hook browser's page.
 	 * @return: the iframe.
@@ -71,9 +71,9 @@ beef.dom = {
 				height: '1px',
 				style: 'visibility:hidden;'
 			});
-		
+
 		document.body.appendChild(iframe);
-		
+
 		return iframe;
 	},
 
@@ -100,7 +100,7 @@ beef.dom = {
 			return highest.height;
 		}
 	},
-	
+
 	/**
      * Create an iFrame element and prepend to document body. URI passed via 'src' property of function's 'params' parameter
      * is assigned to created iframe tag's src attribute resulting in GET request to that URI.
@@ -125,7 +125,7 @@ beef.dom = {
 			$j('body').css({'padding':'0px', 'margin':'0px'});
 		}
 		var iframe = $j('<iframe />').attr(params).css(css).load(onload).prependTo('body');
-		
+
 		return iframe;
 	},
 
@@ -153,7 +153,7 @@ beef.dom = {
      * @param: {Boolean} vis: whether or not you want the screen dimmer enabled or not
      * @param: {Hash} options: a collection of options to customise how the div is configured, as follows:
      *         opacity:0-100         // Lower number = less grayout higher = more of a blackout
-     *           // By default this is 70 
+     *           // By default this is 70
      *         zindex: #             // HTML elements with a higher zindex appear on top of the gray out
      *           // By default this will use beef.dom.getHighestZindex to always go to the top
      *         bgcolor: (#xxxxxx)    // Standard RGB Hex color code
@@ -176,14 +176,14 @@ beef.dom = {
 	        tnode.style.position='absolute';                 // Position absolutely
 	        tnode.style.top='0px';                           // In the top
 	        tnode.style.left='0px';                          // Left corner of the page
-	        tnode.style.overflow='hidden';                   // Try to avoid making scroll bars            
+	        tnode.style.overflow='hidden';                   // Try to avoid making scroll bars
 	        tnode.style.display='none';                      // Start out Hidden
 	        tnode.id='darkenScreenObject';                   // Name it so we can find it later
 	    tbody.appendChild(tnode);                            // Add it to the web page
 	    dark=document.getElementById('darkenScreenObject');  // Get the object.
 	  }
 	  if (vis) {
-	    // Calculate the page width and height 
+	    // Calculate the page width and height
 	    if( document.body && ( document.body.scrollWidth || document.body.scrollHeight ) ) {
 	        var pageWidth = document.body.scrollWidth+'px';
 	        var pageHeight = document.body.scrollHeight+'px';
@@ -216,7 +216,7 @@ beef.dom = {
 		$j('link[rel=stylesheet]').remove();
 		$j('style').remove();
 	},
-	
+
 	/**
      * Create a form element with the specified parameters, appending it to the DOM if append == true
 	 * @param: {Hash} params: params to be applied to the form element
@@ -229,7 +229,7 @@ beef.dom = {
 			$j('body').append(form);
 		return form;
 	},
-	
+
 	/**
 	 * Get the location of the current page.
 	 * @return: the location.
@@ -237,7 +237,7 @@ beef.dom = {
 	getLocation: function() {
 		return document.location.href;
 	},
-	
+
 	/**
 	 * Get links of the current page.
 	 * @return: array of URLs.
@@ -246,11 +246,11 @@ beef.dom = {
 		var linksarray = [];
 		var links = document.links;
 		for(var i = 0; i<links.length; i++) {
-			linksarray = linksarray.concat(links[i].href)		
+			linksarray = linksarray.concat(links[i].href)
 		};
 		return linksarray
 	},
-	
+
 	/**
 	 * Rewrites all links matched by selector to url, also rebinds the click method to simply return true
 	 * @param: {String} url: the url to be rewritten

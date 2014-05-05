@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Inter_protocol_redis < BeEF::Core::Command
-  
+
   def self.options
     cmd = 'set server:name "BeEF says:\\\\nm00!"\\nquit\\n'
     return [

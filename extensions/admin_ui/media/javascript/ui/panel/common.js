@@ -20,20 +20,20 @@ var re_execute_command_title = 'Re-execute command'
 function generate_form_input_field(form, input, value, disabled, zombie) {
 	var input_field = null;
 	var input_def = null;
-			
+
 	if (!input['ui_label']) input['ui_label'] = input['name'];
 	if (!input['type']) input['type'] = 'textfield';
 	if (!input['value']) input['value'] = '';
 
-	input_def = { 
-		id: 'form-zombie-'+zombie.session+'-field-'+input['name'], 
-		name: 'txt_'+input['name'], 
+	input_def = {
+		id: 'form-zombie-'+zombie.session+'-field-'+input['name'],
+		name: 'txt_'+input['name'],
 		fieldLabel: input['ui_label'],
         anchor:'70%',
-		allowBlank: false, 
+		allowBlank: false,
 		value: input['value']
 	};
-		
+
 	// create the input field object based upon the type supplied
 	switch(input['type'].toLowerCase()) {
 		case 'textfield':
@@ -86,13 +86,13 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 			});
 
 			input_field = new Ext.form.ComboBox(input_def);
-								
+
 			break;
 		default:
 			input_field = new Ext.form.TextField(input_def);
 			break;
 	}
-		
+
 	// add the properties for the input element, for example: widths, default values and the html lables
 	for(definition in input) {
 		if( (typeof input[definition] == 'string') && (definition != 'type') && (definition != 'name')) {
@@ -102,9 +102,9 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 
 	if(value) input_field.setValue(value);
 	if(disabled) input_field.setDisabled(true);
-		
+
 	form.add(input_field);
-		
+
 };
 
 function get_dynamic_payload_details(payload, zombie) {
@@ -122,7 +122,7 @@ function get_dynamic_payload_details(payload, zombie) {
 				// generate each of the payload input options
 				generate_form_input_field(Ext.getCmp("payload-panel"), input, null, false, zombie);
 			});
-			
+
 			Ext.getCmp("payload-panel").doLayout();
 		}
 	})
@@ -130,7 +130,7 @@ function get_dynamic_payload_details(payload, zombie) {
 
 /**
  * Generate a panel for an command module that already has been executed.
- * 
+ *
  * @param: {Object} the Panel in the UI to generate the form into.
  * @param: {Integer} the command id to generate the panel for.
  * @param: {Object} the targeted Zombie.
@@ -141,10 +141,10 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
 	}
-	
+
 	sb.showBusy(); // status bar update
 	panel.removeAll();
-	
+
 	Ext.Ajax.request({
 		url: '<%= @base_path %>/modules/select/command.json',
 		method: 'POST',
@@ -152,12 +152,12 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 		loadMask: true,
 		success: function(resp) {
 			var xhr = Ext.decode(resp.responseText);
-			
+
 			if(!xhr || !xhr.definition) {
 				Ext.beef.msg('Error!', 'We could not retrieve the definition of that command module...');
 				return;
 			}
-			
+
 			var form = new Ext.form.FormPanel({
 				url: '<%= @base_path %>/modules/commandmodule/reexecute',
 				id: 'form-command-module-zombie-'+zombie.session,
@@ -166,17 +166,17 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 				defaultType: 'textfield',
 				title: re_execute_command_title,
 				bodyStyle: 'padding: 5px;',
-				
+
 				items: [new Ext.form.Hidden({name: 'command_id', value: command_id})],
-				
+
 				buttons:[{
-					text: zombie_reexecute_button_text,	
+					text: zombie_reexecute_button_text,
 					handler: function()	{
 						var form = Ext.getCmp('form-command-module-zombie-'+zombie.session);
 						if(!form || !form.getForm().isValid()) return;
-						
+
 						sb.update_sending('Sending commands to ' + zombie.ip + '...'); // status bar update
-						
+
 						var command_module_form = form.getForm(); // form to be submitted when execute button is pressed on an command module tab
 						command_module_form.submit({
 							params: {  // insert the nonce with the form
@@ -192,21 +192,21 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 					}
 				}]
 			});
-			
+
 			Ext.each(xhr.definition.Data, function(input) {
 				var value = null;
-				
+
 				if(typeof input == 'string') {
 					value = xhr.data[input];
 				}
-				
+
 				if(typeof input == 'object' && typeof input[0] == 'object') {
 					value = xhr.data[input[0]['name']]
 				}
-				
+
 				generate_form_input_field(form, input, value, false, zombie);
 			});
-			
+
 			var grid_store = new Ext.data.JsonStore({
 				url: '<%= @base_path %>/modules/select/command_results.json?command_id='+command_id,
 				storeId: 'command-results-store-zombie-'+zombie.session,
@@ -218,7 +218,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 					{name: 'data'}
 				]
 			});
-			
+
 			Ext.TaskMgr.start({
 			    run: function(task) {
 					var grid = Ext.getCmp('command-results-grid-zombie-'+zombie.session);
@@ -230,14 +230,14 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 				},
 			    interval: 4000
 			});
-			
+
 			var grid = new Ext.grid.GridPanel({
 				id: 'command-results-grid-zombie-'+zombie.session,
 				store: grid_store,
 				border: false,
 				hideHeaders: true,
 				title: 'Command results',
-				
+
 				viewConfig: {
 					forceFit:true
 				},
@@ -288,10 +288,10 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 				border: false,
 				items: [grid, form]
 			});
-				
+
 			panel.add(accordion);
 			panel.doLayout();
-			
+
 			sb.update_ready(); // status bar update
 		}
 	});
@@ -299,7 +299,7 @@ function genExistingExploitPanel(panel, command_id, zombie, sb) {
 
 /**
  * Generate a panel for an command module.
- * 
+ *
  * @param: {Object} the Panel in the UI to generate the form into.
  * @param: {String} the path to the command module file in the framework.
  * @param: {String} the name of the command module.
@@ -311,7 +311,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
 		return;
 	}
-	
+
 	var xgrid = Ext.getCmp('command-module-grid-zombie-'+zombie.session);
 	var sb = Ext.getCmp('commands-bbar-zombie-'+zombie.session);
     panel.removeAll();
@@ -325,7 +325,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 			params: 'command_module_id=' + command_module_id,
 			success: function(resp) {
 				var module = Ext.decode(resp.responseText);
-				
+
 				if(!module) {
 					Ext.beef.msg('Error!', 'We could not retrieve the definition of that command_module...');
 					return;
@@ -335,12 +335,12 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 				if(module.dynamic){
 					submiturl = '<%= @base_path %>/modules/commandmodule/dynamicnew';
 				}
-				
+
 				module = module.command_modules[1];
 
                 var form = new Ext.form.FormPanel({
 					url: submiturl,
-					
+
 					id: 'form-command-module-zombie-'+zombie.session,
 					border: false,
 					labelWidth: 75,
@@ -348,7 +348,7 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 					title: module.Name,
 					autoScroll: true,
 					bodyStyle: 'padding: 5px;',
-					
+
 					items: [
 						new Ext.form.Hidden({name: 'zombie_session', value: zombie.session}),
 						new Ext.form.Hidden({name: 'command_module_id', value: command_module_id}),
@@ -359,21 +359,21 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 							value: module.Description
 							})
 					],
-					
+
 					buttons:[{
-						text: zombie_execute_button_text,	
+						text: zombie_execute_button_text,
 						handler: function()	{
 							var form = Ext.getCmp('form-command-module-zombie-'+zombie.session), command_module_params = new Array();
-														
+
 							if(!form || !form.getForm().isValid()) {
 								sb.update_fail("Please complete all input fields!"); // status bar update
 								return;
 							}
-							
+
 							sb.update_sending('Sending commands to ' + zombie.ip + '...'); // status bar update
 
 							var command_module_form = form.getForm();  // form to be submitted when execute button is pressed on an command module tab
-							
+
 							command_module_form.submit({
 								params: {  // insert the nonce with the form
 										nonce: Ext.get ("nonce").dom.value
@@ -394,22 +394,22 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 						}
 					}]
 				});
-				
-				// create the panel and hide it 
-				var payload_panel = new Ext.Panel({  
+
+				// create the panel and hide it
+				var payload_panel = new Ext.Panel({
 					id: 'payload-panel',  // used with Ext.GetCmp('payload-panel')
-				    bodyStyle: 'padding:10px;', // we can assign styles to the main div  
+				    bodyStyle: 'padding:10px;', // we can assign styles to the main div
 						layout : 'form',
 					bodyBorder: false,
-				    height: 200,  
+				    height: 200,
 					hidden: true,
 				    border: false //we can remove the border of the panel
 				});
-				
+
 				Ext.each(module.Data, function(input){
 					generate_form_input_field(form, input, null, false, zombie)}
 				);
-				
+
 				form.add(payload_panel);
 				panel.add(form);
 				panel.doLayout();

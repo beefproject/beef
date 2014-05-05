@@ -6,9 +6,9 @@
 module BeEF
 module Extension
 module Qrcode
-  
+
   extend BeEF::API::Extension
-  
+
   @short_name = 'qrcode'
   @full_name = 'QR Code Generator'
   @description = 'This extension prints out a link to a QR Code which can be used to hook browsers into BeEF'

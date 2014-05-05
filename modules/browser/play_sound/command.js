@@ -4,7 +4,7 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-beef.execute(function() {	
+beef.execute(function() {
 
     function playSound(url) {
         function createSound(which) {
@@ -26,11 +26,11 @@ beef.execute(function() {
         }
         window.soundEmbed.removed = false;
         document.body.appendChild(window.soundEmbed);
-    }	
-		
-	
-	
+    }
+
+
+
 	playSound("<%== @sound_file_uri %>");
-	
+
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "Sound Played");
 });

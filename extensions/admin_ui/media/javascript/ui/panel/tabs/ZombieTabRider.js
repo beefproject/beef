@@ -9,11 +9,11 @@
  * Loaded in /ui/panel/index.html
  */
 ZombieTab_Requester = function(zombie) {
-	
+
 	// The status bar.
 	var commands_statusbar = new Beef_StatusBar('requester-bbar-zombie-'+zombie.session);
-	
-	
+
+
 	/*
 	 * The panel used to forge raw HTTP requests.
 	 ********************************************/
@@ -64,7 +64,7 @@ ZombieTab_Requester = function(zombie) {
 
 		fields: ['domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
-		
+
 		baseParams: {
 			nonce: Ext.get("nonce").dom.value,
 			zombie_session: zombie.session
@@ -105,17 +105,17 @@ ZombieTab_Requester = function(zombie) {
 		bbar: history_panel_bbar,
 		border: false,
 		loadMask: {msg:'Loading History...'},
-		
+
 		viewConfig: {
 			forceFit:true
 		},
-		
+
 		view: new Ext.grid.GridView({
 			forceFit: true,
 			emptyText: "No History",
 			enableRowBody:true
 		}),
-		
+
 		columns: [
 			{header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
 			{header: 'Domain', sortable: true, dataIndex: 'domain', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
@@ -130,17 +130,17 @@ ZombieTab_Requester = function(zombie) {
 			{header: 'Res Date', width: 50, sortable: true, dataIndex: 'response_date', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
 
 		],
-		
+
 		listeners: {
 			rowclick: function(grid, rowIndex) {
 				var tab_panel = Ext.getCmp('zombie-requester-tab-zombie-'+zombie.session);
 				var r = grid.getStore().getAt(rowIndex).data;
-				
+
 				if(r.has_ran != "complete") {
 					commands_statusbar.update_fail("Response for this request has not been received yet.");
 					return;
 				}
-				
+
 				if(!tab_panel.get('requester-response-'+r.id)) {
 					genResultTab(r, zombie, commands_statusbar);
 				}
@@ -159,14 +159,14 @@ ZombieTab_Requester = function(zombie) {
 //            }
 		}
 	});
-	
-	
+
+
 	var history_panel = new Ext.Panel({
 		id: 'requester-history-panel-zombie-'+zombie.session,
 		title: 'History',
 		items:[history_panel_grid],
 		layout: 'fit',
-		
+
 		listeners: {
 			activate: function(history_panel) {
 				history_panel.items.items[0].store.reload({params:{url:'<%= @base_path %>/requester/history.json'}});
@@ -183,7 +183,7 @@ ZombieTab_Requester = function(zombie) {
 		}
 		return result;
 	}
-	
+
 	// Function generating the requests panel to send raw requests
 	//-------------------------------------------------------------
 	function genRawRequestPanel(zombie, bar, value) {
@@ -194,7 +194,7 @@ ZombieTab_Requester = function(zombie) {
 			hideLabels : true,
 			border: false,
 			padding: '3px 5px 0 5px',
-			
+
 			items:[{
 				xtype: 'textarea',
 				id: 'raw-request-zombie-'+zombie.session,
@@ -203,14 +203,14 @@ ZombieTab_Requester = function(zombie) {
 				height: '100%',
 				allowBlank: false
 			}],
-			
+
 			buttons: [{
 				text: 'Send',
 				handler: function() {
 					var form = Ext.getCmp('requester-request-form-zombie'+zombie.session).getForm();
-					
+
 					bar.update_sending('Sending request to ' + zombie.ip + '...');
-					
+
 					form.submit({
 						params: {
 							nonce: Ext.get("nonce").dom.value,//insert the nonce with the form
@@ -235,33 +235,33 @@ ZombieTab_Requester = function(zombie) {
 		}
 
 		form.get('raw-request-zombie-'+zombie.session).value = value;
-		
+
 		panel = Ext.getCmp('requester-forge-requests-zombie-'+zombie.session);
 		panel.setTitle('Forge Request');
 		panel.add(form);
 	};
-	
+
 	// Function generating the panel that shows the results of a request
 	// This function is called when the user clicks on a row in the grid
 	// showing the results in the history.
 	//------------------------------------------------------------------
 	function genResultTab(request, zombie, bar) {
 		var tab_panel = Ext.getCmp('zombie-requester-tab-zombie-'+zombie.session);
-		
+
 		bar.update_sending('Getting response...');
-		
+
 		Ext.Ajax.request({
 			url: '<%= @base_path %>/requester/response.json',
 			loadMask: true,
-			
+
 			params: {
 				nonce: Ext.get("nonce").dom.value,
 				http_id: request.id
 			},
-			
+
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
-				
+
 				var tab_result_response_headers = new Ext.Panel({
 					title: 'Response Headers',
 					border: false,
@@ -288,7 +288,7 @@ ZombieTab_Requester = function(zombie) {
 					padding: '5px 5px 5px 5px',
 					items:[new Ext.form.TextArea({id: 'requester-response-req-'+request.id, value: xhr.result.request})]
 				});
-		
+
 				var tab_result_accordion = new Ext.Panel({
 					id: 'requester-response-'+request.id,
 					title: $jEncoder.encoder.encodeForHTML(request.path),
@@ -298,13 +298,13 @@ ZombieTab_Requester = function(zombie) {
 					closable: true,
 					items:[tab_result_request, tab_result_response_headers, tab_result_response_body]
 				});
-		
+
 				tab_panel.add(tab_result_accordion);
 				tab_panel.activate(tab_result_accordion.id);
-				
+
 				bar.update_sent("Displaying response.");
 			},
-			
+
 			failure: function() {
 				bar.update_fail("Error! Could not retrieve the response.");
 			}
@@ -320,18 +320,18 @@ ZombieTab_Requester = function(zombie) {
 			forceFit: true,
 			type: 'fit'
 		},
-		
+
         items: [history_panel, requests_panel, proxy_panel],
-		
+
 		bbar: commands_statusbar,
-		
+
 		listeners: {
 			afterrender : function(){
 				genRawRequestPanel(zombie, commands_statusbar);
 			}
 		}
 	});
-	
+
 };
 
 Ext.extend(ZombieTab_Requester, Ext.TabPanel, {});

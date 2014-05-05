@@ -14,7 +14,7 @@ class Browser_autopwn < BeEF::Core::Command
 				url = @conf.get('beef.extension.metasploit.autopwn_url')
 				@uri = "http://#{host}:8080/#{url}"
 			end
-		end	
+		end
         return [
 			  { 'name' => 'sploit_url', 'description' => 'The URL to exploit', 'ui_label' => 'Listener URL', 'value' => @uri, 'width'=>'200px' },
         ]
@@ -26,5 +26,5 @@ class Browser_autopwn < BeEF::Core::Command
   def post_execute
     save({'result' => @datastore['result']})
   end
-  
+
 end

@@ -7,12 +7,12 @@ module BeEF
 module Extension
 module Console
 module CommandDispatcher
-  
+
 class Target
   include BeEF::Extension::Console::CommandDispatcher
-  
+
   @@commands = []
-  
+
   def initialize(driver)
     super
     begin
@@ -25,7 +25,7 @@ class Target
       return
     end
   end
-  
+
   def commands
     {
       "commands" => "List available commands against this particular target",
@@ -33,11 +33,11 @@ class Target
       "select" => "Prepare the command module for execution against this target"
     }
   end
-  
+
   def name
     "Target"
   end
-  
+
   @@bare_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ])
 
@@ -45,12 +45,12 @@ class Target
     "-h" => [ false, "Help."],
     "-s" => [ false, "<search term>"],
     "-r" => [ false, "List modules which have responses against them only"])
-  
+
   def cmd_commands(*args)
 
     searchstring = nil
     responly = nil
-    
+
     @@commands_opts.parse(args) {|opt, idx, val|
       case opt
         when "-h"
@@ -71,8 +71,8 @@ class Target
           'Status',
           'Execute Count'
         ])
-    
-    
+
+
     driver.interface.getcommands.each { |folder|
       folder['children'].each { |command|
 
@@ -91,7 +91,7 @@ class Target
                 command['status'].gsub(/^Verified /,""),
                 driver.interface.getcommandresponses(command['id']).length] if driver.interface.getcommandresponses(command['id']).length.to_i > 0
 
-        else 
+        else
          tbl << [command['id'].to_i,
             cmdstring,
             command['status'].gsub(/^Verified /,""),
@@ -100,22 +100,22 @@ class Target
 
       }
     }
-    
+
     puts "\n"
     puts "List command modules for this target\n"
     puts tbl.to_s + "\n"
-                
+
   end
-  
+
   def cmd_commands_help(*args)
     print_status("List command modules for this target")
     print_line("Usage: commands [options]")
     print_line
     print @@commands_opts.usage()
   end
-  
+
   def cmd_info(*args)
-    
+
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
         when "-h"
@@ -123,29 +123,29 @@ class Target
           return false
         end
     }
-    
+
     tbl = Rex::Ui::Text::Table.new(
       'Columns' =>
         [
           'Param',
           'Value'
         ])
-    
+
     driver.interface.select_zombie_summary['results'].each { |x|
       x['data'].each { |k,v|
         tbl << [k,v]
       }
     }
-    
+
     puts "\nHooked Browser Info:\n"
-    puts tbl.to_s + "\n"    
-    
+    puts tbl.to_s + "\n"
+
   end
-  
+
   def cmd_info_help(*args)
     print_status("Display initialisation information about the hooked browser.")
   end
-  
+
   def cmd_select(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -154,14 +154,14 @@ class Target
           return false
         end
     }
-    
+
     if args[0] == nil
       cmd_select_help
       return false
     end
-    
+
     modid = nil
-    
+
     if args[0] =~ /[0-9]+/
       modid = args[0]
     else
@@ -173,16 +173,16 @@ class Target
         }
       }
     end
-    
+
     if modid.nil?
       print_status("Could not find command module")
       return false
     end
-    
+
     driver.interface.setcommand(modid)
-    
+
     driver.enstack_dispatcher(Command) if driver.dispatched_enstacked(Command) == false
-    
+
     if driver.interface.targetid.length > 1
       driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] / "+driver.interface.cmd['Name']+" ")
     else
@@ -190,22 +190,22 @@ class Target
     end
 
   end
-  
+
   def cmd_select_help(*args)
     print_status("Select a command module to use against the current target")
     print_status("  Usage: module <id> OR <modulename>")
   end
-  
+
   def cmd_select_tabs(str,words)
     return if words.length > 1
-    
+
     if @@commands == ""
       #nothing prepopulated?
     else
       return @@commands
     end
   end
-  
+
 end
-  
+
 end end end end

@@ -10,7 +10,7 @@
 
 
 class Ping_sweep < BeEF::Core::Command
-  
+
   def self.options
     return [
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class or IP)', 'value' => '192.168.0.1-192.168.0.254'},
@@ -18,7 +18,7 @@ class Ping_sweep < BeEF::Core::Command
         {'name' => 'delay', 'ui_label' => 'Delay between requests (ms)', 'value' => '100'}
     ]
   end
-  
+
   def post_execute
     content = {}
     content['host'] =@datastore['host'] if not @datastore['host'].nil?

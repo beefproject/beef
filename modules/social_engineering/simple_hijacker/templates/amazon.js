@@ -8,7 +8,7 @@
 	$j(document).attr('title', $j(this).html());
 	document.body.scroll = 'no';
 	document.documentElement.style.overflow = 'hidden';
-	
+
 	collect = function(){
 	  answer = "";
 		$j(":input").each(function() {
@@ -16,7 +16,7 @@
 		});
 		send(answer);
 	}
-	
+
 		// floating div
 	function writediv() {
 		sneakydiv = document.createElement('div');
@@ -28,7 +28,7 @@
 	}
 
 	writediv();
-	
+
 	$j("#confirm").click(function () {
       $j('#hax').remove();
   });

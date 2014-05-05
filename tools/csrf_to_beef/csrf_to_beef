@@ -188,7 +188,7 @@ class CommandFile
 //
 
 beef.execute(function() {
-  var target_url = '<%= @target_url %>'; 
+  var target_url = '<%= @target_url %>';
   var timeout = 15;
 
   var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, "#{method}", "#{enctype}",
@@ -302,4 +302,3 @@ def main fname, mname
 end
 
 main fname, mname
-

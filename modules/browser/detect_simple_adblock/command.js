@@ -26,7 +26,7 @@ beef.execute(function() {
 	document.body.appendChild(img);
 
 	setTimeout(function() {
-		var img = document.getElementById('adblock_img');	
+		var img = document.getElementById('adblock_img');
 		if (img.getAttribute("attr") == "error") {
 			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Adblock returned an error');
 		} else if (img.getAttribute("attr") == "load") {

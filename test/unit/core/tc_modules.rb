@@ -11,7 +11,7 @@ class TC_Modules < Test::Unit::TestCase
     $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
     $root_dir = File.expand_path('../../../../', __FILE__)
   end
-  
+
   #
   # Test that modules are loading properly
   #
@@ -19,21 +19,21 @@ class TC_Modules < Test::Unit::TestCase
     assert_nothing_raised do
       BeEF::Modules.load
     end
-    
+
     BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }.each { |k,v|
       assert((BeEF::Module.is_present(k)),"#{k} is not present in config - buh?")
     }
-    
+
     BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }.each { |k,v|
       assert((BeEF::Module.is_enabled(k)),"#{k} is not enabled in config - ruhhh?")
     }
-    
+
     assert_nothing_raised do
       BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }.each { |k,v|
         BeEF::Module.hard_load(k)
       }
     end
-    
+
     BeEF::Core::Configuration.instance.get('beef.module').select {|k,v| v['enable'] == true and v['category'] != nil }.each { |k,v|
       assert((BeEF::Module.is_loaded(k)), "#{k} is not loaded - even though it should be - rut roh?")
     }
@@ -45,7 +45,7 @@ class TC_Modules < Test::Unit::TestCase
         end
       }
     }
-    
+
   end
 
 end

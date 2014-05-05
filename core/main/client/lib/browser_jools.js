@@ -23,34 +23,34 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-        
+
         if (require._core[x]) return x;
         var path = require.modules.path();
         cwd = path.resolve('/', cwd);
         var y = cwd || '/';
-        
+
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-        
+
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-        
+
         throw new Error("Cannot find module '" + x + "'");
-        
+
         function loadAsFileSync (x) {
             if (require.modules[x]) {
                 return x;
             }
-            
+
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-        
+
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = x + '/package.json';
@@ -70,10 +70,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-            
+
             return loadAsFileSync(x + '/index');
         }
-        
+
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -83,23 +83,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-            
+
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-        
+
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-            
+
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-            
+
             return dirs;
         }
     };
@@ -115,13 +115,13 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-    
+
     var keys = (Object.keys || function (obj) {
         var res = [];
         for (var key in obj) res.push(key)
         return res;
     })(require.modules);
-    
+
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -139,7 +139,7 @@ require.define = function (filename, fn) {
         ? ''
         : require.modules.path().dirname(filename)
     ;
-    
+
     var require_ = function (file) {
         return require(file, dirname)
     };
@@ -149,7 +149,7 @@ require.define = function (filename, fn) {
     require_.modules = require.modules;
     require_.define = require.define;
     var module_ = { exports : {} };
-    
+
     require.modules[filename] = function () {
         require.modules[filename]._cached = module_.exports;
         fn.call(
@@ -172,7 +172,7 @@ if (!process.nextTick) process.nextTick = (function () {
     var canPost = typeof window !== 'undefined'
         && window.postMessage && window.addEventListener
     ;
-    
+
     if (canPost) {
         window.addEventListener('message', function (ev) {
             if (ev.source === window && ev.data === 'browserify-tick') {
@@ -184,7 +184,7 @@ if (!process.nextTick) process.nextTick = (function () {
             }
         }, true);
     }
-    
+
     return function (fn) {
         if (canPost) {
             queue.push(fn);
@@ -297,7 +297,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-  
+
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -392,23 +392,23 @@ Jools.prototype.execute = function (fact) {
         , outcome;
 
       _.flatten([rule.condition]).forEach(function (cnd) {
-        cnd.__args = cnd.__args || utils.paramNames(cnd); 
+        cnd.__args = cnd.__args || utils.paramNames(cnd);
 
         if (outcome) {
-          outcome = outcome && cnd.apply({}, utils.paramsToArguments(session, cnd.__args)); 
+          outcome = outcome && cnd.apply({}, utils.paramsToArguments(session, cnd.__args));
         } else {
           outcome = cnd.apply({}, utils.paramsToArguments(session, cnd.__args));
         }
       });
       if (outcome) {
         _.flatten([rule.consequence]).forEach(function (csq) {
-          csq.__args = csq.__args || utils.paramNames(csq); 
+          csq.__args = csq.__args || utils.paramNames(csq);
           csq.apply(session, utils.paramsToArguments(fact, csq.__args));
           if (!_.isEqual(last_session,session)) {
             // Fire all rules again!
             changes = true;
             last_session = _.clone(session);
-          } 
+          }
         });
       }
       if(changes) break;

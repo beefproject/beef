@@ -18,7 +18,7 @@ module Banners
         if File.exists?('core/main/console/beef.ascii')
             File.open('core/main/console/beef.ascii', 'r') do |f|
                 while line = f.gets
-                    puts line 
+                    puts line
                 end
             end
         end
@@ -49,8 +49,8 @@ module Banners
       # get the configuration information
       configuration = BeEF::Core::Configuration.instance
       version = BeEF::Core::Configuration.instance.get('beef.version')
-      beef_host = configuration.get("beef.http.public") || configuration.get("beef.http.host") 
-    
+      beef_host = configuration.get("beef.http.public") || configuration.get("beef.http.host")
+
       # create an array of the interfaces the framework is listening on
       if beef_host == '0.0.0.0' # the framework will listen on all interfaces
         interfaces = Socket.ip_address_list.map {|x| x.ip_address if x.ipv4?}
@@ -58,13 +58,13 @@ module Banners
       else # the framework will listen on only one interface
         interfaces = [beef_host]
       end
-    
+
       self.interfaces = interfaces
-    
+
       # output the banner to the console
       print_info "#{interfaces.count} network interfaces were detected."
     end
-    
+
     #
     # Prints the route to the network interfaces beef has been deployed on.
     # Looks like that:
@@ -81,17 +81,17 @@ module Banners
     def print_network_interfaces_routes
       configuration = BeEF::Core::Configuration.instance
       prototxt = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-      
+
       self.interfaces.map do |host| # display the important URLs on each interface from the interfaces array
         print_success "running on network interface: #{host}"
         beef_host = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
         data = "Hook URL: #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.hook_file")}\n"
         data += "UI URL:   #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.web_ui_basepath")}/panel\n"
-        
+
         print_more data
       end
     end
-    
+
     #
     # Print loaded extensions
     #
@@ -103,10 +103,10 @@ module Banners
       #extensions.each do |key,ext|
       #  output += "#{ext['name']}\n"
       #end
-      
+
       print_more output
     end
-    
+
     #
     # Print loaded modules
     def print_loaded_modules

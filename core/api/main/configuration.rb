@@ -5,18 +5,18 @@
 #
 module BeEF
 module API
-  module Configuration 
-    
+  module Configuration
+
     # @note Defined API Paths
     API_PATHS = {
         'module_configuration_load' => :module_configuration_load
     }
-    
+
     # Fires just after module configuration is loaded and merged
     # @param [String] mod module key
     def module_configuration_load(mod); end
 
   end
-  
+
 end
 end

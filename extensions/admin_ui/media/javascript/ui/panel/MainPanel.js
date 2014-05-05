@@ -81,7 +81,7 @@ MainPanel = function(){
             ]
         }]
     });
-	
+
 };
 
 Ext.extend(MainPanel, Ext.TabPanel);

@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_unity < BeEF::Core::Command
-  
+
   def post_execute
     content = {}
     content['unity'] = @datastore['unity']

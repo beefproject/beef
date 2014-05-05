@@ -19,4 +19,3 @@ class Google_search < BeEF::Core::Command
 	end
 
 end
-

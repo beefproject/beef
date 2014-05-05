@@ -5,9 +5,9 @@
 #
 
 class Detect_google_desktop < BeEF::Core::Command
-  
+
   def post_execute
     save({'GoogleDesktop' => @datastore['google_desktop']})
   end
-  
+
 end

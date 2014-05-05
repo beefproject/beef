@@ -6,7 +6,7 @@
 
 /*!
  * @literal object: beef.net.dns
- * 
+ *
  * request object structure:
  * + msgId: {Integer} Unique message ID for the request.
  * + domain: {String} Remote domain to retrieve the data.
@@ -70,4 +70,3 @@ beef.net.dns = {
 };
 
 beef.regCmp('beef.net.dns');
-

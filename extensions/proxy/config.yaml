@@ -7,8 +7,7 @@ beef:
     extension:
         proxy:
             name: 'Proxy'
-            enable: true 
+            enable: true
             address: "127.0.0.1"
             port: 6789
             authors: ["antisnatchor", "scotty"]
-

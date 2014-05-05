@@ -13,7 +13,7 @@ Ext.onReady(function() {
 
 			success: function() {
 				window.location.href = "<%= @base_path %>/panel"
-			}, 
+			},
 			failure: function() {
 				if(Ext.get('loginError') == null) {
 					Ext.DomHelper.insertAfter('loadingError', {id:'loginError', html: '<b>ERROR</b>: invalid username or password'});
@@ -37,7 +37,7 @@ Ext.onReady(function() {
 			inputType: 'password'
 		},
 		defaultType: 'textfield',
-      	
+
 		items: [{
         		fieldLabel: 'Username',
         		name: 'username-cfrm',
@@ -63,7 +63,7 @@ Ext.onReady(function() {
 				}
 			}
       		}],
-		
+
 		buttons: [{
 			text: 'Login',
 			id: 'loginButton',

@@ -6,15 +6,15 @@
 module BeEF
 module Extension
 module AdminUI
-  
+
   extend BeEF::API::Extension
-  
+
   @full_name = 'administration web UI'
-  
+
   @short_name = 'admin_ui'
-  
+
   @description = 'command control panel for beef using a web interface'
-  
+
 end
 end
 end
