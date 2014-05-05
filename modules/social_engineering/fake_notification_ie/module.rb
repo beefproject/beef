@@ -14,7 +14,7 @@ class Fake_notification_ie < BeEF::Core::Command
       }
     ]
   end
-  
+
   #
   # This method is being called when a zombie sends some
   # data back to the framework.
@@ -24,5 +24,5 @@ class Fake_notification_ie < BeEF::Core::Command
     content['result'] = @datastore['result']
     save content
   end
-  
+
 end

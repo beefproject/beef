@@ -11,6 +11,6 @@ class Phonegap_persist_resume < BeEF::Core::Command
     content = {}
     content['result'] = @datastore['result']
     save content
-  end 
-  
+  end
+
 end

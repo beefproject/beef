@@ -5,7 +5,7 @@
 #
 module BeEF
 module Filters
-  
+
   # Verify the page title string is valid
   # @param [String] str String for testing
   # @return [Boolean] If the string is a valid page title
@@ -25,6 +25,6 @@ module Filters
     return false if str.length > 350
     true
   end
-  
+
 end
 end

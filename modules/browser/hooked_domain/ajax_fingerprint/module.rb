@@ -5,7 +5,7 @@
 #
 
 class Ajax_fingerprint < BeEF::Core::Command
- 
+
   def post_execute
       content = {}
       content['script_urls'] = @datastore['script_urls'] if not @datastore['script_urls'].nil?

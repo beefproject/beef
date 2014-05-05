@@ -37,7 +37,7 @@ module BeEF
     # Gets all module options
     # @param [String] mod module key
     # @return [Hash] a hash of all the module options
-    # @note API Fire: get_options 
+    # @note API Fire: get_options
     def self.get_options(mod)
       if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_options', [mod])
         options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_options', mod)
@@ -64,7 +64,7 @@ module BeEF
     # Gets all module payload options
     # @param [String] mod module key
     # @return [Hash] a hash of all the module options
-    # @note API Fire: get_options 
+    # @note API Fire: get_options
     def self.get_payload_options(mod,payload)
       if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_payload_options', [mod,nil])
         options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_payload_options', mod,payload)
@@ -165,7 +165,7 @@ module BeEF
 
     # Checks to see if module class exists
     # @param [String] mod module key
-    # @return [Boolean] returns whether or not the class exists 
+    # @return [Boolean] returns whether or not the class exists
     def self.exists?(mod)
       begin
         kclass = BeEF::Core::Command.const_get(mod.capitalize)
@@ -364,7 +364,7 @@ module BeEF
 
     # Translates complex browser target configuration
     # @note Takes a complex user defined browser hash and converts it to applicable BeEF constants
-    # @param [Hash] v user defined browser hash    
+    # @param [Hash] v user defined browser hash
     # @return [Hash] BeEF constants hash
     def self.match_target_browser_spec(v)
       browser = {}
@@ -418,7 +418,7 @@ module BeEF
       return os
     end
 
-    # Executes a module 
+    # Executes a module
     # @param [String] mod module key
     # @param [String] hbsession hooked browser session
     # @param [Array] opts array of module execute options (see #get_options)
@@ -482,5 +482,3 @@ module BeEF
 
   end
 end
-
-

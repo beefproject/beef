@@ -40,4 +40,3 @@ class Ui_abuse_ie < BeEF::Core::Command
 	end
 
 end
-

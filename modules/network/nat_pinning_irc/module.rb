@@ -19,7 +19,7 @@ class Irc_nat_pinning < BeEF::Core::Command
         {'name'=>'privateport', 'ui_label' =>'Private Port','value'=>'22'}
     ]
   end
-  
+
   def post_execute
     return if @datastore['result'].nil?
     save({'result' => @datastore['result']})
@@ -29,5 +29,5 @@ class Irc_nat_pinning < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind_socket("IRC")
 
   end
-  
+
 end

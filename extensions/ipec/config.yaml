@@ -6,6 +6,6 @@
 beef:
     extension:
         ipec:
-            enable: true 
+            enable: true
             name: 'Inter-Protocol Exploitation'
             authors: ["antisnatchor"]

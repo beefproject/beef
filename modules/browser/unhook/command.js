@@ -27,4 +27,3 @@ beef.execute(function() {
 	} catch (e) { }
 
 });
-

@@ -19,4 +19,3 @@ rescue LoadError
   puts "Please run: sudo gem install test-unit-full"
   exit
 end
-

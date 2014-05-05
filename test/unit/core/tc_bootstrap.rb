@@ -27,4 +27,3 @@ class TC_Bootstrap < Test::Unit::TestCase
   end
 
 end
-

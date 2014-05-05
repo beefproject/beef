@@ -15,19 +15,19 @@ module BeEF
 
     # Checks to see if extension is enabled in configuration
     # @param [String] ext the extension key
-    # @return [Boolean] whether or not the extension is enabled 
+    # @return [Boolean] whether or not the extension is enabled
     def self.is_enabled(ext)
       return (self.is_present(ext) and BeEF::Core::Configuration.instance.get('beef.extension.'+ext.to_s+'.enable') == true)
     end
 
     # Checks to see if extension has been loaded
     # @param [String] ext the extension key
-    # @return [Boolean] whether or not the extension is loaded 
+    # @return [Boolean] whether or not the extension is loaded
     def self.is_loaded(ext)
       return (self.is_enabled(ext) and BeEF::Core::Configuration.instance.get('beef.extension.'+ext.to_s+'.loaded') == true)
     end
 
-    # Loads an extension 
+    # Loads an extension
     # @param [String] ext the extension key
     # @return [Boolean] whether or not the extension loaded successfully
     # @todo Wrap the require() statement in a try catch block to allow BeEF to fail gracefully if there is a problem with that extension - Issue #480

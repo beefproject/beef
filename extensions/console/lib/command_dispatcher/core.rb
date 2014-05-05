@@ -10,11 +10,11 @@ module CommandDispatcher
 
 class Core
   include BeEF::Extension::Console::CommandDispatcher
-  
+
   def initialize(driver)
     super
   end
-  
+
   def commands
     {
       "?"       => "Help menu",
@@ -31,11 +31,11 @@ class Core
       "target"  => "Target a particular online hooked browser",
     }
   end
-  
+
   def name
     "Core"
   end
-  
+
   def cmd_back(*args)
 	if (driver.current_dispatcher.name == 'Command')
 	  driver.remove_dispatcher('Command')
@@ -51,28 +51,28 @@ class Core
       driver.update_prompt('')
 	  elsif (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
-	      
+
 	      driver.destack_dispatcher
-	      
+
 	      driver.update_prompt('')
     end
   end
-  
+
   def cmd_back_help(*args)
     print_status("Move back one step")
   end
-  
+
   def cmd_exit(* args)
     driver.stop
   end
-  
+
   alias cmd_quit cmd_exit
-  
+
   @@jobs_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ],
 	  "-l" => [ false, "List jobs."         ],
 	  "-k" => [ true, "Terminate the job."  ])
-	  
+
 	def cmd_jobs(*args)
     if (args[0] == nil)
       cmd_jobs_list
@@ -122,12 +122,12 @@ class Core
     puts "\n"
     puts tbl.to_s + "\n"
   end
-  
+
   @@bare_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ])
-  
+
   def cmd_online(*args)
-    
+
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
         when "-h"
@@ -135,7 +135,7 @@ class Core
           return false
         end
     }
-    
+
     tbl = Rex::Ui::Text::Table.new(
       'Columns' =>
         [
@@ -146,21 +146,21 @@ class Core
           'OS',
           'Hardware'
         ])
-    
+
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 30)).each do |zombie|
       tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"HostName").to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion').to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
     end
-    
+
     puts "\n"
     puts "Currently hooked browsers within BeEF"
     puts "\n"
-    puts tbl.to_s + "\n"    
+    puts tbl.to_s + "\n"
   end
-  
+
   def cmd_online_help(*args)
     print_status("Show currently hooked browsers within BeEF")
   end
-  
+
   def cmd_offline(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -169,7 +169,7 @@ class Core
           return false
         end
     }
-    
+
     tbl = Rex::Ui::Text::Table.new(
       'Columns' =>
         [
@@ -180,21 +180,21 @@ class Core
           'OS',
           'Hardware'
         ])
-    
+
     BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
       tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"HostName").to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion').to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
     end
-    
+
     puts "\n"
     puts "Previously hooked browsers within BeEF"
     puts "\n"
     puts tbl.to_s + "\n"
   end
-  
+
   def cmd_offline_help(*args)
     print_status("Show previously hooked browsers")
   end
-  
+
   def cmd_target(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -203,12 +203,12 @@ class Core
           return false
         end
     }
-    
+
     if args[0] == nil
       cmd_target_help
       return
     end
-    
+
     onlinezombies = []
     BeEF::Core::Models::HookedBrowser.all(:lastseen.gt => (Time.new.to_i - 30)).each do |zombie|
       onlinezombies << zombie.id
@@ -222,9 +222,9 @@ class Core
         end
 		#print_status("Adding browser [id:"+t.to_s+"] to target list.")
     }
- 
+
     if not driver.interface.settarget(targets).nil?
-    
+
       if (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
 	      driver.destack_dispatcher
@@ -239,7 +239,7 @@ class Core
       end
     end
   end
-  
+
   def cmd_target_help(*args)
     print_status("Target a particular online, hooked browser")
     print_status("  Usage: target <id>")
@@ -266,7 +266,7 @@ class Core
   def cmd_irb_help(*args)
     print_status("Load the IRB, Interative Ruby Shell")
   end
-  
+
   def cmd_review(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -275,17 +275,17 @@ class Core
           return false
         end
     }
-    
+
     if args[0] == nil
       cmd_review_help
       return
     end
-    
+
     offlinezombies = []
     BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 30)).each do |zombie|
       offlinezombies << zombie.id
     end
-    
+
     targets = args[0].split(',')
     targets.each {|t|
         if not offlinezombies.include?(t.to_i)
@@ -299,32 +299,32 @@ class Core
     #   print_status("Browser does not appear to be offline..")
     #   return false
     # end
-    
+
     if not driver.interface.setofflinetarget(targets).nil?
       if (driver.dispatcher_stack.size > 1 and
 	      driver.current_dispatcher.name != 'Core')
 	      driver.destack_dispatcher
           driver.update_prompt('')
       end
-    
+
       driver.enstack_dispatcher(Target)
       if driver.interface.targetid.length > 1
         driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
       else
         driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
       end
-    end  
-    
+    end
+
   end
-  
+
   def cmd_review_help(*args)
     print_status("Review an offline, previously hooked browser")
     print_status("  Usage: review <id>")
   end
-  
+
   def cmd_show(*args)
     args << "-h" if (args.length == 0)
-    
+
     args.each { |type|
       case type
       when '-h'
@@ -365,31 +365,31 @@ class Core
       end
     }
   end
-  
+
   def cmd_show_tabs(str, words)
     return [] if words.length > 1
-    
-    res = %w{zombies browsers online offline}    
-    
+
+    res = %w{zombies browsers online offline}
+
     if driver.dispatched_enstacked(Target)
       res.concat(%w{commands info})
     end
-    
+
     if driver.dispatched_enstacked(Command)
       res.concat(%w{cmdinfo})
     end
-    
+
     return res
   end
-  
+
   def cmd_show_help
     global_opts = %w{zombies browsers}
     print_status("Valid parameters for the \"show\" command are: #{global_opts.join(", ")}")
-    
+
     target_opts = %w{commands}
     print_status("If you're targeting a module, you can also specify: #{target_opts.join(", ")}")
   end
-  
+
   def beef_logo_to_os(logo)
 	  case logo
     when "mac.png"
@@ -402,7 +402,7 @@ class Core
       hbos = "Unknown"
     end
   end
-  
+
 end
 
 end end end end

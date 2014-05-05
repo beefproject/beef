@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Xssrays
-  
+
 end
 end
 end

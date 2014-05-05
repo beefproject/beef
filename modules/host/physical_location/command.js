@@ -14,4 +14,3 @@ beef.execute(function() {
     beef.geolocation.getGeolocation("<%= @command_url %>", <%= @command_id %>);
 
 });
-

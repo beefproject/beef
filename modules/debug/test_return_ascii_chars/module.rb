@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Test_return_ascii_chars < BeEF::Core::Command
-  
+
   def post_execute
     content = {}
     content['Result String'] = @datastore['result_string']

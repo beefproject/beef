@@ -145,7 +145,7 @@ end
 
 ################################
 # Create CDE Package
-# This will download and make the CDE Executable and 
+# This will download and make the CDE Executable and
 # gnereate a CDE Package in cde-package
 
 task :cde do
@@ -182,5 +182,3 @@ end
 
 
 ################################
-
-

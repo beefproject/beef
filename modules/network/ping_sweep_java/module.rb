@@ -21,7 +21,7 @@ class Ping_sweep_java < BeEF::Core::Command
         {'name' => 'timeout', 'ui_label' => 'Timeout (ms)', 'value' => '2000'}
     ]
   end
-  
+
   def post_execute
     content = {}
     content['ps'] =@datastore['ps'] if not @datastore['ps'].nil?

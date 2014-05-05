@@ -6,6 +6,5 @@
 beef:
     extension:
         autoloader:
-            enable: true 
+            enable: true
             name: 'Autoloader'
-

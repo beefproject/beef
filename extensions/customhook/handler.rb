@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Customhook
-  
+
     class Handler
 
     def call(env)
@@ -40,19 +40,19 @@ module Customhook
               'Access-Control-Allow-Methods' => 'POST, GET'
             }
         )
-      
+
     end
 
     private
-    
+
     # @note Object representing the HTTP request
     @request
-    
+
     # @note Object representing the HTTP response
     @response
-    
+
   end
-  
+
 end
 end
 end

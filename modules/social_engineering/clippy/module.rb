@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Clippy < BeEF::Core::Command
-  
+
   def self.options
     return [
         {'name' =>'clippydir', 'description' =>'Webdir containing clippy image', 'ui_label'=>'Clippy image', 'value' => 'http://clippy.ajbnet.com/1.0.0/'},
@@ -14,7 +14,7 @@ class Clippy < BeEF::Core::Command
         {'name' =>'thankyoumessage', 'description' =>'Thankyou message after downloading', 'ui_label'=>'Thankyou message after downloading', 'value' => 'Thanks for upgrading your browser! Look forward to a safer, faster web!'}
     ]
   end
-  
+
   #
   # This method is being called when a zombie sends some
   # data back to the framework.
@@ -22,5 +22,5 @@ class Clippy < BeEF::Core::Command
   def post_execute
     save({'answer' => @datastore['answer']})
   end
-  
+
 end

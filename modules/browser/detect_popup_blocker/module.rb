@@ -10,5 +10,5 @@ class Detect_popup_blocker < BeEF::Core::Command
     content['popup_blocker_enabled'] = @datastore['popup_blocker_enabled']
     save content
   end
-  
+
 end

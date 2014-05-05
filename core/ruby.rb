@@ -19,4 +19,3 @@ require 'core/ruby/hash'
 
 # @note Patching DataMapper Data Objects Adapter (dm-do-adapter)
 require 'core/ruby/patches/dm-do-adapter/adapter.rb'
-

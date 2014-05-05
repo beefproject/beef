@@ -12,7 +12,7 @@ Returning the shell command results is not supported in Firefox ~16+, IE, Chrome
 =end
 
 class Inter_protocol_win_bindshell < BeEF::Core::Command
-  
+
   def self.options
     return [
 	{'name'=>'rhost',   'ui_label'=>'Target Address', 'value'=>'127.0.0.1'},

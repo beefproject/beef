@@ -5,14 +5,14 @@
 //
 
 DoLogout = function() {
-	
+
 	var button = Ext.get('do-logout-menu');
-	
+
 	after_logout = function() {
 		// will redirect the UA to the login
 		window.location.href = '<%= @base_path %>/panel'
 	}
-	
+
 	button.on('click', function(){
 		Ext.Ajax.request({
 			url: '<%= @base_path %>/authentication/logout',
@@ -21,6 +21,6 @@ DoLogout = function() {
 			success: after_logout,
 			failure: after_logout
 		});
-		
+
 	})
 };

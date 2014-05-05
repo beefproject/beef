@@ -19,4 +19,3 @@
 
 # Allow established connections
 /sbin/iptables -A INPUT -i eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
-

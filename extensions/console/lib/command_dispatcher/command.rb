@@ -7,15 +7,15 @@ module BeEF
 module Extension
 module Console
 module CommandDispatcher
-  
+
 class Command
   include BeEF::Extension::Console::CommandDispatcher
 
   @@params = []
-  
+
   def initialize(driver)
     super
-    begin 
+    begin
       driver.interface.cmd['Data'].each{|data|
         @@params << data['name']
       }
@@ -23,7 +23,7 @@ class Command
       return
     end
   end
-  
+
   def commands
     {
       "execute"   => "Go! Execute the command module",
@@ -32,14 +32,14 @@ class Command
       "cmdinfo"   => "See information about this particular command module"
     }
   end
-  
+
   def name
     "Command"
   end
-  
+
   @@bare_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ])
-  
+
   def cmd_cmdinfo(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -48,7 +48,7 @@ class Command
           return false
         end
     }
-      
+
     print_line("Module name: " + driver.interface.cmd['Name'])
     print_line("Module category: " + driver.interface.cmd['Category'].to_s)
     print_line("Module description: " + driver.interface.cmd['Description'])
@@ -62,11 +62,11 @@ class Command
       end
     } if not driver.interface.cmd['Data'].nil?
   end
-  
+
   def cmd_cmdinfo_help(*args)
     print_status("Displays information about the current command module")
   end
-  
+
   def cmd_param(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -75,7 +75,7 @@ class Command
           return false
         end
     }
-    
+
     if (args[0] == nil || args[1] == nil)
       cmd_param_help
       return
@@ -88,7 +88,7 @@ class Command
       driver.interface.setparam(args[0],p)
     end
   end
-  
+
   def cmd_param_help(*args)
     print_status("Sets parameters for the current modules. Run \"cmdinfo\" to see the parameter values")
     print_status("  Usage: param <paramname> <paramvalue>")
@@ -103,7 +103,7 @@ class Command
       return @@params
     end
   end
-  
+
   def cmd_execute(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -112,18 +112,18 @@ class Command
           return false
         end
     }
-    
+
     if driver.interface.executecommand == true
       print_status("Command successfully queued")
     else
       print_status("Something went wrong")
     end
   end
-  
+
   def cmd_execute_help(*args)
     print_status("Execute this module... go on!")
   end
-  
+
   def cmd_response(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
@@ -132,7 +132,7 @@ class Command
           return false
         end
     }
-    
+
     tbl = Rex::Ui::Text::Table.new(
       'Columns' =>
         [
@@ -154,7 +154,7 @@ class Command
         end
         tbl << [resp['object_id'].to_s, resp['creationdate'], respout]
       end
-    
+
       puts "\n"
       puts "List of responses for this command module:\n"
       puts tbl.to_s + "\n"
@@ -184,13 +184,13 @@ class Command
       end
     end
   end
-  
+
   def cmd_response_help(*args)
     print_status("List and review particular responses to this command")
     print_status("  Usage: response (id)")
     print_status("  If you omit id you'll see a list of all responses for the currently active command module")
   end
-  
+
 end
 
 end end end end

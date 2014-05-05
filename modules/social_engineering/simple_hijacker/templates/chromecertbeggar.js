@@ -20,11 +20,11 @@
     send("User continuing to "+target);
     timer=setTimeout(function(){window.location = target;},500);
   }
-  
+
   getDomain = function(url){
     return url.match(/:\/\/(www\.)?(.[^/:]+)/)[2];
   }
-  
+
   function $(o) {return document.getElementById(o);}
 
   sendCommand = function(cmd) {
@@ -48,9 +48,8 @@
       $("twisty_closed").style.display = "inline";
     }
   }
-  
+
   target = $j(this).attr('href');
 	domain = getDomain(target);
   $j(document).attr('title', domain+" Security Enhanced Layer Factory&#174; certificate acceptance");
 	writediv();
-	

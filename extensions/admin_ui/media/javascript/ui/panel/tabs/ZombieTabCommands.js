@@ -6,10 +6,10 @@
 
 /*
  * The command tab panel. Listing the list of commands sent to the zombie.
- * Loaded in /ui/panel/index.html 
+ * Loaded in /ui/panel/index.html
  */
 ZombieTab_Commands = function(zombie) {
-	
+
 	var command_module_config = new Ext.Panel({
 		id: 'zombie-command-module-config-'+zombie.session,
 		region: 'center',
@@ -29,7 +29,7 @@ ZombieTab_Commands = function(zombie) {
 				fields: ['label', 'creationdate', 'id', 'object_id'],
 				sortInfo: {field: 'id', direction: 'ASC'}
 			}),
-		
+
 		id: 'command-module-grid-zombie-'+zombie.session,
 		title: "Module Results History",
 		sortable: true,
@@ -49,11 +49,11 @@ ZombieTab_Commands = function(zombie) {
 			emptyText: "The results from executed command modules will be listed here.",
 			enableRowBody:true
 		}),
-		
+
 		columns: [
 			{header: 'id', width: 35, sortable: true, dataIndex: 'id'},
 			{header: 'date', width: 100, sortable: true, dataIndex: 'creationdate'},
-			{header: 'label', sortable: true, dataIndex: 'label', renderer: 
+			{header: 'label', sortable: true, dataIndex: 'label', renderer:
 				function(value, metaData, record, rowIndex, colIndex, store) {
 					return 'command '+($jEncoder.encoder.encodeForHTML(record.get("id")+1));
 				}
@@ -61,16 +61,16 @@ ZombieTab_Commands = function(zombie) {
 			{header: 'object_id', sortable: true, dataIndex: 'object_id', hidden: true, menuDisabled: true}
 		]
 	});
-	
+
 	command_module_grid.on('rowclick', function(grid, rowIndex, e) {
 		var r = grid.getStore().getAt(rowIndex).data;
 		var command_id = r.object_id || null;
-		
+
 		if(!command_id) return;
-		
+
 		genExistingExploitPanel(command_module_config, command_id, zombie, commands_statusbar);
 	});
-	
+
 	LoadCommandPanelEvent = function(node,keyclick) {
 		if(!node.leaf && !keyclick) {
 			node.toggle();
@@ -84,14 +84,14 @@ ZombieTab_Commands = function(zombie) {
 			command_module_grid.store.reload({  //reload the command module grid
 				params: {  // insert the nonce with the request to reload the grid
 					nonce: Ext.get ("nonce").dom.value
-			}		
+			}
 			});
 
 			genNewExploitPanel(command_module_config, node.id, node.text, zombie, commands_statusbar);
 			commands_statusbar.showValid('Ready');
 		}
 	};
-	
+
 	var command_module_tree = new Ext.tree.TreePanel({
 		id: "zombie-command-modules"+zombie.session,
 		title: "Module Tree",
@@ -146,7 +146,7 @@ ZombieTab_Commands = function(zombie) {
 	});
 
 	var commands_statusbar = new Beef_StatusBar(zombie.session);
-	
+
 	ZombieTab_Commands.superclass.constructor.call(this, {
 		id: 'zombie-'+zombie.session+'-command-module-panel',
 		title:'Commands',
@@ -160,7 +160,7 @@ ZombieTab_Commands = function(zombie) {
                 collapsible: false,
                 split: true
             },
-			items: [command_module_tree, 
+			items: [command_module_tree,
 				new Ext.Panel({
 					id: 'zombie-command-module-west-'+zombie.session,
 					region: 'center',
@@ -172,7 +172,7 @@ ZombieTab_Commands = function(zombie) {
 
 		bbar: commands_statusbar
 	});
-	
+
 	var sb = Ext.getCmp('command-module-bbar-zombie-'+zombie.session);
 };
 

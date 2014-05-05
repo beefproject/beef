@@ -10,5 +10,5 @@ class Inject_beef < BeEF::Core::Command
     content['Return'] = @datastore['return']
     save content
   end
-  
+
 end

@@ -12,7 +12,7 @@ module BeEF
         # @todo Add new options to specify what kind of redirect you want to achieve
         class Redirector
 
-	        @target = "" 	
+	        @target = ""
 
 	        def initialize(target)
 	        	@target = target

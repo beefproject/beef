@@ -18,7 +18,7 @@ misunderstandings, we interpret that term as broadly as copyright law
 allows. For example, we consider an application to constitute a "derived
 work" for the purpose of this license if it does any of the following:
 * Integrates source code from BeEF.
-* Reads or includes BeEF copyrighted hook, core components, tests, modules 
+* Reads or includes BeEF copyrighted hook, core components, tests, modules
   or extensions.
 * Executes BeEF and parses the results.
 * Integrates/includes/aggregates BeEF into a proprietary executable
@@ -345,4 +345,3 @@ POSSIBILITY OF SUCH DAMAGES.
                      END OF TERMS AND CONDITIONS
 
 ****************************************************************************
-

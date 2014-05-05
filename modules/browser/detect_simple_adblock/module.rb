@@ -5,7 +5,7 @@
 #
 class Detect_simple_adblock< BeEF::Core::Command
 
-	def post_execute 
+	def post_execute
 		content = {}
 		content['simple_adblock'] = @datastore['simple_adblock'] if not @datastore['simple_adblock'].nil?
 		save content

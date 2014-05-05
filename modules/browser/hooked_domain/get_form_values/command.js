@@ -32,4 +32,3 @@ beef.execute(function() {
 	}
 
 });
-

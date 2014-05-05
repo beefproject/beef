@@ -7,15 +7,15 @@ module BeEF
 module Core
 module NetworkStack
 module Handlers
-    
-  # @note Class defining BeEF assets 
-  class AssetHandler 
-    
+
+  # @note Class defining BeEF assets
+  class AssetHandler
+
     # @note call BeEF::Core::NetworkStack::Handlers::AssetHandler.instance
     include Singleton
-    
+
     attr_reader :allocations, :root_dir
-    
+
     # Starts the AssetHandler instance
     def initialize
       @allocations = {}
@@ -65,13 +65,13 @@ module Handlers
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind(file, path=nil, extension=nil, count=-1)
         url = build_url(path, extension)
-        @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
+        @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count}
         @http_server.mount(url, Rack::File.new(@allocations[url]['file']))
         @http_server.remap
         print_info "File [" + "#{root_dir}"+file + "] bound to url [" + url + "]"
         url
     end
-    
+
     # Unbinds a file from a mount point
     # @param [String] url URL path of asset to be unbinded
     #TODO: check why is throwing exception
@@ -156,7 +156,7 @@ module Handlers
             if count == -1
                 return true
             end
-            if count > 0 
+            if count > 0
                 if (count - 1) == 0
                     unbind(url)
                 else
@@ -167,13 +167,13 @@ module Handlers
         end
         false
     end
-   
+
    private
    @http_server
    @allocations
 
   end
-  
+
 end
 end
 end

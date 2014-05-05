@@ -45,7 +45,7 @@ module BeEF
       return BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
     end
 
-    # Loads all enabled modules 
+    # Loads all enabled modules
     # @note API Fire: post_soft_load
     def self.load
       BeEF::Core::Configuration.instance.load_modules_config

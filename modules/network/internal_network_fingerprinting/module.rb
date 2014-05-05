@@ -24,14 +24,14 @@
 
 
 class Internal_network_fingerprinting < BeEF::Core::Command
-  
+
   def self.options
     return [
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class)', 'value' => '192.168.0.1-192.168.0.254'},
         {'name' => 'ports', 'ui_label' => 'Ports to test', 'value' => '80,8080'}
     ]
   end
-  
+
   def post_execute
     content = {}
     content['discovered'] = @datastore['discovered'] if not @datastore['discovered'].nil?

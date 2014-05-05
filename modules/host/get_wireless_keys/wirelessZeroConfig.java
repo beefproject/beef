@@ -4,7 +4,7 @@
  * See the file 'doc/COPYING' for copying permission
  */
 
-import java.io.*;  
+import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.applet.*;
@@ -14,9 +14,9 @@ import java.applet.*;
 // http://milo2012.wordpress.com
 // keith.lee2012[at]gmail.com
 
-public class wirelessZeroConfig extends Applet{  
+public class wirelessZeroConfig extends Applet{
 	public static String result = "";
-		
+
 	public wirelessZeroConfig(){
 		super();
 		return;
@@ -35,7 +35,7 @@ public class wirelessZeroConfig extends Applet{
 			result = "OS is not supported";
 		}
 	}
-	
+
 	public static String getWindows(){
 		String cmd1 = "netsh wlan show profiles";
 		String cmd2 = "netsh wlan export profile name=";
@@ -45,11 +45,11 @@ public class wirelessZeroConfig extends Applet{
 		int match = 0;
 		int count = 0;
 		ArrayList<String> profileList = new ArrayList<String>();
-		try {  
+		try {
 			//Get wlan profile names
-			Process p1 = Runtime.getRuntime().exec(cmd1);  
-			BufferedReader in1 = new BufferedReader(new InputStreamReader(p1.getInputStream()));  
-			String line = null;  
+			Process p1 = Runtime.getRuntime().exec(cmd1);
+			BufferedReader in1 = new BufferedReader(new InputStreamReader(p1.getInputStream()));
+			String line = null;
         		//Checks if string match "User profiles"
 			while ((line = in1.readLine()) != null) {
 				//Checks if string match "User profiles"
@@ -57,7 +57,7 @@ public class wirelessZeroConfig extends Applet{
 					if(line.toLowerCase().contains(keyword1.toLowerCase())){
 						match=1;
 					}
-				}	
+				}
 				if(match==1){
 					if(count>1){
 						//If string matches the keyword "User Profiles"
@@ -70,10 +70,10 @@ public class wirelessZeroConfig extends Applet{
 					count+=1;
 				}
 			}
-			in1.close();	
+			in1.close();
 	    	} catch (IOException e) { }
-		
-		try{	
+
+		try{
     			String tmpDir = System.getProperty("java.io.tmpdir");
 			if ( !(tmpDir.endsWith("/") || tmpDir.endsWith("\\")) )
    				tmpDir = tmpDir + System.getProperty("file.separator");
@@ -81,31 +81,31 @@ public class wirelessZeroConfig extends Applet{
 			//Export WLAN Profile to XML file
 			for(Iterator iterator = profileList.iterator(); iterator.hasNext();){
 				String profileName = iterator.next().toString();
-				Process p2 = Runtime.getRuntime().exec(cmd2+'"'+profileName+'"');  
+				Process p2 = Runtime.getRuntime().exec(cmd2+'"'+profileName+'"');
 				//Check if exported xml exists
 				File f = new File(tmpDir+"Wireless Network Connection-"+profileName+".xml");
-				if(f.exists()){	
+				if(f.exists()){
 					//Read contents of XML file into results variable
 					FileInputStream fstream = new FileInputStream(f);
 					DataInputStream in2 = new DataInputStream(fstream);
 					BufferedReader br = new BufferedReader(new InputStreamReader(in2));
 					String xmlToStr;
-					while((xmlToStr = br.readLine()) != null){			
+					while((xmlToStr = br.readLine()) != null){
 						result+=xmlToStr;
 					}
-					in2.close();				
+					in2.close();
 				}
 			}
-	    } catch (IOException e) {  
+	    } catch (IOException e) {
         }
-		return result;   
+		return result;
 	}
 
 	public static boolean isWindows() {
 		String os = System.getProperty("os.name").toLowerCase();
 		return (os.indexOf("win") >= 0);
 	}
-	
+
 	/**
 	public static void main(String[] args) {
 		if (isWindows()) {
@@ -120,4 +120,4 @@ public class wirelessZeroConfig extends Applet{
 		System.out.println(result);
 	}
 	**/
-}  
+}

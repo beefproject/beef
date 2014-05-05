@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Dns_tunnel < BeEF::Core::Command
-  
+
   def self.options
 	@configuration = BeEF::Core::Configuration.instance
 	beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
@@ -15,11 +15,11 @@ class Dns_tunnel < BeEF::Core::Command
 #        {'name' => 'wait', 'ui_label' => 'Wait between requests (ms)', 'value' => '1000', 'width'=>'100px' }
     ]
   end
-  
+
   def post_execute
     content = {}
     content['dns_requests'] = @datastore['dns_requests']
     save content
   end
-  
+
 end

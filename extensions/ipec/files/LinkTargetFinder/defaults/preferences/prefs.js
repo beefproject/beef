@@ -24,4 +24,3 @@ pref("general.useragent.override", "Firefox/15.0.1");
 
 // enable Java
 pref("security.enable_java", true);
-

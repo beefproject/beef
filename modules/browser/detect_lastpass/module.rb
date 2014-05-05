@@ -5,7 +5,7 @@
 #
 class Detect_lastpass < BeEF::Core::Command
 
-	def post_execute 
+	def post_execute
 		content = {}
 		content['lastpass'] = @datastore['lastpass'] if not @datastore['lastpass'].nil?
 		save content

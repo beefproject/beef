@@ -26,4 +26,3 @@ class TC_Core < Test::Unit::TestCase
   end
 
 end
-

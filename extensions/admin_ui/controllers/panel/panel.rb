@@ -92,7 +92,7 @@ module BeEF
             has_silverlight = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasSilverlight')
             has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
             has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
-            has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP') 
+            has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP')
             has_foxit       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFoxit')
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 

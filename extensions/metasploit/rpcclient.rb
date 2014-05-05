@@ -6,9 +6,9 @@
 module BeEF
 module Extension
 module Metasploit
-  
+
 	class RpcClient < ::Msf::RPC::Client
-		
+
 		include Singleton
 
         def initialize
@@ -21,7 +21,7 @@ module Metasploit
                 BeEF::Core::Configuration.instance.set('beef.extension.metasploit.loaded', false)
                 return nil
             end
-		  
+
             		@lock = false
 			@lastauth = nil
 			@unit_test = false
@@ -41,7 +41,7 @@ module Metasploit
 					if File.exist?(path['path'] + 'msfrpcd')
 						launch_msf = path['path'] + 'msfrpcd'
 						print_info 'Found msfrpcd: ' + launch_msf
-						msf_os = path['os'] 
+						msf_os = path['os']
 					end
 				end
 				if (launch_msf.length > 0)
@@ -51,19 +51,19 @@ module Metasploit
 						argssl = '-S'
 						msf_url = 'http://'
 					else
-						msf_url = 'https://'	
+						msf_url = 'https://'
 					end
 
 					msf_url += opts[:host] + ':' + opts[:port].to_s() + opts[:uri]
 					if msf_os.eql? "win"
 						print_info 'Metasploit auto-launch is currently not supported in BeEF on MS Windows.'
-					else	
+					else
 						child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
-				
+
 						print_info 'Attempt to start msfrpcd, this may take a while. PID: ' + child.pid.to_s
 
 						#Give daemon time to launch
-						#poll and giveup after timeout 
+						#poll and giveup after timeout
 						retries = @config['auto_msfrpcd_timeout']
 						uri = URI(msf_url)
 						http = Net::HTTP.new(uri.host, uri.port)
@@ -88,15 +88,15 @@ module Metasploit
 				else
 					print_error 'Please add a custom path for msfrpcd to the config-file.'
 				end
-			end	
+			end
 			super(opts)
 	    end
-    
+
         def get_lock()
-            sleep 0.2 while @lock 
+            sleep 0.2 while @lock
             @lock = true
         end
-    
+
         def release_lock()
             @lock = false
         end
@@ -109,7 +109,7 @@ module Metasploit
 		end
 		ret
 	end
-    
+
 	def unit_test_init
 		@unit_test = true
 	end
@@ -117,34 +117,34 @@ module Metasploit
 		def login
             		get_lock()
 			res = super(@config['user'] , @config['pass'])
-			
+
 		 	if not res
                 		release_lock()
                 		print_error 'Could not authenticate to Metasploit xmlrpc.'
 				return false
 			end
-			
+
 			print_info 'Successful connection with Metasploit.' if (!@lastauth && !@unit_test)
-			
+
 			@lastauth = Time.now
-      
+
             		release_lock()
 			true
 		end
-    
+
 		def browser_exploits()
-                
+
       			get_lock()
 			res = self.call('module.exploits')
 			return [] if not res or not res['modules']
 
 			mods = res['modules']
 			ret = []
-			
+
 			mods.each do |m|
 				ret << m if(m.include? '/browser/')
 			end
-			
+
       			release_lock()
 			ret.sort
 	  end
@@ -155,21 +155,21 @@ module Metasploit
       			release_lock()
 			res || {}
 		end
-		
+
 		def get_payloads(name)
       			get_lock()
 			res = self.call('module.compatible_payloads',name)
       			release_lock()
 			res || {}
 		end
-		
+
 		def get_options(name)
       			get_lock()
 			res = self.call('module.options','exploit',name)
       			release_lock()
 			res || {}
 		end
-		
+
 		def payloads()
       			get_lock()
 			res = self.call('module.payloads')
@@ -177,7 +177,7 @@ module Metasploit
 			return {} if not res or not res['modules']
 			res['modules']
 		end
-		
+
 		def payload_options(name)
       			get_lock()
 			res = self.call('module.options','payload',name)
@@ -185,7 +185,7 @@ module Metasploit
 			return {} if not res
 			res
 		end
-		
+
 		def launch_exploit(exploit,opts)
       			get_lock()
 			begin
@@ -195,11 +195,11 @@ module Metasploit
         			release_lock()
 				return false
 			end
-      
+
       			release_lock()
 
 			uri = ""
-			if opts['SSL'] 
+			if opts['SSL']
 				uri += "https://"
 			else
 				uri += "http://"
@@ -228,9 +228,9 @@ module Metasploit
 			return res
 
 		end
-		
+
 	end
-	
+
 end
 end
 end

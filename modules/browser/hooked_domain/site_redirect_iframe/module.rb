@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Site_redirect_iframe < BeEF::Core::Command
-  
+
     def self.options
 		configuration = BeEF::Core::Configuration.instance
 		proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
@@ -24,5 +24,5 @@ class Site_redirect_iframe < BeEF::Core::Command
   def post_execute
     save({'result' => @datastore['result']})
   end
-  
+
 end

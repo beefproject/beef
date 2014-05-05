@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Requester
-  
+
 end
 end
 end

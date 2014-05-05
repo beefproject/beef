@@ -20,23 +20,23 @@ class TC_Filesystem < Test::Unit::TestCase
   #
   # Test the consistancy of the filesystem
   #
-  
+
   def test_beef_file
     test_file = '../../beef'
-    
+
     basic_file_test(test_file)
     assert((File.executable?(test_file)), "The file is not executable: " + test_file)
   end
 
   def test_config_file
     test_file = '../../config.yaml'
-    
+
     basic_file_test(test_file)
   end
 
   def test_install_file
     test_file = '../../install'
-    
+
     basic_file_test(test_file)
   end
 

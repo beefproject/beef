@@ -29,8 +29,8 @@ beef.execute(function() {
 		myform.setAttribute("method","post");
 		myform.setAttribute("enctype","multipart/form-data");
 		myform.setAttribute("action",action);
-		document.getElementById("ipc_win_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform); 
-	
+		document.getElementById("ipc_win_window_<%= @command_id %>").contentWindow.document.body.appendChild(myform);
+
 		myExt = document.createElement("INPUT");
 		myExt.setAttribute("id",<%= @command_id %>);
 		myExt.setAttribute("name",<%= @command_id %>);
@@ -83,4 +83,3 @@ beef.execute(function() {
 	waituntilok();
 
 });
-

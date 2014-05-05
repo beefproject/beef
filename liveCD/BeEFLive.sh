@@ -5,16 +5,16 @@
 # See the file 'home/beef/doc/COPYING' for copying permission
 #
 
-   
+
 #
-# This is the auto startup script for the BeEF Live CD. 
+# This is the auto startup script for the BeEF Live CD.
 # IT SHOULD ONLY BE RUN ON THE LIVE CD
 # Download LiveCD here: http://downloads.beefproject.com/BeEFLive1.4.iso
 # MD5 (BeEFLive1.4.iso) = 5167450078ef5e9b8d146113cd4ba67c
 #
-# This script contains a few fixes to make BeEF play nicely with the way  
-# remastersys creates the live cd distributable as well as generating host keys 
-# to enable SSH etc. The script also make it easy for the user to update/start 
+# This script contains a few fixes to make BeEF play nicely with the way
+# remastersys creates the live cd distributable as well as generating host keys
+# to enable SSH etc. The script also make it easy for the user to update/start
 # the BeEF server
 #
 
@@ -34,7 +34,7 @@ fi
 #
 # function to allow BeEF to run in the background
 #
-run_beef() {	
+run_beef() {
 	cd /opt/beef/
 	ruby beef -x
 }
@@ -42,7 +42,7 @@ run_beef() {
 #
 # function to start msf and run in the background
 #
-run_msf() {	
+run_msf() {
 	# start msf
 	/opt/metasploit-framework/msfconsole -r /opt/beef/test/thirdparty/msf/unit/BeEF.rc 2> /dev/null
 }
@@ -54,7 +54,7 @@ enable_msf() {
 	# enable msf integration in main config file
 	sed -i '1N;$!N;s/metasploit:\n\s\{1,\}enable:\sfalse/metasploit:\n            enable: true/g;P;D' /opt/beef/config.yaml
 	# enable auto_msfrpcd
-	sed -i 's/auto_msfrpcd:\sfalse/auto_msfrpcd: true/g' /opt/beef/extensions/metasploit/config.yaml	
+	sed -i 's/auto_msfrpcd:\sfalse/auto_msfrpcd: true/g' /opt/beef/extensions/metasploit/config.yaml
 }
 disable_msf() {
 	# disable msf integration in main config file
@@ -75,13 +75,13 @@ close_bash_t() {
 	close_bash
 }
 close_bash() {
-	echo ""	
+	echo ""
 	echo "Are you sure you want to exit the LiveCD? (y/N): "
 	read var
 	if [ $var = "y" ] ; then
 		disable_msf
 		exit
-	else		
+	else
 		show_menu
 	fi
 }
@@ -105,13 +105,13 @@ show_menu() {
 		echo "Browser Exploitation Framework (BeEF) - http://beefproject.com"
 		echo "See the file 'home/beef/doc/COPYING' for copying permission"
 		echo ""
-		
-		echo "Welcome to the BeEF Live CD" 
-		echo "" 
-		
-		
+
+		echo "Welcome to the BeEF Live CD"
+		echo ""
+
+
 		#
-		# Check for SSH Host Keys - if they do not exist SSH will be displayed as disabled 
+		# Check for SSH Host Keys - if they do not exist SSH will be displayed as disabled
 		# (remastersys has a habit of deleting them during Live CD Creation)
 		#
 		f1="/etc/ssh/ssh_host_rsa_key"
@@ -119,10 +119,10 @@ show_menu() {
 			echo "[1] Disable SSH                              [Currently Enabled]"
 			echo -ne "                                             beef@"
 			ifconfig | awk -F "[: ]+" '/inet addr:/ { if ($4 != "127.0.0.1") print $4 }'
-		else 
+		else
 			echo "[1] Enable SSH                               [Currently Disabled]"
 		fi
-		
+
 			echo "[2] Update BeEF"
 			echo "[3] Update sqlMap                            (Bundled with LiveCD)"
 			echo "[4] Update metasploit-framework              (Bundled with LiveCD)"
@@ -132,13 +132,13 @@ show_menu() {
 		else
 			echo "[5] Enable BeEF in background mode           [Currently Disabled]"
 		fi
-		
+
 		if [ "$sqlm" = "1" ] ; then
 			echo "[6] Disable sqlMap demo                      [Currently Enabled]"
 		else
 			echo "[6] Enable sqlMap demo                       [Currently Disabled]"
 		fi
-		
+
 		if [ "$msf" = "1" ] ; then
 			echo "[7] Disable metasploit-framework integration [Currently Enabled]"
 		else
@@ -147,7 +147,7 @@ show_menu() {
 			echo ""
 			echo "[q] Quit to terminal"
 			echo ""
-		if [ "$back_running" = "1" ] ; then	
+		if [ "$back_running" = "1" ] ; then
 			echo "[k] End BeEF process [BeEF running in background mode]"
 		else
 			echo "[b] Run BeEF"
@@ -155,14 +155,14 @@ show_menu() {
 			echo ""
 			echo -n "BeEF Live ~# "
 			read var
-		
+
 		#
 		# Quit liveCD loop
-		#	
+		#
 		if [ $var = "q" ] ; then
 			 close_bash
 		fi
-		
+
 		#
 		# Create SSH Keys to enable SSH or Delete the Keys to disable
 		#
@@ -170,7 +170,7 @@ show_menu() {
 			if [ -f $f1 ]
 			then
 				sudo rm /etc/ssh/ssh_host_rsa_key
-				sudo rm /etc/ssh/ssh_host_dsa_key 
+				sudo rm /etc/ssh/ssh_host_dsa_key
 			else
 				 sudo ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
 				 sudo ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
@@ -180,10 +180,10 @@ show_menu() {
 				 echo "ssh enabled"
 			 fi
 		fi
-		
+
 		#
 		# Update BeEF from github repository
-		#	
+		#
 		if [ $var = "2" ] ; then
 			 cd /opt/beef
 			 git stash
@@ -192,16 +192,16 @@ show_menu() {
 			 # check for new bundle requirements and update
 		     bundle update
 		fi
-		
+
 		#
 		# Update sqlmap from github repository
-		#	
+		#
 		if [ $var = "3" ] ; then
 			 cd /opt/sqlmap
 		 	 git stash
 			 git pull
 		fi
-		
+
 		#
 		# Update msf from github repository
 		#
@@ -210,7 +210,7 @@ show_menu() {
 			 git stash
 			 git pull
 		fi
-		
+
 		#
 		# set BeEF to run in the background
 		#
@@ -219,24 +219,24 @@ show_menu() {
 			 	bac="0"
 			 	# check and disable sqlmap (requires beef run in the background)
 			 	sqlm="0"
-			else 
+			else
 				bac="1"
 			fi
 		fi
-		
+
 		#
 		# enable the sqlmap demo
 		#
 		if [ $var = "6" ] ; then
 			if [ "$sqlm" = "1" ] ; then
 			 	sqlm="0"
-			else 
+			else
 				sqlm="1"
 				# requires BeEF be run in the background
 				bac="1"
 			fi
 		fi
-		
+
 		#
 		# enable the msf integration
 		#
@@ -244,12 +244,12 @@ show_menu() {
 			if [ "$msf" = "1" ] ; then
 			 	msf="0"
 			 	disable_msf
-			else 
+			else
 				msf="1"
 				enable_msf
 			fi
 		fi
-		
+
 		#
 		# end background beef process
 		#
@@ -257,12 +257,12 @@ show_menu() {
 			pkill -x 'ruby'
 			back_running="0"
 		fi
-		
+
 		#
 		# Run BeEF
 		#
 		if [ $var = "b" ] ; then
-			
+
 			if [ "$msf" = "1" ] ; then
 				#
 				# First start msf if it is enabled
@@ -271,7 +271,7 @@ show_menu() {
 				run_msf &
 				sleep 45
 			fi
-			
+
 			if [ "$bac" = "1" ] ; then
 				#
 				# run beef in the background
@@ -292,20 +292,17 @@ show_menu() {
 					sleep 5
 					python /opt/sqlmap/sqlmap.py --proxy http://127.0.0.1:6789 --wizard
 				fi
-			else 
+			else
 				#
 				# run beef in the foreground
 				#
 				cd /opt/beef/
 				ruby beef -x
 			fi
-		fi	
-			
+		fi
+
 	done
 }
 
 # show user menu
 show_menu
-
-
-

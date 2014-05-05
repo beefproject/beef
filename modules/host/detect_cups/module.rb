@@ -5,9 +5,9 @@
 #
 
 class Detect_cups < BeEF::Core::Command
-  
+
   def post_execute
     save({'CUPS' => @datastore['cups']})
   end
-  
+
 end

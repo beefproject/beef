@@ -62,4 +62,4 @@ WelcomeTab = function() {
     });
 };
 
-Ext.extend(WelcomeTab,Ext.Panel, {}); 
+Ext.extend(WelcomeTab,Ext.Panel, {});

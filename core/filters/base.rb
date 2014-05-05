@@ -159,8 +159,8 @@ module Filters
   # @note This function passes the \302\256 character which translates to the registered symbol (r)
   def self.has_valid_browser_details_chars?(str)
     return false if not is_non_empty_string?(str)
-    not (str =~ /[^\w\d\s()-.,;:_\/!\302\256]/).nil?  
-  end  
+    not (str =~ /[^\w\d\s()-.,;:_\/!\302\256]/).nil?
+  end
 
   # Check for valid base details characters
   # @param [String] str String for testing
@@ -169,8 +169,8 @@ module Filters
   # @note This function passes the \302\256 character which translates to the registered symbol (r)
   def self.has_valid_base_chars?(str)
     return false if not is_non_empty_string?(str)
-    (str =~ /[^\302\256[:print:]]/).nil? 
-  end  
+    (str =~ /[^\302\256[:print:]]/).nil?
+  end
 
   # Verify the yes and no is valid
   # @param [String] str String for testing

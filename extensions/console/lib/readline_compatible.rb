@@ -546,4 +546,3 @@ module Readline
    RbReadline.rl_attempted_completion_function = :readline_attempted_completion_function
 
 end
-

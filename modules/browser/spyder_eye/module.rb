@@ -10,7 +10,7 @@ class Spyder_eye < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.js', '/html2canvas', 'js')
   end
 
-  def post_execute 
+  def post_execute
     content = {}
     content['results'] = @datastore['results'] if not @datastore['results'].nil?
     save content
@@ -32,4 +32,3 @@ class Spyder_eye < BeEF::Core::Command
   end
 
 end
-

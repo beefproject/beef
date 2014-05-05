@@ -4,16 +4,16 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Lcamtuf_download < BeEF::Core::Command
-  
+
   # set and return all options for this module
   def self.options
 
     return [{
-      'name' => 'real_file_uri', 
+      'name' => 'real_file_uri',
       'description' => 'The web accessible URI for the real file.',
       'ui_label' => 'Real File Path',
       'value' => 'http://get.adobe.com/flashplayer/',
-      'width' => '300px' 
+      'width' => '300px'
       },
       {
       'name' => 'malicious_file_uri',
@@ -28,11 +28,11 @@ class Lcamtuf_download < BeEF::Core::Command
       }]
   end
 
-  def post_execute     
+  def post_execute
     content = {}
-    content['result'] = @datastore['result']          
-    
-    save content   
+    content['result'] = @datastore['result']
+
+    save content
   end
-  
+
 end

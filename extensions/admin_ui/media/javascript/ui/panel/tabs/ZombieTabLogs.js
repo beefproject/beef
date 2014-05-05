@@ -25,4 +25,3 @@ ZombieTab_LogTab = function(zombie) {
 };
 
 Ext.extend(ZombieTab_LogTab, Ext.Panel, {} );
-

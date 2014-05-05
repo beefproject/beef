@@ -45,7 +45,7 @@ o This module is incompatible with autorun. Upon completing the shell commands i
 =end
 
 class Inter_protocol_posix_bindshell < BeEF::Core::Command
-  
+
   def self.options
     return [
 	{'name'=>'ip', 'ui_label' => 'Target Address', 'value' => 'localhost'},

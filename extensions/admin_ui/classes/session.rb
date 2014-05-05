@@ -11,11 +11,11 @@ module AdminUI
 # The session for BeEF UI.
 #
 class Session
-  
+
   include Singleton
-  
+
   attr_reader :ip, :id, :nonce, :auth_timestamp
-    
+
   def initialize
     set_logged_out
     @auth_timestamp = Time.new
@@ -29,7 +29,7 @@ class Session
     @nonce = BeEF::Core::Crypto::secure_token
     @ip = ip
   end
-  
+
   #
   # set the session logged out
   #
@@ -52,7 +52,7 @@ class Session
   def get_id
     @id
   end
-  
+
   #
   # return the nonce
   #
@@ -80,10 +80,10 @@ class Session
     # get nonce from request
     request_nonce = request['nonce']
     return false if request_nonce.nil?
-    
+
     # verify nonce
     request_nonce.eql? @nonce
-    
+
   end
 
   #
@@ -106,9 +106,9 @@ class Session
       return true if (cookie[0].to_s.eql? session_cookie_name) and (cookie[1].eql? @id)
     }
     request
-    
-    # not a valid session 
-    false 
+
+    # not a valid session
+    false
   end
 
 end

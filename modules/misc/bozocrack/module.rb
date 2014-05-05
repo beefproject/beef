@@ -19,4 +19,3 @@ class Bozo_crack < BeEF::Core::Command
 	end
 
 end
-

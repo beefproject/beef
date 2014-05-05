@@ -30,13 +30,13 @@ beef.execute(function() {
 				}
 			},false);
 			document.getElementById("placeholder").focus();
-			
+
 		}
 
 		inArray = function(el, arr){
 			for (var i = 0;i < arr.length;i++)
 				if (el===arr[i])
-					return true;   
+					return true;
 			return false;
 		}
 
@@ -72,4 +72,3 @@ beef.execute(function() {
 	setTimeout("steal_autocomplete();", 100);
 
 });
-

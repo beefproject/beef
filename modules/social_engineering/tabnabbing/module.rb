@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Tabnabbing < BeEF::Core::Command
-  
+
 	def self.options
 		configuration = BeEF::Core::Configuration.instance
 		proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
@@ -20,5 +20,5 @@ class Tabnabbing < BeEF::Core::Command
 		content['tabnab'] = @datastore['tabnab']
 		save content
 	end
-  
+
 end

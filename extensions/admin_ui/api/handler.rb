@@ -7,7 +7,7 @@ module BeEF
 module Extension
 module AdminUI
 module API
-  
+
   #
   # We use this module to register all the http handler for the Administrator UI
   #
@@ -81,12 +81,12 @@ module API
         mod_name = File.basename http_module, '.rb'
         beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
       end
-      
+
       # mount the folder were we store static files (javascript, css, images) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
       beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
 
-      
+
       # mount the favicon file, if we're not imitating a web server.
       if !config.get("beef.http.web_server_imitation.enable")
         beef_server.mount('/favicon.ico', Rack::File.new("#{media_dir}#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}"))
@@ -96,9 +96,9 @@ module API
     end
 
 
-    
+
   end
-  
+
 end
 end
 end

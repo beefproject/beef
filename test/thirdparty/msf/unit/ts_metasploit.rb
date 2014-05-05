@@ -30,4 +30,3 @@ class TS_BeefTests
 end
 
 Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
-

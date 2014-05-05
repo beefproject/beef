@@ -10,9 +10,9 @@ class Invisible_iframe < BeEF::Core::Command
             {'name' => 'target', 'ui_label' => 'URL', 'value' => 'http://beefproject.com/'}
 		]
 	end
-  
+
 	def post_execute
 		save({'result' => @datastore['result']})
 	end
-  
+
 end

@@ -9,7 +9,7 @@ module AdminUI
 module Controllers
 
 class Logs < BeEF::Extension::AdminUI::HttpController
-  
+
   def initialize
     super({
       'paths' => {
@@ -18,21 +18,21 @@ class Logs < BeEF::Extension::AdminUI::HttpController
       }
     })
   end
-  
+
   # Selects logs in the database and returns them in a JSON format.
   def select_all_logs
 
     log = BeEF::Core::Models::Log.all()
     (print_error "log is nil";return) if log.nil?
-    
+
     # format log
     @body = logs2json(log)
 
   end
-  
+
   # Selects the logs for a zombie
   def select_zombie_logs
-    
+
     # get params
     session = @params['session'] || nil
     (print_error "session is nil";return) if session.nil?
@@ -45,13 +45,13 @@ class Logs < BeEF::Extension::AdminUI::HttpController
     # get log
     log = BeEF::Core::Models::Log.all(:hooked_browser_id => zombie_id)
     (print_error "log is nil";return)  if log.nil?
-    
+
     # format log
     @body = logs2json(log)
   end
-  
+
   private
-  
+
   # Returns a list of logs in JSON format.
   def logs2json(logs)
     logs_json = []
@@ -68,13 +68,13 @@ class Logs < BeEF::Extension::AdminUI::HttpController
         'hooked_browser_id' => log.hooked_browser_id.to_i
       }
     end
-    
+
     # format output
-    output = {'success' => 'true', 'count' => count, 'logs' => logs_json}.to_json if not logs_json.empty? 
-        
+    output = {'success' => 'true', 'count' => count, 'logs' => logs_json}.to_json if not logs_json.empty?
+
     output
   end
-  
+
 end
 
 end

@@ -17,10 +17,10 @@ class Doser < BeEF::Core::Command
       {'name'=>'post_data', 'ui_label' =>'POST data','value'=>'key=value&&Aa=Aa&BB'}
     ]
   end
-  
+
   def post_execute
     return if @datastore['result'].nil?
     save({'result' => @datastore['result']})
   end
-  
+
 end

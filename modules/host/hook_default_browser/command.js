@@ -5,7 +5,7 @@
 //
 
 beef.execute(function() {
-	
+
 	var pdf_url =  beef.net.httpproto + '://'+beef.net.host+ ':' + beef.net.port + '/report.pdf';
 	window.open( pdf_url, '_blank');
 

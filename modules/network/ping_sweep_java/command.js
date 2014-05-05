@@ -49,4 +49,3 @@ beef.execute(function() {
 		ext_timeout = setTimeout(function() {waituntilok()},5000);
 
 });
-

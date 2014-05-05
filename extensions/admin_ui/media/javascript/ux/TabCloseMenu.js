@@ -12,9 +12,9 @@
  */
 /**
  * @class Ext.ux.TabCloseMenu
- * @extends Object 
+ * @extends Object
  * Plugin (ptype = 'tabclosemenu') for adding a close context menu to tabs.
- * 
+ *
  * @ptype tabclosemenu
  */
 Ext.ux.TabCloseMenu = function(){
@@ -26,7 +26,7 @@ Ext.ux.TabCloseMenu = function(){
 
     function onContextMenu(ts, item, e){
         if(!menu){ // create context menu on first right click
-            menu = new Ext.menu.Menu({            
+            menu = new Ext.menu.Menu({
             items: [{
                 id: tabs.id + '-close',
                 text: 'Close Tab',

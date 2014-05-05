@@ -46,4 +46,3 @@ class Steal_autocomplete < BeEF::Core::Command
 	end
 
 end
-

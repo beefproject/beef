@@ -12,15 +12,15 @@ module Server
         'mount_handler' => :mount_handler,
         'pre_http_start' => :pre_http_start
     }
-    
+
     # Fires just before the HTTP Server is started
     # @param [Object] http_hook_server HTTP Server object
     def pre_http_start(http_hook_server); end
-    
+
     # Fires just after handlers have been mounted
     # @param [Object] server HTTP Server object
     def mount_handler(server); end
-    
+
     # Mounts a handler
     # @param [String] url URL to be mounted
     # @param [Class] http_handler_class the handler Class
@@ -37,7 +37,7 @@ module Server
         BeEF::Core::Server.instance.unmount(url)
     end
 
-  
+
 end
 end
 end

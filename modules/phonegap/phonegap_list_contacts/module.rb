@@ -11,5 +11,5 @@ class Phonegap_list_contacts < BeEF::Core::Command
     content = {}
     content['Result'] = @datastore['result']
     save content
-  end 
+  end
 end

@@ -5,7 +5,7 @@
 #
 class Detect_default_browser < BeEF::Core::Command
 
-	def post_execute 
+	def post_execute
 		content = {}
 		content['browser'] = @datastore['browser'] if not @datastore['browser'].nil?
 		save content

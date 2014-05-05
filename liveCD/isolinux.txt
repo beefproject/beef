@@ -30,5 +30,3 @@ label hd
   menu label hd - boot the first hard disk
   localboot 0x80
   append -
-
-

@@ -41,7 +41,7 @@ beef.net.xssrays = {
     xssraysScanId : 0,
     hookedBrowserSession: "",
     beefRayUrl: "",
-    // the 3 following variables are overridden via BeEF, in the Scan Config XssRays sub-tab. 
+    // the 3 following variables are overridden via BeEF, in the Scan Config XssRays sub-tab.
     crossDomain: false,
     debug:false,
     cleanUpTimeout:5000,

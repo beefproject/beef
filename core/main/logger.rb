@@ -8,9 +8,9 @@ module BeEF
 module Core
 
   class Logger
-    
+
     include Singleton
-    
+
     # Constructor
     def initialize
       @logs = BeEF::Core::Models::Log
@@ -19,7 +19,7 @@ module Core
       # if notifications are enabled create a new instance
       @notifications = BeEF::Extension::Notifications::Notifications unless @config.get('beef.extension.notifications.enable') == false
     end
-  
+
     # Registers a new event in the logs
     # @param [String] from The origin of the event (i.e. Authentication, Hooked Browser)
     # @param [String] event The event description
@@ -31,7 +31,7 @@ module Core
 
       # get time now
       time_now = Time.now
-      
+
       # arguments type checking
       raise Exception::TypeError, '"from" needs to be a string' if not from.string?
       raise Exception::TypeError, '"event" needs to be a string' if not event.string?
@@ -43,14 +43,14 @@ module Core
       if @notifications
         @notifications.new(from, event, time_now, hb)
       end
-      
+
       # return
       true
     end
-    
+
     private
     @logs
-    
+
   end
 end
 end

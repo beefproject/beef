@@ -13,4 +13,3 @@ beef:
             authors: ["bcoles"]
             target:
                 user_notify: ["All"]
-

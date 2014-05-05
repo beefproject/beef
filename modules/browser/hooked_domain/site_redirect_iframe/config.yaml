@@ -13,4 +13,3 @@ beef:
             authors: ["ethicalhack3r", "Yori Kvitchko"]
             target:
                 user_notify: ["ALL"]
-

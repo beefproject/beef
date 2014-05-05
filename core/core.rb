@@ -5,7 +5,7 @@
 #
 module BeEF
 module Core
-  
+
 end
 end
 
@@ -39,5 +39,3 @@ require 'core/main/console/banners'
 
 # @note Include rubyzip lib
 require 'zip'
-
-

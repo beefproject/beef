@@ -5,7 +5,7 @@
 #
 class Detect_firebug < BeEF::Core::Command
 
-	def post_execute 
+	def post_execute
 		content = {}
 		content['firebug'] = @datastore['firebug'] if not @datastore['firebug'].nil?
 		save content

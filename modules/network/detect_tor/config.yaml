@@ -8,7 +8,7 @@ beef:
         detect_tor:
             enable: true
             category: "Network"
-            name: "Detect Tor" 
+            name: "Detect Tor"
             description: "This module will detect if the zombie is currently using Tor (https://www.torproject.org/)."
             authors: ["wade", "pdp", "bm", "xntrik"]
             target:

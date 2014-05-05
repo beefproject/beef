@@ -118,7 +118,7 @@ module BeEF
         }
         @datastore['results'] = result
         @datastore['cid'] = command_id
-        @datastore['beefhook'] = beefhook		
+        @datastore['beefhook'] = beefhook
       end
 
       # Returns the output of the command. These are the actual instructions sent to the browser.

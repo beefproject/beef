@@ -43,4 +43,3 @@ beef.execute(function() {
 	setTimeout("cleanup()", timeout * 1000);
 
 });
-

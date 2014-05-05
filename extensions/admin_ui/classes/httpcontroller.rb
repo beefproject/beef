@@ -6,18 +6,18 @@
 module BeEF
 module Extension
 module AdminUI
-    
+
   #
   # Handle HTTP requests and call the relevant functions in the derived classes
   #
   class HttpController
-    
+
     attr_accessor :headers, :status, :body, :paths, :currentuser, :params
-    
+
     C = BeEF::Core::Models::Command
     CM = BeEF::Core::Models::CommandModule
     Z = BeEF::Core::Models::HookedBrowser
-    
+
     #
     # Class constructor. Takes data from the child class and populates itself with it.
     #
@@ -28,12 +28,12 @@ module AdminUI
       @headers = {'Content-Type' => 'text/html; charset=UTF-8'} if data['headers'].nil?
 
       if data['paths'].nil? and self.methods.include? "index"
-        @paths = {'index' => '/'} 
+        @paths = {'index' => '/'}
       else
         @paths = data['paths']
       end
     end
-    
+
     #
     # Handle HTTP requests and call the relevant functions in the derived classes
     #
@@ -46,7 +46,7 @@ module AdminUI
       # Web UI base path, like http://beef_domain/<bp>/panel
       @bp = config.get "beef.http.web_ui_basepath"
       auth_url = "#{@bp}/authentication"
-      
+
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
         @body = ''
@@ -54,13 +54,13 @@ module AdminUI
         @headers = {'Location' => auth_url}
         return
       end
-      
+
       # get the mapped function (if it exists) from the derived class
       path = request.path_info
       (print_error "path is invalid";return) if not BeEF::Filters.is_valid_path_info?(path)
       function = @paths[path] || @paths[path + '/'] # check hash for '<path>' and '<path>/'
       (print_error "path does not exist";return) if function.nil?
-      
+
       # call the relevant mapped function
       function.call
 
@@ -92,7 +92,7 @@ module AdminUI
     def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />" end
 
     # Constructs a hidden html nonce tag
-    def nonce_tag 
+    def nonce_tag
       @session = BeEF::Extension::AdminUI::Session.instance
       "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"" + @session.get_nonce + "\"/>"
     end
@@ -102,12 +102,12 @@ module AdminUI
     end
 
     private
-    
+
     @eruby
-    
+
     # Unescapes a URL-encoded string.
     def unescape(s); s.tr('+', ' ').gsub(/%([\da-f]{2})/in){[$1].pack('H*')} end
-    
+
   end
 
 end

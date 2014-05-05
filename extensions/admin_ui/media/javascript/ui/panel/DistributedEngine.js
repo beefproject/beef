@@ -16,7 +16,7 @@ DistributedEngine = function() {
 		'requester' : 1,
 		'portscanner' : 2
 	};
-	
+
 	/*
 	 * Returns true of the hooked browser matches one of the rules and should be checked.
 	 * @param: {Literal Object} the browser object.
@@ -24,22 +24,22 @@ DistributedEngine = function() {
 	 * @return: {Boolean} true if matches, false if not.
 	 */
 	this.HookedBrowserMatchesRules = function(hooked_browser, rules) {
-		
+
 	};
-	
+
 	/*
 	 * Disable an existing rule in the framework. That function is called when the user
 	 * unchecks a hooked browser.
 	 * @param: {Integer} the id of the rule.
 	 */
 	this.DisableRule = function(rule_id) {
-		
+
 	};
-	
+
 	/*
 	 * Creates and sends a new rule to the backend.
 	 */
 	this.CreateNewRule = function() {
-		
+
 	};
 };

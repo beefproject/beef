@@ -56,10 +56,10 @@ module BeEF
       # This is from extensions/admin_ui/controllers/authentication/authentication.rb
       #
       def self.permitted_source?(ip)
-        # get permitted subnet 
+        # get permitted subnet
         permitted_ui_subnet = BeEF::Core::Configuration.instance.get("beef.restrictions.permitted_ui_subnet")
         target_network = IPAddr.new(permitted_ui_subnet)
-        
+
         # test if ip within subnet
         return target_network.include?(ip)
       end

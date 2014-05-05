@@ -5,8 +5,8 @@
 #
 require 'base64'
 class Webcam_html5 < BeEF::Core::Command
-  
-	def post_execute 
+
+	def post_execute
 		content = {}
 		content["result"] = @datastore["result"] if not @datastore["result"].nil?
     content["image"] = @datastore["image"] if not @datastore["image"].nil?

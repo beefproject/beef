@@ -56,4 +56,3 @@ beef.execute(function() {
 	setTimeout('parse_browser_details();', 2000);
 
 });
-

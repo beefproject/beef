@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Autoloader
-  
+
 end
 end
 end

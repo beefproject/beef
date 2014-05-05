@@ -5,12 +5,12 @@
 #
 module BeEF
 module Extension
-module Qrcode 
+module Qrcode
 
   module QrcodeGenerator
 
     BeEF::API::Registrar.instance.register(BeEF::Extension::Qrcode::QrcodeGenerator, BeEF::API::Server, 'pre_http_start')
-    
+
     def self.pre_http_start(http_hook_server)
       require 'uri'
 
@@ -37,7 +37,7 @@ module Qrcode
         print_more data
 
       end
-      
+
       if partialurls.size > 0
         BeEF::Core::Console::Banners.interfaces.each do |int|
           next if int == "localhost" or int == "127.0.0.1"
@@ -51,8 +51,8 @@ module Qrcode
           print_more data
         end
       end
-    end  
-    
+    end
+
   end
 
 

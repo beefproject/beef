@@ -13,7 +13,7 @@ beef.execute(function() {
   		function (language) {
   			result = 'language: ' + language.value + '\n';
         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
-  		}, 
+  		},
   		function () {
   			result = 'language: ' + 'fail\n';
         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
@@ -30,5 +30,5 @@ beef.execute(function() {
         beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );
   		}
 	);
-    
+
 });

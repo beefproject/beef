@@ -6,7 +6,7 @@
 class String
 
   # @note Use a gem to colorize the console.
-  # @note http://flori.github.com/term-ansicolor/ 
+  # @note http://flori.github.com/term-ansicolor/
   include Term::ANSIColor
 
 end

