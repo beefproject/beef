@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -18,9 +18,8 @@ module BeEF
   end
 end
 
-#TODO antisnatchor: uncomment this when code will be stable
-#require 'extensions/dns/api'
-#require 'extensions/dns/dns'
-#require 'extensions/dns/model'
-#require 'extensions/dns/rest/dns'
-#require 'extensions/dns/ruby'
+require 'extensions/dns/api'
+require 'extensions/dns/dns'
+require 'extensions/dns/logger'
+require 'extensions/dns/model'
+require 'extensions/dns/rest/dns'

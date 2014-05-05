@@ -38,8 +38,7 @@ gem "dm-migrations"
 gem "msfrpc-client"        # Metasploit Integration extension
 #gem "twitter", ">= 5.0.0" # Twitter Notifications extension
 gem "rubyzip", ">= 1.0.0"
-gem "rubydns"              # DNS extension
-gem "sourcify"
+gem "rubydns", "0.7.0"     # DNS extension
 gem "geoip"                # geolocation support
 
 # For running unit tests

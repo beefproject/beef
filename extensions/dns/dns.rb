@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -7,97 +7,81 @@ module BeEF
   module Extension
     module Dns
 
-      # This class is responsible for providing a DNS nameserver that can be dynamically
-      # configured by other modules and extensions. It is particularly useful for
-      # performing DNS spoofing, hijacking, tunneling, etc.
-      #
-      # Only a single instance will exist during runtime (known as the "singleton pattern").
-      # This makes it easier to coordinate actions across the various BeEF systems.
-      class Server
+      # @todo Add option for configuring upstream servers.
+
+      # Provides the core DNS nameserver functionality. The nameserver handles incoming requests
+      # using a rule-based system. A list of user-defined rules is used to match against incoming
+      # DNS requests. These rules generate a response that is either a resource record or a
+      # failure code.
+      class Server < RubyDNS::Server
 
         include Singleton
 
-        attr_reader :address, :port
-
-        # @!method self.instance
-        #  Returns the singleton instance. Use this in place of {#initialize}.
-
-        # @note This method cannot be invoked! Use {.instance} instead.
-        # @see ::instance
         def initialize
+          super()
           @lock = Mutex.new
-          @server = nil
+          @database = BeEF::Core::Models::Dns::Rule
         end
 
-        def set_server(server)
-          @server = server
-        end
-
-        def get_server
-          @server
-        end
-
-        # Starts the main DNS server run-loop in a new thread.
+        # Adds a new DNS rule. If the rule already exists, its current ID is returned.
         #
-        # @param address [String] interface address server should run on
-        # @param port [Integer] desired server port number
-        def run_server(address = '0.0.0.0', port = 5300)
-          @address = address
-          @port = port
-            Thread.new do
-              sleep(2)
-
-              # antisnatchor: RubyDNS is already implemented with EventMachine 
-              run_server_block(@address, @port)
-            end
-        end
-
-        # Adds a new DNS rule or "resource record". Does nothing if rule is already present.
-        #
-        # @example Adds an A record for foobar.com with the value 1.2.3.4
+        # @example Adds an A record for browserhacker.com with the IP address 1.2.3.4
         #
         #   dns = BeEF::Extension::Dns::Server.instance
         #
-        #   id = dns.add_rule('foobar.com', Resolv::DNS::Resource::IN::A) do |transaction|
-        #     transaction.respond!('1.2.3.4')
-        #   end
+        #   id = dns.add_rule(
+        #     :pattern  => 'browserhacker.com',
+        #     :resource => Resolv::DNS::Resource::IN::A,
+        #     :response => '1.2.3.4'
+        #   )
         #
-        # @param pattern [String, Regexp] query pattern to recognize
-        # @param type [Resolv::DNS::Resource::IN] resource record type (e.g. A, CNAME, NS, etc.)
+        # @param rule [Hash] hash representation of rule
+        # @option rule [String, Regexp] :pattern match criteria
+        # @option rule [Resolv::DNS::Resource::IN] :resource resource record type
+        # @option rule [String, Array] :response server response
         #
-        # @note When parameter 'pattern' is a literal Regexp object, it must NOT be passed
-        #       using the /.../ literal syntax. Instead use either %r{...} or Regexp::new.
-        #       This does not apply if 'pattern' is a variable.
-        #
-        # @yield callback to invoke when pattern is matched
-        # @yieldparam transaction [RubyDNS::Transaction] details of query question and response
-        #
-        # @return [String] unique 7-digit hex identifier for use with {#remove_rule}
-        #
-        # @see #remove_rule
-        # @see http://rubydoc.info/gems/rubydns/RubyDNS/Transaction
-        def add_rule(pattern, type, &block)
-          @lock.synchronize { @server.match(pattern, type, block) }
+        # @return [String] unique 8-digit hex identifier
+        def add_rule(rule = {})
+          @lock.synchronize do
+            # Temporarily disable warnings regarding IGNORECASE flag
+            verbose = $VERBOSE
+            $VERBOSE = nil
+            pattern = Regexp.new(rule[:pattern], Regexp::IGNORECASE)
+            $VERBOSE = verbose
+
+            @database.first_or_create(
+              { :resource => rule[:resource], :pattern => pattern.source },
+              { :response => rule[:response] }
+            ).id
+          end
         end
 
-        # Removes the given DNS rule. Any future queries for it will be passed through.
+        # Retrieves a specific rule given its identifier.
         #
-        # @param id [Integer] id returned from {#add_rule}
+        # @param id [String] unique identifier for rule
         #
-        # @return [Boolean] true on success, false on failure
-        #
-        # @see #add_rule
-        def remove_rule(id)
-          @lock.synchronize { @server.remove_rule(id) }
-        end
-
-        # Retrieves a specific rule given its id
-        #
-        # @param id [Integer] unique identifier for rule
-        #
-        # @return [Hash] hash representation of rule
+        # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
-          @lock.synchronize { @server.get_rule(id) }
+          @lock.synchronize do
+            if is_valid_id?(id)
+              rule = @database.get(id)
+              rule.nil? ? {} : to_hash(rule)
+            end
+          end
+        end
+
+        # Removes the given DNS rule.
+        #
+        # @param id [String] rule identifier
+        #
+        # @return [Boolean] true if rule was removed, otherwise false
+        def remove_rule!(id)
+          @lock.synchronize do
+            if is_valid_id?(id)
+              rule = @database.get(id)
+              rule.nil? ? false : rule.destroy
+            end
+          end
         end
 
         # Returns an AoH representing the entire current DNS ruleset.
@@ -106,58 +90,117 @@ module BeEF
         #
         # * <code>:id</code>
         # * <code>:pattern</code>
-        # * <code>:type</code>
+        # * <code>:resource</code>
         # * <code>:response</code>
         #
-        # @return [Array<Hash>] DNS ruleset (empty if no rules are currently loaded)
+        # @return [Array<Hash>] DNS ruleset (empty array if no rules are currently defined)
         def get_ruleset
-          @lock.synchronize { @server.get_ruleset }
+          @lock.synchronize { @database.collect { |rule| to_hash(rule) } }
         end
 
-        # Clears the entire DNS ruleset.
+        # Removes the entire DNS ruleset.
         #
-        # Requests made after doing so will be passed through to the root nameservers.
-        #
-        # @return [Boolean] true on success, false on failure
-        def remove_ruleset
-          @lock.synchronize { @server.remove_ruleset }
+        # @return [Boolean] true if ruleset was destroyed, otherwise false
+        def remove_ruleset!
+          @lock.synchronize { @database.destroy }
         end
 
-        private
-
-        # Common code needed by {#run_server} to start DNS server.
+        # Starts the DNS server.
         #
-        # @param address [String] interface address server should run on
-        # @param port [Integer] desired server port number
-        def run_server_block(address, port)
-          RubyDNS.run_server(:listen => [[:udp, address, port]]) do
-            # Pass unmatched queries upstream to root nameservers
-            dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
-            unless dns_config['upstream'].nil?
-              dns_config['upstream'].each do |server|
-                if server[1].nil? or server[2].nil?
-                  print_error "Invalid server '#{server[1]}:#{server[2]}' specified for upstream DNS server."
-                  next
-                elsif server[0] == 'tcp'
-                  servers << [:tcp, server[1], server[2]]
-                elsif server[0] == 'udp'
-                  servers << [:udp, server[1], server[2]]
-                else
-                  print_error "Invalid protocol '#{server[0]}' specified for upstream DNS server."
+        # @param options [Hash] server configuration options
+        # @option options [Array<Array>] :upstream upstream DNS servers (if ommitted, unresolvable
+        #   requests return NXDOMAIN)
+        # @option options [Array<Array>] :listen local interfaces to listen on
+        def run(options = {})
+          @lock.synchronize do
+            Thread.new do
+              EventMachine.next_tick do
+                upstream = options[:upstream] || nil
+                listen = options[:listen] || nil
+
+                if upstream
+                  resolver = RubyDNS::Resolver.new(upstream)
+                  @otherwise = Proc.new { |t| t.passthrough!(resolver) }
                 end
+
+                super(:listen => listen)
               end
             end
-            if servers.empty?
-              print_debug "No upstream DNS servers specified. Using '8.8.8.8'"
-              servers << [:tcp, '8.8.8.8', 53]
-              servers << [:udp, '8.8.8.8', 53]
-            end
-            otherwise do |transaction|
-              transaction.passthrough!(
-                  RubyDNS::Resolver.new servers
-              )
+          end
+        end
+
+        # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
+        # sends back its associated response.
+        #
+        # @param name [String] name of the resource record being looked up
+        # @param resource [Resolv::DNS::Resource::IN] query type (e.g. A, CNAME, NS, etc.)
+        # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
+        def process(name, resource, transaction)
+          @lock.synchronize do
+	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
+
+            catch (:done) do
+              # Find rules matching the requested resource class
+              resources = @database.all(:resource => resource)
+              throw :done if resources.length == 0
+
+              # Narrow down search by finding a matching pattern
+              resources.each do |rule|
+                pattern = Regexp.new(rule.pattern)
+
+                if name =~ pattern
+                  print_debug "Found matching DNS rule (id: #{rule.id} response: #{rule.response})"
+                  Proc.new { |t| eval(rule.callback) }.call(transaction)
+                  throw :done
+                end
+              end
+
+              if @otherwise
+                print_debug "No match found, querying upstream servers"
+                @otherwise.call(transaction)
+              else
+                print_debug "No match found, sending NXDOMAIN response"
+                transaction.fail!(:NXDomain)
+              end
             end
           end
+        end
+
+      private
+        # Helper method that converts a DNS rule to a hash.
+        #
+        # @param rule [BeEF::Core::Models::Dns::Rule] rule to be converted
+        #
+        # @return [Hash] hash representation of DNS rule
+        def to_hash(rule)
+          hash = {}
+          hash[:id] = rule.id
+          hash[:pattern] = rule.pattern
+          hash[:resource] = format_resource(rule.resource)
+          hash[:response] = rule.response
+
+          hash
+        end
+
+        # Verifies that the given ID is valid.
+        #
+        # @param id [String] identifier to validate
+        #
+        # @return [Boolean] true if ID is valid, otherwise false
+        def is_valid_id?(id)
+          BeEF::Filters.hexs_only?(id) &&
+            !BeEF::Filters.has_null?(id) &&
+            !BeEF::Filters.has_non_printable_char?(id) &&
+            id.length == 8
+        end
+
+        # Helper method that formats the given resource class in a human-readable format.
+        #
+        # @param resource [Resolv::DNS::Resource::IN] resource class
+        #
+        # @return [String] resource name stripped of any module/class names
+        def format_resource(resource)
+          /::(\w+)$/.match(resource.name)[1]
         end
 
       end

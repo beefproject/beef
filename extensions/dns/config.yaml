@@ -1,15 +1,18 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 beef:
     extension:
         dns:
-            enable: false
+            enable: true
             name: 'DNS Server'
             authors: ['soh_cah_toa']
+            protocol: 'udp'
             address: '127.0.0.1'
             port: 5300
-            upstream:
-                [['tcp', '8.8.8.8', 53], ['udp', '8.8.8.8', 53]]
+            upstream: [
+                ['udp', '8.8.8.8', 53],
+                ['tcp', '8.8.8.8', 53]
+            ]

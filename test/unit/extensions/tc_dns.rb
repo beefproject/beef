@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2013 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -39,33 +39,24 @@ class TC_Dns < Test::Unit::TestCase
 
   # Checks for required settings in config file
   def test_02_config
+    assert(@@dns_config.has_key?('protocol'))
     assert(@@dns_config.has_key?('address'))
     assert(@@dns_config.has_key?('port'))
+    assert(@@dns_config.has_key?('upstream'))
   end
 
   # Verifies public interface
   def test_03_interface
     @@dns = BeEF::Extension::Dns::Server.instance
 
-    assert_respond_to(@@dns, :run_server)
     assert_respond_to(@@dns, :add_rule)
-    assert_respond_to(@@dns, :remove_rule)
     assert_respond_to(@@dns, :get_rule)
+    assert_respond_to(@@dns, :remove_rule!)
     assert_respond_to(@@dns, :get_ruleset)
-    assert_respond_to(@@dns, :remove_ruleset)
+    assert_respond_to(@@dns, :remove_ruleset!)
   end
 
-  # Tests that DNS server runs correctly on desired address and port
-  def test_04_run_server
-    address = @@dns_config['address']
-    port = @@dns_config['port']
-
-    @@dns.run_server(address, port)
-    sleep(3)
-
-    assert_equal(address, @@dns.address)
-    assert_equal(port, @@dns.port)
-  end
+  # @todo Decrement test numbers starting here.
 
   # Tests procedure for properly adding new DNS rules
   def test_05_add_rule_good
