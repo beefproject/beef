@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fake_evernote_clipper:
+            enable: true
+            category: "Social Engineering"
+            name: "Fake Evernote Web Clipper Login"
+            description: "Displays a fake Evernote Web Clipper login dialog."
+            authors: ["xntrik"]
+            target:
+                user_notify: ['C']
