@@ -12,4 +12,4 @@ beef:
             description: "Displays a fake LastPass user dialog."
             authors: ["xntrik", "gcattani"]
             target:
-                user_notify: ['ALL']
+                user_notify: ['C']

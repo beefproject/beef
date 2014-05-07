@@ -1,0 +1,536 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta http-equiv="Pragma" CONTENT="no-cache"><meta http-equiv="Expires" CONTENT="0"><meta http-equiv="CACHE-CONTROL" CONTENT="no-cache">
+
+<style type="text/css">
+body { font-family: Helvetica,Arial; min-width: 200px; min-height: 200px; }
+
+.fullpage{
+  max-width:250px;
+}
+#_docwrite_login_small7 { white-space:normal; width:258px !important; }
+#showvault { vertical-align: top; }
+
+#loginbody hr{
+  width:150%;
+  margin-left:-15%;
+  display: block; height: 1px;
+  border: 0; border-top: 1px solid #ccc;
+  margin-top: 15px; 
+}
+
+#loginbody{
+  height:300px;
+  color:#4c4c4c;
+  overflow:hidden;
+}
+
+#loginbody #deleteicon, #logincontainer #deleteicon{
+  margin-top:-2px;
+}
+/*
+#loginbody .teardrop{
+  margin-right:30px;
+}
+*/
+
+#rememberemailrow, #rememberpasswordrow{
+  padding:3px 0px;
+}
+.logininput { width:228px; height: 27px;
+  padding-right: 40px;
+  padding-left: 5px;
+ }
+.inputdiv input{ margin-top:2px; }
+
+#loginheader img{
+  float:right;
+  padding:5px 5px 0 0;
+  opacity:0.6;
+}
+#logintitletxt{
+  font-size:19px;
+}
+
+.inputdiv { padding-bottom:12px;}
+
+#forgotcontainer{
+  display:inline-block;
+  vertical-align:top;
+  margin-top:1px;
+  float:right;
+  margin-right:10px;
+}
+
+#screenkeyboard{
+  margin-left:-40px;
+}
+
+#screenkeyboard img{
+  opacity:0.6;
+}
+#screenkeyboard img:hover{
+  opacity:1.0;
+}
+
+#screenkeyboardcontainer{
+  position:relative;
+  top:4px;
+}
+
+#deleteicon{
+  opacity:0.6;
+  margin-left:-22px;
+}
+#deleteicon:hover{
+  opacity:1.0;
+}
+#u_button{
+  left:190px !important;
+}
+/* General */
+.clear         {clear:both;font-size:0;height:0;line-height:0;overflow:hidden;}
+
+table td       {
+	padding-right:10px;
+	white-space:nowrap;
+}
+
+
+#createaccount input[type=text], #createaccount input[type=password]{
+  width:300px;
+}
+#createaccount select{
+  width:300px;
+}
+#createaccount .toprows{
+  padding:4px 0px;
+}
+#createaccount #emailerror{
+  color:red;
+}
+
+.wiz, .wiz table{
+  font-size:14px;
+}
+
+.content{
+  width:50%;
+  margin: 50px auto;
+  background: white;
+  border-radius: 5px;
+  border: 1px gray solid;
+  padding: 35px 15px;
+}
+.contentwide{
+  width:55%;
+}
+.dimpled button{
+  padding:7px;
+  margin: 2px 5px;
+}
+#_docwrite_welcome3{
+  margin: 5px 0px;
+}
+.dimpled img{
+  margin:auto;
+}
+#_docwrite_welcome1{
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+}
+.dimpled img{
+  margin-left: 100px;
+}
+#reenterpassword{
+  width:300px;
+}
+.createlink{
+  font-weight:normal !important;
+  font-size:inherit !important;
+}
+
+.imgcenter{
+  display:block !important;
+  margin:0px auto !important;
+}
+
+.dialog{
+  border:1px solid #949494;
+  border-radius: 2px;
+  background:#e6e6e6;
+  color:#4c4c4c;
+  margin:50px auto;
+}
+
+#googleauth, #outofband, #yubikey, #sesame, #grid{
+  width:702px;
+  height:290px;
+  border:1px solid #949494;
+  border-radius: 2px;
+  background:#e6e6e6;
+  color:#4c4c4c;
+  margin:50px auto;
+}
+.multiheader{
+  background:white;
+  border-bottom:1px solid #949494;
+  height:64px;
+}
+.multiheader img{
+   padding:20px 0 0 20px;
+}
+
+.leftcol{
+  float:left;
+}
+
+.multileft{
+  width:472px;
+  border-right:1px solid #c3c3c3;
+  padding:8px;
+  font-size:14px;
+  min-height:210px;
+}
+.multileft a{
+  text-decoration:none;
+  color:#848484;
+  float:right;
+  font-size:12px;
+}
+
+#googright{
+  background:url(gauthlastpass.png) no-repeat center center;
+  width:200px;
+  height:200px;
+}
+
+.multiright{
+  background:url(gauthlastpass.png) no-repeat center center;
+  width:200px;
+  height:200px;
+}
+
+#yubiright{
+  background:url(yubikeyicon2.jpg) no-repeat center center;
+  width:200px;
+  height:200px;
+}
+#sesameright{
+  background:url(step2.gif) no-repeat center center;
+  width:150px;
+  height:150px;
+}
+#gridright{
+  background:url(spreadsheet.png) no-repeat center center;
+  width:200px;
+  height:200px;
+}
+
+
+
+
+
+#googleauthotp{
+  width:100px;
+  height:24px;
+  padding-left:20px;
+}
+.multienter{
+  font-weight:bold;
+  margin:0px;
+}
+.multidesc{
+  padding-top:18px;
+}
+.multititle{
+  float:right;
+  padding:20px 10px 0 0;
+}
+.lost{
+  padding-left:50px;
+}
+.vault-table{
+  border-top:1px solid #c3c3c3
+}
+#googleauthauth{
+  height:30px;
+}
+#labelgoogleauth{
+  padding:5px 3px;
+}
+.stdbg{
+   background:#e6e6e6;
+  padding:0 20px;
+}
+
+.okbutton{
+  border-radius: 2px !important;
+  color:#fff !important;                /* final */
+  background-color:#e0322d !important;  /* final */
+  /*font-weight:bold !important;*/
+  border-color:#af1510 !important;     /* final */
+  background-image: none !important;
+  text-shadow:none !important;
+  min-width: 110px;
+  padding:6px 0px;
+}
+
+.okbutton:hover{
+  background-color: #d12a25 !important;
+}
+
+
+.stdtext{
+  color:#4c4c4c;
+  font-family:Helvetica, Arial, sans-serif;
+  font-size:14px;
+}
+
+
+.stdbtn {
+background-color: #eeeeee;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+background-image: linear-gradient(top, #eeeeee, #cccccc);
+border: 1px solid #ccc;
+border-bottom: 1px solid #bbb;
+-webkit-border-radius: 3px;
+color: #333;
+line-height: 1;
+font-weight: bold;
+padding: 8px 0;
+text-align: center;
+text-shadow: 0 1px 0 #eee;
+min-width: 110px;
+margin: 4px;
+}
+input[type=button] {
+background-color: #eeeeee;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+background-image: linear-gradient(top, #eeeeee, #cccccc);
+border: 1px solid #ccc;
+border-bottom: 1px solid #bbb;
+-webkit-border-radius: 3px;
+color: #333;
+line-height: 1;
+font-weight: bold;
+padding: 8px 0;
+text-align: center;
+text-shadow: 0 1px 0 #eee;
+min-width: 110px;
+margin: 4px;
+}
+
+#prefsheader{
+  height:65px;
+  border-bottom:1px solid #c3c3c3;
+  background-color:white;
+}
+#prefsheader img{
+  padding:22px 0 0 32px;
+}
+.dropStyle {
+  background: #fff !important;
+  color: #000 !important;
+  position:absolute;
+  cursor:default;
+  text-align:left;
+  font-size:14px;
+  z-index:10000;
+  height:120px;
+  overflow:auto;
+  border: 1px solid #000 !important;
+  padding: 4px 0px;
+  font-family: Arial, Helvetica, sans-serif; font-weight:normal;
+}
+.dropStyle div{
+  display:block;
+  padding: 1px 0px;
+  outline: none;  /* need this to disable webkit default glow */
+}
+
+.item {
+}
+.focus {
+      /* background: #d2d2d2 !important;*/
+        background: #dddddd;   /* final from levi */
+	color: #000 !important;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  font-family: Arial, Helvetica, sans-serif; font-weight:normal;
+}
+
+.item[aria-disabled="true"] {
+  color: grey;
+}
+.offscreen {
+   position: absolute;
+  left: -9000px;
+  width: 0;
+  overflow: hidden;
+}
+
+.teardrop{
+  opacity:0.5;
+  background-color: #fff;
+}
+.teardrop:hover, .teardrop:active{
+  opacity:1;
+  /*background-color: #d2d2d2;*/
+  background: #dddddd;   /* final from levi */
+}
+
+body { padding:10px 20px; font:13px Helvetica, Arial, Tahoma, sans-serif; }
+
+.graybody {
+  background: #e6e6e6;
+}
+
+.logintitle{
+  font-size:12px; font-weight:bold; 
+}
+
+.css3button {
+	font-family: Helvetica, Arial, sans-serif; font-weight:bold;
+	font-size: 14px;
+	color: #ffffff;
+	padding: 2px 15px;
+	background: -webkit-linear-gradient(top, rgba(32,188,232,1) 0%,rgba(0,119,232,1) 100%);
+	-webkit-border-radius: 30px;
+	border: 2px solid #ffffff;
+	-webkit-box-shadow:
+		0px 3px 11px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(005,000,004,1);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,0.2),
+		0px 1px 0px rgba(255,255,255,0.3);
+}
+
+.css3button:hover {
+	cursor:hand;
+	 background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#158aff), color-stop(44%,#0b7ef1), color-stop(100%,#126eca));
+}
+
+/** text area input with shadow **/
+
+
+
+checkbox {
+	padding: 4px;
+	}
+
+
+/** input focus darkening **/
+
+
+.form label { 
+	margin-left: 10px; 
+	color: #999999;
+	font-weight:bold; 
+	}
+
+a:link, a:active {
+	font-size : 11px;
+	font-family : helvetica;
+	text-decoration : none;
+	padding-left:10px
+	}
+	
+	a:hover {
+		font-family : helvetica;
+		color : #09F;
+		text-decoration : none;
+		}
+
+button{
+  min-width:110px;
+  padding:6px 15px;
+}
+
+.okbutton{
+  border-radius: 0px !important;
+  color:#fff !important;                /* final */
+  background-color:#e0322d !important;  /* final */
+  /*font-weight:bold !important;*/
+  background-image: none !important;
+  text-shadow:none !important;
+  min-width: 110px;
+}
+
+.okbutton:hover{
+  background-color: #d12a25 !important;
+}
+
+#loginbody a, #loginbodyfull a{
+  color:#848484;
+}
+
+#logincontainer{
+  background:#e6e6e6;
+  margin:50px auto;
+  width: 280px;
+  border-radius: 1px;
+  border: 1px solid #c3c3c3;
+}
+
+#logininner{
+  padding:20px;
+}
+#donotrepromptfor{
+  vertical-align:middle;
+}
+
+</style>
+
+<!-- <script src="lpfulllib.js"></script>
+<script src="db.js"></script>
+<script src="popupcombobox.js"></script>
+<script src="prefs.js"></script>
+<script src="server.js"></script>
+<script src="login.js"></script>
+<script src="popupfilltab_cs.js"></script>
+ -->
+
+ <script src="jquery.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+	$('#u').keyup(function() {
+		parent.postMessage('Username field changed to: ' + $('#u').val(),'*');
+	});
+
+	$('#p').keyup(function() {
+		parent.postMessage('Password field changed to: ' + $('#p').val(),'*');
+	});
+
+	$('#rememberemail').change(function() {
+		parent.postMessage('Remember Email changed to: ' + $('#rememberemail').prop('checked'),'*');
+	});
+
+	$('#rememberpassword').change(function() {
+		parent.postMessage('Remember Password changed to: ' + $('#rememberpassword').prop('checked'),'*');
+	});
+
+	$('#showvault').change(function() {
+		parent.postMessage('Show Vault changed to: ' + $('#showvault').prop('checked'),'*');
+	});
+
+	$('#login,#cancel,#forgot,#screenkeyboard,#createaccount').click(function() {
+		parent.postMessage('Button Clicked - username field: ' + $('#u').val() + '; password field: ' + $('#p').val(),'*');
+		parent.postMessage('KILLFRAME','*');
+	});
+
+	$('#u').focus();
+
+});
+
+</script>
+</head><body id='loginbody' class="graybody" style='width:236px;min-width:236px'><div id='loginheader'><span id="logintitletxt">Sign In</span><img id="logoimg" src='lp_signin_logo.png'/></div><br/><br/><div id="reprompttext" style="display: none;"><br><span id="_docwrite_login_small1"></span><br><br></div><div id="nodbtext" style="display: none; color: red;"><br><b><span id="_docwrite_login_small2"></span></b><br><br></div><form id='f'><div class='inputdiv'><span class='logintitle'><span id="_docwrite_login_small3">Email</span>:</span><br/><input type='text' spellcheck="false" id='u' class='logininput' name='username' value=''/></div><div class='inputdiv'><span class='logintitle'><span id="_docwrite_login_small4">Password</span>:</span><div id="forgotcontainer"><a id='forgot' href='#' tabindex="-1"><span id="_docwrite_login_small21"></span></a></div><br/><div><input type='password' class='logininput' id='p' name='password'/></div></div><div id="rememberemailrow"><input type='checkbox' name='rememberemail' id='rememberemail'/>&nbsp;&nbsp;<label for="rememberemail"><span id="_docwrite_login_small5">Remember Email</span></label></div><div id="rememberpasswordrow"><input type='checkbox' name='rememberpassword' id='rememberpassword'/>&nbsp;&nbsp;<label for="rememberpassword"><span id="_docwrite_login_small6">Remember Password</span></label></div><div id="showvaultrow"><input type='checkbox' name='showvault' id='showvault'/>&nbsp;&nbsp;<label for="showvault"><span id="_docwrite_login_small7">Show Vault After Login</span></label></div><div id="donotrepromptforrow" style="display: none;"><br/><input type='checkbox' name='donotrepromptfor' id='donotrepromptfor'/>&nbsp;&nbsp;<label for="donotrepromptfor"><span id="_docwrite_login_small8"></span></label><select id="donotrepromptforsecs"><option value="0"></option><option value="30" id="_docwrite_login_small9"></option><option value="60" id="_docwrite_login_small10"></option><option value="300" id="_docwrite_login_small11"></option><option value="900" id="_docwrite_login_small12"></option><option value="1800" id="_docwrite_login_small13"></option><option value="3600" id="_docwrite_login_small14"></option><option value="10800" id="_docwrite_login_small15"></option><option value="21600" id="_docwrite_login_small16"></option><option value="28800" id="_docwrite_login_small25"></option><option value="43200" id="_docwrite_login_small17"></option><option value="86400" id="_docwrite_login_small18"></option></select></div><hr/><div id='btnrow' class='btnrow'><table class='buttontable'><tr><td><button class='okbutton' id='login'/>Login</button></td><td><button id='cancel'/>Cancel</button></td></tr></table></div></form><div id='links'><span id="createaccountcontainer"><a id='createaccount' href='#'><span id="_docwrite_login_small23">New here? Create an Account.</span></a><br/></span></div><br/><div id='error'></div></body></html>
+
