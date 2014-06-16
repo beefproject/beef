@@ -175,6 +175,14 @@ show_menu() {
 				 sudo ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
 				 sudo ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
 				 echo ""
+				 echo "Creating beef user..."
+				 sudo useradd -d /home/beef -m beef
+				 sudo adduser beef sudo
+				 sudo chsh -s /bin/bash beef
+				 sudo chown -R beef:beef /opt/beef/
+				 sudo chown -R beef:beef /opt/metasploit-framework/
+				 sudo chown -R beef:beef /opt/sqlmap/
+				 echo ""
 				 echo "Please provide a password for ssh user: beef"
 				 sudo passwd beef
 				 echo "ssh enabled"

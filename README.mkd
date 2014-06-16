@@ -48,7 +48,7 @@ __The following is for the impatient.__
 For full installation details (including on Microsoft Windows), please refer to INSTALL.txt.
 We also have a Wiki page at https://github.com/beefproject/beef/wiki/Installation
 
-       $ curl https://raw.github.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
+       $ curl -L https://raw.github.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
 
 
 Usage 

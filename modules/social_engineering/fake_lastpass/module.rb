@@ -6,16 +6,12 @@
 class Fake_lastpass < BeEF::Core::Command
   
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/index.html','/lp/index','html')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/indexFF.html','/lp/indexFF','html')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/key_small.png','/lp/key_small','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/lpwhite_small.png','/lp/lpwhite_small','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/q3Jrp.png','/lp/q3Jrp','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/screenkeyboard.png','/lp/screenkeyboard','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/xsmall.png','/lp/xsmall','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/create_small.png','/lp/create_small','png')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/icon.png','/lp/icon','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/jquery-1.5.2.min.js','/lp/jquery','js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/index-new.html','/lp/index','html')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/lp_signin_logo.png','/lp/lp_signin_logo','png')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/cancel.png','/lp/cancel','png')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/keyboard.png','/lp/keyboard','png')
+
   end
   
   #
@@ -25,15 +21,10 @@ class Fake_lastpass < BeEF::Core::Command
   def post_execute
     if (@datastore['meta'] == "KILLFRAME") 
       BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/index.html')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/indexFF.html')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/key_small.png')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/lpwhite_small.png')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/q3Jrp.png')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/screenkeyboard.png')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/xsmall.png') 
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/create_small.png') 
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/icon.png') 
       BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/jquery.js') 
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/lp_signin_logo.png') 
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/cancel.png') 
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/lp/keyboard.png') 
     end
     content = {}
     content['result'] = @datastore['result']
