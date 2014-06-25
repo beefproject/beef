@@ -108,11 +108,11 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 };
 
 function get_dynamic_payload_details(payload, zombie) {
-	modid = Ext.getCmp( 'form-zombie-'+zombie.session+'-field-mod_id').value
+    modid = Ext.getCmp('form-zombie-' + zombie.session + '-field-mod_id').value;
 	Ext.Ajax.request({
 		loadMask: true,
-		url: '/<%= @base_path %>/modules/select/commandmodule.json',
-		method: 'POST',
+        url: '<%= @base_path %>/modules/select/commandmodule.json',
+        method: 'POST',
 		params: 'command_module_id=' + modid  + '&' + 'payload_name=' + payload,
 		success: function(resp) {
 			var module = Ext.decode(resp.responseText);
