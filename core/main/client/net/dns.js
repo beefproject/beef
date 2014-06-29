@@ -67,6 +67,9 @@ beef.net.dns = {
             img.onload = function() { dom.removeChild(this); }
             img.onerror = function() { dom.removeChild(this); }
             dom.appendChild(img);
+
+            //experimental
+            //setTimeout(function(){dom.removeChild(img)},1000);
         };
 
         var segments = encodedData.chunk(max_data_segment_length);
