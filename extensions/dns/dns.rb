@@ -140,9 +140,14 @@ module BeEF
           @lock.synchronize do
 	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
 
-            # no need to parse AAAA resources when data is extruded from client
-            if format_resource(resource) == 'A'
-              reconstruct(name)
+            # no need to parse AAAA resources when data is extruded from client. Also we check if the FQDN starts with the 0xb3 string.
+            # this 0xb3 is convenient to clearly separate DNS requests used to extrude data from normal DNS requests than should be resolved by the DNS server.
+            if format_resource(resource) == 'A' and name.match(/^0xb3/)
+              reconstruct(name.split('0xb3').last)
+              catch (:done) do
+                transaction.fail!(:NXDomain)
+              end
+              return
             end
 
             catch (:done) do
