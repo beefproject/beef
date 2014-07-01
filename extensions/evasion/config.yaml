@@ -17,4 +17,5 @@ beef:
               Beef: "Beef"
               evercookie: "evercookie"
               BeEF: "BeEF"
-            chain: ["scramble", "minify", "base_64", "whitespace"]
+            chain: ["scramble", "base_64"]
+# other available obfuscation techniques: ["minify", "base_64", "whitespace"]
