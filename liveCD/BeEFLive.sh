@@ -23,6 +23,9 @@
 # (if they do not yet exist)
 #
 f1="beef"
+if [[ $EUID -eq 999 ]]; then
+	sudo chmod -R 777 /opt/beef
+fi
 if [ -f $f1 ] ; then
 	echo ""
 else
