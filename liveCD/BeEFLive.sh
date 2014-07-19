@@ -70,13 +70,13 @@ disable_msf() {
 # function to copy the BeEF-bind module into metasploit
 #
 copy_beefbind()   {
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-handler.rb /opt/metasploit-framework/lib/msf/core/handler/beef_bind.rb 
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-windows-x86.rb /opt/metasploit-framework/modules/payloads/stages/windows/beef_shell.rb 
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-windows-x86.rb /opt/metasploit-framework/modules/payloads/stagers/windows/beef_bind.rb 
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x86.rb /opt/metasploit-framework/modules/payloads/stages/linux/x86/beef_shell.rb
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x86.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x86/beef_bind.rb
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x64.rb /opt/metasploit-framework/modules/payloads/stages/linux/x64/beef_shell.rb
-	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x64.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x64/beef_bind.rb
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-handler.rb /opt/metasploit-framework/lib/msf/core/handler/beef_bind.rb 
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-windows-x86.rb /opt/metasploit-framework/modules/payloads/stages/windows/beef_shell.rb 
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-windows-x86.rb /opt/metasploit-framework/modules/payloads/stagers/windows/beef_bind.rb 
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x86.rb /opt/metasploit-framework/modules/payloads/stages/linux/x86/beef_shell.rb
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x86.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x86/beef_bind.rb
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x64.rb /opt/metasploit-framework/modules/payloads/stages/linux/x64/beef_shell.rb
+	sudo cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x64.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x64/beef_bind.rb
 }
 
 #
