@@ -67,6 +67,19 @@ disable_msf() {
 }
 
 #
+# function to copy the BeEF-bind module into metasploit
+#
+copy_beefbind()   {
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-handler.rb /opt/metasploit-framework/lib/msf/core/handler/beef_bind.rb 
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-windows-x86.rb /opt/metasploit-framework/modules/payloads/stages/windows/beef_shell.rb 
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-windows-x86.rb /opt/metasploit-framework/modules/payloads/stagers/windows/beef_bind.rb 
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x86.rb /opt/metasploit-framework/modules/payloads/stages/linux/x86/beef_shell.rb
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x86.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x86/beef_bind.rb
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stage-linux-x64.rb /opt/metasploit-framework/modules/payloads/stages/linux/x64/beef_shell.rb
+	cp /opt/beef/modules/exploits/beefbind/shellcode_sources/msf/beef_bind-stager-linux-x64.rb /opt/metasploit-framework/modules/payloads/stagers/linux/x64/beef_bind.rb
+}
+
+#
 # function to exit cleanly
 #
 # trap ctrl-c and call close_bash()
@@ -147,6 +160,7 @@ show_menu() {
 		else
 			echo "[7] Enable metasploit-framework integration  [Currently Disabled]"
 		fi
+			echo "[8] Copy BeEF-bind module into the metasploit-framework"
 			echo ""
 			echo "[q] Quit to terminal"
 			echo ""
@@ -260,7 +274,14 @@ show_menu() {
 				enable_msf
 			fi
 		fi
-		
+
+		#
+		# copy BeEF-bind module to Metasploit
+		#	
+		if [ $var = "8" ] ; then
+			copy_beefbind
+		fi
+	
 		#
 		# end background beef process
 		#
