@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        wordpress_post_auth_rce:
+            enable: true
+            category: "Misc"
+            name: "Wordpress Post-Auth RCE"
+            description: "This module attempts to upload and activate a malicious wordpress plugin.  Afterwards, the URI to trigger it is: http://vulnerable-wordpress.site/wordpress/wp-content/plugins/beefbind/beefbind.php.  The command to execute can be send by a POST-parameter named 'cmd'.  CORS headers have been added to allow bidirectional crossdomain communication."
+            authors: ["Bart Leppens"]
+            target:
+                working: ["ALL"]
