@@ -20,7 +20,7 @@ class Phonegap_prompt_user < BeEF::Core::Command
             'name' => 'question', 
             'description' => 'Prompt question', 
             'ui_label'=>'Question', 
-            'value' => 'Please enter your Apple ID',
+            'value' => 'Please enter your Apple ID password',
             'width' => '300px'
             },{
             'name' => 'ans_yes', 
@@ -33,6 +33,12 @@ class Phonegap_prompt_user < BeEF::Core::Command
             'description' => 'Prompt negative answer button label', 
             'ui_label'=>'No', 
             'value' => 'Cancel',
+            'width' => '100px'
+            },{
+            'name' => 'text',
+            'description' => 'Default text to display',
+            'ui_label'=>'Default text',
+            'value' => 'Password',
             'width' => '100px'
             }]
   end

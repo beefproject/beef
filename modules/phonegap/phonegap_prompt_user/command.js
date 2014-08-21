@@ -12,6 +12,8 @@ beef.execute(function() {
     var ans_yes = "<%== @ans_yes %>";
     var ans_no = "<%== @ans_no %>";
     var result = '';
+    var def_text = "<%== @text %>";
+
 
    
     function onPrompt(results) {
@@ -23,7 +25,8 @@ beef.execute(function() {
         question,
         onPrompt,      
         title,         
-        [ans_yes,ans_no]
+        [ans_yes,ans_no],
+	def_text
     );
   
 });
