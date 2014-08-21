@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+#   Phonegap_prompt_user
+#
+beef:
+    module:
+        phonegap_alert_user:
+            enable: true
+            category: "Phonegap"
+            name: "Alert User"
+            description: "Show user an alert"
+            authors: ["staregate"]
+            target:
+                working: ["All"]
