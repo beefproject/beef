@@ -79,7 +79,7 @@ beef.updater = {
 			try {
 				command();
 			} catch(e) {
-				console.error('execute_commands - command failed to execute: ' + e.message);
+				beef.debug('execute_commands - command failed to execute: ' + e.message);
                 // prints the command source to be executed, to better trace errors
                 // beef.client_debug must be enabled in the main config
                 beef.debug(command.toString());

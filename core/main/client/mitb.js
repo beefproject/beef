@@ -106,7 +106,7 @@ beef.mitb = {
                 history.pushState({ Be:"EF" }, title, e.currentTarget);
             }
         } catch (e) {
-            console.error('beef.mitb.poisonAnchor - failed to execute: ' + e.message);
+            beef.debug('beef.mitb.poisonAnchor - failed to execute: ' + e.message);
         }
         return false;
     },
