@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Host"
             name: "Fingerprint Operating System"
-            description: "This module attempts to fingerprint the Windows Operating System version and enumerate installed patches. It uses the 'res' protocol handler (Internet Explorer only) to load images from EXE/DLL files.<br/><br/>Enumerating patches requires service pack uninstall files on the host.<br/><br/>Tested with IE8 on WinXP SP3."
+            description: "This module attempts to fingerprint the Windows Operating System version, enumerate installed patches and enumerate installed software.<br/><br/>It uses the 'res' protocol handler (Internet Explorer only) to load images from EXE/DLL files.<br/><br/>Enumerating patches only works on Windows XP and requires service pack uninstall files on the host.<br/><br/>Tested with:<ul><li>IE8 on WinXP SP3<li><li>IE11 on Windows 7 SP1</li><li>IE10 on Windows 8.</li>"
             authors: ["bcoles"]
             target:
                 working: ["IE"]

