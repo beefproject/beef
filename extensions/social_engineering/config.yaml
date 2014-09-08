@@ -46,3 +46,8 @@ beef:
                           cid8:  "corner-bl.png"
                           cid9:  "corner-br.png"
                           cid10: "bottom-border.png"
+            powershell:
+                # the default payload being used is windows/meterpreter/reverse_https
+                msf_reverse_handler_host: "127.0.0.1"
+                msf_reverse_handler_port: "443"
+                powershell_handler_url: "/ps"
