@@ -20,9 +20,10 @@ if RUBY_PLATFORM.downcase.include?("mswin") || RUBY_PLATFORM.downcase.include?("
   gem "execjs"
   gem "win32console"
 elsif !RUBY_PLATFORM.downcase.include?("darwin")
-  gem "therubyracer"
+  gem "therubyracer", "0.11.3"
   gem "execjs"
 end
+ 
 
 gem "ansi"
 gem "term-ansicolor", :require => "term/ansicolor"
