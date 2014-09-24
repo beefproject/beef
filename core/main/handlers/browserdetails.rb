@@ -38,10 +38,17 @@ module BeEF
           zombie.firstseen = Time.new.to_i
 
           # hostname
+          log_zombie_port = 0
           if not @data['results']['HostName'].nil? then
             log_zombie_domain=@data['results']['HostName']
           elsif (not @data['request'].referer.nil?) and (not @data['request'].referer.empty?)
-            log_zombie_domain=@data['request'].referer.gsub('http://', '').gsub('https://', '').split('/')[0]
+            referer = @data['request'].referer
+            if referer.start_with?("https://") then
+              log_zombie_port = 443
+            else
+              log_zombie_port = 80
+            end
+            log_zombie_domain=referer.gsub('http://', '').gsub('https://', '').split('/')[0]
           else
             log_zombie_domain="unknown" # Probably local file open
           end
@@ -51,7 +58,6 @@ module BeEF
             log_zombie_port=@data['results']['HostPort']
           else
             log_zombie_domain_parts=log_zombie_domain.split(':')
-            log_zombie_port=80
             if log_zombie_domain_parts.length > 1 then
               log_zombie_port=log_zombie_domain_parts[1].to_i
             end
