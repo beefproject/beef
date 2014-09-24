@@ -1995,7 +1995,17 @@ beef.browser = {
         var page_uri = (document.location.href) ? document.location.href : "Unknown";
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
         var hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
-        var hostport = (document.location.port) ? document.location.port : "80";
+        switch (document.location.protocol) {
+            case "http:":
+                var default_port = "80";
+                break;
+            case "https:":
+                var default_port = "443";
+                break
+            default:
+                var default_port = "";
+        }
+        var hostport = (document.location.port) ? document.location.port : default_port;
         var browser_plugins = beef.browser.getPlugins();
         var date_stamp = new Date().toString();
         var os_name = beef.os.getName();
