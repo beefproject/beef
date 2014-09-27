@@ -133,6 +133,8 @@ beef:
             enable: true
         proxy:
             enable: true
+            key: "beef_key.pem"
+            cert: "beef_cert.pem"
         metasploit:
             enable: false
         social_engineering:

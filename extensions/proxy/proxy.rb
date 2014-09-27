@@ -3,6 +3,8 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'openssl';
+
 module BeEF
   module Extension
     module Proxy
@@ -18,9 +20,16 @@ module BeEF
           @conf = BeEF::Core::Configuration.instance
           @proxy_server = TCPServer.new(@conf.get('beef.extension.proxy.address'), @conf.get('beef.extension.proxy.port'))
 
+          ssl_context = OpenSSL::SSL::SSLContext.new
+          ssl_context.cert = OpenSSL::X509::Certificate.new(File.open(@conf.get('beef.extension.proxy.cert')));
+          ssl_context.key = OpenSSL::PKey::RSA.new(File.open(@conf.get('beef.extension.proxy.key')));
+
+          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context);
+          ssl_server.start_immediately = false;
+
           loop do
-            proxy = @proxy_server.accept
-            Thread.new proxy, &method(:handle_request)
+            ssl_socket = ssl_server.accept
+            Thread.new ssl_socket, &method(:handle_request)
           end
         end
 
@@ -30,18 +39,41 @@ module BeEF
           # HTTP method # defaults to GET
           method = request_line[/^\w+/]
 
+          if method == "CONNECT" then
+            # request_line is something like:
+            # CONNECT example.com:443 HTTP/1.1
+            host_port = request_line.split(" ")[1]
+            url_prefix = "https://" + host_port
+            loop do
+              line = socket.readline
+              if line.strip.empty?
+                break
+              end
+            end
+            socket.puts("HTTP/1.0 200 Connection established\r\n\r\n")
+            socket.accept
+            print_debug("[PROXY] Handled CONNECT to #{host_port}")
+            request_line = socket.readline
+            method = request_line[/^\w+/]
+          else
+            url_prefix = ""
+          end
+
           # HTTP version # defaults to 1.0
           version = request_line[/HTTP\/(1\.\d)\s*$/, 1]
           version = "1.0" if version.nil?
 
           # url # host:port/path
-          url = request_line[/^\w+\s+(\S+)/, 1]
+          url = url_prefix + request_line[/^\w+\s+(\S+)/, 1]
 
           # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
           tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
           uri = tolerant_parser.parse(url.to_s)
 
-          raw_request = request_line
+          method, path, version = request_line.split(" ")
+          path = url_prefix + path
+          # extensions/requester/api/hook.rb parses raw_request to find port and path
+          raw_request = [method, path, version].join(" ")
           content_length = 0
 
           loop do
