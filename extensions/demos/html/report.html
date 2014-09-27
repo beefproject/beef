@@ -7,7 +7,7 @@
 <html><head>
 <title>Loading</title>
 <script>
-	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '/hook.js" type="text/javascript"><\/script>';
+	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '<%= @hook_uri %>" type="text/javascript"><\/script>';
 	document.write(commandModuleStr);
 </script>
 </head><body>

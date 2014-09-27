@@ -13,10 +13,11 @@ module Demos
   
   @full_name = 'demonstrations'
   
-  @description = 'list of demonstration pages for beef'
+  @description = 'Demonstration pages for BeEF'
   
 end
 end
 end
 
 require 'extensions/demos/api'
+require 'extensions/demos/handler'

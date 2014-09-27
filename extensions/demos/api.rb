@@ -6,15 +6,26 @@
 module BeEF
 module Extension
 module Demos
-  
+
   module RegisterHttpHandlers
-    
+
     BeEF::API::Registrar.instance.register(BeEF::Extension::Demos::RegisterHttpHandlers, BeEF::API::Server, 'mount_handler')
-    
+
     def self.mount_handler(beef_server)
-      # mount the handler to support the demos
-      dir = File.dirname(__FILE__)+'/html/'
-      beef_server.mount('/demos/', Rack::File.new(dir))
+      # mount everything in html directory to /demos/
+      path = File.dirname(__FILE__)+'/html/'
+      files = Dir[path+'**/*']
+      files.each do |f|
+        # don't follow symlinks
+        next if File.symlink?(f)
+        mount_path = '/demos/'+f.sub(path,'')
+        if File.extname(f) == '.html'
+          # use handler to mount HTML templates
+          beef_server.mount(mount_path, BeEF::Extension::Demos::Handler.new(f))
+        else
+          beef_server.mount(mount_path, Rack::File.new(f))
+        end
+      end
     end
   end
 end
