@@ -114,8 +114,8 @@ module BeEF
               print_more "Upgrade OpenSSL to version 1.0.1g or newer."
             end
             @http_server.ssl = true
-            @http_server.ssl_options = {:private_key_file => $root_dir + "/" + @configuration.get('beef.http.https.key'),
-                                      :cert_chain_file => $root_dir + "/" + @configuration.get('beef.http.https.cert'),
+            @http_server.ssl_options = {:private_key_file => File.expand_path(@configuration.get('beef.http.https.key'), $root_dir),
+                                      :cert_chain_file => File.expand_path(@configuration.get('beef.http.https.cert'), $root_dir),
                                       :verify_peer => false}
           end
         end
