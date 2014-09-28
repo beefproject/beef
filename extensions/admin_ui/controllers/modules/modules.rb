@@ -117,6 +117,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Hooked Page', 'Cookies',       'Cookies'],
 
         # Host
+        ['Host', 'Host Name/IP',     'IP'],
         ['Host', 'Date',             'DateStamp'],
         ['Host', 'Operating System', 'OsName'],
         ['Host', 'Hardware',         'Hardware'],

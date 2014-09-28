@@ -119,6 +119,9 @@ beef:
         # set this to TRUE if you want to allow auto-run execution for modules with target->user_notify
         allow_user_notify: true
 
+    # Enables DNS lookups on zombie IP addresses
+    dns_hostname_lookup: false
+
     # IP Geolocation
     # NOTE: requires MaxMind database:
     #   curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz

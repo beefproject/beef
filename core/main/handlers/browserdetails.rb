@@ -86,6 +86,21 @@ module BeEF
             self.err_msg "Invalid browser name returned from the hook browser's initial connection."
           end
 
+          # lookup zombie host name
+          ip_str = zombie.ip
+          if config.get('beef.dns_hostname_lookup')
+            begin
+              require 'resolv'
+              host_name = Resolv.getname(zombie.ip).to_s
+              if BeEF::Filters.is_valid_hostname?(host_name)
+                ip_str += " [#{host_name}]"
+              end
+            rescue
+              print_debug "[INIT] Reverse lookup failed - No results for IP address '#{zombie.ip}'"
+            end
+          end
+          BD.set(session_id, 'IP', ip_str)
+
           # geolocation
           if config.get('beef.geoip.enable')
             require 'geoip'
