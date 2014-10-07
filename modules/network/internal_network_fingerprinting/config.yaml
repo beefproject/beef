@@ -8,9 +8,9 @@ beef:
         internal_network_fingerprinting:
             enable: true
             category: "Network"
-            name: "Fingerprint Network"
-            description: "Discover devices and applications in the network of the victim using signatures like default logo images/favicons (partially based on the Yokoso idea)."
-            authors: ["bcoles@gmail.com", "wade", "antisnatchor"]
+            name: "Fingerprint Local Network"
+            description: "Discover devices and applications in the victim's Local Area Network.<br/><br/>This module uses a signature based approach - based on default logo images/favicons for known network device/applications - to fingerprint each IP address within the LAN.<br/><br/>Partially based on <a href='http://yokoso.inguardians.com/'>Yokosou</a> and <a href='http://code.google.com/p/jslanscanner/'>jslanscanner</a>."
+            authors: ["bcoles", "wade", "antisnatchor"]
             target:
-                user_notify: ["FF", "IE", "C"]
+                user_notify: ["FF", "IE", "C", "S"]
                 not_working: ["O"]

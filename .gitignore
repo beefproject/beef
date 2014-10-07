@@ -6,3 +6,5 @@ custom-config.yaml
 .rvmrc
 
 *.lock
+
+extensions/metasploit/msf-exploits.cache
