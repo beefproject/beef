@@ -44,6 +44,20 @@ module BeEF
         end
 
         #
+        # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
+        # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
+        #
+        get '/pf' do
+          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
+          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+
+          output = {
+              'aaData' => online_hooks
+          }
+          output.to_json
+        end
+
+        #
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
         get '/:session' do
@@ -69,20 +83,38 @@ module BeEF
         end
 
         def get_hb_details(hb)
-           details = BeEF::Core::Models::BrowserDetails
 
-           {
-               'id'       => hb.id,
-               'session'  => hb.session,
-               'name'     => details.get(hb.session, 'BrowserName'),
-               'version'  => details.get(hb.session, 'BrowserVersion'),
-               'os'       => details.get(hb.session, 'OsName'),
-               'platform' => details.get(hb.session, 'BrowserPlatform'),
-               'ip'       => hb.ip,
-               'domain'   => details.get(hb.session, 'HostName'),
-               'port'     => hb.port.to_s,
-               'page_uri' => details.get(hb.session, 'PageURI')
-           }
+          {
+              'id' => hb.id,
+              'session' => hb.session,
+              'name' => details.get(hb.session, 'BrowserName'),
+              'version' => details.get(hb.session, 'BrowserVersion'),
+              'os' => details.get(hb.session, 'OsName'),
+              'platform' => details.get(hb.session, 'BrowserPlatform'),
+              'ip' => hb.ip,
+              'domain' => details.get(hb.session, 'HostName'),
+              'port' => hb.port.to_s,
+              'page_uri' => details.get(hb.session, 'PageURI')
+          }
+        end
+
+        # this is used in the 'get '/pf'' restful api call
+        def hbs_to_array(hbs)
+          hbs_online = []
+          hbs.each do |hb|
+            details = BeEF::Core::Models::BrowserDetails
+            # TODO jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
+            hbs_online << [hb.id,
+                           hb.ip,
+                           details.get(hb.session, 'BrowserName'),
+                           details.get(hb.session, 'BrowserVersion'),
+                           details.get(hb.session, 'OsName'),
+                           details.get(hb.session, 'BrowserPlatform'),
+                           details.get(hb.session, 'BrowserLanguage'),
+                           details.get(hb.session, 'BrowserPlugins')
+            ]
+          end
+          hbs_online
         end
 
       end
