@@ -104,14 +104,19 @@ module BeEF
           hbs.each do |hb|
             details = BeEF::Core::Models::BrowserDetails
             # TODO jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
-            hbs_online << [hb.id,
-                           hb.ip,
-                           details.get(hb.session, 'BrowserName'),
-                           details.get(hb.session, 'BrowserVersion'),
-                           details.get(hb.session, 'OsName'),
-                           details.get(hb.session, 'BrowserPlatform'),
-                           details.get(hb.session, 'BrowserLanguage'),
-                           details.get(hb.session, 'BrowserPlugins')
+            hbs_online << [
+                hb.id,
+                hb.ip,
+                details.get(hb.session, 'BrowserName'),
+                details.get(hb.session, 'BrowserVersion'),
+                details.get(hb.session, 'OsName'),
+                details.get(hb.session, 'BrowserPlatform'),
+                details.get(hb.session, 'BrowserLanguage'),
+                details.get(hb.session, 'BrowserPlugins'),
+                details.get(hb.session, 'LocationCity'),
+                details.get(hb.session, 'LocationCountry'),
+                details.get(hb.session, 'LocationLatitude'),
+                details.get(hb.session, 'LocationLongitude')
             ]
           end
           hbs_online
