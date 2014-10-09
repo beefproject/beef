@@ -871,6 +871,19 @@ beef.browser = {
     },
 
     /**
+     * Returns a hash of string keys representing a given capability
+     * @example: beef.browser.capabilities()["navigator.plugins"]
+     */
+    capabilities(): function() {
+      var out = {};
+      var type = this.type();
+
+      out["navigator.plugins"] = (type.IE11 || !type.IE);
+
+      return out;
+    }
+
+    /**
      * Returns the type of browser being used.
      * @example: beef.browser.type().IE6
      * @example: beef.browser.type().FF
@@ -931,7 +944,7 @@ beef.browser = {
             C36iOS: this.isC36iOS(), // Chrome 36 on iOS
             C37: this.isC37(), // Chrome 37
             C37iOS: this.isC37iOS(), // Chrome 37 on iOS
-            
+
             C: this.isC(), // Chrome any version
 
             FF2: this.isFF2(), // Firefox 2
@@ -1498,8 +1511,7 @@ beef.browser = {
 
         var quicktime = false;
 
-        // Not Internet Explorer
-        if (!this.type().IE) {
+        if (this.capabilities()["navigator.plugins"]) {
 
             for (i = 0; i < navigator.plugins.length; i++) {
 
@@ -1509,7 +1521,7 @@ beef.browser = {
 
             }
 
-            // Internet Explorer
+            // Has navigator.plugins
         } else {
 
             try {
@@ -1540,8 +1552,8 @@ beef.browser = {
 
         var realplayer = false;
 
-        // Not Internet Explorer
-        if (!this.type().IE) {
+        if (this.capabilities()["navigator.plugins"]) {
+
 
             for (i = 0; i < navigator.plugins.length; i++) {
 
@@ -1551,7 +1563,7 @@ beef.browser = {
 
             }
 
-            // Internet Explorer
+            // has navigator.plugins
         } else {
 
             var definedControls = [
@@ -1591,8 +1603,8 @@ beef.browser = {
 
         var wmp = false;
 
-        // Not Internet Explorer
-        if (!this.type().IE) {
+        if (this.capabilities()["navigator.plugins"]) {
+
 
             for (i = 0; i < navigator.plugins.length; i++) {
 
@@ -1602,7 +1614,7 @@ beef.browser = {
 
             }
 
-            // Internet Explorer
+            // Has navigator.plugins
         } else {
 
             try {
@@ -1735,8 +1747,8 @@ beef.browser = {
             return r;
         };
 
-        // Internet Explorer
-        if (this.isIE()) this.getPluginsIE();
+        // Things lacking navigator.plugins
+        if (!this.capabilities()["navigator.plugins"]) this.getPluginsIE();
 
         // All other browsers that support navigator.plugins
         else if (navigator.plugins && navigator.plugins.length > 0) {
