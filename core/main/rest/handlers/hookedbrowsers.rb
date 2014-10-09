@@ -47,12 +47,24 @@ module BeEF
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
-        get '/pf' do
+        get '/pf/online' do
           online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
-          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
 
           output = {
               'aaData' => online_hooks
+          }
+          output.to_json
+        end
+
+        #
+        # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
+        # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
+        #
+        get '/pf/offline' do
+          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+
+          output = {
+              'aaData' => offline_hooks
           }
           output.to_json
         end
