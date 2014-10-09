@@ -874,14 +874,14 @@ beef.browser = {
      * Returns a hash of string keys representing a given capability
      * @example: beef.browser.capabilities()["navigator.plugins"]
      */
-    capabilities(): function() {
+    capabilities: function() {
       var out = {};
       var type = this.type();
 
       out["navigator.plugins"] = (type.IE11 || !type.IE);
 
       return out;
-    }
+    },
 
     /**
      * Returns the type of browser being used.
