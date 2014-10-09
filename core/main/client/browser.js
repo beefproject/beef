@@ -931,7 +931,7 @@ beef.browser = {
             C36iOS: this.isC36iOS(), // Chrome 36 on iOS
             C37: this.isC37(), // Chrome 37
             C37iOS: this.isC37iOS(), // Chrome 37 on iOS
-            
+
             C: this.isC(), // Chrome any version
 
             FF2: this.isFF2(), // Firefox 2
