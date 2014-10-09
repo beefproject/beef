@@ -398,11 +398,19 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Safari 8.xx
+     * @example: beef.browser.isS8()
+     */
+    isS8: function () {
+        return (window.navigator.userAgent.match(/ Version\/8\.\d/) != null && window.navigator.userAgent.match(/Safari\/\d/) != null && !window.globalStorage && !!window.getComputedStyle && !window.opera && !window.chrome && !("MozWebSocket" in window));
+    },
+
+    /**
      * Returns true if Safari.
      * @example: beef.browser.isS()
      */
     isS: function () {
-        return this.isS4() || this.isS5() || this.isS6() || this.isS7();
+        return this.isS4() || this.isS5() || this.isS6() || this.isS7() || this.isS8();
     },
 
     /**
@@ -1009,6 +1017,7 @@ beef.browser = {
             S5: this.isS5(), // Safari 5.xx
             S6: this.isS6(), // Safari 6.x
             S7: this.isS7(), // Safari 7.x
+            S8: this.isS8(), // Safari 8.x
             S: this.isS()   // Safari any version
         }
     },
@@ -1405,6 +1414,10 @@ beef.browser = {
             return '7'
         }
         ;	// Safari 7
+        if (this.isS8()) {
+            return '8'
+        }
+        ;       // Safari 8
 
         if (this.isO9_52()) {
             return '9.5'
