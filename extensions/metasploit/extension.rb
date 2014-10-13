@@ -9,6 +9,10 @@ module Metasploit
   
   extend BeEF::API::Extension
 
+      @short_name = 'msf'
+      @full_name = 'Metasploit'
+      @description = 'Metasploit integration'
+
   # Translates msf exploit options to beef options array
   def self.translate_options(msf_options)
     options = []
@@ -89,3 +93,4 @@ require 'msfrpc-client'
 require 'extensions/metasploit/rpcclient'
 require 'extensions/metasploit/api'
 require 'extensions/metasploit/module'
+require 'extensions/metasploit/rest/msf'

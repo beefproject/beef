@@ -11,6 +11,7 @@ module BeEF
         module MetasploitHooks
 
           BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Modules, 'post_soft_load')
+          BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Server, 'mount_handler')
 
           # Load modules from metasploit just after all other module config is loaded
           def self.post_soft_load
@@ -18,7 +19,7 @@ module BeEF
             if msf.login
               msf_module_config = {}
               path = BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')
-              if not BeEF::Core::Console::CommandLine.parse[:resetdb] and File.exists?("#{path}msf-exploits.cache")
+              if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")
                 print_debug "Attempting to use Metasploit exploits cache file"
                 raw = File.read("#{path}msf-exploits.cache")
                 begin
@@ -39,7 +40,7 @@ module BeEF
                 msf_modules = msf.call('module.exploits')
                 count = 1
                 msf_modules['modules'].each { |m|
-                  next if not m.include? "/browser/"
+                  next if !m.include? "/browser/"
                   m_details = msf.call('module.info', 'exploit', m)
                   if m_details
                     key = 'msf_'+m.split('/').last
@@ -70,16 +71,16 @@ module BeEF
 
 
                     msf_module_config[key] = {
-                        'enable'=> true,
-                        'msf'=> true,
-                        'msf_key' => m,
-                        'name'=> m_details['name'],
-                        'category' => 'Metasploit',
+                        'enable'     => true,
+                        'msf'        => true,
+                        'msf_key'    => m,
+                        'name'       => m_details['name'],
+                        'category'   => 'Metasploit',
                         'description'=> m_details['description'],
-                        'authors'=> m_details['references'],
-                        'path'=> path,
-                        'class'=> 'Msf_module',
-                        'target'=> target_browser
+                        'authors'    => m_details['references'],
+                        'path'       => path,
+                        'class'      => 'Msf_module',
+                        'target'     => target_browser
                     }
                     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [key])
                     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [key, nil])
@@ -102,12 +103,17 @@ module BeEF
           def self.get_options(mod)
             msf_key = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.msf_key")
             msf = BeEF::Extension::Metasploit::RpcClient.instance
-            if msf_key != nil and msf.login
+            if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'exploit', msf_key)
               com = BeEF::Core::Models::CommandModule.first(:name => mod)
               if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
-                options << {'name' => 'mod_id', 'id' => 'mod_id', 'type' => 'hidden', 'value' => com.id}
+                options << {
+                  'name'  => 'mod_id',
+                  'id'    => 'mod_id',
+                  'type'  => 'hidden',
+                  'value' => com.id
+                }
                 msf_payload_options = msf.call('module.compatible_payloads', msf_key)
                 if msf_payload_options
                   options << BeEF::Extension::Metasploit.translate_payload(msf_payload_options)
@@ -132,27 +138,26 @@ module BeEF
               msf_opts[opt["name"]] = opt["value"]
             }
 
-            if msf_key != nil and msf.login
+            if msf_key != nil && msf.login
               # Are the options correctly formatted for msf?
               # This call has not been tested
               msf.call('module.execute', 'exploit', msf_key, msf_opts)
             end
 
             hb = BeEF::HBManager.get_by_session(hbsession)
-            if not hb
+            if !hb
               print_error "Could not find hooked browser when attempting to execute module '#{mod}'"
               return false
             end
 
             bopts = []
-            uri = ""
             if msf_opts['SSL']
-              uri += "https://"
+              proto = 'https'
             else
-              uri += "http://"
+              proto = 'http'
             end
             config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
-            uri += config['callback_host'] + ":" + msf_opts['SRVPORT'] + "/" + msf_opts['URIPATH']
+            uri = proto + '://' + config['callback_host'] + ":" + msf_opts['SRVPORT'] + "/" + msf_opts['URIPATH']
 
 
             bopts << {:sploit_url => uri}
@@ -172,7 +177,7 @@ module BeEF
             msf_key = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.msf_key")
 
             msf = BeEF::Extension::Metasploit::RpcClient.instance
-            if msf_key != nil and msf.login
+            if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'payload', payload)
 
               com = BeEF::Core::Models::CommandModule.first(:name => mod)
@@ -183,6 +188,13 @@ module BeEF
                 print_error "Unable to retrieve metasploit payload options for exploit: #{msf_key}"
               end
             end
+          end
+
+          # Mounts the handler for processing Metasploit RESTful API requests.
+          #
+          # @param beef_server [BeEF::Core::Server] HTTP server instance
+          def self.mount_handler(beef_server)
+            beef_server.mount('/api/msf', BeEF::Extension::Metasploit::MsfRest.new)
           end
         end
       end
