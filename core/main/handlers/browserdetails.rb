@@ -68,10 +68,10 @@ module BeEF
 
           #Parse http_headers. Unfortunately Rack doesn't provide a util-method to get them :(
           @http_headers = Hash.new
-          http_header = @data['request'].env.select {|k,v| k.to_s.start_with? 'HTTP_'}
-                      .each {|key,value|
-                            @http_headers[key.sub(/^HTTP_/, '')] = value
-                      }
+          http_header = @data['request'].env.select { |k, v| k.to_s.start_with? 'HTTP_' }
+          .each { |key, value|
+            @http_headers[key.sub(/^HTTP_/, '')] = value
+          }
           zombie.httpheaders = @http_headers.to_json
           zombie.save
           #print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
@@ -112,37 +112,37 @@ module BeEF
               else
                 #print_debug "[INIT] Geolocation results: #{geoip}"
                 BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", "#{zombie.id}")
-                BD.set(session_id, 'LocationCity',          "#{geoip['city_name']}")
-                BD.set(session_id, 'LocationCountry',       "#{geoip['country_name']}")
-                BD.set(session_id, 'LocationCountryCode2',  "#{geoip['country_code2']}")
-                BD.set(session_id, 'LocationCountryCode3',  "#{geoip['country_code3']}")
+                BD.set(session_id, 'LocationCity', "#{geoip['city_name']}")
+                BD.set(session_id, 'LocationCountry', "#{geoip['country_name']}")
+                BD.set(session_id, 'LocationCountryCode2', "#{geoip['country_code2']}")
+                BD.set(session_id, 'LocationCountryCode3', "#{geoip['country_code3']}")
                 BD.set(session_id, 'LocationContinentCode', "#{geoip['continent_code']}")
-                BD.set(session_id, 'LocationPostCode',      "#{geoip['postal_code']}")
-                BD.set(session_id, 'LocationLatitude',      "#{geoip['latitude']}")
-                BD.set(session_id, 'LocationLongitude',     "#{geoip['longitude']}")
-                BD.set(session_id, 'LocationDMACode',       "#{geoip['dma_code']}")
-                BD.set(session_id, 'LocationAreaCode',      "#{geoip['area_code']}")
-                BD.set(session_id, 'LocationTimezone',      "#{geoip['timezone']}")
-                BD.set(session_id, 'LocationRegionName',    "#{geoip['real_region_name']}")
+                BD.set(session_id, 'LocationPostCode', "#{geoip['postal_code']}")
+                BD.set(session_id, 'LocationLatitude', "#{geoip['latitude']}")
+                BD.set(session_id, 'LocationLongitude', "#{geoip['longitude']}")
+                BD.set(session_id, 'LocationDMACode', "#{geoip['dma_code']}")
+                BD.set(session_id, 'LocationAreaCode', "#{geoip['area_code']}")
+                BD.set(session_id, 'LocationTimezone', "#{geoip['timezone']}")
+                BD.set(session_id, 'LocationRegionName', "#{geoip['real_region_name']}")
               end
             else
               print_error "[INIT] Geolocation failed - Could not find MaxMind GeoIP database '#{geoip_file}'"
-              print_more  "Download: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
+              print_more "Download: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
             end
           end
 
           # detect browser proxy
           using_proxy = false
           [
-            'CLIENT_IP',
-            'FORWARDED_FOR',
-            'FORWARDED',
-            'FORWARDED_FOR_IP',
-            'PROXY_CONNECTION',
-            'PROXY_AUTHENTICATE',
-            'X_FORWARDED',
-            'X_FORWARDED_FOR',
-            'VIA'
+              'CLIENT_IP',
+              'FORWARDED_FOR',
+              'FORWARDED',
+              'FORWARDED_FOR_IP',
+              'PROXY_CONNECTION',
+              'PROXY_AUTHENTICATE',
+              'X_FORWARDED',
+              'X_FORWARDED_FOR',
+              'VIA'
           ].each do |header|
             unless JSON.parse(zombie.httpheaders)[header].nil?
               using_proxy = true
@@ -153,12 +153,12 @@ module BeEF
           # retrieve proxy client IP
           proxy_clients = []
           [
-            'CLIENT_IP',
-            'FORWARDED_FOR',
-            'FORWARDED',
-            'FORWARDED_FOR_IP',
-            'X_FORWARDED',
-            'X_FORWARDED_FOR'
+              'CLIENT_IP',
+              'FORWARDED_FOR',
+              'FORWARDED',
+              'FORWARDED_FOR_IP',
+              'X_FORWARDED',
+              'X_FORWARDED_FOR'
           ].each do |header|
             proxy_clients << "#{JSON.parse(zombie.httpheaders)[header]}" unless JSON.parse(zombie.httpheaders)[header].nil?
           end
@@ -311,10 +311,10 @@ module BeEF
 
           # get and store the yes|no value for browser components
           components = [
-            'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
-            'HasFoxit', 'HasWebSocket', 'HasWebRTC', 'HasActiveX',
-            'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
-            'hasSessionCookies', 'hasPersistentCookies'
+              'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
+              'HasFoxit', 'HasWebSocket', 'HasWebRTC', 'HasActiveX',
+              'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
+              'hasSessionCookies', 'hasPersistentCookies'
           ]
           components.each do |k|
             v = get_param(@data['results'], k)
@@ -364,6 +364,16 @@ module BeEF
             }
             if autorun.length > 0
               print_info "Autorun executed[#{autorun.join(', ')}] against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
+            end
+          end
+
+          if config.get('beef.integration.phishing_frenzy.enable')
+            # get and store the browser plugins
+            victim_uid = get_param(@data['results'], 'PhishingFrenzyUID')
+            if BeEF::Filters.alphanums_only?(victim_uid)
+              BD.set(session_id, 'PhishingFrenzyUID', victim_uid)
+            else
+              self.err_msg "Invalid PhishingFrenzy Victim UID returned from the hook browser's initial connection."
             end
           end
         end

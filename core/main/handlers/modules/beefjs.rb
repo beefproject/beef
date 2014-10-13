@@ -38,7 +38,7 @@ module BeEF
 
             # @note If Evasion is enabled, the final ext_js string will be ext_js_to_obfuscate + ext_js_to_not_obfuscate
             # @note If Evasion is disabled, the final ext_js will be just ext_js_to_not_obfuscate
-            ext_js_sub_files.each{ |ext_js_sub_file|
+            ext_js_sub_files.each { |ext_js_sub_file|
               if config.get("beef.extension.evasion.enable")
                 if config.get("beef.extension.evasion.exclude_core_js").include?(ext_js_sub_file)
                   print_debug "Excluding #{ext_js_sub_file} from core files obfuscation list"
@@ -101,6 +101,11 @@ module BeEF
               hook_session_config['websocket_port'] = config.get("beef.http.websocket.port")
               hook_session_config['ws_poll_timeout'] = config.get("beef.http.websocket.ws_poll_timeout")
               hook_session_config['websocket_sec_port']= config.get("beef.http.websocket.secure_port")
+            end
+
+            # @note Set if PhishingFrenzy integration is enabled
+            if config.get("beef.integration.phishing_frenzy.enable")
+              hook_session_config['phishing_frenzy_enable'] = config.get("beef.integration.phishing_frenzy.enable")
             end
 
             # @note populate place holders in the beef_js string and set the response body

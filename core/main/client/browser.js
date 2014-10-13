@@ -726,12 +726,12 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 31.
-         * @example: beef.browser.isC31iOS()
-         */
-        isC31iOS: function () {
-            return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 31) ? true : false);
-        },
+     * Returns true if Chrome for iOS 31.
+     * @example: beef.browser.isC31iOS()
+     */
+    isC31iOS: function () {
+        return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 31) ? true : false);
+    },
 
     /**
      * Returns true if Chrome 32.
@@ -742,9 +742,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 32.
-         * @example: beef.browser.isC32iOS()
-         */
+     * Returns true if Chrome for iOS 32.
+     * @example: beef.browser.isC32iOS()
+     */
     isC32iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 32) ? true : false);
     },
@@ -758,9 +758,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 33.
-         * @example: beef.browser.isC33iOS()
-         */
+     * Returns true if Chrome for iOS 33.
+     * @example: beef.browser.isC33iOS()
+     */
     isC33iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 33) ? true : false);
     },
@@ -774,9 +774,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 34.
-         * @example: beef.browser.isC34iOS()
-         */
+     * Returns true if Chrome for iOS 34.
+     * @example: beef.browser.isC34iOS()
+     */
     isC34iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 34) ? true : false);
     },
@@ -790,9 +790,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 35.
-         * @example: beef.browser.isC35iOS()
-         */
+     * Returns true if Chrome for iOS 35.
+     * @example: beef.browser.isC35iOS()
+     */
     isC35iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 35) ? true : false);
     },
@@ -806,9 +806,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 36.
-         * @example: beef.browser.isC36iOS()
-         */
+     * Returns true if Chrome for iOS 36.
+     * @example: beef.browser.isC36iOS()
+     */
     isC36iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 36) ? true : false);
     },
@@ -822,9 +822,9 @@ beef.browser = {
     },
 
     /**
-         * Returns true if Chrome for iOS 37.
-         * @example: beef.browser.isC37iOS()
-         */
+     * Returns true if Chrome for iOS 37.
+     * @example: beef.browser.isC37iOS()
+     */
     isC37iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 37) ? true : false);
     },
@@ -890,13 +890,13 @@ beef.browser = {
      * Returns a hash of string keys representing a given capability
      * @example: beef.browser.capabilities()["navigator.plugins"]
      */
-    capabilities: function() {
-      var out = {};
-      var type = this.type();
+    capabilities: function () {
+        var out = {};
+        var type = this.type();
 
-      out["navigator.plugins"] = (type.IE11 || !type.IE);
+        out["navigator.plugins"] = (type.IE11 || !type.IE);
 
-      return out;
+        return out;
     },
 
     /**
@@ -2145,6 +2145,24 @@ beef.browser = {
         if (has_wmp) details['HasWMP'] = has_wmp;
         if (has_foxit) details['HasFoxit'] = has_foxit;
 
+        var pf_integration = "<%= @phishing_frenzy_enable %>";
+        if (pf_integration) {
+            var pf_param = "UID";
+            var pf_victim_uid = "";
+            var location_search = window.location.search.substring(1);
+            var params = location_search.split('&');
+            for (var i = 0; i < params.length; i++) {
+                var param_entry = params[i].split('=');
+                if (param_entry[0] == pf_param) {
+                    pf_victim_uid = param_entry[1];
+                    details['PhishingFrenzyUID'] = pf_victim_uid;
+                    break;
+                }
+            }
+        } else {
+            details['PhishingFrenzyUID'] = "N/A";
+        }
+
         return details;
     },
 
@@ -2346,11 +2364,12 @@ beef.browser = {
     /**
      * Get the browser language
      */
-    getBrowserLanguage: function(){
+    getBrowserLanguage: function () {
         var l = 'Unknown';
-        try{
-          l = window.navigator.userLanguage || window.navigator.language;
-        }catch(e){}
+        try {
+            l = window.navigator.userLanguage || window.navigator.language;
+        } catch (e) {
+        }
         return l;
     },
 
