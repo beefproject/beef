@@ -120,6 +120,7 @@ module BeEF
             hbs_online << [
                 hb.id,
                 hb.ip,
+                details.get(hb.session, 'PhishingFrenzyUID'),
                 details.get(hb.session, 'BrowserName'),
                 details.get(hb.session, 'BrowserVersion'),
                 details.get(hb.session, 'OsName'),
@@ -129,8 +130,7 @@ module BeEF
                 details.get(hb.session, 'LocationCity'),
                 details.get(hb.session, 'LocationCountry'),
                 details.get(hb.session, 'LocationLatitude'),
-                details.get(hb.session, 'LocationLongitude'),
-                details.get(hb.session, 'PhishingFrenzyUID')
+                details.get(hb.session, 'LocationLongitude')
             ]
           end
           hbs_online
