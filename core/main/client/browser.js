@@ -2173,7 +2173,7 @@ beef.browser = {
 
         var pf_integration = "<%= @phishing_frenzy_enable %>";
         if (pf_integration) {
-            var pf_param = "UID";
+            var pf_param = "uid";
             var pf_victim_uid = "";
             var location_search = window.location.search.substring(1);
             var params = location_search.split('&');
