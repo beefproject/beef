@@ -33,6 +33,9 @@ module Metasploit
 				 :ssl_version => @config['ssl_version'] ,
 				 :context => {}
  			}
+			if opts[:ssl_version] =~ /SSLv3/i
+				print_warning("Warning: Connections to Metasploit RPC over SSLv3 are insecure. Use TLSv1 instead.")
+			end
 			#auto start msfrpcd
 			if (@config['auto_msfrpcd'] || false)
 				launch_msf = ''

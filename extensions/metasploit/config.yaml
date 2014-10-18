@@ -7,7 +7,7 @@
 # Then set msf_callback_host to be the public IP of your MSF server
 #
 # Ensure you load the xmlrpc interface in Metasploit
-# msf > load msgrpc ServerHost=10.211.55.2 Pass=abc123
+# msf > load msgrpc ServerHost=IP Pass=abc123
 # Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
 # Also always use the IP of your machine where MSF is listening.
 beef:
@@ -23,7 +23,7 @@ beef:
             # if you need "ssl: true" make sure you start msfrpcd with "SSL=y", like:
             # load msgrpc ServerHost=IP Pass=abc123 SSL=y
             ssl: false
-            ssl_version: 'SSLv3'
+            ssl_version: 'TLSv1'
             ssl_verify: true
             callback_host: "127.0.0.1"
             autopwn_url: "autopwn"
