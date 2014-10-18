@@ -14,14 +14,18 @@ beef.os = {
 	  * http://ha.ckers.org/blog/20070319/detecting-default-browser-in-ie/
 	  */
 	getDefaultBrowser: function() {
-		var mt = document.mimeType;
 		var result = "Unknown"
-		if (mt) {
-			if (mt == "Safari Document")       result = "Safari";
-			if (mt == "Firefox HTML Document") result = "Firefox";
-			if (mt == "Chrome HTML Document")  result = "Chrome";
-			if (mt == "HTML Document")         result = "Internet Explorer";
-			if (mt == "Opera Web Document")    result = "Opera";
+		try {
+			var mt = document.mimeType;
+			if (mt) {
+				if (mt == "Safari Document")       result = "Safari";
+				if (mt == "Firefox HTML Document") result = "Firefox";
+				if (mt == "Chrome HTML Document")  result = "Chrome";
+				if (mt == "HTML Document")         result = "Internet Explorer";
+				if (mt == "Opera Web Document")    result = "Opera";
+			}
+		} catch (e) {
+			beef.debug("[os] getDefaultBrowser: "+e.message);
 		}
 		return result;
 	},
