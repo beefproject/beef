@@ -76,12 +76,16 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                         id: 'xssrays_hooked_domain',
                         text: 'Launch XssRays on Hooked Domain',
                         iconCls: 'zombie-tree-ctxMenu-xssrays'
+                    },{
+                        id: 'delete_zombie',
+                        text: 'Delete Zombie',
                     }
 
           ],
           listeners: {
               itemclick: function(item, object) {
                   var hb_id = this.contextNode.id.split('zombie-online-')[1];
+		  var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({
@@ -97,6 +101,20 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                                 params: 'hb_id=' + escape(hb_id)
                             });
                           break;
+                       case 'delete_zombie':
+			   var token = beefwui.get_rest_token();
+			   var hid = '';
+			   if (typeof hb_id_off === 'undefined'){
+			      hid=hb_id;
+			   }else{
+			      hid=hb_id_off;
+			   }
+			   var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
+                           Ext.Ajax.request({
+                                url: url,
+                                method: 'GET'
+                            });
+                          break;
                   }
               }
           }
@@ -106,7 +124,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		//creates a new hooked browser tab when a hooked browser is clicked
 		click: function(node, e) {
 			if(!node.leaf) return;
-
+	   
             mainPanel.remove(mainPanel.getComponent('current-browser'));
 			if(!mainPanel.getComponent('current-browser')) {
 				mainPanel.add(new ZombieTab(node.attributes));
@@ -126,7 +144,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
         },
 		//update the set of rules when a checkbox is clicked
 		checkchange: function(node, checked) {
-			
+		  
 		}
 	},
 	

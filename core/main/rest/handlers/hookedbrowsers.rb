@@ -43,6 +43,42 @@ module BeEF
           output.to_json
         end
 
+	get '/:session/delete' do
+          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          error 401 unless hb != nil
+
+          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+	  details.destroy
+
+	  logs = BeEF::Core::Models::Log.all(:hooked_browser_id => hb.id)
+	  logs.destroy
+
+	  commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hb.id)
+	  commands.destroy
+
+	  results = BeEF::Core::Models::Result.all(:hooked_browser_id => hb.id)
+	  results.destroy
+
+	  begin
+	    requester = BeEF::Core::Models::Http.all(:hooked_browser_id => hb.id)
+	    requester.destroy
+	  rescue Exception => e
+	    #the requester module may not be enabled
+	  end
+
+	  begin
+	    xssraysscans = BeEF::Core::Models::Xssraysscan.all(:hooked_browser_id => hb.id)
+	    xssraysscans.destroy
+
+	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => hb.id)
+	    xssraysdetails.destroy
+	  rescue Exception => e
+	    #the xssraysscan module may not be enabled
+	  end
+
+	  hb.destroy
+	end
+
         #
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
