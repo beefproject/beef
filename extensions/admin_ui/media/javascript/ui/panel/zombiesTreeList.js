@@ -77,8 +77,11 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                         text: 'Launch XssRays on Hooked Domain',
                         iconCls: 'zombie-tree-ctxMenu-xssrays'
                     },{
+                        xtype: 'menuseparator'
+                    },{
                         id: 'delete_zombie',
                         text: 'Delete Zombie',
+                        iconCls: 'zombie-tree-ctxMenu-delete'
                     }
 
           ],
