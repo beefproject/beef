@@ -28,7 +28,7 @@ class Ui_abuse_ie < BeEF::Core::Command
       popunder = File.read("#{$root_dir}/modules/social_engineering/ui_abuse_ie/popunder.html")
       body = popunder.gsub("__URL_PLACEHOLDER__", @exe_url)
       BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_raw('200', {'Content-Type'=>'text/html'}, body, "/underpop.html", -1)
-    rescue Exception => e
+    rescue => e
       print_error "Something went wrong executing Ui_abuse_ie::pre_send, exception: #{e.message}"
     end
   end

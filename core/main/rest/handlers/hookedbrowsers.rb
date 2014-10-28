@@ -62,7 +62,7 @@ module BeEF
 	  begin
 	    requester = BeEF::Core::Models::Http.all(:hooked_browser_id => hb.id)
 	    requester.destroy
-	  rescue Exception => e
+	  rescue => e
 	    #the requester module may not be enabled
 	  end
 
@@ -72,7 +72,7 @@ module BeEF
 
 	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => hb.id)
 	    xssraysdetails.destroy
-	  rescue Exception => e
+	  rescue => e
 	    #the xssraysscan module may not be enabled
 	  end
 
