@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        etag_client:
+            enable: true
+            category: "IPEC"
+            name: "ETag Tunnel: Server-to-Client"
+            description: "This module sends data from server to client using ETag HTTP header.<br/><br/>A payload name and message are taken as input. The structure of ETag header isn't modified. The message is sent as a bitstream, decoded, and then can be accessed via Window object property specified in payload name parameter.<br/><br/> Note: To use this feature you should enable ETag extension."
+            authors: ["dnkolegov,ovbroslavsky,neoleksov"]
+            target:
+                working: "All"

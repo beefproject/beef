@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        s2c_dns_tunnel:
+            enable: true
+            category: "IPEC"
+            name: "DNS Tunnel: Server-to-Client"
+            description: "This module retreives data sending by server over DNS covert channel (DNS tunnel).<br/><br/> A payload name and message are taken as input. The message is sent as a bitstream, decoded, and then can be accessed via Window object property specified in payload name parameter.<br/><br/>Note: To use this feature you should enable S2C DNS Tunnel extension."
+            authors: ["dnkolegov"]
+            target:
+                working: "All"
