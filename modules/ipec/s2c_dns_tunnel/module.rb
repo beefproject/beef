@@ -9,9 +9,6 @@ class S2c_dns_tunnel < BeEF::Core::Command
 
     @configuration = BeEF::Core::Configuration.instance
     zone    = @configuration.get("beef.extension.s2c_dns_tunnel.zone");
-    port    = @configuration.get("beef.http.port");
-    scheme  = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
-
     return [
             {'name' => 'payload_name', 'ui_label'=>'Payload Name', 'type' => 'text', 'width' => '400px', 'value' => 'dnsTunnelPayload'},
             {'name' => 'zone', 'ui_label'=>'Zone', 'type' => 'hidden', 'width' => '400px', 'value' => zone},
