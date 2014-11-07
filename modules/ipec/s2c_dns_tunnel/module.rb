@@ -15,8 +15,6 @@ class S2c_dns_tunnel < BeEF::Core::Command
     return [
             {'name' => 'payload_name', 'ui_label'=>'Payload Name', 'type' => 'text', 'width' => '400px', 'value' => 'dnsTunnelPayload'},
             {'name' => 'zone', 'ui_label'=>'Zone', 'type' => 'hidden', 'width' => '400px', 'value' => zone},
-            {'name' => 'port', 'ui_label'=>'Port', 'type' => 'hidden', 'width' => '400px', 'value' => port},
-            {'name' => 'scheme', 'ui_label'=>'Scheme', 'type' => 'hidden', 'width' => '400px', 'value' => scheme},
             {'name' => 'data', 'ui_label'=>'Message', 'type' => 'textarea', 
              'value' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ' +
                         'ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco ' +
