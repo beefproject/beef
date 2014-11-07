@@ -19,8 +19,8 @@ beef.execute(function() {
 
   var payload_name  = "<%= @payload_name %>";
   var domain        = "<%= @zone %>";
-  var scheme        = "<%= @scheme %>";
-  var port          = "<%= @port %>";
+  var scheme        = beef.net.httpproto;
+  var port          = beef.net.port;
   var cid           = "<%= @command_id %>";
   var curl          = "<%= @command_url %>";
  
