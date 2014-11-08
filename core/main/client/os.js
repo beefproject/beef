@@ -79,6 +79,10 @@ beef.os = {
 
 	isWin8: function() {
 		return (this.ua.match('(Windows NT 6.2)')) ? true : false;
+	},	
+	
+	isWin81: function() {
+		return (this.ua.match('(Windows NT 6.3)')) ? true : false;
 	},
 	
 	isOpenBSD: function() {
@@ -138,7 +142,7 @@ beef.os = {
 	},
 
 	isWindows: function() {
-		return this.isWin311() || this.isWinNT4() || this.isWinCE() || this.isWin95() || this.isWin98() || this.isWinME() || this.isWin2000() || this.isWin2000SP1() || this.isWinXP() || this.isWinServer2003() || this.isWinVista() || this.isWin7() || this.isWin8() || this.isWinPhone();
+		return this.isWin311() || this.isWinNT4() || this.isWinCE() || this.isWin95() || this.isWin98() || this.isWinME() || this.isWin2000() || this.isWin2000SP1() || this.isWinXP() || this.isWinServer2003() || this.isWinVista() || this.isWin7() || this.isWin8() || this.isWin81() || this.isWinPhone();
 	},
 	
 	getName: function() {
@@ -156,6 +160,7 @@ beef.os = {
 		if(this.isWinVista())      return 'Windows Vista';
 		if(this.isWin7())          return 'Windows 7';
 		if(this.isWin8())          return 'Windows 8';
+		if(this.isWin81())         return 'Windows 8.1';
 
 		//Nokia
 		if(this.isNokia()) {
