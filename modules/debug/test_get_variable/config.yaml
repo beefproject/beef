@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        test_get_variable:
+            enable: false
+            category: "Debug"
+            name: "Test JS variable passing"
+            description: "Test for JS variable passing from another BeEF's script via Window object"
+            authors: ["dnkolegov"]
+            target:
+                 working: ["All"]

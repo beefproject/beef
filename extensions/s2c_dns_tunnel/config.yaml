@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    extension:
+        s2c_dns_tunnel:
+            enable: false
+            name: 'Server-to-Client DNS Tunnel'
+            authors: ['dnkolegov','afr1ka']
+            # Define which network interface DNS server should listen. IP-address of this interface will be used in DNS answers.
+            # By default, DNS server will be started on the interface which has a highest IP-address and will listen UDP 53 port only.
+            # listen: ''
+            # Zone managed by DNS server. DNS server will not be started if zone is not specified
+            zone: ''
