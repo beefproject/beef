@@ -1,3 +1,4 @@
+### BeEF ###
 beef.db
 test/msf-test
 custom-config.yaml
@@ -8,3 +9,95 @@ custom-config.yaml
 *.lock
 
 extensions/metasploit/msf-exploits.cache
+
+# The following lines were created by https://www.gitignore.io
+
+### Linux ###
+*~
+
+# KDE directory preferences
+.directory
+
+
+### vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+
+### Emacs ###
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+
+
+### nanoc ###
+# For projects using nanoc (http://nanoc.ws/)
+
+# Default location for output, needs to match output_dir's value found in config.yaml
+output/
+
+# Temporary file directory
+tmp/
+
+# Crash Log
+crash.log
+
+
+### Windows ###
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+
+### TortoiseGit ###
+# Project-level settings
+/.tgitconfig
+
