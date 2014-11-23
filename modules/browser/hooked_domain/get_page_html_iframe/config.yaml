@@ -10,6 +10,6 @@ beef:
             category: ["Browser", "Hooked Domain"]
             name: "Get Page and iframe HTML"
             description: "This module will retrieve the HTML from the current page and any iframes (that have the same origin)."
-            authors: ["bcoles","kxynos"]
+            authors: ["bcoles", "kxynos"]
             target:
                 working: ["ALL"]

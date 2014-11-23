@@ -17,7 +17,7 @@ beef:
     module:
         send_inotes:
             enable: true
-            category: ["Misc","IBM iNotes"]
+            category: ["Misc", "IBM iNotes"]
             name: "Send iNotes"
             description: "If you have access to the origin of a victims IBM iNotes, you can use this module to send a note to someone."
             authors: ["Bart Leppens"]

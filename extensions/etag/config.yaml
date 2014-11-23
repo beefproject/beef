@@ -8,4 +8,4 @@ beef:
         etag:
             enable: false
             name: 'Server-to-Client Etag Tunnel'
-            authors: ["ovbroslavsky","neoleksov"]
+            authors: ["ovbroslavsky", "neoleksov"]

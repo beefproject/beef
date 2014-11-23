@@ -17,7 +17,7 @@ beef:
     module:
         extract_inotes_list:
             enable: true
-            category: ["Misc","IBM iNotes"]
+            category: ["Misc", "IBM iNotes"]
             name: "Extract iNotes list"
             description: "If you have access to the origin of a victims IBM iNotes, you can use this module to extract a list of notes."
             authors: ["Bart Leppens"]
