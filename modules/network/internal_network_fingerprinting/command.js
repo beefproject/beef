@@ -215,6 +215,10 @@ beef.execute(function() {
     "443","https",false,
     "/themes/pfsense_ng/images/logo.gif",200,56),
   new Array(
+    "Jenkins",
+    "80","http",false,
+    "/static/"+Math.random().toString(36).substring(2,10)+"/images/jenkins.png",240,323),
+  new Array(
     "m0n0wall",
     "80","http",false,
     "/logo.gif",150,47)
