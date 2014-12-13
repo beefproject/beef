@@ -83,7 +83,12 @@ curl -Lsk https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installe
 echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
 
 source ~/.bashrc
-source $HOME/.rvm/scripts/rvm
+
+if [ -e $HOME/.rvm/scripts/rvm ]; then
+	source $HOME/.rvm/scripts/rvm
+else
+	source /usr/local/rvm/scripts/rvm
+fi
 
 	rvm install 1.9.2
 	rvm use 1.9.2 --default
