@@ -9,6 +9,7 @@
  * Loaded in /ui/panel/index.html 
  */
 ZombieTab_Commands = function(zombie) {
+	var originalRoot;
 	
 	var command_module_config = new Ext.Panel({
 		id: 'zombie-command-module-config-'+zombie.session,
@@ -92,14 +93,44 @@ ZombieTab_Commands = function(zombie) {
 		}
 	};
 	
+	var command_module_tree_search = new Ext.form.TextField( {
+		emptyText: 'Search',
+		id: 'module-search-' + zombie.session,
+		style: {
+			width: '100%'
+			},
+		listeners: {
+			specialkey : function(field,e){
+				if(e.getKey() == e.ENTER){
+					if( field.getValue() ){
+						var root = {
+										text: "Search results",
+										children: search_module(originalRoot, field.getValue())
+						};
+						command_module_tree.setRootNode(root);
+					} else 
+						command_module_tree.setRootNode(originalRoot);
+						
+				}
+			}
+		}
+	});
+	
+	var command_module_tree_search_panel = new Ext.Panel({
+        id: "zombie-command-modules-search-panel"+zombie.session,
+		items: [ command_module_tree_search ],
+        width: 190,
+        minSize: 190,
+        maxSize: 500,
+        region: 'north'
+	});
+
 	var command_module_tree = new Ext.tree.TreePanel({
 		id: "zombie-command-modules"+zombie.session,
-		title: "Module Tree",
-		border: true,
-		region: 'west',
+		region: 'center',
 		width: 190,
         minSize: 190,
-        maxSize: 500, // if some command module names are even longer, adjust this value
+        maxSize: 500,
 		useArrows: true,
 		autoScroll: true,
 		animate: true,
@@ -119,6 +150,7 @@ ZombieTab_Commands = function(zombie) {
              load: function(treeloader, node, response) {
                        // Hide loading mask after tree is fully loaded
                        treeloader.treeLoadingMask.hide();
+						originalRoot = command_module_tree.root.childNodes;
                        return true;
              }
           }
@@ -133,17 +165,33 @@ ZombieTab_Commands = function(zombie) {
 			},
 			'activate' : function() {
 			},
+			'deactivate' : function() {
+			},
 			'select' : function() {
 			},
 			'keyup' : function() {
 			},
 			'render' : function(c) {
-				c.getEl().on('keyup', function() {
-					LoadCommandPanelEvent(Ext.getCmp('zombie-command-modules'+zombie.session).getSelectionModel().getSelectedNode(),true);
-				});
-			}
+				c.getEl().on('keyup', function(a) {
+                    LoadCommandPanelEvent(Ext.getCmp('zombie-command-modules'+zombie.session).getSelectionModel().getSelectedNode(),true);
+                });
+            }
 		}
 	});
+
+	var command_module_tree_container = new Ext.Panel({
+        id: "zombie-command-modules-container"+zombie.session,
+		title: "Module Tree",
+		border: true,
+        width: 190,
+        minSize: 190,
+        maxSize: 500, // if some command module names are even longer, adjust this value
+        layout: 'border',
+        region: 'west',
+        split: true,
+		items: [ command_module_tree_search_panel,command_module_tree ],
+	});
+
 
 	var commands_statusbar = new Beef_StatusBar(zombie.session);
 	
@@ -160,13 +208,14 @@ ZombieTab_Commands = function(zombie) {
                 collapsible: false,
                 split: true
             },
-			items: [command_module_tree, 
-				new Ext.Panel({
-					id: 'zombie-command-module-west-'+zombie.session,
-					region: 'center',
-					layout: 'border',
-					border: false,
-					items: [command_module_grid, command_module_config]
+			items: [
+                    command_module_tree_container,
+                    new Ext.Panel({
+                        id: 'zombie-command-module-west-'+zombie.session,
+                        region: 'center',
+                        layout: 'border',
+                        border: false,
+                        items: [command_module_grid, command_module_config]
 			})]
 		},
 
