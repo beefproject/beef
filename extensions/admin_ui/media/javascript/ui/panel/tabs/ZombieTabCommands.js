@@ -9,7 +9,6 @@
  * Loaded in /ui/panel/index.html 
  */
 ZombieTab_Commands = function(zombie) {
-	var k = 0;
 	var originalRoot;
 	
 	var command_module_config = new Ext.Panel({
