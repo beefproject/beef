@@ -1,0 +1,14 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    extension:
+        webrtc:
+            name: 'WebRTC'
+            enable: false
+            authors: ["xntrik"]
+            stunservers: '["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]'
+            # stunservers: '["stun:stun.l.google.com:19302"]'
+            turnservers: '{"username": "someone%40somewhere.com", "password": "somepass", "uris": ["turn:numb.viagenie.ca:3478?transport=udp","turn:numb.viagenie.ca:3478?transport=tcp"]}'
