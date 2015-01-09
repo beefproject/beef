@@ -13,3 +13,4 @@ beef:
             authors: ["xntrik"]
             target:
                 user_notify: ['C']
+                not_working: ["ALL"]
