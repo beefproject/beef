@@ -1,0 +1,28 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        cross_origin_scanner:
+            enable: true
+            category: "Network"
+            name: "Cross-Origin Scanner"
+            description: "Scan an IP range for web servers which allow cross-origin requests using CORS. The HTTP response is returned to BeEF."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
+                not_working:
+                    IE:
+                        min_ver: 6
+                        max_ver: 7
+                    O:
+                        min_ver: 1
+                        max_ver: 11
+                    C:
+                        min_ver: 1
+                        max_ver: 2
+                    S:
+                        min_ver: 1
+                        max_ver: 3
