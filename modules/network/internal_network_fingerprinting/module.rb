@@ -24,5 +24,25 @@ class Internal_network_fingerprinting < BeEF::Core::Command
       content['fail'] = 'No devices/applications have been discovered.'
     end
     save content
+
+    configuration = BeEF::Core::Configuration.instance
+    if configuration.get("beef.extension.network.enable") == true
+      if @datastore['results'] =~ /^proto=(.+)&ip=(.+)&port=([\d]+)&discovered=(.+)&url=(.+)/
+        proto = $1
+        ip = $2
+        port = $3
+        discovered = $4
+        url = $5
+        session_id = @datastore['beefhook']
+        cid = @datastore['cid'].to_i
+        if !ip.nil?
+          print_debug("Hooked browser found '#{discovered}' [ip: #{ip}]")
+          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => discovered, :cid => cid)
+          r.save
+        end
+      end
+
+    end
+
   end
 end
