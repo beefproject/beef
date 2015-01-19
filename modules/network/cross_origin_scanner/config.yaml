@@ -11,9 +11,11 @@ beef:
             name: "Cross-Origin Scanner"
             description: "Scan an IP range for web servers which allow cross-origin requests using CORS. The HTTP response is returned to BeEF."
             authors: ["bcoles"]
+            # http://caniuse.com/cors
             target:
                 working: ["ALL"]
                 not_working:
+                    # CORS is partially supported on IE 8 & 9
                     IE:
                         min_ver: 6
                         max_ver: 7
@@ -22,7 +24,10 @@ beef:
                         max_ver: 11
                     C:
                         min_ver: 1
-                        max_ver: 2
+                        max_ver: 3
                     S:
+                        min_ver: 1
+                        max_ver: 3
+                    F:
                         min_ver: 1
                         max_ver: 3
