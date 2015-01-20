@@ -108,6 +108,12 @@
    background-repeat: no-repeat;
 }
 
+.network-host-ctxMenu-adapter {
+   background-image: url(../images/icons/adapter.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
 .network-host-ctxMenu-fingerprint {
    background-image: url(../images/icons/magnifier.png);
    background-size: 16px 16px;

@@ -5,7 +5,7 @@
 //
 
 /*
- * The Network tab panel for the selected zombie.
+ * The Network tab panel for the selected zombie browser.
  * Loaded in /ui/panel/index.html
  */
 ZombieTab_Network = function(zombie) {
@@ -15,22 +15,23 @@ ZombieTab_Network = function(zombie) {
 	// RESTful API token
 	var token = beefwui.get_rest_token();
 
-        var get_module_id = function(name){
-                var id = "";                            
-        $jwterm.ajax({
-            type: 'GET',                                        
-            url: "/api/modules/search/" + name + "?token=" + token,
-            async: false,                                       
-            processData: false,                                 
-            success: function(data){                            
-                id = data.id;                                   
-            },                                                  
-            error: function(){                                  
-                //update_fail("Error getting module id.");               
-            }                                                           
-        });                                                     
+	// get module ID from name
+	var get_module_id = function(name){
+		var id = "";
+		$jwterm.ajax({
+			type: 'GET',
+			url: "/api/modules/search/" + name + "?token=" + token,
+			async: false,
+			processData: false,
+			success: function(data){                            
+				id = data.id;                                   
+			},
+			error: function(){                                  
+				commands_statusbar.update_fail("Error getting module id for '"+mod_name+"'");
+			}
+		});                                                     
                 return id;                                      
-        }                   
+	}                   
 
 	/*
 	 * The panel that displays all identified network services grouped by host
@@ -89,11 +90,60 @@ ZombieTab_Network = function(zombie) {
 			rowclick: function(grid, rowIndex) {
 				var r = grid.getStore().getAt(rowIndex).data;
 			},
-			containercontextmenu: function(view, e) {
-				e.preventDefault();
-			},
 			contextmenu: function(e, element, options) {
 				e.preventDefault();
+			},
+			containercontextmenu: function(view, e) {
+				e.preventDefault();
+				var emptygrid_menu = new Ext.menu.Menu({
+					items: [
+					{
+						text: 'Get Internal IP (WebRTC)',
+						iconCls: 'network-host-ctxMenu-adapter',
+						handler: function() {
+							var mod_id = get_module_id("get_internal_ip_webrtc");
+							commands_statusbar.update_sending('Identifying zombie network adapters ...');
+							$jwterm.ajax({
+								contentType: 'application/json',
+								data: JSON.stringify({}),
+								dataType: 'json',
+								type: 'POST',
+								url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+								async: false,
+								processData: false,
+								success: function(data){
+									commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+								},
+								error: function(){
+									commands_statusbar.update_fail('Error sending command');
+								}
+							});
+						}
+					},{
+						text: 'Identify LAN Subnets',
+						iconCls: 'network-host-ctxMenu-network',
+						handler: function() {
+							var mod_id = get_module_id("identify_lan_subnets");
+							commands_statusbar.update_sending('Identifying zombie LAN subnets ...');
+							$jwterm.ajax({
+								contentType: 'application/json',
+								data: JSON.stringify({}),
+								dataType: 'json',
+								type: 'POST',
+								url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+								async: false,
+								processData: false,
+								success: function(data){
+									commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+								},
+								error: function(){
+									commands_statusbar.update_fail('Error sending command');
+								}
+							});
+						}
+					}]
+				});
+				emptygrid_menu.showAt(e.getXY());
 			},
 			rowcontextmenu: function(grid, rowIndex, e) {
 				e.preventDefault();
@@ -126,7 +176,7 @@ ZombieTab_Network = function(zombie) {
                                                                         async: false,
                                                                         processData: false,
                                                                         success: function(data){
-                                                                                commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
                                                                         },
                                                                         error: function(){
                                                                                 commands_statusbar.update_fail('Error sending command');
@@ -148,7 +198,7 @@ ZombieTab_Network = function(zombie) {
                                                                         async: false,
                                                                         processData: false,
                                                                         success: function(data){
-                                                                                commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
                                                                         },
                                                                         error: function(){
                                                                                 commands_statusbar.update_fail('Error sending command');
@@ -177,7 +227,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -199,7 +249,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -228,7 +278,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -250,7 +300,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -375,7 +425,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -397,7 +447,7 @@ ZombieTab_Network = function(zombie) {
 	                                                                async: false,
 	                                                                processData: false,
 	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
 	                                                                },
 	                                                                error: function(){
 	                                                                        commands_statusbar.update_fail('Error sending command');
@@ -422,7 +472,7 @@ ZombieTab_Network = function(zombie) {
                                                                         async: false,
                                                                         processData: false,
                                                                         success: function(data){
-                                                                                commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
                                                                         },
                                                                         error: function(){
                                                                                 commands_statusbar.update_fail('Error sending command');
@@ -447,7 +497,7 @@ ZombieTab_Network = function(zombie) {
                                                                         async: false,
                                                                         processData: false,
                                                                         success: function(data){
-                                                                                commands_statusbar.update_sent("Command [" + data.command_id + "] sent successfully");
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
                                                                         },
                                                                         error: function(){
                                                                                 commands_statusbar.update_fail('Error sending command');
