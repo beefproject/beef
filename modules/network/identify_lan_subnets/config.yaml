@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        identify_lan_subnets:
+            enable: true
+            category: "Network"
+            name: "Identify LAN Subnets"
+            description: "Discover active hosts in the internal network(s) of the hooked browser. This module works by attempting to connect to commonly used LAN IP addresses and timing the response."
+            authors: ["browserhacker.com"]
+            target:
+                working: ["FF", "C"]
+                not_working: ["IE", "S", "O"]
