@@ -141,8 +141,170 @@ ZombieTab_Network = function(zombie) {
 								}
 							});
 						}
+					},{
+						text: 'Discover Web Servers',
+						iconCls: 'network-host-ctxMenu-web',
+						menu: {
+						  xtype: 'menu',
+						  items: [{
+							text: 'Common LAN IPs',
+							iconCls: 'network-host-ctxMenu-network',
+							handler: function() {
+								var mod_name = "get_http_servers";
+								var mod_id = get_module_id(mod_name);
+								commands_statusbar.update_sending('Favicon scanning commonly used local area network IP addresses for web servers...');
+								$jwterm.ajax({
+									contentType: 'application/json',
+									data: JSON.stringify({"ipRange":"common"}),
+									dataType: 'json',
+									type: 'POST',
+									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+									async: false,
+									processData: false,
+									success: function(data){
+										commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+									},
+									error: function(){
+										commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+									}
+								});
+							}
+						  },{
+							text: 'Specify IP Range',
+							iconCls: 'network-host-ctxMenu-network',
+							handler: function() {
+								var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+								var mod_name = "get_http_servers";
+								var mod_id = get_module_id(mod_name);
+								commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for web servers...');
+								$jwterm.ajax({
+									contentType: 'application/json',
+									data: JSON.stringify({"ipRange":ip_range}),
+									dataType: 'json',
+									type: 'POST',
+									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+									async: false,
+									processData: false,
+									success: function(data){
+										commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+									},
+									error: function(){
+										commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+									}
+								});
+							}
+						  }]
+						}
+					},{
+                                                text: 'Fingerprint HTTP',
+                                                iconCls: 'network-host-ctxMenu-fingerprint',
+                                                menu: {
+                                                  xtype: 'menu',
+                                                  items: [{
+                                                        text: 'Common LAN IPs',
+                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        handler: function() {
+                                                                var mod_name = "internal_network_fingerprinting";
+                                                                var mod_id = get_module_id(mod_name);
+                                                                commands_statusbar.update_sending('Fingerprinting commonly used local area network IP addresses...');
+                                                                $jwterm.ajax({
+                                                                        contentType: 'application/json',
+                                                                        data: JSON.stringify({"ipRange":"common"}),
+                                                                        dataType: 'json',
+                                                                        type: 'POST',
+                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                                        async: false,
+                                                                        processData: false,
+                                                                        success: function(data){
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                                        },
+                                                                        error: function(){
+                                                                                commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+                                                                        }
+                                                                });
+                                                        }
+                                                  },{
+                                                        text: 'Specify IP Range',
+                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        handler: function() {
+                                                                var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+                                                                var mod_name = "internal_network_fingerprinting";
+                                                                var mod_id = get_module_id(mod_name);
+                                                                commands_statusbar.update_sending('Fingerprinting ' + ip_range + '...');
+                                                                $jwterm.ajax({
+                                                                        contentType: 'application/json',
+                                                                        data: JSON.stringify({"ipRange":ip_range}),
+                                                                        dataType: 'json',
+                                                                        type: 'POST',
+                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                                        async: false,
+                                                                        processData: false,
+                                                                        success: function(data){
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                                        },
+                                                                        error: function(){
+                                                                                commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+                                                                        }
+                                                                });
+                                                         }
+                                                  }]
+                                                }
+                                        },{
+                                                text: 'CORS Scan',
+                                                iconCls: 'network-host-ctxMenu-cors',
+                                                menu: {
+                                                  xtype: 'menu',
+                                                  items: [{
+                                                        text: 'Common LAN IPs',
+                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        handler: function() {
+                                                                var mod_name = "cross_origin_scanner";
+                                                                var mod_id = get_module_id(mod_name);
+                                                                commands_statusbar.update_sending('CORS scanning commonly used local area network IP addresses...');
+                                                                $jwterm.ajax({
+                                                                        contentType: 'application/json',
+                                                                        data: JSON.stringify({"ipRange":"common"}),
+                                                                        dataType: 'json',
+                                                                        type: 'POST',
+                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                                        async: false,
+                                                                        processData: false,
+                                                                        success: function(data){
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                                        },
+                                                                        error: function(){
+                                                                                commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+                                                                        }
+                                                                });
+                                                        }
+                                                  },{
+                                                        text: 'Specify IP Range',
+                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        handler: function() {
+                                                                var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+                                                                var mod_name = "cross_origin_scanner";
+                                                                var mod_id = get_module_id(mod_name);
+                                                                commands_statusbar.update_sending('CORS scanning ' + ip_range + '...');
+                                                                $jwterm.ajax({
+                                                                        contentType: 'application/json',
+                                                                        data: JSON.stringify({"ipRange":ip_range}),
+                                                                        dataType: 'json',
+                                                                        type: 'POST',
+                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                                        async: false,
+                                                                        processData: false,
+                                                                        success: function(data){
+                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                                        },
+                                                                        error: function(){
+                                                                                commands_statusbar.update_fail('Error executing module ' + mod_name + ' [id: ' + mod_id + ']');
+                                                                        }
+                                                                });
+                                                        }
+                                                  }]
+                                                }
 					}]
-				});
+                                });
 				emptygrid_menu.showAt(e.getXY());
 			},
 			rowcontextmenu: function(grid, rowIndex, e) {
@@ -158,7 +320,8 @@ ZombieTab_Network = function(zombie) {
 				grid.rowCtxMenu = new Ext.menu.Menu({
 					items: [
 					{
-                                                text: 'Discover HTTP',
+                                                text: 'Discover Web Servers',
+						iconCls: 'network-host-ctxMenu-web',
                                                 menu: {
                                                   xtype: 'menu',
                                                   items: [{
@@ -166,7 +329,7 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
                                                                 var mod_id = get_module_id("get_http_servers");
-                                                                commands_statusbar.update_sending('Fingerprinting ' + ip + '...');
+                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
                                                                         data: JSON.stringify({"ipRange":ip+'-'+ip}),
@@ -188,7 +351,7 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
                                                                 var mod_id = get_module_id("get_http_servers");
-                                                                commands_statusbar.update_sending('Scanning ' + ip_range + ' for HTTP servers...');
+                                                                commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for HTTP servers...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
                                                                         data: JSON.stringify({"ipRange":ip_range}),

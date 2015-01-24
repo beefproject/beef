@@ -11,7 +11,7 @@ module Network
   
   @short_name = 'network'
   @full_name = 'Network'
-  @description = ''
+  @description = "This extension provides a simple interface for interacting with hosts on a zombie browser's local area networks."
 
 end
 end

