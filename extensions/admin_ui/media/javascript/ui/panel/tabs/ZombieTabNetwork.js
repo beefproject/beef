@@ -174,6 +174,10 @@ ZombieTab_Network = function(zombie) {
 							iconCls: 'network-host-ctxMenu-network',
 							handler: function() {
 								var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+								if (!ip_range) {
+									commands_statusbar.update_fail('Cancelled');
+									return;
+								}
 								var mod_name = "get_http_servers";
 								var mod_id = get_module_id(mod_name);
 								commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for web servers...');
@@ -228,6 +232,10 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
                                                                 var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+                                                                if (!ip_range) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var mod_name = "internal_network_fingerprinting";
                                                                 var mod_id = get_module_id(mod_name);
                                                                 commands_statusbar.update_sending('Fingerprinting ' + ip_range + '...');
@@ -282,6 +290,10 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
                                                                 var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+                                                                if (!ip_range) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var mod_name = "cross_origin_scanner";
                                                                 var mod_id = get_module_id(mod_name);
                                                                 commands_statusbar.update_sending('CORS scanning ' + ip_range + '...');
@@ -623,7 +635,15 @@ ZombieTab_Network = function(zombie) {
                                                         handler: function() {
                                                                 var mod_id = get_module_id("shell_shock_scanner");
 								var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
+                                                                if (!lhost) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var lport = prompt("Enter local port for connect back shell:", 'LPORT');
+                                                                if (!lport) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
 								alert("Now start your reverse shell handler on " + lhost + ':' + lport);
                                                                 commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
                                                                 $jwterm.ajax({
@@ -648,7 +668,15 @@ ZombieTab_Network = function(zombie) {
                                                         handler: function() {
                                                                 var mod_id = get_module_id("rfi_scanner");
                                                                 var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
+                                                                if (!lhost) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var lport = prompt("Enter local port for connect back shell:", 'LPORT');
+                                                                if (!lport) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
 								alert("Now start your reverse shell handler on " + lhost + ':' + lport);
                                                                 commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
                                                                 $jwterm.ajax({
