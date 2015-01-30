@@ -142,6 +142,28 @@ ZombieTab_Network = function(zombie) {
 							});
 						}
 					},{
+						text: 'Discover Routers',
+						iconCls: 'network-host-ctxMenu-router',
+						handler: function() {
+							var mod_id = get_module_id("fingerprint_routers");
+							commands_statusbar.update_sending('Scanning commonly used local area network IP addresses for routers ...');
+							$jwterm.ajax({
+								contentType: 'application/json',
+								data: JSON.stringify({}),
+								dataType: 'json',
+								type: 'POST',
+								url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+								async: false,
+								processData: false,
+								success: function(data){
+									commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+								},
+								error: function(){
+									commands_statusbar.update_fail('Error sending command');
+								}
+							});
+						}
+					},{
 						text: 'Discover Web Servers',
 						iconCls: 'network-host-ctxMenu-web',
 						menu: {
