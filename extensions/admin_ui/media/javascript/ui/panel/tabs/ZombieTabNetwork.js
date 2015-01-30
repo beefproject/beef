@@ -98,7 +98,7 @@ ZombieTab_Network = function(zombie) {
 				var emptygrid_menu = new Ext.menu.Menu({
 					items: [
 					{
-						text: 'Get Internal IP (WebRTC)',
+						text: 'Get Internal IP Address',
 						iconCls: 'network-host-ctxMenu-adapter',
 						handler: function() {
 							var mod_id = get_module_id("get_internal_ip_webrtc");
@@ -193,7 +193,7 @@ ZombieTab_Network = function(zombie) {
 							}
 						  },{
 							text: 'Specify IP Range',
-							iconCls: 'network-host-ctxMenu-network',
+							iconCls: 'network-host-ctxMenu-config',
 							handler: function() {
 								var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
 								if (!ip_range) {
@@ -251,7 +251,7 @@ ZombieTab_Network = function(zombie) {
                                                         }
                                                   },{
                                                         text: 'Specify IP Range',
-                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        iconCls: 'network-host-ctxMenu-config',
                                                         handler: function() {
                                                                 var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
                                                                 if (!ip_range) {
@@ -309,7 +309,7 @@ ZombieTab_Network = function(zombie) {
                                                         }
                                                   },{
                                                         text: 'Specify IP Range',
-                                                        iconCls: 'network-host-ctxMenu-network',
+                                                        iconCls: 'network-host-ctxMenu-config',
                                                         handler: function() {
                                                                 var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
                                                                 if (!ip_range) {

@@ -96,6 +96,12 @@
 /*
  * Network Panel
  ****************************************/
+.network-host-ctxMenu-config {
+   background-image: url(../images/icons/tools.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
 .network-host-ctxMenu-host {
    background-image: url(../images/icons/pc.png);
    background-size: 16px 16px;
@@ -116,6 +122,12 @@
 
 .network-host-ctxMenu-adapter {
    background-image: url(../images/icons/adapter.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-router {
+   background-image: url(../images/icons/router.png);
    background-size: 16px 16px;
    background-repeat: no-repeat;
 }
