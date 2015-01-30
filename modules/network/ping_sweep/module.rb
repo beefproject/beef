@@ -26,5 +26,21 @@ class Ping_sweep < BeEF::Core::Command
       content['fail'] = 'No active hosts have been discovered.'
     end
     save content
+
+    configuration = BeEF::Core::Configuration.instance
+    if configuration.get("beef.extension.network.enable") == true
+
+      session_id = @datastore['beefhook']
+      cid = @datastore['cid'].to_i
+
+      # save the network host
+      if @datastore['results'] =~ /host=([\d\.]+) is alive/
+        ip = $1
+        print_debug("Hooked browser has network interface #{ip}")
+        r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+        r.save
+      end
+    end
+
   end
 end
