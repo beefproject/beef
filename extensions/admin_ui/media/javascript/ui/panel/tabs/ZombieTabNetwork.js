@@ -568,7 +568,7 @@ ZombieTab_Network = function(zombie) {
 				grid.rowCtxMenu.showAt(e.getXY());
 			},
 			afterrender: function(datagrid) {
-				datagrid.store.reload();
+				datagrid.store.reload({ params: {nonce: Ext.get ("nonce").dom.value} });
 			}
 
 		}
@@ -581,7 +581,7 @@ ZombieTab_Network = function(zombie) {
 		layout: 'fit',
 		listeners: {
 			activate: function(hosts_panel) {
-				hosts_panel.items.items[0].store.reload();
+				hosts_panel.items.items[0].store.reload({ params: {nonce: Ext.get ("nonce").dom.value} });
 			}
 		}
 	});
