@@ -1340,7 +1340,7 @@ beef.browser = {
             return '40'
         }
         ;   // Chrome 40
-        if (this.is409iOS()) {
+        if (this.isC40iOS()) {
             return '40'
         }
         ;   // Chrome 40 for iOS
