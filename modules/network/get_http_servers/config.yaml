@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_http_servers:
+            enable: true
+            category: "Network"
+            name: "Get HTTP Servers (Favicon)"
+            description: "Attempts to discover HTTP servers on the specified IP range by checking for a favicon.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses."
+            authors: ["bcoles"]
+            target:
+                user_notify: ["FF", "IE", "C", "S"]

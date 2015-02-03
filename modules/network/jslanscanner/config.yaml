@@ -1,0 +1,18 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+# Ported to BeEF from JsLanScanner: https://code.google.com/p/jslanscanner/source/browse/trunk/lan_scan/js/lan_scan.js
+#
+beef:
+    module:
+        fingerprint_routers:
+            enable: true
+            category: "Network"
+            name: "Fingerprint Routers"
+            description: "This module attempts to discover network routers on the local network of the hooked browser. It scans for web servers on IP addresses commonly used by routers. It uses a signature based approach - based on default image paths for known network devices - to determine if the web server is a router web interface.<br/><br/>Ported to BeEF from <a href='http://code.google.com/p/jslanscanner/' target='_blank'>JsLanScanner</a>.<br/><br/>Note: The user may see authentication popups in the event any of the target IP addresses are using HTTP authentication."
+            authors: ["Gareth Heyes"]
+            target:
+                user_notify: ["FF", "S"]
+                not_working: ["C", "IE"]

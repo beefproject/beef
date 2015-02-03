@@ -94,6 +94,70 @@
 }
 
 /*
+ * Network Panel
+ ****************************************/
+.network-host-ctxMenu-config {
+   background-image: url(../images/icons/tools.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-host {
+   background-image: url(../images/icons/pc.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-network {
+   background-image: url(../images/icons/network.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-web {
+   background-image: url(../images/icons/web.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-adapter {
+   background-image: url(../images/icons/adapter.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-router {
+   background-image: url(../images/icons/router.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-fingerprint {
+   background-image: url(../images/icons/magnifier.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-cors {
+   background-image: url(../images/icons/cors.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-shellshock {
+   background-image: url(../images/icons/shellshock.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+.network-host-ctxMenu-php {
+   background-image: url(../images/icons/php.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
+
+/*
  * Ext.beef.msg
  ****************************************/
 .msg .x-box-mc {

