@@ -38,7 +38,7 @@ class Port_scanner < BeEF::Core::Command
         service = $4
         session_id = @datastore['beefhook']
         cid = @datastore['cid'].to_i
-        if !ip.nil?
+        if !ip.nil? && BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
           r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => 'http', :ip => ip, :port => port, :type => service, :cid => cid)
           r.save

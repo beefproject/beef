@@ -35,7 +35,7 @@ class Fingerprint_routers < BeEF::Core::Command
         device = $2
         session_id = @datastore['beefhook']
         cid = @datastore['cid'].to_i
-        if !ip.nil?
+        if !ip.nil? && BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network device " + device + " [ip: #{ip}]")
           r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :type => device, :cid => cid)
           r.save

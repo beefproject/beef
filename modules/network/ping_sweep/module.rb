@@ -36,9 +36,11 @@ class Ping_sweep < BeEF::Core::Command
       # save the network host
       if @datastore['results'] =~ /host=([\d\.]+) is alive/
         ip = $1
-        print_debug("Hooked browser has network interface #{ip}")
-        r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
-        r.save
+        if BeEF::Filters.is_valid_ip?(ip)
+          print_debug("Hooked browser has network interface #{ip}")
+          r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+          r.save
+        end
       end
     end
 
