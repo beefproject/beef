@@ -89,6 +89,10 @@ beef.execute(function() {
     "80","http",false,
     "/pagerror.gif",36,48),
   new Array(
+    "PHP",
+    "80","http",false,
+    "/?=PHPE9568F34-D428-11d2-A769-00AA001ACF42",120,67),
+  new Array(
     "QNAP NAS",
     "8080","http",false,
     "/ajax_obj/img/running.gif",16,16),
@@ -97,9 +101,13 @@ beef.execute(function() {
     "443","https",false,
     "/cgi-bin/images/login/cloud_portal.png",165,32),
   new Array(
-    "Asus Router",
+    "Asus RT Series Router",
     "80","http",false,
     "/images/top-02.gif",359,78),
+  new Array(
+    "Asus RX Series Router",
+    "80","http",false,
+    "/images/bu_blue.gif",82,16),
   new Array(
     "Belkin Router",
     "80","http",false,

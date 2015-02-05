@@ -36,6 +36,7 @@ class Identify_lan_subnets < BeEF::Core::Command
         hosts.split(',').flatten.each do |ip|
           next if ip.nil?
           next unless ip.to_s =~ /^([\d\.]+)$/
+          next unless BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found host #{ip}")
           r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
           r.save

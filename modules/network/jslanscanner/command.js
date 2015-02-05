@@ -220,6 +220,7 @@ beef.execute(function() {
 		{make:'SMC',model:'7004ABR',graphic:'/images/logo.gif'},
 		{make:'DLink',model:'DI524',graphic:'/m524.gif'},
 		{make:'Cisco',model:'2600',graphic:'/images/logo.png'},
+		{make:'ASUS',model:'RX Series',graphic:'/images/banner_sys4bg.gif'},
 		{make:'ASUS',model:'RT Series',graphic:'/images/EZSetup_button.gif'}
 	];
 
