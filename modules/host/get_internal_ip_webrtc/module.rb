@@ -25,9 +25,11 @@ class Get_internal_ip_webrtc < BeEF::Core::Command
             next unless ip =~ /^[\d\.]+$/
             next if ip =~ /^0\.0\.0\.0$/
             next unless BeEF::Filters.is_valid_ip?(ip)
-            print_debug("Hooked browser has network interface #{ip}")
-            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :os => os, :cid => cid)
-            r.save
+            if BeEF::Core::Models::NetworkHost.all(:ip => ip).empty? # prevent duplicates
+              print_debug("Hooked browser has network interface #{ip}")
+              r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :os => os, :cid => cid)
+              r.save
+            end
           end
         end
       end

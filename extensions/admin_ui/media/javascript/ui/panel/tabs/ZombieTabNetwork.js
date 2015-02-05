@@ -30,8 +30,8 @@ ZombieTab_Network = function(zombie) {
 				commands_statusbar.update_fail("Error getting module id for '"+mod_name+"'");
 			}
 		});                                                     
-                return id;                                      
-	}                   
+        return id;
+	};
 
 	/*
 	 * The panel that displays all identified network services grouped by host
@@ -756,8 +756,6 @@ ZombieTab_Network = function(zombie) {
                 sortInfo: {field: 'ip', direction: 'ASC'}
         });
 
-        var req_pagesize = 50;
-
         var services_panel_bbar = new Ext.PagingToolbar({
                 pageSize: req_pagesize,
                 store: services_panel_store,
@@ -811,131 +809,144 @@ ZombieTab_Network = function(zombie) {
 				var ip = record.get('ip');
 				var port = record.get('port');
                                 var proto = record.get('proto');
-				grid.rowCtxMenu = new Ext.menu.Menu({
-					items: [{
-					  text: 'Scan ('+ip+':'+port+'/'+proto+')',
-					  iconCls: 'network-host-ctxMenu-host',
-					  menu: {
-						xtype: 'menu',
-						items: [{
-                                                        text: 'Fingerprint HTTP',
-							iconCls: 'network-host-ctxMenu-fingerprint',
-                                                        handler: function() {
-	                                                        var mod_id = get_module_id("internal_network_fingerprinting");
-	                                                        commands_statusbar.update_sending('Fingerprinting ' + ip + '...'); 
-	                                                        $jwterm.ajax({
-	                                                                contentType: 'application/json',
-	                                                                data: JSON.stringify({"ipRange":ip+'-'+ip, "ports":port}),
-	                                                                dataType: 'json',
-	                                                                type: 'POST',
-	                                                                url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-	                                                                async: false,
-	                                                                processData: false,
-	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-	                                                                },
-	                                                                error: function(){
-	                                                                        commands_statusbar.update_fail('Error sending command');
-	                                                                }
-	                                                        });
-                                                        }
-                                                },{
-                                                        text: 'CORS Scan',
-							iconCls: 'network-host-ctxMenu-cors',
-                                                        handler: function() {
-	                                                        var mod_id = get_module_id("cross_origin_scanner");
-	                                                        commands_statusbar.update_sending('CORS scanning ' + ip + '...');
-	                                                        $jwterm.ajax({
-	                                                                contentType: 'application/json',
-	                                                                data: JSON.stringify({"ipRange":ip+'-'+ip, "ports":port}),
-	                                                                dataType: 'json',
-	                                                                type: 'POST',
-	                                                                url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-	                                                                async: false,
-	                                                                processData: false,
-	                                                                success: function(data){
-	                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-	                                                                },
-	                                                                error: function(){
-	                                                                        commands_statusbar.update_fail('Error sending command');
-	                                                                }
-	                                                        });
-                                                        }
-                                                },{
-                                                        text: 'Shellshock Scan',
-							iconCls: 'network-host-ctxMenu-shellshock',
-                                                        handler: function() {
-                                                                var mod_id = get_module_id("shell_shock_scanner");
-								var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
-                                                                if (!lhost) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-                                                                var lport = prompt("Enter local port for connect back shell:", 'LPORT');
-                                                                if (!lport) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-								alert("Now start your reverse shell handler on " + lhost + ':' + lport);
-                                                                commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
-                                                                $jwterm.ajax({
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({"rproto":proto, "rhost":ip, "rport":port, "lhost":lhost, "lport":lport}),
-                                                                        dataType: 'json',
-                                                                        type: 'POST',
-                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-                                                                        async: false,
-                                                                        processData: false,
-                                                                        success: function(data){
-                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-                                                                        },
-                                                                        error: function(){
-                                                                                commands_statusbar.update_fail('Error sending command');
-                                                                        }
-                                                                });
-                                                        }
-                                                },{
-                                                        text: 'RFI Scan',
-                                                        iconCls: 'network-host-ctxMenu-php',
-                                                        handler: function() {
-                                                                var mod_id = get_module_id("rfi_scanner");
-                                                                var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
-                                                                if (!lhost) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-                                                                var lport = prompt("Enter local port for connect back shell:", 'LPORT');
-                                                                if (!lport) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-								alert("Now start your reverse shell handler on " + lhost + ':' + lport);
-                                                                commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
-                                                                $jwterm.ajax({
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({"rproto":proto, "rhost":ip, "rport":port, "lhost":lhost, "lport":lport, "payload":"reverse_php"}),
-                                                                        dataType: 'json',
-                                                                        type: 'POST',
-                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-                                                                        async: false,
-                                                                        processData: false,
-                                                                        success: function(data){
-                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-                                                                        },
-                                                                        error: function(){
-                                                                                commands_statusbar.update_fail('Error sending command');
-                                                                        }
-                                                                });
-                                                        }
-                                                }]
-					  }
-					}]
-                                });
-                                grid.rowCtxMenu.showAt(e.getXY());
+                            grid.rowCtxMenu = new Ext.menu.Menu({
+                                items: [{
+                                    text: 'Scan (' + ip + ':' + port + '/' + proto + ')',
+                                    iconCls: 'network-host-ctxMenu-host',
+                                    menu: {
+                                        xtype: 'menu',
+                                        items: [{
+                                            text: 'Fingerprint HTTP',
+                                            iconCls: 'network-host-ctxMenu-fingerprint',
+                                            handler: function () {
+                                                var mod_id = get_module_id("internal_network_fingerprinting");
+                                                commands_statusbar.update_sending('Fingerprinting ' + ip + '...');
+                                                $jwterm.ajax({
+                                                    contentType: 'application/json',
+                                                    data: JSON.stringify({"ipRange": ip + '-' + ip, "ports": port}),
+                                                    dataType: 'json',
+                                                    type: 'POST',
+                                                    url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                    async: false,
+                                                    processData: false,
+                                                    success: function (data) {
+                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                    },
+                                                    error: function () {
+                                                        commands_statusbar.update_fail('Error sending command');
+                                                    }
+                                                });
+                                            }
+                                        }, {
+                                            text: 'CORS Scan',
+                                            iconCls: 'network-host-ctxMenu-cors',
+                                            handler: function () {
+                                                var mod_id = get_module_id("cross_origin_scanner");
+                                                commands_statusbar.update_sending('CORS scanning ' + ip + '...');
+                                                $jwterm.ajax({
+                                                    contentType: 'application/json',
+                                                    data: JSON.stringify({"ipRange": ip + '-' + ip, "ports": port}),
+                                                    dataType: 'json',
+                                                    type: 'POST',
+                                                    url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                    async: false,
+                                                    processData: false,
+                                                    success: function (data) {
+                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                    },
+                                                    error: function () {
+                                                        commands_statusbar.update_fail('Error sending command');
+                                                    }
+                                                });
+                                            }
+                                        }, {
+                                            text: 'Shellshock Scan',
+                                            iconCls: 'network-host-ctxMenu-shellshock',
+                                            handler: function () {
+                                                var mod_id = get_module_id("shell_shock_scanner");
+                                                var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
+                                                if (!lhost) {
+                                                    commands_statusbar.update_fail('Cancelled');
+                                                    return;
+                                                }
+                                                var lport = prompt("Enter local port for connect back shell:", 'LPORT');
+                                                if (!lport) {
+                                                    commands_statusbar.update_fail('Cancelled');
+                                                    return;
+                                                }
+                                                alert("Now start your reverse shell handler on " + lhost + ':' + lport);
+                                                commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
+                                                $jwterm.ajax({
+                                                    contentType: 'application/json',
+                                                    data: JSON.stringify({
+                                                        "rproto": proto,
+                                                        "rhost": ip,
+                                                        "rport": port,
+                                                        "lhost": lhost,
+                                                        "lport": lport
+                                                    }),
+                                                    dataType: 'json',
+                                                    type: 'POST',
+                                                    url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                    async: false,
+                                                    processData: false,
+                                                    success: function (data) {
+                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                    },
+                                                    error: function () {
+                                                        commands_statusbar.update_fail('Error sending command');
+                                                    }
+                                                });
+                                            }
+                                        }, {
+                                            text: 'RFI Scan',
+                                            iconCls: 'network-host-ctxMenu-php',
+                                            handler: function () {
+                                                var mod_id = get_module_id("rfi_scanner");
+                                                var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
+                                                if (!lhost) {
+                                                    commands_statusbar.update_fail('Cancelled');
+                                                    return;
+                                                }
+                                                var lport = prompt("Enter local port for connect back shell:", 'LPORT');
+                                                if (!lport) {
+                                                    commands_statusbar.update_fail('Cancelled');
+                                                    return;
+                                                }
+                                                alert("Now start your reverse shell handler on " + lhost + ':' + lport);
+                                                commands_statusbar.update_sending('Shellshock scanning ' + ip + '...');
+                                                $jwterm.ajax({
+                                                    contentType: 'application/json',
+                                                    data: JSON.stringify({
+                                                        "rproto": proto,
+                                                        "rhost": ip,
+                                                        "rport": port,
+                                                        "lhost": lhost,
+                                                        "lport": lport,
+                                                        "payload": "reverse_php"
+                                                    }),
+                                                    dataType: 'json',
+                                                    type: 'POST',
+                                                    url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                    async: false,
+                                                    processData: false,
+                                                    success: function (data) {
+                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                    },
+                                                    error: function () {
+                                                        commands_statusbar.update_fail('Error sending command');
+                                                    }
+                                                });
+                                            }
+                                        }]
+                                    }
+                                }]
+                            });
+                            grid.rowCtxMenu.showAt(e.getXY());
                         },
-                        afterrender: function(datagrid) {
-                                datagrid.store.reload({ params: {nonce: Ext.get ("nonce").dom.value} });
-                        }
+                    afterrender: function (datagrid) {
+                        datagrid.store.reload({params: {nonce: Ext.get("nonce").dom.value}});
+                    }
 
                 }
         });

