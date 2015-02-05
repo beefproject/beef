@@ -10,7 +10,7 @@ beef:
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
-    client_debug: false
+    client_debug: true
     # Used for generating secure tokens
     crypto_default_value_length: 80
 
@@ -33,7 +33,7 @@ beef:
         # NOTE: A poll timeout of less than 5,000 (ms) might impact performance
         #  when hooking lots of browsers (50+).
         # Enabling WebSockets is generally better (beef.websocket.enable)
-        xhr_poll_timeout: 5000
+        xhr_poll_timeout: 1000
 
         # Reverse Proxy / NAT
         # If BeEF is running behind a reverse proxy or NAT

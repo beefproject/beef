@@ -13,4 +13,4 @@ beef:
             authors: ["xntrik", "@natevw"]
             target:
                  working: ["C", "FF"]
-                 unknown: ["All"]
+                 not_working: ["ALL"]

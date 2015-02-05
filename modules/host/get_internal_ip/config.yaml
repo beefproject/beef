@@ -8,9 +8,8 @@ beef:
         get_internal_ip:
             enable: true
             category: "Host"
-            name: "Get Internal IP"
-            description: "Retrieve the internal (behind NAT) IP address of the victim machine using an unsigned Java applet"
+            name: "Get Internal IP (Java)"
+            description: "Retrieve the internal (behind NAT) IP address of the victim machine using an unsigned Java applet.<br/><br/>The browser must have Java enabled and configured to allow execution of unsigned Java applets."
             authors: ["antisnatchor"]
             target:
-                 working: ["IE", "FF", "O"]
-                 user_notify: ["C", "S"]
+                 user_notify: ["ALL"]

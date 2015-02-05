@@ -35,7 +35,8 @@ WelcomeTab = function() {
               <li><img alt='' src='media/images/icons/red.png'  unselectable='on'> The command module does not work against this target</li></ul><br />\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows the user to check if links, forms and URI path of the page (where the browser is hooked) is vulnerable to XSS.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Rider:</span> The Rider tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser. \
-              Each request sent by the Rider is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li></ul><br />\
+              Each request sent by the Rider is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li> \
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Network:</span> The Network tab allows you to interact with hosts on the local network(s) of the hooked browser.</li></ul><br /> \
               <p>You can also right-click a hooked browser to open a context-menu with additional functionality:</p><br /> \
               <ul style=\"margin-left:15px;\">\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Tunneling Proxy:</span> The Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". \

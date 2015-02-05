@@ -29,5 +29,23 @@ class Port_scanner < BeEF::Core::Command
       content['fail'] = 'No open ports have been found.'
     end
     save content
+
+    configuration = BeEF::Core::Configuration.instance
+    if configuration.get("beef.extension.network.enable") == true
+      if @datastore['results'] =~ /^ip=([\d\.]+)&port=(CORS|WebSocket|HTTP): Port ([\d]+) is OPEN (.*)$/
+        ip = $1
+        port = $3
+        service = $4
+        session_id = @datastore['beefhook']
+        cid = @datastore['cid'].to_i
+        if !ip.nil? && BeEF::Filters.is_valid_ip?(ip)
+          print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
+          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => 'http', :ip => ip, :port => port, :type => service, :cid => cid)
+          r.save
+        end
+      end
+
+    end
+
   end
 end

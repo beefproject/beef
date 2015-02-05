@@ -9,8 +9,8 @@ beef:
             enable: true
             category: "Network"
             name: "Port Scanner"
-            description: "Scan ports in a given hostname, using WebSockets, CORS and img tags. It uses the three methods to avoid blocked ports or Same Origin Policy."
+            description: "Scan ports in a given hostname, using WebSockets, CORS and img tags. It uses the three methods to avoid blocked ports or Same Origin Policy.<br/><br/>Note: The user may see authentication popups in the event any of the target ports are web servers using HTTP authentication."
             authors: ["javier.marcos"]
             target:
-                working: ["FF", "C"]
+                user_notify: ["FF", "C"]
                 not_working: ["S", "O", "IE"]

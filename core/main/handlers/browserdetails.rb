@@ -177,6 +177,13 @@ module BeEF
             unless proxy_server.nil?
               BD.set(session_id, 'ProxyServer', "#{proxy_server}")
               proxy_log_string += " [server: #{proxy_server}]"
+              if config.get("beef.extension.network.enable") == true
+                if proxy_server =~ /^([\d\.]+):([\d]+)$/
+                  print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
+                  r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy', :cid => 'init')
+                  r.save
+                end
+              end
             end
             BeEF::Core::Logger.instance.register('Zombie', "#{proxy_log_string}", "#{zombie.id}")
           end
@@ -344,6 +351,12 @@ module BeEF
           # log a few info of newly hooked zombie in the console
           print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
 
+          # add localhost as network host
+          if config.get('beef.extension.network.enable')
+            print_debug("Hooked browser has network interface 127.0.0.1")
+            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'OsName'), :cid => 'init')
+            r.save
+          end
 
           # Call autorun modules
           if config.get('beef.autorun.enable')
