@@ -302,7 +302,6 @@ class ShellInterface
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
         ['Browser Components', 'Windows Media Player','HasWMP'], 
         ['Browser Components', 'VLC',                'HasVLC'],
-        ['Browser Components', 'Foxit',              'HasFoxit'],
         ['Browser Components', 'WebRTC',             'HasWebRTC'],
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],

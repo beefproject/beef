@@ -2214,7 +2214,6 @@ beef.browser = {
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
-        var has_foxit = (beef.browser.hasFoxit()) ? "Yes" : "No";
         try {
             var cookies = document.cookie;
             var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
@@ -2261,7 +2260,6 @@ beef.browser = {
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
         if (has_wmp) details['HasWMP'] = has_wmp;
-        if (has_foxit) details['HasFoxit'] = has_foxit;
 
         var pf_integration = "<%= @phishing_frenzy_enable %>";
         if (pf_integration) {

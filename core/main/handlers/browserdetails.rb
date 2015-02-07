@@ -319,7 +319,7 @@ module BeEF
           # get and store the yes|no value for browser components
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
-              'HasFoxit', 'HasWebSocket', 'HasWebRTC', 'HasActiveX',
+              'HasWebSocket', 'HasWebRTC', 'HasActiveX',
               'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
               'hasSessionCookies', 'hasPersistentCookies'
           ]
