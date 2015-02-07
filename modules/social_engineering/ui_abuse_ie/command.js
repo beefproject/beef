@@ -79,7 +79,7 @@ beef.execute(function() {
         // The keypress focus is on the popunder, but the following would be nice to have to force the victim to press TAB
 //        var tab_pressed = false;
 //        function checkTabPressed(){
-//            console.log(event.keyCode);
+//            beef.debug(event.keyCode);
 //            if(tab_pressed && event.keyCode != 9){
 //                // all good
 //            }else if(event.keyCode == 9){

