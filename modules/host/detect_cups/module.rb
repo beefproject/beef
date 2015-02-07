@@ -23,11 +23,16 @@ class Detect_cups < BeEF::Core::Command
         ip = $2
         port = $3
         session_id = @datastore['beefhook']
+        type = 'CUPS'
         cid = @datastore['cid'].to_i
-        if BeEF::Filters.is_valid_ip?(ip)
+        if BeEF::Filters.is_valid_ip?(ip) && BeEF::Core::Models::NetworkService.all(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type).empty?
           print_debug("Hooked browser found 'CUPS' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => 'CUPS', :cid => cid)
+          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type, :cid => cid)
           r.save
+          if BeEF::Core::Models::NetworkHost.all(:hooked_browser_id => session_id, :ip => ip).empty?
+            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+            r.save
+          end
         end
       end
     end

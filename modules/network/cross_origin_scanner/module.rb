@@ -20,10 +20,16 @@ class Cross_origin_scanner < BeEF::Core::Command
       if @datastore['results'] =~ /ip=(.+)&port=([\d]+)&status/
         ip = $1
         port = $2
+        proto = 'http'
+        type = 'HTTP Server (CORS)'
         print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-        if !ip.nil? && !port.nil? && BeEF::Filters.is_valid_ip?(ip)
-          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => 'http', :ip => ip, :port => port, :type => 'HTTP Server (CORS)', :cid => cid)
+        if !ip.nil? && !port.nil? && BeEF::Filters.is_valid_ip?(ip) && BeEF::Core::Models::NetworkService.all(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type).empty?
+          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type, :cid => cid)
           r.save
+          if BeEF::Core::Models::NetworkHost.all(:hooked_browser_id => session_id, :ip => ip).empty?
+            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+            r.save
+          end
         end
       end
     end

@@ -39,6 +39,10 @@ class Internal_network_fingerprinting < BeEF::Core::Command
           print_debug("Hooked browser found '#{discovered}' [ip: #{ip}]")
           r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => discovered, :cid => cid)
           r.save
+          if BeEF::Core::Models::NetworkHost.all(:hooked_browser_id => session_id, :ip => ip).empty?
+            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+            r.save
+          end
         end
       end
 
