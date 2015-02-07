@@ -9,11 +9,16 @@ beef.execute(function() {
   var ips = new Array();
   var proto = 'http';
   var ipRange = "<%= @ipRange %>";
-  var port   = "<%= @rport %>";
+  var ports = "<%= @ports %>";
   var timeout = "<%= @timeout %>";
   var wait = "<%= @wait %>";
   var threads = "<%= @threads %>";
   var urls = new Array('/favicon.ico', '/favicon.png', '/images/favicon.ico', '/images/favicon.png');
+
+  // set target ports
+  if (ports != null) {
+    ports = ports.split(',');
+  }
 
   // set target IP addresses
   if (ipRange == 'common') {
@@ -116,7 +121,9 @@ beef.execute(function() {
     var worker = workers[u % threads];
     // for each LAN IP address
     for (var i=0; i < ips.length; i++) {
-      worker.queue('checkFavicon("'+proto+'","'+ips[i]+'","'+port+'","'+urls[u]+'");');
+      for (var p=0; p < ports.length; p++) {
+        worker.queue('checkFavicon("'+proto+'","'+ips[i]+'","'+ports[p]+'","'+urls[u]+'");');
+      }
     }
   }
 

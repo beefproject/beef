@@ -174,10 +174,15 @@ ZombieTab_Network = function(zombie) {
 							handler: function() {
 								var mod_name = "get_http_servers";
 								var mod_id = get_module_id(mod_name);
-								commands_statusbar.update_sending('Favicon scanning commonly used local area network IP addresses for web servers...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+								commands_statusbar.update_sending('Favicon scanning commonly used local area network IP addresses for web servers [ports: '+ports+'] ...');
 								$jwterm.ajax({
 									contentType: 'application/json',
-									data: JSON.stringify({"ipRange":"common"}),
+									data: JSON.stringify({"ipRange":"common","ports":ports}),
 									dataType: 'json',
 									type: 'POST',
 									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -200,12 +205,17 @@ ZombieTab_Network = function(zombie) {
 									commands_statusbar.update_fail('Cancelled');
 									return;
 								}
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
 								var mod_name = "get_http_servers";
 								var mod_id = get_module_id(mod_name);
 								commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for web servers...');
 								$jwterm.ajax({
 									contentType: 'application/json',
-									data: JSON.stringify({"ipRange":ip_range}),
+									data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
 									dataType: 'json',
 									type: 'POST',
 									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -290,10 +300,15 @@ ZombieTab_Network = function(zombie) {
                                                         handler: function() {
                                                                 var mod_name = "cross_origin_scanner";
                                                                 var mod_id = get_module_id(mod_name);
-                                                                commands_statusbar.update_sending('CORS scanning commonly used local area network IP addresses...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+                                                                commands_statusbar.update_sending('CORS scanning commonly used local area network IP addresses [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":"common"}),
+                                                                        data: JSON.stringify({"ipRange":"common","ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -316,12 +331,17 @@ ZombieTab_Network = function(zombie) {
                                                                         commands_statusbar.update_fail('Cancelled');
                                                                         return;
                                                                 }
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var mod_name = "cross_origin_scanner";
                                                                 var mod_id = get_module_id(mod_name);
-                                                                commands_statusbar.update_sending('CORS scanning ' + ip_range + '...');
+                                                                commands_statusbar.update_sending('CORS scanning ' + ip_range + ' [ports: ' + ports + '] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip_range}),
+                                                                        data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -365,10 +385,15 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
                                                                 var mod_id = get_module_id("get_http_servers");
-                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip}),
+                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -423,10 +448,15 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
                                                                 var mod_id = get_module_id("cross_origin_scanner");
-                                                                commands_statusbar.update_sending('CORS scanning ' + ip + '...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+                                                                commands_statusbar.update_sending('CORS scanning ' + ip + ' [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip}),
+                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -515,10 +545,15 @@ ZombieTab_Network = function(zombie) {
                                                         iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
                                                                 var mod_id = get_module_id("get_http_servers");
-                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip}),
+                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -536,11 +571,16 @@ ZombieTab_Network = function(zombie) {
                                                         text: 'Network ('+class_c+'.0/24)',
                                                         iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
                                                                 var mod_id = get_module_id("get_http_servers");
-                                                                commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for HTTP servers...');
+                                                                commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for HTTP servers [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip_range}),
+                                                                        data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -617,10 +657,15 @@ ZombieTab_Network = function(zombie) {
 							iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
 								var mod_id = get_module_id("cross_origin_scanner");
-	                                                        commands_statusbar.update_sending('CORS scanning ' + ip + '...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+	                                                        commands_statusbar.update_sending('CORS scanning ' + ip + ' [ports: '+ports+'] ...');
 	                                                        $jwterm.ajax({
 	                                                                contentType: 'application/json',
-	                                                                data: JSON.stringify({"ipRange":ip+'-'+ip}),
+	                                                                data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
 	                                                                dataType: 'json',
 	                                                                type: 'POST',
 	                                                                url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -639,10 +684,15 @@ ZombieTab_Network = function(zombie) {
 							iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
 	                                                        var mod_id = get_module_id("cross_origin_scanner");
-	                                                        commands_statusbar.update_sending('CORS scanning ' + ip_range + '...');
+                                                                var ports = prompt("Enter ports to scan:", '80,8080');
+                                                                if (!ports) {
+                                                                        commands_statusbar.update_fail('Cancelled');
+                                                                        return;
+                                                                }
+	                                                        commands_statusbar.update_sending('CORS scanning ' + ip_range + ' [ports: '+ports+'] ...');
 	                                                        $jwterm.ajax({
 	                                                                contentType: 'application/json',
-	                                                                data: JSON.stringify({"ipRange":ip_range}),
+	                                                                data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
 	                                                                dataType: 'json',
 	                                                                type: 'POST',
 	                                                                url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -842,7 +892,7 @@ ZombieTab_Network = function(zombie) {
                                             iconCls: 'network-host-ctxMenu-cors',
                                             handler: function () {
                                                 var mod_id = get_module_id("cross_origin_scanner");
-                                                commands_statusbar.update_sending('CORS scanning ' + ip + '...');
+                                                commands_statusbar.update_sending('CORS scanning ' + ip + ' [port: '+port+'] ...');
                                                 $jwterm.ajax({
                                                     contentType: 'application/json',
                                                     data: JSON.stringify({"ipRange": ip + '-' + ip, "ports": port}),
