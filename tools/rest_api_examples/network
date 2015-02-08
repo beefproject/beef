@@ -1,0 +1,104 @@
+#!/usr/bin/env ruby
+# network - Example BeEF RESTful API script
+# Retrieves details for all identified network hosts and network services
+# Refer to the wiki for info: https://github.com/beefproject/beef/wiki/BeEF-RESTful-API
+##
+require 'rest_client'
+require 'json'
+require 'optparse'
+require 'pp'
+require './lib/string' # colored strings
+require './lib/print'  # print wrappers
+require './lib/beef_rest_api'
+
+if ARGV.length == 0
+  puts "#{$0}:"
+  puts "|  Example BeEF RESTful API script"
+  puts "|  Use --help for help"
+  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  exit 1
+end
+
+# API config
+proto = 'http'
+host = '127.0.0.1'
+port = '3000'
+user = 'beef'
+pass = 'beef'
+
+# Command line options
+@debug = false
+@verbose = false
+OptionParser.new do |opts|
+  opts.on('-h', '--help', 'Shows this help screen') do
+    puts opts
+    exit 1
+  end
+  opts.on('--host HOST', "Set BeEF host (default: #{host})") do |h|
+    host = h
+  end
+  opts.on('--port PORT', "Set BeEF port (default: #{port})") do |p|
+    port = p
+  end
+  opts.on('--user', "Set BeEF username (default: #{user})") do |u|
+    user = u
+  end
+  opts.on('--pass', "Set BeEF password (default: #{pass})") do |p|
+    pass = p
+  end
+  opts.on('--ssl', 'Use HTTPS') do
+    proto = 'https'
+  end
+  opts.on('-v', '--verbose', 'Enable verbose output') do
+    @verbose = true
+  end
+  opts.on('-d', '--debug', 'Enable debug output') do
+    @debug = true
+  end
+end.parse!
+
+@api = BeefRestAPI.new proto, host, port, user, pass
+
+# Retrieve the RESTful API token
+print_status "Authenticating to: #{proto}://#{host}:#{port}"
+@api.auth
+
+# Retrieve BeEF version
+@api.version
+
+# Retrieve all network hosts
+hosts = @api.network_hosts_all
+print_debug hosts
+
+# Retrieve all network services
+services = @api.network_services_all
+print_debug services
+
+# Retrieve online hooked browser list
+hooks = @api.online_browsers.flatten
+exit 1 if hooks.empty?
+print_debug hooks
+
+# Retrieve network hosts for each hooked browser
+hooks.each do |hook|
+  next if hook['id'].nil?
+  print_status "Retrieving network hosts for browser [id: #{hook['id']}]"
+  hosts = @api.network_hosts(hook['session'])
+  print_debug hosts
+  hosts['hosts'].each do |host|
+    next if host['id'].nil?
+    print_verbose "#{host['ip']}" + (" - #{host['type']}" unless host['type'].nil?).to_s
+  end
+end
+
+# Retrieve network services for each hooked browser
+hooks.each do |hook|
+  next if hook['id'].nil?
+  print_status "Retrieving network services for browser [id: #{hook['id']}]"
+  services = @api.network_services(hook['session'])
+  print_debug services
+  services['services'].each do |service|
+    next if service['id'].nil?
+    print_verbose "#{service['ip']}:#{service['port']}" + (" - #{service['type']}" unless service['type'].nil?).to_s
+  end
+end

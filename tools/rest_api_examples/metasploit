@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+# metasploit - Example BeEF RESTful API script
+# Starts some Metasploit payload handlers;
+# lists all running metasploit jobs;
+# then stops the payload handlers.
+# Refer to the wiki for info: https://github.com/beefproject/beef/wiki/BeEF-RESTful-API
+##
+require 'rest_client'
+require 'json'
+require 'optparse'
+require 'pp'
+require './lib/string' # colored strings
+require './lib/print'  # print wrappers
+require './lib/beef_rest_api' # API
+
+if ARGV.length == 0
+  puts "#{$0}:"
+  puts "|  Example BeEF RESTful API script"
+  puts "|  Use --help for help"
+  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  exit 1
+end
+
+# API config
+proto = 'http'
+host = '127.0.0.1'
+port = '3000'
+user = 'beef'
+pass = 'beef'
+
+# Command line options
+@debug = false
+@verbose = false
+OptionParser.new do |opts|
+  opts.on('-h', '--help', 'Shows this help screen') do
+    puts opts
+    exit 1
+  end
+  opts.on('--host HOST', "Set BeEF host (default: #{host})") do |h|
+    host = h
+  end
+  opts.on('--port PORT', "Set BeEF port (default: #{port})") do |p|
+    port = p
+  end
+  opts.on('--user', "Set BeEF username (default: #{user})") do |u|
+    user = u
+  end
+  opts.on('--pass', "Set BeEF password (default: #{pass})") do |p|
+    pass = p
+  end
+  opts.on('--ssl', 'Use HTTPS') do
+    proto = 'https'
+  end
+  opts.on('-v', '--verbose', 'Enable verbose output') do
+    @verbose = true
+  end
+  opts.on('-d', '--debug', 'Enable debug output') do
+    @debug = true
+  end
+end.parse!
+
+@api = BeefRestAPI.new proto, host, port, user, pass
+
+# Retrieve the RESTful API token
+print_status "Authenticating to: #{proto}://#{host}:#{port}"
+@api.auth
+
+# Retrieve BeEF version
+@api.version
+
+# Retrieve Metasploit version
+@api.msf_version
+
+# Start payload handlers
+handlers = [
+  @api.msf_handler( {'PAYLOAD'=>'generic/shell_reverse_tcp', 'LPORT' => '6666', 'LHOST' => host} ),
+  @api.msf_handler( {'PAYLOAD'=>'cmd/unix/reverse', 'LPORT' => '6010', 'LHOST' => host} ),
+  @api.msf_handler( {'PAYLOAD'=>'linux/x86/meterpreter/reverse_tcp', 'LPORT' => '6020', 'LHOST'=> host} ),
+  @api.msf_handler( {'PAYLOAD'=>'windows/meterpreter/reverse_tcp', 'LPORT' => '6030', 'LHOST'=> host} )
+]
+
+# Retrieve msf jobs
+jobs = @api.msf_jobs
+print_debug jobs
+
+# Retrieve msf job details
+jobs.each do |job_id,job_name|
+  next if job_id !~ /\A\d+\Z/
+  print_status "Retrieving details for Metasploit job [id: #{job_id}] [#{job_name}]"
+  details = @api.msf_job_info(job_id)
+  print_debug details
+end
+
+# Stop payload handlers
+handlers.each do |handler_id|
+  print_debug @api.msf_job_stop handler_id
+end
+
