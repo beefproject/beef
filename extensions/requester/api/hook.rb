@@ -71,15 +71,13 @@ module BeEF
 
             req_parts = http_db_object.request.split(/  |\n/)
 
+            @host = http_db_object.domain
+            @port = http_db_object.port
+
             #@note: retrieve HTTP headers values needed later, and the \r\n that indicates the start of the post-data (if any)
             req_parts.each_with_index do |value, index|
               if value.match(/^Content-Length:\s+(\d+)/)
                  @content_length = Integer(req_parts[index].split(/:\s+/)[1])
-              end
-
-              if value.match(/^Host/)
-                 @host = req_parts[index].split(/:\s+/)[1].split(/:/)[0]
-                 @port = req_parts[index].split(/:\s+/)[1].split(/:/)[1]
               end
 
               if value.eql?("") or value.strip.empty? # this will be the CRLF (before HTTP request body)

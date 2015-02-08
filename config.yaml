@@ -10,7 +10,7 @@ beef:
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
-    client_debug: true
+    client_debug: false
     # Used for generating secure tokens
     crypto_default_value_length: 80
 
