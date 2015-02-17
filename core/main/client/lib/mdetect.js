@@ -703,4 +703,6 @@ function InitDeviceScan()
     isTierGenericMobile = DetectTierOtherPhones();
 };
 
-InitDeviceScan()
+try {
+   InitDeviceScan();
+}catch(e){}
