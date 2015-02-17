@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Host"
             name: "Get Internal IP WebRTC"
-            description: "Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC Peer-to-Peer connection framework. Code from http://net.ipcalf.com/"
+            description: "Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC Peer-to-Peer connection framework. Code from <a href='http://net.ipcalf.com/' target='_blank'>http://net.ipcalf.com/</a>"
             authors: ["xntrik", "@natevw"]
             target:
                  working: ["C", "FF"]

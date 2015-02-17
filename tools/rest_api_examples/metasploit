@@ -42,10 +42,10 @@ OptionParser.new do |opts|
   opts.on('--port PORT', "Set BeEF port (default: #{port})") do |p|
     port = p
   end
-  opts.on('--user', "Set BeEF username (default: #{user})") do |u|
+  opts.on('--user USERNAME', "Set BeEF username (default: #{user})") do |u|
     user = u
   end
-  opts.on('--pass', "Set BeEF password (default: #{pass})") do |p|
+  opts.on('--pass PASSWORD', "Set BeEF password (default: #{pass})") do |p|
     pass = p
   end
   opts.on('--ssl', 'Use HTTPS') do
