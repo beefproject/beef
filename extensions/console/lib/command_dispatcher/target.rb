@@ -30,7 +30,9 @@ class Target
     {
       "commands" => "List available commands against this particular target",
       "info" => "Info about the target",
-      "select" => "Prepare the command module for execution against this target"
+      "select" => "Prepare the command module for execution against this target",
+      "hosts" => "List identified network hosts",
+      "services" => "List identified network services"
     }
   end
   
@@ -145,7 +147,84 @@ class Target
   def cmd_info_help(*args)
     print_status("Display initialisation information about the hooked browser.")
   end
-  
+
+  def cmd_hosts(*args)
+
+    @@bare_opts.parse(args) {|opt, idx, val|
+      case opt
+        when "-h"
+          cmd_hosts_help
+          return false
+        end
+    }
+
+    configuration = BeEF::Core::Configuration.instance
+    if !configuration.get("beef.extension.network.enable")
+      print_error("Network extension is disabled")
+      return
+    end
+
+    tbl = Rex::Ui::Text::Table.new(
+      'Columns' =>
+        [
+          'IP',
+          'Hostname',
+          'Type',
+          'Operating System',
+          'MAC Address'
+        ])
+
+    driver.interface.select_network_hosts['results'].each do |x|
+      tbl << [x['ip'],x['hostname'],x['type'],x['os'],x['mac']]
+    end
+
+    puts "\nNetwork Hosts:\n\n"
+    puts tbl.to_s + "\n"
+
+  end
+
+  def cmd_hosts_help(*args)
+    print_status("Display information about network hosts on the hooked browser's network.")
+  end
+
+  def cmd_services(*args)
+
+    @@bare_opts.parse(args) {|opt, idx, val|
+      case opt
+        when "-h"
+          cmd_services_help
+          return false
+        end
+    }
+
+    configuration = BeEF::Core::Configuration.instance
+    if !configuration.get("beef.extension.network.enable")
+      print_error("Network extension is disabled")
+      return 
+    end
+
+    tbl = Rex::Ui::Text::Table.new(
+      'Columns' =>
+        [
+          'IP',
+          'Port',
+          'Protocol',
+          'Type'
+        ])
+
+    driver.interface.select_network_services['results'].each do |x|
+      tbl << [x['ip'],x['port'],x['proto'],x['type']]
+    end
+
+    puts "\nNetwork Services:\n\n"
+    puts tbl.to_s + "\n"
+
+  end
+
+  def cmd_services_help(*args)
+    print_status("Display information about network services on the hooked browser's network.")
+  end
+ 
   def cmd_select(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt

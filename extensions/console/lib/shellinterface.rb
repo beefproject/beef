@@ -362,6 +362,79 @@ class ShellInterface
     summary_grid_hash
   end
 
+  def select_network_hosts
+
+    return if self.targetsession.nil?
+
+    configuration = BeEF::Core::Configuration.instance
+    if !configuration.get("beef.extension.network.enable")
+      print_error("Network extension is disabled")
+      return {
+        'success' => 'false',
+        'results' => []
+      }
+    end
+
+    # init the summary grid
+    summary_grid_hash = {
+      'success' => 'true',
+      'results' => []
+    }
+    @nh = BeEF::Core::Models::NetworkHost
+    hosts = @nh.all(:hooked_browser_id => self.targetsession)
+
+    # add property to summary hash
+    if not hosts.empty?
+      hosts.each do |x|
+        summary_grid_hash['results'].push({
+          'ip'       => x['ip'].to_s,
+          'hostname' => x['hostname'].to_s,
+          'type'     => x['type'].to_s,
+          'os'       => x['os'].to_s,
+          'mac'      => x['mac'].to_s
+        })
+      end
+    end
+
+    summary_grid_hash
+  end
+
+  def select_network_services
+
+    return if self.targetsession.nil?
+
+    configuration = BeEF::Core::Configuration.instance
+    if !configuration.get("beef.extension.network.enable")
+      print_error("Network extension is disabled")
+      return {
+        'success' => 'false',
+        'results' => []
+      }
+    end
+
+    # init the summary grid
+    summary_grid_hash = {
+      'success' => 'true',
+      'results' => []
+    }
+    @ns = BeEF::Core::Models::NetworkService
+    services = @ns.all(:hooked_browser_id => self.targetsession)
+
+    # add property to summary hash
+    if not services.empty?
+      services.each do |x|
+        summary_grid_hash['results'].push({
+          'proto' => x['proto'].to_s,
+          'ip'    => x['ip'].to_s,
+          'port'  => x['port'].to_s,
+          'type'  => x['type'].to_s
+        })
+      end
+    end
+
+    summary_grid_hash
+  end
+
   attr_reader :targetsession
   attr_reader :targetid
   attr_reader :targetip
