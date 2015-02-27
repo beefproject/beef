@@ -149,27 +149,33 @@ module BeEF
 
         # this is used in the 'get '/pf'' restful api call
         def hbs_to_array(hbs)
-          hbs_online = []
+          hooked_browsers = []
           hbs.each do |hb|
             details = BeEF::Core::Models::BrowserDetails
             # TODO jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
-            hbs_online << [
+
+            pfuid = details.get(hb.session, 'PhishingFrenzyUID') != nil ? details.get(hb.session, 'PhishingFrenzyUID') : 'n/a'
+            bname = details.get(hb.session, 'BrowserName') != nil ? details.get(hb.session, 'BrowserName') : 'n/a'
+            bversion = details.get(hb.session, 'BrowserVersion') != nil ? details.get(hb.session, 'BrowserVersion') : 'n/a'
+            bplugins = details.get(hb.session, 'BrowserPlugins') != nil ? details.get(hb.session, 'BrowserPlugins') : 'n/a'
+
+            hooked_browsers << [
                 hb.id,
                 hb.ip,
-                details.get(hb.session, 'PhishingFrenzyUID'),
-                details.get(hb.session, 'BrowserName'),
-                details.get(hb.session, 'BrowserVersion'),
+                pfuid,
+                bname,
+                bversion,
                 details.get(hb.session, 'OsName'),
                 details.get(hb.session, 'BrowserPlatform'),
                 details.get(hb.session, 'BrowserLanguage'),
-                details.get(hb.session, 'BrowserPlugins'),
+                bplugins,
                 details.get(hb.session, 'LocationCity'),
                 details.get(hb.session, 'LocationCountry'),
                 details.get(hb.session, 'LocationLatitude'),
                 details.get(hb.session, 'LocationLongitude')
             ]
           end
-          hbs_online
+          hooked_browsers
         end
 
       end
