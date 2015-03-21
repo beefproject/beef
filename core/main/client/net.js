@@ -287,6 +287,10 @@ beef.net = {
      *  - allowCrossDomain: set cross-domain requests as allowed or blocked
      *
      * forge_request is used mainly by the Requester and Tunneling Proxy Extensions.
+     * Example usage:
+     * beef.net.forge_request("http", "POST", "172.20.40.50", 8080, "/lulz",
+     *   true, null, { foo: "bar" }, 5, 'html', false, null, function(response) {
+     *   alert(response.response_body)})
      */
     forge_request: function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
@@ -361,6 +365,8 @@ beef.net = {
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
                 }
             },
+
+            data: data,
 
             // http server responded successfully
             success: function (data, textStatus, xhr) {
