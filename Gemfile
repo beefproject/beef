@@ -6,10 +6,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-gem "eventmachine", "1.0.3"
+gem "eventmachine"
 gem "thin"
-gem "sinatra", "1.4.2"
-gem "rack", "1.5.2"
+gem "sinatra"
+gem "rack"
 gem "em-websocket", "~> 0.3.6" # WebSocket support
 gem "uglifier", "~> 2.2.1"
 
