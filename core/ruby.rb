@@ -7,9 +7,6 @@
 # @note Patching Ruby Security
 require 'core/ruby/security'
 
-# @note Patching Rack File class to prevent a potential XSS
-require 'core/ruby/file.rb'
-
 # @note Patching Ruby
 require 'core/ruby/module'
 require 'core/ruby/object'
