@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        f5_bigip_cookie_disclosure:
+            enable: true
+            category: ["Network","ADC"]
+            name: "F5 BigIP Backend Cookie Disclosure"
+            description: "This module detects F5 BigIP persistent cookies and exposures all available information about backend (pool name, IP address and port, routed domain)."
+            authors: ["dnkolegov, ovbroslavsky, neoleksov"]
+            target:
+                working: ["ALL"]
