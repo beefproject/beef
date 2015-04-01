@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2014 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        f5_bigip_cookie_stealing:
+            enable: true
+            category: ["Network","ADC"]
+            name: "F5 BigIP User's Cookie Stealing"
+            description: "This module retrieves all BigIP user's session cookies, bypassing sandbox restrictions."
+            authors: ["dnkolegov, ovbroslavsky, neoleksov"]
+            target:
+                working: ["ALL"]
