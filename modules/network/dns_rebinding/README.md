@@ -41,10 +41,12 @@ In module main config is *domain*. Module adds  DNS rule to BeEF DNS database wi
 
 3. Hook victim by help of link contains new registered domain, for example *http://dnsrebinding.org*
 4. In BeEF UI open module "DNS Rebinding" and fill *target* field. (That is target IP from victim's LAN, for example 192.168.0.1) Then launch module for hooked browser. Module adds DNS rule with double A record in BeEF DNS database and sends JS.
-4. Victim's browser will send query to small HTTP Server of DNS Rebinding extension. Then extension block IP with the help of iptables. Then victim's browser will initiate second XMLHttpRequest to page. And that will be query to target IP. Then sends response from target IP to DNS Rebinding Proxy server. 
+4. Victim's browser will send query to small HTTP Server of DNS Rebinding extension. Then extension block IP with the help of iptables. Then victim's browser will initiate second XMLHttpRequest to page. And that will be query to target IP. Then sends response from target IP to DNS Rebinding Proxy server.
 5. Open in your browser page http://address_proxy:port_proxy/**path**, where **path** is path you want get from target IP.
     For example, if **path** = **login.html** and target IP is 192.168.0.1 you get HTML page from victim's router, the same as http://192.168.0.1/login.php
 6. That is all.
+
+Extension uses Iptables to block client. That is no good way, because system() is patched and Iptables need sudo. But victim's browser need get TCP RST from server right away XMLHttpRequest to successful attack.
 
 Notice, attack is VERY DEMANDING, there are many things that can break it. For example:
 1. If victim's browser already have established connection with target IP in other tab, when browser gets DNS response from BeEF DNS server it will use second (local) IP address instead of public address.
