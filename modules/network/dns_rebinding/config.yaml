@@ -1,0 +1,12 @@
+beef:
+    module:
+        dns_rebinding:
+            enable: true
+            category: "Network"
+            name: "DNS Rebinding"
+            description: "dnsrebind"
+            domain: "dnsreb.chickenkiller.com"
+            authors: ["aa"]
+            target:
+                working: ["C"]
+                not_working: ["All"]
