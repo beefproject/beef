@@ -12,7 +12,6 @@ module API
         )
 
 	def self.pre_http_start(http_hook_server)
-	    #TODO: Move IP and port to config file 
         config = BeEF::Core::Configuration.instance.get('beef.extension.dns_rebinding')
         address_http = config['address_http_internal']
         address_proxy = config['address_proxy_internal']
