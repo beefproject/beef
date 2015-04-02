@@ -6,7 +6,13 @@ beef:
             name: "DNS Rebinding"
             description: "dnsrebind"
             domain: "dnsreb.chickenkiller.com"
-            authors: ["aa"]
+            authors: ["Milovanov T.I."]
             target:
-                working: ["C"]
+                working:
+                    C:
+                        min_ver: 1
+                        max_ver: 40
+                    O:
+                        min_ver: 1
+                        max_ver: 27
                 not_working: ["All"]
