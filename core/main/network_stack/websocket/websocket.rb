@@ -168,8 +168,9 @@ module BeEF
                 begin
                   secure ? print_debug("New WebSocketSecure channel open.") : print_debug("New WebSocket channel open.")
                   ws.onmessage { |msg|
-                    msg_hash = JSON.parse("#{msg}")
-                    #@note messageHash[result] is Base64 encoded
+                    begin
+                      msg_hash = JSON.parse("#{msg}")
+                      #@note messageHash[result] is Base64 encoded
                     if (msg_hash["cookie"]!= nil)
                       print_debug("WebSocket - Browser says helo! WebSocket is running")
                       #insert new connection in activesocket
@@ -202,9 +203,12 @@ module BeEF
                       #print_debug("Received from WebSocket #{messageHash}")
                       execute(msg_hash)
                     end
+                    rescue => e
+                      print_error "WebSocket - something wrong in msg handling - skipped: #{e}"
+                    end
                   }
                 rescue => e
-                  print_error "WebSocket error: #{e}"
+                  print_error "WebSocket staring error: #{e}"
                 end
               end
             }
