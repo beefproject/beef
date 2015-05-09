@@ -82,11 +82,14 @@ class Firefox_extension_dropper < BeEF::Core::Command
 
   def self.options
     @configuration = BeEF::Core::Configuration.instance
+    proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
     beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    base_host = "#{proto}://#{beef_host}:#{beef_port}"
     return [
         {'name' => 'extension_name', 'ui_label' => 'Extension name', 'value' => 'HTML5 Rendering Enhancements'},
         {'name' => 'xpi_name', 'ui_label' => 'Extension file (XPI) name', 'value' => 'HTML5_Enhancements'},
-        {'name' => 'domain', 'ui_label' => 'Serving Domain', 'value' => 'http://beefdomain'}
+        {'name' => 'base_host', 'ui_label' => 'Download from', 'value' => base_host, 'width'=>'150px'}
     ]
   end
 
