@@ -11,7 +11,7 @@ module Qrcode
   
   @short_name = 'qrcode'
   @full_name = 'QR Code Generator'
-  @description = 'This extension prints out a link to a QR Code which can be used to hook browsers into BeEF'
+  @description = 'This extension generates QR Codes for specified URLs which can be used to hook browsers into BeEF.'
 
 end
 end
