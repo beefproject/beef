@@ -71,7 +71,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     dns_address = @@config.get('beef.extension.dns.address')
     dns_port = @@config.get('beef.extension.dns.port')
 
-    dig_output = `dig @#{dns_address} -p #{dns_port} -t A #{domain}`
+    dig_output = IO.popen(["dig", "@#{dns_address}", "-p", "#{dns_port}", "-t", "A", "#{domain}"], 'r+').read
     assert_match(regex, dig_output)
   end
 
