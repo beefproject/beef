@@ -25,8 +25,10 @@ module Qrcode
 
       # get URLs from QR config
       configuration.get("beef.extension.qrcode.targets").each do |target|
+        # absolute URLs
         if target.lines.grep(/^https?:\/\//i).size > 0
           fullurls << target
+        # relative URLs
         else
           # network interfaces
           BeEF::Core::Console::Banners.interfaces.each do |int|
@@ -41,10 +43,16 @@ module Qrcode
       end
 
       unless fullurls.empty?
-        data = ""
+        img_dir = 'extensions/qrcode/images'
+        begin
+          Dir.mkdir(img_dir) unless File.directory?(img_dir)
+        rescue
+          print_error "[QR] Could not create directory '#{img_dir}'"
+        end
+        data = ''
         fullurls.uniq.each do |target|
           fname = ('a'..'z').to_a.shuffle[0,8].join
-          qr_path = "extensions/qrcode/images/#{fname}.png"
+          qr_path = "#{img_dir}/#{fname}.png"
           begin
             qr = Qr4r::encode(
               target, qr_path, {
@@ -65,6 +73,11 @@ module Qrcode
           #w = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
           #h = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
           #data += "- Google API: https://chart.googleapis.com/chart?cht=qr&chs=#{w}x#{h}&chl=#{url}\n"
+          # QRServer.com
+          #url = URI.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+          #w = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
+          #h = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
+          #data += "- QRServer API: https://api.qrserver.com/v1/create-qr-code/?size=#{w}x#{h}&data=#{url}\n"
         end
         print_info "QR code images available:"
         print_more data
