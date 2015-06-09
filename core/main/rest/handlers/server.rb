@@ -23,14 +23,26 @@ module BeEF
 
 
         # @note Binds a local file to a specified path in BeEF's web server
+        # Note: 'local_file' expects a file from the /extensions/social_engineering/droppers directory.
+        # Example usage:
+        # curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mount":"/dropper","local_file":"dropper.exe"}'
+        # -X POST -v http://10.0.60.10/api/server/bind?token=xyz
+
         post '/bind' do
           request.body.rewind
           begin
             data = JSON.parse request.body.read
             mount = data['mount']
             local_file = data['local_file']
-            BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(local_file, mount)
-            status 200
+
+            droppers_dir = File.expand_path('..', __FILE__) + "/../../../../extensions/social_engineering/droppers/"
+
+            if File.exists?(droppers_dir + local_file) && Dir.entries(droppers_dir).include?(local_file)
+              BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind("/extensions/social_engineering/droppers/#{local_file}", mount)
+              status 200
+            else
+              halt 400
+            end
           rescue => e
             error 400
           end
