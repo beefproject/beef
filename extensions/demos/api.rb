@@ -15,6 +15,9 @@ module Demos
       # mount everything in html directory to /demos/
       path = File.dirname(__FILE__)+'/html/'
       files = Dir[path+'**/*']
+
+      beef_server.mount('/demos', Rack::File.new(path))
+
       files.each do |f|
         # don't follow symlinks
         next if File.symlink?(f)
@@ -22,8 +25,6 @@ module Demos
         if File.extname(f) == '.html'
           # use handler to mount HTML templates
           beef_server.mount(mount_path, BeEF::Extension::Demos::Handler.new(f))
-        else
-          beef_server.mount(mount_path, Rack::File.new(f))
         end
       end
     end
