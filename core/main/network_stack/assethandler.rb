@@ -65,10 +65,20 @@ module Handlers
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind(file, path=nil, extension=nil, count=-1)
         url = build_url(path, extension)
-        @allocations[url] = {'file' => "#{root_dir}"+file, 'path' => path, 'extension' => extension, 'count' => count} 
-        @http_server.mount(url, Rack::File.new(@allocations[url]['file']))
+        @allocations[url] = {'file' => "#{root_dir}"+file,
+                             'path' => path,
+                             'extension' => extension,
+                             'count' => count}
+
+        resp_body = File.read("#{root_dir}#{file}")
+        @http_server.mount(
+            url,
+            BeEF::Core::NetworkStack::Handlers::Raw.new('200', {'Content-Type'=>'text/plain'}, resp_body)
+        )
+
         @http_server.remap
-        print_info "File [" + "#{root_dir}"+file + "] bound to url [" + url + "]"
+        print_info "File [#{file}] bound to url [#{url}]"
+
         url
     end
     

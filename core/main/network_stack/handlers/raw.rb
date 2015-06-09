@@ -10,14 +10,19 @@ module BeEF
 
         class Raw
 
-	        def initialize(status, header={}, body)
+	        def initialize(status, header={}, body=nil)
 	        	@status  = status
-	                @header  = header
-	                @body    = body
+	          @header  = header
+						@body    = body
 	        end
 
 	        def call(env)
-	            [@status, @header, @body]
+	            # [@status, @header, @body]
+						@response = Rack::Response.new(
+								body = @body,
+								status = @status,
+								header = @header
+						)
 	        end
 
 	        private

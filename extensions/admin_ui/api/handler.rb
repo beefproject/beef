@@ -86,19 +86,16 @@ module API
       media_dir = File.dirname(__FILE__)+'/../media/'
       beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
 
-      
       # mount the favicon file, if we're not imitating a web server.
       if !config.get("beef.http.web_server_imitation.enable")
-        beef_server.mount('/favicon.ico', Rack::File.new("#{media_dir}#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}"))
+        BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(
+            "/extensions/admin_ui/media#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
+            '/favicon.ico')
       end
 
       self.build_javascript_ui beef_server
     end
-
-
-    
   end
-  
 end
 end
 end
