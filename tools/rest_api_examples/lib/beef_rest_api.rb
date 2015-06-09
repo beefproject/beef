@@ -344,4 +344,23 @@ def webrtc_status id
   end
 end
 
+################################################################################
+### Social Engineering
+################################################################################
+
+# bind dropper to path
+def bind(fname, path)
+  print_verbose "Binding 'extensions/social_engineering/droppers/#{fname}' to '#{path}'"
+  begin
+    response = RestClient.post "#{@url}/server/bind?token=#{@token}",
+    { 'mount' => "#{path}",
+      'local_file' => "#{fname}" }.to_json,
+    :content_type => :json,
+    :accept => :json
+  print_good "Bound '#{fname}' successfully" if response.code == 200
+  rescue => e
+    print_error "Could not bind file #{fname}: #{e.message}"
+  end
+end
+
 end
