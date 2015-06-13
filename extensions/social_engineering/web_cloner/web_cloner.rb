@@ -15,7 +15,9 @@ module BeEF
           @config = BeEF::Core::Configuration.instance
           @cloned_pages_dir = "#{File.expand_path('../../../../extensions/social_engineering/web_cloner', __FILE__)}/cloned_pages/"
           beef_proto = @config.get("beef.http.https.enable") == true ? "https" : "http"
-          @beef_hook = "#{beef_proto}://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
+          beef_host = @config.get("beef.http.public") || @config.get("beef.http.host")
+          beef_port = @config.get("beef.http.public_port") || @config.get("beef.http.port")
+          @beef_hook = "#{beef_proto}://#{beef_host}:#{beef_port}#{@config.get('beef.http.hook_file')}"
         end
 
         def clone_page(url, mount, use_existing, dns_spoof)
