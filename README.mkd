@@ -24,7 +24,9 @@ __Please, send us pull requests!__
 
 __Web:__ http://beefproject.com/
 
-__Mail:__ beef-subscribe@bindshell.net
+__Bugs:__ https://github.com/beefproject/beef
+
+__Security Bugs:__ security@beefproject.com
 
 __IRC:__ ircs://irc.freenode.net/beefproject
 
