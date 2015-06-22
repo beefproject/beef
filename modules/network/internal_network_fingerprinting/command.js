@@ -256,6 +256,7 @@ beef.execute(function() {
     "Netscape iPlanet",
     "80","http",true,
     "/mc-icons/menu.gif",21,18),
+  new Array("Kemp Load Master", "443", "https", false, "/kemplogo.png",951,75),
   new Array(
     "m0n0wall",
     "80","http",false,
@@ -263,6 +264,7 @@ beef.execute(function() {
   new Array("SMC Router","80","http",false,"/images/logo.gif",133,59)
 
 // Uncommon signatures
+//new Array("Rejetto HttpFileServer", "8080", "http",i true, "/~img27",16,16),
 //new Array("Citrix MetaFrame", "80", "http", false, "/Citrix/MetaFrameXP/default/media/nfusehead.gif",230,41),
 //new Array("Oracle E-Business Suite","80","http",false,"/OA_MEDIA/FNDSSCORP.gif",134,31),
 //new Array("OracleAS Reports Service","80","http",false,"/reports/images/oraclelogo_sizewithprodbrand.gif",133,20),
