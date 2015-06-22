@@ -42,9 +42,10 @@ module BeEF
               IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", "--no-check-certificate"], 'r+') do |wget_io|
               end
               success = true
+            rescue Errno::ENOENT => e
+              print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
             rescue => e
               print_error "Errors executing wget: #{e}"
-              print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
             end
 
             if success
