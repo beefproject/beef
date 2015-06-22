@@ -3,7 +3,7 @@
 # Retrieves module details and pops an alert dialog on all hooked browsers
 # Refer to the wiki for info: https://github.com/beefproject/beef/wiki/BeEF-RESTful-API
 ##
-require 'rest_client'
+require 'rest-client'
 require 'json'
 require 'optparse'
 require 'pp'

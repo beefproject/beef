@@ -3,7 +3,7 @@
 # Retrieves BeEF logs and logs for all online hooked browsers
 # Refer to the wiki for info: https://github.com/beefproject/beef/wiki/BeEF-RESTful-API
 ##
-require 'rest_client'
+require 'rest-client'
 require 'json'
 require 'optparse'
 require 'pp'
