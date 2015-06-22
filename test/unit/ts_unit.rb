@@ -9,6 +9,7 @@ require '../common/ts_common'
 
 require './core/filter/tc_base'
 require './core/filter/tc_command'
+require './core/main/network_stack/handlers/dynamicreconstruction'
 require './core/main/network_stack/handlers/redirector'
 require './core/tc_loader'
 require './core/tc_core'
@@ -56,6 +57,7 @@ class TS_BeefTests
     suite << TC_Network.suite
     suite << TC_Hooks.suite
     suite << TC_Redirector.suite
+    suite << TC_DynamicReconstruction.suite
     #suite << TC_Dns.suite
 
     return suite
