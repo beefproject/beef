@@ -24,7 +24,7 @@ class TS_BeefIntegrationTests
 
     suite = Test::Unit::TestSuite.new(name="BeEF Integration Test Suite")
     suite << TC_CheckEnvironment.suite
-    suite << TC_login.suite
+    suite << TC_Login.suite
     suite << TC_DebugModules.suite
     suite << TC_Jools.suite
     #suite << TC_DnsRest.suite

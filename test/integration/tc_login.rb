@@ -7,7 +7,7 @@ require 'test/unit'
 require '../common/test_constants'
 require '../common/beef_test'
 
-class TC_login < Test::Unit::TestCase
+class TC_Login < Test::Unit::TestCase
 
   def test_log_in
     session = Capybara::Session.new(:selenium)
