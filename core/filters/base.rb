@@ -22,7 +22,7 @@ module Filters
   # @return [Boolean] Whether or not the only characters in str are specified in chars
   def self.only?(chars, str)
     regex = Regexp.new('[^' + chars + ']')
-    regex.match(str).nil?
+    regex.match(str.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')).nil?
   end
 
   # Check if one or more characters in 'chars' are in 'str'
@@ -31,7 +31,7 @@ module Filters
   # @return [Boolean] Whether one of the characters exists in the string
   def self.exists?(chars, str)
     regex = Regexp.new(chars)
-    not regex.match(str).nil?
+    not regex.match(str.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')).nil?
   end
 
   # Check for null char
