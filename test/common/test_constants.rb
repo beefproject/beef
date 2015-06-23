@@ -7,7 +7,7 @@ BEEF_TEST_DIR = "/tmp/beef-test/"
 
 # General constants
 ATTACK_DOMAIN = "127.0.0.1"
-VICTIM_DOMAIN = "127.0.0.2"
+VICTIM_DOMAIN = "localhost"
 ATTACK_URL = "http://" + ATTACK_DOMAIN + ":3000/ui/panel"
 VICTIM_URL = "http://" + VICTIM_DOMAIN + ":3000/demos/basic.html"
 
