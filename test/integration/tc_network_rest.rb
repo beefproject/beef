@@ -57,7 +57,7 @@ class TC_NetworkRest < Test::Unit::TestCase
                                :accept => :json
       result = JSON.parse(response.body)
       success = result['success']
-      cmd_id = result['command_id']
+      @@cmd_id = result['command_id']
       sleep 15.0
     end
 
@@ -65,6 +65,14 @@ class TC_NetworkRest < Test::Unit::TestCase
       $root_dir = nil
     end
 
+  end
+
+  # Ensure the Port Scanner module identified the BeEF host
+  def test_port_scanner_results
+    rest_response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_port_scanner}/#{@@cmd_id}?token=#{@@token}"
+    check_rest_response(rest_response)
+    result = JSON.parse(rest_response.body)
+    raise "Port Scanner module failed to identify any open ports" unless result.to_s =~ /Port 3000 is OPEN/
   end
 
   # Tests GET /api/network/hosts handler
