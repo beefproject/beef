@@ -79,18 +79,18 @@ beef.browser.cookie = {
 			var lol_length = Math.floor(Math.random() * (max - min + 1)) + min;
 
 			var grunt = function(){
-					var moo = Math.floor(Math.random() * 62);
-					// this covers alpha chars only, both uppercase and lowercase
-					if(moo < 36){
-						return String.fromCharCode(moo + 55);
-					}else{
-						return String.fromCharCode(moo + 61);
-					}
-				};
-				while(to_hell.length < lol_length){
-					to_hell += grunt();
+				var moo = Math.floor(Math.random() * 62);
+				// this covers alpha chars only, both uppercase and lowercase
+				if(moo < 36){
+					return String.fromCharCode(moo + 55);
+				}else{
+					return String.fromCharCode(moo + 61);
 				}
-				return to_hell;
+			};
+			while(to_hell.length < lol_length){
+				to_hell += grunt();
+			}
+			return to_hell;
 		},
 		
 		hasSessionCookies: function (name){
