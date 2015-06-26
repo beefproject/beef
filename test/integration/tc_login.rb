@@ -7,7 +7,7 @@ require 'test/unit'
 require '../common/test_constants'
 require '../common/beef_test'
 
-class TC_login < Test::Unit::TestCase
+class TC_Login < Test::Unit::TestCase
 
   def test_log_in
     session = Capybara::Session.new(:selenium)
@@ -22,12 +22,14 @@ class TC_login < Test::Unit::TestCase
     sleep 20.0
     session.has_content?('logout')
     BeefTest.save_screenshot(session)
+    session.driver.browser.close
   end
 
   def test_beef_test_login_function
     session = BeefTest.login
     session.has_content?('logout')
     BeefTest.save_screenshot(session)
+    session.driver.browser.close
   end
 
   def test_log_out
@@ -35,6 +37,7 @@ class TC_login < Test::Unit::TestCase
     session.click_link('Logout')
     session.has_content?('BeEF Authentication')
     BeefTest.save_screenshot(session)
+    session.driver.browser.close
   end
 
   def test_beef_test_logout_function
@@ -42,6 +45,7 @@ class TC_login < Test::Unit::TestCase
     session = BeefTest.logout(session)
     session.has_content?('BeEF Authentication')
     BeefTest.save_screenshot(session)
+    session.driver.browser.close
   end
 
   def test_logs_tab
@@ -57,6 +61,7 @@ class TC_login < Test::Unit::TestCase
 
     BeefTest.save_screenshot(session)
     BeefTest.logout(session)
+    session.driver.browser.close
   end
 
   def test_hooking_browser
@@ -79,6 +84,8 @@ class TC_login < Test::Unit::TestCase
     BeefTest.save_screenshot(victim)
 
     BeefTest.logout(attacker)
+    attacker.driver.browser.close
+    victim.driver.browser.close
   end
 
 end

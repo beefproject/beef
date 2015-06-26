@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-# command-modules - Example BeEF RESTful API script
-# Retrieves module details and pops an alert dialog on all hooked browsers
+# clone_page - Example BeEF RESTful API script
+# Clone a web page and mount it locally
 # Refer to the wiki for info: https://github.com/beefproject/beef/wiki/BeEF-RESTful-API
 ##
 require 'rest-client'
@@ -9,7 +9,7 @@ require 'optparse'
 require 'pp'
 require './lib/string' # colored strings
 require './lib/print'  # print wrappers
-require './lib/beef_rest_api'
+require './lib/beef_rest_api' # API
 
 if ARGV.length == 0
   puts "#{$0}:"
@@ -40,10 +40,10 @@ OptionParser.new do |opts|
   opts.on('--port PORT', "Set BeEF port (default: #{port})") do |p|
     port = p
   end
-  opts.on('--user', "Set BeEF username (default: #{user})") do |u|
+  opts.on('--user USERNAME', "Set BeEF username (default: #{user})") do |u|
     user = u
   end
-  opts.on('--pass', "Set BeEF password (default: #{pass})") do |p|
+  opts.on('--pass PASSWORD', "Set BeEF password (default: #{pass})") do |p|
     pass = p
   end
   opts.on('--ssl', 'Use HTTPS') do
@@ -66,33 +66,10 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 # Retrieve BeEF version
 @api.version
 
-# Retrieve module categories
-print_debug @api.categories
-
-# Retrieve modules
-modules = @api.modules.flatten
-exit 1 if modules.empty?
-print_debug modules
-
-# Retrieve module details
-modules.each do |m|
-  next if m['id'].nil?
-  print_status "Retrieving module details [id: #{m['id']}]"
-  details = @api.module_details(m['id'])
-  print_debug details
-end
-
-# Retrieve online hooked browser list
-hooks = @api.online_browsers.flatten
-exit 1 if hooks.empty?
-print_debug hooks
-
-# Execute alert dialog on all online browsers
-mod_id = @api.get_module_id "Alert_dialog"
-hooks.each do |hook|
-  next if hook['id'].nil?
-  print_status "Executing module [id: #{mod_id}, browser: #{hook['id']}]"
-  result = @api.execute_module(hook['session'], mod_id, { "text" => "hello!" })
-  print_debug result
-end
+# Clone http://localhost/ and mount to /
+url = 'http://localhost/'
+path = '/'
+use_existing = false
+dns_spoof = false
+@api.clone_page(url, path, use_existing, dns_spoof)
 

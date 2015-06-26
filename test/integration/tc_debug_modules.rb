@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'test/unit'
-require 'rest_client'
+require 'rest-client'
 require 'json'
 require '../common/test_constants'
 require '../common/beef_test'
