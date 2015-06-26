@@ -71,12 +71,30 @@ beef.browser.cookie = {
 			( ( domain ) ? ";domain=" + domain : "" ) +
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 		},
+
+		veganLol: function (){
+			var to_hell= '';
+			var min = 3;
+			var max = 15;
+			var lol_length = Math.floor(Math.random() * (max - min + 1)) + min;
+
+			var grunt = function(){
+					var moo = Math.floor(Math.random() * 62);
+					// this covers alpha chars only, both uppercase and lowercase
+					if(moo < 36){
+						return String.fromCharCode(moo + 55);
+					}else{
+						return String.fromCharCode(moo + 61);
+					}
+				};
+				while(to_hell.length < lol_length){
+					to_hell += grunt();
+				}
+				return to_hell;
+		},
 		
-		hasSessionCookies: function (name)
-		{
-			var name = name || "cookie";
-			if (name == "") name = "cookie";
-			this.setCookie( name, 'none', '', '/', '', '' );
+		hasSessionCookies: function (name){
+			this.setCookie( name, beef.browser.cookie.veganLol(), '', '/', '', '' );
 
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');
@@ -84,11 +102,8 @@ beef.browser.cookie = {
 			
 		},
 
-		hasPersistentCookies: function (name)
-		{
-			var name = name || "cookie";
-			if (name == "") name = "cookie";
-			this.setCookie( name, 'none', 1, '/', '', '' );
+		hasPersistentCookies: function (name){
+			this.setCookie( name, beef.browser.cookie.veganLol(), 1, '/', '', '' );
 
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');

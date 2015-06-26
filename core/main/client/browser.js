@@ -2319,8 +2319,9 @@ beef.browser = {
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
         try {
             var cookies = document.cookie;
-            var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
-            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
+            var veglol = beef.browser.cookie.veganLol();
+            var has_session_cookies = (beef.browser.cookie.hasSessionCookies(veglol)) ? "Yes" : "No";
+            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies(veglol)) ? "Yes" : "No";
             if (cookies) details['Cookies'] = cookies;
             if (has_session_cookies) details['hasSessionCookies'] = has_session_cookies;
             if (has_persistent_cookies) details['hasPersistentCookies'] = has_persistent_cookies;
