@@ -25,7 +25,7 @@ class BeefTest
     session.fill_in 'user', :with => 'beef'
     session.fill_in 'pass', :with => 'beef'
     session.click_button('Login')
-    sleep 20.0
+    sleep 10.0
 
     session
   end
