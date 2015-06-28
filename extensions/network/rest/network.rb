@@ -29,7 +29,7 @@ module BeEF
         # Returns the entire list of network hosts for all zombies
         get '/hosts' do
           begin
-            hosts = @nh.all
+            hosts = @nh.all(:unique => true, :order => [:id.asc])
             count = hosts.length
 
             result = {}
@@ -45,7 +45,7 @@ module BeEF
         # Returns the entire list of network services for all zombies
         get '/services' do
           begin
-            services = @ns.all
+            services = @ns.all(:unique => true, :order => [:id.asc])
             count = services.length
 
             result = {}
@@ -63,7 +63,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hosts = @nh.all(:hooked_browser_id => id)
+            hosts = @nh.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
             count = hosts.length
 
             result = {}
@@ -84,7 +84,7 @@ module BeEF
           begin
             id = params[:id]
 
-            services = @ns.all(:hooked_browser_id => id)
+            services = @ns.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
             count = services.length
 
             result = {}
