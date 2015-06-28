@@ -50,7 +50,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
     json = {:url => url, :mount => mount, :dns_spoof => dns_spoof}.to_json
 
-    domain = url.gsub(%r{^http://}, '')
+    domain = url.gsub(%r{^https?://}, '')
 
     response = RestClient.post("#{RESTAPI_SENG}/clone_page?token=#{@@token}",
                                json,
