@@ -29,6 +29,7 @@ module BeEF
         def self.add(service={})
           (print_error "Invalid hooked browser session"; return) if not BeEF::Filters.is_valid_hook_session_id?(service[:hooked_browser_id])
           (print_error "Invalid IP address"; return) if not BeEF::Filters.is_valid_ip?(service[:ip])
+          (print_error "Invalid port"; return) if not BeEF::Filters.is_valid_port?(service[:port])
 
           # store the returned network host details
           BeEF::Core::Models::NetworkHost.add(

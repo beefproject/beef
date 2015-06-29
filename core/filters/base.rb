@@ -142,6 +142,15 @@ module Filters
     valid
   end
 
+  # Checks if the given string is a valid TCP port
+  # @param [String] port string for testing
+  # @return [Boolean] true if the string is a valid TCP port, otherwise false
+  def self.is_valid_port?(port)
+    valid = false
+    valid = true if port.to_i > 0 && port.to_i < 2**16
+    valid
+  end
+
   # Checks if string is a valid domain name
   # @param [String] domain string for testing
   # @return [Boolean] If the string is a valid domain name
