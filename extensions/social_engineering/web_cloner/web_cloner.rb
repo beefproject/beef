@@ -39,7 +39,7 @@ module BeEF
           #
           if use_existing.nil? || use_existing == false
             begin #,"--background"
-              cmd = ["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}"]
+              cmd = ["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", '--read-timeout', '60', '--tries', '3']
               if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
                 cmd << "--no-check-certificate"
               end
