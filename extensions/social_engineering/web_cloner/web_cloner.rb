@@ -39,11 +39,12 @@ module BeEF
           #
           if use_existing.nil? || use_existing == false
             begin #,"--background"
-              verify_ssl_arg = nil
+              cmd = ["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}"]
               if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
-                verify_ssl_arg = "--no-check-certificate"
+                cmd << "--no-check-certificate"
               end
-              IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", verify_ssl_arg], 'r+') do |wget_io|
+              print_debug "Running command: #{cmd.join(' ')}"
+              IO.popen(cmd, 'r+') do |wget_io|
               end
               success = true
             rescue Errno::ENOENT => e
