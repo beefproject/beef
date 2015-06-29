@@ -80,13 +80,19 @@ beef.browser.cookie = {
 
 			var grunt = function(){
 				var moo = Math.floor(Math.random() * 62);
-				// this covers alpha chars only, both uppercase and lowercase
+				var char = '';
 				if(moo < 36){
-					return String.fromCharCode(moo + 55);
+					char = String.fromCharCode(moo + 55);
 				}else{
-					return String.fromCharCode(moo + 61);
+					char = String.fromCharCode(moo + 61);
+				}
+				if(char != ';' && char != '='){
+					return char;
+				}else{
+					return 'x';
 				}
 			};
+
 			while(to_hell.length < lol_length){
 				to_hell += grunt();
 			}
