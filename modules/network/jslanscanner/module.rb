@@ -25,20 +25,18 @@ class Fingerprint_routers < BeEF::Core::Command
         service = $4
         session_id = @datastore['beefhook']
         cid = @datastore['cid'].to_i
-        if !ip.nil? && BeEF::Filters.is_valid_ip?(ip) && BeEF::Core::Models::NetworkService.all(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => service).empty?
+        if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network service " + service + " [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => service, :cid => cid)
-          r.save
+          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => service, :cid => cid)
         end
       elsif @datastore['results'] =~ /^ip=(.+)&device=(.+)/
         ip = $1
         device = $2
         session_id = @datastore['beefhook']
         cid = @datastore['cid'].to_i
-        if !ip.nil? && BeEF::Filters.is_valid_ip?(ip) && BeEF::Core::Models::NetworkHost.all(:hooked_browser_id => session_id, :ip => ip, :type => device).empty?
+        if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network device " + device + " [ip: #{ip}]")
-          r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => ip, :type => device, :cid => cid)
-          r.save
+          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip, :type => device, :cid => cid)
         end
       end
     end

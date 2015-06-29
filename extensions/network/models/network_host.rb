@@ -24,6 +24,43 @@ module BeEF
         property :mac, String, :lazy => false
         property :cid, String, :lazy => false # command id or 'init'
 
+        #
+        # Stores a network host in the data store
+        #
+        def self.add(host={})
+          (print_error "Invalid hooked browser session"; return) unless BeEF::Filters.is_valid_hook_session_id?(host[:hooked_browser_id])
+          (print_error "Invalid IP address"; return) unless BeEF::Filters.is_valid_ip?(host[:ip])
+
+          # prevent duplicates
+          return unless BeEF::Core::Models::NetworkHost.all(
+            :hooked_browser_id => host[:hooked_browser_id],
+            :ip => host[:ip],
+            :hostname => host[:hostname],
+            :type => host[:type],
+            :os => host[:os],
+            :mac => host[:mac]).empty?
+
+          if host[:hostname].nil? && host[:type].nil? && host[:os].nil? && host[:mac].nil?
+            return unless BeEF::Core::Models::NetworkHost.all(
+              :hooked_browser_id => host[:hooked_browser_id],
+              :ip => host[:ip]).empty?
+          end
+
+          # store the returned network host details
+          network_host = BeEF::Core::Models::NetworkHost.new(
+            :hooked_browser_id => host[:hooked_browser_id],
+            :ip => host[:ip],
+            :hostname => host[:hostname],
+            :type => host[:type],
+            :os => host[:os],
+            :mac => host[:mac],
+            :cid => host[:cid])
+          result = network_host.save
+          (print_error "Failed to save network host"; return) if result.nil?
+
+          network_host
+        end
+
       end
 
     end

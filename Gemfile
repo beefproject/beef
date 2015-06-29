@@ -52,6 +52,7 @@ if ENV['BEEF_TEST']
   gem "test-unit"
   gem "selenium"
   gem "selenium-webdriver"
+  gem "rspec"
   # nokogirl is needed by capybara which may require one of the below commands
   # sudo apt-get install libxslt-dev libxml2-dev
   # sudo port install libxml2 libxslt

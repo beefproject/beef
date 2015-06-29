@@ -28,8 +28,7 @@ class TC_Network < Test::Unit::TestCase
   # Tests procedure for properly adding new host
   def test_02_add_host_good
     assert_nothing_raised do
-      r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => '1234', :ip => '127.0.0.1')
-      r.save
+      BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => '1234', :ip => '127.0.0.1')
       raise "Adding network host failed" if BeEF::Core::Models::NetworkHost.all(:hooked_browser_id => '1234', :ip => '127.0.0.1').empty?
     end
   end
@@ -37,8 +36,7 @@ class TC_Network < Test::Unit::TestCase
   # Tests procedure for properly adding new service
   def test_03_add_service_good
     assert_nothing_raised do
-      r = BeEF::Core::Models::NetworkService.new(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :type => 'Apache', :cid => 1)
-      r.save
+      BeEF::Core::Models::NetworkService.add(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :type => 'Apache', :cid => 1)
       raise "Adding network service failed" if BeEF::Core::Models::NetworkService.all(:hooked_browser_id => '1234', :ip => '127.0.0.1').empty?
     end
   end

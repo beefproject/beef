@@ -39,7 +39,11 @@ module BeEF
           #
           if use_existing.nil? || use_existing == false
             begin #,"--background"
-              IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", "--no-check-certificate"], 'r+') do |wget_io|
+              verify_ssl_arg = nil
+              if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
+                verify_ssl_arg = "--no-check-certificate"
+              end
+              IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", verify_ssl_arg], 'r+') do |wget_io|
               end
               success = true
             rescue Errno::ENOENT => e
@@ -170,7 +174,9 @@ module BeEF
             http = Net::HTTP.new(uri.host, uri.port)
             if uri.scheme == "https"
               http.use_ssl = true
-              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+              if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+              end
             end
             request = Net::HTTP::Get.new(uri.request_uri)
             response = http.request(request)
