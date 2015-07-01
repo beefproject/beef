@@ -74,8 +74,8 @@ beef.browser.cookie = {
 
 		veganLol: function (){
 			var to_hell= '';
-			var min = 3;
-			var max = 15;
+			var min = 17;
+			var max = 25;
 			var lol_length = Math.floor(Math.random() * (max - min + 1)) + min;
 
 			var grunt = function(){
