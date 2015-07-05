@@ -83,7 +83,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'VBScript',           'VBScriptEnabled'],
         ['Browser Components', 'PhoneGap',           'HasPhonegap'],
         ['Browser Components', 'Google Gears',       'HasGoogleGears'],
-        ['Browser Components', 'Silverlight',        'HasSilverlight'],
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],

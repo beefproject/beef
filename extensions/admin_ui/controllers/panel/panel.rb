@@ -89,7 +89,6 @@ module BeEF
             has_googlegears = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasGoogleGears')
             has_webrtc      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebRTC')
             has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
-            has_silverlight = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasSilverlight')
             has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
             has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
             has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP') 
@@ -112,7 +111,6 @@ module BeEF
                 'has_googlegears' => has_googlegears,
                 'has_webrtc'      => has_webrtc,
                 'has_activex'     => has_activex,
-                'has_silverlight' => has_silverlight,
                 'has_quicktime'   => has_quicktime,
                 'has_wmp'         => has_wmp,
                 'has_realplayer'  => has_realplayer,

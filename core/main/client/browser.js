@@ -2130,16 +2130,6 @@ beef.browser = {
                         catch (e) {
                         }
                     }},
-                'Silverlight_Plug-In': {
-                    'control': 'Silverlight Plug-In',
-                    'return': function (control) {
-                        try {
-                            version = navigator.plugins['Silverlight Plug-In']["description"];
-                            return 'Silverlight Plug-In Version ' + version;//+ " description "+ filename;
-                        }
-                        catch (e) {
-                        }
-                    }},
                 'FoxitReader_Plugin': {
                     'control': 'FoxitReader Plugin',
                     'return': function (control) {
@@ -2326,7 +2316,6 @@ beef.browser = {
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_webrtc = (beef.browser.hasWebRTC()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
-        var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
@@ -2373,7 +2362,6 @@ beef.browser = {
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
         if (has_webrtc) details['HasWebRTC'] = has_webrtc;
         if (has_activex) details['HasActiveX'] = has_activex;
-        if (has_silverlight) details['HasSilverlight'] = has_silverlight;
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
         if (has_wmp) details['HasWMP'] = has_wmp;

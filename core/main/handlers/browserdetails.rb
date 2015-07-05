@@ -319,7 +319,7 @@ module BeEF
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
               'HasWebSocket', 'HasWebRTC', 'HasActiveX',
-              'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
+              'HasQuickTime', 'HasRealPlayer', 'HasWMP',
               'hasSessionCookies', 'hasPersistentCookies'
           ]
           components.each do |k|
