@@ -59,7 +59,7 @@ module Handlers
     # Binds a file to a mount point
     # @param [String] file File path to asset
     # @param [String] path URL path to mount the asset to (can be nil for random path)
-    # @param [String] extension Extension to append to the URL path (can be nil for none)
+    # @param [String] extension File extension (.x). If == nil content-type is text/plain, otherwise use the right one via MIME::Types.type_for()
     # @param [Integer] count The amount of times the asset can be accessed before being automatically unbinded (-1 = unlimited)
     # @return [String] URL Path of mounted asset
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
@@ -71,13 +71,20 @@ module Handlers
                              'count' => count}
 
         resp_body = File.read("#{root_dir}#{file}")
+
+        if extension.nil? || MIME::Types.type_for(extension).empty?
+          content_type = 'text/plain'
+        else
+          content_type = MIME::Types.type_for(extension).first.content_type
+        end
+
         @http_server.mount(
             url,
-            BeEF::Core::NetworkStack::Handlers::Raw.new('200', {'Content-Type'=>'text/plain'}, resp_body)
+            BeEF::Core::NetworkStack::Handlers::Raw.new('200', {'Content-Type' => content_type}, resp_body)
         )
 
         @http_server.remap
-        print_info "File [#{file}] bound to url [#{url}]"
+        print_info "File [#{file}] bound to Url [#{url}] using Content-type [#{content_type}]"
 
         url
     end

@@ -90,7 +90,7 @@ module API
       if !config.get("beef.http.web_server_imitation.enable")
         BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(
             "/extensions/admin_ui/media#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
-            '/favicon.ico')
+            '/favicon.ico', 'ico')
       end
 
       self.build_javascript_ui beef_server
