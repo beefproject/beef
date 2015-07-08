@@ -21,7 +21,6 @@ require './core/tc_autorun'
 require './core/tc_obfuscation'
 require './core/tc_logger'
 require './extensions/tc_xssrays'
-require './extensions/tc_vnc'
 require './extensions/tc_ipec_tunnel'
 require './extensions/tc_hooks'
 require './extensions/tc_proxy'
@@ -47,7 +46,6 @@ class TS_BeefTests
     suite << TC_SocialEngineering.suite
     suite << TC_Autorun.suite
     suite << TC_XssRays.suite
-    suite << TC_Vnc.suite
     suite << TC_Obfuscation.suite
     suite << TC_Logger.suite
     suite << TC_IpecTunnel.suite
