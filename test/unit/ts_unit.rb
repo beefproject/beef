@@ -46,7 +46,7 @@ class TS_BeefTests
     suite << TC_Grep.suite
     suite << TC_SocialEngineering.suite
     suite << TC_Autorun.suite
-    suite << TC_Xssrays.suite
+    suite << TC_XssRays.suite
     suite << TC_Vnc.suite
     suite << TC_Obfuscation.suite
     suite << TC_Logger.suite
