@@ -19,6 +19,7 @@ require './tc_jools' # Basic tests for jools
 require './tc_network_rest' # Basic tests for Network extension RESTful API interface
 #require './tc_dns_rest' # Basic tests for DNS RESTful API interface
 require './tc_social_engineering_rest' # Basic tests for social engineering RESTful API interface
+require './tc_webrtc_rest' # Basic tests for WebRTC extension
 
 class TS_BeefIntegrationTests
   def self.suite
@@ -31,6 +32,7 @@ class TS_BeefIntegrationTests
     suite << TC_NetworkRest.suite
     #suite << TC_DnsRest.suite
     suite << TC_SocialEngineeringRest.suite
+    suite << TC_WebRTCRest.suite
 
     return suite
   end

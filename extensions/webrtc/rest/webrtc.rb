@@ -152,7 +152,7 @@ module BeEF
         # +++ Example with curl +++
         # curl -H "Content-type: application/json; charset=UTF-8" -v
         #  -X POST -d '{"from":1,"to":2,"message":"Just a plain message"}'
-        #  http://127.0.0.1:3000/api/webrtc/go\?token\=df67654b03d030d97018f85f0284247d7f49c348
+        #  http://127.0.0.1:3000/api/webrtc/msg\?token\=df67654b03d030d97018f85f0284247d7f49c348
         #
         # Available client-side "message" options and handling:
         #  !gostealth - will put the <to> browser into a stealth mode
