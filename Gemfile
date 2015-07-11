@@ -51,7 +51,6 @@ if ENV['BEEF_TEST']
   gem 'test-unit'
   gem 'test-unit-full'
   gem 'curb'
-  gem 'test-unit'
   gem 'selenium'
   gem 'selenium-webdriver'
   gem 'rspec'
