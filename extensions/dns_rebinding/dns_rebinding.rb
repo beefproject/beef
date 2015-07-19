@@ -44,7 +44,11 @@ module DNSRebinding
                     if start_string.include?("load")
                         log "[Server] Block with iptables\n"
                         port_http = dr_config['port_http']
-                        system("iptables -A INPUT -s #{victim_ip} -p tcp --dport #{port_http} -j REJECT --reject-with tcp-reset")
+                        if BeEF::Filters::is_valid_ip?(victim_ip) && port_http.kind_of?(Integer)
+                            IO.popen(["iptables","-A","INPUT","-s","#{victim_ip}","-p","tcp","--dport","#{port_http}","-j","REJECT","--reject-with","tcp-reset"], 'r+'){|io|}
+                        else
+                          print_error "[Dns_Rebinding] victim_ip or port_http values are illegal."
+                        end
                     end
                     log "-------------------------------\n"
                 end
@@ -192,8 +196,8 @@ module DNSRebinding
             response_a = @responses[path]
             @mutex_responses.unlock
 
-            response = response_a[1];
-            content_type = response_a[0];
+            response = response_a[1]
+            content_type = response_a[0]
 
             send_http_response(socket, response, {'Content-Type'=>content_type})
 

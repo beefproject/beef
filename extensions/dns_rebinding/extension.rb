@@ -5,8 +5,8 @@ module DNSRebinding
     extend BeEF::API::Extension
 
     @short_name  = 'DNS Rebinding'
-    @full_name   = 'aaaa'
-    @description = 'aaaa'
+    @full_name   = 'DNS Rebinding'
+    @description = 'DNS Rebinding extension'
 
 end
 end
