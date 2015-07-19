@@ -1,0 +1,18 @@
+beef:
+    module:
+        dns_rebinding:
+            enable: true
+            category: "Network"
+            name: "DNS Rebinding"
+            description: "dnsrebind"
+            domain: "dnsreb.beefproject.com"
+            authors: ["Milovanov T.I."]
+            target:
+                working:
+                    C:
+                        min_ver: 1
+                        max_ver: 40
+                    O:
+                        min_ver: 1
+                        max_ver: 27
+            not_working: ["All"]
