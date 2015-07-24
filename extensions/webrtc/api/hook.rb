@@ -85,7 +85,7 @@ module BeEF
                   }
                 }
                 if (peerid == null) {
-                  console.log('received a peer message, but, we are already setup?');
+                  beef.debug('received a peer message, but, we are already setup?');
                 } else {
                   beefrtcs[peerid].processMessage(
                     JSON.stringify(#{output})
