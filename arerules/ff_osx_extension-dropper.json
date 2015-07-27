@@ -9,9 +9,9 @@
     "name": "firefox_extension_dropper",
     "condition": null,
     "options": {
-      "extension_name": "DownThem All - Download Manager",
-      "xpi_name": "Down-Them-All",
-      "base_host": "http://127.0.0.1:3000"
+      "extension_name": "Ummeneske",
+      "xpi_name": "Ummeneske",
+      "base_host": "http://172.16.45.1:3000"
     }
   }],
   "execution_order": [0],

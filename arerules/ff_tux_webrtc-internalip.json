@@ -1,7 +1,7 @@
 {"name": "Get Internal IP (WebRTC)",
   "author": "antisnatchor",
   "browser": "FF",
-  "browser_version": ">= 30",
+  "browser_version": ">= 31",
   "os": "Linux",
   "os_version": "ALL",
   "modules": [

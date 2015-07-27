@@ -12,7 +12,7 @@
   }, {
     "name": "test_return_long_string",
     "condition": "status==1",
-    "code": "var mod_input=test_return_ascii_chars_mod_output + '--(DUPA)--';",
+    "code": "var mod_input=test_return_ascii_chars_mod_output + '--(CICCIO)--';",
     "options": {
       "repeat": "10",
       "repeat_string": "<<mod_input>>"
@@ -21,7 +21,7 @@
     {
       "name": "alert_dialog",
       "condition": "status=1",
-      "code": "var mod_input=test_return_long_string_mod_output + '--(SUTEK)--';",
+      "code": "var mod_input=test_return_long_string_mod_output + '--(PASTICCIO)--';",
       "options":{"text":"<<mod_input>>"}
     },
    {

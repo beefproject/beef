@@ -25,26 +25,11 @@
       "options":{"text":"<<mod_input>>"}
     },
    {
-    // this doesn't execute atm as the setInterval call loops infinitely. Add a timeout of X second to continue anyway.
     "name": "get_page_html",
     "condition": null,
     "options": {}
   }],
   "execution_order": [0, 1, 2, 3],
   "execution_delay": [0, 0, 0, 0],
-  /* chain_mode can be 'sequential' or 'nested-forward':
-  #
-  #  - sequential chain with delays (setTimeout stuff)
-  #    ex.: setTimeout(module_one(),   0);
-  #         setTimeout(module_two(),   2000);
-  #         setTimeout(module_three(), 3000);
-  #
-  #  - nested forward chain with status checks (setInterval to wait for command to return from async operations)
-  #    ex.:  module_one()
-  #           if result == success
-  #             module_two(module_one_output)
-  #               if result == success
-  #                  module_three(module_two_output)
-  #*/
   "chain_mode": "nested-forward"
 }
