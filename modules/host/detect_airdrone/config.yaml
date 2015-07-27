@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_airdrone:
+            enable: true
+            category: "Host"
+            name: "Detect Airdrone"
+            description: "This module attempts to detect Airdrone on localhost (default port: 8888)"
+            authors: ["bcoles"]
+            target:
+                working:
+                    ALL:
+                        os: ["Android"]
+                not_working:
+                    ALL:
+                        os: ["All"]

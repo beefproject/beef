@@ -16,6 +16,7 @@ require 'base64'
 require 'xmlrpc/client'
 require 'openssl'
 require 'rubydns'
+require 'mime/types'
 
 # @note Include the filters
 require 'core/filters'

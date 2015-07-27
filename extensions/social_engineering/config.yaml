@@ -13,6 +13,7 @@ beef:
                 # NOTE: you must have 'wget' in your PATH
                 add_beef_hook: true
                 user_agent: "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"
+                verify_ssl: true
             mass_mailer:
                 # NOTE: you must have 'file' in your PATH
                 user_agent: "Microsoft-MacOutlook/12.12.0.111556"
@@ -20,6 +21,7 @@ beef:
                 port: 587
                 use_auth: true
                 use_tls: true
+                verify_ssl: true
                 helo: "gmail.com" # this is usually the domain name
                 auth: "youruser@gmail.com"
                 password: "yourpass"

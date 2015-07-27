@@ -31,7 +31,9 @@ module BeEF
           # create new SSL context and disable CA chain validation
           if @config.get("#{@config_prefix}.use_tls")
             @ctx = OpenSSL::SSL::SSLContext.new
-            @ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE # In case the SMTP server uses a self-signed cert, we proceed anyway
+            if not @config.get("#{@config_prefix}.verify_ssl")
+              @ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE # In case the SMTP server uses a self-signed cert, we proceed anyway
+            end
             @ctx.ssl_version = "TLSv1"
           end
 

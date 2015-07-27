@@ -61,6 +61,7 @@ module BeEF
                 result = {
                     "success" => false
                 }.to_json
+                halt 500
               end
             end
 

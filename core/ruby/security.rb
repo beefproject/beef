@@ -12,8 +12,8 @@ end
 
 # @note Prevent system from ever being used
 def system(args)
-  puts "For security reasons the system method is not accepted in the Browser Exploitation Framework code base."
-  exit
+ puts "For security reasons the system method is not accepted in the Browser Exploitation Framework code base."
+ exit
 end
 
 # @note Prevent Kernel.system from ever being used

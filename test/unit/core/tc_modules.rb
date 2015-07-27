@@ -48,4 +48,14 @@ class TC_Modules < Test::Unit::TestCase
     
   end
 
+  def test_safe_client_debug_log
+    Dir['../../modules/**/*.js'].each do |path|
+      File.open(path) do |f|
+        f.grep(/\W*console\.log\W*\(/im) do |line|
+          assert(false, "Function 'console.log' used instead of 'beef.debug' in command module: " + path + ':' + line)
+        end
+      end
+    end
+  end
+
 end

@@ -1,0 +1,15 @@
+beef:
+    extension:
+        dns_rebinding:
+            enable: true
+            name: 'DNS Rebinding'
+            authors: ['Milovanov T.I.']
+            #Addresses are split into internal/external for more convenient attack
+            #from LAN.
+            address_http_internal:  '192.168.x.x'
+            address_http_external:  'x.x.x.x'
+            address_proxy_internal: '192.168.x.x'
+            address_proxy_external: 'x.x.x.x'
+            port_http: 80
+            port_proxy: 81
+            debug_mode: true

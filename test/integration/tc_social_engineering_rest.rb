@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'test/unit'
-require 'rest_client'
+require 'rest-client'
 require 'json'
 require '../common/test_constants'
 
@@ -50,29 +50,33 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
     json = {:url => url, :mount => mount, :dns_spoof => dns_spoof}.to_json
 
+    domain = url.gsub(%r{^https?://}, '')
+
     response = RestClient.post("#{RESTAPI_SENG}/clone_page?token=#{@@token}",
                                json,
                                @@headers)
 
     check_response(response)
 
-    ip = Socket.ip_address_list.detect { |i| !(i.ipv4_loopback? || i.ipv6_loopback?) }
-    domain = url.gsub(%r{^http://}, '')
-
-    regex = %r{
-      ^#{domain}\.\t+
-      \d+\t+
-      IN\t+
-      A\t+
-      #{ip.ip_address}$
-    }x
-
     # Send DNS request to server to verify that a new rule was added
     dns_address = @@config.get('beef.extension.dns.address')
     dns_port = @@config.get('beef.extension.dns.port')
+    dig_output = IO.popen(["dig", "@#{dns_address}", "-p", "#{dns_port}", "-t",
+                          "A", "+short", "#{domain}"], 'r+').read.strip!
 
-    dig_output = IO.popen(["dig", "@#{dns_address}", "-p", "#{dns_port}", "-t", "A", "#{domain}"], 'r+').read
-    assert_match(regex, dig_output)
+    foundmatch = false
+
+    # Iterate local IPs (excluding loopbacks) to find a match to the 'dig'
+    # output
+    assert_block do
+        Socket.ip_address_list.each { |i|
+            if !(i.ipv4_loopback? || i.ipv6_loopback?)
+                return true if i.ip_address.to_s.eql?(dig_output.to_s)
+            end
+        }
+    end
+
+    # assert(foundmatch)
   end
 
   private

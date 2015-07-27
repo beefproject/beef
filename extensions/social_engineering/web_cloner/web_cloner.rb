@@ -15,7 +15,9 @@ module BeEF
           @config = BeEF::Core::Configuration.instance
           @cloned_pages_dir = "#{File.expand_path('../../../../extensions/social_engineering/web_cloner', __FILE__)}/cloned_pages/"
           beef_proto = @config.get("beef.http.https.enable") == true ? "https" : "http"
-          @beef_hook = "#{beef_proto}://#{@config.get('beef.http.host')}:#{@config.get('beef.http.port')}#{@config.get('beef.http.hook_file')}"
+          beef_host = @config.get("beef.http.public") || @config.get("beef.http.host")
+          beef_port = @config.get("beef.http.public_port") || @config.get("beef.http.port")
+          @beef_hook = "#{beef_proto}://#{beef_host}:#{beef_port}#{@config.get('beef.http.hook_file')}"
         end
 
         def clone_page(url, mount, use_existing, dns_spoof)
@@ -37,12 +39,18 @@ module BeEF
           #
           if use_existing.nil? || use_existing == false
             begin #,"--background"
-              IO.popen(["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", "--no-check-certificate"], 'r+') do |wget_io|
+              cmd = ["wget", "#{url}", "-c", "-k", "-O", "#{@cloned_pages_dir + output}", "-U", "#{user_agent}", '--read-timeout', '60', '--tries', '3']
+              if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
+                cmd << "--no-check-certificate"
+              end
+              print_debug "Running command: #{cmd.join(' ')}"
+              IO.popen(cmd, 'r+') do |wget_io|
               end
               success = true
+            rescue Errno::ENOENT => e
+              print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
             rescue => e
               print_error "Errors executing wget: #{e}"
-              print_error "Looks like wget is not in your PATH. If 'which wget' returns null, it means you don't have 'wget' in your PATH."
             end
 
             if success
@@ -167,7 +175,9 @@ module BeEF
             http = Net::HTTP.new(uri.host, uri.port)
             if uri.scheme == "https"
               http.use_ssl = true
-              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+              if not @config.get('beef.extension.social_engineering.web_cloner.verify_ssl')
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+              end
             end
             request = Net::HTTP::Get.new(uri.request_uri)
             response = http.request(request)

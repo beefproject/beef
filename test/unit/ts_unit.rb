@@ -9,6 +9,7 @@ require '../common/ts_common'
 
 require './core/filter/tc_base'
 require './core/filter/tc_command'
+require './core/main/network_stack/handlers/dynamicreconstruction'
 require './core/main/network_stack/handlers/redirector'
 require './core/tc_loader'
 require './core/tc_core'
@@ -20,9 +21,7 @@ require './core/tc_autorun'
 require './core/tc_obfuscation'
 require './core/tc_logger'
 require './extensions/tc_xssrays'
-require './extensions/tc_vnc'
 require './extensions/tc_ipec_tunnel'
-require './extensions/tc_hackverter'
 require './extensions/tc_hooks'
 require './extensions/tc_proxy'
 require './extensions/tc_requester'
@@ -46,18 +45,17 @@ class TS_BeefTests
     suite << TC_Grep.suite
     suite << TC_SocialEngineering.suite
     suite << TC_Autorun.suite
-    suite << TC_Xssrays.suite
-    suite << TC_Vnc.suite
+    suite << TC_XssRays.suite
     suite << TC_Obfuscation.suite
     suite << TC_Logger.suite
     suite << TC_IpecTunnel.suite
     suite << TC_Requester.suite
     suite << TC_Proxy.suite
-    suite << TC_Hackverter.suite
     suite << TC_EventLogger.suite
     suite << TC_Network.suite
     suite << TC_Hooks.suite
     suite << TC_Redirector.suite
+    suite << TC_DynamicReconstruction.suite
     #suite << TC_Dns.suite
 
     return suite

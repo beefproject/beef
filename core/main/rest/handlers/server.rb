@@ -38,7 +38,9 @@ module BeEF
             droppers_dir = File.expand_path('..', __FILE__) + "/../../../../extensions/social_engineering/droppers/"
 
             if File.exists?(droppers_dir + local_file) && Dir.entries(droppers_dir).include?(local_file)
-              BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind("/extensions/social_engineering/droppers/#{local_file}", mount)
+              f_ext = File.extname(local_file).gsub('.','')
+              f_ext = nil if f_ext.empty?
+              BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind("/extensions/social_engineering/droppers/#{local_file}", mount, f_ext)
               status 200
             else
               halt 400

@@ -270,6 +270,7 @@ beef.net = {
                 response.status_code = jqXHR.status;
                 response.status_text = textStatus;
                 response.duration = (end_time - start_time);
+                response.port_status = "open";
             },
             complete: function (jqXHR, textStatus) {
                 response.status_code = jqXHR.status;
@@ -286,7 +287,7 @@ beef.net = {
                     response.port_status = "open";
                 }
             }
-        }).done(function () {
+        }).always(function () {
                 if (callback != null) {
                     callback(response);
                 }

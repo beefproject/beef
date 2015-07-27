@@ -6,8 +6,8 @@
 BEEF_TEST_DIR = "/tmp/beef-test/"
 
 # General constants
-ATTACK_DOMAIN = "attacker.beefproject.com"
-VICTIM_DOMAIN = "attacker.beefproject.com"
+ATTACK_DOMAIN = "127.0.0.1"
+VICTIM_DOMAIN = "localhost"
 ATTACK_URL = "http://" + ATTACK_DOMAIN + ":3000/ui/panel"
 VICTIM_URL = "http://" + VICTIM_DOMAIN + ":3000/demos/basic.html"
 
@@ -19,6 +19,8 @@ BEEF_PASSWD = "beef"
 RESTAPI_HOOKS = "http://" + ATTACK_DOMAIN + ":3000/api/hooks"
 RESTAPI_LOGS = "http://" + ATTACK_DOMAIN + ":3000/api/logs"
 RESTAPI_MODULES = "http://" + ATTACK_DOMAIN + ":3000/api/modules"
+RESTAPI_NETWORK = "http://" + ATTACK_DOMAIN + ":3000/api/network"
 RESTAPI_DNS = "http://" + ATTACK_DOMAIN + ":3000/api/dns"
 RESTAPI_SENG = "http://" + ATTACK_DOMAIN + ":3000/api/seng"
 RESTAPI_ADMIN = "http://" + ATTACK_DOMAIN + ":3000/api/admin"
+RESTAPI_WEBRTC = "http://" + ATTACK_DOMAIN + ":3000/api/webrtc"

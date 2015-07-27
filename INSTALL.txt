@@ -33,8 +33,10 @@ Installation
 
 	  http://www.sqlite.org/sqlitedll-3_7_0_1.zip
 
-	  Other than that, you also need TheRubyRacer. As it's painful to install it on Windows, you can download 2 pre-compiled V8 DLLs and 2 gems from https://github.com/hiranpeiris/therubyracer_for_windows.
+	  Other than that, you also need TheRubyRacer. As it's painful to install it on Windows, you can download 2 pre-compiled V8 DLLs and 2 gems from https://github.com/eakmotion/therubyracer_for_windows.
 
+	Finally, edit beef's gem lock file by replacing the required ruby racer version with the version downloaded from the link above. 
+	
    3. Prerequisites (Linux)
 
       !!! This must be done PRIOR to running the bundle install command !!!

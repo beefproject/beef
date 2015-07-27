@@ -363,4 +363,21 @@ def bind(fname, path)
   end
 end
 
+# clone page and bind to path
+def clone_page(url, path, use_existing, dns_spoof)
+  print_verbose "Binding '#{url}' to '#{path}'"
+  begin
+    response = RestClient.post "#{@url}/seng/clone_page?token=#{@token}",
+    { 'mount' => "#{path}",
+      'url' => "#{url}",
+      'use_existing' => use_existing,
+      'dns_spoof' => dns_spoof }.to_json,
+    :content_type => :json,
+    :accept => :json
+    print_good "Bound '#{url}' successfully" if response.code == 200
+  rescue => e
+    print_error "Could not bind URL #{url}: #{e.message}"
+  end
+end
+
 end

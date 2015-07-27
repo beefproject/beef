@@ -35,7 +35,7 @@ require 'core/loader'
 if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
   config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
 else
-  config = BeEF::Core::Configuration.new("#{$root_dir}/#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+  config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
 end
 
 # @note After the BeEF core is loaded, bootstrap the rest of the framework internals

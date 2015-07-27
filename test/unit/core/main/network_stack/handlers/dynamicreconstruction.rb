@@ -99,4 +99,18 @@ class TC_DynamicReconstruction < Test::Unit::TestCase
     assert_equal "", response.body_str
   end
 
+  def test_ascii_values
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test?bh=z&sid=z&pid=z&pc=z&d=z")
+    assert_equal 200, response.response_code
+    assert_equal "", response.body_str
+  end
+
+  def test_array_values
+    wait_for_server
+    response = Curl::Easy.http_get("http://127.0.0.1:" + @port.to_s + "/test?bh[]=1&sid[]=1&pid[]=1&pc[]=1&d[]=1")
+    assert_equal 200, response.response_code
+    assert_equal "", response.body_str
+  end
+
 end

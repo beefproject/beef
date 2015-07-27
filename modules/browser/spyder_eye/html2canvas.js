@@ -3,6 +3,7 @@
   Copyright (c) 2013 Niklas von Hertzen (@niklasvh)
 
   Released under MIT License
+  Modified for BeEF <http://beefproject.com>
 */
 (function(window, document, undefined){
 
@@ -15,7 +16,7 @@ html2canvas;
 
 function h2clog(a) {
   if (_html2canvas.logging && window.console && window.console.log) {
-    window.console.log(a);
+    beef.debug(a);
   }
 }
 
@@ -2801,7 +2802,7 @@ _html2canvas.Renderer.Canvas = function(options) {
         if (storageContext.clip){
           ctx.save();
           ctx.beginPath();
-          // console.log(storageContext);
+          // beef.debug(storageContext);
           ctx.rect(storageContext.clip.left, storageContext.clip.top, storageContext.clip.width, storageContext.clip.height);
           ctx.clip();
         }

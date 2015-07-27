@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Fake Notification Bar (Chrome)"
-            description: "Displays a fake notification bar at the top of the screen, similar to those presented in Chrome. If the user clicks the notification they will be prompted to download the file specified below."
+            description: "Displays a fake notification bar at the top of the screen, similar to those presented in Chrome. If the user clicks the notification they will be prompted to download the file specified below.<br><br>You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt."
             authors: ["xntrik", "bcoles"]
             target:
                 user_notify: ['ALL']

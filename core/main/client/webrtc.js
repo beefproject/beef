@@ -67,10 +67,12 @@ Beefwebrtc.prototype.initialize = function() {
 
   // Initialise the pcConfig hash with the provided stunservers
   var stuns = JSON.parse(this.stunservers);
-  this.pcConfig = {"iceServers": [{"urls":stuns}]};
+  this.pcConfig = {"iceServers": [{"urls":stuns, "username":"user",
+    "credential":"pass"}]};
 
   // We're not getting the browsers to request their own TURN servers, we're specifying them through BeEF
-  this.forceTurn(this.turnjson);
+  // this.forceTurn(this.turnjson);
+  this.turnDone = true;
 
   // Caller is always ready to create peerConnection.
   this.signalingReady = this.initiator;
@@ -450,6 +452,18 @@ Beefwebrtc.prototype.onCreateSessionDescriptionError = function(error) {
   if (localverbose === true) {beef.debug('Failed to create session description: ' + error.toString());}
 }
 
+// If the browser successfully sets a remote description
+Beefwebrtc.prototype.onSetRemoteDescriptionSuccess = function() {
+  var localverbose = false;
+
+  for (var k in beefrtcs) {
+    if (beefrtcs[k].verbose === true) {
+      localverbose = true;
+    }
+  }
+  if (localverbose === true) {beef.debug('Set remote session description successfully');}
+}
+
 // Check for messages - which includes signaling from a calling peer - this gets kicked off in maybeStart()
 Beefwebrtc.prototype.calleeStart = function() {
   // Callee starts to process cached offer and other messages.
@@ -467,11 +481,55 @@ Beefwebrtc.prototype.processSignalingMessage = function(message) {
 
   if (message.type === 'offer') {
     if (this.verbose) {beef.debug("Processing signalling message: OFFER");}
-    this.setRemote(message);
-    this.doAnswer();
+    if (navigator.mozGetUserMedia) { // Mozilla shim fuckn shit - since the new
+                                     // version of FF - which no longer works
+        if (this.verbose) {beef.debug("Moz shim here");}
+        globalrtc[this.peerid].setRemoteDescription(
+            new RTCSessionDescription(message),
+            function() {
+              // globalrtc[this.peerid].createAnswer(function(answer) {
+              //   globalrtc[this.peerid].setLocalDescription(
+
+              var peerid = null;
+
+              for (var k in beefrtcs) {
+                if (beefrtcs[k].allgood === false) {
+                  peerid = beefrtcs[k].peerid;
+                }
+              }
+
+              globalrtc[peerid].createAnswer(function(answer) {
+                globalrtc[peerid].setLocalDescription(
+                    new RTCSessionDescription(answer),
+                    function() {
+                      beefrtcs[peerid].sendSignalMsg(answer);
+                    },function(error) {
+                      beef.debug("setLocalDescription error: " + error);
+                    });
+              },function(error) {
+                beef.debug("createAnswer error: " +error);
+              });
+            },function(error) {
+              beef.debug("setRemoteDescription error: " + error);
+            });
+                          
+    } else {
+      this.setRemote(message);
+      this.doAnswer();
+    }
   } else if (message.type === 'answer') {
     if (this.verbose) {beef.debug("Processing signalling message: ANSWER");}
-    this.setRemote(message);
+    if (navigator.mozGetUserMedia) { // terrible moz shim - as for the offer
+        if (this.verbose) {beef.debug("Moz shim here");}
+        globalrtc[this.peerid].setRemoteDescription(
+          new RTCSessionDescription(message),
+          function() {},
+          function(error) {
+            beef.debug("setRemoteDescription error: " + error);
+          });
+    } else {
+      this.setRemote(message);
+    }
   } else if (message.type === 'candidate') {
     if (this.verbose) {beef.debug("Processing signalling message: CANDIDATE");}
     var candidate = new RTCIceCandidate({sdpMLineIndex: message.label,
@@ -486,11 +544,11 @@ Beefwebrtc.prototype.processSignalingMessage = function(message) {
 // Used to set the RTC remote session
 Beefwebrtc.prototype.setRemote = function(message) {
     globalrtc[this.peerid].setRemoteDescription(new RTCSessionDescription(message),
-       onSetRemoteDescriptionSuccess, this.onSetSessionDescriptionError);
+       this.onSetRemoteDescriptionSuccess, this.onSetSessionDescriptionError);
 
-  function onSetRemoteDescriptionSuccess() {
-    if (this.verbose) {beef.debug("Set remote session description success.");}
-  }
+  // function onSetRemoteDescriptionSuccess() {
+  //   if (this.verbose) {beef.debug("Set remote session description success.");}
+  // }
 }
 
 // As part of the processSignalingMessage function, we check for 'offers' from peers. If there's an offer, we answer, as below

@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Clippy"
-            description: "Brings up a clippy image and asks the user to do stuff."
+            description: "Brings up a clippy image and asks the user to do stuff. Users who accept are prompted to download an executable.<br><br>You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt."
             authors: ["vt [nick.freeman@security-assessment.com]", "denden [denis.andzakovic@security-assessment.com]"]
             target:
                 user_notify: ['ALL']

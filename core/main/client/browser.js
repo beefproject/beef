@@ -406,11 +406,19 @@ beef.browser = {
     },
 
     /**
+     * Returns true if FF39
+     * @example: beef.browser.isFF39()
+     */
+    isFF39: function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/39./) != null;
+    },
+
+    /**
      * Returns true if FF.
      * @example: beef.browser.isFF()
      */
     isFF: function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39();
 
     },
 
@@ -1149,6 +1157,7 @@ beef.browser = {
             FF36: this.isFF36(), // Firefox 36
             FF37: this.isFF37(), // Firefox 37
             FF38: this.isFF38(), // Firefox 38
+            FF39: this.isFF39(), // Firefox 39
             FF: this.isFF(),   // Firefox any version
 
             IE6: this.isIE6(), // Internet Explorer 6
@@ -1592,6 +1601,10 @@ beef.browser = {
             return '38'
         }
         ;   // Firefox 38
+        if (this.isFF39()) {
+            return '39'
+        }
+        ;   // Firefox 39
 
         if (this.isIE6()) {
             return '6'
@@ -2117,16 +2130,6 @@ beef.browser = {
                         catch (e) {
                         }
                     }},
-                'Silverlight_Plug-In': {
-                    'control': 'Silverlight Plug-In',
-                    'return': function (control) {
-                        try {
-                            version = navigator.plugins['Silverlight Plug-In']["description"];
-                            return 'Silverlight Plug-In Version ' + version;//+ " description "+ filename;
-                        }
-                        catch (e) {
-                        }
-                    }},
                 'FoxitReader_Plugin': {
                     'control': 'FoxitReader Plugin',
                     'return': function (control) {
@@ -2314,14 +2317,14 @@ beef.browser = {
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_webrtc = (beef.browser.hasWebRTC()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
-        var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
         try {
             var cookies = document.cookie;
-            var has_session_cookies = (beef.browser.cookie.hasSessionCookies("cookie")) ? "Yes" : "No";
-            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies("cookie")) ? "Yes" : "No";
+            var veglol = beef.browser.cookie.veganLol();
+            var has_session_cookies = (beef.browser.cookie.hasSessionCookies(veglol)) ? "Yes" : "No";
+            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies(veglol)) ? "Yes" : "No";
             if (cookies) details['Cookies'] = cookies;
             if (has_session_cookies) details['hasSessionCookies'] = has_session_cookies;
             if (has_persistent_cookies) details['hasPersistentCookies'] = has_persistent_cookies;
@@ -2361,7 +2364,6 @@ beef.browser = {
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
         if (has_webrtc) details['HasWebRTC'] = has_webrtc;
         if (has_activex) details['HasActiveX'] = has_activex;
-        if (has_silverlight) details['HasSilverlight'] = has_silverlight;
         if (has_quicktime) details['HasQuickTime'] = has_quicktime;
         if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
         if (has_wmp) details['HasWMP'] = has_wmp;

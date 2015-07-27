@@ -5,7 +5,7 @@
 #
 require 'test/unit'
 
-class TC_Xssrays < Test::Unit::TestCase
+class TC_XssRays < Test::Unit::TestCase
 
   def setup
     $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))

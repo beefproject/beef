@@ -180,8 +180,7 @@ module BeEF
               if config.get("beef.extension.network.enable") == true
                 if proxy_server =~ /^([\d\.]+):([\d]+)$/
                   print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
-                  r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy', :cid => 'init')
-                  r.save
+                  BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy', :cid => 'init')
                 end
               end
             end
@@ -324,7 +323,7 @@ module BeEF
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
               'HasWebSocket', 'HasWebRTC', 'HasActiveX',
-              'HasSilverlight', 'HasQuickTime', 'HasRealPlayer', 'HasWMP',
+              'HasQuickTime', 'HasRealPlayer', 'HasWMP',
               'hasSessionCookies', 'hasPersistentCookies'
           ]
           components.each do |k|
@@ -358,8 +357,7 @@ module BeEF
           # add localhost as network host
           if config.get('beef.extension.network.enable')
             print_debug("Hooked browser has network interface 127.0.0.1")
-            r = BeEF::Core::Models::NetworkHost.new(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'OsName'), :cid => 'init')
-            r.save
+            BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'OsName'), :cid => 'init')
           end
 
           # Autorun Rule Engine - Check if the hooked browser type/version and OS type/version match any Rule-sets

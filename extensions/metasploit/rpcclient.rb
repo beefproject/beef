@@ -21,7 +21,6 @@ module Metasploit
                 BeEF::Core::Configuration.instance.set('beef.extension.metasploit.loaded', false)
                 return nil
             end
-		  
             		@lock = false
 			@lastauth = nil
 			@unit_test = false
@@ -116,25 +115,41 @@ module Metasploit
 	def unit_test_init
 		@unit_test = true
 	end
-        # login into metasploit
+        # login to metasploit
 		def login
             		get_lock()
+
 			res = super(@config['user'] , @config['pass'])
-			
 		 	if not res
                 		release_lock()
-                		print_error 'Could not authenticate to Metasploit xmlrpc.'
+                		print_error 'Could not authenticate to Metasploit MSGRPC.'
 				return false
 			end
-			
-			print_info 'Successful connection with Metasploit.' if (!@lastauth && !@unit_test)
-			
+			if (!@lastauth)
+				print_info 'Successful connection with Metasploit.' if (!@unit_test)
+				print_debug "Metasploit: Received temporary token: #{self.token}"
+				# Generate permanent token
+				new_token = token_generate
+				if new_token.nil?
+					print_warning "Metasploit: Could not retrieve permanent Metasploit token. Connection to Metasploit will time out in 5 minutes."
+				else
+					self.token = new_token
+					print_debug "Metasploit: Received permanent token: #{self.token}"
+				end
+			end
 			@lastauth = Time.now
       
             		release_lock()
 			true
 		end
-    
+
+		# generate a permanent auth token
+		def token_generate
+			res = self.call('auth.token_generate')
+			return if not res or not res['token']
+			res['token']
+		end
+
 		def browser_exploits()
                 
       			get_lock()
