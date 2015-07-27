@@ -401,7 +401,7 @@ module BeEF
               end
 
               os_ver_rule_maj, os_ver_rule_min = 5, 0 if os_ver_rule_maj == 'XP'
-              os_ver_rule_maj, os_ver_rule_min = 6, 0 if os_ver_rule_min == 'Vista'
+              os_ver_rule_maj, os_ver_rule_min = 6, 0 if os_ver_rule_maj == 'Vista'
 
               next unless @VERSION.include?(b_ver_cond)
               next unless BeEF::Filters::is_valid_browserversion?(b_ver)
