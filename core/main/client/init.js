@@ -69,13 +69,11 @@ function beef_init() {
             beef.net.browser_details();
             beef.updater.execute_commands();
             beef.logger.start();
-            beef.are.init();
         }else {
             beef.net.browser_details();
             beef.updater.execute_commands();
             beef.updater.check();
             beef.logger.start();
-            beef.are.init();
         }
     }
 }

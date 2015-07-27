@@ -1,0 +1,20 @@
+{
+  "name": "Firefox Extension Dropper",
+  "author": "antisnatchor",
+  "browser": "FF",
+  "browser_version": "ALL",
+  "os": "OSX",
+  "os_version": ">= 10.8",
+  "modules": [{
+    "name": "firefox_extension_dropper",
+    "condition": null,
+    "options": {
+      "extension_name": "DownThem All - Download Manager",
+      "xpi_name": "Down-Them-All",
+      "base_host": "http://127.0.0.1:3000"
+    }
+  }],
+  "execution_order": [0],
+  "execution_delay": [0],
+  "chain_mode": "sequential"
+}

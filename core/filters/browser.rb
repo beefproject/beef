@@ -54,6 +54,7 @@ module Filters
     return false if not is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return true if str.eql? "UNKNOWN"
+    return true if str.eql? "ALL"
     return false if not nums_only?(str) and not is_valid_float?(str)  
     return false if str.length > 10      
     true

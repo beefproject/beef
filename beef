@@ -130,6 +130,9 @@ end
 # @note Call the API method 'pre_http_start'
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
+# Load any ARE (Autorun Rule Engine) rules scanning the <beef_root>/arerules/enabled directory
+BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
+
 # @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
   require 'extensions/console/shell'

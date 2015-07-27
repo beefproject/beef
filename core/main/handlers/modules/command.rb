@@ -38,7 +38,7 @@ module BeEF
             command_module.build_datastore(command.data)
             command_module.pre_send
 
-            build_missing_beefjs_components(command_module.beefjs_components) if not command_module.beefjs_components.empty?
+            build_missing_beefjs_components(command_module.beefjs_components) unless command_module.beefjs_components.empty?
 
             ws = BeEF::Core::Websocket::Websocket.instance
 

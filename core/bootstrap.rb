@@ -32,6 +32,13 @@ require 'core/main/network_stack/api'
 # @note Include the distributed engine
 require 'core/main/distributed_engine/models/rules'
 
+# @note Include the autorun engine
+require 'core/main/autorun_engine/models/rule'
+require 'core/main/autorun_engine/models/execution'
+require 'core/main/autorun_engine/parser'
+require 'core/main/autorun_engine/engine'
+require 'core/main/autorun_engine/rule_loader'
+
 ## @note Include helpers
 require 'core/module'
 require 'core/modules'
@@ -46,6 +53,7 @@ require 'core/main/rest/handlers/categories'
 require 'core/main/rest/handlers/logs'
 require 'core/main/rest/handlers/admin'
 require 'core/main/rest/handlers/server'
+require 'core/main/rest/handlers/autorun_engine'
 require 'core/main/rest/api'
 
 ## @note Include Websocket

@@ -15,6 +15,7 @@ module Models
   
     property :id, Serial
     property :date, String, :length => 15, :lazy => false
+    property :status, Integer
     property :data, Text
   
   end

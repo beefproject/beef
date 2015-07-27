@@ -23,12 +23,13 @@ module Models
 
     has n, :results
 
+
     # Save results and flag that the command has been run on the hooked browser
     # @param [String] hook_session_id The session_id.
     # @param [String] command_id The command_id.
     # @param [String] command_friendly_name The command friendly name.
     # @param [String] result The result of the command module.
-    def self.save_result(hook_session_id, command_id, command_friendly_name, result)
+    def self.save_result(hook_session_id, command_id, command_friendly_name, result, status)
       # @note enforcing arguments types
       command_id = command_id.to_i
 
@@ -37,6 +38,7 @@ module Models
       raise Exception::TypeError, '"command_id" needs to be an integer' if not command_id.integer?
       raise Exception::TypeError, '"command_friendly_name" needs to be a string' if not command_friendly_name.string?
       raise Exception::TypeError, '"result" needs to be a hash' if not result.hash?
+      raise Exception::TypeError, '"status" needs to be an integer' if not status.integer?
 
       # @note get the hooked browser structure and id from the database
       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) || nil
@@ -51,20 +53,29 @@ module Models
       raise Exception::TypeError, "command is nil" if command.nil?
 
       # @note create the entry for the results 
-      command.results.new(:hooked_browser_id => hooked_browser_id, :data => result.to_json, :date => Time.now.to_i)
+      command.results.new(:hooked_browser_id => hooked_browser_id,
+                          :data => result.to_json,:status => status,:date => Time.now.to_i)
       command.save
 
-      # @note log that the result was returned
-      BeEF::Core::Logger.instance.register('Command', "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']", hooked_browser_id)
+      s = self.show_status(status)
+      log = "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions (status: #{s}) from command module [id:#{command_id}, name:'#{command_friendly_name}']"
+      BeEF::Core::Logger.instance.register('Command', log, hooked_browser_id)
+      print_info log
+    end
 
-      # @note prints the event into the console
-      if BeEF::Settings.console?
-        print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions from command module [id:#{command_id}, name:'#{command_friendly_name}']"
+    def self.show_status(status)
+      case status
+        when -1
+          result = 'ERROR'
+        when 1
+          result = 'SUCCESS'
+        else
+          result = 'UNKNOWN'
       end
+      result
     end
 
   end
-
 end
 end
 end

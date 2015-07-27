@@ -216,13 +216,17 @@ module BeEF
             self.err_msg "Invalid cookies returned from the hook browser's initial connection."
           end
 
-          # get and store the os name
+          # get and store the OS name
           os_name = get_param(@data['results'], 'OsName')
           if BeEF::Filters.is_valid_osname?(os_name)
             BD.set(session_id, 'OsName', os_name)
           else
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
           end
+
+          # get and store the OS version (without checks as it can be very different or even empty, for instance on linux/bsd)
+          os_version = get_param(@data['results'], 'OsVersion')
+          BD.set(session_id, 'OsVersion', os_version)
 
           # get and store default browser
           default_browser = get_param(@data['results'], 'DefaultBrowser')
@@ -349,7 +353,7 @@ module BeEF
           end
 
           # log a few info of newly hooked zombie in the console
-          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
+          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
 
           # add localhost as network host
           if config.get('beef.extension.network.enable')
@@ -358,27 +362,13 @@ module BeEF
             r.save
           end
 
-          # Call autorun modules
-          if config.get('beef.autorun.enable')
-            autorun = []
-            BeEF::Core::Configuration.instance.get('beef.module').each { |k, v|
-              if v.has_key?('autorun') and v['autorun'] == true
-                target_status = BeEF::Module.support(k, {'browser' => browser_name, 'ver' => browser_version, 'os' => os_name})
-                if target_status == BeEF::Core::Constants::CommandModule::VERIFIED_WORKING
-                  BeEF::Module.execute(k, session_id)
-                  autorun.push(k)
-                elsif target_status == BeEF::Core::Constants::CommandModule::VERIFIED_USER_NOTIFY and config.get('beef.autorun.allow_user_notify')
-                  BeEF::Module.execute(k, session_id)
-                  autorun.push(k)
-                else
-                  print_debug "Autorun attempted to execute unsupported module '#{k}' against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
-                end
-              end
-            }
-            if autorun.length > 0
-              print_info "Autorun executed[#{autorun.join(', ')}] against Hooked browser [id:#{zombie.id}, ip:#{zombie.ip}, type:#{browser_name}-#{browser_version}, os:#{os_name}]"
-            end
-          end
+          # Autorun Rule Engine - Check if the hooked browser type/version and OS type/version match any Rule-sets
+          # stored in the BeEF::Core::AutorunEngine::Models::Rule database table
+          # If one or more Rule-sets do match, trigger the module chain specified
+          #
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          match_rules = are.match(browser_name, browser_version, os_name, os_version)
+          are.trigger(match_rules, zombie.id) if match_rules.length > 0
 
           if config.get('beef.integration.phishing_frenzy.enable')
             # get and store the browser plugins

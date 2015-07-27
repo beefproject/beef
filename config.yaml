@@ -75,7 +75,6 @@ beef:
             type: "apache" # Supported: apache, iis, nginx
             hook_404: false # inject BeEF hook in HTTP 404 responses
             hook_root: false # inject BeEF hook in the server home page
-
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
@@ -102,10 +101,10 @@ beef:
 
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
-        db_port: 5432
+        db_port: 3306
         db_name: "beef"
         db_user: "beef"
-        db_passwd: "beef123"
+        db_passwd: "beef"
         db_encoding: "UTF-8"
 
     # Credentials to authenticate in BeEF.
@@ -114,12 +113,18 @@ beef:
         user:   "beef"
         passwd: "beef"
 
-    # Autorun modules as soon the browser is hooked.
-    # NOTE: only modules with target type 'working' or 'user_notify' can be run automatically.
+    # Autorun Rule Engine
     autorun:
-        enable: true
-        # set this to TRUE if you want to allow auto-run execution for modules with target->user_notify
-        allow_user_notify: true
+        # this is used when rule chain_mode type is nested-forward, needed as command results are checked via setInterval
+        # to ensure that we can wait for async command results. The timeout is needed to prevent infinite loops or eventually
+        # continue execution regardless of results.
+        # If you're chaining multiple async modules, and you expect them to complete in more than 5 seconds, increase the timeout.
+        result_poll_interval: 300
+        result_poll_timeout: 5000
+
+        # If the modules doesn't return status/results and timeout exceeded, continue anyway with the chain.
+        # This is useful to call modules (nested-forward chain mode) that are not returning their status/results.
+        continue_after_timeout: true
 
     # Enables DNS lookups on zombie IP addresses
     dns_hostname_lookup: false

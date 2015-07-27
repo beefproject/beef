@@ -30,6 +30,7 @@ beef.os = {
 		return result;
 	},
 
+	// the likelihood that we hook Windows 3.11 (which has only Win in the UA string) is zero in 2015
 	isWin311: function() {
 		return (this.ua.match('(Win16)')) ? true : false;
 	},
@@ -101,6 +102,19 @@ beef.os = {
 		return (this.ua.match('(Mac_PowerPC)|(Macintosh)|(MacIntel)')) ? true : false;
 	},
 
+	isOsxYosemite: function(){ // TODO
+		return (this.ua.match('(OS X 10_10)|(OS X 10.10)')) ? true : false;
+	},
+	isOsxMavericks: function(){ // TODO
+		return (this.ua.match('(OS X 10_9)|(OS X 10.9)')) ? true : false;
+	},
+	isOsxSnowLeopard: function(){ // TODO
+		return (this.ua.match('(OS X 10_8)|(OS X 10.8)')) ? true : false;
+	},
+	isOsxLeopard: function(){ // TODO
+		return (this.ua.match('(OS X 10_7)|(OS X 10.7)')) ? true : false;
+	},
+
 	isWinPhone: function() {
 		return (this.ua.match('(Windows Phone)')) ? true : false;
 	},
@@ -142,34 +156,24 @@ beef.os = {
 	},
 
 	isWindows: function() {
-		return this.isWin311() || this.isWinNT4() || this.isWinCE() || this.isWin95() || this.isWin98() || this.isWinME() || this.isWin2000() || this.isWin2000SP1() || this.isWinXP() || this.isWinServer2003() || this.isWinVista() || this.isWin7() || this.isWin8() || this.isWin81() || this.isWinPhone();
+		return (this.ua.match('Windows')) ? true : false;
 	},
 	
 	getName: function() {
-		//Windows
-		if(this.isWin311())        return 'Windows 3.11';
-		if(this.isWinNT4())        return 'Windows NT 4';
-		if(this.isWinCE())         return 'Windows CE';
-		if(this.isWin95())         return 'Windows 95';
-		if(this.isWin98())         return 'Windows 98';
-		if(this.isWinME())         return 'Windows Millenium';
-		if(this.isWin2000())       return 'Windows 2000';
-		if(this.isWin2000SP1())    return 'Windows 2000 SP1';
-		if(this.isWinXP())         return 'Windows XP';
-		if(this.isWinServer2003()) return 'Windows Server 2003';
-		if(this.isWinVista())      return 'Windows Vista';
-		if(this.isWin7())          return 'Windows 7';
-		if(this.isWin8())          return 'Windows 8';
-		if(this.isWin81())         return 'Windows 8.1';
+		
+		if(this.isWindows()){
+			return 'Windows';
+		}
+
+		if(this.isMacintosh()) {
+			return 'OSX';
+		}
 
 		//Nokia
 		if(this.isNokia()) {
-
 			if (this.ua.indexOf('Maemo Browser') != -1) return 'Maemo';
 			if (this.ua.match('(SymbianOS)|(Symbian OS)')) return 'SymbianOS';
 			if (this.ua.indexOf('Symbian') != -1) return 'Symbian';
-
-			//return 'Nokia';
 		}
 
 		// BlackBerry
@@ -178,7 +182,7 @@ beef.os = {
 		// Android
 		if(this.isAndroid()) return 'Android';
 
-		//linux
+		//Linux
 		if(this.isLinux()) return 'Linux';
 		if(this.isSunOS()) return 'Sun OS';
 
@@ -188,17 +192,6 @@ beef.os = {
 		if (this.isIpad()) return 'iOS';
 		//iPod
 		if (this.isIpod()) return 'iOS';
-
-		// zune
-		//if (this.isZune()) return 'Zune';
-		
-		//macintosh
-		if(this.isMacintosh()) {
-			if((typeof navigator.oscpu != 'undefined') && (navigator.oscpu.indexOf('Mac OS')!=-1))
-				return navigator.oscpu;
-				
-			return 'Macintosh';
-		}
 		
 		//others
 		if(this.isQNX()) return 'QNX';
@@ -206,6 +199,36 @@ beef.os = {
 		if(this.isWebOS()) return 'webOS';
 		
 		return 'unknown';
+	},
+
+	getVersion: function(){
+		//Windows
+		if(this.isWindows()) {
+			if (this.isWin81())         return '8.1';
+			if (this.isWin8())          return '8';
+			if (this.isWin7())          return '7';
+			if (this.isWinVista())      return 'Vista';
+			if (this.isWinXP())         return 'XP';
+			if (this.isWinServer2003()) return 'Server 2003';
+			if (this.isWin2000SP1())    return '2000 SP1';
+			if (this.isWin2000())       return '2000';
+			if (this.isWinME())         return 'Millenium';
+
+			if (this.isWinNT4())        return 'NT 4';
+			if (this.isWinCE())         return 'CE';
+			if (this.isWin95())         return '95';
+			if (this.isWin98())         return '98';
+		}
+
+		// OS X
+		if(this.isMacintosh()) {
+			if (this.isOsxYosemite())        return '10.10';
+			if (this.isOsxMavericks())       return '10.9';
+			if (this.isOsxSnowLeopard())     return '10.8';
+			if (this.isOsxLeopard())         return '10.7';
+		}
+
+		// TODO add Android/iOS version detection
 	}
 };
 

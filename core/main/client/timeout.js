@@ -14,4 +14,4 @@
  Cheers to John Wilander that discussed this bug with me at OWASP AppSec Research Greece
  antisnatchor
  */
-setTimeout(beef_init, 1000);
+//setTimeout(beef_init, 1000);

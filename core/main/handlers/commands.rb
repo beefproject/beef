@@ -42,7 +42,7 @@ module BeEF
 
           # @note get and check session id from the request
           beefhook = get_param(@data, 'beefhook')
-          (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(beefhook)
+          (print_error "BeEF hook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(beefhook)
 
           result = get_param(@data, 'results')
 
@@ -57,11 +57,14 @@ module BeEF
           # @note get/set details for datastore and log entry
           command_friendly_name = command.friendlyname
           (print_error "command friendly name is empty"; return) if command_friendly_name.empty?
-          command_results = get_param(@data, 'results')
-          (print_error "command results are empty"; return) if command_results.empty?
+
+          command_status  = @data['status']
+          command_results = @data['results']
+          (print_error "command results or status are empty"; return) if command_results.empty?
+
           # @note save the command module results to the datastore and create a log entry
           command_results = {'data' => command_results}
-          BeEF::Core::Models::Command.save_result(beefhook, command_id, command_friendly_name, command_results)
+          BeEF::Core::Models::Command.save_result(beefhook, command_id, command_friendly_name, command_results, command_status)
 
         end
 

