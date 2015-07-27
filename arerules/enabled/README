@@ -1,0 +1,2 @@
+Move here the ARE rule files that you want to pre-load when BeEF starts.
+Make sure they are .json files (any other file extension is ignored).
