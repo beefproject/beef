@@ -9,6 +9,8 @@ module BeEF
     module Rest
       class AutorunEngine < BeEF::Core::Router::Router
 
+        config = BeEF::Core::Configuration.instance
+
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
           halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
