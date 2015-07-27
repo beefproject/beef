@@ -86,7 +86,7 @@ module BeEF
 
 
         # Wraps module bodies in their own function, using setTimeout to trigger them with an eventual delay.
-        # Launch order is also taken care of (TODO execution is not nested right now, check if it should be changed)]
+        # Launch order is also taken care of.
         #  - sequential chain with delays (setTimeout stuff)
         #    ex.: setTimeout(module_one(),   0);
         #         setTimeout(module_two(),   2000);
@@ -110,7 +110,7 @@ module BeEF
         end
 
         # Wraps module bodies in their own function, using setTimeout to trigger them with an eventual delay.
-        # Launch order is also taken care of (TODO execution is not nested right now, check if it should be changed)
+        # Launch order is also taken care of.
         #  - nested forward chain with status checks (setInterval to wait for command to return from async operations)
         #    ex.:  module_one()
         #           if result == success
