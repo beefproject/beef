@@ -19,7 +19,7 @@ module BeEF
         OS = ['Linux','Windows','OSX','Android','iOS','BlackBerry','ALL']
         VERSION = ['<','<=','==','>=','>','ALL','Vista','XP']
         CHAIN_MODE = ['sequential','nested-forward']
-
+        MAX_VER_LEN = 25
         # Parse a JSON ARE file and returns an Hash with the value mappings
         def parse(name,author,browser, browser_version, os, os_version, modules, exec_order, exec_delay, chain_mode)
           begin
@@ -30,12 +30,14 @@ module BeEF
             return [false, 'Illegal author name'] unless BeEF::Filters.is_non_empty_string?(author)
 
             return [false, 'Illegal browser definition'] unless BROWSER.include?(browser)
-            return [false, 'Illegal browser_version definition'] unless BeEF::Filters::is_valid_browserversion?(
-                browser_version.split(' ').last) || VERSION.include?(browser_version[0,2].gsub(/\s+/,'')) || browser_version == 'ALL'
+            return [false, 'Illegal browser_version definition'] unless
+                (VERSION.include?(browser_version[0,2].gsub(/\s+/,'')) || browser_version == 'ALL') &&
+                    BeEF::Filters::is_valid_browserversion?(browser_version.split(' ').last) && browser_version.length < MAX_VER_LEN
 
             return [false, 'Illegal os definition'] unless OS.include?(os)
             return [false, 'Illegal os_version definition'] unless
-                 (VERSION.include?(os_version[0, 2].gsub(/\s+/, '')) || os_version == 'ALL') && BeEF::Filters::only?("a-zA-Z0-9.<=> ",os_version)
+                 (VERSION.include?(os_version[0, 2].gsub(/\s+/, '')) || os_version == 'ALL') &&
+                     BeEF::Filters::is_valid_osversion?(os_version.split(' ').last) && os_version.length < MAX_VER_LEN
 
 
             # check if module names, conditions and options are ok

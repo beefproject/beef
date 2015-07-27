@@ -51,12 +51,25 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid browser version characters
   def self.is_valid_browserversion?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return true if str.eql? "UNKNOWN"
     return true if str.eql? "ALL"
     return false if not nums_only?(str) and not is_valid_float?(str)  
-    return false if str.length > 10      
+    return false if str.length > 20
+    true
+  end
+
+  # Verify the os version string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid os version characters
+  def self.is_valid_osversion?(str)
+    return false unless is_non_empty_string?(str)
+    return false if has_non_printable_char?(str)
+    return true if str.eql? "UNKNOWN"
+    return true if str.eql? "ALL"
+    return false unless BeEF::Filters::only?("a-zA-Z0-9.<=> ", str)
+    return false if str.length > 20
     true
   end
 
