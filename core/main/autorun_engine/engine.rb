@@ -109,13 +109,14 @@ module BeEF
           wrapper
         end
 
-        # Wraps module bodies in their own function, using setTimeout to trigger them with an eventual delay.
+        # Wraps module bodies in their own function, then start to execute them from the first, polling for
+        # command execution status/results (with configurable polling interval and timeout).
         # Launch order is also taken care of.
         #  - nested forward chain with status checks (setInterval to wait for command to return from async operations)
         #    ex.:  module_one()
-        #           if result == success
+        #           if condition
         #             module_two(module_one_output)
-        #               if result == success
+        #               if condition
         #                  module_three(module_two_output)
         #
         # Note: command result status is checked, and you can properly chain input into output, having also

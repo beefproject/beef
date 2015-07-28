@@ -2,7 +2,7 @@
   "name": "Test return debug stuff",
   "author": "antisnatchor",
   "browser": "S",
-  "browser_version": "== 8",
+  "browser_version": ">= 7",
   "os": "OSX",
   "os_version": "<= 10.10",
   "modules": [{
