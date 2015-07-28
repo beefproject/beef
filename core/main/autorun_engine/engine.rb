@@ -367,15 +367,6 @@ module BeEF
           rules.each do |rule|
             begin
               browser_match, os_match = false, false
-              # The following is to protect from potential RCE if someone uploads a rule containing a payload
-              # as the version condition. In this way we ensure that only <,>,= and the ALL string are allowed as characters,
-              # effectively nullifying the risk of eval() usage. We need eval() here for easy match-making of versions
-
-              # TODO the character > can be used to redirect output in RCE vectors, play with it
-              # next unless BeEF::Filters::only?("a-zA-Z0-9", browser) &&
-              #     BeEF::Filters::only?("a-zA-Z0-9.<=>", browser_version) &&
-              #     BeEF::Filters::only?("a-zA-Z0-9", os) &&
-              #     BeEF::Filters::only?("a-zA-Z0-9.<=>", os_version)
 
               b_ver_cond = rule.browser_version.split(' ').first
               b_ver = rule.browser_version.split(' ').last
@@ -384,7 +375,8 @@ module BeEF
               os_ver_rule_maj = rule.os_version.split(' ').last.split('.').first
               os_ver_rule_min = rule.os_version.split(' ').last.split('.').last
 
-              # Most of the times Linux/*BSD OS doesn't return any version (TODO: improve OS detection on these operating systems)
+              # Most of the times Linux/*BSD OS doesn't return any version
+              # (TODO: improve OS detection on these operating systems)
               if os_version != nil && !@VERSION_STR.include?(os_version)
                 os_ver_hook_maj = os_version.split('.').first
                 os_ver_hook_min = os_version.split('.').last
@@ -413,6 +405,19 @@ module BeEF
               # check if the browser and OS types do match
               next unless browser == 'ALL'  || browser == rule.browser
               next unless os == 'ALL'       || os == rule.os
+
+              # Note from @antisnatchor
+              # don't be scared at the next eval() calls :-) we need to dynamically produce boolean conditions
+              # for version matching, for instance 7 >= 10, as in browser_version >= rule.browser_version.
+              #
+              # Every rule is first parsed with AutorunEngine::Parser (both loading from file, or via RESTful API).
+              # This class implements various checks to ensure that input is strictly validated.
+              # see the following filters:
+              # BeEF::Filters::is_valid_browserversion? (make sure it's only integer/float/ALL/UNKNOWN)
+              #
+              # BeEF::Filters::is_valid_osversion? (make sure only 'a-zA-Z0-9.<=> ' are allowed).
+              # Length is also checked (maximum 25 characters), as well as additional checks
+              # on where special characters like <=> are placed.
 
               # check if the browser version match
               if b_ver_cond == 'ALL'
