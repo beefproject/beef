@@ -127,7 +127,7 @@ module BeEF
           @http_server.start # starts the web server
         rescue RuntimeError => e
           if e.message =~ /no acceptor/ # the port is in use
-            print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF on an invalid IP."
+            print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF to an invalid IP."
             print_error "Is BeEF already running? Exiting..."
             exit 127
           else
