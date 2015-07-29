@@ -18,9 +18,9 @@ module BeEF
           property :name, Text                                       # rule name
           property :author, String                                   # rule author
           property :browser, String, :length => 10                   # browser name
-          property :browser_version, String, :length => 25           # browser version
+          property :browser_version, String, :length => 15           # browser version
           property :os, String, :length => 10                        # OS name
-          property :os_version, String, :length => 25                # OS version
+          property :os_version, String, :length => 15                # OS version
           property :modules, Text                                    # JSON stringyfied representation of the JSON rule for further parsing
           property :execution_order, Text                            # command module execution order
           property :execution_delay, Text                            # command module time delays

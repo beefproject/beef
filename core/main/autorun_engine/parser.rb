@@ -19,7 +19,7 @@ module BeEF
         OS = ['Linux','Windows','OSX','Android','iOS','BlackBerry','ALL']
         VERSION = ['<','<=','==','>=','>','ALL','Vista','XP']
         CHAIN_MODE = ['sequential','nested-forward']
-        MAX_VER_LEN = 25
+        MAX_VER_LEN = 15
         # Parse a JSON ARE file and returns an Hash with the value mappings
         def parse(name,author,browser, browser_version, os, os_version, modules, exec_order, exec_delay, chain_mode)
           begin

@@ -410,13 +410,13 @@ module BeEF
               # don't be scared at the next eval() calls :-) we need to dynamically produce boolean conditions
               # for version matching, for instance 7 >= 10, as in browser_version >= rule.browser_version.
               #
-              # Every rule is first parsed with AutorunEngine::Parser (both loading from file, or via RESTful API).
+              # Every rule is first parsed with AutorunEngine::Parser.parse (both loading from file, or via RESTful API).
               # This class implements various checks to ensure that input is strictly validated.
               # see the following filters:
               # BeEF::Filters::is_valid_browserversion? (make sure it's only integer/float/ALL/UNKNOWN)
               #
               # BeEF::Filters::is_valid_osversion? (make sure only 'a-zA-Z0-9.<=> ' are allowed).
-              # Length is also checked (maximum 25 characters), as well as additional checks
+              # Length is also checked (maximum MAX_VER_LEN characters), as well as additional checks
               # on where special characters like <=> are placed.
 
               # check if the browser version match
