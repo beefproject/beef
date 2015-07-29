@@ -1758,19 +1758,28 @@ beef.browser = {
             flash_versions = 12;
             flash_installed = false;
 
-            if (window.ActiveXObject) {
-                for (x = 2; x <= flash_versions; x++) {
-                    try {
-                        Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
-                        if (Flash) {
-                            flash_installed = true;
+            if (this.type().IE11) {
+            	// see: 
+            	// http://stackoverflow.com/questions/19638981/window-activexobject-difference-in-ie11
+            	// http://msdn.microsoft.com/en-us/library/ie/dn423948%28v=vs.85%29.aspx
+            	
+            	flash_installed = (navigator.plugins["Shockwave Flash"] != undefined);
+            } else {
+            	if (window.ActiveXObject != null) {
+                    for (x = 2; x <= flash_versions; x++) {
+                        try {
+                            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
+                            if (Flash) {
+                                flash_installed = true;
+                            }
                         }
-                    }
-                    catch (e) {
-                        beef.debug("Creating Flash ActiveX object failed: " + e.message);
+                        catch (e) {
+                            beef.debug("Creating Flash ActiveX object failed: " + e.message);
+                        }
                     }
                 }
             }
+            
             return flash_installed;
         }
     },
