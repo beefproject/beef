@@ -32,12 +32,12 @@ module BeEF
             return [false, 'Illegal browser definition'] unless BROWSER.include?(browser)
             return [false, 'Illegal browser_version definition'] unless
                 (VERSION.include?(browser_version[0,2].gsub(/\s+/,'')) || browser_version == 'ALL') &&
-                    BeEF::Filters::is_valid_browserversion?(browser_version.split(' ').last) && browser_version.length < MAX_VER_LEN
+                    BeEF::Filters::is_valid_browserversion?(browser_version[2..-1].gsub(/\s+/,'')) && browser_version.length < MAX_VER_LEN
 
             return [false, 'Illegal os definition'] unless OS.include?(os)
             return [false, 'Illegal os_version definition'] unless
-                 (VERSION.include?(os_version[0, 2].gsub(/\s+/, '')) || os_version == 'ALL') &&
-                     BeEF::Filters::is_valid_osversion?(os_version.split(' ').last) && os_version.length < MAX_VER_LEN
+                 (VERSION.include?(os_version[0,2].gsub(/\s+/,'')) || os_version == 'ALL') &&
+                     BeEF::Filters::is_valid_osversion?(os_version[2..-1].gsub(/\s+/,'')) && os_version.length < MAX_VER_LEN
 
 
             # check if module names, conditions and options are ok
