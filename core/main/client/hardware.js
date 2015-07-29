@@ -32,6 +32,8 @@ beef.hardware = {
           arch = 'x86';
       }
     }
+    // TODO we can infer the OS is 64 bit, if we first detect the OS type (os.js).
+    // For example, if OSX is at least 10.7, most certainly is 64 bit.
     return arch;
   },
 
