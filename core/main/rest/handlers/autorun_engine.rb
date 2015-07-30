@@ -26,7 +26,7 @@ module BeEF
           begin
             data = JSON.parse request.body.read
             rloader = BeEF::Core::AutorunEngine::RuleLoader.instance
-            rloader.load(data)
+            rloader.load(data).to_json
           rescue => e
             err = 'Malformed JSON ruleset.'
             print_error "[ARE] ERROR: #{e.message}"
