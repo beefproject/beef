@@ -70,16 +70,10 @@ var deployJava = function() {
         hattrs.events);
     var applet_valid_attrs = hattrs.applet.concat(hattrs.core);
 
-    // generic log function, use console.log unless it isn't available
-    // then revert to alert()
+    // generic log function
     function log(message) {
         if ( ! rv.debug ) {return};
-
-        if (console.log) {
-            console.log(message);
-        } else {
-            alert(message);
-        }
+        beef.debug(message);
     }
 
     //checks where given version string matches query
