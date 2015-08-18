@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        blockui:
+            enable: true
+            category: "Misc"
+            name: "BlockUI Modal Dialog"
+            description: "This module uses jQuery <a href='https://github.com/malsup/blockui/'>BlockUI</a> to block the window and display a message."
+            authors: ["bcoles"]
+            target:
+                user_notify: ["ALL"]
