@@ -45,9 +45,43 @@ task :msf => ["install", "msf_install"] do
   Rake::Task['msf_stop'].invoke
 end
 
+
+################################
+# run bundle-audit
+
+namespace :bundle_audit do
+  require 'bundler/audit/cli'
+
+  desc 'Update bundle-audit database'
+  task :update do
+    Bundler::Audit::CLI.new.update
+  end
+
+  desc 'Check gems for vulns using bundle-audit'
+  task :check do
+    Bundler::Audit::CLI.new.check
+  end
+
+  desc 'Update vulns database and check gems using bundle-audit'
+  task :run do
+    Rake::Task['bundle_audit:update'].invoke
+    Rake::Task['bundle_audit:check'].invoke
+  end
+end
+
+desc "Run bundle-audit"
+task :bundle_audit do
+  Rake::Task['bundle_audit:run'].invoke
+end
+
+
+################################
+# Install
+
 #task :install do
 #  sh "export BEEF_TEST=true"
 #end
+
 
 ################################
 # X11 set up
