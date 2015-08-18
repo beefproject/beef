@@ -62,4 +62,4 @@ if ENV['BEEF_TEST']
   gem 'rest-client', '~> 1.6.7'
 end
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
