@@ -60,7 +60,7 @@ if ENV['BEEF_TEST']
   # sudo port install libxml2 libxslt
   gem 'capybara'
   # RESTful API tests/generic command module tests
-  gem 'rest-client', '~> 1.6.7'
+  gem 'rest-client', '~> 1.8.0'
 end
 
 source 'https://rubygems.org'
