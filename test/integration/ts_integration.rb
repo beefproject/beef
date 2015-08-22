@@ -15,6 +15,7 @@ require 'selenium/webdriver'
 require './check_environment' # Basic log in and log out tests
 require './tc_debug_modules' # RESTful API tests (as well as debug modules)
 require './tc_login' # Basic log in and log out tests
+require './tc_proxy' # Basic tests for Proxy extension
 #require './tc_jools' # Basic tests for jools
 require './tc_network_rest' # Basic tests for Network extension RESTful API interface
 #require './tc_dns_rest' # Basic tests for DNS RESTful API interface
@@ -28,6 +29,7 @@ class TS_BeefIntegrationTests
     suite << TC_CheckEnvironment.suite
     suite << TC_Login.suite
     suite << TC_DebugModules.suite
+    suite << TC_Proxy.suite
     #suite << TC_Jools.suite
     suite << TC_NetworkRest.suite
     #suite << TC_DnsRest.suite
