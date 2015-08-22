@@ -406,34 +406,20 @@ module BeEF
               next unless browser == 'ALL'  || browser == rule.browser
               next unless os == 'ALL'       || os == rule.os
 
-              # Note from @antisnatchor
-              # don't be scared at the next eval() calls :-) we need to dynamically produce boolean conditions
-              # for version matching, for instance 7 >= 10, as in browser_version >= rule.browser_version.
-              #
-              # Every rule is first parsed with AutorunEngine::Parser.parse (both loading from file, or via RESTful API).
-              # This class implements various checks to ensure that input is strictly validated.
-              # see the following filters:
-              # BeEF::Filters::is_valid_browserversion? (make sure it's only integer/float/ALL/UNKNOWN)
-              #
-              # BeEF::Filters::is_valid_osversion? (make sure only 'a-zA-Z0-9.<=> ' are allowed).
-              # Length is also checked (maximum MAX_VER_LEN characters), as well as additional checks
-              # on where special characters like <=> are placed.
-
               # check if the browser version match
-              if b_ver_cond == 'ALL'
+              browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
+              if browser_version_match
                 browser_match = true
-                browser_version_match = true
               else
-               browser_version_match = eval(browser_version.to_s + rule.browser_version)
-               browser_match = true if browser_version_match
+                browser_match = false
               end
 
-              print_more "Browser version check -> (hook) #{browser_version.to_s} #{rule.browser_version} (rule) : #{browser_version_match}"
+              print_more "Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : #{browser_version_match}"
 
               # check if the OS versions match
               if os_version != nil || rule.os_version != 'ALL'
-                os_major_version_match = eval(os_ver_hook_maj.to_s + os_ver_rule_cond + os_ver_rule_maj.to_s)
-                os_minor_version_match = eval(os_ver_hook_min.to_s + os_ver_rule_cond + os_ver_rule_min.to_s)
+                os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
+                os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
               else
                 # os_version_match = true if (browser doesn't return an OS version || rule OS version is ALL )
                 os_major_version_match, os_minor_version_match = true, true
@@ -456,6 +442,16 @@ module BeEF
           return match_rules
         end
 
+        # compare versions
+        def compare_versions(ver_a, cond, ver_b)
+          return true if cond == 'ALL'
+          return true if cond == '==' && ver_a == ver_b
+          return true if cond == '<=' && ver_a <= ver_b
+          return true if cond == '<'  && ver_a <  ver_b
+          return true if cond == '>=' && ver_a >= ver_b
+          return true if cond == '>'  && ver_a >  ver_b
+          return false
+        end
       end
     end
   end
