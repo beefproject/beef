@@ -25,6 +25,7 @@ module BeEF
 
           def self.mount_handler(beef_server)
             beef_server.mount('/proxy', BeEF::Extension::Requester::Handler)
+            beef_server.mount('/api/proxy', BeEF::Extension::Proxy::ProxyRest.new)
           end
 
         end
