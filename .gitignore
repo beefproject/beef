@@ -1,6 +1,7 @@
 ### BeEF ###
 beef.db
 test/msf-test
+extensions/admin_ui/media/javascript-min/
 custom-config.yaml
 .DS_Store
 .gitignore
