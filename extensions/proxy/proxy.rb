@@ -3,7 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-require 'openssl';
+require 'openssl'
 
 module BeEF
   module Extension
@@ -20,12 +20,30 @@ module BeEF
           @conf = BeEF::Core::Configuration.instance
           @proxy_server = TCPServer.new(@conf.get('beef.extension.proxy.address'), @conf.get('beef.extension.proxy.port'))
 
+          # setup proxy for SSL/TLS
           ssl_context = OpenSSL::SSL::SSLContext.new
-          ssl_context.cert = OpenSSL::X509::Certificate.new(File.open(@conf.get('beef.extension.proxy.cert')));
-          ssl_context.key = OpenSSL::PKey::RSA.new(File.open(@conf.get('beef.extension.proxy.key')));
+          #ssl_context.ssl_version = :TLSv1_2
 
-          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context);
-          ssl_server.start_immediately = false;
+          # load certificate
+          begin
+            cert_file = @conf.get('beef.extension.proxy.cert')
+            cert = File.open(cert_file)
+            ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
+          rescue
+            print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
+          end
+
+          # load key
+          begin
+            key_file = @conf.get('beef.extension.proxy.key')
+            key = File.open(key_file)
+            ssl_context.key = OpenSSL::PKey::RSA.new(key)
+          rescue
+            print_error "[Proxy] Could not load SSL key '#{key_file}'"
+          end
+
+          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context)
+          ssl_server.start_immediately = false
 
           loop do
             ssl_socket = ssl_server.accept
