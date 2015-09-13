@@ -124,7 +124,18 @@ module BeEF
                   @otherwise = Proc.new { |t| t.passthrough!(resolver) }
                 end
 
-                super(:listen => listen)
+                begin
+                  super(:listen => listen)
+                rescue RuntimeError => e
+                  if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
+                    print_error "[DNS] Another process is already listening on port #{options[:listen]}"
+                    print_error "Exiting..."
+                    exit 127
+                  else
+                    raise
+                  end
+                end
+
               end
             end
           end
