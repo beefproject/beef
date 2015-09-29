@@ -72,6 +72,7 @@ module Metasploit
 
 						if opts[:ssl]
 							http.use_ssl = true
+							http.ssl_version = opts[:ssl_version]
 						end
 						if not @config['ssl_verify']
 							http.verify_mode = OpenSSL::SSL::VERIFY_NONE
