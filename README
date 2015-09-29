@@ -50,7 +50,7 @@ __The following is for the impatient.__
 For full installation details (including on Microsoft Windows), please refer to INSTALL.txt.
 We also have a Wiki page at https://github.com/beefproject/beef/wiki/Installation
 
-   $ bash -s stable < <(curl -Ls https://raw.github.com/beefproject/beef/a6a7536e736e7788e12df91756a8f132ced24970/install-beef)
+   $ bash -s stable < <(curl -Ls https://raw.githubusercontent.com/beefproject/beef/a6a7536e736e7788e12df91756a8f132ced24970/install-beef)
 
 
 Usage 
