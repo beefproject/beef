@@ -22,7 +22,6 @@ module BeEF
         property :type, String, :lazy => false # proxy, router, gateway, dns, etc
         property :os, String, :lazy => false
         property :mac, String, :lazy => false
-        property :cid, String, :lazy => false # command id or 'init'
 
         #
         # Stores a network host in the data store
@@ -53,8 +52,7 @@ module BeEF
             :hostname => host[:hostname],
             :type => host[:type],
             :os => host[:os],
-            :mac => host[:mac],
-            :cid => host[:cid])
+            :mac => host[:mac])
           result = network_host.save
           (print_error "Failed to save network host"; return) if result.nil?
 

@@ -31,14 +31,13 @@ class Ping_sweep < BeEF::Core::Command
     if configuration.get("beef.extension.network.enable") == true
 
       session_id = @datastore['beefhook']
-      cid = @datastore['cid'].to_i
 
       # save the network host
       if @datastore['results'] =~ /host=([\d\.]+) is alive/
         ip = $1
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser has network interface #{ip}")
-          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip)
         end
       end
     end

@@ -14,7 +14,6 @@ class Cross_origin_scanner < BeEF::Core::Command
     if configuration.get("beef.extension.network.enable") == true
 
       session_id = @datastore['beefhook']
-      cid = @datastore['cid'].to_i
 
       # log the network service
       if @datastore['results'] =~ /ip=(.+)&port=([\d]+)&status/
@@ -24,7 +23,7 @@ class Cross_origin_scanner < BeEF::Core::Command
         type = 'HTTP Server (CORS)'
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type, :cid => cid)
+          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
     end

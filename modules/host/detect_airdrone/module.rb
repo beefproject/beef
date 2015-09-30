@@ -24,10 +24,9 @@ class Detect_airdrone < BeEF::Core::Command
         port = $3
         session_id = @datastore['beefhook']
         type = 'Airdrone'
-        cid = @datastore['cid'].to_i
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found 'Airdrone' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type, :cid => cid)
+          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
     end

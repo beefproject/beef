@@ -21,7 +21,6 @@ module BeEF
         property :ip, Text, :lazy => false
         property :port, String, :lazy => false
         property :type, String, :lazy => false
-        property :cid, String, :lazy => false # command id or 'init'
 
         #
         # Stores a network service in the data store
@@ -34,8 +33,7 @@ module BeEF
           # store the returned network host details
           BeEF::Core::Models::NetworkHost.add(
             :hooked_browser_id => service[:hooked_browser_id],
-            :ip => service[:ip],
-            :cid => service[:cid])
+            :ip => service[:ip])
 
           # prevent duplicates
           return unless BeEF::Core::Models::NetworkService.all(
@@ -51,8 +49,7 @@ module BeEF
             :proto => service[:proto],
             :ip => service[:ip],
             :port => service[:port],
-            :type => service[:type],
-            :cid => service[:cid])
+            :type => service[:type])
           result = network_service.save
           (print_error "Failed to save network service"; return) if result.nil?
 

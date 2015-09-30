@@ -28,7 +28,6 @@ class Identify_lan_subnets < BeEF::Core::Command
     if configuration.get("beef.extension.network.enable") == true
 
       session_id = @datastore['beefhook']
-      cid = @datastore['cid'].to_i
 
       # log the network hosts
       if @datastore['results'] =~ /^hosts=([\d\.,]+)/
@@ -38,7 +37,7 @@ class Identify_lan_subnets < BeEF::Core::Command
           next unless ip.to_s =~ /^([\d\.]+)$/
           next unless BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found host #{ip}")
-          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
+          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip)
         end
       end
     end
