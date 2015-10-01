@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_burp:
+            enable: true
+            category: "Network"
+            name: "Detect Burp"
+            description: "This module checks if the browser is using Burp. The Burp web interface must be enabled (default). The proxy IP address is returned to BeEF."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
