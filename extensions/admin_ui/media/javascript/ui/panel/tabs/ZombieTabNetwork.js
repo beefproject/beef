@@ -46,7 +46,7 @@ ZombieTab_Network = function(zombie) {
 		autoDestroy: true,
 		autoLoad: false,
 		root: 'hosts',
-		fields: ['id', 'ip', 'hostname', 'type', 'os', 'mac'],
+		fields: ['id', 'ip', 'hostname', 'type', 'os', 'mac', 'lastseen'],
 		sortInfo: {field: 'ip', direction: 'ASC'}
 	});
 
@@ -81,9 +81,10 @@ ZombieTab_Network = function(zombie) {
 			{header: 'Id', width: 5, sortable: true, dataIndex: 'id', hidden:true},
                         {header: 'IP Address', width: 10, sortable: true, dataIndex: 'ip', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Host Name', width: 10, sortable: true, dataIndex: 'hostname', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-			{header: 'Type', width: 20, sortable: true, dataIndex: 'type', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+			{header: 'Type', width: 15, sortable: true, dataIndex: 'type', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Operating System', width: 10, sortable: true, dataIndex: 'os', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-			{header: 'MAC Address', width: 10, sortable: true, dataIndex: 'mac', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
+			{header: 'MAC Address', width: 10, sortable: true, dataIndex: 'mac', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
+                        {header: 'Last Seen', width: 15, sortable: true, dataIndex: 'lastseen', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
 		],
 		
 		listeners: {
