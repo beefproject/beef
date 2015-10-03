@@ -2061,9 +2061,11 @@ beef.browser = {
      * @example: if(beef.browser.hasJava()) { ... }
      */
     hasJava: function () {
-
-        return beef.browser.javaEnabled();
-
+        if (beef.browser.getPlugins().match(/java/i) && beef.browser.javaEnabled()) {
+          return true;
+        } else {
+          return false;
+        }
     },
 
     /**
