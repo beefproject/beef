@@ -34,6 +34,116 @@ ZombieTab_Network = function(zombie) {
 	};
 
 	/*
+	 * arrayUnique()
+	 */
+	var arrayUnique = function(a) {
+		return a.reduce(function(p, c) {
+			if (p.indexOf(c) < 0) p.push(c);
+			return p;
+		}, []);
+	};
+
+	/*
+	 * Draw the network map with vis.js
+	 */
+	var draw = function() {
+
+		var hosts = null;
+		var url = '/api/network/hosts/'+zombie.session+'?token='+token;
+		$jwterm.ajax({
+			contentType: 'application/json',
+			dataType: 'json',
+			type: 'GET',
+			url: url,
+			async: false,
+			processData: false,
+			loadMask: {msg:'Loading network hosts...'},
+			success: function(data){
+				hosts = data;
+			},
+			error: function(){
+				commands_statusbar.update_fail('Error retrieving network hosts');
+			}
+		});
+	
+		var network = null;
+		var DIR = '<%= @base_path %>/media/images/icons/';
+		var EDGE_LENGTH_MAIN = 150;
+		var EDGE_LENGTH_SUB = 50;
+
+		var nodes = [];
+		var edges = [];
+
+		if (hosts.count == '0') {
+			commands_statusbar.update_fail('Found no network hosts');
+			return false;
+		}
+
+		nodes.push({id: 1000, label: '', image: DIR + '../beef.png', shape: 'image'});
+		nodes.push({id: 1001, label: '', image: DIR + 'System-Firewall-2-icon.png', shape: 'image'});
+		edges.push({from: 1000, to: 1001, length: EDGE_LENGTH_SUB});
+		var HB_ID = 1002;
+		nodes.push({id: HB_ID, label: 'Hooked Browser', image: DIR + 'Apps-internet-web-browser-icon.png', shape: 'image'});
+		edges.push({from: 1001, to: HB_ID, length: EDGE_LENGTH_SUB});
+
+		// add subnet nodes
+		var subnets = [];
+		for (var key in hosts.hosts) {
+			if (isNaN(hosts.hosts[key].id)) continue;
+			var ip = hosts.hosts[key].ip;
+			var first = ip.split('.')[0];
+			subnets.push(first);
+		}
+		subnets = arrayUnique(subnets);
+		for (var i=0; i<=subnets.length; i++) {
+			if (isNaN(subnets[i])) continue;
+			nodes.push({id: subnets[i], label: subnets[i]+'.0.0.0/8', image: DIR + 'Network-Pipe-icon.png', shape: 'image'});
+			edges.push({from: HB_ID, to: subnets[i], length: EDGE_LENGTH_SUB});
+		}
+
+		// add host nodes
+		var i = 2000;
+		for (var key in hosts.hosts) {
+			if (isNaN(hosts.hosts[key].id)) continue;
+			var ip = hosts.hosts[key].ip;
+			var hostname = hosts.hosts[key].hostname;
+			var type = hosts.hosts[key].type;
+			var os = hosts.hosts[key].os;
+			var label = ip;
+			if (hostname) label += ' ['+hostname+']';
+			if (os) label += "\n" + os;
+			var icon = 'pc.png';
+			nodes.push({id: i, label: label, image: DIR + icon, shape: 'image'});
+			edges.push({from: ip.split('.')[0], to: i, length: EDGE_LENGTH_SUB});
+			i++;
+		}
+	
+		var container = document.getElementById('zombie_network');
+		var data = {
+			nodes: nodes,
+			edges: edges
+		};
+		var options = {};
+		network = new vis.Network(container, data, options);
+	}
+	
+	/*
+	 * Network Map panel
+	 */
+	var map_panel = new Ext.Panel({
+		id: 'network-map-panel-zombie-'+zombie.session,
+		title: 'Map',
+		layout: 'fit',
+		autoDestroy: true,
+		html: '<div id="zombie_network"></div>',
+		listeners: {
+			activate: function(map_panel) {
+				draw();
+			}
+		}
+	});
+
+	/*
 	 * The panel that displays all identified network services grouped by host
 	 ********************************************/
 	var hosts_panel_store = new Ext.ux.data.PagingJsonStore({
@@ -1026,7 +1136,7 @@ ZombieTab_Network = function(zombie) {
 			stripRows: true,
 			type: 'fit'
 		},
-        	items: [hosts_panel, services_panel],
+        	items: [map_panel, hosts_panel, services_panel],
 		bbar: commands_statusbar,
 		listeners: {
 		}
