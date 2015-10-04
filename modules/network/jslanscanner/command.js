@@ -10,6 +10,7 @@ beef.execute(function() {
 	if(!beef.browser.isFF() && !beef.browser.isS()){
 		beef.debug("[command #<%= @command_id %>] Browser is not supported.");
 		beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser");
+		return;
 	}
 
 //------------------------------------------------------------------------------------------
