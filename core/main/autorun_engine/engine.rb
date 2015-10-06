@@ -403,8 +403,8 @@ module BeEF
               # os_ver without checks as it can be very different or even empty, for instance on linux/bsd)
 
               # check if the browser and OS types do match
-              next unless browser == 'ALL'  || browser == rule.browser
-              next unless os == 'ALL'       || os == rule.os
+              next unless rule.browser == 'ALL'  || browser == rule.browser
+              next unless rule.os == 'ALL'       || os == rule.os
 
               # check if the browser version match
               browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
