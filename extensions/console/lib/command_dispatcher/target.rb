@@ -171,11 +171,12 @@ class Target
           'Hostname',
           'Type',
           'Operating System',
-          'MAC Address'
+          'MAC Address',
+          'Last Seen'
         ])
 
     driver.interface.select_network_hosts['results'].each do |x|
-      tbl << [x['ip'],x['hostname'],x['type'],x['os'],x['mac']]
+      tbl << [x['ip'],x['hostname'],x['type'],x['os'],x['mac'],x['lastseen']]
     end
 
     puts "\nNetwork Hosts:\n\n"

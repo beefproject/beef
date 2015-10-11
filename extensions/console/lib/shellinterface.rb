@@ -390,7 +390,8 @@ class ShellInterface
           'hostname' => x['hostname'].to_s,
           'type'     => x['type'].to_s,
           'os'       => x['os'].to_s,
-          'mac'      => x['mac'].to_s
+          'mac'      => x['mac'].to_s,
+          'lastseen' => x['lastseen'].to_s
         })
       end
     end
