@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_proxy_servers_wpad:
+            enable: true
+            category: "Network"
+            name: "Get Proxy Servers (WPAD)"
+            description: "This module retrieves proxy server addresses for the zombie browser's local network using Web Proxy Auto-Discovery Protocol (WPAD).<br/><br/>Note: The zombie browser must resolve <i>wpad</i> to an IP address successfully for this module to work."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
