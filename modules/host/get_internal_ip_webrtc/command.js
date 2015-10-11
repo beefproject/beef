@@ -15,7 +15,8 @@ beef.execute(function() {
 
 	    // Construct RTC peer connection
 	    var servers = {iceServers:[]};
-	    var rtc = new RTCPeerConnection(servers);
+	    var mediaConstraints = {optional:[{googIPv6: true}]};
+	    var rtc = new RTCPeerConnection(servers, mediaConstraints);
 	    rtc.createDataChannel('', {reliable:false});
 
 	    // Upon an ICE candidate being found
