@@ -357,7 +357,7 @@ module BeEF
           if rule_id != nil
             rules = [BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)]
           else
-            rules = BeEF::Core::AutorunEngine::Models::Rule.all(:browser => browser)
+            rules = BeEF::Core::AutorunEngine::Models::Rule.all()
           end
           return nil if rules == nil
 
