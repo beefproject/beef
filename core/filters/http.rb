@@ -14,8 +14,6 @@ module Filters
     return false if has_non_printable_char?(str)
     return false if str.length > 255
     return false if (str =~ /^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/).nil?
-    return false if not (str =~ /\.\./).nil?
-    return false if not (str =~ /\-\-/).nil?      
     true
   end
 
