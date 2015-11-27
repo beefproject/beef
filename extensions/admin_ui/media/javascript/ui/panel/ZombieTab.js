@@ -13,6 +13,7 @@ ZombieTab = function(zombie) {
 	ipec_tab = new ZombieTab_IpecTab(zombie);
 	autorun_tab = new ZombieTab_Autorun(zombie);
 	network_tab = new ZombieTab_Network(zombie);
+  rtc_tab = new ZombieTab_Rtc(zombie);
 
 	ZombieTab.superclass.constructor.call(this, {
 		id:"current-browser",
@@ -25,7 +26,7 @@ ZombieTab = function(zombie) {
 			forceFit: true,
 			type: 'fit'
 		},
-		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab, autorun_tab, network_tab],
+		items:[main_tab, log_tab, commands_tab, requester_tab, xssrays_tab, ipec_tab, autorun_tab, network_tab, rtc_tab],
 		listeners:{
 			afterrender:function(component){
 				// Hide auto-run tab

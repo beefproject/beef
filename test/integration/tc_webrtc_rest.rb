@@ -40,7 +40,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
       @@victim1 = BeefTest.new_victim
       @@victim2 = BeefTest.new_victim
       
-      puts "WebRTC Tests: Sleeping for 8 - waiting for 2 browsers to get hooked"
+      # puts "WebRTC Tests beginning"
       sleep 8.0
 
       # Fetch last online browsers' ids
@@ -95,7 +95,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
     result = JSON.parse(rest_response.body)
     assert_equal true, result["success"]
 
-    sleep 20.0
+    sleep 30.0
 
     rest_response = nil
     assert_nothing_raised do
@@ -237,7 +237,13 @@ class TC_WebRTCRest < Test::Unit::TestCase
         return true if hb[1]["id"].eql?(@@victim2id)
       }
     end
-    
+
+  end
+
+  def test_5_webrtc_execcmd # assumes test 2 has run
+    return if not @@activated
+
+    #
 
   end
 

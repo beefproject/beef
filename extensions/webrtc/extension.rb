@@ -19,6 +19,8 @@ end
 
 require 'extensions/webrtc/models/rtcsignal'
 require 'extensions/webrtc/models/rtcmanage'
+require 'extensions/webrtc/models/rtcstatus'
+require 'extensions/webrtc/models/rtcmodulestatus'
 require 'extensions/webrtc/api/hook'
 require 'extensions/webrtc/handlers'
 require 'extensions/webrtc/api'

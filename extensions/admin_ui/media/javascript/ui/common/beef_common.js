@@ -13,6 +13,7 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
     var BeefWUI = {
 
         rest_token: "",
+        hooked_browsers: {},
 
         /**
          * Retrieve the token needed to call the RESTful API.
@@ -37,7 +38,107 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
                 });
             }
             return this.rest_token;
-        }
+        },
+
+        /**
+	     * Get hooked browser ID from session
+         */
+        get_hb_id: function(sess){
+	    	var id = "";
+	    	$jwterm.ajax({
+	    		type: 'GET',
+	    		url: "/api/hooks/?token=" + this.get_rest_token(),
+	    		async: false,
+	    		processData: false,
+	    		success: function(data){                            
+                    for (var k in data['hooked-browsers']['online']) {
+                        if (data['hooked-browsers']['online'][k].session === sess) {
+                            id = data['hooked-browsers']['online'][k].id;
+                        }
+                    }
+
+                    if (id === "") {
+                      for (var k in data['hooked-browsers']['offline']) {
+                          if (data['hooked-browsers']['offline'][k].session === sess) {
+                              id = data['hooked-browsers']['offline'][k].id;
+                          }
+                      }
+                    }
+	    		},
+	    		error: function(){                                  
+	    			commands_statusbar.update_fail("Error getting hb id");
+	    		}
+	    	});                                                     
+            return id;
+	    },
+
+      /**
+       * Get hooked browser info from ID
+       */
+      get_info_from_id: function(id) {
+	    	var info = {};
+	    	$jwterm.ajax({
+	    		type: 'GET',
+	    		url: "/api/hooks/?token=" + this.get_rest_token(),
+	    		async: false,
+	    		processData: false,
+	    		success: function(data){                            
+                    for (var k in data['hooked-browsers']['online']) {
+                        if (data['hooked-browsers']['online'][k].id === id) {
+                            info = data['hooked-browsers']['online'][k];
+                        }
+                    }
+
+                    if ($jwterm.isEmptyObject(info)) {
+                      for (var k in data['hooked-browsers']['offline']) {
+                          if (data['hooked-browsers']['offline'][k].id === id) {
+                              info = data['hooked-browsers']['offline'][k];
+                          }
+                      }
+                    }
+	    		},
+	    		error: function(){                                  
+	    			commands_statusbar.update_fail("Error getting hb ip");
+	    		}
+	    	});                                                     
+            console.log(info);
+            return info;
+
+      },
+
+      /**
+       * Get hooked browser info from ID
+       */
+      get_fullinfo_from_id: function(id) {
+	    	var info = {};
+	    	$jwterm.ajax({
+	    		type: 'POST',
+	    		url: "<%= @base_path %>/panel/hooked-browser-tree-update.json",
+	    		async: false,
+	    		processData: false,
+	    		success: function(data){                            
+                    for (var k in data['hooked-browsers']['online']) {
+                        if (data['hooked-browsers']['online'][k].id === id) {
+                            info = data['hooked-browsers']['online'][k];
+                        }
+                    }
+
+                    if ($jwterm.isEmptyObject(info)) {
+                      for (var k in data['hooked-browsers']['offline']) {
+                          if (data['hooked-browsers']['offline'][k].id === id) {
+                              info = data['hooked-browsers']['offline'][k];
+                          }
+                      }
+                    }
+	    		},
+	    		error: function(){                                  
+	    			commands_statusbar.update_fail("Error getting hb ip");
+	    		}
+	    	});                                                     
+            console.log(info);
+            return info;
+
+      }
     };
 
     window.beefwui = BeefWUI;

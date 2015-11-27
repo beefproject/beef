@@ -357,7 +357,13 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 							fieldLabel: 'Description',
 							fieldClass: 'command-module-panel-description',
 							value: module.Description
-							})
+					  }),
+            new Ext.form.DisplayField({
+              name: 'command_module_id_visible',
+              fieldLabel: 'Id',
+              fieldClass: 'command-module-panel-description',
+              value: command_module_id
+            })
 					],
 					
 					buttons:[{

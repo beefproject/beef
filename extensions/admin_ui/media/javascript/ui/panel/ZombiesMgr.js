@@ -32,6 +32,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var has_quicktime      = zombie_array[index]["has_quicktime"];
 		var has_realplayer     = zombie_array[index]["has_realplayer"];
 		var date_stamp         = zombie_array[index]["date_stamp"];
+    var hb_id              = zombie_array[index]["hb_id"];
 
 		text = "<img src='<%= @base_path %>/media/images/icons/"+escape(browser_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
 		text+= "<img src='<%= @base_path %>/media/images/icons/"+escape(os_icon)+"' style='padding-top:3px;' width='13px' height='13px'/> ";
@@ -75,6 +76,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 	this.updateZombies = function(zombies, rules){
 		var offline_hooked_browsers = zombies["offline"];
 		var online_hooked_browsers = zombies["online"];
+    beefwui.hooked_browsers = zombies["online"];
 
 		for(tree_type in this.zombies_tree_lists) {
 			hooked_browsers_tree = this.zombies_tree_lists[tree_type];

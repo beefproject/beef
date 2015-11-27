@@ -80,6 +80,12 @@
    background-image: url(../images/icons/xssrays.png);
 }
 
+.zombie-tree-ctxMenu-rtc {
+  background-image: url(../images/icons/network.png);
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+}
+
 .zombie-tree-ctxMenu-delete {
    background-image: url(../images/icons/delete.png);
    background-size: 32px 32px;

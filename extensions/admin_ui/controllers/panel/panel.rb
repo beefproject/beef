@@ -114,7 +114,8 @@ module BeEF
                 'has_quicktime'   => has_quicktime,
                 'has_wmp'         => has_wmp,
                 'has_realplayer'  => has_realplayer,
-                'date_stamp'      => date_stamp
+                'date_stamp'      => date_stamp,
+                'hb_id'           => hooked_browser.id
             }
 
           end
