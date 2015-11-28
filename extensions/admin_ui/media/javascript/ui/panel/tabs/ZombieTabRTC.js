@@ -12,7 +12,7 @@ ZombieTab_Rtc = function(zombie) {
   var zombie_id = beefwui.get_hb_id(zombie.session);
 	
 	// The status bar.
-	var commands_statusbar = new Beef_StatusBar('network-bbar-zombie-'+zombie.session);
+	var commands_statusbar = new Beef_StatusBar('webtrc-bbar-zombie-'+zombie.session);
 	// RESTful API token
 	var token = beefwui.get_rest_token();
 
