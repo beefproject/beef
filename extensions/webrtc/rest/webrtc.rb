@@ -73,7 +73,9 @@ module BeEF
             body = JSON.parse(request.body.read)
 
             fromhb = body['from']
+            raise InvalidParamError, 'from' if fromhb.nil?
             tohb = body['to']
+            raise InvalidParamError, 'to' if tohb.nil?
             verbose = body['verbose']
 
             result = {}
@@ -109,6 +111,9 @@ module BeEF
 
             result.to_json
 
+          rescue InvalidParamError => e
+            print_error e.message
+            halt 400
           rescue StandardError => e
             print_error "Internal error while initiating RTCPeerConnections .. (#{e.message})"
             halt 500
@@ -289,8 +294,11 @@ module BeEF
             body = JSON.parse(request.body.read)
 
             fromhb = body['from']
+            raise InvalidParamError, 'from' if fromhb.nil?
             tohb = body['to']
+            raise InvalidParamError, 'to' if tohb.nil?
             message = body['message']
+            raise InvalidParamError, 'message' if message.nil?
 
             if message === "!gostealth"
               stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => fromhb.to_i, :target_hooked_browser_id => tohb.to_i) || nil
@@ -359,8 +367,12 @@ module BeEF
           begin
             body = JSON.parse(request.body.read)
             fromhb = body['from']
+            raise InvalidParamError, 'from' if fromhb.nil?
             tohb = body['to']
+            raise InvalidParamError, 'to' if tohb.nil?
             cmdid = body['cmdid']
+            raise InvalidParamError, 'cmdid' if cmdid.nil?
+
             cmdoptions = body['options'] if body['options']
             cmdoptions = nil if cmdoptions.eql?("")
 
@@ -445,10 +457,15 @@ module BeEF
               result['success'] = false
               result.to_json
             end
-
+          rescue JSON::ParserError => e
+            print_error "Invalid JSON: #{e.message}"
+            halt 400
           rescue InvalidParamError => e
             print_error e.message
             halt 400
+          rescue StandardError => e
+            print_error "Internal error while executing command (#{e.message})"
+            halt 500
           end
         end
 
