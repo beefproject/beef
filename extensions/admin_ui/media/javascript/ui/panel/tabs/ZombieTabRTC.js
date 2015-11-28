@@ -12,7 +12,7 @@ ZombieTab_Rtc = function(zombie) {
   var zombie_id = beefwui.get_hb_id(zombie.session);
 	
 	// The status bar.
-	var commands_statusbar = new Beef_StatusBar('webtrc-bbar-zombie-'+zombie.session);
+	var commands_statusbar = new Beef_StatusBar('webrtc-bbar-zombie-'+zombie.session);
 	// RESTful API token
 	var token = beefwui.get_rest_token();
 
@@ -97,69 +97,75 @@ ZombieTab_Rtc = function(zombie) {
                 text: "Command Peer to Stealth",
                 handler: function() {
                   if (zombie_id === record.json.hb_id) {
-                    var url = "/api/webrtc/msg?token=" + beefwui.get_rest_token();
-                    Ext.Ajax.request({
-                        url: url,
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-                        jsonData: {
-                            'from': record.json.hb_id,
-                            'to': record.json.target_id,
-                            'message': "!gostealth"
-                        }
-                    });
+                    var from = record.json.hb_id;
+                    var to = record.json.target_id;
                   } else {
-                    var url = "/api/webrtc/msg?token=" + beefwui.get_rest_token();
-                    Ext.Ajax.request({
-                        url: url,
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-                        jsonData: {
-                            'from': record.json.target_id,
-                            'to': record.json.hb_id,
-                            'message': "!gostealth"
-                        }
-                    });
+                    var from = record.json.target_id;
+                    var to = record.json.hb_id;
                   }
+                  commands_statusbar.update_sending("Sending stealth command");
+                  var url = "/api/webrtc/msg?token=" + beefwui.get_rest_token();
+                  Ext.Ajax.request({
+                    url: url,
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                    jsonData: {
+                      'from': from,
+                      'to': to,
+                      'message': "!gostealth"
+                    },
+                    success: function(data){
+                      commands_statusbar.update_sent("Stealth command sent successfully");
+                    },
+                    error: function(){
+                      commands_statusbar.update_fail("Error sending stealth command");
+                    }
+                  });
                 }
               },{
                 text: "Execute Command Module via RTC",
                 handler: function() {
                   var url = "/api/webrtc/cmdexec?token=" + beefwui.get_rest_token();
                   var cmd_id = prompt("Enter command module ID:");
+                  if (!cmd_id || cmd_id == "" || isNaN(cmd_id)) {
+                    commands_statusbar.update_fail('Invalid command module ID');
+                    return;
+                  }
                   var cmd_opts = prompt("Parameters:");
                   if (cmd_opts == "") {
                     cmd_opts = "[]";
                   }
-                  cmd_opts = JSON.parse(cmd_opts);
-                  if (!cmd_id || cmd_id == "") {
+                  try {
+                    cmd_opts = JSON.parse(cmd_opts);
+                  } catch (e) {
+                    commands_statusbar.update_fail("Invalid JSON")
                     return;
                   }
                   if (zombie_id === record.json.hb_id) {
-                    Ext.Ajax.request({
-                      url: url,
-                      method: 'POST',
-                      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-                      jsonData: {
-                        'from': record.json.hb_id,
-                        'to': record.json.target_id,
-                        'cmdid': cmd_id,
-                        'options': cmd_opts
-                      }
-                    });
+                    var from = record.json.hb_id;
+                    var to = record.json.target_id;
                   } else {
-                    Ext.Ajax.request({
-                      url: url,
-                      method: 'POST',
-                      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-                      jsonData: {
-                        'from': record.json.target_id,
-                        'to': record.json.hb_id,
-                        'cmdid': cmd_id,
-                        'options': cmd_opts
-                      }
-                    });
+                    var from = record.json.target_id;
+                    var to = record.json.hb_id;
                   }
+                  commands_statusbar.update_sending("Sending command [id: " + cmd_id + "]");
+                  Ext.Ajax.request({
+                    url: url,
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                    jsonData: {
+                      'from': from,
+                      'to': to,
+                      'cmdid': cmd_id,
+                      'options': cmd_opts
+                    },
+                    success: function(data){
+                      commands_statusbar.update_sent("Command [id: " + cmd_id + "] sent successfully");
+                    },
+                    error: function(){
+                      commands_statusbar.update_fail("Error executing module [id: " + cmd_id + "]");
+                    }
+                  });
                 }
               }
             ]
@@ -172,16 +178,23 @@ ZombieTab_Rtc = function(zombie) {
                 text: "Command Peer to un-stealth",
                 handler: function() {
                   if (zombie_id === record.json.hb_id) {
+                    commands_statusbar.update_sending("Sending un-stealth command");
                     var url = "/api/webrtc/msg?token=" + beefwui.get_rest_token();
                     Ext.Ajax.request({
-                        url: url,
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-                        jsonData: {
-                            'from': record.json.hb_id,
-                            'to': record.json.target_id,
-                            'message': "!endstealth"
-                        }
+                      url: url,
+                      method: 'POST',
+                      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                      jsonData: {
+                        'from': record.json.hb_id,
+                        'to': record.json.target_id,
+                        'message': "!endstealth"
+                      },
+                      success: function(data){
+                        commands_statusbar.update_sent("Un-stealth command sent successfully");
+                      },
+                      error: function(){
+                        commands_statusbar.update_fail("Error sending un-stealth command");
+                      }
                     });
                   }
                 }
@@ -190,14 +203,21 @@ ZombieTab_Rtc = function(zombie) {
                 handler: function() {
                   var url = "/api/webrtc/cmdexec?token=" + beefwui.get_rest_token();
                   var cmd_id = prompt("Enter command module ID:");
+                  if (!cmd_id || cmd_id == "" || isNaN(cmd_id)) {
+                    commands_statusbar.update_fail('Invalid command module ID');
+                    return;
+                  }
                   var cmd_opts = prompt("Parameters:");
                   if (cmd_opts == "") {
                     cmd_opts = "[]";
                   }
-                  cmd_opts = JSON.parse(cmd_opts);
-                  if (!cmd_id || cmd_id == "") {
+                  try {
+                    cmd_opts = JSON.parse(cmd_opts);
+                  } catch (e) {
+                    commands_statusbar.update_fail("Invalid JSON")
                     return;
                   }
+                  commands_statusbar.update_sending("Sending command [id: " + cmd_id + "]")
                   Ext.Ajax.request({
                     url: url,
                     method: 'POST',
@@ -207,6 +227,12 @@ ZombieTab_Rtc = function(zombie) {
                       'to': record.json.target_id,
                       'cmdid': cmd_id,
                       'options': cmd_opts
+                    },
+                    success: function(data){
+                      commands_statusbar.update_sent("Command [id: " + cmd_id + "] sent successfully");
+                    },
+                    error: function(){
+                      commands_statusbar.update_fail("Error executing module [id: " + cmd_id + "]");
                     }
                   });
                 }
