@@ -120,6 +120,29 @@ module BeEF
           result.to_json
         end
 
+        # useful when you inject the BeEF hook in MITM situations (see MITMf) and you want to feed back
+        # to BeEF a more accurate OS type/version and architecture information
+        post '/update/:session' do
+          body = JSON.parse request.body.read
+          os = body['os']
+          os_version = body['os_version']
+          arch = body['arch']
+
+          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          error 401 unless hb != nil
+
+          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'OsName').destroy
+          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'OsVersion').destroy
+          #BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
+
+          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'OsName', :detail_value => os).save
+          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'OsVersion', :detail_value => os_version).save
+          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch).save
+
+          #TODO if there where any ARE rules defined for this hooked browser, after updating OS/arch, force a retrigger of the rule.
+          {'success' => true}.to_json
+        end
+
         def hb_to_json(hbs)
           hbs_hash = {}
           i = 0
@@ -139,6 +162,7 @@ module BeEF
               'name' => details.get(hb.session, 'BrowserName'),
               'version' => details.get(hb.session, 'BrowserVersion'),
               'os' => details.get(hb.session, 'OsName'),
+              'os_version' => details.get(hb.session, 'OsVersion'),
               'platform' => details.get(hb.session, 'BrowserPlatform'),
               'ip' => hb.ip,
               'domain' => details.get(hb.session, 'HostName'),
