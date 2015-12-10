@@ -1883,16 +1883,20 @@ beef.browser = {
             flash_versions = 12;
             flash_installed = false;
 
-            if (window.ActiveXObject) {
-                for (x = 2; x <= flash_versions; x++) {
-                    try {
-                        Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
-                        if (Flash) {
-                            flash_installed = true;
+
+            if (this.type().IE11) {
+                flash_installed = (navigator.plugins["Shockwave Flash"] != undefined);
+            } else {
+                if (window.ActiveXObject != null) {
+                    for (x = 2; x <= flash_versions; x++) {
+                        try {
+                            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
+                            if (Flash) {
+                                flash_installed = true;
+                            }
+                        } catch (e) {
+                            beef.debug("Creating Flash ActiveX object failed: " + e.message);
                         }
-                    }
-                    catch (e) {
-                        beef.debug("Creating Flash ActiveX object failed: " + e.message);
                     }
                 }
             }
