@@ -261,7 +261,8 @@ beef.execute(function() {
     "m0n0wall",
     "80","http",false,
     "/logo.gif",150,47),
-  new Array("SMC Router","80","http",false,"/images/logo.gif",133,59)
+  new Array("SMC Router","80","http",false,"/images/logo.gif",133,59),
+  new Array("ntop","3000","http",false,"/ntop_logo.png",103,50)
 
 // Uncommon signatures
 //new Array("Rejetto HttpFileServer", "8080", "http",i true, "/~img27",16,16),
