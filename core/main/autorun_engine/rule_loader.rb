@@ -21,10 +21,10 @@ module BeEF
 
             name = data['name']
             author = data['author']
-            browser = data['browser']
-            browser_version = data['browser_version']
-            os = data['os']
-            os_version = data['os_version']
+            browser = data['browser']||'ALL'
+            browser_version = data['browser_version']||'ALL'
+            os = data['os']||'ALL'
+            os_version = data['os_version']||'ALL'
             modules = data['modules']
             exec_order = data['execution_order']
             exec_delay = data['execution_delay']
