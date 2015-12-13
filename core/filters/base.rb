@@ -142,6 +142,16 @@ module Filters
     valid
   end
 
+  # Checks if the given string is a valid private IP address
+  # @param [String] ip string for testing
+  # @return [Boolean] true if the string is a valid private IP address, otherwise false
+  # @note Includes RFC1918 private IPv4, private IPv6, and localhost 127.0.0.0/8,
+  #       but does not include local-link addresses.
+  def self.is_valid_private_ip?(ip)
+    return false unless is_valid_ip?(ip)
+    return ip =~ /\A(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2[0-9]\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])\z/ ? true : false
+  end
+
   # Checks if the given string is a valid TCP port
   # @param [String] port string for testing
   # @return [Boolean] true if the string is a valid TCP port, otherwise false
