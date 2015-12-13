@@ -18,7 +18,7 @@ beef.net.connection = {
     try {
       var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
       var type = connection.type;
-      if (type) return type; else return 'unknown';
+      if (/^[a-z]+$/.test(type)) return type; else return 'unknown';
     } catch(e) {
       beef.debug("Error retrieving connection type: " + e.message);
       return 'unknown';
