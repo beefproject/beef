@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Host"
             name: "Get Clipboard"
-            description: "Retrieves the clipboard contents. This module will work automatically with Internet Explorer 6.x however Internet Explorer 7.x will prompt the user and ask for permission to access the clipboard."
+            description: "Retrieves the clipboard contents. This module works invisibly with Internet Explorer 6.x however Internet Explorer 7.x - 8.x will prompt the user for permission to access the clipboard."
             authors: ["bcoles"]
             target:
                 working: 
@@ -19,6 +19,6 @@ beef:
                 user_notify:
                     IE:
                         min_ver: 7
-                        max_ver: 7
+                        max_ver: 8
                 not_working: ["All"]
 
