@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_connection_type:
+            enable: true
+            category: "Host"
+            name: "Get Network Connection Type"
+            description: "Retrieve the network connection type (wifi, 3G, etc).<br/>Note: Android only."
+            authors: ["bcoles"]
+            target:
+                working:
+                    C:
+                        os: ["Android"]
+                        min_ver: 46
+                        max_ver: 47
+                    FF:
+                        os: ["Android"]
+                        min_ver: 42
+                        max_ver: 42
+                not_working:
+                    ALL:
+                        os: ["All"]
