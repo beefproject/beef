@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        disable_developer_tools:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Disable Developer Tools"
+            description: "This module prevents users from executing JavaScript within the Internet Explorer Developer Tools console."
+            authors: ["bcoles", "KSpace"]
+            target:
+                user_notify:
+                    IE:
+                        min_ver: 8
+                        max_ver: 11
+                not_working: ["All"]
+
