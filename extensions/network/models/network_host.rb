@@ -31,6 +31,14 @@ module BeEF
           (print_error "Invalid hooked browser session"; return) unless BeEF::Filters.is_valid_hook_session_id?(host[:hooked_browser_id])
           (print_error "Invalid IP address"; return) unless BeEF::Filters.is_valid_ip?(host[:ip])
 
+          # save network hosts with private IP addresses only?
+          unless BeEF::Filters.is_valid_private_ip?(host[:ip])
+            configuration = BeEF::Core::Configuration.instance
+            if configuration.get("beef.extension.network.ignore_public_ips") == true
+              (print_debug "Ignoring network host with public IP address [ip: #{host[:ip]}]"; return)
+            end
+          end
+
           # update lastseen
           BeEF::Core::Models::NetworkHost.all(
             :hooked_browser_id => host[:hooked_browser_id],

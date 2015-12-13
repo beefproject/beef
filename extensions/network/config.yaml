@@ -10,3 +10,5 @@ beef:
             enable: true
             authors: ["bcoles"]
             description: "This extension facilitates interaction with hosts on a zombie browser's local area network(s). It provides a point and click interface for performing a variety of actions including host discovery, fingerprinting and exploitation. Identified network hosts are available in the Network -> Hosts panel. Identified network services are available in the Network -> Services panel. Right-click a host or service for more options."
+            # enable this option to record private network hosts and services only (RFC1918 IPv4, private IPv6, localhost)
+            ignore_public_ips: false
