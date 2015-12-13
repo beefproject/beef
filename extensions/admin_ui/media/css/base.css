@@ -138,6 +138,12 @@
    background-repeat: no-repeat;
 }
 
+.network-host-ctxMenu-proxy {
+   background-image: url(../images/icons/proxy.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
 .network-host-ctxMenu-fingerprint {
    background-image: url(../images/icons/magnifier.png);
    background-size: 16px 16px;

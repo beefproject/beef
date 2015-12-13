@@ -252,6 +252,28 @@ ZombieTab_Network = function(zombie) {
 								}
 							});
 						}
+                                        },{
+                                                text: 'Discover Proxies',
+                                                iconCls: 'network-host-ctxMenu-proxy',
+                                                handler: function() {
+                                                        var mod_id = get_module_id("get_proxy_servers_wpad");
+                                                        commands_statusbar.update_sending('Scanning for WPAD proxies ...');
+                                                        $jwterm.ajax({
+                                                                contentType: 'application/json',
+                                                                data: JSON.stringify({}),
+                                                                dataType: 'json',
+                                                                type: 'POST',
+                                                                url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                                                async: false,
+                                                                processData: false,
+                                                                success: function(data){
+                                                                        commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                                                },
+                                                                error: function(){
+                                                                        commands_statusbar.update_fail('Error sending command');
+                                                                }
+                                                        });
+                                                }
 					},{
 						text: 'Discover Routers',
 						iconCls: 'network-host-ctxMenu-router',
