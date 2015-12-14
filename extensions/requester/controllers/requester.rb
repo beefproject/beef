@@ -75,10 +75,16 @@ class Requester < BeEF::Extension::AdminUI::HttpController
         (self.err_msg 'Invalid HTTP HostPort';return @body = '{success : false}') if not BeEF::Filters.nums_only?(hostport) #check the target hostport
     end
 
+    proto = @params['proto'] || 'http'
+    if proto !~ /\Ahttps?\z/
+        (self.err_msg 'Invalid request protocol';return @body = '{success : false}')
+    end
+
     # Saves the new HTTP request.
     http = H.new(
       :request => raw_request,
       :method => verb,
+      :proto => proto,
       :domain => hostname,
       :port => hostport,
       :path => uri,
@@ -119,6 +125,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     H.all(:hooked_browser_id => zombie.id).each{|http|
       history << {
         'id'      => http.id,
+        'proto' => http.proto,
         'domain'  => http.domain,
 	      'port'    => http.port,
         'path'    => http.path,
@@ -162,6 +169,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
       'request'   => http_db.request,
       'response'  => response_data,
       'response_headers' => http_db.response_headers,
+      'proto'     => http_db.proto,
       'domain'    => http_db.domain,
       'port'      => http_db.port,
       'path'      => http_db.path,

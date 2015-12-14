@@ -66,6 +66,7 @@ module BeEF
             allow_cross_domain = http_db_object.allow_cross_domain.to_s
             req_parts = http_db_object.request.split(/ |\n/)
             verb = req_parts[0]
+            proto = http_db_object.proto
             uri = req_parts[1]
             headers = {}
 
@@ -102,11 +103,14 @@ module BeEF
               end
             end
 
+            # set default port if nil
             if @port.nil?
-              if uri.match(/^https:/)
-                 @port = 443
+              if uri.to_s =~ /^https?/
+                # absolute
+                (uri.match(/^https:/)) ? @port = 443 : @port = 80
               else
-                 @port = 80
+                # relative
+                (proto == 'https') ? @port = 443 : @port = 80
               end
             end
 
@@ -117,6 +121,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
+                  'proto' => proto,
                   'host' => @host,
                   'port' => @port,
                   'data' => @post_data,
@@ -129,6 +134,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
+                  'proto' => proto,
                   'host' => @host,
                   'port' => @port,
                   'uri' => uri,

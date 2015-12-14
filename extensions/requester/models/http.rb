@@ -47,6 +47,9 @@ module Models
     # The content length for the request.
     property :content_length, Text, :lazy => false, :default => 0
 
+    # The request protocol/scheme (http/https)
+    property :proto, Text, :lazy => false
+
     # The domain on which perform the request.
     property :domain, Text, :lazy => false
 
