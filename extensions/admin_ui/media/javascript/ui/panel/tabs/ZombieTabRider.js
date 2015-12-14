@@ -148,19 +148,35 @@ ZombieTab_Requester = function(zombie) {
 			},
 			afterrender: function(datagrid) {
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
-			}
+			},
 
-            //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
-//            ,rowcontextmenu: function(grid, rowIndex, event){
-//                 event.stopEvent();
-//
-//                 history_panel_context_menu.showAt(event.xy);
-//                 history_panel_context_menu.rowIndex = rowIndex;
-//                 history_panel_context_menu.dbIndex = getHttpDbId(grid, rowIndex);
-//            }
+			// History grid context menu (right click on a row in the history grid)
+			rowcontextmenu: function(grid, rowIndex, e){
+				e.preventDefault();
+				grid.getSelectionModel().selectRow(rowIndex);
+				if (!!grid.rowCtxMenu) {
+					grid.rowCtxMenu.destroy();
+				}
+				var record = grid.selModel.getSelected();
+				grid.rowCtxMenu = new Ext.menu.Menu({
+					items: [{
+						text: 'View Response',
+						iconCls: 'network-host-ctxMenu-web',
+						handler: function() {
+							if(record.get('has_ran') != "complete") {
+								commands_statusbar.update_fail("Response for this request has not been received yet.");
+								return;
+							}
+							if(!history_panel.get('requester-response-'+record.get('id'))) {
+								genResultTab(grid.getStore().getAt(rowIndex).data, zombie, commands_statusbar);
+							}
+						}
+					}]
+				});
+				grid.rowCtxMenu.showAt(e.getXY());
+			}
 		}
 	});
-	
 	
 	var history_panel = new Ext.Panel({
 		id: 'requester-history-panel-zombie-'+zombie.session,
