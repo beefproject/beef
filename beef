@@ -138,7 +138,13 @@ if config.get("beef.extension.console.shell.enable") == true
   require 'extensions/console/shell'
   puts ""
   begin
-    FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
+    log_dir = File.expand_path(config.get("beef.extension.console.shell.historyfolder"))
+    FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
+  rescue => e
+    print_error "Could not create log directory for shell history '#{log_dir}': #{e.message}"
+    exit 1
+  end
+  begin
     BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
                                         BeEF::Extension::Console::Shell::DefaultPromptChar, {'config' => config, 'http_hook_server' => http_hook_server}).run
   rescue Interrupt
