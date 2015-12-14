@@ -62,7 +62,7 @@ ZombieTab_Requester = function(zombie) {
 		autoLoad: false,
 		root: 'history',
 
-		fields: ['domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
+		fields: ['proto', 'domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
 		baseParams: {
@@ -118,6 +118,7 @@ ZombieTab_Requester = function(zombie) {
 		
 		columns: [
 			{header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
+			{header: 'Proto', width: 30, sortable: true, dataIndex: 'proto', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Domain', sortable: true, dataIndex: 'domain', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Port', width: 30, sortable: true, dataIndex: 'port', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Method', width: 30, sortable: true, dataIndex: 'method', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
@@ -196,6 +197,17 @@ ZombieTab_Requester = function(zombie) {
 			padding: '3px 5px 0 5px',
 			
 			items:[{
+				xtype: 'checkboxgroup',
+				//border: true,
+				//fieldLabel : 'Request Options',
+				items: [{
+					boxLabel: 'SSL',
+					name: 'ssl',
+					inputValue: '1',
+					checked: false, // (window.location.protocol == 'https'),
+					id: 'requester-forge-requests-ssl'
+				}]
+			},{
 				xtype: 'textarea',
 				id: 'raw-request-zombie-'+zombie.session,
 				name: 'raw_request',
@@ -207,6 +219,8 @@ ZombieTab_Requester = function(zombie) {
 			buttons: [{
 				text: 'Send',
 				handler: function() {
+					var use_ssl = Ext.getCmp('requester-forge-requests-ssl').getValue();
+					if (use_ssl) var proto = 'https'; else var proto = 'http';
 					var form = Ext.getCmp('requester-request-form-zombie'+zombie.session).getForm();
 					
 					bar.update_sending('Sending request to ' + zombie.ip + '...');
@@ -214,7 +228,8 @@ ZombieTab_Requester = function(zombie) {
 					form.submit({
 						params: {
 							nonce: Ext.get("nonce").dom.value,//insert the nonce with the form
-							zombie_session: zombie.session
+							zombie_session: zombie.session,
+							proto: proto
 						},
 						success: function() {
 							bar.update_sent("Request sent to hooked browser " + zombie.ip);
