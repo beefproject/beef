@@ -31,7 +31,7 @@ module Channels
       begin
         client.direct_message_create(username, message)
       rescue
-        print "Twitter send failed, verify tokens have Read/Write/DM acceess..\n"
+        print_error "Twitter send failed, verify tokens have Read/Write/DM acceess..."
       end
     end
   end
