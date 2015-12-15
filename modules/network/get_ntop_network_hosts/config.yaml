@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_ntop_network_hosts:
+            enable: true
+            category: "Network"
+            name: "Get ntop Network Hosts"
+            description: "This module retrieves network information from ntop (unauthenticated).<br/>Tested on ntop v.5.0.1 on Ubuntu and v.5.0 Fedora RPM. This module does not work for ntop-ng."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
