@@ -20,6 +20,8 @@ module BeEF
         OS_MAC_IMG = 'mac.png'
         OS_QNX_UA_STR = 'QNX'
         OS_QNX_IMG = 'qnx.ico'
+        OS_SUNOS_UA_STR = 'SunOS'
+        OS_SUNOS_IMG = 'sunos.gif'
         OS_BEOS_UA_STR = 'BeOS'
         OS_BEOS_IMG = 'beos.png'
         OS_OPENBSD_UA_STR = 'OpenBSD'
@@ -54,6 +56,8 @@ module BeEF
               OS_MAC_UA_STR
             when /qnx/
               OS_QNX_UA_STR
+            when /sun/
+              OS_SUNOS_UA_STR
             when /beos/
               OS_BEOS_UA_STR
             when /openbsd/

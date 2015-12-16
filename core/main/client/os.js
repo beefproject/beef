@@ -182,9 +182,11 @@ beef.os = {
 		// Android
 		if(this.isAndroid()) return 'Android';
 
+		// SunOS
+		if(this.isSunOS()) return 'SunOS';
+
 		//Linux
 		if(this.isLinux()) return 'Linux';
-		if(this.isSunOS()) return 'Sun OS';
 
 		//iPhone
 		if (this.isIphone()) return 'iOS';
