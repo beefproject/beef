@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Network"
             name: "Get ntop Network Hosts"
-            description: "This module retrieves network information from ntop (unauthenticated).<br/>Tested on ntop v.5.0.1 on Ubuntu and v.5.0 Fedora RPM. This module does not work for ntop-ng."
+            description: "This module retrieves network information from ntop (unauthenticated).<br/><br/>Tested on:<ul><li>ntop v.5.0.1 on Ubuntu 14.04.1 Server (x86_64)</li><li>ntop v.5.0 on Fedora 19.1 (x86_64)</li><li>ntop v.4.1.0 on Solaris 11.1 (x86)</li></ul><br/>This module does not work for ntop-ng."
             authors: ["bcoles"]
             target:
                 working: ["ALL"]
