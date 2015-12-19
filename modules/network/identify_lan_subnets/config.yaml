@@ -12,5 +12,5 @@ beef:
             description: "Discover active hosts in the internal network(s) of the hooked browser. This module works by attempting to connect to commonly used LAN IP addresses and timing the response."
             authors: ["browserhacker.com"]
             target:
-                working: ["FF", "C"]
+                user_notify: ["FF", "C"]
                 not_working: ["IE", "S", "O"]

@@ -231,28 +231,6 @@ ZombieTab_Network = function(zombie) {
 							});
 						}
 					},{
-						text: 'Identify LAN Subnets',
-						iconCls: 'network-host-ctxMenu-network',
-						handler: function() {
-							var mod_id = get_module_id("identify_lan_subnets");
-							commands_statusbar.update_sending('Identifying zombie LAN subnets ...');
-							$jwterm.ajax({
-								contentType: 'application/json',
-								data: JSON.stringify({}),
-								dataType: 'json',
-								type: 'POST',
-								url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-								async: false,
-								processData: false,
-								success: function(data){
-									commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-								},
-								error: function(){
-									commands_statusbar.update_fail('Error sending command');
-								}
-							});
-						}
-                                        },{
                                                 text: 'Discover Proxies',
                                                 iconCls: 'network-host-ctxMenu-proxy',
                                                 handler: function() {
