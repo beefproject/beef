@@ -876,7 +876,44 @@ ZombieTab_Network = function(zombie) {
                                                         }
                                                   }]
                                                 }
-                                        }]
+					},{
+						xtype: 'menuseparator'
+					},{
+						text: 'Remove',
+						iconCls: 'zombie-tree-ctxMenu-delete',
+						handler: function() {
+							var host_id = record.get('id');
+							if (!confirm('Are you sure you want to remove network host [id: '+host_id+', ip: '+ ip +'] ?')) {
+								commands_statusbar.update_fail('Cancelled');
+								return;
+							}
+
+							commands_statusbar.update_sending('Removing network host [id: '+ host_id +', ip: '+ ip +'] ...');
+							$jwterm.ajax({
+								contentType: 'application/json',
+								dataType: 'json',
+								type: 'DELETE',
+								url: "/api/network/host/" + host_id + "?token=" + token,
+								async: false,
+								processData: false,
+								success: function(data){
+									try {
+										if (data.success) {
+											commands_statusbar.update_sent('Removed network host successfully');
+											Ext.getCmp('network-host-grid-zombie-'+zombie.session).getStore().reload();
+										} else {
+											commands_statusbar.update_fail('Could not remove network host');
+										}
+									} catch(e) {
+										commands_statusbar.update_fail('Could not remove network host');
+									}
+								},
+								error: function(){
+									commands_statusbar.update_fail('Could not remove host');
+								}
+							});
+						}
+					}]
 				  });
                                 }
 				grid.rowCtxMenu.showAt(e.getXY());

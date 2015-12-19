@@ -68,6 +68,16 @@ module BeEF
           network_host
         end
 
+        #
+        # Removes a network host from the data store
+        #
+        def self.delete(id)
+          (print_error "Failed to remove network host. Invalid host ID."; return) if id.to_s !~ /\A\d+\z/
+          host = BeEF::Core::Models::NetworkHost.get(id.to_i)
+          (print_error "Failed to remove network host [id: #{id}]. Host does not exist."; return) if host.nil?
+          host.destroy
+        end
+
       end
 
     end
