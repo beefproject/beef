@@ -61,7 +61,7 @@ class TC_Login < Test::Unit::TestCase
     session.should have_content('Event')
     session.should have_content('Date')
     session.should have_content('Page')
-    session.should have_content('User with ip 127.0.0.1 has successfuly authenticated in the application')
+    session.should have_content('User with ip 127.0.0.1 has successfully authenticated in the application')
 
     BeefTest.save_screenshot(session)
     BeefTest.logout(session)
