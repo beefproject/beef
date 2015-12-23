@@ -26,12 +26,12 @@ ZombieTab_Network = function(zombie) {
 			success: function(data){                            
 				id = data.id;                                   
 			},
-			error: function(){                                  
-				commands_statusbar.update_fail("Error getting module id for '"+mod_name+"'");
+			error: function(){
+				commands_statusbar.update_fail("Error getting module id for '"+name+"'");
 			}
-		});                                                     
-        return id;
-	};
+		});
+		return id;
+	}
 
 	/*
 	 * arrayUnique()
@@ -487,102 +487,81 @@ ZombieTab_Network = function(zombie) {
                                   grid.rowCtxMenu = new Ext.menu.Menu({
                                         items: [
                                         {
-                                                text: 'Discover Web Servers',
-                                                iconCls: 'network-host-ctxMenu-web',
-                                                menu: {
-                                                  xtype: 'menu',
-                                                  items: [{
-                                                        text: 'Host ('+ip+')',
-                                                        iconCls: 'network-host-ctxMenu-host',
-                                                        handler: function() {
-                                                                var mod_id = get_module_id("get_http_servers");
-                                                                var ports = prompt("Enter ports to scan:", '80,8080');
-                                                                if (!ports) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-                                                                commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
-                                                                $jwterm.ajax({
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
-                                                                        dataType: 'json',
-                                                                        type: 'POST',
-                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-                                                                        async: false,
-                                                                        processData: false,
-                                                                        success: function(data){
-                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-                                                                        },
-                                                                        error: function(){
-                                                                                commands_statusbar.update_fail('Error sending command');
-                                                                        }
-                                                                });
-                                                        }
-                                                  }]
-                                                }
+                                          text: 'Discover Web Servers',
+                                          iconCls: 'network-host-ctxMenu-web',
+                                          handler: function() {
+                                            var mod_id = get_module_id("get_http_servers");
+                                            var ports = prompt("Enter ports to scan:", '80,8080');
+                                            if (!ports) {
+                                              commands_statusbar.update_fail('Cancelled');
+                                                return;
+                                              }
+                                            commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
+                                            $jwterm.ajax({
+                                              contentType: 'application/json',
+                                              data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
+                                              dataType: 'json',
+                                              type: 'POST',
+                                              url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                              async: false,
+                                              processData: false,
+                                              success: function(data){
+                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                              },
+                                              error: function(){
+                                                commands_statusbar.update_fail('Error sending command');
+                                              }
+                                            });
+                                          }
                                         },{
-                                                text: 'Fingerprint HTTP',
-                                                iconCls: 'network-host-ctxMenu-fingerprint',
-                                                menu: {
-                                                  xtype: 'menu',
-                                                  items: [{
-                                                        text: 'Host ('+ip+')',
-                                                        iconCls: 'network-host-ctxMenu-host',
-                                                        handler: function() {
-                                                                var mod_id = get_module_id("internal_network_fingerprinting");
-                                                                commands_statusbar.update_sending('Fingerprinting ' + ip + '...');
-                                                                $jwterm.ajax({
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip}),
-                                                                        dataType: 'json',
-                                                                        type: 'POST',
-                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-                                                                        async: false,
-                                                                        processData: false,
-                                                                        success: function(data){
-                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-                                                                        },
-                                                                        error: function(){
-                                                                                commands_statusbar.update_fail('Error sending command');
-                                                                        }
-                                                                });
-                                                        }
-                                                  }]
-                                                }
+                                          text: 'Fingerprint HTTP',
+                                          iconCls: 'network-host-ctxMenu-fingerprint',
+                                          handler: function() {
+                                            var mod_id = get_module_id("internal_network_fingerprinting");
+                                            commands_statusbar.update_sending('Fingerprinting ' + ip + '...');
+                                            $jwterm.ajax({
+                                              contentType: 'application/json',
+                                              data: JSON.stringify({"ipRange":ip+'-'+ip}),
+                                              dataType: 'json',
+                                              type: 'POST',
+                                              url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                              async: false,
+                                              processData: false,
+                                              success: function(data){
+                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                              },
+                                              error: function(){
+                                                commands_statusbar.update_fail('Error sending command');
+                                              }
+                                            });
+                                          }
                                         },{
-                                                text: 'CORS Scan',
-                                                iconCls: 'network-host-ctxMenu-cors',
-                                                menu: {
-                                                  xtype: 'menu',
-                                                  items: [{
-                                                        text: 'Host ('+ip+')',
-                                                        iconCls: 'network-host-ctxMenu-host',
-                                                        handler: function() {
-                                                                var mod_id = get_module_id("cross_origin_scanner");
-                                                                var ports = prompt("Enter ports to scan:", '80,8080');
-                                                                if (!ports) {
-                                                                        commands_statusbar.update_fail('Cancelled');
-                                                                        return;
-                                                                }
-                                                                commands_statusbar.update_sending('CORS scanning ' + ip + ' [ports: '+ports+'] ...');
-                                                                $jwterm.ajax({
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
-                                                                        dataType: 'json',
-                                                                        type: 'POST',
-                                                                        url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
-                                                                        async: false,
-                                                                        processData: false,
-                                                                        success: function(data){
-                                                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
-                                                                        },
-                                                                        error: function(){
-                                                                                commands_statusbar.update_fail('Error sending command');
-                                                                        }
-                                                                });
-                                                        }
-                                                  }]
-                                                }
+                                          text: 'CORS Scan',
+                                          iconCls: 'network-host-ctxMenu-cors',
+                                          handler: function() {
+                                            var mod_id = get_module_id("cross_origin_scanner");
+                                            var ports = prompt("Enter ports to scan:", '80,8080');
+                                            if (!ports) {
+                                              commands_statusbar.update_fail('Cancelled');
+                                              return;
+                                            }
+                                            commands_statusbar.update_sending('CORS scanning ' + ip + ' [ports: '+ports+'] ...');
+                                            $jwterm.ajax({
+                                              contentType: 'application/json',
+                                              data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
+                                              dataType: 'json',
+                                              type: 'POST',
+                                              url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
+                                              async: false,
+                                              processData: false,
+                                              success: function(data){
+                                                commands_statusbar.update_sent("Command [id: " + data.command_id + "] sent successfully");
+                                              },
+                                              error: function(){
+                                                commands_statusbar.update_fail('Error sending command');
+                                              }
+                                            });
+                                          }
                                         },{
                                                 text: 'Port Scan',
                                                 iconCls: 'network-host-ctxMenu-network',
@@ -1009,11 +988,6 @@ ZombieTab_Network = function(zombie) {
                                 var proto = record.get('proto');
                             grid.rowCtxMenu = new Ext.menu.Menu({
                                 items: [{
-                                    text: 'Scan (' + ip + ':' + port + '/' + proto + ')',
-                                    iconCls: 'network-host-ctxMenu-host',
-                                    menu: {
-                                        xtype: 'menu',
-                                        items: [{
                                             text: 'Fingerprint HTTP',
                                             iconCls: 'network-host-ctxMenu-fingerprint',
                                             handler: function () {
@@ -1063,12 +1037,12 @@ ZombieTab_Network = function(zombie) {
                                             handler: function () {
                                                 var mod_id = get_module_id("shell_shock_scanner");
                                                 var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
-                                                if (!lhost) {
+                                                if (!lhost || lhost == 'LHOST') {
                                                     commands_statusbar.update_fail('Cancelled');
                                                     return;
                                                 }
                                                 var lport = prompt("Enter local port for connect back shell:", 'LPORT');
-                                                if (!lport) {
+                                                if (!lport || lport == 'LPORT') {
                                                     commands_statusbar.update_fail('Cancelled');
                                                     return;
                                                 }
@@ -1102,12 +1076,12 @@ ZombieTab_Network = function(zombie) {
                                             handler: function () {
                                                 var mod_id = get_module_id("rfi_scanner");
                                                 var lhost = prompt("Enter local IP for connect back shell:", 'LHOST');
-                                                if (!lhost) {
+                                                if (!lhost || lhost == 'LHOST') {
                                                     commands_statusbar.update_fail('Cancelled');
                                                     return;
                                                 }
                                                 var lport = prompt("Enter local port for connect back shell:", 'LPORT');
-                                                if (!lport) {
+                                                if (!lport || lport == 'LPORT') {
                                                     commands_statusbar.update_fail('Cancelled');
                                                     return;
                                                 }
@@ -1136,8 +1110,6 @@ ZombieTab_Network = function(zombie) {
                                                     }
                                                 });
                                             }
-                                        }]
-                                    }
                                 }]
                             });
                             grid.rowCtxMenu.showAt(e.getXY());
