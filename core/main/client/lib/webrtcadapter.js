@@ -149,7 +149,7 @@ if (navigator.mozGetUserMedia) {
     var orgEnumerateDevices =
         navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
     navigator.mediaDevices.enumerateDevices = function() {
-      return orgEnumerateDevices().catch(function(e) {
+      return orgEnumerateDevices().then(undefined, function(e) {
         if (e.name === 'NotFoundError') {
           return [];
         }
