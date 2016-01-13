@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        detect_airdrone:
+        detect_airdroid:
             enable: true
             category: "Host"
-            name: "Detect Airdrone"
-            description: "This module attempts to detect Airdrone on localhost (default port: 8888)"
+            name: "Detect Airdroid"
+            description: "This module attempts to detect Airdroid application for Android running on localhost (default port: 8888)"
             authors: ["bcoles"]
             target:
                 working:

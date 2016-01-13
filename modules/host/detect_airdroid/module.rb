@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-class Detect_airdrone < BeEF::Core::Command
+class Detect_airdroid < BeEF::Core::Command
 
   def self.options
     return [
@@ -14,18 +14,18 @@ class Detect_airdrone < BeEF::Core::Command
   end
   
   def post_execute
-    save({'airdrone' => @datastore['airdrone']})
+    save({'airdroid' => @datastore['airdroid']})
 
     configuration = BeEF::Core::Configuration.instance
     if configuration.get("beef.extension.network.enable") == true
-      if @datastore['results'] =~ /^proto=(https?)&ip=([\d\.]+)&port=([\d]+)&airdrone=Installed$/
+      if @datastore['results'] =~ /^proto=(https?)&ip=([\d\.]+)&port=([\d]+)&airdroid=Installed$/
         proto = $1
         ip = $2
         port = $3
         session_id = @datastore['beefhook']
-        type = 'Airdrone'
+        type = 'Airdroid'
         if BeEF::Filters.is_valid_ip?(ip)
-          print_debug("Hooked browser found 'Airdrone' [proto: #{proto}, ip: #{ip}, port: #{port}]")
+          print_debug("Hooked browser found 'Airdroid' [proto: #{proto}, ip: #{ip}, port: #{port}]")
           BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
