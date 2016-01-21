@@ -3,30 +3,38 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# Enable MSF by changing extension:metasploit:enable to true
-# Then set msf_callback_host to be the public IP of your MSF server
+
+# Enable MSF integration by changing beef.extension.metasploit.enable
+# to true in BeEF's main config.yaml file.
 #
-# Ensure you load the xmlrpc interface in Metasploit
-# msf > load msgrpc ServerHost=IP Pass=abc123
-# Please note that the ServerHost parameter must have the same value of host and callback_host variables here below.
-# Also always use the IP of your machine where MSF is listening.
+# Ensure you load the msgrpc interface in Metasploit before starting BeEF:
+# msf > load msgrpc ServerHost=127.0.0.1 Pass=abc123 SSL=y
+#
+# Ensure that the IP address supplied to Metasploit with the 'ServerHost'
+# parameter is the same IP address as specified in beef.extension.metasploit.host
+# 
+# Ensure that the IP address specified in beef.extension.metasploit.callback_host
+# is the publicly accessible IP address for victim connections to Metasploit.
+
 beef:
     extension:
         metasploit:
             name: 'Metasploit'
             enable: true
+            # Metasploit msgrpc connection options
             host: "127.0.0.1"
             port: 55552
             user: "msf"
             pass: "abc123"
             uri: '/api'
-            # if you need "ssl: true" make sure you start msfrpcd with "SSL=y", like:
-            # load msgrpc ServerHost=IP Pass=abc123 SSL=y
-            ssl: false
+            ssl: true
             ssl_version: 'TLSv1'
             ssl_verify: true
+            # Public connect back host IP address for victim connections to Metasploit
             callback_host: "127.0.0.1"
+            # URIPATH from Metasploit Browser AutoPwn server module
             autopwn_url: "autopwn"
+            # Start msfrpcd automatically with BeEF
             auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
             msf_path: [ 
