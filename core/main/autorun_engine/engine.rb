@@ -360,6 +360,7 @@ module BeEF
             rules = BeEF::Core::AutorunEngine::Models::Rule.all()
           end
           return nil if rules == nil
+          return nil unless rules.length?
 
           print_info "[ARE] Checking if any defined rules should be triggered on target."
           # TODO handle cases where there are multiple ARE rules for the same hooked browser.
