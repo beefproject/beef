@@ -28,7 +28,7 @@ beef:
             pass: "abc123"
             uri: '/api'
             ssl: true
-            ssl_version: 'TLSv1'
+            ssl_version: 'TLS1'
             ssl_verify: true
             # Public connect back host IP address for victim connections to Metasploit
             callback_host: "127.0.0.1"
