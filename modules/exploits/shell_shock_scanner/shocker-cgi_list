@@ -218,6 +218,7 @@
 /cgi-bin/php-cgi
 /cgi-bin/php.cgi
 /cgi-bin/php.fcgi
+/cgi-bin/ping.sh
 /cgi-bin/pollit/Poll_It_SSI_v2.0.cgi
 /cgi-bin/pollssi.cgi
 /cgi-bin/postcards.cgi
