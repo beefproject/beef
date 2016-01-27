@@ -28,7 +28,7 @@ class Get_physical_location < BeEF::Core::Command
 
     writeToResults = Hash.new
     writeToResults['data'] = addressFound
-    BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults)
+    BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults, 0)
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/getGPSLocation.jar')
 
     content = {}

@@ -17,7 +17,7 @@ class Get_wireless_keys < BeEF::Core::Command
 		f.write((@datastore['results']).sub("result=",""))
   		writeToResults = Hash.new
    		writeToResults['data'] = "Please import "+Dir.pwd+"/exported_wlan_profiles.xml into your windows machine"
-		BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults)
+		BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults, 0)
 		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/wirelessZeroConfig.jar')
 	end
   
