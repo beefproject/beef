@@ -244,10 +244,19 @@ module BeEF
           (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
           (print_error "command name is empty"; return) if data["handler"].empty?
           (print_error "command results are empty"; return) if command_results.empty?
+          (print_error "command status is invalid"; return) unless data["status"] =~ /\A0|1|2|undefined\z/
+          if data["status"] == "undefined"
+            status = 0
+          else
+            status = data["status"].to_i
+          end
           handler = data["handler"]
           if handler.match(/command/)
-            BeEF::Core::Models::Command.save_result(hooked_browser, data["cid"],
-                                                    @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"), command_results)
+            BeEF::Core::Models::Command.save_result(hooked_browser,
+              data["cid"],
+              @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"),
+              command_results,
+              status)
           else #processing results from extensions, call the right handler
             data["beefhook"] = hooked_browser
             data["results"] = JSON.parse(Base64.decode64(data["result"]))
