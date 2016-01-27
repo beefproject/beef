@@ -155,6 +155,10 @@ beef.os = {
 		return (this.ua.match('BeOS')) ? true : false;
 	},
 
+        isAros: function() {
+                return (this.ua.match('AROS')) ? true : false;
+        },
+
 	isWindows: function() {
 		return (this.ua.match('Windows')) ? true : false;
 	},
@@ -199,6 +203,7 @@ beef.os = {
 		if(this.isQNX()) return 'QNX';
 		if(this.isBeOS()) return 'BeOS';
 		if(this.isWebOS()) return 'webOS';
+		if(this.isAros()) return 'AROS';
 		
 		return 'unknown';
 	},

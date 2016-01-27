@@ -30,6 +30,7 @@ module BeEF
         OS_IOS_IMG = 'ios.png'
         OS_IPHONE_UA_STR = 'iPhone'
         OS_WEBOS_UA_STR = 'webos.png'
+        OS_AROS_UA_STR = 'AROS'
         OS_IPHONE_IMG = 'iphone.jpg'
         OS_IPAD_UA_STR = 'iPad'
         OS_IPAD_IMG = 'ipad.png'
@@ -70,6 +71,8 @@ module BeEF
               OS_BLACKBERRY_UA_STR
             when /android/
               OS_ANDROID_UA_STR
+            when /aros/
+              OS_AROS_UA_STR
             else
               'ALL'
           end
