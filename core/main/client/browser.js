@@ -44,6 +44,14 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Odyssey
+     * @example: beef.browser.isOdyssey()
+     */
+    isOdyssey: function () {
+        return (window.navigator.userAgent.match(/Odyssey Web Browser/) != null && window.navigator.userAgent.match(/OWB\/\d+\.\d/) != null);
+    },
+
+    /**
      * Returns true if IE6.
      * @example: beef.browser.isIE6()
      */
@@ -1872,6 +1880,10 @@ beef.browser = {
             return 'MI'
         }
         ;               // Midori any version
+        if (this.isOdyssey()) {
+            return 'OD'
+        }
+        ;               // Odyssey any version
         return 'UNKNOWN';	// Unknown UA
     },
 

@@ -19,6 +19,7 @@ module Constants
     O       = 'O'        # Opera
     A       = 'A'        # Avant
     MI      = 'MI'       # Midori
+    OD      = 'OD'       # Odyssey
     ALL     = 'ALL'      # ALL
     UNKNOWN = 'UN'       # Unknown
 
@@ -31,6 +32,7 @@ module Constants
     FRIENDLY_O_NAME   = 'Opera'
     FRIENDLY_A_NAME   = 'Avant'
     FRIENDLY_MI_NAME  = 'Midori'
+    FRIENDLY_OD_NAME  = 'Odyssey'
     FRIENDLY_UN_NAME  = 'UNKNOWN'
 
     # Attempt to retrieve a browser's friendly name
@@ -48,6 +50,7 @@ module Constants
         when O ;       return FRIENDLY_O_NAME
         when A ;       return FRIENDLY_A_NAME
         when MI ;      return FRIENDLY_MI_NAME
+        when OD ;      return FRIENDLY_OD_NAME
         when UNKNOWN;  return FRIENDLY_UN_NAME
       end
 
