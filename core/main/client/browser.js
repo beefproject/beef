@@ -29,10 +29,18 @@ beef.browser = {
 
     /**
      * Returns true if Iceweasel.
-     * @example: beef.browser.isI()
+     * @example: beef.browser.isIceweasel()
      */
-    isI: function () {
+    isIceweasel: function () {
         return window.navigator.userAgent.match(/Iceweasel\/\d+\.\d/) != null;
+    },
+
+    /**
+     * Returns true if Midori.
+     * @example: beef.browser.isMidori()
+     */
+    isMidori: function () {
+        return window.navigator.userAgent.match(/Midori\/\d+\.\d/) != null;
     },
 
     /**
@@ -1843,7 +1851,15 @@ beef.browser = {
             return 'S'
         }
         ;		// Safari any version
-        return 'UNKNOWN';					// Unknown UA
+        if (this.isA()) {
+            return 'A'
+        }
+        ;               // Avant any version
+        if (this.isMidori()) {
+            return 'MI'
+        }
+        ;               // Midori any version
+        return 'UNKNOWN';	// Unknown UA
     },
 
     /**

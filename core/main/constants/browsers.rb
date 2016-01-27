@@ -17,6 +17,8 @@ module Constants
     K       = 'K'        # Konqueror
     C       = 'C'        # Chrome
     O       = 'O'        # Opera
+    A       = 'A'        # Avant
+    MI      = 'MI'       # Midori
     ALL     = 'ALL'      # ALL
     UNKNOWN = 'UN'       # Unknown
 
@@ -27,6 +29,8 @@ module Constants
     FRIENDLY_K_NAME   = 'Konqueror'
     FRIENDLY_C_NAME   = 'Chrome'
     FRIENDLY_O_NAME   = 'Opera'
+    FRIENDLY_A_NAME   = 'Avant'
+    FRIENDLY_MI_NAME  = 'Midori'
     FRIENDLY_UN_NAME  = 'UNKNOWN'
 
     # Attempt to retrieve a browser's friendly name
@@ -42,6 +46,8 @@ module Constants
         when K ;       return FRIENDLY_K_NAME
         when C ;       return FRIENDLY_C_NAME
         when O ;       return FRIENDLY_O_NAME
+        when A ;       return FRIENDLY_A_NAME
+        when MI ;      return FRIENDLY_MI_NAME
         when UNKNOWN;  return FRIENDLY_UN_NAME
       end
 
