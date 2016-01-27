@@ -56,33 +56,6 @@ module Constants
 
     end
 
-    # Attempt to match the browserstring to a browser constant
-    # @param [String] browserstring Browser UA string
-    # @return [Array] An array of matching browser constants
-    # @todo Confirm this function returns an array if multiple constants are matched
-    def self.match_browser(browserstring)
-      matches = []
-      browserstring.split(" ").each do |chunk|
-        case chunk
-        when /Firefox/, /FF/
-          matches << FF
-        when /Mozilla/
-          matches << M
-        when /Internet Explorer/, /IE/
-          matches << IE
-        when /Safari/
-          matches << S
-        when /Konqueror/
-          matches << K
-        when /Chrome/
-          matches << C
-        when /Opera/
-          matches << O
-        end
-      end
-      matches.uniq
-    end
-
   end
 
 end
