@@ -28,4 +28,3 @@ beef:
                     O:
                         min_ver: 12
                         max_ver: latest
-                not_working: ["All"]
