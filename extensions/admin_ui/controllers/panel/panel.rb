@@ -86,12 +86,8 @@ module BeEF
             domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
             has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
             has_web_sockets = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebSocket')
-            has_googlegears = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasGoogleGears')
             has_webrtc      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebRTC')
             has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
-            has_quicktime   = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasQuickTime')
-            has_realplayer  = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasRealPlayer')
-            has_wmp         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWMP') 
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
 
             return {
@@ -108,12 +104,8 @@ module BeEF
                 'hw_name'         => hw_name,
                 'has_flash'       => has_flash,
                 'has_web_sockets' => has_web_sockets,
-                'has_googlegears' => has_googlegears,
                 'has_webrtc'      => has_webrtc,
                 'has_activex'     => has_activex,
-                'has_quicktime'   => has_quicktime,
-                'has_wmp'         => has_wmp,
-                'has_realplayer'  => has_realplayer,
                 'date_stamp'      => date_stamp,
                 'hb_id'           => hooked_browser.id
             }
