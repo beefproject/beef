@@ -40,11 +40,11 @@ fi
 
 if [ "$OS" == "Darwin" ]; then
 	echo "Mac OSX Detected"
-	echo "Installing Ruby Version Manager (RVM) & Ruby 1.9.3.."
+	echo "Installing Ruby Version Manager (RVM) & Ruby 2.1.5.."
 	bash -s stable < <(curl -Ls https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
 	source ~/.bash_login
-	rvm install 1.9.3-p0 --with-gcc=clang
-	rvm use 1.9.3-p0
+	rvm install 2.1.5 --with-gcc=clang
+	rvm use 2.1.5
 	echo ""
 	echo "Downloading BeEF.."
 	
@@ -90,8 +90,8 @@ else
 	source /usr/local/rvm/scripts/rvm
 fi
 
-	rvm install 1.9.2
-	rvm use 1.9.2 --default
+	rvm install 2.1.5
+	rvm use 2.1.5 --default
 
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
@@ -119,14 +119,14 @@ if [ "$Distro" == "RedHat" ]; then
 	sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
 
 	echo ""
-	echo "Installing Ruby Version Manager (RVM) & Ruby 1.9.2"
+	echo "Installing Ruby Version Manager (RVM) & Ruby 2.1.5"
 	wget https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer
 	bash ./rvm-installer
 	source ~/.rvm/scripts/rvm
 	rvm pkg install openssl
-	rvm install 1.9.2 --with-openssl-dir=$rvm_path/usr
+	rvm install 2.1.5 --with-openssl-dir=$rvm_path/usr
 	source ~/.rvm/scripts/rvm
-	rvm use 1.9.2 --default
+	rvm use 2.1.5 --default
 	
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
