@@ -8,14 +8,11 @@
 
 puts "\nWelcome to the BeEF installer!"
 
-if  RUBY_VERSION < '1.9'
+if RUBY_VERSION < '2.0'
   puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
-  puts ""
-  puts "OSX:"
-  puts "See README"
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.0 or later."
   puts "\n"
-  exit
+  exit 1
 end
 
 puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"

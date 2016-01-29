@@ -9,24 +9,16 @@
 # stop deprecation warning from being displayed
 $VERBOSE = nil
 
-# @note Version check to ensure BeEF is running Ruby 1.9 >
-if  RUBY_VERSION < '1.9'
+# @note Version check to ensure BeEF is running Ruby 2.0+
+if RUBY_VERSION < '2.0'
   puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
-  puts "OSX:"
-  puts "See Readme"
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.0 or later."
   puts "\n"
-  exit
+  exit 1
 end
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
 $root_dir = File.expand_path('..', __FILE__)
-
-# @note Prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
-if RUBY_VERSION =~ /1.9/
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
-end
 
 # @note Require core loader's
 require 'core/loader'
