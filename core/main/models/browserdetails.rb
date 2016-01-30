@@ -87,6 +87,7 @@ module Models
       return BeEF::Core::Constants::Os::OS_BEOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BEOS_UA_STR
       return BeEF::Core::Constants::Os::OS_OPENBSD_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_OPENBSD_UA_STR
       return BeEF::Core::Constants::Os::OS_WEBOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_WEBOS_UA_STR
+      return BeEF::Core::Constants::Os::OS_AROS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_AROS_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPHONE_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPAD_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPOD_UA_STR
