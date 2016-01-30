@@ -66,6 +66,7 @@ module Models
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if browser.eql? 'S'  # Safari
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if browser.eql? 'C'  # Chrome
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if browser.eql? 'O'  # Opera
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG   if browser.eql? 'OD' # Odyssey
     
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
     end

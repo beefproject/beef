@@ -26,6 +26,8 @@ module Constants
     AGENT_CHROME_IMG      = 'chrome.png'
     AGENT_OPERA_UA_STR    = 'Opera'
     AGENT_OPERA_IMG       = 'opera.ico'
+    AGENT_ODYSSEY_UA_STR  = 'Odyssey Web Browser'
+    AGENT_ODYSSEY_IMG     = 'odyssey.png'
 
   end
 
