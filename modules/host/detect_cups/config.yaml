@@ -12,9 +12,4 @@ beef:
             description: "This module attempts to detect Common UNIX Printing System (CUPS) on localhost on the default port 631."
             authors: ["bcoles"]
             target:
-                working:
-                    ALL:
-                        os: ["Linux"]
-                not_working:
-                    ALL:
-                        os: ["All"]
+                working: ["ALL"]
