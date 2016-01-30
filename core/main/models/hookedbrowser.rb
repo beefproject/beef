@@ -53,6 +53,7 @@ puts 'A'*100
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_KONQ_IMG    if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_KONQ_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_UA_STR
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_UA_STR
     
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG

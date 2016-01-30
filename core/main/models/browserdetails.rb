@@ -58,16 +58,17 @@ module Models
     # hooked browser is using (i.e. Firefox, Internet Explorer)
     #
     def self.browser_icon(session_id)
-    
+
       browser = get(session_id, 'BrowserName')
-    
+ 
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_IMG      if browser.eql? 'IE' # Internet Explorer
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_IMG if browser.eql? 'FF' # Firefox
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if browser.eql? 'S'  # Safari
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if browser.eql? 'C'  # Chrome
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if browser.eql? 'O'  # Opera
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG   if browser.eql? 'OD' # Odyssey
-    
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_IMG  if browser.eql? 'MI' # Midori
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG if browser.eql? 'OD' # Odyssey
+
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
     end
   
