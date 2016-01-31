@@ -403,19 +403,29 @@ module BeEF
               next unless @VERSION.include?(os_ver_rule_cond) || @VERSION_STR.include?(os_ver_rule_cond)
               # os_ver without checks as it can be very different or even empty, for instance on linux/bsd)
 
-              # check if the browser and OS types do match
-              next unless rule.browser == 'ALL'  || browser == rule.browser
-              next unless rule.os == 'ALL'       || os == rule.os
-
-              # check if the browser version match
-              browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
-              if browser_version_match
-                browser_match = true
+              # skip rule unless the browser matches
+              browser_match = false
+              # check if rule specifies multiple browsers
+              if rule.browser !~ /\A[A-Z]+\Z/
+                rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
+                  browser_match = true if b == browser || b == 'ALL'
+                end
+              # else, only one browser
               else
-                browser_match = false
+                next unless rule.browser == 'ALL' || browser == rule.browser
+                # check if the browser version matches
+                browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
+                if browser_version_match
+                  browser_match = true
+                else
+                  browser_match = false
+                end
+                print_more "Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : #{browser_version_match}"
               end
+              next unless browser_match
 
-              print_more "Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : #{browser_version_match}"
+              # skip rule unless the OS matches
+              next unless rule.os == 'ALL' || os == rule.os
 
               # check if the OS versions match
               if os_version != nil || rule.os_version != 'ALL'
