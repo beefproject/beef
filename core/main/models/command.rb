@@ -58,7 +58,7 @@ module Models
       command.save
 
       s = self.show_status(status)
-      log = "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions (status: #{s}) from command module [id:#{command_id}, name:'#{command_friendly_name}']"
+      log = "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has executed instructions (status: #{s}) from command module [cid:#{command_id}, mod: #{command.command_module_id}, name:'#{command_friendly_name}']"
       BeEF::Core::Logger.instance.register('Command', log, hooked_browser_id)
       print_info log
     end
