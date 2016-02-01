@@ -13,6 +13,7 @@ module BeEF
 
         def initialize
           @config = BeEF::Core::Configuration.instance
+          @debug_on = @config.get('beef.debug')
         end
 
         # this expects parsed JSON as input
@@ -35,9 +36,10 @@ module BeEF
 
             if parser_result.length == 1 && parser_result.first
               print_info "[ARE] Ruleset (#{name}) parsed and stored successfully."
-              print_more "Target Browser: #{browser} (#{browser_version})"
-              print_more "Target OS: #{os} (#{os_version})"
-              print_more "Modules to Trigger:"
+              if @debug_on
+                print_more "Target Browser: #{browser} (#{browser_version})"
+                print_more "Target OS: #{os} (#{os_version})"
+                print_more "Modules to Trigger:"
                          modules.each do |mod|
                             print_more "(*) Name: #{mod['name']}"
                             print_more "(*) Condition: #{mod['condition']}"
@@ -47,8 +49,9 @@ module BeEF
                               print_more "\t#{key}: (#{value})"
                             end
                          end
-              print_more "Exec order: #{exec_order}"
-              print_more "Exec delay: #{exec_delay}"
+                print_more "Exec order: #{exec_order}"
+                print_more "Exec delay: #{exec_delay}"
+              end
               are_rule = BeEF::Core::AutorunEngine::Models::Rule.new(
                   :name => name,
                   :author => author,
@@ -85,7 +88,7 @@ module BeEF
 
         def load_directory
           Dir.glob("#{$root_dir}/arerules/enabled/**/*.json") do |rule|
-            print_info "[ARE] Processing rule: #{rule}"
+            print_debug "[ARE] Processing rule: #{rule}"
             self.load_file rule
           end
         end
