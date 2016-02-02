@@ -6,7 +6,7 @@
 class Doser < BeEF::Core::Command
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/doser/worker.js', '/worker', 'js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/DOSer/worker.js', '/worker', 'js')
   end
 
   def self.options
