@@ -1,4 +1,4 @@
-{"name": "Get Internal IP (WebRTC)",
+{"name": "LAN CORS Scan",
   "author": "bcoles",
   "browser": ["FF", "C"],
   "browser_version": "ALL",
