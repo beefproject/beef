@@ -23,6 +23,18 @@ $root_dir = File.expand_path('..', __FILE__)
 # @note Require core loader's
 require 'core/loader'
 
+# @note Check the system language settings for UTF-8 compatibility
+env_lang = ENV['LANG']
+if env_lang !~ /(utf8|utf-8)/i
+  print_warning "Warning: System language $LANG does not appear to be UTF-8 compatible."
+  if env_lang =~ /\A([a-z]+_[a-z]+)\./i
+    country = $1
+    if !RUBY_PLATFORM.downcase.include?('mswin') && !RUBY_PLATFORM.downcase.include?('mingw')
+      print_more "Try: export LANG=#{country}.utf8"
+    end
+  end
+end
+
 # @note Initialize the Configuration object. Eventually loads a different config.yaml if -c flag was passed.
 if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
   config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
