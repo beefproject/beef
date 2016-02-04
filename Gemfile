@@ -17,7 +17,7 @@ gem 'mime-types'
 
 # Windows support
 if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
-  # make sure you install this gem following https://github.com/hiranpeiris/therubyracer_for_windows
+  # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
   gem 'therubyracer', '~> 0.11.0beta1'
   gem 'execjs'
   gem 'win32console'
