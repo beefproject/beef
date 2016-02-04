@@ -32,21 +32,59 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'dm-core'
 gem 'json'
 gem 'data_objects'
-gem 'dm-sqlite-adapter'  # SQLite support
-#gem dm-postgres-adapter # PostgreSQL support
-#gem dm-mysql-adapter    # MySQL support
+gem 'rubyzip', '>= 1.0.0'
+
+# SQLite support
+group :sqlite do
+  gem 'dm-sqlite-adapter'
+end
+
+# PostgreSQL support
+group :postgres do
+  #gem dm-postgres-adapter
+end
+
+# MySQL support
+group :mysql do
+  #gem dm-mysql-adapter
+end
+
+# Geolocation support
+group :geoip do
+  gem 'geoip'
+end
+
 gem 'parseconfig'
 gem 'erubis'
 gem 'dm-migrations'
-gem 'msfrpc-client'        # Metasploit Integration extension
-#gem 'twitter', '>= 5.0.0' # Twitter Notifications extension
-gem 'rubyzip', '>= 1.0.0'
-gem 'rubydns', '0.7.0'     # DNS extension
-gem 'geoip'                # geolocation support
-gem 'dm-serializer'        # network extension
-gem 'qr4r'                 # QRcode extension
+
+# Metasploit Integration extension
+group :ext_msf do
+  gem 'msfrpc-client'
+end
+
+# Twitter Notifications extension
+group :ext_twitter do
+  #gem 'twitter', '>= 5.0.0'
+end
+
+# DNS extension
+group :ext_dns do
+  gem 'rubydns', '0.7.0'
+end
+
+# network extension
+group :ext_network do
+  gem 'dm-serializer'
+end
+
+# QRcode extension
+group :ext_qrcode do
+  gem 'qr4r'
+end
 
 # For running unit tests
+group :test do
 if ENV['BEEF_TEST']
   gem 'test-unit'
   gem 'test-unit-full'
@@ -61,6 +99,7 @@ if ENV['BEEF_TEST']
   gem 'capybara'
   # RESTful API tests/generic command module tests
   gem 'rest-client', '~> 1.8.0'
+end
 end
 
 source 'https://rubygems.org'
