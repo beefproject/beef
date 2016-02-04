@@ -159,6 +159,7 @@ module BeEF
         #@note Fire a new command module to multiple hooked browsers.
         # Returns the command IDs of the launched module, or 0 if firing got issues.
         # Use "hb_ids":["ALL"] to run on all hooked browsers
+        # Use "hb_ids":["ALL_ONLINE"] to run on all hooked browsers currently online
         #
         # POST request body example (for modules that don't need parameters, just remove "mod_params")
         #  {
@@ -194,8 +195,13 @@ module BeEF
             hb_ids = body["hb_ids"]
             results = Hash.new
 
+            # run on all hooked browsers currently online?
+            if hb_ids.first =~ /\Aall_online\z/i
+              hb_ids = []
+              BeEF::Core::Models::HookedBrowser.all(
+                :lastseen.gte => (Time.new.to_i - 15)).each {|hb| hb_ids << hb.id }
             # run on all hooked browsers?
-            if hb_ids.first =~ /\Aall\z/i
+            elsif hb_ids.first =~ /\Aall\z/i
               hb_ids = []
               BeEF::Core::Models::HookedBrowser.all.each {|hb| hb_ids << hb.id }
             end
