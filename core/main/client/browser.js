@@ -2540,7 +2540,7 @@ beef.browser = {
         var hw_name = beef.hardware.getName();
         var cpu_type = beef.hardware.cpuType();
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
-        var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : null;
+        var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
             if (value == true) return value; else if (typeof value == 'object') return value; else return;
         });
