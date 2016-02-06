@@ -11,7 +11,7 @@ module Filters
   # @return [Boolean] Whether the string is not empty
   def self.is_non_empty_string?(str)
     return false if str.nil?
-    return false if not str.is_a? String
+    return false unless str.is_a? String
     return false if str.empty?
     true
   end
@@ -38,7 +38,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has a null character
   def self.has_null? (str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     exists?('\x00', str)
   end
 
@@ -46,7 +46,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] Whether or not the string has non-printable characters
   def self.has_non_printable_char?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     not only?('[:print:]', str)
   end
 
@@ -54,7 +54,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string only contains numbers
   def self.nums_only?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     only?('0-9', str)
   end
 
@@ -62,8 +62,8 @@ module Filters
   # @param [String] str String for float testing
   # @return [Boolean] If the string is a valid float
   def self.is_valid_float?(str)
-    return false if not is_non_empty_string?(str)
-    return false if not only?('0-9\.', str)
+    return false unless is_non_empty_string?(str)
+    return false unless only?('0-9\.', str)
     not (str =~ /^[\d]+\.[\d]+$/).nil?
   end
 
@@ -71,7 +71,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string only contains hex characters
   def self.hexs_only?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     only?('0123456789ABCDEFabcdef', str)
   end
 
@@ -79,7 +79,7 @@ module Filters
   # @param [String] String for testing
   # @return [Boolean] If the first character of the string is a number
   def self.first_char_is_num?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     not (str =~ /^\d.*/).nil?
   end
 
@@ -87,7 +87,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has a whitespace character
   def self.has_whitespace_char?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     exists?('\s', str)
   end
 
@@ -95,7 +95,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string only has alphanums
   def self.alphanums_only?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     only?("a-zA-Z0-9", str)
   end
 
@@ -177,7 +177,7 @@ module Filters
   # @return [Boolean] If the string has valid browser details characters
   # @note This function passes the \302\256 character which translates to the registered symbol (r)
   def self.has_valid_browser_details_chars?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     not (str =~ /[^\w\d\s()-.,;:_\/!\302\256]/).nil?  
   end  
 
@@ -187,7 +187,7 @@ module Filters
   # @note This is for basic filtering where possible all specific filters must be implemented
   # @note This function passes the \302\256 character which translates to the registered symbol (r)
   def self.has_valid_base_chars?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     (str =~ /[^\302\256[:print:]]/).nil? 
   end  
 

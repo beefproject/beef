@@ -10,7 +10,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string is a valid page title
   def self.is_valid_pagetitle?(str)
-    return false if not str.is_a? String
+    return false unless str.is_a? String
     return false if has_non_printable_char?(str)
     return false if str.length > 500 # CxF Increased this because some page titles are MUCH longer
     true
@@ -20,7 +20,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string is a valid referrer
   def self.is_valid_pagereferrer?(str)
-    return false if not str.is_a? String
+    return false unless str.is_a? String
     return false if has_non_printable_char?(str)
     return false if str.length > 350
     true

@@ -10,7 +10,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid browser name characters
   def self.is_valid_browsername?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if str.length > 2
     return false if has_non_printable_char?(str)
     true
@@ -20,7 +20,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid browser type characters
   def self.is_valid_browsertype?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if str.length < 10
     return false if str.length > 500 #CxF - had to increase this because the Chrome detection JSON String is getting bigger.
     return false if has_non_printable_char?(str)
@@ -31,7 +31,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid Operating System name characters
   def self.is_valid_osname?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length < 2
     true
@@ -41,7 +41,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid Hardware name characters
   def self.is_valid_hwname?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length < 2
     true
@@ -77,7 +77,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid browser / ua string characters
   def self.is_valid_browserstring?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 300      
     true
@@ -132,7 +132,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid CPU type characters
   def self.is_valid_cpu?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
@@ -144,7 +144,7 @@ module Filters
   # @note This string can be empty if there are no browser plugins
   # @todo Verify if the ruby version statement is still necessary
   def self.is_valid_browser_plugins?(str)
-    return true if not is_non_empty_string?(str)
+    return true unless is_non_empty_string?(str)
     return false if str.length > 1000
     if RUBY_VERSION >= "1.9" && str.encoding === Encoding.find('UTF-8')
       return (str =~ /[^\w\d\s()-.,';_!\302\256]/u).nil?

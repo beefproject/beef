@@ -68,7 +68,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_1_webrtc_check_for_two_hooked_browsers
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -83,7 +83,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_2_webrtc_establishing_p2p
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -119,7 +119,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_3_webrtc_send_msg # assumes test 2 has run
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -157,7 +157,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_4_webrtc_stealthmode # assumes test 2 has run
-    return if not @@activated
+    return unless @@activated
 
     # Test our two browsers are still online
     rest_response = nil
@@ -241,7 +241,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_5_webrtc_execcmd # assumes test 2 has run
-    return if not @@activated
+    return unless @@activated
 
     #
 
