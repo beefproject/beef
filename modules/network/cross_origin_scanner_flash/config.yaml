@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        cross_origin_scanner_flash:
+            enable: true
+            category: "Network"
+            name: "Cross-Origin Scanner (Flash)"
+            description: "Scan an IP range for web servers which allow cross-origin requests using Flash. The HTTP response is returned to BeEF.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses.<br/><br/>This module uses ContentHijacking.swf from <a href='https://github.com/nccgroup/CrossSiteContentHijacking'>CrossSiteContentHijacking</a> by Soroush Dalili (@irsdl)."
+            authors: ["bcoles", "@irsdl"]
+            target:
+                working: ["C", "FF"]
+                not_working: ["IE", "S", "O"]

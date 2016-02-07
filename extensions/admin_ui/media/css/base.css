@@ -156,6 +156,12 @@
    background-repeat: no-repeat;
 }
 
+.network-host-ctxMenu-flash {
+   background-image: url(../images/icons/flash.png);
+   background-size: 16px 16px;
+   background-repeat: no-repeat;
+}
+
 .network-host-ctxMenu-shellshock {
    background-image: url(../images/icons/shellshock.png);
    background-size: 16px 16px;
