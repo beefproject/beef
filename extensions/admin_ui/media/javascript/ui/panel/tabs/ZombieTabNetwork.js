@@ -409,7 +409,7 @@ ZombieTab_Network = function(zombie) {
                                                         text: 'Common LAN IPs',
                                                         iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
-                                                                var mod_name = "cross_origin_scanner";
+                                                                var mod_name = "cross_origin_scanner_cors";
                                                                 var mod_id = get_module_id(mod_name);
                                                                 var ports = prompt("Enter ports to scan:", '80,8080');
                                                                 if (!ports) {
@@ -447,7 +447,7 @@ ZombieTab_Network = function(zombie) {
                                                                         commands_statusbar.update_fail('Cancelled');
                                                                         return;
                                                                 }
-                                                                var mod_name = "cross_origin_scanner";
+                                                                var mod_name = "cross_origin_scanner_cors";
                                                                 var mod_id = get_module_id(mod_name);
                                                                 commands_statusbar.update_sending('CORS scanning ' + ip_range + ' [ports: ' + ports + '] ...');
                                                                 $jwterm.ajax({
@@ -539,7 +539,7 @@ ZombieTab_Network = function(zombie) {
                                           text: 'CORS Scan',
                                           iconCls: 'network-host-ctxMenu-cors',
                                           handler: function() {
-                                            var mod_id = get_module_id("cross_origin_scanner");
+                                            var mod_id = get_module_id("cross_origin_scanner_cors");
                                             var ports = prompt("Enter ports to scan:", '80,8080');
                                             if (!ports) {
                                               commands_statusbar.update_fail('Cancelled');
@@ -746,7 +746,7 @@ ZombieTab_Network = function(zombie) {
                                                         text: 'Host ('+ip+')',
 							iconCls: 'network-host-ctxMenu-host',
                                                         handler: function() {
-								var mod_id = get_module_id("cross_origin_scanner");
+								var mod_id = get_module_id("cross_origin_scanner_cors");
                                                                 var ports = prompt("Enter ports to scan:", '80,8080');
                                                                 if (!ports) {
                                                                         commands_statusbar.update_fail('Cancelled');
@@ -773,7 +773,7 @@ ZombieTab_Network = function(zombie) {
                                                         text: 'Network ('+class_c+'.0/24)',
 							iconCls: 'network-host-ctxMenu-network',
                                                         handler: function() {
-	                                                        var mod_id = get_module_id("cross_origin_scanner");
+	                                                        var mod_id = get_module_id("cross_origin_scanner_cors");
                                                                 var ports = prompt("Enter ports to scan:", '80,8080');
                                                                 if (!ports) {
                                                                         commands_statusbar.update_fail('Cancelled');
@@ -1013,7 +1013,7 @@ ZombieTab_Network = function(zombie) {
                                             text: 'CORS Scan',
                                             iconCls: 'network-host-ctxMenu-cors',
                                             handler: function () {
-                                                var mod_id = get_module_id("cross_origin_scanner");
+                                                var mod_id = get_module_id("cross_origin_scanner_cors");
                                                 commands_statusbar.update_sending('CORS scanning ' + ip + ' [port: '+port+'] ...');
                                                 $jwterm.ajax({
                                                     contentType: 'application/json',

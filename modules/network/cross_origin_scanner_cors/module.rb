@@ -3,7 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Cross_origin_scanner < BeEF::Core::Command
+class Cross_origin_scanner_cors < BeEF::Core::Command
 
   def post_execute
     content = {}
