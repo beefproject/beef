@@ -895,7 +895,7 @@ ZombieTab_Network = function(zombie) {
 						}
                                         },{
                                                 text: 'Flash Cross-Origin Scan',
-                                                iconCls: 'network-host-ctxMenu-cors',
+                                                iconCls: 'network-host-ctxMenu-flash',
                                                 menu: {
                                                   xtype: 'menu',
                                                   items: [{
