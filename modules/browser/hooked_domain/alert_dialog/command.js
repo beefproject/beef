@@ -6,5 +6,5 @@
 
 beef.execute(function() {
 	alert("<%= @text %>");
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "text=<%= @text %>");
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "text=<%= @text %>", beef.are.status_success());
 });

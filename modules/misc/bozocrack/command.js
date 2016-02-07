@@ -13,7 +13,7 @@ beef.execute(function() {
         var re = /^[0-9a-f]{32}$/i;
         var valid_hash = re.exec(hash);
         if (!valid_hash) {
-                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid MD5 hash');
+                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid MD5 hash', beef.are.status_error());
                 return;
         }
 
@@ -37,7 +37,7 @@ beef.execute(function() {
 				}
 			}
 			if (!result) {
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, "hash="+hash+"&fail=no results");
+				beef.net.send('<%= @command_url %>', <%= @command_id %>, "hash="+hash+"&fail=no results", beef.are.status_error());
 			} else {
 				beef.net.send('<%= @command_url %>', <%= @command_id %>, "hash="+hash+"&result="+result);
 			}
