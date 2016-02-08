@@ -12,4 +12,5 @@ beef:
             description: "Attempts to discover HTTP servers on the specified IP range by checking for a favicon.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses."
             authors: ["bcoles"]
             target:
-                user_notify: ["FF", "IE", "C", "S"]
+                user_notify: ["FF", "IE", "C", "S", "MI", "OD"]
+                not_working: ["O"]

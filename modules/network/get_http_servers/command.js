@@ -6,6 +6,12 @@
 
 beef.execute(function() {
 
+  if(beef.browser.isO()) {
+    beef.debug("[command #<%= @command_id %>] Browser is not supported.");
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser");
+    return;
+  }
+
   var ips = new Array();
   var proto = 'http';
   var ipRange = "<%= @ipRange %>";
