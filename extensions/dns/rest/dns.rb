@@ -69,8 +69,6 @@ module BeEF
             resource = body['resource']
             response = body['response']
 
-            valid_resources = ["A", "AAAA", "CNAME", "HINFO", "MINFO", "MX", "NS", "PTR", "SOA", "TXT", "WKS"]
-
             # Validate required JSON keys
             unless [pattern, resource, response].include?(nil)
               if response.is_a?(Array)
@@ -79,11 +77,36 @@ module BeEF
                 raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
               end
 
-              raise InvalidJsonError, 'Wrong "resource" key passed to endpoint /api/dns/rule' unless valid_resources.include?(resource)
+              case resource
+              when "A"
+                dns_resource = Resolv::DNS::Resource::IN::A
+              when "AAAA"
+                dns_resource = Resolv::DNS::Resource::IN::AAAA
+              when "CNAME"
+                dns_resource = Resolv::DNS::Resource::IN::CNAME
+              when "HINFO"
+                dns_resource = Resolv::DNS::Resource::IN::HINFO
+              when "MINFO"
+                dns_resource = Resolv::DNS::Resource::IN::MINFO
+              when "MX"
+                dns_resource = Resolv::DNS::Resource::IN::MX
+              when "NS"
+                dns_resource = Resolv::DNS::Resource::IN::NS
+              when "PTR"
+                dns_resource = Resolv::DNS::Resource::IN::PTR
+              when "SOA"
+                dns_resource = Resolv::DNS::Resource::IN::SOA
+              when "TXT"
+                dns_resource = Resolv::DNS::Resource::IN::TXT
+              when "WKS"
+                dns_resource = Resolv::DNS::Resource::IN::WKS
+              else
+                raise InvalidJsonError, 'Wrong "resource" key passed to endpoint /api/dns/rule'
+              end
 
               id = @dns.add_rule(
                 :pattern => pattern,
-                :resource => eval("Resolv::DNS::Resource::IN::#{resource}"),
+                :resource => dns_resource,
                 :response => response
               )
 
