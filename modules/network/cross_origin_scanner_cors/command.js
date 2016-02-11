@@ -13,7 +13,7 @@ beef.execute(function() {
   var wait = 2;
 
   if(!beef.browser.hasCors()) {
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS');
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.are.status_error());
     return;
   }
 
@@ -47,7 +47,7 @@ beef.execute(function() {
     // set target IP range
     var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied");
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
