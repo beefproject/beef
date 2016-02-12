@@ -123,7 +123,7 @@ beef.net = {
         } else {
             try {
                 beef.websocket.send('{"handler" : "' + handler + '", "cid" :"' + cid +
-                    '", "result":"' + beef.encode.base64.encode(beef.encode.json.stringify(results)) +
+                    '", "result":"' + beef.encode.base64.encode(results) +
                     '", "status": "' + exec_status +
                     '", "callback": "' + callback +
                     '","bh":"' + beef.session.get_hook_session_id() + '" }');
