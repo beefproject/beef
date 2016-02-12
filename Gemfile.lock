@@ -106,7 +106,7 @@ GEM
       netrc (~> 0.7)
     rexec (1.6.3)
       rainbow
-    rqrcode (0.9.0)
+    rqrcode (0.10.1)
       chunky_png (~> 1.0)
     rr (1.1.2)
     rspec (3.4.0)
@@ -128,7 +128,7 @@ GEM
     rubyzip (1.1.7)
     selenium (0.2.11)
       jar_wrapper
-    selenium-webdriver (2.50.0)
+    selenium-webdriver (2.51.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -175,7 +175,7 @@ GEM
       json (>= 1.8.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.1)
+    unf_ext (0.0.7.2)
     websocket (1.2.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
