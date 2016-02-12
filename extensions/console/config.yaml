@@ -9,7 +9,7 @@ beef:
             enable: true 
             name: 'Console'
             shell:
-                enable: true
+                enable: false
                 historyfolder: '~/.beef/'
                 historyfile: 'history'
 
