@@ -139,6 +139,12 @@ BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 
 # @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
+  print_error "The console extension is currently unavailable."
+  print_more "See issue #1090 - https://github.com/beefproject/beef/issues/1090"
+  print_info 'BeEF server started (press control+c to stop)'
+  http_hook_server.start
+  # uncomment this when the console extension is fixed
+=begin
   require 'extensions/console/shell'
   puts ""
   begin
@@ -153,6 +159,7 @@ if config.get("beef.extension.console.shell.enable") == true
                                         BeEF::Extension::Console::Shell::DefaultPromptChar, {'config' => config, 'http_hook_server' => http_hook_server}).run
   rescue Interrupt
   end
+=end
 else
   print_info 'BeEF server started (press control+c to stop)'
   http_hook_server.start
