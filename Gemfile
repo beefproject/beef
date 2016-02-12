@@ -20,7 +20,6 @@ if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('
   # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
   gem 'therubyracer', '~> 0.11.0beta1'
   gem 'execjs'
-  gem 'win32console'
 elsif !RUBY_PLATFORM.downcase.include?('darwin')
   gem 'therubyracer', '0.11.3'
   gem 'execjs'
