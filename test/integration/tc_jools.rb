@@ -43,7 +43,7 @@ class TC_Jools < Test::Unit::TestCase
             var result = j.execute(fact);
             return result.state;"
        result = victim.execute_script(script)
-       assert_equal result,'on'
+       assert_equal 'on',result
        victim.driver.browser.close
     end
 
@@ -107,9 +107,9 @@ class TC_Jools < Test::Unit::TestCase
             return results;"
        results = victim.execute_script(script)
        assert_not_nil results
-       assert_equal results[0]['color'],'green'
+       assert_equal 'green',results[0]['color']
        assert_not_equal results[1]['color'], 'green'
-       assert_equal results[2]['color'],'yellow'
+       assert_equal 'yellow',results[2]['color']
        assert_not_equal results[3]['color'], 'yellow'
        victim.driver.browser.close
     end
