@@ -307,11 +307,15 @@ module BeEF
           begin
             cmd_body = command_body.lines.map(&:chomp)
             wrapper_start_index,wrapper_end_index = nil
+
             cmd_body.each_with_index do |line, index|
-              if line.include?('beef.execute(function()')
+              if line.to_s =~ /^(beef|[a-zA-Z]+)\.execute\(function\(\)/
                 wrapper_start_index = index
                 break
               end
+            end
+            if wrapper_start_index.nil?
+              print_error "[ARE] Could not find module start index"
             end
 
             cmd_body.reverse.each_with_index do |line, index|
@@ -320,8 +324,14 @@ module BeEF
                 break
               end
             end
+            if wrapper_end_index.nil?
+              print_error "[ARE] Could not find module end index"
+            end
 
-            cleaned_cmd_body = cmd_body.slice(wrapper_start_index+1..-(wrapper_end_index+2)).join("\n")
+            cleaned_cmd_body = cmd_body.slice(wrapper_start_index..-(wrapper_end_index+1)).join("\n")
+            if cleaned_cmd_body.eql?('')
+              print_error "[ARE] No command to send"
+            end
 
             # check if <<mod_input>> should be replaced with a variable name (depending if the variable is a string or number)
             if replace_input
