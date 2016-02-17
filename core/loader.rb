@@ -17,6 +17,7 @@ require 'xmlrpc/client'
 require 'openssl'
 require 'rubydns'
 require 'mime/types'
+require 'optparse'
 
 # @note Include the filters
 require 'core/filters'
