@@ -75,6 +75,9 @@ module BeEF
             exec_order.each{ |order| return [false, 'execution_order values must be Integers'] unless order.integer?}
             exec_delay.each{ |delay| return [false, 'execution_delay values must be Integers'] unless delay.integer?}
 
+            return [false, 'execution_order and execution_delay values must be consistent with modules numbers'] unless
+                modules.size == exec_order.size && modules.size == exec_delay.size
+
             success
           rescue => e
             print_error "#{e.message}"
