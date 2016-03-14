@@ -22,6 +22,7 @@ module BeEF
           # By default Text is only 65K, so field length increased to 1 MB
           property :mod_body, Text,    :length => 1024000 # entire command module(s) body to be sent
           property :exec_time, String, :length => 15      # timestamp of ruleset triggering
+          property :rule_token, String, :length => 10     # unique token to be appended to wrapper function names
           property :is_sent, Boolean
         end
       end
