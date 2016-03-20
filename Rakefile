@@ -45,7 +45,7 @@ task :msf => ["install", "msf_install"] do
   Rake::Task['msf_stop'].invoke
 end
 
-desc 'Generate API documentation to docs/rdocs/index.html'
+desc 'Generate API documentation to doc/rdocs/index.html'
 task :rdoc do
   Rake::Task['rdoc:rerdoc'].invoke
 end
@@ -85,9 +85,9 @@ end
 namespace :rdoc do
   require 'rdoc/task'
 
-  desc 'Generate API documentation to docs/rdocs/index.html'
+  desc 'Generate API documentation to doc/rdocs/index.html'
   Rake::RDocTask.new do |rd|
-    rd.rdoc_dir = 'docs/rdocs'
+    rd.rdoc_dir = 'doc/rdocs'
     rd.main = 'README.mkd'
     rd.rdoc_files.include('core/**/*\.rb')
       #'extensions/**/*\.rb'
