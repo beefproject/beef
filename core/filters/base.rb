@@ -192,11 +192,9 @@ module Filters
   # Verify the yes and no is valid
   #   @param [String] str String for testing
   #   @return [Boolean] If the string is either 'yes' or 'no'
-  # @todo Confirm this is case insensitive
   def self.is_valid_yes_no?(str)
     return false if has_non_printable_char?(str)
-    return false if str !~ /^(Yes|No)$/
-    return false if str.length > 200
+    return false if str !~ /\A(Yes|No)\z/i
     true
   end
 
