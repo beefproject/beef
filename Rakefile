@@ -45,6 +45,11 @@ task :msf => ["install", "msf_install"] do
   Rake::Task['msf_stop'].invoke
 end
 
+desc 'Generate API documentation to docs/rdocs/index.html'
+task :rdoc do
+  Rake::Task['rdoc:rerdoc'].invoke
+end
+
 
 ################################
 # run bundle-audit
@@ -72,6 +77,24 @@ end
 desc "Run bundle-audit"
 task :bundle_audit do
   Rake::Task['bundle_audit:run'].invoke
+end
+
+################################
+# rdoc
+
+namespace :rdoc do
+  require 'rdoc/task'
+
+  desc 'Generate API documentation to docs/rdocs/index.html'
+  Rake::RDocTask.new do |rd|
+    rd.rdoc_dir = 'docs/rdocs'
+    rd.main = 'README.mkd'
+    rd.rdoc_files.include('core/**/*\.rb')
+      #'extensions/**/*\.rb'
+      #'modules/**/*\.rb'
+    rd.options << '--line-numbers'
+    rd.options << '--all'
+  end
 end
 
 
