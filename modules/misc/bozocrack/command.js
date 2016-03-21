@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-	var hash   = '<%= @hash.gsub(/'/, "\\'") %>';
+	var hash   = beef.encode.base64.decode('<%= Base64.encode64(@hash).delete("\n") %>');
 	var result = '';
 
         // validate hash

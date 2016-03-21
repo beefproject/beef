@@ -7,7 +7,7 @@
 beef.execute(function() {
 
 	try {
-		var msg = "<%= @msg.gsub(/"/, '\\"') %>";
+		var msg = decodeURIComponent(beef.encode.base64.decode('<%= Base64.encode64(@msg).delete("\n") %>'));
 		beef.debug(msg);
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=called the beef.debug() function. Check the developer console for your debug message.');
 	} catch(e) {

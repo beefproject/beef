@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-	var query = '<%= @query.gsub(/'/, "\\'") %>';
+	var query = beef.encode.base64.decode('<%= Base64.encode64(@query).delete("\n") %>');
 
 	var searchGoogle = function(query) {
 

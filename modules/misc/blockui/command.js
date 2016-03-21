@@ -8,7 +8,7 @@ beef.execute(function() {
   var timeout = '<%= @timeout %>' * 1000;
 
   var blockui = function() {
-    $j.blockUI({ message: '<%= @message.gsub(/'/, "\\\'") %>' });
+    $j.blockUI({ message: decodeURIComponent(beef.encode.base64.decode('<%= Base64.encode64(@message).delete("\n") %>')) });
     setTimeout("$j.unblockUI();", <%= @timeout %> * 1000);
   }
 
