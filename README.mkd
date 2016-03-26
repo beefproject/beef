@@ -24,7 +24,7 @@ __Please, send us pull requests!__
 
 __Web:__ http://beefproject.com/
 
-__Bugs:__ https://github.com/beefproject/beef
+__Bugs:__ https://github.com/beefproject/beef/issues
 
 __Security Bugs:__ security@beefproject.com
 
