@@ -51,7 +51,7 @@ module BeEF
                   secure ? print_debug("New WebSocketSecure channel open.") : print_debug("New WebSocket channel open.")
                   ws.onmessage { |msg|
                     begin
-                      msg_hash = JSON.parse("#{msg}")
+                      msg_hash = JSON.parse(msg)
 
                     if (msg_hash["cookie"]!= nil)
                       print_debug("WebSocket - Browser says helo! WebSocket is running")
@@ -143,7 +143,11 @@ module BeEF
         #@param [Hash] data contains the answer of a command
         def execute (data)
           command_results=Hash.new
-          command_results["data"] = unescape_stringify Base64.decode64(data['result'])
+
+          print_debug Base64.decode64(data['result'])
+
+          # the last gsub is to remove leading/trailing double quotes from the result value.
+          command_results["data"] = unescape_stringify(Base64.decode64(data['result'])).gsub!(/\A"|"\Z/, '')
           command_results["data"].force_encoding('UTF-8')
           hooked_browser = data["bh"]
           (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
