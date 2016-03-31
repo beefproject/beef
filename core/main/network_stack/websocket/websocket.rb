@@ -138,41 +138,47 @@ module BeEF
           }
         end
 
-        BeEF::Core::Handlers::Commands
         #call the handler for websocket cmd response
         #@param [Hash] data contains the answer of a command
         def execute (data)
           command_results=Hash.new
 
-          print_debug Base64.decode64(data['result'])
-
           # the last gsub is to remove leading/trailing double quotes from the result value.
           command_results["data"] = unescape_stringify(Base64.decode64(data['result'])).gsub!(/\A"|"\Z/, '')
-          command_results["data"].force_encoding('UTF-8')
+          command_results["data"].force_encoding('UTF-8') if command_results["data"] != nil
           hooked_browser = data["bh"]
-          (print_error "BeEFhook is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
-          (print_error "command_id is invalid"; return) if not BeEF::Filters.is_valid_command_id?(data["cid"])
-          (print_error "command name is empty"; return) if data["handler"].empty?
-          (print_error "command results are empty"; return) if command_results.empty?
-          (print_error "command status is invalid"; return) unless data["status"] =~ /\A0|1|2|undefined\z/
-          if data["status"] == "undefined"
-            status = 0
-          else
-            status = data["status"].to_i
-          end
           handler = data["handler"]
+          command_id = data["cid"]
+          command_status = data["status"]
+
+          (print_error "BeEFhook is invalid"; return) unless BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
+          (print_error "command_id is invalid"; return) unless BeEF::Filters.is_valid_command_id?(command_id)
+          (print_error "command name is empty"; return) if handler.empty?
+          (print_error "command results are empty"; return) if command_results.empty?
+          (print_error "command status is invalid"; return) unless command_status =~ /\A0|1|2|undefined\z/
+
+          command_mod = "beef.module.#{handler.gsub('/command/','').gsub('.js','')}"
+          command_name = @@config.get("#{command_mod}.class")
+
+          data["status"] == "undefined" ? status = 0 : status = data["status"].to_i
+
           if handler.match(/command/)
+
+            command = BeEF::Core::Command.const_get(command_name.capitalize)
+            command_obj = command.new(BeEF::Module.get_key_by_class(command_name))
+            command_obj.build_callback_datastore(command_results["data"], command_id, hooked_browser, nil, nil)
+            command_obj.session_id = hooked_browser
+            if command_obj.respond_to?(:post_execute)
+              command_obj.post_execute
+            end
+
             BeEF::Core::Models::Command.save_result(hooked_browser,
               data["cid"],
-              @@config.get("beef.module.#{handler.gsub("/command/", "").gsub(".js", "")}.name"),
+              @@config.get("#{command_mod}.name"),
               command_results,
               status)
           else #processing results from extensions, call the right handler
             data["beefhook"] = hooked_browser
-
-
-            print_debug Base64.decode64(data["result"]).inspect
-
             data["results"] = JSON.parse(Base64.decode64(data["result"]))
             if MOUNTS.has_key?(handler)
               if MOUNTS[handler].class == Array and MOUNTS[handler].length == 2
@@ -182,6 +188,7 @@ module BeEF
               end
             end
           end
+
         end
       end
     end
