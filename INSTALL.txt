@@ -41,12 +41,36 @@ Installation
 
       !!! This must be done PRIOR to running the bundle install command !!!
 
-      On linux you will need to find the packages specific to your distribution for sqlite.  An example for Ubuntu systems is:
+      On linux you will need to find the packages specific to your distribution for sqlite.  An example build script for Ubuntu 14.04 systems is:
 
-      3.0. sudo apt-get install libsqlite3-dev sqlite3 sqlite3-doc
-      3.1. install rvm from rvm.beginrescueend.com, this takes care of the various incompatible and conflicting ruby packages that are required
-      3.2. rvm install 2.1.5
-      3.3. rvm use 2.1.5
+        # Set your prefered build dir
+        BUILDDIR=/opt && \
+        cd $BUILDDIR && \
+        \
+        # Install dependences
+        sudo apt-get update && \
+        sudo apt-get install -y \
+            build-essential \
+            git \
+            libsqlite3-dev \
+            software-properties-common \
+            sqlite3 \
+            sqlite3-doc && \
+        \
+        # Add brightbox ppa for the latest version of ruby
+        sudo apt-add-repository -y \
+            ppa:brightbox/ruby-ng && \
+        \
+        # Install ruby (2.2 in this example)
+        sudo apt-get update && \
+        sudo apt-get install -y \
+            ruby2.2 \
+            ruby2.2-dev && \
+        \
+        # Install bundler using gem
+        sudo gem install bundler
+
+      3.1. It is recommended not to use rvm. If you use rvm the ruby binaries are installed to locations outside of your default path which may cause problems later.
   
    4. Prerequisites (Mac OSX)
    
