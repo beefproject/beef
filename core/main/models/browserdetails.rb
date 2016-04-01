@@ -68,6 +68,8 @@ module Models
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if browser.eql? 'O'  # Opera
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_IMG  if browser.eql? 'MI' # Midori
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG if browser.eql? 'OD' # Odyssey
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_BRAVE_IMG if browser.eql? 'BR' # Brave
+
 
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
     end
@@ -123,7 +125,7 @@ module Models
       return BeEF::Core::Constants::Hardware::HW_MOTOROLA_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_MOTOROLA_UA_STR
       return BeEF::Core::Constants::Hardware::HW_HTC_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_HTC_UA_STR
       return BeEF::Core::Constants::Hardware::HW_GOOGLE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_GOOGLE_UA_STR
-	return BeEF::Core::Constants::Hardware::HW_ERICSSON_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ERICSSON_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_ERICSSON_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ERICSSON_UA_STR
 
       BeEF::Core::Constants::Hardware::HW_UNKNOWN_IMG
 

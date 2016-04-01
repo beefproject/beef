@@ -30,6 +30,8 @@ module Constants
     AGENT_MIDORI_IMG      = 'midori.png'
     AGENT_ODYSSEY_UA_STR  = 'Odyssey Web Browser'
     AGENT_ODYSSEY_IMG     = 'odyssey.png'
+    AGENT_BRAVE_UA_STR    = 'brave'
+    AGENT_BRAVE_IMG       = 'brave.png'
 
   end
 

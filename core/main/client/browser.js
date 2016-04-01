@@ -52,6 +52,14 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Brave
+     * @example: beef.browser.isBrave()
+     */
+    isBrave: function(){
+        return (window.navigator.userAgent.match(/brave\/\d+\.\d/) != null && window.navigator.userAgent.match(/Brave\/\d+\.\d/) != null);
+    },
+
+    /**
      * Returns true if IE6.
      * @example: beef.browser.isIE6()
      */
@@ -1979,6 +1987,10 @@ beef.browser = {
             return 'OD'
         }
         ;               // Odyssey any version
+        if (this.isBrave()) {
+            return 'BR'
+        }
+        ;               // Brave any version
         return 'UNKNOWN';	// Unknown UA
     },
 
