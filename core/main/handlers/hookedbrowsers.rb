@@ -79,7 +79,7 @@ module Handlers
         zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
         zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
 
-        # TODO this is not considering WebSocket channel, as data is sent from core/main/handlers/modules/command.rb if WS is enabled
+        # @note Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
         are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hook_session_id)
         are_executions.each do |are_exec|
           @body += are_exec.mod_body

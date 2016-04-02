@@ -69,6 +69,15 @@ module BeEF
                         zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
                         zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
 
+                        # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
+                        are_body = ''
+                        are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hooked_browser.session)
+                        are_executions.each do |are_exec|
+                          are_body += are_exec.mod_body
+                          are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
+                        end
+                        @@activeSocket[hooked_browser.session].send(are_body) unless are_body.empty?
+
                         #@todo antisnatchor:
                         #@todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions
                         #Check if new forged requests need to be sent (Requester/TunnelingProxy)
