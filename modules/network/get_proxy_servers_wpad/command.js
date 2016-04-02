@@ -42,6 +42,11 @@ beef.execute(function() {
   }
 
   load_script("http://wpad/wpad.dat");
+  load_script("http://wpad/wpad.pac");
+
+  load_script("http://wpad/proxy.dat");
+  load_script("http://wpad/proxy.pac");
+
   setTimeout("read_wpad()", 10000);
 
 });
