@@ -39,7 +39,14 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
                 debug: function(msg) {
                     if (!<%= @client_debug %>) return;
                     if (typeof console == "object" && typeof console.log == "function") {
-                        console.log(msg);
+                      var currentdate = new Date();
+                      var datetime = currentdate.getFullYear() + "-"
+                      + (currentdate.getMonth()+1)  + "-"
+                      + currentdate.getDate() + " "
+                      + currentdate.getHours() + ":"
+                      + currentdate.getMinutes() + ":"
+                      + currentdate.getSeconds();
+                        console.log('['+datetime+'] '+msg);
                     } else {
                         // TODO: maybe add a callback to BeEF server for debugging purposes
                         //window.alert(msg);
