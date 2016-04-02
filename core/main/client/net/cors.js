@@ -17,9 +17,10 @@ beef.net.cors = {
      * @param method {String} HTTP verb ('GET', 'POST', 'DELETE', etc.)
      * @param url {String} url
      * @param data {String} request body
+     * @param timeout {Integer} request timeout in milliseconds
      * @param callback {Function} function to callback on completion
      */
-    request: function(method, url, data, callback) {
+    request: function(method, url, data, timeout, callback) {
 
     var xhr;
     var response = new this.response;
@@ -29,6 +30,7 @@ beef.net.cors = {
 
         if ('withCredentials' in xhr) {
             xhr.open(method, url, true);
+            xhr.timeout = parseInt(timeout, 10);
             xhr.onerror = function() {
             };
             xhr.onreadystatechange = function() {
