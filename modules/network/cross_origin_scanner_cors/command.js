@@ -10,6 +10,7 @@ beef.execute(function() {
   var ipRange = "<%= @ipRange %>";
   var ports   = "<%= @ports %>";
   var threads = "<%= @threads %>";
+  var timeout = <%= @timeout %>*1000;
   var wait = 2;
 
   if(!beef.browser.hasCors()) {
@@ -105,7 +106,7 @@ beef.execute(function() {
     for (var p=0; p < ports.length; p++) {
       var url = proto + '://' + ips[i] + ':' + ports[p];
       worker.queue('beef.net.cors.request(' +
-      '"GET", "'+url+'", "", function(response) {' +
+      '"GET", "'+url+'", "", '+timeout+', function(response) {' +
        'if (response != null && response["status"] != 0) {' +
         'beef.debug("[Cross-Origin Scanner] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +

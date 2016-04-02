@@ -16,7 +16,8 @@
       "options": {
         "ipRange":"<<mod_input>>",
         "ports":"80,8080",
-        "threads":"5"
+        "threads":"3",
+        "timeout":"15"
       }
     }
   ],
