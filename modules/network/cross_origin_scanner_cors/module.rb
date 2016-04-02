@@ -35,7 +35,7 @@ class Cross_origin_scanner_cors < BeEF::Core::Command
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class)', 'value' => '192.168.0.1-192.168.0.254'},
         {'name' => 'ports',   'ui_label' => 'Ports', 'value' => '80,8080'},
         {'name' => 'threads', 'ui_label' => 'Workers', 'value' => '3'},
-        {'name' => 'timeout', 'ui_label' => 'Timeout for each request (s)', 'value' => '15'}
+        {'name' => 'timeout', 'ui_label' => 'Timeout for each request (s)', 'value' => '10'}
     ]
   end
 
