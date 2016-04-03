@@ -58,6 +58,18 @@ module BeEF
                       #insert new connection in activesocket
                       @@activeSocket["#{msg_hash["cookie"]}"] = ws
                       print_debug("WebSocket - activeSocket content [#{@@activeSocket}]")
+
+                      hb_session = msg_hash["cookie"]
+                      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hb_session)
+                      if hooked_browser != nil
+                        browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserName')
+                        browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserVersion')
+                        os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsName')
+                        os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsVersion')
+                        BeEF::Core::AutorunEngine::Engine.instance.run(hooked_browser.id, browser_name, browser_version, os_name, os_version)
+                      else
+                        print_error "WebSocket - Fingerprinting not finished yet. ARE rules were not triggered. You may want to trigger them manually via RESTful API."
+                      end
                     elsif msg_hash["alive"] != nil
                       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => msg_hash["alive"])
                       unless hooked_browser.nil?
@@ -96,6 +108,7 @@ module BeEF
                     end
                     rescue => e
                       print_error "WebSocket - something wrong in msg handling - skipped: #{e}"
+                      print_debug "WebSocket - something wrong in msg handling - skipped: #{e.backtrace}"
                     end
                   }
                 rescue => e

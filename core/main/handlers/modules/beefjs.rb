@@ -105,6 +105,7 @@ module BeEF
               hook_session_config['websocket_secure'] = config.get("beef.http.websocket.secure")
               hook_session_config['websocket_port'] = config.get("beef.http.websocket.port")
               hook_session_config['ws_poll_timeout'] = config.get("beef.http.websocket.ws_poll_timeout")
+              hook_session_config['ws_connect_timeout'] = config.get("beef.http.websocket.ws_connect_timeout")
               hook_session_config['websocket_sec_port']= config.get("beef.http.websocket.secure_port")
             end
 

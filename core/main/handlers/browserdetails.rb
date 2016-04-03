@@ -371,13 +371,11 @@ module BeEF
             BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'OsName'))
           end
 
-          # Autorun Rule Engine - Check if the hooked browser type/version and OS type/version match any Rule-sets
-          # stored in the BeEF::Core::AutorunEngine::Models::Rule database table
-          # If one or more Rule-sets do match, trigger the module chain specified
-          #
-          are = BeEF::Core::AutorunEngine::Engine.instance
-          match_rules = are.match(browser_name, browser_version, os_name, os_version)
-          are.trigger(match_rules, zombie.id) if match_rules.length > 0
+          # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel
+          # is WebSockets, then ARe rules are triggered after channel is established.
+          unless config.get("beef.http.websocket.enable")
+            BeEF::Core::AutorunEngine::Engine.instance.run(zombie.id, browser_name, browser_version, os_name, os_version)
+          end
         end
 
         def get_param(query, key)
@@ -389,4 +387,5 @@ module BeEF
     end
   end
 end
+
 

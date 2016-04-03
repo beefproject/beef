@@ -17,6 +17,7 @@ beef.websocket = {
 
     socket:null,
     ws_poll_timeout: "<%= @ws_poll_timeout %>",
+    ws_connect_timeout: "<%= @ws_connect_timeout %>",
 
     /**
      * Initialize the WebSocket client object.
@@ -85,7 +86,7 @@ beef.websocket = {
      */
     alive: function (){
         beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
-        setTimeout("beef.websocket.alive()", beef.websocket.ws_poll_timeout);
+        setTimeout("beef.websocket.alive()", parseInt(beef.websocket.ws_poll_timeout));
     }
 };
 

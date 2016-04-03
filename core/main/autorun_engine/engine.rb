@@ -24,6 +24,14 @@ module BeEF
           @VERSION_STR = ['XP','Vista']
         end
 
+        # Check if the hooked browser type/version and OS type/version match any Rule-sets
+        # stored in the BeEF::Core::AutorunEngine::Models::Rule database table
+        # If one or more Rule-sets do match, trigger the module chain specified
+        def run(hb_id, browser_name, browser_version, os_name, os_version)
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          match_rules = are.match(browser_name, browser_version, os_name, os_version)
+          are.trigger(match_rules, hb_id) if match_rules.length > 0
+        end
 
         # Prepare and return the JavaScript of the modules to be sent.
         # It also updates the rules ARE execution table with timings
