@@ -12,7 +12,6 @@
     },
     {"name": "get_http_servers",
       "condition": "status==1",
-      //"code": "var mod_input='10.0.60.13-10.0.60.19';",
       "code": "var s=get_internal_ip_webrtc_mod_output.split('.');var start = s[0]+'.'+s[1]+'.'+s[2]+'.1'; var end = s[0]+'.'+s[1]+'.'+s[2]+'.255'; var mod_input = start+'-'+end;",
       "options": {
         "ipRange":"<<mod_input>>",
