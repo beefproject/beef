@@ -30,7 +30,7 @@ module BeEF
         def run(hb_id, browser_name, browser_version, os_name, os_version)
           are = BeEF::Core::AutorunEngine::Engine.instance
           match_rules = are.match(browser_name, browser_version, os_name, os_version)
-          are.trigger(match_rules, hb_id) if match_rules.length > 0
+          are.trigger(match_rules, hb_id) if match_rules !=nil && match_rules.length > 0
         end
 
         # Prepare and return the JavaScript of the modules to be sent.
