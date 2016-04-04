@@ -114,14 +114,14 @@ module BeEF
           delayed_exec = ''
           c = 0
           while c < mods.length
-            delayed_exec += %Q| setTimeout("#{mods[order[c]][:mod_name]}_#{rule_token}();", #{delay[c]}); |
+            delayed_exec += %Q| setTimeout(function(){#{mods[order[c]][:mod_name]}_#{rule_token}();}, #{delay[c]}); |
             mod_body = mods[order[c]][:mod_body].to_s.gsub("#{mods[order[c]][:mod_name]}_mod_output", "#{mods[order[c]][:mod_name]}_#{rule_token}_mod_output")
             wrapped_mod = "#{mod_body}\n"
             wrapper += wrapped_mod
             c += 1
           end
           wrapper += delayed_exec
-          print_more "Final Modules Wrapper:\n #{delayed_exec}" if @debug_on
+          print_more "Final Modules Wrapper:\n #{wrapper}" if @debug_on
           wrapper
         end
 
