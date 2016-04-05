@@ -1,6 +1,6 @@
 {"name": "LAN Fingerprint (Common IPs)",
   "author": "antisnatchor",
-  "browser": ["FF", "C"],
+  "browser": "ALL",
   "browser_version": "ALL",
   "os": "ALL",
   "os_version": "ALL",
