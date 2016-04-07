@@ -12,7 +12,7 @@ class Get_visited_domains < BeEF::Core::Command
       'description' => 'Specify additional resources to fetch during visited domains analysis. Paste to the below field full URLs leading to CSS, image, JS or other *static* resources hosted on desired page. Separate domain names with url by using semicolon (;). Next domains separate by comma (,).', 
       'type' => 'textarea',
       'ui_label' => 'Specify custom page to check',
-      'value' => 'Redtube ; http://images.cdn.redtube.com/_thumbs/v2009/favicon.ico,',
+      'value' => 'Github ; https://assets-cdn.github.com/favicon.ico,',
       'width' => '400px',
       'height' => '200px'
     }]
