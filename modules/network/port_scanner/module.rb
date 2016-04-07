@@ -14,7 +14,7 @@ class Port_scanner < BeEF::Core::Command
   def self.options
     return [
         {'name' => 'ipHost', 'ui_label' => 'Scan IP or Hostname', 'value' => '192.168.1.10'},
-        {'name' => 'ports' , 'ui_label' => 'Specific port(s) to scan', 'value' => 'default'},
+        {'name' => 'ports' , 'ui_label' => 'Specific port(s) to scan', 'value' => 'top'},
         {'name' => 'closetimeout' , 'ui_label' => 'Closed port timeout (ms)', 'value' => '1100'},
         {'name' => 'opentimeout', 'ui_label' => 'Open port timeout (ms)', 'value' => '2500'},
         {'name' => 'delay', 'ui_label' => 'Delay between requests (ms)', 'value' => '600'},

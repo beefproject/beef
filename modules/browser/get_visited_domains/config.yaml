@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Get Visited Domains"
-            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done by Michal Zalewski at http://lcamtuf.coredump.cx/cachetime/"
+            description: "This module will retrieve rapid history extraction through non-destructive cache timing.\nBased on work done by Michal Zalewski at http://lcamtuf.coredump.cx/cachetime/\n\nYou can specify additional resources to fetch during visited domains analysis. To do so, paste to the below text field full URLs leading to CSS, image, JS or other *static* resources hosted on desired page (mind to avoid CDN resources, as they vary). Separate domain names with url by using semicolon (;), specify next domains by separating them with comma (,)."
             authors: ["@keith55", "oxplot", "quentin"]
             target:
                 working: ["FF", "IE", "O"]
