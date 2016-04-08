@@ -7,6 +7,7 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
 
   def pre_send
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/cross_origin_scanner_flash/ContentHijacking.swf','/objects/ContentHijacking','swf')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/cross_origin_scanner_flash/swfobject.js', '/swfobject', 'js')
   end
 
   def post_execute
@@ -19,8 +20,15 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
 
       session_id = @datastore['beefhook']
 
-      # log the network service
-      if @datastore['results'] =~ /proto=(.+)&ip=(.+)&port=([\d]+)&title/
+      # log discovered hosts
+      if @datastore['results'] =~ /^ip=(.+)&status=alive$/
+        ip = $1
+        if BeEF::Filters.is_valid_ip?(ip)
+          print_debug("Hooked browser found host #{ip}")
+          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip)
+        end
+      # log discovered network services
+      elsif @datastore['results'] =~ /^proto=(.+)&ip=(.+)&port=([\d]+)&title/
         proto = $1
         ip = $2
         port = $3
@@ -39,8 +47,7 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
         {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class)', 'value' => '192.168.0.1-192.168.0.254'},
         {'name' => 'ports',   'ui_label' => 'Ports', 'value' => '80,8080'},
         {'name' => 'threads', 'ui_label' => 'Workers', 'value' => '2'},
-        {'name' => 'wait',    'ui_label' => 'Wait (s) between each request for each worker', 'value' => '2'},
-        {'name' => 'timeout', 'ui_label' => 'Timeout for each request (s)', 'value' => '10'}
+        {'name' => 'timeout', 'ui_label' => 'Timeout for each request (s)', 'value' => '5'}
     ]
   end
 

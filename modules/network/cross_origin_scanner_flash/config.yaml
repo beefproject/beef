@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Network"
             name: "Cross-Origin Scanner (Flash)"
-            description: "Scan an IP range for web servers which allow cross-origin requests using Flash. The HTTP response is returned to BeEF.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses.<br/><br/>This module uses ContentHijacking.swf from <a href='https://github.com/nccgroup/CrossSiteContentHijacking'>CrossSiteContentHijacking</a> by Soroush Dalili (@irsdl)."
+            description: "This module scans an IP range to locate web servers with a permissive Flash cross-origin policy. The HTTP response is returned to BeEF.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses.<br/><br/>This module uses ContentHijacking.swf from <a href='https://github.com/nccgroup/CrossSiteContentHijacking'>CrossSiteContentHijacking</a> by Soroush Dalili (@irsdl)."
             authors: ["bcoles", "@irsdl"]
             target:
                 working: ["C", "FF"]
