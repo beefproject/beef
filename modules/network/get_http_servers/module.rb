@@ -8,7 +8,7 @@ class Get_http_servers < BeEF::Core::Command
   
   def self.options
     return [
-        {'name' => 'ipRange', 'ui_label' => 'Scan IP range (C class)', 'value' => '192.168.0.1-192.168.0.254'},
+        {'name' => 'rhosts', 'ui_label' => 'Remote IP(s)', 'value' => 'common'},
         {'name' => 'ports', 'ui_label' => 'Ports', 'value' => '80,8080'},
         {'name' => 'threads', 'ui_label' => 'Workers', 'value' => '3'},
         {'name' => 'wait', 'ui_label' => 'Wait (s) between each request for each worker', 'value' => '5'},

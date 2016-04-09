@@ -293,7 +293,7 @@ ZombieTab_Network = function(zombie) {
 								commands_statusbar.update_sending('Favicon scanning commonly used local area network IP addresses for web servers [ports: '+ports+'] ...');
 								$jwterm.ajax({
 									contentType: 'application/json',
-									data: JSON.stringify({"ipRange":"common","ports":ports}),
+									data: JSON.stringify({"rhosts":"common","ports":ports}),
 									dataType: 'json',
 									type: 'POST',
 									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -311,7 +311,7 @@ ZombieTab_Network = function(zombie) {
 							text: 'Specify IP Range',
 							iconCls: 'network-host-ctxMenu-config',
 							handler: function() {
-								var ip_range = prompt("Enter IP range to scan:", '192.168.1.1-192.168.1.254');
+								var ip_range = prompt("Enter IPs to scan:", '192.168.1.1-192.168.1.254');
 								if (!ip_range) {
 									commands_statusbar.update_fail('Cancelled');
 									return;
@@ -326,7 +326,7 @@ ZombieTab_Network = function(zombie) {
 								commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for web servers...');
 								$jwterm.ajax({
 									contentType: 'application/json',
-									data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
+									data: JSON.stringify({"rhosts":ip_range,"ports":ports}),
 									dataType: 'json',
 									type: 'POST',
 									url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -567,7 +567,7 @@ ZombieTab_Network = function(zombie) {
                                             commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
                                             $jwterm.ajax({
                                               contentType: 'application/json',
-                                              data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
+                                              data: JSON.stringify({"rhosts":ip,"ports":ports}),
                                               dataType: 'json',
                                               type: 'POST',
                                               url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -738,7 +738,7 @@ ZombieTab_Network = function(zombie) {
                                                                 commands_statusbar.update_sending('Favicon scanning ' + ip + ' for HTTP servers [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip+'-'+ip,"ports":ports}),
+                                                                        data: JSON.stringify({"rhosts":ip,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
@@ -765,7 +765,7 @@ ZombieTab_Network = function(zombie) {
                                                                 commands_statusbar.update_sending('Favicon scanning ' + ip_range + ' for HTTP servers [ports: '+ports+'] ...');
                                                                 $jwterm.ajax({
                                                                         contentType: 'application/json',
-                                                                        data: JSON.stringify({"ipRange":ip_range,"ports":ports}),
+                                                                        data: JSON.stringify({"rhosts":ip_range,"ports":ports}),
                                                                         dataType: 'json',
                                                                         type: 'POST',
                                                                         url: "/api/modules/" + zombie.session + "/" + mod_id + "?token=" + token,
