@@ -12,5 +12,6 @@ beef:
             description: "Attempts to discover HTTP servers on the specified IP range by checking for a favicon.<br/><br/>Note: You can specify multiple remote IP addresses (separated by commas) or a range of IP addresses for a class C network (10.1.1.1-10.1.1.254). Set the IP address to 'common' to scan a list of common LAN addresses."
             authors: ["bcoles"]
             target:
-                user_notify: ["FF", "IE", "C", "S", "MI", "OD"]
+                working: ["IE", "S"]
+                user_notify: ["FF", "C", "MI", "OD"]
                 not_working: ["O"]
