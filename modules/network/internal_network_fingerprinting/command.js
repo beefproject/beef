@@ -265,6 +265,7 @@ beef.execute(function() {
   new Array("ntop","3000","http",false,"/ntop_logo.png",103,50)
 
 // Uncommon signatures
+//new Array("Microsoft ADFS","80","http",false,"/adfs/portal/illustration/illustration.png",1420,1080),
 //new Array("Rejetto HttpFileServer", "8080", "http",i true, "/~img27",16,16),
 //new Array("Citrix MetaFrame", "80", "http", false, "/Citrix/MetaFrameXP/default/media/nfusehead.gif",230,41),
 //new Array("Oracle E-Business Suite","80","http",false,"/OA_MEDIA/FNDSSCORP.gif",134,31),
