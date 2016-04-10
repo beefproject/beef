@@ -14,26 +14,24 @@
 </head>
 
 <body>
-	You should be hooked into <b>BeEF</b>.
-	<p>
-		Have fun while your browser is working against you.
-	</p>
-		
-		These links are for demonstrating the "Get Page HREFs" command module<br />
-	<ul>
-	
-	<li><a href="http://beefproject.com" target="_blank">The Browser Exploitation Framework Project homepage</a>
-	<li><a href="http://ha.ckers.org/" target="_blank">ha.ckers.org homepage</a>
-	<li><a href="http://slashdot.org/" target="_blank">Slashdot</a>
+  <div style='font:12px tahoma,arial,helvetica,sans-serif; width: 450px; margin: 0 auto;' >
 
-	</ul>
+    <img src='<%= BeEF::Core::Configuration.instance.get("beef.http.web_ui_basepath") %>/media/images/beef.jpg' />
 
-    <p>Have a go at the event logger.<br />
-    <label for="imptxt">Insert your secret here:</label>&nbsp;&nbsp;<input type="text" id="imptxt" name="Important Text" /></p>
-	
-	<p>
-		You can also load up a more advanced demo page <a href="butcher/index.html">here</a>
-	</p>
-	
+    <p>You should be hooked into <b>BeEF</b>.</p>
+    <p>Have fun while your browser is working against you.</p>
+    <p>These links are for demonstrating the "Get Page HREFs" command module:</p>
+    <ul>
+      <li><a href="http://beefproject.com" target="_blank">The Browser Exploitation Framework Project homepage</a>
+      <li><a href="https://github.com/beefproject/beef/wiki" target="_blank">BeEF Wiki</a></li>
+      <li><a href="http://browserhacker.com/" target="_blank">Browser Hacker's Handbook</a></li>
+      <li><a href="http://ha.ckers.org/" target="_blank">ha.ckers.org homepage</a>
+      <li><a href="http://slashdot.org/" target="_blank">Slashdot</a>
+    </ul>
+
+    <p>Have a go at the event logger. <label for="imptxt">Insert your secret here:</label></p>
+    <p><textarea type="text" id="imptxt" name="Important Text" style='width: 400px; margin: 0 auto;'></textarea></p>
+    <p>You can also load up a more <a href="butcher/index.html">advanced demo page</a>.</p>
+  </div>
 </body>
 </html>
