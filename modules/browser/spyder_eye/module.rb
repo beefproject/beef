@@ -6,6 +6,13 @@
 class Spyder_eye < BeEF::Core::Command
   require 'base64'
 
+  def self.options
+    return [
+        { 'ui_label'=>'Repeat', 'name'=>'repeat', 'description' => 'Number of snapshot to take.', 'value'=>'1', 'width'=>'80px' },
+        { 'ui_label'=>'Delay', 'name'=>'delay', 'description' => 'Delay between taking each snapshot in ms. To low value may severily impact browser\'s performance.', 'value'=>'3000', 'width'=>'80px' },
+    ]
+  end
+
   def pre_send
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.js', '/h2c', 'js')
   end
