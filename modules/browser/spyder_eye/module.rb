@@ -7,7 +7,7 @@ class Spyder_eye < BeEF::Core::Command
   require 'base64'
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.js', '/html2canvas', 'js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.js', '/h2c', 'js')
   end
 
   def post_execute 
@@ -28,8 +28,6 @@ class Spyder_eye < BeEF::Core::Command
       print_error("Could not write screenshot file '#{filename}' - Exception: #{e.message}")
     end
 
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/html2canvas.js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/h2c.js')
   end
-
 end
-
