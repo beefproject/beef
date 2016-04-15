@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Spyder_eye < BeEF::Core::Command
-  require 'base64'
 
   def self.options
     return [
@@ -24,7 +23,9 @@ class Spyder_eye < BeEF::Core::Command
 
     # save screenshot file
     begin
-      filename = "screenshot_#{Integer(@datastore['cid'])}.png"
+      timestamp = Time.now.getutc.to_s.gsub(/[ :]/, ' ' => '_', ':' => '-').chomp('_UTC')
+      ip = BeEF::Core::Models::BrowserDetails.get(session_id, 'IP')
+      filename = "screenshot_#{ip}_#{timestamp}_#{@datastore['cid']}.png"
       File.open(filename, 'wb') do |file|
         data = @datastore['results'].gsub(/^image=data:image\/(png|jpg);base64,/, "")
         file.write(Base64.decode64(data))

