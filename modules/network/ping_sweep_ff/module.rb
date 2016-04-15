@@ -9,7 +9,7 @@
 # It works calling a Java method from JavaScript and do not require user interaction.
 
 
-class Ping_sweep < BeEF::Core::Command
+class Ping_sweep_ff < BeEF::Core::Command
   
   def self.options
     return [
