@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        ping_sweep:
+            enable: true
+            category: "Network"
+            name: "Ping Sweep"
+            description: "Discover active hosts in the internal network of the hooked browser using JavaScript XHR.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses."
+            authors: ["bcoles"]
+            target:
+                working: ["FF"]
+                not_working: ["ALL"]
