@@ -26,7 +26,7 @@ beef.execute(function() {
 	takeit = function() {
 		for(var i = 0; i < takes; i++) {
 			beef.debug('Taking ' + i + '. snapshot');
-			setTimeout(snap, delay);
+			setTimeout(snap, delay * i);
 		}
 	};
 
