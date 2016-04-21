@@ -166,7 +166,7 @@ beef:
             enable: true
         # this is still experimental..
         dns:
-            enable: true
+            enable: false
         # this is still experimental..
         dns_rebinding:
             enable: false
