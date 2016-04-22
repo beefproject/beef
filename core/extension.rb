@@ -32,8 +32,8 @@ module BeEF
     # @return [Boolean] whether or not the extension loaded successfully
     # @todo Wrap the require() statement in a try catch block to allow BeEF to fail gracefully if there is a problem with that extension - Issue #480
     def self.load(ext)
-      if File.exists?('extensions/'+ext+'/extension.rb')
-        require 'extensions/'+ext+'/extension.rb'
+      if File.exists?("#{$root_dir}/extensions/#{ext}/extension.rb")
+        require "#{$root_dir}/extensions/#{ext}/extension.rb"
         print_debug "Loaded extension: '#{ext}'"
         BeEF::Core::Configuration.instance.set('beef.extension.'+ext+'.loaded', true)
         return true
