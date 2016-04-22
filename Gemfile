@@ -19,13 +19,11 @@ gem 'mime-types'
 if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
   # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
   gem 'therubyracer', '~> 0.11.0beta1'
-  gem 'execjs'
 elsif !RUBY_PLATFORM.downcase.include?('darwin')
   gem 'therubyracer', '0.11.3'
-  gem 'execjs'
 end
  
-
+gem 'execjs'
 gem 'ansi'
 gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'dm-core'
@@ -97,7 +95,7 @@ if ENV['BEEF_TEST']
   # sudo port install libxml2 libxslt
   gem 'capybara'
   # RESTful API tests/generic command module tests
-  gem 'rest-client', '~> 1.8.0'
+  gem 'rest-client', '>= 1.8.0'
 end
 end
 
