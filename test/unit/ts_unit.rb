@@ -31,7 +31,7 @@ require './extensions/tc_network'
 require './extensions/tc_qrcode'
 require './extensions/tc_console'
 require './extensions/tc_webrtc'
-#require './extensions/tc_dns'
+require './extensions/tc_dns'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -64,7 +64,7 @@ class TS_BeefTests
     suite << TC_DynamicReconstruction.suite
     suite << TC_Console.suite
     suite << TC_Webrtc.suite
-    #suite << TC_Dns.suite
+    suite << TC_Dns.suite
 
     return suite
   end

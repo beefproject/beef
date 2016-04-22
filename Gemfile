@@ -67,7 +67,7 @@ end
 
 # DNS extension
 group :ext_dns do
-  gem 'rubydns', '0.7.0'
+  gem 'rubydns', '~> 0.7.3'
 end
 
 # network extension
