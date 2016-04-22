@@ -70,51 +70,59 @@ module BeEF
             response = body['response']
 
             # Validate required JSON keys
-            unless [pattern, resource, response].include?(nil)
-              if response.is_a?(Array)
-                raise InvalidJsonError, 'Empty "response" key passed to endpoint /api/dns/rule' if response.empty?
-              else
-                raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
-              end
-
-              case resource
-              when "A"
-                dns_resource = Resolv::DNS::Resource::IN::A
-              when "AAAA"
-                dns_resource = Resolv::DNS::Resource::IN::AAAA
-              when "CNAME"
-                dns_resource = Resolv::DNS::Resource::IN::CNAME
-              when "HINFO"
-                dns_resource = Resolv::DNS::Resource::IN::HINFO
-              when "MINFO"
-                dns_resource = Resolv::DNS::Resource::IN::MINFO
-              when "MX"
-                dns_resource = Resolv::DNS::Resource::IN::MX
-              when "NS"
-                dns_resource = Resolv::DNS::Resource::IN::NS
-              when "PTR"
-                dns_resource = Resolv::DNS::Resource::IN::PTR
-              when "SOA"
-                dns_resource = Resolv::DNS::Resource::IN::SOA
-              when "TXT"
-                dns_resource = Resolv::DNS::Resource::IN::TXT
-              when "WKS"
-                dns_resource = Resolv::DNS::Resource::IN::WKS
-              else
-                raise InvalidJsonError, 'Wrong "resource" key passed to endpoint /api/dns/rule'
-              end
-
-              id = @dns.add_rule(
-                :pattern => pattern,
-                :resource => dns_resource,
-                :response => response
-              )
-
-              result = {}
-              result['success'] = true
-              result['id'] = id
-              result.to_json
+            if pattern.nil? || pattern.eql?('')
+              raise InvalidJsonError, 'Empty "pattern" key passed to endpoint /api/dns/rule'
             end
+            if resource !~ /\A[A-Z]+\Z/
+              raise InvalidJsonError, 'Invalid "resource" key passed to endpoint /api/dns/rule'
+            end
+            unless response.is_a?(Array)
+              raise InvalidJsonError, 'Non-array "response" key passed to endpoint /api/dns/rule'
+            end
+            if response.empty?
+              raise InvalidJsonError, 'Empty "response" array passed to endpoint /api/dns/rule'
+            end
+
+            # Validate resource
+            case resource
+            when "A"
+              dns_resource = Resolv::DNS::Resource::IN::A
+            when "AAAA"
+              dns_resource = Resolv::DNS::Resource::IN::AAAA
+            when "CNAME"
+              dns_resource = Resolv::DNS::Resource::IN::CNAME
+            when "HINFO"
+              dns_resource = Resolv::DNS::Resource::IN::HINFO
+            when "MINFO"
+              dns_resource = Resolv::DNS::Resource::IN::MINFO
+            when "MX"
+              dns_resource = Resolv::DNS::Resource::IN::MX
+            when "NS"
+              dns_resource = Resolv::DNS::Resource::IN::NS
+            when "PTR"
+              dns_resource = Resolv::DNS::Resource::IN::PTR
+            when "SOA"
+              dns_resource = Resolv::DNS::Resource::IN::SOA
+            when "TXT"
+              dns_resource = Resolv::DNS::Resource::IN::TXT
+            when "WKS"
+              dns_resource = Resolv::DNS::Resource::IN::WKS
+            else
+              raise InvalidJsonError, 'Invalid "resource" key passed to endpoint /api/dns/rule'
+            end
+
+            # Add rule
+            id = @dns.add_rule(
+              :pattern => pattern,
+              :resource => dns_resource,
+              :response => response
+            )
+
+            # Return result
+            result = {}
+            result['success'] = true
+            result['id'] = id
+            result.to_json
           rescue InvalidJsonError => e
             print_error e.message
             halt 400
