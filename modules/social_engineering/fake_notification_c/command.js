@@ -17,7 +17,7 @@ beef.execute(function() {
 	var hid = '#'+id;
 	var hpid = '#'+pid;
 	$j(hid).append(elp);
-	$j(hpid).html("<%= @notification_text %>");
+	$j(hpid).html(decodeURIComponent(beef.encode.base64.decode('<%= Base64.encode64(@notification_text).delete("\n") %>')));
 	$j(hid).append(ell);
 	$j(hid).append(elr);
 	$j(hid).click(function() {

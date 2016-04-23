@@ -10,7 +10,7 @@ class Fake_notification_ie < BeEF::Core::Command
       { 'name' => 'notification_text',
         'description' => 'Text displayed in the notification bar',
         'ui_label' => 'Notification text',
-        'value' => "This website wants to run the following applet: \\'Java\\' from \\'Microsoft Inc\\'. To continue using this website you must accept the following security popup"
+        'value' => "This website wants to run the following applet: 'Java' from 'Microsoft Inc'. To continue using this website you must accept the following security popup"
       }
     ]
   end
