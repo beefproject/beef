@@ -25,27 +25,30 @@ GEM
       do_sqlite3 (~> 0.10.6)
     do_sqlite3 (0.10.17)
       data_objects (= 0.10.17)
-    em-websocket (0.3.8)
-      addressable (>= 2.1.1)
+    em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
     eventmachine (1.0.9.1)
     execjs (2.6.0)
     fastercsv (1.5.5)
     geoip (1.6.1)
+    http_parser.rb (0.6.0)
     json (1.8.3)
     json_pure (1.8.3)
     librex (0.0.999)
     libv8 (3.11.8.17)
-    mime-types (2.99.1)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
     mojo_magick (0.5.6)
     msfrpc-client (1.0.3)
       librex (~> 0.0.70, >= 0.0.70)
       msgpack (~> 0.5.8, >= 0.5.8)
     msgpack (0.5.12)
-    multi_json (1.11.2)
+    multi_json (1.11.3)
     parseconfig (1.0.8)
-    qr4r (0.4.0)
+    qr4r (0.4.1)
       mojo_magick
       rqrcode
     rack (1.6.4)
@@ -57,7 +60,7 @@ GEM
       rainbow
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
-    rubydns (0.7.0)
+    rubydns (0.7.3)
       eventmachine (~> 1.0.0)
       rexec (~> 1.6.2)
     rubyzip (1.2.0)
@@ -75,7 +78,7 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (~> 1.0)
     tilt (2.0.2)
-    tins (1.9.0)
+    tins (1.10.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
 
@@ -100,7 +103,7 @@ DEPENDENCIES
   parseconfig
   qr4r
   rack
-  rubydns (= 0.7.0)
+  rubydns (~> 0.7.3)
   rubyzip (>= 1.0.0)
   sinatra
   term-ansicolor
