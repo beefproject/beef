@@ -1482,10 +1482,8 @@ LinearGradientContainer.prototype = Object.create(GradientContainer.prototype);
 
 LinearGradientContainer.prototype.stepRegExp = /((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/;
 
-function log() {
-    if (window.html2canvas.logging && window.console && window.console.log) {
-        Function.prototype.bind.call(window.console.log, (window.console)).apply(window.console, [(Date.now() - window.html2canvas.start) + "ms", "html2canvas:"].concat([].slice.call(arguments, 0)));
-    }
+function log(msg) {
+    beef.debug(msg);
 }
 
 function NodeContainer(node, parent) {
