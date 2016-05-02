@@ -23,7 +23,7 @@ class Spyder_eye < BeEF::Core::Command
 
     # save screenshot file
     begin
-      timestamp = Time.now.getutc.to_s.gsub(/[ :]/, ' ' => '_', ':' => '-').chomp('_UTC')
+      timestamp = Time.now.localtime.strftime("%Y-%m-%d_%H-%M-%S")
       ip = BeEF::Core::Models::BrowserDetails.get(session_id, 'IP')
       filename = "screenshot_#{ip}_-_#{timestamp}_#{@datastore['cid']}.png"
       File.open(filename, 'wb') do |file|
