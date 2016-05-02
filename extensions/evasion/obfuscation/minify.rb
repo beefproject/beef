@@ -15,9 +15,14 @@ module BeEF
         end
 
         def execute(input, config)
-          input = Uglifier.compile(input)
-          print_debug "[OBFUSCATION - MINIFIER] Javascript has been minified"
-          input
+          begin 
+            input2 = Uglifier.compile(input)
+            print_debug "[OBFUSCATION - MINIFIER] Javascript has been minified"
+            input2
+          rescue
+            print_error "[OBFUSCATION - MINIFIER FAILED] Javascript couldn't be minified. Returning the input form."
+            input
+          end
         end
       end
     end

