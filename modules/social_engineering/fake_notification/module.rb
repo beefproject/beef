@@ -3,7 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Fake_notification_ie < BeEF::Core::Command
+class Fake_notification < BeEF::Core::Command
 
   def self.options
     return [
