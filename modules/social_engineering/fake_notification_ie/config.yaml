@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fake_notification_ie:
+            enable: true
+            category: "Social Engineering"
+            name: "Fake Notification Bar (IE)"
+            description: "Displays a fake notification bar at the top of the screen, similar to those presented in IE. If the user clicks the notification they will be prompted to download the file specified below.<br><br>You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt."
+            authors: ["xntrik", "bcoles"]
+            target:
+                user_notify: ['ALL']
