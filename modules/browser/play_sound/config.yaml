@@ -11,5 +11,16 @@ beef:
             name: "Play Sound"
             description: "Play a sound on the hooked browser."
             authors: ["Saafan"]
+            # http://caniuse.com/audio
             target:
                 working: ["All"]
+                not_working:
+                    IE:
+                        min_ver: 1
+                        max_ver: 8
+                    FF:
+                        min_ver: 1
+                        max_ver: 2
+                    S:
+                        min_ver: 1
+                        max_ver: 3
