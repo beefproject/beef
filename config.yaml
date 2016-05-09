@@ -159,9 +159,6 @@ beef:
             enable: true
         evasion:
             enable: false
-        console:
-             shell:
-                enable: false
         ipec:
             enable: true
         # this is still experimental..
