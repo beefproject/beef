@@ -3,6 +3,8 @@ Verify first that your issue/request has not been posted previously:
 * https://github.com/beefproject/beef/issues
 * https://github.com/beefproject/beef/wiki/FAQ
 
+Ensure you're using the [latest version of BeEF](https://github.com/beefproject/beef/releases/tag/beef-0.4.7.0).
+
 
 #### Environment
 
