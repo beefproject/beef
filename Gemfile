@@ -30,6 +30,8 @@ gem 'dm-core'
 gem 'json'
 gem 'data_objects'
 gem 'rubyzip', '>= 1.0.0'
+gem 'espeak-ruby', '>= 1.0.3' # Text-to-Voice
+
 
 # SQLite support
 group :sqlite do
