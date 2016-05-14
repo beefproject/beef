@@ -29,6 +29,7 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
+    espeak-ruby (1.0.3)
     eventmachine (1.0.9.1)
     execjs (2.6.0)
     fastercsv (1.5.5)
@@ -94,6 +95,7 @@ DEPENDENCIES
   dm-sqlite-adapter
   em-websocket
   erubis
+  espeak-ruby (>= 1.0.3)
   eventmachine
   execjs
   geoip
@@ -112,4 +114,4 @@ DEPENDENCIES
   uglifier
 
 BUNDLED WITH
-   1.11.2
+   1.12.1
