@@ -261,6 +261,13 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
+			if (<%= BeEF::Core::Configuration.instance.get("beef.extension.admin_ui.play_sound_on_new_zombie") %>) {
+				try {
+					var sound = new Audio('/demos/new_zombie.mp3');
+					sound.play();
+				} catch(e) {}
+			}
+
 			this.online_hooked_browsers_array.push(hooked_browser);
 		}
 		
