@@ -88,7 +88,44 @@ module Handlers
 
         url
     end
-    
+
+    # Binds a file to a mount point (cached for 1 year)
+    # @param [String] file File path to asset
+    # @param [String] path URL path to mount the asset to (can be nil for random path)
+    # @param [String] extension File extension (.x). If == nil content-type is text/plain, otherwise use the right one via MIME::Types.type_for()
+    # @param [Integer] count The amount of times the asset can be accessed before being automatically unbinded (-1 = unlimited)
+    # @return [String] URL Path of mounted asset
+    # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
+    def bind_cached(file, path=nil, extension=nil, count=-1)
+        url = build_url(path, extension)
+        @allocations[url] = {'file' => "#{root_dir}"+file,
+                             'path' => path,
+                             'extension' => extension,
+                             'count' => count}
+
+        resp_body = File.read("#{root_dir}#{file}")
+
+        if extension.nil? || MIME::Types.type_for(extension).empty?
+          content_type = 'text/plain'
+        else
+          content_type = MIME::Types.type_for(extension).first.content_type
+        end
+
+        @http_server.mount(
+            url,
+            BeEF::Core::NetworkStack::Handlers::Raw.new(
+              '200', {
+                'Content-Type' => content_type,
+                'Expires' => CGI.rfc1123_date(Time.now+(60*60*24*365)) },
+              resp_body)
+        )
+
+        @http_server.remap
+        print_info "File [#{file}] bound to Url [#{url}] using Content-type [#{content_type}]"
+
+        url
+    end
+
     # Unbinds a file from a mount point
     # @param [String] url URL path of asset to be unbinded
     #TODO: check why is throwing exception
