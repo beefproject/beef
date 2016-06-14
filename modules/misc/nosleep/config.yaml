@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        no_sleep:
+            enable: true
+            category: "Misc"
+            name: "No Sleep"
+            description: "This module uses <a href='https://github.com/richtr/NoSleep.js'>NoSleep.js</a> to prevent display sleep and enable wake lock in any Android or iOS web browser."
+            authors: ["bcoles"]
+            target:
+                working:
+                    ALL:
+                        os: ["iOS", "Android"]
