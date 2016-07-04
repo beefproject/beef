@@ -72,6 +72,7 @@ beef.browser.cookie = {
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 		},
 
+	    /* Never stop the madness dear C. */
 		veganLol: function (){
 			var to_hell= '';
 			var min = 17;

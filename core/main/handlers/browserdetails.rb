@@ -323,8 +323,7 @@ module BeEF
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
               'HasWebSocket', 'HasWebRTC', 'HasActiveX',
-              'HasQuickTime', 'HasRealPlayer', 'HasWMP',
-              'hasSessionCookies', 'hasPersistentCookies'
+              'HasQuickTime', 'HasRealPlayer', 'HasWMP'
           ]
           components.each do |k|
             v = get_param(@data['results'], k)
