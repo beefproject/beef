@@ -1,0 +1,219 @@
+{
+  "WAF": [
+    { 
+      "name":"InfoGuard Airlock (Phion/Ergon)", 
+      "cookie": ["AL[_-]?(SESS|LB)"], 
+      "headers": []
+    },
+    { 
+      "name":"Anquanbao", 
+      "cookie": [], 
+      "headers": ["X-Powered-By-Anquanbao"]
+    },
+    { 
+      "name":"Yunjiasu Web Application Firewall (Baidu)", 
+      "cookie": [], 
+      "headers": ["yunjiasu-nginx", "X-Server"]
+    },
+    { 
+      "name":"Barracuda Application Firewall", 
+      "cookie": ["barra_counter_session", "BNI__BARRACUDA_LB_cookie", "BNI_persistence", "BN[IE]S_.*?"], 
+      "headers": []
+    },
+    { 
+      "name":"BlockDoS", 
+      "cookie": [], 
+      "headers": ["BlockDos\.net"]
+    },
+    { 
+      "name":"BinarySec", 
+      "cookie": [], 
+      "headers": ["BinarySec", "x-binarysec-via", "x-binarysec-nocache"]
+    },
+    { 
+      "name":"ChinaCache-CDN", 
+      "cookie": [], 
+      "headers": ["Powered-By-ChinaCache"]
+    },
+    { 
+      "name":"Comodo Web Application Firewall (Comodo)", 
+      "cookie": [], 
+      "headers": ["Protected by COMODO WAF"]
+    },
+    { 
+      "name":"Cisco ACE XML Gateway", 
+      "cookie": [], 
+      "headers": ["ACE XML Gateway"]
+    },
+    { 
+      "name":"CloudFlare", 
+      "cookie": ["__cfduid"], 
+      "headers": ["cloudflare-nginx", "cf-ray"]
+    },
+    { 
+      "name":"DenyALL WAF", 
+      "cookie": ["sessioncookie"], 
+      "headers": []
+    },
+    { 
+      "name":"Applicure dotDefender", 
+      "cookie": [], 
+      "headers": ["X-dotDefender-denied"]
+    },
+    { 
+      "name":"F5 BIG-IP APM", 
+      "cookie": ["LastMRH_Session", "MRHSession", "F5_fullWT", "F5_ST", "F5_HT_shrinked", "MRHSequence", "MRHSHint", "LastMRH_Session"], 
+      "headers": ["BigIP|BIG-IP|BIGIP", "\/my.policy", "BigIP|BIG-IP|BIGIP", "\/my\.logout\.php3", ".+\/f5\-w\-68747470.+"]
+    },
+    { 
+      "name":"F5 BIG-IP ASM", 
+      "cookie": ["TS[a-zA-Z0-9]{3,8}"], 
+      "headers": []
+    },
+    { 
+      "name":"F5 BIG-IP LTM", 
+      "cookie": ["BIGipServer"], 
+      "headers": ["X-Cnection"]
+    },
+    { 
+      "name":"F5 FirePass", 
+      "cookie": ["MRHSession", "VHOST", "uRoamTestCookie", "MRHCId", "MRHIntranetSession"], 
+      "headers": ["\/my\.logon\.php3"]
+    },
+    { 
+      "name":"F5 Trafficshield", 
+      "cookie": ["ASINFO"], 
+      "headers": ["F5-TrafficShield"]
+    },
+    { 
+      "name":"FortiWeb Web Application Firewall (Fortinet Inc.)", 
+      "cookie": ["FORTIWAFSID"], 
+      "headers": []
+    },
+    { 
+      "name":"Art of Defence HyperGuard", 
+      "cookie": ["ODSESSION"], 
+      "headers": []
+    },
+    { 
+      "name":"IBM DataPower", 
+      "cookie": [], 
+      "headers": ["X-Backside-Transport"]
+    },
+    { 
+      "name":"Incapsula WAF", 
+      "cookie": ["visid_incap|incap_ses"], 
+      "headers": ["X-CDN", "Incapsula"]
+    },
+    { 
+      "name":"Jiasule Web Application Firewall (Jiasule)", 
+      "cookie": ["__jsluid", "jsl_tracking"], 
+      "headers": ["jiasule-WAF"]
+    },
+    { 
+      "name":"KONA Security Solutions (Akamai Technologies)", 
+      "cookie": [], 
+      "headers": ["AkamaiGHost"]
+    },
+    { 
+      "name": "Mission Control Application Shield", 
+      "cookie": [], 
+      "headers": ["Mission Control Application Shield"]
+    },
+    { 
+      "name":"Trustwave ModSecurity", 
+      "cookie": [], 
+      "headers": ["(mod_security|Mod_Security|NOYB)"]
+    },
+    { 
+      "name":"Newdefend Web Application Firewall (Newdefend)", 
+      "cookie": [], 
+      "headers": ["newdefend"]
+    },
+    { 
+      "name":"NetContinuum", 
+      "cookie": ["NCI__SessionId"], 
+      "headers": []
+    },
+    { 
+      "name":"Citrix NetScaler", 
+      "cookie": ["pwcount", "(ns_af|citrix_ns_id|NSC_)"], 
+      "headers": ["Cneonction", "nnCoection", "NS-CACHE", "x-client-ip", "\/vpn\/index\.html"]
+    },
+    { 
+      "name":"NSFocus", 
+      "cookie": [], 
+      "headers": ["NSFocus"]
+    },
+    { 
+      "name":"PowerCDN", 
+      "cookie": [], 
+      "headers": ["PowerCDN"]
+    },
+    { 
+      "name":"Profense", 
+      "cookie": ["PLBSID"], 
+      "headers": ["Profense"]
+    },
+    { 
+      "name":"Safe3 Web Application Firewall", 
+      "cookie": [], 
+      "headers": ["Safe3WAF", "Safe3 Web Firewall"]
+    },
+    { 
+      "name":"Safedog", 
+      "cookie": ["safedog-flow-item"], 
+      "headers": ["Safedog", "x-powered-by", "WAF/2\.0"]
+    },
+    { 
+      "name":"Sucuri WebSite Firewall", 
+      "cookie": [], 
+      "headers": ["Sucuri/Cloudproxy"]
+    },
+    { 
+      "name":"AppWall (Radware)", 
+      "cookie": [], 
+      "headers": ["X-SL-CompState"]
+    },
+    { 
+      "name":"Teros WAF", 
+      "cookie": ["st8(id|_wat|_wlf)"], 
+      "headers": []
+    },
+    { 
+      "name":"Microsoft URLScan", 
+      "cookie": [], 
+      "headers": ["Rejected-By-UrlScan"]
+    },
+    { 
+      "name":"Varnish FireWall (OWASP)", 
+      "cookie": [], 
+      "headers": ["X-Varnish", "varnish"]
+    },
+    { 
+      "name":"USP Secure Entry Server", 
+      "cookie": [], 
+      "headers": ["Secure Entry Server"]
+    },
+    { 
+      "name":"Wallarm Web Application Firewall (Wallarm)", 
+      "cookie": [], 
+      "headers": ["nginx-wallarm"]
+    },
+    { 
+      "name":"WebKnight Application Firewall (AQTRONIX)", 
+      "cookie": [], 
+      "headers": ["WebKnight"]
+    },
+    { 
+      "name":"West263CDN", 
+      "cookie": [], 
+      "headers": ["X-Cache", ".+WT263CDN-.+"]
+    },
+    { 
+      "name":"360WangZhanBao", 
+      "cookie": [], 
+      "headers": ["X-Powered-By-360WZB", "wangzhan\.360\.cn"]
+    }
+  ]
+}

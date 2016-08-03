@@ -112,6 +112,3 @@ DEPENDENCIES
   therubyracer (= 0.11.3)
   thin
   uglifier
-
-BUNDLED WITH
-   1.12.1

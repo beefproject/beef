@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_waf:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "WAF Detection"
+            description: "This module identifies and fingerprints Web Application Firewall (WAF) products."
+            authors: ["PLineytcev"]
+            target:
+                working: ["ALL"]

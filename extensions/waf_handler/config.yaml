@@ -1,0 +1,11 @@
+#
+# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    extension:
+        waf_handler:
+            enable: true
+            name: 'WAF Detection'
+            authors: ["PLineytcev"]
