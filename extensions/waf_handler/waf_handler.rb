@@ -34,9 +34,9 @@ module BeEF
                     @@cookResult = 'IN COOKIES : ' + waf['name'] + ' was found'
                     return @@detect = '1'
                   end
-	              end
+								end
               end
-	          end
+						end
           end
 
           if headers.empty?
