@@ -34,9 +34,9 @@ module BeEF
                     @@cookResult = 'IN COOKIES : ' + waf['name'] + ' was found'
                     return @@detect = '1'
                   end
-								end
+                end
               end
-						end
+            end
           end
 
           if headers.empty?
@@ -47,10 +47,10 @@ module BeEF
                 headers.each do |header|
                   if header.scan(patternHeader).any?
                     @@headResult = 'IN HEADERS : ' + waf['name'] + ' was found'
-		                return @@detect = '1'
-	                end
-	              end
-	            end
+                    return @@detect = '1'
+                  end
+                end
+              end
             end
           end	
         end
