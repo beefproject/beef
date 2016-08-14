@@ -5,32 +5,26 @@
 //
 
 beef.execute(function() {
-
-  var cmddotexe = 'cmd.exe',
-      xssString = '<script>alert(1)</script>',
-      adminFolder = '/Admin_Files/',
-      dirtString = '../../../../etc/passwd',
-      xssStringEncoded = escape(xssString),
-      statusResult = 'IN STATUS CODE : Nothing was found',
-      data = '',
-      xhr = new XMLHttpRequest(),
-      attack = [xssString + '.html',
-                dirtString,
-                adminFolder,
-                xssStringEncoded + '.html',
-                cmddotexe],
+  var xhr = new XMLHttpRequest(),
+      attack = ['<%= @attackVector1 %>',
+                '<%= @attackVector2 %>',
+                '<%= @attackVector3 %>',
+                '<%= @attackVector4 %>'
+      ],
       statusStore = {
                       '200': ['IN STATUS CODE : DenyALL WAF was found', 
                               'Condition Intercepted'],
                       '403': ['IN STATUS CODE : CloudFlare was found', 
                               'CloudFlare Ray ID:|var CloudFlare='],
-                      //'403': ['IN STATUS CODE : Jiasule was found',
-                      //        'notice-jiasule'],
+                      '404': ['IN STATUS CODE : Varnish was found',
+                              '\bXID: \d+'],
                       '501': ['IN STATUS CODE : Trustwave ModSecurity was found', 
                               null], 
                       '999': ['IN STATUS CODE : Aqtronix WebKnight was found', 
                               null]
-                    },
+      },
+      statusResult = 'IN STATUS CODE : Nothing was found',
+      data,
       cookiesResult, 
       headersResult;
 
