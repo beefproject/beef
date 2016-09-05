@@ -13,7 +13,7 @@ echo "          BeEF Installer   "
 echo "======================================"
 echo ""
 
-echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and it's dependencies." 
+echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and its dependencies." 
 echo "" 
 echo "In rare cases, this may lead to unexpected behaviour or package conflicts on some systems."
 echo ""
