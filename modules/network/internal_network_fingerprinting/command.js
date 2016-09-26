@@ -262,7 +262,11 @@ beef.execute(function() {
     "80","http",false,
     "/logo.gif",150,47),
   new Array("SMC Router","80","http",false,"/images/logo.gif",133,59),
-  new Array("ntop","3000","http",false,"/ntop_logo.png",103,50)
+  new Array("ntop","3000","http",false,"/ntop_logo.png",103,50),
+  new Array(
+	"ZeroShell",
+	"80","http",false,
+	"/kerbynet/Zeroshell.gif",180,63)
 
 // Uncommon signatures
 //new Array("Microsoft ADFS","80","http",false,"/adfs/portal/illustration/illustration.png",1420,1080),
