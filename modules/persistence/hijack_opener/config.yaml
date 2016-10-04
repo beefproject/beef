@@ -12,5 +12,5 @@ beef:
             description: "This module abuses window.location.opener to hijack the opening window, replacing it with a BeEF hook and 100% * 100% iframe containing the referring web page. Note that the iframe will be blank if the origin makes use of a restrictive X-Frame-Origin directive.<br/><br/>This attack will only work if the opener did not make use of the <i>noopener</i> and <i>noreferrer</i> directives. Refer to <a href='https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/'>Target=_blank - the most underestimated vulnerability ever</a> for more information."
             authors: ["bcoles"]
             target:
-                user_notify: ["FF"]
-                not_working: ["All"]
+                user_notify: ["All"]
+                not_working: ["O"]
