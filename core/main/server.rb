@@ -42,8 +42,6 @@ module BeEF
             'beef_port'     => @configuration.get('beef.http.port'),
             'beef_public'   => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
-            'beef_dns_host' => @configuration.get('beef.http.dns_host'),
-            'beef_dns_port' => @configuration.get('beef.http.dns_port'),
             'beef_hook'     => @configuration.get('beef.http.hook_file'),
             'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? "https" : "http",
             'client_debug'  => @configuration.get("beef.client_debug")
