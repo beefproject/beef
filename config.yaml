@@ -35,15 +35,16 @@ beef:
         # Enabling WebSockets is generally better (beef.websocket.enable)
         xhr_poll_timeout: 1000
 
-        # Reverse Proxy / NAT
-        # If BeEF is running behind a reverse proxy or NAT
-        #  set the public hostname and port here
+        # Host Name / Domain Name
+        # If you want BeEF to be accessible via hostname or domain name (ie, DynDNS),
+        #   set the public hostname below:
         #public: ""      # public hostname/IP address
-        #public_port: "" # experimental
 
-        # DNS
-        dns_host: "localhost"
-        dns_port: 53
+        # Reverse Proxy / NAT
+        # If you want BeEF to be accessible behind a reverse proxy or NAT,
+        #   set both the publicly accessible hostname/IP address and port below:
+        #public: ""      # public hostname/IP address
+        #public_port: "" # public port (experimental)
 
         # Web Admin user interface URI
         web_ui_basepath: "/ui"
@@ -80,7 +81,7 @@ beef:
         https:
             enable: false
             # In production environments, be sure to use a valid certificate signed for the value
-            # used in beef.http.dns_host (the domain name of the server where you run BeEF)
+            # used in beef.http.public (the domain name of the server where you run BeEF)
             key: "beef_key.pem"
             cert: "beef_cert.pem"
 
