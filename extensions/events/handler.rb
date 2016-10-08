@@ -61,6 +61,8 @@ module Events
           result = "#{event['time']}s - [User Pasted Text] \"#{event['data']}\""
         when 'blur'
           result = "#{event['time']}s - [Blur] Browser window has lost focus."
+        when 'console'
+          result = "#{event['time']}s - [Console] #{event['data']}"
         when 'keys'
           print_debug "+++++++++++++++++ Key mods: #{event['mods']}"
           print_debug "EventData: #{event['data']}"
