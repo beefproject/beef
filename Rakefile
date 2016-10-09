@@ -80,6 +80,24 @@ task :bundle_audit do
 end
 
 ################################
+# SSL/TLS certificate
+
+namespace :ssl do
+  desc 'Re-generate SSL certificate'
+  task :create do
+    if File.file?('/usr/local/bin/openssl')
+      path = '/usr/local/bin/openssl'
+    elsif File.file?('/usr/bin/openssl')
+      path = '/usr/bin/openssl'
+    else
+      puts "[-] Error: could not find openssl"
+      exit 1
+    end
+    IO.popen([path, 'req', '-new', '-newkey', 'rsa:4096', '-sha256', '-x509', '-days', '3650', '-nodes', '-out', 'beef_cert.pem', '-keyout', 'beef_key.pem', '-subj', '/CN=localhost'], 'r+').read.to_s
+  end
+end
+
+################################
 # rdoc
 
 namespace :rdoc do
