@@ -20,12 +20,14 @@ Installation
 
    1. Prerequisites (platform independent)
 
-      BeEF requires Ruby 2.0+ and the "bundler" gem. Bundler can be installed by:
+      BeEF requires Ruby 2.1+ and the "bundler" gem. Bundler can be installed by:
 
       gem install bundler
 
       
    2. Prerequisites (Windows)
+
+      Windows is no longer supported. The following instructions are outdated.
 
       !!! This must be done PRIOR to running the bundle install command !!!
       
@@ -76,7 +78,7 @@ Installation
    
       - XCode: provides the sqlite support BeEF needs
       
-      - Ruby 2.0
+      - Ruby 2.1
       	To install RVM and Ruby 2.1.5 on Mac OS:
       	$ bash -s stable < <(curl -Ls https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile
       	$ rvm install 2.1.5
