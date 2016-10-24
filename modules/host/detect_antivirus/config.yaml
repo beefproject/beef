@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        detect_bitdefender2012:
+        detect_antivirus:
             enable: true
             category: "Host"
-            name: "Detect Bit Defender 2012"
-            description: "This module detect the javascript code automatically included by Bitdefender 2012"
-            authors: ["nbblrr"]
+            name: "Detect Antivirus"
+            description: "This module detect the javascript code automatically included by some AVs (currently supports detection for Kaspersky, Avira, BitDefender, Norton, Dr. Web)"
+            authors: ["phosphore","vah13","nbblrr"]
             target:
                 working: ["ALL"]

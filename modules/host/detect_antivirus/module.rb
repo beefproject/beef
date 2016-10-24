@@ -4,10 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-class Detect_bitdefender2012 < BeEF::Core::Command
+class Detect_antivirus < BeEF::Core::Command
 
   def post_execute
-    save({'BitDefender' => @datastore['bitdefender']})
+    save({'Antivirus' => @datastore['antivirus']})
   end
 
 end
