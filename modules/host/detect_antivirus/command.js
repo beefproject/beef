@@ -8,13 +8,13 @@ beef.execute(function() {
 
     //Detection of av elements starts
         var image = "<body><img src='x'/></body>";
-        var iframe = document.createElement("iframe");
-        iframe.setAttribute("style", "margin-left:-10000000000px; margin-right: -10000000000px");
-        iframe.setAttribute("id", "frmin");
-        document.body.appendChild(iframe);
-        iframe.contentWindow.document.open();
-        iframe.contentWindow.document.write(image);
-        iframe.contentWindow.document.close();
+        var hidden_iframe = beef.dom.createInvisibleIframe();
+        hidden_iframe.setAttribute("id", "frmin");
+        document.body.appendChild(hidden_iframe);
+        var kaspersky_iframe = hidden_iframe.contentDocument || hidden_iframe.contentWindow.document;
+        kaspersky_iframe.open();
+        kaspersky_iframe.write(image);
+        kaspersky_iframe.close();
 
         var frm = document.getElementById("frmin");
         ka = frm.contentDocument.getElementsByTagName("html")[0].outerHTML;
