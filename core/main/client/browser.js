@@ -1459,15 +1459,15 @@ beef.browser = {
             C50iOS: this.isC50iOS(), // Chrome 50 on iOS
             C51: this.isC51(), // Chrome 51
             C51iOS: this.isC51iOS(), // Chrome 51 on iOS
-			C52: this.isC52(), // Chrome 52
+	    C52: this.isC52(), // Chrome 52
             C52iOS: this.isC52iOS(), // Chrome 52 on iOS
-			C53: this.isC53(), // Chrome 53
+            C53: this.isC53(), // Chrome 53
             C53iOS: this.isC53iOS(), // Chrome 53 on iOS
-			C54: this.isC54(), // Chrome 54
+            C54: this.isC54(), // Chrome 54
             C54iOS: this.isC54iOS(), // Chrome 54 on iOS
-			C55: this.isC55(), // Chrome 55
+            C55: this.isC55(), // Chrome 55
             C55iOS: this.isC55iOS(), // Chrome 55 on iOS
-			C56: this.isC56(), // Chrome 56
+            C56: this.isC56(), // Chrome 56
             C56iOS: this.isC56iOS(), // Chrome 56 on iOS
             
             C: this.isC(), // Chrome any version
