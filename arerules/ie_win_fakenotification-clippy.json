@@ -7,7 +7,7 @@
   "os_version": ">= 7",
   "modules": [
     {
-      "name": "fake_notification_ie",
+      "name": "fake_notification",
       "condition": null,
       "options": {
         "notification_text":"Internet Explorer SECURITY NOTIFICATION: your browser is outdated and vulnerable to critical security vulnerabilities like CVE-2015-009 and CVE-2014-879. Please update it."

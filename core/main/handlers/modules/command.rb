@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -53,7 +53,7 @@ module BeEF
             if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
               #content = command_module.output.gsub('//
               #//
-              #//   Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+              #//   Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
               #//   Browser Exploitation Framework (BeEF) - http://beefproject.com
               #//   See the file 'doc/COPYING' for copying permission
               #//
@@ -65,7 +65,7 @@ module BeEF
             # @note prints the event to the console
             if BeEF::Settings.console?
               name = command_module.friendlyname || kclass
-              print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has been sent instructions from command module [id:#{command.id}, name:'#{name}']"
+              print_info "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}] has been sent instructions from command module [cid:#{command.id}, mod: #{command.command_module_id}, name:'#{name}']"
             end
 
             # @note flag that the command has been sent to the hooked browser

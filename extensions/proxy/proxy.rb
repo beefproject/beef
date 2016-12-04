@@ -1,9 +1,9 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-require 'openssl';
+require 'openssl'
 
 module BeEF
   module Extension
@@ -20,12 +20,30 @@ module BeEF
           @conf = BeEF::Core::Configuration.instance
           @proxy_server = TCPServer.new(@conf.get('beef.extension.proxy.address'), @conf.get('beef.extension.proxy.port'))
 
+          # setup proxy for SSL/TLS
           ssl_context = OpenSSL::SSL::SSLContext.new
-          ssl_context.cert = OpenSSL::X509::Certificate.new(File.open(@conf.get('beef.extension.proxy.cert')));
-          ssl_context.key = OpenSSL::PKey::RSA.new(File.open(@conf.get('beef.extension.proxy.key')));
+          #ssl_context.ssl_version = :TLSv1_2
 
-          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context);
-          ssl_server.start_immediately = false;
+          # load certificate
+          begin
+            cert_file = @conf.get('beef.extension.proxy.cert')
+            cert = File.open(cert_file)
+            ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
+          rescue
+            print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
+          end
+
+          # load key
+          begin
+            key_file = @conf.get('beef.extension.proxy.key')
+            key = File.open(key_file)
+            ssl_context.key = OpenSSL::PKey::RSA.new(key)
+          rescue
+            print_error "[Proxy] Could not load SSL key '#{key_file}'"
+          end
+
+          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context)
+          ssl_server.start_immediately = false
 
           loop do
             ssl_socket = ssl_server.accept
@@ -130,30 +148,30 @@ module BeEF
           # but the final content-length forwarded back by the proxy is clearly bigger. Date header follows the same way.
           response_headers = ""
           if (response_status != -1 && response_status != 0)
+            ignore_headers = [
+              "Content-Encoding",
+              "Keep-Alive",
+              "Cache-Control", 
+              "Vary",
+              "Pragma",
+              "Connection",
+              "Expires",
+              "Accept-Ranges",
+              "Date"]
             headers.each_line do |line|
               # stripping the Encoding, Cache and other headers
               header_key = line.split(': ')[0]
               header_value = line.split(': ')[1]
-              if !header_key.nil? &&
-                  header_key != "Content-Encoding" &&
-                  header_key != "Keep-Alive" &&
-                  header_key != "Cache-Control" &&
-                  header_key != "Vary" &&
-                  header_key != "Pragma" &&
-                  header_key != "Connection" &&
-                  header_key != "Expires" &&
-                  header_key != "Accept-Ranges" &&
-                  header_key != "Date"
-                if header_value.nil?
-                  #headers_hash[header_key] = ""
+              next if header_key.nil?
+              next if ignore_headers.include?(header_key)
+              if header_value.nil?
+                #headers_hash[header_key] = ""
+              else
+                # update Content-Length with the valid one
+                if header_key == "Content-Length"
+                  response_headers += "Content-Length: #{response_body.size}\r\n"
                 else
-                  # update Content-Length with the valid one
-                  if header_key == "Content-Length"
-                    header_value = response_body.size
-                    response_headers += "Content-Length: #{header_value}\r\n"
-                  else
-                    response_headers += line
-                  end
+                  response_headers += line
                 end
               end
             end

@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Doser < BeEF::Core::Command
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/doser/worker.js', '/worker', 'js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/network/DOSer/worker.js', '/worker', 'js')
   end
 
   def self.options

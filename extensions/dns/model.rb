@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -51,7 +51,7 @@ module BeEF
             sym_regex = /^:?(NoError|FormErr|ServFail|NXDomain|NotImp|Refused|NotAuth)$/i
 
             src = if resource == Resolv::DNS::Resource::IN::A
-              if response.is_a?(String) && BeEF::Filters.is_valid_ip?(:ipv4, response)
+              if response.is_a?(String) && BeEF::Filters.is_valid_ip?(response, :ipv4)
                 sprintf "t.respond!('%s')", response
               elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                 sprintf "t.fail!(:%s)", response.to_sym
@@ -60,7 +60,7 @@ module BeEF
                 str2 = ''
 
                 response.each do |r|
-                  raise InvalidDnsResponseError, 'A' unless BeEF::Filters.is_valid_ip?(:ipv4, r)
+                  raise InvalidDnsResponseError, 'A' unless BeEF::Filters.is_valid_ip?(r, :ipv4)
                   str2 << sprintf(str1, r)
                 end
 
@@ -69,7 +69,7 @@ module BeEF
                 raise InvalidDnsResponseError, 'A'
               end
             elsif resource == Resolv::DNS::Resource::IN::AAAA
-              if response.is_a?(String) && BeEF::Filters.is_valid_ip?(:ipv6, response)
+              if response.is_a?(String) && BeEF::Filters.is_valid_ip?(response, :ipv6)
                 sprintf "t.respond!('%s')", response
               elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                 sprintf "t.fail!(:%s)", response.to_sym
@@ -78,7 +78,7 @@ module BeEF
                 str2 = ''
 
                 response.each do |r|
-                  raise InvalidDnsResponseError, 'AAAA' unless BeEF::Filters.is_valid_ip?(:ipv6, r)
+                  raise InvalidDnsResponseError, 'AAAA' unless BeEF::Filters.is_valid_ip?(r, :ipv6)
                   str2 << sprintf(str1, r)
                 end
 

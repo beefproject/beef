@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -20,6 +20,7 @@ RESTAPI_HOOKS = "http://" + ATTACK_DOMAIN + ":3000/api/hooks"
 RESTAPI_LOGS = "http://" + ATTACK_DOMAIN + ":3000/api/logs"
 RESTAPI_MODULES = "http://" + ATTACK_DOMAIN + ":3000/api/modules"
 RESTAPI_NETWORK = "http://" + ATTACK_DOMAIN + ":3000/api/network"
+RESTAPI_PROXY = "http://" + ATTACK_DOMAIN + ":3000/api/proxy"
 RESTAPI_DNS = "http://" + ATTACK_DOMAIN + ":3000/api/dns"
 RESTAPI_SENG = "http://" + ATTACK_DOMAIN + ":3000/api/seng"
 RESTAPI_ADMIN = "http://" + ATTACK_DOMAIN + ":3000/api/admin"

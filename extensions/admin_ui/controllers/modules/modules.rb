@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -134,17 +134,26 @@ class Modules < BeEF::Extension::AdminUI::HttpController
           data   = BeEF::Core::Constants::Browsers.friendly_name(BD.get(zombie_session, p[2]))
 
         when "ScreenSize"
-          screen_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-          width  = screen_size_hash['width']
-          height = screen_size_hash['height']
-          cdepth = screen_size_hash['colordepth']
-          data   = "Width: #{width}, Height: #{height}, Colour Depth: #{cdepth}"
-
+          screen_size = BD.get(zombie_session, "ScreenSize")
+          if screen_size.nil?
+            data = "Unknown"
+          else
+            screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+            width  = screen_size_hash['width']
+            height = screen_size_hash['height']
+            cdepth = screen_size_hash['colordepth']
+            data   = "Width: #{width}, Height: #{height}, Colour Depth: #{cdepth}"
+          end
         when "WindowSize"
-          window_size_hash = JSON.parse(BD.get(zombie_session, p[2]).gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-          width  = window_size_hash['width']
-          height = window_size_hash['height']
-          data   = "Width: #{width}, Height: #{height}"
+          window_size = BD.get(zombie_session, "WindowSize")
+          if window_size.nil?
+            data = "Unknown"
+          else
+            window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
+            width  = window_size_hash['width']
+            height = window_size_hash['height']
+            data   = "Width: #{width}, Height: #{height}"
+          end
         else
           data   = BD.get(zombie_session, p[2])
       end

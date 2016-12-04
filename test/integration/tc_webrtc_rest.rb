@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -40,7 +40,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
       @@victim1 = BeefTest.new_victim
       @@victim2 = BeefTest.new_victim
       
-      puts "WebRTC Tests: Sleeping for 8 - waiting for 2 browsers to get hooked"
+      # puts "WebRTC Tests beginning"
       sleep 8.0
 
       # Fetch last online browsers' ids
@@ -68,7 +68,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_1_webrtc_check_for_two_hooked_browsers
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -83,7 +83,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_2_webrtc_establishing_p2p
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -95,7 +95,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
     result = JSON.parse(rest_response.body)
     assert_equal true, result["success"]
 
-    sleep 20.0
+    sleep 30.0
 
     rest_response = nil
     assert_nothing_raised do
@@ -119,7 +119,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_3_webrtc_send_msg # assumes test 2 has run
-    return if not @@activated
+    return unless @@activated
 
     rest_response = nil
     assert_nothing_raised do
@@ -157,7 +157,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
   end
 
   def test_4_webrtc_stealthmode # assumes test 2 has run
-    return if not @@activated
+    return unless @@activated
 
     # Test our two browsers are still online
     rest_response = nil
@@ -237,7 +237,13 @@ class TC_WebRTCRest < Test::Unit::TestCase
         return true if hb[1]["id"].eql?(@@victim2id)
       }
     end
-    
+
+  end
+
+  def test_5_webrtc_execcmd # assumes test 2 has run
+    return unless @@activated
+
+    #
 
   end
 

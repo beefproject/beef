@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -58,15 +58,19 @@ module Models
     # hooked browser is using (i.e. Firefox, Internet Explorer)
     #
     def self.browser_icon(session_id)
-    
+
       browser = get(session_id, 'BrowserName')
-    
+ 
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_IMG      if browser.eql? 'IE' # Internet Explorer
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_IMG if browser.eql? 'FF' # Firefox
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if browser.eql? 'S'  # Safari
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if browser.eql? 'C'  # Chrome
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if browser.eql? 'O'  # Opera
-    
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_IMG  if browser.eql? 'MI' # Midori
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG if browser.eql? 'OD' # Odyssey
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_BRAVE_IMG if browser.eql? 'BR' # Brave
+
+
       BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
     end
   
@@ -83,9 +87,11 @@ module Models
       return BeEF::Core::Constants::Os::OS_ANDROID_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_ANDROID_UA_STR
       return BeEF::Core::Constants::Os::OS_LINUX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_LINUX_UA_STR
       return BeEF::Core::Constants::Os::OS_QNX_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_QNX_UA_STR
+      return BeEF::Core::Constants::Os::OS_SUNOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_SUNOS_UA_STR
       return BeEF::Core::Constants::Os::OS_BEOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_BEOS_UA_STR
       return BeEF::Core::Constants::Os::OS_OPENBSD_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_OPENBSD_UA_STR
       return BeEF::Core::Constants::Os::OS_WEBOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_WEBOS_UA_STR
+      return BeEF::Core::Constants::Os::OS_AROS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_AROS_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPHONE_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPAD_UA_STR
       return BeEF::Core::Constants::Os::OS_IOS_IMG if ua_string.include? BeEF::Core::Constants::Os::OS_IPOD_UA_STR
@@ -119,7 +125,7 @@ module Models
       return BeEF::Core::Constants::Hardware::HW_MOTOROLA_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_MOTOROLA_UA_STR
       return BeEF::Core::Constants::Hardware::HW_HTC_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_HTC_UA_STR
       return BeEF::Core::Constants::Hardware::HW_GOOGLE_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_GOOGLE_UA_STR
-	return BeEF::Core::Constants::Hardware::HW_ERICSSON_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ERICSSON_UA_STR
+      return BeEF::Core::Constants::Hardware::HW_ERICSSON_IMG if ua_string.include? BeEF::Core::Constants::Hardware::HW_ERICSSON_UA_STR
 
       BeEF::Core::Constants::Hardware::HW_UNKNOWN_IMG
 

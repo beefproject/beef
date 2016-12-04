@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -103,7 +103,7 @@ class TC_DebugModules < Test::Unit::TestCase
     result = JSON.parse(response.body)
     data = JSON.parse(result['0']['data'])['data']
     assert_not_nil data
-    assert_equal data,(repeat_string * repeat_count)
+    assert_equal (repeat_string * repeat_count),data
   end
   #
   ## Test debug module "Test_return_ascii_chars" using the RESTful API

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -16,7 +16,19 @@ module BeEF
           # Load modules from metasploit just after all other module config is loaded
           def self.post_soft_load
             msf = BeEF::Extension::Metasploit::RpcClient.instance
-            if msf.login
+
+            timeout = 10
+            connected = false
+            Timeout.timeout(timeout) do
+              begin
+                print_status "Connecting to Metasploit on #{BeEF::Core::Configuration.instance.get('beef.extension.metasploit.host')}:#{BeEF::Core::Configuration.instance.get('beef.extension.metasploit.port')}"
+                connected = msf.login
+              rescue Timeout::Error
+                return
+              end
+            end
+
+            if connected
               msf_module_config = {}
               path = BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')
               if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")

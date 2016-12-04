@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -24,6 +24,14 @@ module BeEF
           @VERSION_STR = ['XP','Vista']
         end
 
+        # Check if the hooked browser type/version and OS type/version match any Rule-sets
+        # stored in the BeEF::Core::AutorunEngine::Models::Rule database table
+        # If one or more Rule-sets do match, trigger the module chain specified
+        def run(hb_id, browser_name, browser_version, os_name, os_version)
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          match_rules = are.match(browser_name, browser_version, os_name, os_version)
+          are.trigger(match_rules, hb_id) if match_rules !=nil && match_rules.length > 0
+        end
 
         # Prepare and return the JavaScript of the modules to be sent.
         # It also updates the rules ARE execution table with timings
@@ -44,6 +52,10 @@ module BeEF
             mods_codes = Array.new
             mods_conditions = Array.new
 
+            # this ensures that if both rule A and rule B call the same module in sequential mode,
+            # execution will be correct preventing wrapper functions to be called with equal names.
+            rule_token = SecureRandom.hex(5)
+
             modules.each do |cmd_mod|
               mod = BeEF::Core::Models::CommandModule.first(:name => cmd_mod['name'])
               options = []
@@ -53,7 +65,9 @@ module BeEF
                 replace_input = true if v == '<<mod_input>>'
               end
 
-              command_body = prepare_command(mod, options, hb_id, replace_input)
+              command_body = prepare_command(mod, options, hb_id, replace_input, rule_token)
+
+
               mods_bodies.push(command_body)
               mods_codes.push(cmd_mod['code'])
               mods_conditions.push(cmd_mod['condition'])
@@ -62,11 +76,12 @@ module BeEF
             # Depending on the chosen chain mode (sequential or nested/forward), prepare the appropriate wrapper
             case chain_mode
               when 'nested-forward'
-                wrapper = prepare_nested_forward_wrapper(mods_bodies, mods_codes, mods_conditions, execution_order)
+                wrapper = prepare_nested_forward_wrapper(mods_bodies, mods_codes, mods_conditions, execution_order, rule_token)
               when 'sequential'
-                wrapper = prepare_sequential_wrapper(mods_bodies, execution_order, execution_delay)
+                wrapper = prepare_sequential_wrapper(mods_bodies, execution_order, execution_delay, rule_token)
               else
                 wrapper = nil
+                print_error "Chain mode looks wrong!"
                 # TODO catch error, which should never happen as values are checked way before ;-)
             end
 
@@ -74,6 +89,7 @@ module BeEF
                 :session => hb_session,
                 :mod_count => modules.length,
                 :mod_successful => 0,
+                :rule_token => rule_token,
                 :mod_body => wrapper,
                 :is_sent => false,
                 :rule_id => rule_id
@@ -93,19 +109,19 @@ module BeEF
         #         setTimeout(module_three(), 3000);
         # Note: no result status is checked here!! Useful if you just want to launch a bunch of modules without caring
         #  what their status will be (for instance, a bunch of XSRFs on a set of targets)
-        def prepare_sequential_wrapper(mods, order, delay)
+        def prepare_sequential_wrapper(mods, order, delay, rule_token)
           wrapper = ''
           delayed_exec = ''
           c = 0
-
           while c < mods.length
-            delayed_exec += %Q| setTimeout("#{mods[order[c]][:mod_name]}();", #{delay[c]}); |
-            wrapped_mod = "#{mods[order[c]][:mod_body]}\n"
+            delayed_exec += %Q| setTimeout(function(){#{mods[order[c]][:mod_name]}_#{rule_token}();}, #{delay[c]}); |
+            mod_body = mods[order[c]][:mod_body].to_s.gsub("#{mods[order[c]][:mod_name]}_mod_output", "#{mods[order[c]][:mod_name]}_#{rule_token}_mod_output")
+            wrapped_mod = "#{mod_body}\n"
             wrapper += wrapped_mod
             c += 1
           end
           wrapper += delayed_exec
-          print_more "Final Modules Wrapper:\n #{delayed_exec}" if @debug_on
+          print_more "Final Modules Wrapper:\n #{wrapper}" if @debug_on
           wrapper
         end
 
@@ -124,7 +140,7 @@ module BeEF
         # Note: Useful in situations where you want to launch 2 modules, where the second one will execute only
         #     if the first once return with success. Also, the second module has the possibility of mangling first
         #     module output and use it as input for some of its module inputs.
-        def prepare_nested_forward_wrapper(mods, code, conditions, order)
+        def prepare_nested_forward_wrapper(mods, code, conditions, order, rule_token)
           wrapper, delayed_exec = '',''
           delayed_exec_footers = Array.new
           c = 0
@@ -148,8 +164,8 @@ module BeEF
             if c == 0
               # this is the first wrapper to prepare
               delayed_exec += %Q|
-                function #{mods[order[c]][:mod_name]}_f(){
-                  #{mods[order[c]][:mod_name]}();
+                function #{mods[order[c]][:mod_name]}_#{rule_token}_f(){
+                  #{mods[order[c]][:mod_name]}_#{rule_token}();
 
                   // TODO add timeout to prevent infinite loops
                   function isResReady(mod_result, start){
@@ -165,8 +181,8 @@ module BeEF
                           }
                           var status = mod_result[0];
                        if(#{conditions[i]}){
-                         #{mods[order[i]][:mod_name]}_can_exec = true;
-                         #{mods[order[c]][:mod_name]}_mod_output = mod_result[1];
+                         #{mods[order[i]][:mod_name]}_#{rule_token}_can_exec = true;
+                         #{mods[order[c]][:mod_name]}_#{rule_token}_mod_output = mod_result[1];
               |
 
               delayed_exec_footer = %Q|
@@ -174,20 +190,22 @@ module BeEF
                     }
                   }
                   var start = (new Date()).getTime();
-                  var resultReady = setInterval(function(){var start = (new Date()).getTime(); isResReady(#{mods[order[c]][:mod_name]}_mod_output, start);},#{@result_poll_interval});
+                  var resultReady = setInterval(function(){var start = (new Date()).getTime(); isResReady(#{mods[order[c]][:mod_name]}_#{rule_token}_mod_output, start);},#{@result_poll_interval});
                 }
-                #{mods[order[c]][:mod_name]}_f();
+                #{mods[order[c]][:mod_name]}_#{rule_token}_f();
               |
 
               delayed_exec_footers.push(delayed_exec_footer)
 
             elsif c < mods.length - 1
+              code_snippet = code_snippet.to_s.gsub(mods[order[c-1]][:mod_name], "#{mods[order[c-1]][:mod_name]}_#{rule_token}")
+
               # this is one of the wrappers in the middle of the chain
               delayed_exec += %Q|
-                function #{mods[order[c]][:mod_name]}_f(){
-                  if(#{mods[order[c]][:mod_name]}_can_exec){
+                function #{mods[order[c]][:mod_name]}_#{rule_token}_f(){
+                  if(#{mods[order[c]][:mod_name]}_#{rule_token}_can_exec){
                      #{code_snippet}
-                     #{mods[order[c]][:mod_name]}(#{mod_input});
+                     #{mods[order[c]][:mod_name]}_#{rule_token}(#{mod_input});
                      function isResReady(mod_result, start){
                         if (mod_result === null && parseInt(((new Date().getTime()) - start)) < #{@result_poll_timeout}){
                            // loop
@@ -201,8 +219,8 @@ module BeEF
                           }
                           var status = mod_result[0];
                           if(#{conditions[i]}){
-                             #{mods[order[i]][:mod_name]}_can_exec = true;
-                             #{mods[order[c]][:mod_name]}_mod_output = mod_result[1];
+                             #{mods[order[i]][:mod_name]}_#{rule_token}_can_exec = true;
+                             #{mods[order[c]][:mod_name]}_#{rule_token}_mod_output = mod_result[1];
               |
 
               delayed_exec_footer = %Q|
@@ -210,26 +228,28 @@ module BeEF
                        }
                      }
                      var start = (new Date()).getTime();
-                     var resultReady = setInterval(function(){ isResReady(#{mods[order[c]][:mod_name]}_mod_output, start);},#{@result_poll_interval});
+                     var resultReady = setInterval(function(){ isResReady(#{mods[order[c]][:mod_name]}_#{rule_token}_mod_output, start);},#{@result_poll_interval});
                   }
                 }
-                #{mods[order[c]][:mod_name]}_f();
+                #{mods[order[c]][:mod_name]}_#{rule_token}_f();
               |
 
               delayed_exec_footers.push(delayed_exec_footer)
             else
+              code_snippet = code_snippet.to_s.gsub(mods[order[c-1]][:mod_name], "#{mods[order[c-1]][:mod_name]}_#{rule_token}")
               # this is the last wrapper to prepare
               delayed_exec += %Q|
-                function #{mods[order[c]][:mod_name]}_f(){
-                  if(#{mods[order[c]][:mod_name]}_can_exec){
+                function #{mods[order[c]][:mod_name]}_#{rule_token}_f(){
+                  if(#{mods[order[c]][:mod_name]}_#{rule_token}_can_exec){
                      #{code_snippet}
-                     #{mods[order[c]][:mod_name]}(#{mod_input});
+                     #{mods[order[c]][:mod_name]}_#{rule_token}(#{mod_input});
                   }
                 }
-                #{mods[order[c]][:mod_name]}_f();
+                #{mods[order[c]][:mod_name]}_#{rule_token}_f();
               |
             end
-            wrapped_mod = "#{mods[order[c]][:mod_body]}\n"
+            mod_body = mods[order[c]][:mod_body].to_s.gsub("#{mods[order[c]][:mod_name]}_mod_output", "#{mods[order[c]][:mod_name]}_#{rule_token}_mod_output")
+            wrapped_mod = "#{mod_body}\n"
             wrapper += wrapped_mod
             c += 1
           end
@@ -242,7 +262,7 @@ module BeEF
         # prepare the command module (compiling the Erubis templating stuff), eventually obfuscate it,
         # and store it in the database.
         # Returns the raw module body after template substitution.
-        def prepare_command(mod, options, hb_id, replace_input)
+        def prepare_command(mod, options, hb_id, replace_input, rule_token)
           config = BeEF::Core::Configuration.instance
           begin
             command = BeEF::Core::Models::Command.new(
@@ -285,11 +305,11 @@ module BeEF
 
             replace_input ? mod_input = 'mod_input' : mod_input = ''
             result = %Q|
-                var #{mod.name} = function(#{mod_input}){
+                var #{mod.name}_#{rule_token} = function(#{mod_input}){
                     #{clean_command_body(command_body, replace_input)}
                 };
-                var #{mod.name}_can_exec = false;
-                var #{mod.name}_mod_output = null;
+                var #{mod.name}_#{rule_token}_can_exec = false;
+                var #{mod.name}_#{rule_token}_mod_output = null;
             |
 
             return {:mod_name => mod.name, :mod_body => result}
@@ -307,11 +327,15 @@ module BeEF
           begin
             cmd_body = command_body.lines.map(&:chomp)
             wrapper_start_index,wrapper_end_index = nil
+
             cmd_body.each_with_index do |line, index|
-              if line.include?('beef.execute(function()')
+              if line.to_s =~ /^(beef|[a-zA-Z]+)\.execute\(function\(\)/
                 wrapper_start_index = index
                 break
               end
+            end
+            if wrapper_start_index.nil?
+              print_error "[ARE] Could not find module start index"
             end
 
             cmd_body.reverse.each_with_index do |line, index|
@@ -320,8 +344,14 @@ module BeEF
                 break
               end
             end
+            if wrapper_end_index.nil?
+              print_error "[ARE] Could not find module end index"
+            end
 
-            cleaned_cmd_body = cmd_body.slice(wrapper_start_index+1..-(wrapper_end_index+2)).join("\n")
+            cleaned_cmd_body = cmd_body.slice(wrapper_start_index..-(wrapper_end_index+1)).join("\n")
+            if cleaned_cmd_body.eql?('')
+              print_error "[ARE] No command to send"
+            end
 
             # check if <<mod_input>> should be replaced with a variable name (depending if the variable is a string or number)
             if replace_input
@@ -339,7 +369,7 @@ module BeEF
               return cleaned_cmd_body
             end
           rescue =>  e
-            print_error "[ARE] There is likely a problem with the module's command.js parsing. Check Engine.clean_command_body.dd"
+            print_error "[ARE] There is likely a problem with the module's command.js parsing. Check Engine.clean_command_body"
           end
         end
 
@@ -357,9 +387,10 @@ module BeEF
           if rule_id != nil
             rules = [BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)]
           else
-            rules = BeEF::Core::AutorunEngine::Models::Rule.all(:browser => browser)
+            rules = BeEF::Core::AutorunEngine::Models::Rule.all()
           end
           return nil if rules == nil
+          return nil unless rules.length > 0
 
           print_info "[ARE] Checking if any defined rules should be triggered on target."
           # TODO handle cases where there are multiple ARE rules for the same hooked browser.
@@ -402,38 +433,34 @@ module BeEF
               next unless @VERSION.include?(os_ver_rule_cond) || @VERSION_STR.include?(os_ver_rule_cond)
               # os_ver without checks as it can be very different or even empty, for instance on linux/bsd)
 
-              # check if the browser and OS types do match
-              next unless browser == 'ALL'  || browser == rule.browser
-              next unless os == 'ALL'       || os == rule.os
-
-              # Note from @antisnatchor
-              # don't be scared at the next eval() calls :-) we need to dynamically produce boolean conditions
-              # for version matching, for instance 7 >= 10, as in browser_version >= rule.browser_version.
-              #
-              # Every rule is first parsed with AutorunEngine::Parser.parse (both loading from file, or via RESTful API).
-              # This class implements various checks to ensure that input is strictly validated.
-              # see the following filters:
-              # BeEF::Filters::is_valid_browserversion? (make sure it's only integer/float/ALL/UNKNOWN)
-              #
-              # BeEF::Filters::is_valid_osversion? (make sure only 'a-zA-Z0-9.<=> ' are allowed).
-              # Length is also checked (maximum MAX_VER_LEN characters), as well as additional checks
-              # on where special characters like <=> are placed.
-
-              # check if the browser version match
-              if b_ver_cond == 'ALL'
-                browser_match = true
-                browser_version_match = true
+              # skip rule unless the browser matches
+              browser_match = false
+              # check if rule specifies multiple browsers
+              if rule.browser !~ /\A[A-Z]+\Z/
+                rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
+                  browser_match = true if b == browser || b == 'ALL'
+                end
+              # else, only one browser
               else
-               browser_version_match = eval(browser_version.to_s + rule.browser_version)
-               browser_match = true if browser_version_match
+                next unless rule.browser == 'ALL' || browser == rule.browser
+                # check if the browser version matches
+                browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
+                if browser_version_match
+                  browser_match = true
+                else
+                  browser_match = false
+                end
+                print_more "Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : #{browser_version_match}"
               end
+              next unless browser_match
 
-              print_more "Browser version check -> (hook) #{browser_version.to_s} #{rule.browser_version} (rule) : #{browser_version_match}"
+              # skip rule unless the OS matches
+              next unless rule.os == 'ALL' || os == rule.os
 
               # check if the OS versions match
               if os_version != nil || rule.os_version != 'ALL'
-                os_major_version_match = eval(os_ver_hook_maj.to_s + os_ver_rule_cond + os_ver_rule_maj.to_s)
-                os_minor_version_match = eval(os_ver_hook_min.to_s + os_ver_rule_cond + os_ver_rule_min.to_s)
+                os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
+                os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
               else
                 # os_version_match = true if (browser doesn't return an OS version || rule OS version is ALL )
                 os_major_version_match, os_minor_version_match = true, true
@@ -456,6 +483,16 @@ module BeEF
           return match_rules
         end
 
+        # compare versions
+        def compare_versions(ver_a, cond, ver_b)
+          return true if cond == 'ALL'
+          return true if cond == '==' && ver_a == ver_b
+          return true if cond == '<=' && ver_a <= ver_b
+          return true if cond == '<'  && ver_a <  ver_b
+          return true if cond == '>=' && ver_a >= ver_b
+          return true if cond == '>'  && ver_a >  ver_b
+          return false
+        end
       end
     end
   end

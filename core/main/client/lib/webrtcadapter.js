@@ -77,11 +77,16 @@ if (navigator.mozGetUserMedia) {
     return new mozRTCPeerConnection(pcConfig, pcConstraints);
   };
 
-  // The RTCSessionDescription object.
-  window.RTCSessionDescription = mozRTCSessionDescription;
+  try {
+    // The RTCSessionDescription object.
+    window.RTCSessionDescription = mozRTCSessionDescription;
 
-  // The RTCIceCandidate object.
-  window.RTCIceCandidate = mozRTCIceCandidate;
+    // The RTCIceCandidate object.
+    window.RTCIceCandidate = mozRTCIceCandidate;
+
+  }catch(err) {
+    
+  }
 
   // getUserMedia constraints shim.
   getUserMedia = (webrtcDetectedVersion < 38) ?
@@ -149,7 +154,7 @@ if (navigator.mozGetUserMedia) {
     var orgEnumerateDevices =
         navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
     navigator.mediaDevices.enumerateDevices = function() {
-      return orgEnumerateDevices().catch(function(e) {
+      return orgEnumerateDevices().then(undefined, function(e) {
         if (e.name === 'NotFoundError') {
           return [];
         }

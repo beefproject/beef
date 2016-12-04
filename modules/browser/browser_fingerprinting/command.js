@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -41,7 +41,8 @@ beef.execute(function() {
 		new Array("Internet Explorer","5-6","res://shdoclc.dll/pagerror.gif"),
 		new Array("Internet Explorer","7-9","res://ieframe.dll/ielogo.png"),
 		new Array("Internet Explorer","7+", "res://ieframe.dll/info_48.png"),
-        new Array("Internet Explorer","10+","res://ieframe.dll/immersivelogo.png")
+		new Array("Internet Explorer","10+","res://ieframe.dll/immersivelogo.png"),
+		new Array("Tor Browser","1+","chrome://browser/content/abouttbupdate/aboutTBUpdateLogo.png")
 	);
 
 	for (var i=0; i<fingerprints.length; i++) {

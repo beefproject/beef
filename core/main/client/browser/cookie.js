@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -72,6 +72,7 @@ beef.browser.cookie = {
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 		},
 
+	    /* Never stop the madness dear C. */
 		veganLol: function (){
 			var to_hell= '';
 			var min = 17;

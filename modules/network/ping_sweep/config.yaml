@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -9,8 +9,8 @@ beef:
             enable: true
             category: "Network"
             name: "Ping Sweep"
-            description: "Discover active hosts in the internal network of the hooked browser. It works by calling a Java method from JavaScript and does not require user interaction.<br> For browsers other than Firefox, use the PingSweep Java module."
-            authors: ["jgaliana"]
+            description: "Discover active hosts in the internal network of the hooked browser using JavaScript XHR.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses."
+            authors: ["bcoles"]
             target:
                 working: ["FF"]
-                not_working: ["C", "S", "O", "IE"]
+                not_working: ["ALL"]

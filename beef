@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -9,27 +9,31 @@
 # stop deprecation warning from being displayed
 $VERBOSE = nil
 
-# @note Version check to ensure BeEF is running Ruby 1.9 >
-if  RUBY_VERSION < '1.9'
+# @note Version check to ensure BeEF is running Ruby 2.1+
+if RUBY_VERSION < '2.1'
   puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
-  puts "OSX:"
-  puts "See Readme"
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.1 or later."
   puts "\n"
-  exit
+  exit 1
 end
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
 $root_dir = File.expand_path('..', __FILE__)
 
-# @note Prevent some errors on encoding: encoding handling changed (improved) from 1.8.7 to 1.9.1/2.
-if RUBY_VERSION =~ /1.9/
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
-end
-
 # @note Require core loader's
 require 'core/loader'
+
+# @note Check the system language settings for UTF-8 compatibility
+env_lang = ENV['LANG']
+if env_lang !~ /(utf8|utf-8)/i
+  print_warning "Warning: System language $LANG does not appear to be UTF-8 compatible."
+  if env_lang =~ /\A([a-z]+_[a-z]+)\./i
+    country = $1
+    if !RUBY_PLATFORM.downcase.include?('mswin') && !RUBY_PLATFORM.downcase.include?('mingw')
+      print_more "Try: export LANG=#{country}.utf8"
+    end
+  end
+end
 
 # @note Initialize the Configuration object. Eventually loads a different config.yaml if -c flag was passed.
 if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
@@ -120,9 +124,9 @@ print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 #@note Starts the WebSocket server
 if config.get("beef.http.websocket.enable")
   BeEF::Core::Websocket::Websocket.instance
-  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
+  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{config.get("beef.http.websocket.ws_poll_timeout")}]"
   if config.get("beef.http.websocket.secure")
-    print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{config.get("beef.http.websocket.alive_timer")}]"
+    print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{config.get("beef.http.websocket.ws_poll_timeout")}]"
   end
 end
 
@@ -135,14 +139,27 @@ BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 
 # @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
 if config.get("beef.extension.console.shell.enable") == true
+  print_error "The console extension is currently unavailable."
+  print_more "See issue #1090 - https://github.com/beefproject/beef/issues/1090"
+  print_info 'BeEF server started (press control+c to stop)'
+  http_hook_server.start
+  # uncomment this when the console extension is fixed
+=begin
   require 'extensions/console/shell'
   puts ""
   begin
-    FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
+    log_dir = File.expand_path(config.get("beef.extension.console.shell.historyfolder"))
+    FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
+  rescue => e
+    print_error "Could not create log directory for shell history '#{log_dir}': #{e.message}"
+    exit 1
+  end
+  begin
     BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
                                         BeEF::Extension::Console::Shell::DefaultPromptChar, {'config' => config, 'http_hook_server' => http_hook_server}).run
   rescue Interrupt
   end
+=end
 else
   print_info 'BeEF server started (press control+c to stop)'
   http_hook_server.start

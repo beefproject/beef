@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -48,7 +48,7 @@ module BeEF
 
           # @note create the command module to handle the response
           command = @kclass.new(BeEF::Module.get_key_by_class(@kclass))
-          command.build_callback_datastore(@http_params, @http_header, result, command_id, beefhook)
+          command.build_callback_datastore(result, command_id, beefhook, @http_params, @http_header)
           command.session_id = beefhook
           if command.respond_to?(:post_execute)
             command.post_execute

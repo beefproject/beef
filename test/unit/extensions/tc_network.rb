@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -36,7 +36,7 @@ class TC_Network < Test::Unit::TestCase
   # Tests procedure for properly adding new service
   def test_03_add_service_good
     assert_nothing_raised do
-      BeEF::Core::Models::NetworkService.add(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :type => 'Apache', :cid => 1)
+      BeEF::Core::Models::NetworkService.add(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :type => 'Apache')
       raise "Adding network service failed" if BeEF::Core::Models::NetworkService.all(:hooked_browser_id => '1234', :ip => '127.0.0.1').empty?
     end
   end

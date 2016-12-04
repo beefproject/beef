@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -19,6 +19,8 @@ end
 
 require 'extensions/webrtc/models/rtcsignal'
 require 'extensions/webrtc/models/rtcmanage'
+require 'extensions/webrtc/models/rtcstatus'
+require 'extensions/webrtc/models/rtcmodulestatus'
 require 'extensions/webrtc/api/hook'
 require 'extensions/webrtc/handlers'
 require 'extensions/webrtc/api'

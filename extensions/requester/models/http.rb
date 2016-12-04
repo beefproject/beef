@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -46,6 +46,9 @@ module Models
 
     # The content length for the request.
     property :content_length, Text, :lazy => false, :default => 0
+
+    # The request protocol/scheme (http/https)
+    property :proto, Text, :lazy => false
 
     # The domain on which perform the request.
     property :domain, Text, :lazy => false

@@ -1,15 +1,15 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
-# @note Version check to ensure BeEF is running Ruby 1.9 >
-if  RUBY_VERSION < '1.9'
+# @note Version check to ensure BeEF is running Ruby 2.0+
+if RUBY_VERSION < '2.0'
   puts "\n"
-  puts "Ruby version " + RUBY_VERSION + " is no longer supported. Please upgrade 1.9 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.0 or later."
   puts "\n"
-  exit
+  exit 1
 end
 
 begin

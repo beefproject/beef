@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -25,6 +25,7 @@ module BeEF
 
           def self.mount_handler(beef_server)
             beef_server.mount('/proxy', BeEF::Extension::Requester::Handler)
+            beef_server.mount('/api/proxy', BeEF::Extension::Proxy::ProxyRest.new)
           end
 
         end

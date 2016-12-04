@@ -1,10 +1,11 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
-    addressable (2.3.6)
-    ansi (1.4.3)
-    daemons (1.1.9)
-    data_objects (0.10.14)
+    addressable (2.4.0)
+    ansi (1.5.0)
+    chunky_png (1.3.5)
+    daemons (1.2.3)
+    data_objects (0.10.17)
       addressable (~> 2.1)
     dm-core (1.2.1)
       addressable (~> 2.3)
@@ -13,54 +14,74 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
+    dm-serializer (1.2.2)
+      dm-core (~> 1.2.0)
+      fastercsv (~> 1.5)
+      json (~> 1.6)
+      json_pure (~> 1.6)
+      multi_json (~> 1.0)
     dm-sqlite-adapter (1.2.0)
       dm-do-adapter (~> 1.2.0)
       do_sqlite3 (~> 0.10.6)
-    do_sqlite3 (0.10.14)
-      data_objects (= 0.10.14)
-    em-websocket (0.3.8)
-      addressable (>= 2.1.1)
+    do_sqlite3 (0.10.17)
+      data_objects (= 0.10.17)
+    em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
-    eventmachine (1.0.7)
-    execjs (2.0.2)
-    geoip (1.4.0)
-    json (1.8.1)
-    librex (0.0.68)
+    espeak-ruby (1.0.3)
+    eventmachine (1.0.9.1)
+    execjs (2.6.0)
+    fastercsv (1.5.5)
+    geoip (1.6.1)
+    http_parser.rb (0.6.0)
+    json (1.8.3)
+    json_pure (1.8.3)
+    librex (0.0.999)
     libv8 (3.11.8.17)
-    msfrpc-client (1.0.1)
-      librex (>= 0.0.32)
-      msgpack (>= 0.4.5)
-    msgpack (0.5.8)
-    multi_json (1.9.3)
-    parseconfig (1.0.4)
-    rack (1.5.2)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
+    mojo_magick (0.5.6)
+    msfrpc-client (1.0.3)
+      librex (~> 0.0.70, >= 0.0.70)
+      msgpack (~> 0.5.8, >= 0.5.8)
+    msgpack (0.5.12)
+    multi_json (1.11.3)
+    parseconfig (1.0.8)
+    qr4r (0.4.1)
+      mojo_magick
+      rqrcode
+    rack (1.6.4)
     rack-protection (1.5.3)
       rack
-    rainbow (2.0.0)
-    ref (1.0.5)
+    rainbow (2.1.0)
+    ref (2.0.0)
     rexec (1.6.3)
       rainbow
-    rubydns (0.7.0)
+    rqrcode (0.10.1)
+      chunky_png (~> 1.0)
+    rubydns (0.7.3)
       eventmachine (~> 1.0.0)
       rexec (~> 1.6.2)
-    rubyzip (1.1.3)
-    sinatra (1.4.2)
-      rack (~> 1.5, >= 1.5.2)
+    rubyzip (1.2.0)
+    sinatra (1.4.7)
+      rack (~> 1.5)
       rack-protection (~> 1.4)
-      tilt (~> 1.3, >= 1.3.4)
-    term-ansicolor (1.1.5)
+      tilt (>= 1.3, < 3)
+    term-ansicolor (1.3.2)
+      tins (~> 1.0)
     therubyracer (0.11.3)
       libv8 (~> 3.11.8.12)
       ref
-    thin (1.6.2)
-      daemons (>= 1.0.9)
-      eventmachine (>= 1.0.0)
-      rack (>= 1.0.0)
-    tilt (1.4.1)
-    uglifier (2.2.1)
-      execjs (>= 0.3.0)
-      multi_json (~> 1.0, >= 1.0.2)
+    thin (1.6.4)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (~> 1.0)
+    tilt (2.0.2)
+    tins (1.10.1)
+    uglifier (3.0.0)
+      execjs (>= 0.3.0, < 3)
 
 PLATFORMS
   ruby
@@ -70,20 +91,27 @@ DEPENDENCIES
   data_objects
   dm-core
   dm-migrations
+  dm-serializer
   dm-sqlite-adapter
-  em-websocket (~> 0.3.6)
+  em-websocket
   erubis
-  eventmachine (= 1.0.3)
+  espeak-ruby (>= 1.0.3)
+  eventmachine
   execjs
   geoip
   json
+  mime-types
   msfrpc-client
   parseconfig
-  rack (= 1.5.2)
-  rubydns (= 0.7.0)
+  qr4r
+  rack
+  rubydns (~> 0.7.3)
   rubyzip (>= 1.0.0)
-  sinatra (= 1.4.2)
+  sinatra
   term-ansicolor
   therubyracer (= 0.11.3)
   thin
-  uglifier (~> 2.2.1)
+  uglifier
+
+BUNDLED WITH
+   1.12.1

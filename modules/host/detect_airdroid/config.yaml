@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_airdroid:
+            enable: true
+            category: "Host"
+            name: "Detect Airdroid"
+            description: "This module attempts to detect Airdroid application for Android running on localhost (default port: 8888)"
+            authors: ["bcoles"]
+            target:
+                working:
+                    ALL:
+                        os: ["Android"]
+                not_working:
+                    ALL:
+                        os: ["All"]

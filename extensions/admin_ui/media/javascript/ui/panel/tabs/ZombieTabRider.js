@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -62,7 +62,7 @@ ZombieTab_Requester = function(zombie) {
 		autoLoad: false,
 		root: 'history',
 
-		fields: ['domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
+		fields: ['proto', 'domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
 		
 		baseParams: {
@@ -118,6 +118,7 @@ ZombieTab_Requester = function(zombie) {
 		
 		columns: [
 			{header: 'Id', width: 10, sortable: true, dataIndex: 'id', hidden:true},
+			{header: 'Proto', width: 30, sortable: true, dataIndex: 'proto', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Domain', sortable: true, dataIndex: 'domain', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Port', width: 30, sortable: true, dataIndex: 'port', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Method', width: 30, sortable: true, dataIndex: 'method', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
@@ -147,19 +148,35 @@ ZombieTab_Requester = function(zombie) {
 			},
 			afterrender: function(datagrid) {
 				datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
-			}
+			},
 
-            //  Uncomment it when we'll add a contextMenu (right click on a row) in the history grid
-//            ,rowcontextmenu: function(grid, rowIndex, event){
-//                 event.stopEvent();
-//
-//                 history_panel_context_menu.showAt(event.xy);
-//                 history_panel_context_menu.rowIndex = rowIndex;
-//                 history_panel_context_menu.dbIndex = getHttpDbId(grid, rowIndex);
-//            }
+			// History grid context menu (right click on a row in the history grid)
+			rowcontextmenu: function(grid, rowIndex, e){
+				e.preventDefault();
+				grid.getSelectionModel().selectRow(rowIndex);
+				if (!!grid.rowCtxMenu) {
+					grid.rowCtxMenu.destroy();
+				}
+				var record = grid.selModel.getSelected();
+				grid.rowCtxMenu = new Ext.menu.Menu({
+					items: [{
+						text: 'View Response',
+						iconCls: 'network-host-ctxMenu-web',
+						handler: function() {
+							if(record.get('has_ran') != "complete") {
+								commands_statusbar.update_fail("Response for this request has not been received yet.");
+								return;
+							}
+							if(!history_panel.get('requester-response-'+record.get('id'))) {
+								genResultTab(grid.getStore().getAt(rowIndex).data, zombie, commands_statusbar);
+							}
+						}
+					}]
+				});
+				grid.rowCtxMenu.showAt(e.getXY());
+			}
 		}
 	});
-	
 	
 	var history_panel = new Ext.Panel({
 		id: 'requester-history-panel-zombie-'+zombie.session,
@@ -196,6 +213,17 @@ ZombieTab_Requester = function(zombie) {
 			padding: '3px 5px 0 5px',
 			
 			items:[{
+				xtype: 'checkboxgroup',
+				//border: true,
+				//fieldLabel : 'Request Options',
+				items: [{
+					boxLabel: 'SSL',
+					name: 'ssl',
+					inputValue: '1',
+					checked: false, // (window.location.protocol == 'https'),
+					id: 'requester-forge-requests-ssl'
+				}]
+			},{
 				xtype: 'textarea',
 				id: 'raw-request-zombie-'+zombie.session,
 				name: 'raw_request',
@@ -207,6 +235,8 @@ ZombieTab_Requester = function(zombie) {
 			buttons: [{
 				text: 'Send',
 				handler: function() {
+					var use_ssl = Ext.getCmp('requester-forge-requests-ssl').getValue();
+					if (use_ssl) var proto = 'https'; else var proto = 'http';
 					var form = Ext.getCmp('requester-request-form-zombie'+zombie.session).getForm();
 					
 					bar.update_sending('Sending request to ' + zombie.ip + '...');
@@ -214,7 +244,8 @@ ZombieTab_Requester = function(zombie) {
 					form.submit({
 						params: {
 							nonce: Ext.get("nonce").dom.value,//insert the nonce with the form
-							zombie_session: zombie.session
+							zombie_session: zombie.session,
+							proto: proto
 						},
 						success: function() {
 							bar.update_sent("Request sent to hooked browser " + zombie.ip);

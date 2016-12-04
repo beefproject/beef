@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -73,7 +73,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
     Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => @session.get_id, :path => "/", :httponly => true})
       
-    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfuly authenticated in the application.")
+    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully authenticated in the application.")
     @body = "{ success : true }"
   end
   
@@ -96,7 +96,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
     Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => "", :path => "/", :httponly => true, expires: Time.now})
 
-    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfuly logged out.")
+    BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully logged out.")
     @body = "{ success : true }"
     
   end

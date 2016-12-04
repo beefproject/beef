@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -140,7 +140,7 @@ beef.dom = {
             if ($j(this).attr('href') != '')
             {
                 e.preventDefault();
-                beef.dom.createIframe('fullscreen', 'get', {'src':$j(this).attr('href')}, {}, null);
+                beef.dom.createIframe('fullscreen', {'src':$j(this).attr('href')}, {}, null);
                 $j(document).attr('title', $j(this).html());
                 document.body.scroll = "no";
                 document.documentElement.style.overflow = 'hidden';
@@ -452,7 +452,13 @@ beef.dom = {
             var attributes = inputs[i];
             input = document.createElement('input');
                 for(key in attributes){
-                    input.setAttribute(key, attributes[key]);
+                    if (key == 'name' && attributes[key] == 'submit') {
+                      // workaround for https://github.com/beefproject/beef/issues/1117
+                      beef.debug("createIframeXsrfForm - warning: changed form input 'submit' to 'Submit'");
+                      input.setAttribute('Submit', attributes[key]);
+                    } else {
+                      input.setAttribute(key, attributes[key]);
+                    }
                 }
             formXsrf.appendChild(input);
         }

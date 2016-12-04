@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -32,7 +32,7 @@ module BeEF
             #todo antisnatchor: remove this gsub crap adding some hook packing.
             if config.get("beef.http.websocket.enable") && ws.getsocket(hb.session)
               content = File.read(find_beefjs_component_path 'beef.net.requester').gsub('//
-              //   Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+              //   Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
               //   Browser Exploitation Framework (BeEF) - http://beefproject.com
               //   See the file \'doc/COPYING\' for copying permission
               //', "")
@@ -66,6 +66,7 @@ module BeEF
             allow_cross_domain = http_db_object.allow_cross_domain.to_s
             req_parts = http_db_object.request.split(/ |\n/)
             verb = req_parts[0]
+            proto = http_db_object.proto
             uri = req_parts[1]
             headers = {}
 
@@ -102,11 +103,14 @@ module BeEF
               end
             end
 
+            # set default port if nil
             if @port.nil?
-              if uri.match(/^https:/)
-                 @port = 443
+              if uri.to_s =~ /^https?/
+                # absolute
+                (uri.match(/^https:/)) ? @port = 443 : @port = 80
               else
-                 @port = 80
+                # relative
+                (proto == 'https') ? @port = 443 : @port = 80
               end
             end
 
@@ -117,6 +121,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
+                  'proto' => proto,
                   'host' => @host,
                   'port' => @port,
                   'data' => @post_data,
@@ -129,6 +134,7 @@ module BeEF
               http_request_object = {
                   'id' => http_db_object.id,
                   'method' => verb,
+                  'proto' => proto,
                   'host' => @host,
                   'port' => @port,
                   'uri' => uri,

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -20,6 +20,8 @@ module BeEF
         OS_MAC_IMG = 'mac.png'
         OS_QNX_UA_STR = 'QNX'
         OS_QNX_IMG = 'qnx.ico'
+        OS_SUNOS_UA_STR = 'SunOS'
+        OS_SUNOS_IMG = 'sunos.gif'
         OS_BEOS_UA_STR = 'BeOS'
         OS_BEOS_IMG = 'beos.png'
         OS_OPENBSD_UA_STR = 'OpenBSD'
@@ -28,6 +30,8 @@ module BeEF
         OS_IOS_IMG = 'ios.png'
         OS_IPHONE_UA_STR = 'iPhone'
         OS_WEBOS_UA_STR = 'webos.png'
+        OS_AROS_UA_STR = 'AROS'
+        OS_AROS_IMG = 'icaros.png'
         OS_IPHONE_IMG = 'iphone.jpg'
         OS_IPAD_UA_STR = 'iPad'
         OS_IPAD_IMG = 'ipad.png'
@@ -54,6 +58,8 @@ module BeEF
               OS_MAC_UA_STR
             when /qnx/
               OS_QNX_UA_STR
+            when /sun/
+              OS_SUNOS_UA_STR
             when /beos/
               OS_BEOS_UA_STR
             when /openbsd/
@@ -66,6 +72,8 @@ module BeEF
               OS_BLACKBERRY_UA_STR
             when /android/
               OS_ANDROID_UA_STR
+            when /aros/
+              OS_AROS_UA_STR
             else
               'ALL'
           end

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -17,6 +17,10 @@ module Constants
     K       = 'K'        # Konqueror
     C       = 'C'        # Chrome
     O       = 'O'        # Opera
+    A       = 'A'        # Avant
+    MI      = 'MI'       # Midori
+    OD      = 'OD'       # Odyssey
+    BR      = 'BR'       # Brave
     ALL     = 'ALL'      # ALL
     UNKNOWN = 'UN'       # Unknown
 
@@ -27,6 +31,10 @@ module Constants
     FRIENDLY_K_NAME   = 'Konqueror'
     FRIENDLY_C_NAME   = 'Chrome'
     FRIENDLY_O_NAME   = 'Opera'
+    FRIENDLY_A_NAME   = 'Avant'
+    FRIENDLY_MI_NAME  = 'Midori'
+    FRIENDLY_OD_NAME  = 'Odyssey'
+    FRIENDLY_BR_NAME  = 'Brave'
     FRIENDLY_UN_NAME  = 'UNKNOWN'
 
     # Attempt to retrieve a browser's friendly name
@@ -42,36 +50,13 @@ module Constants
         when K ;       return FRIENDLY_K_NAME
         when C ;       return FRIENDLY_C_NAME
         when O ;       return FRIENDLY_O_NAME
+        when A ;       return FRIENDLY_A_NAME
+        when MI ;      return FRIENDLY_MI_NAME
+        when OD ;      return FRIENDLY_OD_NAME
+        when BR ;      return FRIENDLY_BR_NAME
         when UNKNOWN;  return FRIENDLY_UN_NAME
       end
 
-    end
-
-    # Attempt to match the browserstring to a browser constant
-    # @param [String] browserstring Browser UA string
-    # @return [Array] An array of matching browser constants
-    # @todo Confirm this function returns an array if multiple constants are matched
-    def self.match_browser(browserstring)
-      matches = []
-      browserstring.split(" ").each do |chunk|
-        case chunk
-        when /Firefox/, /FF/
-          matches << FF
-        when /Mozilla/
-          matches << M
-        when /Internet Explorer/, /IE/
-          matches << IE
-        when /Safari/
-          matches << S
-        when /Konqueror/
-          matches << K
-        when /Chrome/
-          matches << C
-        when /Opera/
-          matches << O
-        end
-      end
-      matches.uniq
     end
 
   end

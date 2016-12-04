@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -86,6 +86,10 @@ beef.os = {
 		return (this.ua.match('(Windows NT 6.3)')) ? true : false;
 	},
 	
+	isWin10: function() {
+		return (this.ua.match('Windows NT 10.0')) ? true : false;
+	},
+	
 	isOpenBSD: function() {
 		return (this.ua.indexOf('OpenBSD') != -1) ? true : false;
 	},
@@ -155,6 +159,10 @@ beef.os = {
 		return (this.ua.match('BeOS')) ? true : false;
 	},
 
+        isAros: function() {
+                return (this.ua.match('AROS')) ? true : false;
+        },
+
 	isWindows: function() {
 		return (this.ua.match('Windows')) ? true : false;
 	},
@@ -182,9 +190,11 @@ beef.os = {
 		// Android
 		if(this.isAndroid()) return 'Android';
 
+		// SunOS
+		if(this.isSunOS()) return 'SunOS';
+
 		//Linux
 		if(this.isLinux()) return 'Linux';
-		if(this.isSunOS()) return 'Sun OS';
 
 		//iPhone
 		if (this.isIphone()) return 'iOS';
@@ -197,6 +207,7 @@ beef.os = {
 		if(this.isQNX()) return 'QNX';
 		if(this.isBeOS()) return 'BeOS';
 		if(this.isWebOS()) return 'webOS';
+		if(this.isAros()) return 'AROS';
 		
 		return 'unknown';
 	},
@@ -204,6 +215,7 @@ beef.os = {
 	getVersion: function(){
 		//Windows
 		if(this.isWindows()) {
+			if (this.isWin10())         return '10';
 			if (this.isWin81())         return '8.1';
 			if (this.isWin8())          return '8';
 			if (this.isWin7())          return '7';

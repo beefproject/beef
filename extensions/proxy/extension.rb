@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -21,3 +21,4 @@ require 'extensions/requester/models/http'
 #require 'extensions/proxy/models/http'
 require 'extensions/proxy/proxy'
 require 'extensions/proxy/api'
+require 'extensions/proxy/rest/proxy'

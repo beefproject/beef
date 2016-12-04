@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -158,6 +158,8 @@ module BeEF
         #
         #@note Fire a new command module to multiple hooked browsers.
         # Returns the command IDs of the launched module, or 0 if firing got issues.
+        # Use "hb_ids":["ALL"] to run on all hooked browsers
+        # Use "hb_ids":["ALL_ONLINE"] to run on all hooked browsers currently online
         #
         # POST request body example (for modules that don't need parameters, just remove "mod_params")
         #  {
@@ -173,7 +175,7 @@ module BeEF
         # curl example (alert module with custom text, 2 hooked browsers)):
         #
         #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
-        #-X POST http://127.0.0.1:3000/api/modules/multi?token=2316d82702b83a293e2d46a0886a003a6be0a633
+        #-X POST http://127.0.0.1:3000/api/modules/multi_browser?token=2316d82702b83a293e2d46a0886a003a6be0a633
         #
         post '/multi_browser' do
           request.body.rewind
@@ -192,6 +194,19 @@ module BeEF
 
             hb_ids = body["hb_ids"]
             results = Hash.new
+
+            # run on all hooked browsers currently online?
+            if hb_ids.first =~ /\Aall_online\z/i
+              hb_ids = []
+              BeEF::Core::Models::HookedBrowser.all(
+                :lastseen.gte => (Time.new.to_i - 15)).each {|hb| hb_ids << hb.id }
+            # run on all hooked browsers?
+            elsif hb_ids.first =~ /\Aall\z/i
+              hb_ids = []
+              BeEF::Core::Models::HookedBrowser.all.each {|hb| hb_ids << hb.id }
+            end
+
+            # run modules
             hb_ids.each do |hb_id|
               hb = BeEF::Core::Models::HookedBrowser.first(:id => hb_id)
               if hb == nil
@@ -204,7 +219,7 @@ module BeEF
             end
             results.to_json
           rescue => e
-            print_error "Invalid JSON input passed to endpoint /api/modules/multi"
+            print_error "Invalid JSON input passed to endpoint /api/modules/multi_browser"
             error 400 # Bad Request
           end
         end

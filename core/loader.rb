@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -17,6 +17,7 @@ require 'xmlrpc/client'
 require 'openssl'
 require 'rubydns'
 require 'mime/types'
+require 'optparse'
 
 # @note Include the filters
 require 'core/filters'

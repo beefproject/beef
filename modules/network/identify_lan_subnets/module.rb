@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -23,26 +23,6 @@ class Identify_lan_subnets < BeEF::Core::Command
       content['fail'] = 'No active hosts have been discovered.'
     end
     save content
-
-    configuration = BeEF::Core::Configuration.instance
-    if configuration.get("beef.extension.network.enable") == true
-
-      session_id = @datastore['beefhook']
-      cid = @datastore['cid'].to_i
-
-      # log the network hosts
-      if @datastore['results'] =~ /^hosts=([\d\.,]+)/
-        hosts = "#{$1}"
-        hosts.split(',').flatten.each do |ip|
-          next if ip.nil?
-          next unless ip.to_s =~ /^([\d\.]+)$/
-          next unless BeEF::Filters.is_valid_ip?(ip)
-          print_debug("Hooked browser found host #{ip}")
-          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip, :cid => cid)
-        end
-      end
-    end
-
   end
 
 end

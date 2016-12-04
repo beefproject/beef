@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -10,6 +10,7 @@
 zombiesTreeList = function(id) {
     
 	var title = id.slice(0,1).toUpperCase() + id.slice(1);
+
 
 	zombiesTreeList.superclass.constructor.call(this, {
 		id:'zombie-tree-'+id,
@@ -56,6 +57,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		'sub-branch' : 'domain',
 		'distributed' : false
 	},
+
 	
 	//store the list of online hooked browsers in an array
 	online_hooked_browsers_array: new Array,
@@ -77,6 +79,15 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                         text: 'Launch XssRays on Hooked Domain',
                         iconCls: 'zombie-tree-ctxMenu-xssrays'
                     },{
+                        id: 'rtc_caller',
+                        text: 'Set as WebRTC Caller',
+                        iconCls: 'zombie-tree-ctxMenu-rtc'
+                    },{
+                        id: 'rtc_receiver',
+                        text: 'Set as WebRTC Receiver and GO',
+                        iconCls: 'zombie-tree-ctxMenu-rtc',
+                        activated: false
+                    },{
                         xtype: 'menuseparator'
                     },{
                         id: 'delete_zombie',
@@ -88,7 +99,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
           listeners: {
               itemclick: function(item, object) {
                   var hb_id = this.contextNode.id.split('zombie-online-')[1];
-		  var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
+		          var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({
@@ -104,19 +115,36 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                                 params: 'hb_id=' + escape(hb_id)
                             });
                           break;
+                       case 'rtc_caller':
+                          beefwui.rtc_caller = hb_id;
+                          break;
+                       case 'rtc_receiver':
+                          beefwui.rtc_receiver = hb_id;
+                          var url = "/api/webrtc/go?token=" + beefwui.get_rest_token();
+                          Ext.Ajax.request({
+                              url: url,
+                              method: 'POST',
+                              headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                              jsonData: {
+                                  'from': beefwui.get_hb_id(beefwui.rtc_caller),
+                                  'to': beefwui.get_hb_id(beefwui.rtc_receiver),
+                                  'verbose': true
+                              }
+                          });
+                          break;
                        case 'delete_zombie':
-			   var token = beefwui.get_rest_token();
-			   var hid = '';
-			   if (typeof hb_id_off === 'undefined'){
-			      hid=hb_id;
-			   }else{
-			      hid=hb_id_off;
-			   }
-			   var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
-                           Ext.Ajax.request({
-                                url: url,
-                                method: 'GET'
-                            });
+			              var token = beefwui.get_rest_token();
+			              var hid = '';
+			              if (typeof hb_id_off === 'undefined'){
+			                 hid=hb_id;
+			              }else{
+			                 hid=hb_id_off;
+			              }
+			              var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
+                          Ext.Ajax.request({
+                            url: url,
+                            method: 'GET'
+                          });
                           break;
                   }
               }
@@ -126,6 +154,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	listeners: {
 		//creates a new hooked browser tab when a hooked browser is clicked
 		click: function(node, e) {
+            globalnode = node;
 			if(!node.leaf) return;
 	   
             mainPanel.remove(mainPanel.getComponent('current-browser'));
@@ -140,8 +169,28 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                 if(!node.leaf) return;
 
                 node.select();
+                // if (typeof(beefwui.rtc_caller) === 'undefined') {
+                //     node.getOwnerTree().contextMenu.items.add({
+                //         id: 'rtc_caller',
+                //         text: 'Set as WebRTC Caller',
+                //         iconCls: 'zombie-tree-ctxMenu-xssrays'
+                //     });
+                // }
                 var c = node.getOwnerTree().contextMenu;
                 c.contextNode = node;
+                if (typeof(beefwui.rtc_caller) === 'undefined') {
+                    c.items.get('rtc_receiver').disable();
+                } else if (beefwui.rtc_caller === node.id.substr(-80)) {
+                    c.items.get('rtc_receiver').disable();
+                } else {
+                    c.items.get('rtc_receiver').enable();
+                }
+
+                // c.items['rtc_receiver'].disable();
+                // c.add({
+                //     id: 'rtc_caller',
+                //     text: 'Set as WebRTC Caller',
+                //     iconCls: 'zombie-tree-ctxMenu-xssrays'});
                 c.showAt(event.getXY());
 
         },
@@ -212,6 +261,13 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
+			if (<%= BeEF::Core::Configuration.instance.get("beef.extension.admin_ui.play_sound_on_new_zombie") %>) {
+				try {
+					var sound = new Audio('/demos/new_zombie.mp3');
+					sound.play();
+				} catch(e) {}
+			}
+
 			this.online_hooked_browsers_array.push(hooked_browser);
 		}
 		

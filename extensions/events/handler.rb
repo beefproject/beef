@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -61,6 +61,8 @@ module Events
           result = "#{event['time']}s - [User Pasted Text] \"#{event['data']}\""
         when 'blur'
           result = "#{event['time']}s - [Blur] Browser window has lost focus."
+        when 'console'
+          result = "#{event['time']}s - [Console] #{event['data']}"
         when 'keys'
           print_debug "+++++++++++++++++ Key mods: #{event['mods']}"
           print_debug "EventData: #{event['data']}"

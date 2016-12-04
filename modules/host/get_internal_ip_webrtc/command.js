@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -15,7 +15,8 @@ beef.execute(function() {
 
 	    // Construct RTC peer connection
 	    var servers = {iceServers:[]};
-	    var rtc = new RTCPeerConnection(servers);
+	    var mediaConstraints = {optional:[{googIPv6: true}]};
+	    var rtc = new RTCPeerConnection(servers, mediaConstraints);
 	    rtc.createDataChannel('', {reliable:false});
 
 	    // Upon an ICE candidate being found

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -171,11 +171,12 @@ class Target
           'Hostname',
           'Type',
           'Operating System',
-          'MAC Address'
+          'MAC Address',
+          'Last Seen'
         ])
 
     driver.interface.select_network_hosts['results'].each do |x|
-      tbl << [x['ip'],x['hostname'],x['type'],x['os'],x['mac']]
+      tbl << [x['ip'],x['hostname'],x['type'],x['os'],x['mac'],x['lastseen']]
     end
 
     puts "\nNetwork Hosts:\n\n"

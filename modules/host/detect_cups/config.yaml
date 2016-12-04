@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -12,9 +12,4 @@ beef:
             description: "This module attempts to detect Common UNIX Printing System (CUPS) on localhost on the default port 631."
             authors: ["bcoles"]
             target:
-                working:
-                    ALL:
-                        os: ["Linux"]
-                not_working:
-                    ALL:
-                        os: ["All"]
+                working: ["ALL"]

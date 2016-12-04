@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -10,12 +10,10 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string is a valid hostname
   def self.is_valid_hostname?(str)
-    return false if not is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 255
     return false if (str =~ /^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/).nil?
-    return false if not (str =~ /\.\./).nil?
-    return false if not (str =~ /\-\-/).nil?      
     true
   end
 

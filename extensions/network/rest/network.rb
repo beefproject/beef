@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -115,6 +115,27 @@ module BeEF
             halt 400
           rescue StandardError => e
             print_error "Internal error while retrieving host with id #{id} (#{e.message})"
+            halt 500
+          end
+        end
+
+        # Removes a specific host given its id
+        delete '/host/:id' do
+          begin
+            id = params[:id]
+            raise InvalidParamError, 'id' if id !~ /\A\d+\z/
+
+            host = @nh.all(:id => id)
+            halt 404 if host.nil?
+
+            result = {}
+            result['success'] = @nh.delete(id)
+            result.to_json
+          rescue InvalidParamError => e
+            print_error e.message
+            halt 400
+          rescue StandardError => e
+            print_error "Internal error while removing network host with id #{id} (#{e.message})"
             halt 500
           end
         end

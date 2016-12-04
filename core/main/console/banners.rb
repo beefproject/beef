@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -84,10 +84,10 @@ module Banners
       
       self.interfaces.map do |host| # display the important URLs on each interface from the interfaces array
         print_success "running on network interface: #{host}"
-        beef_host = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
-        data = "Hook URL: #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.hook_file")}\n"
+        port = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
+        data = "Hook URL: #{prototxt}://#{host}:#{port}#{configuration.get("beef.http.hook_file")}\n"
         if configuration.get("beef.extension.admin_ui.enable")
-          data += "UI URL:   #{prototxt}://#{host}:#{configuration.get("beef.http.port")}#{configuration.get("beef.http.web_ui_basepath")}/panel\n"
+          data += "UI URL:   #{prototxt}://#{host}:#{port}#{configuration.get("beef.http.web_ui_basepath")}/panel\n"
         end
         
         print_more data

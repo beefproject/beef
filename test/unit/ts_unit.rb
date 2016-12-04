@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -16,6 +16,7 @@ require './core/tc_core'
 require './core/tc_api'
 require './core/tc_bootstrap'
 require './core/tc_modules'
+require './core/tc_extensions'
 require './core/tc_social_engineering'
 require './core/tc_autorun'
 require './core/tc_obfuscation'
@@ -27,7 +28,10 @@ require './extensions/tc_proxy'
 require './extensions/tc_requester'
 require './extensions/tc_event_logger'
 require './extensions/tc_network'
-#require './extensions/tc_dns'
+require './extensions/tc_qrcode'
+require './extensions/tc_console'
+require './extensions/tc_webrtc'
+require './extensions/tc_dns'
 require './tc_grep'
 require './tc_filesystem'
 
@@ -41,6 +45,7 @@ class TS_BeefTests
     suite << TC_Bootstrap.suite
     suite << TC_Api.suite
     suite << TC_Modules.suite
+    suite << TC_Extensions.suite
     suite << TC_Filesystem.suite
     suite << TC_Grep.suite
     suite << TC_SocialEngineering.suite
@@ -53,10 +58,13 @@ class TS_BeefTests
     suite << TC_Proxy.suite
     suite << TC_EventLogger.suite
     suite << TC_Network.suite
+    suite << TC_Qrcode.suite
     suite << TC_Hooks.suite
     suite << TC_Redirector.suite
     suite << TC_DynamicReconstruction.suite
-    #suite << TC_Dns.suite
+    suite << TC_Console.suite
+    suite << TC_Webrtc.suite
+    suite << TC_Dns.suite
 
     return suite
   end

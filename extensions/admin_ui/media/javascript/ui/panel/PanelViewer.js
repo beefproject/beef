@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -59,6 +59,7 @@ Ext.TaskMgr.start({
 					hr.innerHTML = "You appear to be logged out. <a href='<%= @base_path %>/panel/'>Login</a>";
 				}
 				var distributed_engine_rules = (updates['ditributed-engine-rules']) ? updates['ditributed-engine-rules'] : null;
+        beefwui.hooked_browsers = (updates['hooked-browsers']); //? updates['hooked-browsers'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;
 				
 				if(zombiesManager && hooked_browsers) {

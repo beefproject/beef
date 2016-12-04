@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -28,13 +28,19 @@ module BeEF
             return [false, 'Illegal chain_mode definition'] unless CHAIN_MODE.include?(chain_mode)
             return [false, 'Illegal rule name'] unless BeEF::Filters.is_non_empty_string?(name)
             return [false, 'Illegal author name'] unless BeEF::Filters.is_non_empty_string?(author)
-
-            return [false, 'Illegal browser definition'] unless BROWSER.include?(browser)
-
-            if browser_version != 'ALL'
-              return [false, 'Illegal browser_version definition'] unless
+            # if multiple browsers were specified, check each browser
+            if browser.kind_of?(Array)
+              browser.each do |b|
+                return [false, 'Illegal browser definition'] unless BROWSER.include?(b)
+              end
+            # else, if only one browser was specified, check browser and browser version
+            else
+              return [false, 'Illegal browser definition'] unless BROWSER.include?(browser)
+              if browser_version != 'ALL'
+                return [false, 'Illegal browser_version definition'] unless
                   VERSION.include?(browser_version[0,2].gsub(/\s+/,'')) &&
                       BeEF::Filters::is_valid_browserversion?(browser_version[2..-1].gsub(/\s+/,'')) && browser_version.length < MAX_VER_LEN
+              end
             end
 
             if os_version != 'ALL'
@@ -68,6 +74,9 @@ module BeEF
 
             exec_order.each{ |order| return [false, 'execution_order values must be Integers'] unless order.integer?}
             exec_delay.each{ |delay| return [false, 'execution_delay values must be Integers'] unless delay.integer?}
+
+            return [false, 'execution_order and execution_delay values must be consistent with modules numbers'] unless
+                modules.size == exec_order.size && modules.size == exec_delay.size
 
             success
           rescue => e

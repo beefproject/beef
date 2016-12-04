@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -61,7 +61,7 @@ class TC_Login < Test::Unit::TestCase
     session.should have_content('Event')
     session.should have_content('Date')
     session.should have_content('Page')
-    session.should have_content('User with ip 127.0.0.1 has successfuly authenticated in the application')
+    session.should have_content('User with ip 127.0.0.1 has successfully authenticated in the application')
 
     BeefTest.save_screenshot(session)
     BeefTest.logout(session)

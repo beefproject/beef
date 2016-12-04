@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -21,7 +21,6 @@ module BeEF
         property :ip, Text, :lazy => false
         property :port, String, :lazy => false
         property :type, String, :lazy => false
-        property :cid, String, :lazy => false # command id or 'init'
 
         #
         # Stores a network service in the data store
@@ -31,11 +30,18 @@ module BeEF
           (print_error "Invalid IP address"; return) if not BeEF::Filters.is_valid_ip?(service[:ip])
           (print_error "Invalid port"; return) if not BeEF::Filters.is_valid_port?(service[:port])
 
+          # save network services with private IP addresses only?
+          unless BeEF::Filters.is_valid_private_ip?(service[:ip])
+            configuration = BeEF::Core::Configuration.instance
+            if configuration.get("beef.extension.network.ignore_public_ips") == true
+              (print_debug "Ignoring network service with public IP address [ip: #{service[:ip]}]"; return)
+            end
+          end
+
           # store the returned network host details
           BeEF::Core::Models::NetworkHost.add(
             :hooked_browser_id => service[:hooked_browser_id],
-            :ip => service[:ip],
-            :cid => service[:cid])
+            :ip => service[:ip])
 
           # prevent duplicates
           return unless BeEF::Core::Models::NetworkService.all(
@@ -51,8 +57,7 @@ module BeEF
             :proto => service[:proto],
             :ip => service[:ip],
             :port => service[:port],
-            :type => service[:type],
-            :cid => service[:cid])
+            :type => service[:type])
           result = network_service.save
           (print_error "Failed to save network service"; return) if result.nil?
 

