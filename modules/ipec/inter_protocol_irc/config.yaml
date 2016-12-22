@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "IPEC"
             name: "IRC"
-            description: "Using Inter-protocol Expliotation/Communication (IPEC) the hooked browser will connect to an IRC server, join a channel and send messages to it.<br><br>NOTE: Some IRC servers (like freenode) have implemented protections against connections from a web browser. This module is unlikely to work in those instances."
+            description: "Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will connect to an IRC server, join a channel and send messages to it.<br><br>NOTE: Some IRC servers (like freenode) have implemented protections against connections from a web browser. This module is unlikely to work in those instances."
             authors: ["jgaliana"]
             target:
                 working: ["FF"]
