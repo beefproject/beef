@@ -19,7 +19,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Read Gmail"
-            description: "If we are able to run in the context of mail.google.com (either by SOP bypass or other issue) then lets go read some email, grabs unread message ids from gmails atom feed, then grabs conent of each message"
+            description: "If we are able to run in the context of mail.google.com (either by SOP bypass or other issue) then lets go read some email, grabs unread message ids from gmails atom feed, then grabs content of each message"
             authors: ["mh"]
             target:
                 user_notify: ['ALL']
