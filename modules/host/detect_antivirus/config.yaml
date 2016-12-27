@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Host"
             name: "Detect Antivirus"
-            description: "This module detect the javascript code automatically included by some AVs (currently supports detection for Kaspersky, Avira, Avast (ASW), BitDefender, Norton, Dr. Web)"
+            description: "This module detects the javascript code automatically included by some AVs (currently supports detection for Kaspersky, Avira, Avast (ASW), BitDefender, Norton, Dr. Web)"
             authors: ["phosphore","vah13","nbblrr"]
             target:
                 working: ["ALL"]

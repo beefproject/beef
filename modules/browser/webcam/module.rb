@@ -12,7 +12,7 @@ class Webcam < BeEF::Core::Command
   def self.options
        configuration = BeEF::Core::Configuration.instance
        social_engineering_title = "This website is using Adobe Flash"
-       social_engineering_text = "In order to work with the programming framework this website is using, you need to allow the Adobe Flash Player Settings. If you use the new Ajax and HTML5 features in conjunction with Adobe Flash Player, it will increase your user experience."
+       social_engineering_text = "In order to work with the programming framework this website is using, you need to allow the Adobe Flash Player Settings. If you use the new Ajax and HTML5 features in conjunction with Adobe Flash Player, it will improve your user experience."
        no_of_pictures = 20
        interval = 1000
        return [

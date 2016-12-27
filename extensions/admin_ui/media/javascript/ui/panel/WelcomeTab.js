@@ -22,7 +22,7 @@ WelcomeTab = function() {
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Hooked Browsers</span></p><br />\
               <p>To interact with a hooked browser simply left-click it, a new tab will appear. \
               Each hooked browser tab has a number of sub-tabs, described below:</p><br /> \
-              <ul style=\"margin-left:15px;\"><li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Main:</span> Display information about the hooked browser after you've run some command modules.</li> \
+              <ul style=\"margin-left:15px;\"><li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Details:</span> Display information about the hooked browser after you've run some command modules.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Logs:</span> Displays recent log entries related to this particular hooked browser.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Commands:</span> This tab is where modules can be executed against the hooked browser. This is where most of the BeEF functionality resides. \
               Most command modules consist of Javascript code that is executed against the selected\
@@ -36,7 +36,8 @@ WelcomeTab = function() {
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>XssRays:</span> The XssRays tab allows the user to check if links, forms and URI path of the page (where the browser is hooked) is vulnerable to XSS.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Rider:</span> The Rider tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser. \
               Each request sent by the Rider is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li> \
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Network:</span> The Network tab allows you to interact with hosts on the local network(s) of the hooked browser.</li></ul><br /> \
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Network:</span> The Network tab allows you to interact with hosts on the local network(s) of the hooked browser.</li> \
+              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>IPEC:</span> Send commands to the victims systems using Inter-Protocol Exploitation/Communication (IPEC)</li></ul><br /> \
               <p>You can also right-click a hooked browser to open a context-menu with additional functionality:</p><br /> \
               <ul style=\"margin-left:15px;\">\
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Tunneling Proxy:</span> The Proxy allows you to use a hooked browser as a proxy. Simply right-click a browser from the Hooked Browsers tree to the left and select \"Use as Proxy\". \
