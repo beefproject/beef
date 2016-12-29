@@ -1,5 +1,5 @@
 #
-#   Copyright (c) 2006-2016 Wade Alcorn wade@bindshell.net
+#   Copyright (c) 2006-2017 Wade Alcorn wade@bindshell.net
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
