@@ -12,12 +12,13 @@ class Fake_flash_update < BeEF::Core::Command
   end
   
   def self.options
+    @configuration = BeEF::Core::Configuration.instance
+    proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    base_host = "#{proto}://#{beef_host}:#{beef_port}"
     
-    configuration = BeEF::Core::Configuration.instance
-    
-    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-    
-    image = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/adobe/flash_update.png"
+    image = "#{base_host}/adobe/flash_update.png"
 
     return [
         {'name' =>'image', 'description' =>'Location of image for the update prompt', 'ui_label'=>'Image', 'value' => image},
