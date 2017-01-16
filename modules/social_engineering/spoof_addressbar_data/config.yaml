@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        spoof_addressbar_data:
+            enable: true
+            category: "Social Engineering"
+            name: "Spoof Address Bar (data URL)"
+            description: "This module redirects the browser to a legitimate looking URL with a ''data'' scheme, such as ''data:text/html,http://victim.com'', with a BeEF hook and a user-specified URL in a 100% x 100% iframe."
+            authors: ["bcoles"]
+            target:
+                user_notify: ["O", "FF", "C"]
+                not_working: ["IE"]
