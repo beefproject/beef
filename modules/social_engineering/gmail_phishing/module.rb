@@ -6,9 +6,13 @@
 class Gmail_phishing < BeEF::Core::Command
 
   def self.options
-     configuration = BeEF::Core::Configuration.instance
-     proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-     xss_hook_url = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/demos/basic.html"
+    @configuration = BeEF::Core::Configuration.instance
+    proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    base_host = "#{proto}://#{beef_host}:#{beef_port}"
+
+     xss_hook_url = "#{base_host}/demos/basic.html"
      logout_gmail_interval = 10000
      wait_seconds_before_redirect = 1000
      return [

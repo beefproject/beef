@@ -6,9 +6,12 @@
 class Pretty_theft < BeEF::Core::Command
   
   def self.options
-    configuration = BeEF::Core::Configuration.instance
-    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-    logo_uri = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/ui/media/images/beef.png"
+    @configuration = BeEF::Core::Configuration.instance
+    proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
+    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    base_host = "#{proto}://#{beef_host}:#{beef_port}"
+    logo_uri = "#{base_host}/ui/media/images/beef.png"
     return [
 		{'name' => 'choice', 'type' => 'combobox', 'ui_label' => 'Dialog Type', 'store_type' => 'arraystore', 'store_fields' => ['choice'], 'store_data' => [['Facebook'],['LinkedIn'],['Windows'],['YouTube'],['Yammer'],['IOS'],['Generic']], 'valueField' => 'choice', 'value' => 'Facebook', editable: false, 'displayField' => 'choice', 'mode' => 'local', 'autoWidth' => true },
        		

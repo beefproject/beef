@@ -6,9 +6,13 @@
 class Deface_web_page < BeEF::Core::Command
 
   def self.options
-	configuration = BeEF::Core::Configuration.instance
-    proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-	favicon_uri = "#{proto}://#{configuration.get("beef.http.host")}:#{configuration.get("beef.http.port")}/ui/media/images/favicon.ico"
+        @configuration = BeEF::Core::Configuration.instance
+        proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http"
+        beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+        beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+        base_host = "#{proto}://#{beef_host}:#{beef_port}"
+
+	favicon_uri = "#{base_host}/ui/media/images/favicon.ico"
     return [
 		{ 'name' => 'deface_title', 'description' => 'Page Title', 'ui_label' => 'New Title', 'value' => 'BeEF - The Browser Exploitation Framework Project', 'width'=>'200px' },
 		{ 'name' => 'deface_favicon', 'description' => 'Shortcut Icon', 'ui_label' => 'New Favicon', 'value' => favicon_uri, 'width'=>'200px' },
