@@ -194,7 +194,7 @@ ZombieTab_Network = function(zombie) {
 			{header: 'Type', width: 15, sortable: true, dataIndex: 'type', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'Operating System', width: 10, sortable: true, dataIndex: 'os', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
 			{header: 'MAC Address', width: 10, sortable: true, dataIndex: 'mac', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-                        {header: 'Last Seen', width: 15, sortable: true, dataIndex: 'lastseen', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
+                        {header: 'Last Seen', width: 15, sortable: true, dataIndex: 'lastseen', renderer: function(value){return $jEncoder.encoder.encodeForHTML(new Date(1000*value).toUTCString())}}
 		],
 		
 		listeners: {
