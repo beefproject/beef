@@ -109,7 +109,8 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     config = BeEF::Core::Configuration.instance
     permitted_ui_subnet = config.get('beef.restrictions.permitted_ui_subnet')
     target_network = IPAddr.new(permitted_ui_subnet)
-    
+    # test if supplied IP address is valid dot-decimal format
+    return false unless ip =~ /\A[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\z/
     # test if ip within subnet
     return target_network.include?(ip)
   end
