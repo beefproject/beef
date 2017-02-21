@@ -10,7 +10,7 @@ beef:
             category: "Persistence"
             name: "Invisible HTMLFile (ActiveX)"
             description: "This module uses a <i>HTMLFile</i> ActiveX object to create an invisible HTML document containing a BeEF hook. The hook persists until the tab is closed. Internet Explorer only.<br/><br/> Based on <a href='https://www.brokenbrowser.com/zombie-alert/'>research</a> by <a href='https://twitter.com/magicmac2000'>@MagicMac2000</a>."
-            authors: ["bcoles"]
+            authors: ["bcoles", "@MagicMac2000"]
             target:
                 working:
                     IE:
