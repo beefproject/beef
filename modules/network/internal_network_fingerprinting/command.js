@@ -241,6 +241,10 @@ beef.execute(function() {
     "443","https",false,
     "/themes/pfsense_ng/images/logo.gif",200,56),
   new Array(
+    "pfSense CE <= 2.3.2",
+    "80","http",false,
+    "/logo.png",124,36),
+  new Array(
     "Apache Tomcat",
     "8080","http",true,
     "/docs/images/tomcat.gif",146,92),
