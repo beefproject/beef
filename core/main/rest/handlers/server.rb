@@ -14,7 +14,8 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -28,7 +29,7 @@ module BeEF
         # curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mount":"/dropper","local_file":"dropper.exe"}'
         # -X POST -v http://10.0.60.10/api/server/bind?token=xyz
 
-        post '/bind' do
+        post '/api/server/bind' do
           request.body.rewind
           begin
             data = JSON.parse request.body.read
@@ -40,6 +41,8 @@ module BeEF
             if File.exists?(droppers_dir + local_file) && Dir.entries(droppers_dir).include?(local_file)
               f_ext = File.extname(local_file).gsub('.','')
               f_ext = nil if f_ext.empty?
+
+              # TODO this need to be changed since weuse config.ru now
               BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind("/extensions/social_engineering/droppers/#{local_file}", mount, f_ext)
               status 200
             else

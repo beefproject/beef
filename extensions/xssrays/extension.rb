@@ -11,8 +11,8 @@ end
 end
 end
 
-require 'extensions/xssrays/models/xssraysscan'
-require 'extensions/xssrays/models/xssraysdetail'
-require 'extensions/xssrays/api/scan'
-require 'extensions/xssrays/handler'
-require 'extensions/xssrays/api'
+require './models/xssraysscan'
+require './models/xssraysdetail'
+require './api/scan'
+require './handler'
+require './api'

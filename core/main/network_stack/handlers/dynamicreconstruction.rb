@@ -14,18 +14,18 @@ module BeEF
           # @note holds packet queue
           PQ = Array.new()
 
-          # @note obtain dynamic mount points from HttpHookServer
-          MOUNTS = BeEF::Core::Server.instance.mounts
+          MOUNTS = BeEF::Core::Handlers::InternalMounts.instance.get_mountpoints
 
           before do
-            error 404 unless !params.empty?
+            # TODO this is just a PITA during DEV - implement a similar check
+            #error 404 unless !params.empty?
             headers 'Pragma' => 'no-cache',
                     'Cache-Control' => 'no-cache',
                     'Expires' => '0'
           end
 
           # Combines packet information and pushes to PQ (packet queue), then checks packets
-          get '/' do
+          get '/dh' do
             headers 'Pragma' => 'no-cache',
                     'Cache-Control' => 'no-cache',
                     'Expires' => '0',
@@ -47,6 +47,10 @@ module BeEF
             Thread.new {
               check_packets()
             }
+          end
+
+          def get_mounts
+            return MOUNTS
           end
 
           # Check packets goes through the PQ array and attempts to reconstruct the stream from multiple packets

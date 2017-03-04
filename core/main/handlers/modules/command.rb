@@ -40,7 +40,7 @@ module BeEF
 
             build_missing_beefjs_components(command_module.beefjs_components) unless command_module.beefjs_components.empty?
 
-            ws = BeEF::Core::Websocket::Websocket.instance
+            # ws = BeEF::Core::Websocket::Websocket.instance
 
             if config.get("beef.extension.evasion.enable")
               evasion = BeEF::Extension::Evasion::Evasion.instance
@@ -50,18 +50,18 @@ module BeEF
             end
 
             #todo antisnatchor: remove this gsub crap adding some hook packing.
-            if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
-              #content = command_module.output.gsub('//
-              #//
-              #//   Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
-              #//   Browser Exploitation Framework (BeEF) - http://beefproject.com
-              #//   See the file 'doc/COPYING' for copying permission
-              #//
-              #//', "")
-              ws.send(@output, hooked_browser.session)
-            else
+            # if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
+            #   #content = command_module.output.gsub('//
+            #   #//
+            #   #//   Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+            #   #//   Browser Exploitation Framework (BeEF) - http://beefproject.com
+            #   #//   See the file 'doc/COPYING' for copying permission
+            #   #//
+            #   #//', "")
+            #   ws.send(@output, hooked_browser.session)
+            # else
               @body << @output + "\n\n"
-            end
+            # end
             # @note prints the event to the console
             if BeEF::Settings.console?
               name = command_module.friendlyname || kclass

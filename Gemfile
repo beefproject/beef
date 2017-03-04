@@ -7,9 +7,16 @@
 #
 
 gem 'eventmachine'
+gem 'puma'
+
+# TODO REMOVE THIN
 gem 'thin'
+
+# TODO remove unicorn
+gem 'unicorn'
+
 gem 'sinatra'
-gem 'rack'
+# gem 'rack', '~> 1.6.4'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'

@@ -18,7 +18,7 @@ module BeEF
             # @note set up values required to construct beefjs
             beef_js = ''
             # @note location of sub files
-            beef_js_path = "#{$root_dir}/core/main/client/"
+            beef_js_path = "#{File.expand_path('..', __FILE__)}/../../client/"
 
             # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
             ext_js_sub_files = %w(lib/jquery-1.10.2.min.js lib/jquery-migrate-1.2.1.min.js lib/evercookie.js lib/json2.js lib/mdetect.js lib/jquery.blockUI.js)
@@ -137,7 +137,7 @@ module BeEF
             component_path = component
             component_path.gsub!(/beef./, '')
             component_path.gsub!(/\./, '/')
-            component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"
+            component_path.replace "#{File.expand_path('..', __FILE__)}/../../client/#{component_path}.js"
 
             return false if not File.exists? component_path
 

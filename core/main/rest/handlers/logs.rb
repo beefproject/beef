@@ -13,7 +13,8 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -23,7 +24,7 @@ module BeEF
         #
         # @note Get all global logs
         #
-        get '/' do
+        get '/api/logs' do
           logs = BeEF::Core::Models::Log.all()
           logs_to_json(logs)
         end
@@ -31,7 +32,7 @@ module BeEF
         #
         # @note Get hooked browser logs
         #
-        get '/:session' do
+        get '/api/logs/:session' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
 

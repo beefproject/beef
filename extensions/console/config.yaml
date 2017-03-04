@@ -6,7 +6,7 @@
 beef:
     extension:
         console:
-            enable: true 
+            enable: false
             name: 'Console'
             shell:
                 enable: false

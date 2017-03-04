@@ -27,7 +27,7 @@ module Core
       BeEF::Core::Models::CommandModule.all.each do |mod|
         db_modules << mod.name
       end
-      
+
 
       config.get('beef.module').each{|k,v|
         BeEF::Core::Models::CommandModule.new(:name => k, :path => "#{v['path']}module.rb").save if not db_modules.include? k
@@ -41,7 +41,7 @@ module Core
       }
 
       # Call Migration method
-      BeEF::API::Registrar.instance.fire(BeEF::API::Migration, 'migrate_commands')
+      #BeEF::API::Registrar.instance.fire(BeEF::API::Migration, 'migrate_commands')
       
     end
   end

@@ -18,11 +18,12 @@ module Handlers
     configure do
       disable :protection
     end
+
     
     # Process HTTP requests sent by a hooked browser to the framework.
     # It will update the database to add or update the current hooked browser
     # and deploy some command modules or extensions to the hooked browser.
-    get '/' do
+    get '/hook.js' do
       @body = ''
       @params = request.query_string
       #@response = Rack::Response.new(body=[], 200, header={})
@@ -87,7 +88,7 @@ module Handlers
         end
 
         # @note We dynamically get the list of all browser hook handler using the API and register them
-        BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, request, response)
+        #BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, request, response)
       end
 
       # @note set response headers and body

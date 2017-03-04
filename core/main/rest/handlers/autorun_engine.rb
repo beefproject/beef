@@ -13,7 +13,8 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -21,7 +22,7 @@ module BeEF
         end
 
         # Add a new ruleset. Returne the rule_id if request was successful
-        post '/rule/add' do
+        post '/api/autorun/rule/add' do
           request.body.rewind
           begin
             data = JSON.parse request.body.read
@@ -35,7 +36,7 @@ module BeEF
         end
 
         # Delete a ruleset
-        get '/rule/delete/:rule_id' do
+        get '/api/autorun/rule/delete/:rule_id' do
           begin
             rule_id = params[:rule_id]
             rule = BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)
@@ -49,7 +50,7 @@ module BeEF
         end
 
         # Trigger a specified rule_id on online hooked browsers. Offline hooked browsers are ignored
-        get '/rule/trigger/:rule_id' do
+        get '/api/autorun/rule/trigger/:rule_id' do
           begin
             rule_id = params[:rule_id]
 
@@ -79,7 +80,7 @@ module BeEF
         end
 
         # Delete a ruleset
-        get '/rule/list/:rule_id' do
+        get '/api/autorun/rule/list/:rule_id' do
           begin
             rule_id = params[:rule_id]
             if rule_id == 'all'

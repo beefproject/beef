@@ -5,8 +5,8 @@
 #
 
 # Remove Thin 'Server' response header
-Thin.send :remove_const, :SERVER
-Thin::SERVER = nil
+# Thin.send :remove_const, :SERVER
+# Thin::SERVER = nil
 
 module BeEF
   module Core

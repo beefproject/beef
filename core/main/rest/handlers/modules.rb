@@ -12,8 +12,10 @@ module BeEF
         config = BeEF::Core::Configuration.instance
 
         before do
-          error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO re-enable 401 with auth check THIS
+          # error 401 unless params[:token] == config.get('beef.api_token')
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -23,7 +25,7 @@ module BeEF
         #
         # @note Get all available and enabled modules (id, name, category)
         #
-        get '/' do
+        get '/api/modules' do
           mods = BeEF::Core::Models::CommandModule.all
 
           mods_hash = {}
@@ -42,7 +44,7 @@ module BeEF
           mods_hash.to_json
         end
 
-        get '/search/:mod_name' do
+        get '/api/modules/search/:mod_name' do
           mod = BeEF::Core::Models::CommandModule.first(:name => params[:mod_name])
           result = {}
           if mod != nil
@@ -54,7 +56,7 @@ module BeEF
         #
         # @note Get the module definition (info, options)
         #
-        get '/:mod_id' do
+        get '/api/modules/:mod_id' do
           cmd = BeEF::Core::Models::CommandModule.get(params[:mod_id])
           error 404 unless cmd != nil
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
@@ -80,7 +82,7 @@ module BeEF
         #
         #{"date":"1331637093","data":"{\"data\":\"text=michele\"}"}
         #
-        get '/:session/:mod_id/:cmd_id' do
+        get '/api/modules/:session/:mod_id/:cmd_id' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
           cmd = BeEF::Core::Models::Command.first(:hooked_browser_id => hb.id,
@@ -136,7 +138,7 @@ module BeEF
         #
         #{"success":"true","command_id":"not_available"}
         #
-        post '/:session/:mod_id' do
+        post '/api/modules/:session/:mod_id' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
@@ -147,6 +149,8 @@ module BeEF
             data = JSON.parse request.body.read
             options = []
             data.each{|k,v| options.push({'name' => k, 'value' => v})}
+
+            print_info "executing mod #{params[:mod_id]}"
             exec_results = BeEF::Module.execute(modk, params[:session], options)
             exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
           rescue => e
@@ -177,7 +181,7 @@ module BeEF
         #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
         #-X POST http://127.0.0.1:3000/api/modules/multi_browser?token=2316d82702b83a293e2d46a0886a003a6be0a633
         #
-        post '/multi_browser' do
+        post '/api/modules/multi_browser' do
           request.body.rewind
           begin
             body = JSON.parse request.body.read
@@ -252,7 +256,7 @@ module BeEF
         # "modules":[{"mod_id":99,"mod_input":[{"repeat":"10"},{"repeat_string":"ABCDE"}]},{"mod_id":116,"mod_input":[{"question":"hooked?"}]},{"mod_id":128,"mod_input":[]}]}'
         #  -X POST http://127.0.0.1:3000/api/modules/multi_module?token=e640483ae9bca2eb904f003f27dd4bc83936eb92
         #
-        post '/multi_module' do
+        post '/api/modules/multi_module' do
           request.body.rewind
           begin
             body = JSON.parse request.body.read

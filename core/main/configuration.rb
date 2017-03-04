@@ -33,6 +33,7 @@ module BeEF
           print_error "Fatal Error: cannot load configuration file"
           print_debug e
         end
+        @root = File.expand_path('../../../', __FILE__)
         @@instance = self
       end
 
@@ -94,10 +95,10 @@ module BeEF
       # Load extensions configurations
       def load_extensions_config
         self.set('beef.extension', {})
-        Dir.glob("#{$root_dir}/extensions/*/config.yaml") do | cf |
+        Dir.glob("#{File.expand_path('../../../', __FILE__)}/extensions/*/config.yaml") do | cf |
           y = self.load(cf)
           if y != nil
-            y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
+            y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{@root}\//, '')
             @config = y.deep_merge(@config)
           else
             print_error "Unable to load extension configuration '#{cf}'"
@@ -109,14 +110,15 @@ module BeEF
       def load_modules_config
         self.set('beef.module', {})
         # support nested sub-categories, like browser/hooked_domain/ajax_fingerprint
-        module_configs = File.join("#{$root_dir}/modules/**", "config.yaml")
+        module_configs = File.join("#{File.expand_path('../../../', __FILE__)}/modules/**", "config.yaml")
         Dir.glob(module_configs) do | cf |
           y = self.load(cf)
           if y != nil
-            y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{$root_dir}\//, '')
+            y['beef']['module'][y['beef']['module'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(/#{@root}\//, '')
             @config = y.deep_merge(@config)
             # API call for post module config load
-            BeEF::API::Registrar.instance.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
+            # TODO check if this is needed in some mofules or not..
+            #BeEF::API::Registrar.instance.fire(BeEF::API::Configuration, 'module_configuration_load', y['beef']['module'].keys.first)
           else
             print_error "Unable to load module configuration '#{cf}'"
           end

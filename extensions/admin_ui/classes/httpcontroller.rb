@@ -67,7 +67,7 @@ module AdminUI
       # build the template filename and apply it - if the file exists
       function_name = function.name # used for filename
       class_s = self.class.to_s.sub('BeEF::Extension::AdminUI::Controllers::', '').downcase # used for directory name
-      template_ui = "#{$root_dir}/extensions/admin_ui/controllers/#{class_s}/#{function_name}.html"
+      template_ui = "#{File.expand_path('../../../../', __FILE__)}/extensions/admin_ui/controllers/#{class_s}/#{function_name}.html"
       @eruby = Erubis::FastEruby.new(File.read(template_ui)) if File.exists? template_ui # load the template file
       @body = @eruby.result(binding()) if not @eruby.nil? # apply template and set the response
 

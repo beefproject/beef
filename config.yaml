@@ -8,7 +8,7 @@
 beef:
     version: '0.4.7.0-alpha'
     # More verbose messages (server-side)
-    debug: false
+    debug: true
     # More verbose messages (client-side)
     client_debug: false
     # Used for generating secure tokens
@@ -149,19 +149,19 @@ beef:
     # You may override default extension configuration parameters here
     extension:
         requester:
-            enable: true
+            enable: false
         proxy:
-            enable: true
+            enable: false
             key: "beef_key.pem"
             cert: "beef_cert.pem"
         metasploit:
             enable: false
         social_engineering:
-            enable: true
+            enable: false
         evasion:
             enable: false
         ipec:
-            enable: true
+            enable: false
         # this is still experimental..
         dns:
             enable: false

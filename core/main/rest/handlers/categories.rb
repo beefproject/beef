@@ -13,14 +13,15 @@ module BeEF
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
                   'Expires' => '0'
         end
 
-        get '/' do
+        get '/api/categories' do
            categories = BeEF::Modules::get_categories
            cats = Array.new
            i = 0

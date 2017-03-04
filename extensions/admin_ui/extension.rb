@@ -19,17 +19,20 @@ end
 end
 end
 
-# Constants for that extension
-require 'extensions/admin_ui/constants/agents'
-require 'extensions/admin_ui/constants/icons'
+r = File.expand_path('../', __FILE__)
+require "#{r}/constants/agents.rb"
+require "#{r}/constants/icons.rb"
 
-# Classes
-require 'extensions/admin_ui/classes/httpcontroller'
-require 'extensions/admin_ui/classes/session'
+require "#{r}/classes/httpcontroller.rb"
+require "#{r}/classes/session.rb"
 
-# Handlers
-require 'extensions/admin_ui/handlers/ui'
+require "#{r}/api/command.rb"
+require "#{r}/api/handler.rb"
 
-# API Hooking
-require 'extensions/admin_ui/api/command'
-require 'extensions/admin_ui/api/handler'
+require "#{r}/controllers/authentication/authenticationng.rb"
+require "#{r}/controllers/logs/logs.rb"
+require "#{r}/controllers/modules/modules.rb"
+require "#{r}/controllers/panel/panel.rb"
+
+
+# require "#{r}/handlers/ngui.rb"

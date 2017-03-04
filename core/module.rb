@@ -39,18 +39,18 @@ module BeEF
     # @return [Hash] a hash of all the module options
     # @note API Fire: get_options 
     def self.get_options(mod)
-      if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_options', [mod])
-        options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_options', mod)
-        mo = []
-        options.each{|o|
-          if o[:data].kind_of?(Array)
-            mo += o[:data]
-          else
-            print_debug "API Warning: return result for BeEF::Module.get_options() was not an array."
-          end
-        }
-        return mo
-      end
+      #if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_options', [mod])
+        # options = BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_options', mod)
+        # mo = []
+        # options.each{|o|
+        #   if o[:data].kind_of?(Array)
+        #     mo += o[:data]
+        #   else
+        #     print_debug "API Warning: return result for BeEF::Module.get_options() was not an array."
+        #   end
+        # }
+        # return mo
+      #end
       if self.check_hard_load(mod)
         class_name = BeEF::Core::Configuration.instance.get("beef.module.#{mod}.class")
         class_symbol = BeEF::Core::Command.const_get(class_name)
@@ -81,11 +81,11 @@ module BeEF
     # @note API Fire: post_soft_load
     def self.soft_load(mod)
       # API call for pre-soft-load module
-      BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
+      #BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_soft_load', mod)
       config = BeEF::Core::Configuration.instance
       mod_str = "beef.module.#{mod}"
       if not config.get("#{mod_str}.loaded")
-        if not File.exists?("#{$root_dir}/#{config.get("#{mod_str}.path")}/module.rb")
+        if not File.exists?("#{File.expand_path('../../', __FILE__)}/#{config.get("#{mod_str}.path")}module.rb")
           print_debug "Unable to locate module file: #{config.get("#{mod_str}.path")}/module.rb"
           return false
         end
@@ -93,7 +93,7 @@ module BeEF
         self.parse_targets(mod)
         print_debug "Soft Load module: '#{mod}'"
         # API call for post-soft-load module
-        BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
+        #BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
         return true
       end
       print_error "Unable to load module '#{mod}'"
@@ -108,7 +108,7 @@ module BeEF
     # @note API Fire: post_hard_load
     def self.hard_load(mod)
       # API call for pre-hard-load module
-      BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
+      #BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'pre_hard_load', mod)
       config = BeEF::Core::Configuration.instance
       if not self.is_enabled(mod)
         print_error "Hard load attempted on module '#{mod}' that is not enabled."
@@ -116,15 +116,24 @@ module BeEF
       end
       mod_str = "beef.module.#{mod}"
       begin
-        require config.get("#{mod_str}.path")+'module.rb'
+        require File.expand_path('../../', __FILE__) + '/' + config.get("#{mod_str}.path")+'module.rb'
         if self.exists?(config.get("#{mod_str}.class"))
+
           # start server mount point
-          BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
+          # BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
+
+          int_mounts = BeEF::Core::Handlers::InternalMounts.instance
+
+          print_info "mounts.." +  int_mounts.get_mountpoints.inspect
+
+          int_mounts.add_mountpoint("/command/#{mod}.js" , [BeEF::Core::Handlers::Commands, mod])
+
           BeEF::Core::Configuration.instance.set("#{mod_str}.mount", "/command/#{mod}.js")
           BeEF::Core::Configuration.instance.set("#{mod_str}.loaded", true)
           print_debug "Hard Load module: '#{mod}'"
+
           # API call for post-hard-load module
-          BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
+          #BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
           return true
         else
           print_error "Hard loaded module '#{mod}' but the class BeEF::Core::Commands::#{mod.capitalize} does not exist"
@@ -429,11 +438,12 @@ module BeEF
         print_error "Module not found '#{mod}'. Failed to execute module."
         return nil
       end
-      if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
-        BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
-        # @note We return not_nil by default as we cannot determine the correct status if multiple API hooks have been called
-        return 'not_available' # @note using metasploit, we cannot know if the module execution was successful or not
-      end
+      # TODO - double check if this is needed or not...
+      # if BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'override_execute', [mod, nil,nil])
+      #   BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'override_execute', mod, hbsession,opts)
+      #   # @note We return not_nil by default as we cannot determine the correct status if multiple API hooks have been called
+      #   return 'not_available' # @note using metasploit, we cannot know if the module execution was successful or not
+      # end
       hb = BeEF::HBManager.get_by_session(hbsession)
       if not hb
         print_error "Could not find hooked browser when attempting to execute module '#{mod}'"

@@ -14,7 +14,14 @@ module API
   module Handler
     require 'uglifier'
 
-    BeEF::API::Registrar.instance.register(BeEF::Extension::AdminUI::API::Handler, BeEF::API::Server, 'mount_handler')
+    #TODO this basically loads all the other handlers. change this. see other TODOs
+    # the handlers are then called not with Sinatra bu via plain Rack via extensions/admin_ui/handlers/ui.rb
+    # remove the server.mount stuff since we don't use it anymore
+    # Probably better to rewrite the code to use something like:
+    # map '/ui/path' do
+    #   run UI-controller.new
+    # end
+    #BeEF::API::Registrar.instance.register(BeEF::Extension::AdminUI::API::Handler, BeEF::API::Server, 'mount_handler')
 
     def self.evaluate_and_minify(content, params, name)
       erubis = Erubis::FastEruby.new(content)
@@ -26,7 +33,48 @@ module API
       File.path write_to
     end
 
-    def self.build_javascript_ui(beef_server)
+    #
+    # This function gets called automatically by the server.
+    #
+    def self.mount
+      config = BeEF::Core::Configuration.instance
+
+      # Web UI base path, like http://beef_domain/<bp>/panel
+      bp = config.get "beef.http.web_ui_basepath"
+      params = {
+          'base_path' => bp
+      }
+
+      #  +++++++++++++ TODO re-enable this once the main web-ui is working ++++++++++++
+      # registers the http controllers used by BeEF core (authentication, logs, modules and panel)
+      # Dir["#{File.expand_path('../../../../', __FILE__)}/extensions/admin_ui/controllers/**/*.rb"].each do |http_module|
+      #   require http_module
+      #   mod_name = File.basename http_module, '.rb'
+      #   BeEF::Extension::AdminUI::Handlers::UI.new(mod_name)
+      #  # beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
+      # end
+
+
+      #  +++++++++++++ TODO re-enable this once the main web-ui is working ++++++++++++
+      # registers the http controllers used by BeEF extensions (requester, proxy, xssrays, etc..)
+      # Dir["#{File.expand_path('../../../../', __FILE__)}/extensions/**/controllers/*.rb"].each do |http_module|
+      #   require http_module
+      #   mod_name = File.basename http_module, '.rb'
+      #   beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
+      # end
+      
+      # mount the folder were we store static files (javascript, css, images) for the admin ui
+      media_dir = File.dirname(__FILE__)+'/../media/'
+      #beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
+
+      # mount the favicon file, if we're not imitating a web server.
+      # TODO reenable favicon
+      # if !config.get("beef.http.web_server_imitation.enable")
+      #   BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(
+      #       "/extensions/admin_ui/media#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
+      #       '/favicon.ico', 'ico')
+      # end
+
       auth_js_file = File.read(File.dirname(__FILE__)+'/../media/javascript/ui/authentication.js') + "\n\n"
       js_files = ""
 
@@ -41,59 +89,19 @@ module API
         js_files << File.read(File.dirname(__FILE__)+'/../media/javascript/'+file) + "\n\n"
       end
 
-      config = BeEF::Core::Configuration.instance
-      bp = config.get "beef.http.web_ui_basepath"
-
-      # if more dynamic variables are needed in JavaScript files
-      # add them here in the following Hash
-      params = {
-       'base_path' => bp
-      }
-
       # process all JavaScript files, evaluating them with Erubis
       web_ui_all = self.evaluate_and_minify(js_files, params, 'web_ui_all')
       web_ui_auth = self.evaluate_and_minify(auth_js_file, params, 'web_ui_auth')
 
-      beef_server.mount("#{bp}/web_ui_all.js", Rack::File.new(web_ui_all))
-      beef_server.mount("#{bp}/web_ui_auth.js", Rack::File.new(web_ui_auth))
 
-    end
+      #beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
+      # beef_server.mount("#{bp}/web_ui_all.js", Rack::File.new(web_ui_all))
+      # beef_server.mount("#{bp}/web_ui_auth.js", Rack::File.new(web_ui_auth))
 
-    #
-    # This function gets called automatically by the server.
-    #
-    def self.mount_handler(beef_server)
-      config = BeEF::Core::Configuration.instance
+      # beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
 
-      # Web UI base path, like http://beef_domain/<bp>/panel
-      bp = config.get "beef.http.web_ui_basepath"
 
-      # registers the http controllers used by BeEF core (authentication, logs, modules and panel)
-      Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each do |http_module|
-        require http_module
-        mod_name = File.basename http_module, '.rb'
-        beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
-      end
-
-      # registers the http controllers used by BeEF extensions (requester, proxy, xssrays, etc..)
-      Dir["#{$root_dir}/extensions/**/controllers/*.rb"].each do |http_module|
-        require http_module
-        mod_name = File.basename http_module, '.rb'
-        beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
-      end
-      
-      # mount the folder were we store static files (javascript, css, images) for the admin ui
-      media_dir = File.dirname(__FILE__)+'/../media/'
-      beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
-
-      # mount the favicon file, if we're not imitating a web server.
-      if !config.get("beef.http.web_server_imitation.enable")
-        BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(
-            "/extensions/admin_ui/media#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
-            '/favicon.ico', 'ico')
-      end
-
-      self.build_javascript_ui beef_server
+      return [bp, media_dir, web_ui_all, web_ui_auth]
     end
   end
 end

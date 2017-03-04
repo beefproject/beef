@@ -13,7 +13,8 @@ module BeEF
 
         before do
           # error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -39,7 +40,7 @@ module BeEF
         #
         #{"success":"true","token":"122323121"}
         #
-        post '/login' do
+        post '/api/admin/login' do
           request.body.rewind
           begin
             data = JSON.parse request.body.read

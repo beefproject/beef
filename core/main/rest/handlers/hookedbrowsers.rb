@@ -12,8 +12,10 @@ module BeEF
         config = BeEF::Core::Configuration.instance
 
         before do
-          error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          # TODO re-enable 401 with auth check THIS
+          #error 401 unless params[:token] == config.get('beef.api_token')
+          # TODO READD THE PERMITTED SOURCE
+          #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -30,7 +32,7 @@ module BeEF
         #
         # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
         #
-        get '/' do
+        get '/api/hooks' do
           online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
           offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
 
@@ -43,7 +45,7 @@ module BeEF
           output.to_json
         end
 
-	get '/:session/delete' do
+	get '/api/hooks/:session/delete' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
 
@@ -83,7 +85,7 @@ module BeEF
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
-        get '/pf/online' do
+        get '/api/hooks/pf/online' do
           online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
 
           output = {
@@ -96,7 +98,7 @@ module BeEF
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
-        get '/pf/offline' do
+        get '/api/hooks/pf/offline' do
           offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
 
           output = {
@@ -108,7 +110,7 @@ module BeEF
         #
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
-        get '/:session' do
+        get '/api/hooks/:session' do
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
 
@@ -122,7 +124,7 @@ module BeEF
 
         # useful when you inject the BeEF hook in MITM situations (see MITMf) and you want to feed back
         # to BeEF a more accurate OS type/version and architecture information
-        post '/update/:session' do
+        post '/api/hooks/update/:session' do
           body = JSON.parse request.body.read
           os = body['os']
           os_version = body['os_version']
@@ -171,7 +173,7 @@ module BeEF
           }
         end
 
-        # this is used in the 'get '/pf'' restful api call
+        # this is used in the 'get '/api/hooks/pf'' restful api call
         def hbs_to_array(hbs)
           hooked_browsers = []
           hbs.each do |hb|

@@ -7,27 +7,11 @@ module BeEF
   module Extension
     module AdminUI
       module Controllers
-
-#
-#
-#
-        class Panel < BeEF::Extension::AdminUI::HttpController
-
-          def initialize
-            super({
-                      'paths' => {
-                          '/' => method(:index),
-                          '/hooked-browser-tree-update.json' => method(:hooked_browser_tree_update)
-                      }
-                  })
-          end
-
-          # default index page
-          def index;
-          end
+        # TODO check if all the URLs are protected by authentication
+        class Panel < BeEF::Core::Router::Router
 
           # return a JSON object contains all the updates for the hooked browser trees
-          def hooked_browser_tree_update
+          get '/ui/panel/hooked-browser-tree-update.json' do
             # retrieve the hbs that are online
             hooked_browsers_online = zombies2json_simple(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 30)))
 
@@ -51,13 +35,9 @@ module BeEF
                 'ditributed-engine-rules' => distributed_engine_rules
             }
 
-            @body = ret.to_json
+            ret.to_json
           end
 
-          # Takes a list distributed engine rules and format the results into JSON
-          def distributed_engine_rules_2_json_simple(rules)
-
-          end
 
           # Takes a list of zombies and format the results in a JSON array.
           def zombies2json_simple(zombies)
