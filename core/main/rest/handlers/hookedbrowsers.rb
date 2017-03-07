@@ -13,7 +13,7 @@ module BeEF
 
         before do
           # TODO re-enable 401 with auth check THIS
-          #error 401 unless params[:token] == config.get('beef.api_token')
+          error 401 unless params[:token] == config.get('beef.api_token')
           # TODO READD THE PERMITTED SOURCE
           #halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',

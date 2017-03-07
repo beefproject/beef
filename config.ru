@@ -154,18 +154,24 @@ print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
 BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 
-# +++++++++++ TODO ++++++++++
-# -  /core/main/handlers/commands.rb commands should be a dynamic sinatra handler extending Router
-# - check why nothing is written into
 
-
-
-
+# Core
 use BeEF::Core::Handlers::HookedBrowsers
 use BeEF::Core::NetworkStack::Handlers::DynamicReconstruction
+use BeEF::Core::Handlers::BrowserDetails
 
-#use BeEF::Core::Handlers::BrowserDetails #- TODO this is giving problems if USE in the middle - apprently we don'tneed to USE it specifically, since it's loaded earlier
-# use BeEF::Core::Handlers::Dyncommands.new
+# RESTful API
+use BeEF::Core::Rest::HookedBrowsers
+use BeEF::Core::Rest::Modules
+use BeEF::Core::Rest::Categories
+use BeEF::Core::Rest::Logs
+use BeEF::Core::Rest::Admin
+use BeEF::Core::Rest::Server
+use BeEF::Core::Rest::AutorunEngine
+
+# Internal Handlers singleton Core
+run BeEF::Core::Handlers::Dyncommands
+
 
 # new Admin UI Sinatra handlers
 #use Rack::Static, :urls => ["/ui/media"], :root => "extensions/admin_ui/media"
@@ -175,17 +181,3 @@ use BeEF::Core::NetworkStack::Handlers::DynamicReconstruction
 # use BeEF::Extension::AdminUI::Controllers::Modules
 # use BeEF::Extension::AdminUI::Controllers::Logs
 
-
-# TODO NOTE IMPORTANT - if the RESTful API is enabled, pages return 404 unless it's /page?token=something
-# TODO this is caused by "error 404 unless !params.empty?" in DynamicReconstruction
-# leave these RESTful API at the end, since we have the token checks returning 401 at the end (like Firewall rules)
-use BeEF::Core::Rest::HookedBrowsers
-use BeEF::Core::Rest::Modules
-# use BeEF::Core::Rest::Categories
-# use BeEF::Core::Rest::Logs
-# use BeEF::Core::Rest::Admin
-# use BeEF::Core::Rest::Server
-# use BeEF::Core::Rest::AutorunEngine
-
-
-run BeEF::Core::Handlers::Dyncommands
