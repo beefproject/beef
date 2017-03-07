@@ -68,7 +68,22 @@ module BeEF
             }
 
             # @note create the config for the hooked browser session
-            hook_session_config = BeEF::Core::Server.instance.to_h
+            beef_proto = config.get("beef.http.https.enable") == true ? "https" : "http"
+            beef_host = config.get("beef.http.public") || config.get("beef.http.host")
+            beef_port = config.get("beef.http.public_port") || config.get("beef.http.port")
+
+            hook_session_config =  {
+                'beef_version'  => config.get('beef.version'),
+                'beef_url'      => "#{beef_proto}://#{beef_host}:#{beef_port}",
+                'beef_root_dir' => File.expand_path('../../../../', __FILE__),
+                'beef_host'     => beef_host,
+                'beef_port'     => beef_port,
+                'beef_public'   => config.get('beef.http.public'),
+                'beef_public_port' => config.get('beef.http.public_port'),
+                'beef_hook'     => config.get('beef.http.hook_file'),
+                'beef_proto'    => config.get('beef.http.https.enable') == true ? "https" : "http",
+                'client_debug'  => config.get("beef.client_debug")
+            }
 
             # @note if http_host="0.0.0.0" in config ini, use the host requested by client
             unless hook_session_config['beef_public'].nil?

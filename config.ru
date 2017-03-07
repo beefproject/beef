@@ -32,7 +32,6 @@ require './core/ruby/string'
 require './core/ruby/print'
 require './core/ruby/hash'
 require './core/ruby/patches/dm-do-adapter/adapter.rb'
-
 require './core/api/module'
 require './core/api/modules'
 require './core/api/extension'
@@ -42,7 +41,6 @@ require './core/api/main/network_stack/assethandler.rb'
 require './core/api/main/server'
 require './core/api/main/server/hook'
 require './core/api/main/configuration'
-
 require './core/settings'
 require './core/main/models/user'
 require './core/main/models/commandmodule'
@@ -52,27 +50,19 @@ require './core/main/models/command'
 require './core/main/models/result'
 require './core/main/models/optioncache'
 require './core/main/models/browserdetails'
-
 require './core/main/constants/browsers'
 require './core/main/constants/commandmodule'
 require './core/main/constants/distributedengine'
 require './core/main/constants/os'
 require './core/main/constants/hardware'
-
 require './core/main/configuration'
 require './core/main/command'
 require './core/main/crypto'
 require './core/main/logger'
 require './core/main/migration'
-
 require './core/main/console/commandline'
 require './core/main/console/banners'
-
-
 require './core/main/router/router'
-# require './core/main/router/api' -> this mounts the main router under /
-
-require './core/main/server' # TODO this is not gonna be needed anymore..remove it
 require './core/main/handlers/internal_mounts'
 require './core/main/handlers/modules/beefjs'
 require './core/main/handlers/modules/command'
@@ -81,29 +71,21 @@ require './core/main/handlers/events'
 require './core/main/handlers/dyncommands'
 require './core/main/handlers/hookedbrowsers'
 require './core/main/handlers/browserdetails'
-
-# TODO change this once we don'tneed it anymore
-
 require './core/main/network_stack/handlers/dynamicreconstruction'
 require './core/main/network_stack/handlers/redirector'
 require './core/main/network_stack/handlers/raw'
 require './core/main/network_stack/assethandler'
-# require './core/main/network_stack/api' -> this mounts the router under /dh
-
 require './core/main/distributed_engine/models/rules'
-
 require './core/main/autorun_engine/models/rule'
 require './core/main/autorun_engine/models/execution'
 require './core/main/autorun_engine/parser'
 require './core/main/autorun_engine/engine'
 require './core/main/autorun_engine/rule_loader'
-
 require './core/module'
 require './core/modules'
 require './core/extension'
 require './core/extensions'
 require './core/hbmanager'
-
 require './core/main/rest/handlers/admin_ui'
 require './core/main/rest/handlers/hookedbrowsers'
 require './core/main/rest/handlers/modules'
@@ -112,10 +94,9 @@ require './core/main/rest/handlers/logs'
 require './core/main/rest/handlers/admin'
 require './core/main/rest/handlers/server'
 require './core/main/rest/handlers/autorun_engine'
-
 require './core/main/rest/api'
 
-# check /core/main/rest/api.rb for all the mounts
+# TODO re-enable WebSockets channel when ready
 #require './core/main/network_stack/websocket/websocket'
 
 
@@ -158,7 +139,6 @@ BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 # Core
 use BeEF::Core::Handlers::HookedBrowsers
 use BeEF::Core::NetworkStack::Handlers::DynamicReconstruction
-use BeEF::Core::Handlers::BrowserDetails
 
 # RESTful API
 use BeEF::Core::Rest::HookedBrowsers
@@ -166,12 +146,12 @@ use BeEF::Core::Rest::Modules
 use BeEF::Core::Rest::Categories
 use BeEF::Core::Rest::Logs
 use BeEF::Core::Rest::Admin
-use BeEF::Core::Rest::Server
+use BeEF::Core::Rest::Server # TODO change the way dynamic mounts are added
 use BeEF::Core::Rest::AutorunEngine
 
 # Internal Handlers singleton Core
 run BeEF::Core::Handlers::Dyncommands
-
+run BeEF::Core::Handlers::BrowserDetails
 
 # new Admin UI Sinatra handlers
 #use Rack::Static, :urls => ["/ui/media"], :root => "extensions/admin_ui/media"

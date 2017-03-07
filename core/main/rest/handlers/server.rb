@@ -10,7 +10,6 @@ module BeEF
       class Server < BeEF::Core::Router::Router
 
         config = BeEF::Core::Configuration.instance
-        http_server = BeEF::Core::Server.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
