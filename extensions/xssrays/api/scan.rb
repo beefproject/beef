@@ -32,7 +32,8 @@ module BeEF
             # build the beefjs xssrays component
 
             # the URI of the XssRays handler where rays should come back if the vulnerability is verified
-            beefurl = BeEF::Core::Server.instance.url
+            # TODO refactor THIS since we don't use Server anymore
+            beefurl = nil #BeEF::Core::Server.instance.url
             cross_domain = xs.cross_domain
             timeout = xs.clean_timeout
             debug = config.get("beef.extension.xssrays.js_console_logs")

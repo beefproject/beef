@@ -11,7 +11,8 @@ module BeEF
         include Singleton
 
         def initialize
-          @http_server = BeEF::Core::Server.instance
+          # TODO refactor THIS since we don't use Server anymore
+          # @http_server = BeEF::Core::Server.instance
           @config = BeEF::Core::Configuration.instance
           @cloned_pages_dir = "#{File.expand_path('../../../../extensions/social_engineering/web_cloner', __FILE__)}/cloned_pages/"
           beef_proto = @config.get("beef.http.https.enable") == true ? "https" : "http"
@@ -144,8 +145,9 @@ module BeEF
             end
 
             print_info "Mounting cloned page on URL [#{mount}]"
-            @http_server.mount("#{mount}", interceptor.new)
-            @http_server.remap
+            # TODO re-enable this
+            # @http_server.mount("#{mount}", interceptor.new)
+            # @http_server.remap
 
             success = true
           else

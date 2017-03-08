@@ -92,6 +92,20 @@ require './core/main/rest/api'
 # TODO re-enable WebSockets channel when ready
 #require './core/main/network_stack/websocket/websocket'
 
+# AMAZON DEPLOY VIA ELASTIC BEAN STALK.
+#  - Make sure there is no Gemfile.lock
+#  - set env vars via: eb setenv LANG=en_US.UTF-8
+#  - confirm vars are set ok with:
+# eb printenv
+# Environment Variables:
+#                 LANG = en_US.UTF-8
+# LANGUAGE = en_US.UTF-8
+# RAILS_SKIP_ASSET_COMPILATION = false
+# BUNDLE_WITHOUT = test:development
+# RACK_ENV = production
+# LC_ALL = en_US.UTF-8
+# RAILS_SKIP_MIGRATIONS = false
+
 
 # If you run locally with rackup, add the following line at the start of this file:
 #\ -s puma -w -p 3000

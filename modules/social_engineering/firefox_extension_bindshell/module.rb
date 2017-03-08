@@ -66,8 +66,10 @@ class Firefox_extension_bindshell < BeEF::Core::Command
     # mount the extension in the BeEF web server, calling a specific nested class (needed because we need a specific content-type/disposition)
     bind_extension = Firefox_extension_bindshell::Bind_extension
     bind_extension.set :extension_path, "#{$root_dir}/modules/social_engineering/firefox_extension_bindshell/extension/#{@xpi_name}.xpi"
-    BeEF::Core::Server.instance.mount("/#{@xpi_name}.xpi", bind_extension.new)
-    BeEF::Core::Server.instance.remap
+
+    # TODO refactor this since we don't use anymore Server
+    # BeEF::Core::Server.instance.mount("/#{@xpi_name}.xpi", bind_extension.new)
+    # BeEF::Core::Server.instance.remap
   end
 
   def self.options

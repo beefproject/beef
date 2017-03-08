@@ -20,7 +20,9 @@ module Handlers
     def initialize
       @allocations = {}
       @sockets = {}
-      @http_server = BeEF::Core::Server.instance
+
+      # TODO refactor this since we don't use anymore Server
+      @http_server = nil #BeEF::Core::Server.instance
       @root_dir = File.expand_path('../../../../', __FILE__)
     end
 

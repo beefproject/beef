@@ -18,7 +18,11 @@ module BeEF
         @@lastalive= Hash.new
         @@config = BeEF::Core::Configuration.instance
         #@@wsopt=nil
-        MOUNTS = BeEF::Core::Server.instance.mounts
+
+        # TODO check if below change works when re-enabling web sockets
+        # MOUNTS = BeEF::Core::Server.instance.mounts
+        MOUNTS = BeEF::Core::Handlers::InternalMounts.instance.get_mountpoints
+
 
         def initialize
 
