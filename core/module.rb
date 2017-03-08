@@ -123,9 +123,6 @@ module BeEF
           # BeEF::Core::Server.instance.mount("/command/#{mod}.js", BeEF::Core::Handlers::Commands, mod)
 
           int_mounts = BeEF::Core::Handlers::InternalMounts.instance
-
-          print_info "mounts.." +  int_mounts.get_mountpoints.inspect
-
           int_mounts.add_mountpoint("/command/#{mod}.js" , [BeEF::Core::Handlers::Commands, mod])
 
           BeEF::Core::Configuration.instance.set("#{mod_str}.mount", "/command/#{mod}.js")

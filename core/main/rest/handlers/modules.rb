@@ -150,7 +150,7 @@ module BeEF
             options = []
             data.each{|k,v| options.push({'name' => k, 'value' => v})}
 
-            print_info "executing mod #{params[:mod_id]}"
+            print_info "Executing Command Module (id:#{params[:mod_id]})"
             exec_results = BeEF::Module.execute(modk, params[:session], options)
             exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
           rescue => e

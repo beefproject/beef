@@ -98,7 +98,7 @@ require './core/main/rest/api'
 #  - confirm vars are set ok with:
 # eb printenv
 # Environment Variables:
-#                 LANG = en_US.UTF-8
+# LANG = en_US.UTF-8
 # LANGUAGE = en_US.UTF-8
 # RAILS_SKIP_ASSET_COMPILATION = false
 # BUNDLE_WITHOUT = test:development

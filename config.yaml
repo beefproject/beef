@@ -46,6 +46,11 @@ beef:
         #public: ""      # public hostname/IP address
         #public_port: "" # public port (experimental)
 
+        # for AMAZON ElasticBeanStalk deployment, use public settings likethe following:
+        #public: "beef-amazon-ebs.jnmhk59vzq.us-west-2.elasticbeanstalk.com"   # DNS name of your app
+        #public_port: "80"                                                     # or 443
+
+
         # Web Admin user interface URI
         web_ui_basepath: "/ui"
 
