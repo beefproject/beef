@@ -23,12 +23,13 @@ gem 'mime-types'
 
 
 # Windows support
-if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
-  # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
-  gem 'therubyracer', '~> 0.11.0beta1'
-elsif !RUBY_PLATFORM.downcase.include?('darwin')
-  gem 'therubyracer', '0.11.3'
-end
+# TODO re-enable this when the WebUI is reenabled
+# if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
+#   # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
+#   gem 'therubyracer'
+# elsif !RUBY_PLATFORM.downcase.include?('darwin')
+#   gem 'therubyracer'
+# end
  
 gem 'execjs'
 gem 'ansi'

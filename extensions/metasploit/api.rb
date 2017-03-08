@@ -31,24 +31,24 @@ module BeEF
             if connected
               msf_module_config = {}
               path = BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')
-              if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")
-                print_debug "Attempting to use Metasploit exploits cache file"
-                raw = File.read("#{path}msf-exploits.cache")
-                begin
-                  msf_module_config = YAML.load(raw)
-                rescue => e
-                  puts e
-                end
-                count = 1
-                msf_module_config.each { |k, v|
-                  BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [k])
-                  BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [k, nil])
-                  BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [k, nil, nil])
-                  print_over "Loaded #{count} Metasploit exploits."
-                  count += 1
-                }
-                print "\r\n"
-              else
+              # if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")
+              #   print_debug "Attempting to use Metasploit exploits cache file"
+              #   raw = File.read("#{path}msf-exploits.cache")
+              #   begin
+              #     msf_module_config = YAML.load(raw)
+              #   rescue => e
+              #     puts e
+              #   end
+              #   count = 1
+              #   msf_module_config.each { |k, v|
+              #     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_options', [k])
+              #     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'get_payload_options', [k, nil])
+              #     BeEF::API::Registrar.instance.register(BeEF::Extension::Metasploit::API::MetasploitHooks, BeEF::API::Module, 'override_execute', [k, nil, nil])
+              #     print_over "Loaded #{count} Metasploit exploits."
+              #     count += 1
+              #   }
+              #   print "\r\n"
+              # else
                 msf_modules = msf.call('module.exploits')
                 count = 1
                 msf_modules['modules'].each { |m|
@@ -106,7 +106,7 @@ module BeEF
                   f.write(msf_module_config.to_yaml)
                   print_debug "Wrote Metasploit exploits to cache file"
                 end
-              end
+              # end
               BeEF::Core::Configuration.instance.set('beef.module', msf_module_config)
             end
           end

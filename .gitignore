@@ -102,3 +102,8 @@ $RECYCLE.BIN/
 # Project-level settings
 /.tgitconfig
 
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

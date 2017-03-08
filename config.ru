@@ -1,9 +1,3 @@
-#\ -s puma -w -p 3000
-
-# alternative app servers:
-#  Thin --> -s thin -w -p 3000
-#  Unicorn, just type (without rackup) ->  unicorn -p 3000
-
 require 'rubygems'
 require 'bundler/setup'
 Bundler.require(:default)
@@ -60,7 +54,6 @@ require './core/main/command'
 require './core/main/crypto'
 require './core/main/logger'
 require './core/main/migration'
-require './core/main/console/commandline'
 require './core/main/console/banners'
 require './core/main/router/router'
 require './core/main/handlers/internal_mounts'
@@ -98,6 +91,14 @@ require './core/main/rest/api'
 
 # TODO re-enable WebSockets channel when ready
 #require './core/main/network_stack/websocket/websocket'
+
+
+# If you run locally with rackup, add the following line at the start of this file:
+#\ -s puma -w -p 3000
+
+# alternative app servers:
+#  Thin --> -s thin -w -p 3000
+#  Unicorn, just type (without rackup) ->  unicorn -p 3000
 
 
 BeEF::Core::Console::Banners.print_welcome_msg

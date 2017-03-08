@@ -12,11 +12,11 @@ module BeEF
       #@note All the HTTP handlers registered on BeEF will extend this class.
       class Router < Sinatra::Base
 
-        if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
+        #if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
           config = BeEF::Core::Configuration.new("#{File.expand_path('..', __FILE__)}/../../../config.yaml")
-        else
-          config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
-        end
+        #else
+        #  config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+        #end
 
 
         #TODO reset this to false for production
