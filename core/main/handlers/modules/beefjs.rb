@@ -130,7 +130,7 @@ module BeEF
             end
 
             # @note populate place holders in the beef_js string and set the response body
-            eruby = Erubis::FastEruby.new(beef_js)
+            eruby = Erubis::FastEruby.new(beef_js.encode(Encoding.find('UTF-8'), {invalid: :replace, undef: :replace, replace: ''}))
             @hook = eruby.evaluate(hook_session_config)
 
             if config.get("beef.extension.evasion.enable")
