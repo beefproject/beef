@@ -13,16 +13,6 @@ gem 'rack'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
-
-
-# Windows support
-if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
-  # make sure you install this gem following https://github.com/eakmotion/therubyracer_for_windows
-  gem 'therubyracer', '~> 0.11.0beta1'
-elsif !RUBY_PLATFORM.downcase.include?('darwin')
-  gem 'therubyracer', '0.11.3'
-end
- 
 gem 'execjs'
 gem 'ansi'
 gem 'term-ansicolor', :require => 'term/ansicolor'
