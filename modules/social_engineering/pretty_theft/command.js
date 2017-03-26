@@ -112,7 +112,7 @@ beef.execute(function() {
 		// Set appearance using styles, maybe cleaner way to do this with CSS block?
 		var windowborder = 'style="width:330px;background:white;border:10px #999999 solid;border-radius:8px"';
 		var windowmain = 'style="border:1px #555 solid;"';
- 		var tbarstyle = 'style="color: rgb(255, 255, 255); background-color: rgb(109, 132, 180);font-size: 13px;font-family:tahoma,verdana,arial,sans-serif;font-weight: bold;padding: 5px;padding-left:8px;text-align: left;height: 18px;"';
+ 		var tbarstyle = 'style="color: rgb(255, 255, 255); background-color: rgb(109, 132, 180);font-size: 13px;font-family:tahoma,verdana,arial,sans-serif;font-weight: bold;padding: 5px;padding-left:8px;text-align: left;height: 30px;"';
 		var bbarstyle = 'style="color: rgb(0, 0, 0);background-color: rgb(242, 242, 242);padding: 8px;text-align: right;border-top: 1px solid rgb(198, 198, 198);height:28px;margin-top:10px;"';
 		var messagestyle = 'style="align:left;font-size:11px;font-family:tahoma,verdana,arial,sans-serif;margin:10px 15px;line-height:12px;height:40px;"';
 		var box_prestyle = 'style="color: grey;font-size: 11px;font-weight: bold;font-family: tahoma,verdana,arial,sans-serif;padding-left:30px;"';
@@ -142,7 +142,7 @@ beef.execute(function() {
 		// Set appearance using styles, maybe cleaner way to do this with CSS block?
 		var windowborder = 'style="width:330px;background:white;border: 10px #999999 solid;border-radius:8px;"';
 		var windowmain = 'style="border:1px #555 solid;"';
- 		var tbarstyle = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 22px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
+ 		var tbarstyle = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 30px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
 
 //-moz-box-shadow: 0 1px 4px #ccc;-webkit-box-shadow: 0 1px 4px #CCC;-o-box-shadow: 0 1px 4px #ccc;box-shadow: 0 1px 4px #CCC;
 
@@ -219,7 +219,7 @@ beef.execute(function() {
 		// Set appearance using styles, maybe cleaner way to do this with CSS block?
 		var windowborder  = 'style="width:330px;background:white;border: 10px #999999 solid;border-radius:8px;"';
 		var windowmain    = 'style="border:1px #555 solid;"';
- 		var tbarstyle     = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 22px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
+ 		var tbarstyle     = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 30px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
 		var bbarstyle     = 'style="color: rgb(0, 0, 0);background-color: rgb(242, 242, 242);padding: 8px;text-align: right;border-top: 1px solid rgb(198, 198, 198);height:28px;margin-top:10px;"';
 		var messagestyle  = 'style="align:left;font-size:11px;font-family:Arial,sans-serif;margin:10px 15px;line-height:12px;height:40px;"';
 		var box_prestyle  = 'style="color: #666;font-size: 11px;font-weight: bold;font-family: Arial,sans-serif;padding-left:30px;"';
@@ -249,7 +249,7 @@ beef.execute(function() {
 		// Set appearance using styles, maybe cleaner way to do this with CSS block?
 		var windowborder  = 'style="width:330px;background:white;border: 10px #999999 solid;border-radius:8px;"';
 		var windowmain    = 'style="border:1px #555 solid;"';
- 		var tbarstyle     = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 22px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
+ 		var tbarstyle     = 'style="color:white; font-size: 14px;font-family:Arial,sans-serif;font-weight: bold;outline-style: inherit;outline-color: #000000;outline-width: 1px;padding:5px;padding-left:8px;padding-right:6px;text-align: left;height: 30px;line-height:22px;border-bottom: 1px solid #CDCDCD;background: #F4F4F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#595959);background: -webkit-gradient(linear, left top, left bottom, from(#919191), to(#595959));background: -moz-linear-gradient(top,  #919191,  #595959);"';
 		var bbarstyle     = 'style="color: rgb(0, 0, 0);background-color: rgb(242, 242, 242);padding: 8px;text-align: right;border-top: 1px solid rgb(198, 198, 198);height:28px;margin-top:10px;"';
 		var messagestyle  = 'style="align:left;font-size:11px;font-family:Arial,sans-serif;margin:10px 15px;line-height:12px;height:40px;"';
 		var box_prestyle  = 'style="color: #666;font-size: 11px;font-weight: bold;font-family: Arial,sans-serif;padding-left:30px;"';
