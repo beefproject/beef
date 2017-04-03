@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Persistence"
             name: "JSONP Service Worker"
-            description: "This module will exploit an unescaped callback parameter in a JSONP endpoint (of the same domain compromized) to ensure that BeEF will hook every time the user revisits the domain"
+            description: "This module will exploit an unfiltered callback parameter in a JSONP endpoint (of the same domain compromized) to ensure that BeEF will hook every time the user revisits the domain"
             authors: ["clod81"]
             target:
                 working: ["C"]
