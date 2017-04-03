@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        jsonp_service_worker:
+            enable: true
+            category: "Persistence"
+            name: "JSONP Service Worker"
+            description: "This module will exploit an unescaped callback parameter in a JSONP endpoint (of the same domain compromized) to ensure that BeEF will hook every time the user revisits the domain"
+            authors: ["clod81"]
+            target:
+                working: ["C"]
+                not_working: ["S", "FF", "IE"]
