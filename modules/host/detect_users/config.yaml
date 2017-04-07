@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_users:
+            enable: true
+            category: "Host"
+            name: "Detect Users"
+            description: "This module attempts to enumerate valid usernames on the user's system using <a href='https://soroush.secproject.com/blog/2013/04/microsoft-xmldom-in-ie-can-divulge-information-of-local-drivenetwork-in-error-messages/'>Internet Explorer XMLDOM XXE</a> discovered by Soroush Dalili (@irsdl)."
+            authors: ["bcoles"]
+            target:
+                working: ["IE"]
+                not_working: ["ALL"]
