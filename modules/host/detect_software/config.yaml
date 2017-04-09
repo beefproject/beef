@@ -3,14 +3,15 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+
 beef:
     module:
-        Detect_software:
+        detect_software:
             enable: true
             category: "Host"
             name: "Detect Software"
-            description: "Detects software installed on the host (Internet Explorer only)"
-            authors: ["mh"]
+            description: "This module attempts to detect software installed on the host by using <a href='https://soroush.secproject.com/blog/2013/04/microsoft-xmldom-in-ie-can-divulge-information-of-local-drivenetwork-in-error-messages/'>Internet Explorer XMLDOM XXE</a> discovered by Soroush Dalili (@irsdl).<br/><br/>If the XMLDOM XXE technique fails, the module falls back to using the 'res' protocol handler to load known resource images from EXE/DLL files.<br/><br/>It also attempts to enumerate installed patches if service pack uninstall files are present on the host (WinXP only)."
+            authors: ["bcoles"]
             target:
                 working: ["IE"]
-                not_working: ["All"]
+                not_working: ["ALL"]
