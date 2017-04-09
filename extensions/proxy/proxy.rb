@@ -157,6 +157,7 @@ module BeEF
               "Connection",
               "Expires",
               "Accept-Ranges",
+              "Transfer-Encoding",
               "Date"]
             headers.each_line do |line|
               # stripping the Encoding, Cache and other headers
