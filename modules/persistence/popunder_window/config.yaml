@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Persistence"
             name: "Create Pop Under"
-            description: "This module creates a new discreet pop under window with the BeEF hook included.<br><br>Another browser node will be added to the hooked browser tree."
+            description: "This module creates a new discreet pop under window with the BeEF hook included.<br><br>Another browser node will be added to the hooked browser tree.<br/><br/>Modern browsers block popups by default and warn the user the popup was blocked (unless the origin is permitted to spawn popups).<br/><br/>However, this check is bypassed for some user-initiated events such as clicking the page. Use the 'clickjack' option below to add an event handler which spawns the popup when the user clicks anywhere on the page. Running the module multiple times will spawn multiple popups for a single click event.<br/><br/>Note: mobile devices may open the new popup window on top or redirect the current window, rather than open in the background."
             authors: ["ethicalhack3r"]
             target:
                 user_notify: ["ALL"]
