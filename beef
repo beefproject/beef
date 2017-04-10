@@ -9,10 +9,10 @@
 # stop deprecation warning from being displayed
 $VERBOSE = nil
 
-# @note Version check to ensure BeEF is running Ruby 2.1+
-if RUBY_VERSION < '2.1'
+# @note Version check to ensure BeEF is running Ruby 2.2+
+if RUBY_VERSION < '2.2'
   puts "\n"
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.1 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
   puts "\n"
   exit 1
 end

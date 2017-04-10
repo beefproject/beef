@@ -146,7 +146,7 @@ module Filters
   def self.is_valid_browser_plugins?(str)
     return true unless is_non_empty_string?(str)
     return false if str.length > 1000
-    if RUBY_VERSION >= "1.9" && str.encoding === Encoding.find('UTF-8')
+    if str.encoding === Encoding.find('UTF-8')
       return (str =~ /[^\w\d\s()-.,';_!\302\256]/u).nil?
     else
       return (str =~ /[^\w\d\s()-.,';_!\302\256]/n).nil?
