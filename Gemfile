@@ -75,6 +75,7 @@ end
 # For running unit tests
 group :test do
 if ENV['BEEF_TEST']
+  gem 'rake'
   gem 'test-unit'
   gem 'test-unit-full'
   gem 'curb'
