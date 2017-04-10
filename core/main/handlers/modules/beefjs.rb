@@ -24,7 +24,7 @@ module BeEF
             ext_js_sub_files = %w(lib/jquery-1.10.2.min.js lib/jquery-migrate-1.2.1.min.js lib/evercookie.js lib/json2.js lib/mdetect.js lib/jquery.blockUI.js)
 
             # @note BeEF libraries: need Eruby evaluation and obfuscation
-            beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js net/dns.js net/connection.js net/cors.js are.js)
+            beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js geolocation.js net/dns.js net/connection.js net/cors.js net/requester.js net/xssrays.js net/portscanner.js are.js)
             # @note Load websocket library only if WS server is enabled in config.yaml
             if config.get("beef.http.websocket.enable") == true
               beef_js_sub_files << "websocket.js"
