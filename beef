@@ -118,6 +118,11 @@ BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
 
+# @note Warn on default credentials
+if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
+  print_warning "Warning: Default username and password in use!"
+end
+
 #@note Prints the API key needed to use the RESTful API
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
