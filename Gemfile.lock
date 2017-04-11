@@ -106,6 +106,3 @@ DEPENDENCIES
   term-ansicolor
   thin
   uglifier
-
-BUNDLED WITH
-   1.12.1
