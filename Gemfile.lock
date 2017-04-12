@@ -1,10 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.4.0)
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
     ansi (1.5.0)
-    chunky_png (1.3.5)
-    daemons (1.2.3)
+    chunky_png (1.3.8)
+    daemons (1.2.4)
     data_objects (0.10.17)
       addressable (~> 2.1)
     dm-core (1.2.1)
@@ -29,53 +30,71 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
-    espeak-ruby (1.0.3)
+    espeak-ruby (1.0.4)
     eventmachine (1.0.9.1)
-    execjs (2.6.0)
+    execjs (2.7.0)
     fastercsv (1.5.5)
-    geoip (1.6.1)
+    filesize (0.1.1)
+    geoip (1.6.3)
     http_parser.rb (0.6.0)
-    json (1.8.3)
-    json_pure (1.8.3)
-    librex (0.0.999)
-    mime-types (3.0)
+    jsobfu (0.4.2)
+      rkelly-remix
+    json (1.8.6)
+    json_pure (1.8.6)
+    metasm (1.0.3)
+    mime-types (3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0221)
+    mime-types-data (3.2016.0521)
+    mini_portile2 (2.1.0)
     mojo_magick (0.5.6)
-    msfrpc-client (1.0.3)
-      librex (~> 0.0.70, >= 0.0.70)
-      msgpack (~> 0.5.8, >= 0.5.8)
-    msgpack (0.5.12)
-    multi_json (1.11.3)
+    msfrpc-client (1.1.0)
+      msgpack
+      rex
+    msgpack (1.1.0)
+    multi_json (1.12.1)
+    nokogiri (1.7.1)
+      mini_portile2 (~> 2.1.0)
     parseconfig (1.0.8)
+    public_suffix (2.0.5)
     qr4r (0.4.1)
       mojo_magick
       rqrcode
-    rack (1.6.4)
+    rack (1.6.5)
     rack-protection (1.5.3)
       rack
-    rainbow (2.1.0)
+    rainbow (2.2.1)
+    rb-readline-r7 (0.5.2.0)
+    rex (2.0.10)
+      filesize
+      jsobfu (~> 0.4.1)
+      json
+      metasm (~> 1.0.2)
+      nokogiri
+      rb-readline-r7
+      robots
     rexec (1.6.3)
       rainbow
+    rkelly-remix (0.0.7)
+    robots (0.10.1)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
     rubydns (0.7.3)
       eventmachine (~> 1.0.0)
       rexec (~> 1.6.2)
     rubyzip (1.2.1)
-    sinatra (1.4.7)
+    sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
-    term-ansicolor (1.3.2)
+    term-ansicolor (1.5.0)
       tins (~> 1.0)
-    thin (1.6.4)
+    thin (1.7.0)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
-      rack (~> 1.0)
-    tilt (2.0.2)
-    tins (1.10.1)
-    uglifier (3.0.0)
+      rack (>= 1, < 3)
+    tilt (2.0.7)
+    tins (1.13.2)
+    uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
 
 PLATFORMS
@@ -90,7 +109,7 @@ DEPENDENCIES
   dm-sqlite-adapter
   em-websocket
   erubis
-  espeak-ruby (>= 1.0.3)
+  espeak-ruby (~> 1.0.4)
   eventmachine
   execjs
   geoip
@@ -108,4 +127,4 @@ DEPENDENCIES
   uglifier
 
 BUNDLED WITH
-   1.12.1
+   1.14.4

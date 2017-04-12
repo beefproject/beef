@@ -20,7 +20,7 @@ gem 'dm-core'
 gem 'json'
 gem 'data_objects'
 gem 'rubyzip', '~> 1.2.1'
-gem 'espeak-ruby', '>= 1.0.3' # Text-to-Voice
+gem 'espeak-ruby', '~> 1.0.4' # Text-to-Voice
 
 
 # SQLite support
@@ -88,7 +88,7 @@ if ENV['BEEF_TEST']
   # sudo port install libxml2 libxslt
   gem 'capybara'
   # RESTful API tests/generic command module tests
-  gem 'rest-client', '>= 1.8.0'
+  gem 'rest-client', '~> 2.0.1'
 end
 end
 
