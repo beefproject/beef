@@ -21,7 +21,7 @@ gem 'json'
 gem 'data_objects'
 gem 'rubyzip', '~> 1.2.1'
 gem 'espeak-ruby', '~> 1.0.4' # Text-to-Voice
-
+gem 'nokogiri', '~> 1.7.1'
 
 # SQLite support
 group :sqlite do
