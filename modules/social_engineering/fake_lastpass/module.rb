@@ -6,7 +6,7 @@
 class Fake_lastpass < BeEF::Core::Command
   
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/jquery-1.5.2.min.js','/lp/jquery','js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/core/main/client/lib/jquery-1.10.2.min.js','/lp/jquery','js')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/index-new.html','/lp/index','html')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/lp_signin_logo.png','/lp/lp_signin_logo','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_lastpass/cancel.png','/lp/cancel','png')
