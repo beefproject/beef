@@ -14,7 +14,7 @@ class Fake_evernote_clipper < BeEF::Core::Command
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_evernote_clipper/evernote_web_clipper.png','/ev/evernote_web_clipper','png')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_evernote_clipper/GothamSSm-Medium.otf','/ev/GothamSSm-Medium','otf')
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/social_engineering/fake_evernote_clipper/GothamSSm-Bold.otf','/ev/GothamSSm-Bold','otf')
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/core/main/client/lib/jquery-1.10.2.min.js','/ev/jquery','js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/core/main/client/lib/jquery-1.12.4.min.js','/ev/jquery','js')
   end
   
   #
