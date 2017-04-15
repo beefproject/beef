@@ -19,6 +19,7 @@ end
 
 $:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
 $root_dir = File.expand_path('..', __FILE__)
+$home_dir = File.expand_path('~/.beef', __FILE__).freeze
 
 # @note Require core loader's
 require 'core/loader'
@@ -121,6 +122,13 @@ BeEF::Core::Console::Banners.print_network_interfaces_routes
 # @note Warn on default credentials
 if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
   print_warning "Warning: Default username and password in use!"
+end
+
+# @note create ~/.beef/
+begin
+    FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
+rescue => e
+    print_error "Could not create '#{$home_dir}': #{e.message}"
 end
 
 #@note Prints the API key needed to use the RESTful API
