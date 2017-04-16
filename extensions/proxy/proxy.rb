@@ -57,11 +57,14 @@ module BeEF
           # HTTP method # defaults to GET
           method = request_line[/^\w+/]
 
+          # Handle SSL requests
+          url_prefix = ''
           if method == "CONNECT" then
             # request_line is something like:
             # CONNECT example.com:443 HTTP/1.1
             host_port = request_line.split(" ")[1]
-            url_prefix = "https://" + host_port
+            proto = 'https'
+            url_prefix = proto + '://' + host_port
             loop do
               line = socket.readline
               if line.strip.empty?
@@ -72,27 +75,30 @@ module BeEF
             socket.accept
             print_debug("[PROXY] Handled CONNECT to #{host_port}")
             request_line = socket.readline
-            method = request_line[/^\w+/]
-          else
-            url_prefix = ""
           end
 
+          method, path, version = request_line.split(" ")
+
+          # HTTP scheme/protocol # defaults to http
+          proto = 'http' unless proto.eql?('https')
+
           # HTTP version # defaults to 1.0
-          version = request_line[/HTTP\/(1\.\d)\s*$/, 1]
-          version = "HTTP/1.0" if version.nil?
+          version = 'HTTP/1.0' if version !~ /\AHTTP\/\d\.\d\z/
 
-          # url # host:port/path
-          url = url_prefix + request_line[/^\w+\s+(\S+)/, 1]
+          # HTTP request path
+          path = request_line[/^\w+\s+(\S+)/, 1]
 
-          # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors when sending attack vectors (see tolerant_parser)
+          # url # proto://host:port + path
+          url = url_prefix + path
+
+          # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors
+          # when sending attack vectors (see tolerant_parser)
           # anti: somehow the config below was removed, have a look into this
           tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
           uri = tolerant_parser.parse(url.to_s)
 
-          method, path, version = request_line.split(" ")
-          path = url_prefix + path
           # extensions/requester/api/hook.rb parses raw_request to find port and path
-          raw_request = [method, path, version].join(" ") + "\r\n"
+          raw_request = [method, uri.path, version].join(' ') + "\r\n"
           content_length = 0
 
           loop do
@@ -118,6 +124,7 @@ module BeEF
           http = H.new(
               :request => raw_request,
               :method => method,
+              :proto => proto,
               :domain => uri.host,
               :port => uri.port,
               :path => uri.path,
@@ -178,7 +185,7 @@ module BeEF
             end
           end
 
-          res = "#{version} #{response_status}\r\n#{response_headers}\r\n\r\n#{response_body}"
+          res = "#{version} #{response_status}\r\n#{response_headers}\r\n#{response_body}"
           socket.write(res)
           socket.close
         end
