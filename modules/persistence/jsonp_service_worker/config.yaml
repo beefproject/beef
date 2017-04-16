@@ -13,4 +13,4 @@ beef:
             authors: ["clod81"]
             target:
                 working: ["C"]
-                not_working: ["S", "FF", "IE"]
+                not_working: ["ALL"]
