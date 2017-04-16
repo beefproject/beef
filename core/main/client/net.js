@@ -320,18 +320,21 @@ beef.net = {
      */
     forge_request: function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
 
-        // check if same domain or cross domain
-        var cross_domain = true;
         if (domain == "undefined" || path == "undefined") {
+            beef.debug("[beef.net.forge_request] Error: Malformed request. No host specified.");
             return;
         }
-        if (document.domain == domain.replace(/(\r\n|\n|\r)/gm, "")) { //strip eventual line breaks
+
+        // check if same domain or cross domain
+        var cross_domain = true;
+        if (document.domain == domain && document.location.protocol == scheme + ':') {
             if (document.location.port == "" || document.location.port == null) {
                 cross_domain = !(port == "80" || port == "443");
             } else {
                 if (document.location.port == port) cross_domain = false;
             }
         }
+
         // build the url
         var url = "";
         if (path.indexOf("http://") != -1 || path.indexOf("https://") != -1) {
@@ -350,13 +353,27 @@ beef.net = {
 
         // if cross-domain requests are not allowed and the request is cross-domain
         // don't proceed and return
-        if (allowCrossDomain == "false" && cross_domain && callback != null) {
+        if (allowCrossDomain == "false" && cross_domain) {
+            beef.debug("[beef.net.forge_request] Error: Cross Domain Request. The request was not sent.");
             response.status_code = -1;
             response.status_text = "crossdomain";
             response.port_status = "crossdomain";
             response.response_body = "ERROR: Cross Domain Request. The request was not sent.\n";
             response.headers = "ERROR: Cross Domain Request. The request was not sent.\n";
-            callback(response, requestid);
+            if (callback != null) callback(response, requestid);
+            return response;
+        }
+
+        // if the request was cross-domain from a HTTPS origin to HTTP
+        // don't proceed and return
+        if (document.location.protocol == 'https:' && scheme == 'http') {
+            beef.debug("[beef.net.forge_request] Error: Mixed Active Content. The request was not sent.");
+            response.status_code = -1;
+            response.status_text = "mixedcontent";
+            response.port_status = "mixedcontent";
+            response.response_body = "ERROR: Mixed Active Content. The request was not sent.\n";
+            response.headers = "ERROR: Mixed Active Content. The request was not sent.\n";
+            if (callback != null) callback(response, requestid);
             return response;
         }
 
