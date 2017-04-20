@@ -7,8 +7,6 @@ module BeEF
   module Extension
     module Dns
 
-      # @todo Add option for configuring upstream servers.
-
       # Provides the core DNS nameserver functionality. The nameserver handles incoming requests
       # using a rule-based system. A list of user-defined rules is used to match against incoming
       # DNS requests. These rules generate a response that is either a resource record or a
