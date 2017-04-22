@@ -166,15 +166,15 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     
     res = {
       'id'        => http_db.id,
-      'request'   => http_db.request,
-      'response'  => response_data,
-      'response_headers' => http_db.response_headers,
-      'proto'     => http_db.proto,
-      'domain'    => http_db.domain,
-      'port'      => http_db.port,
-      'path'      => http_db.path,
+      'request'   => http_db.request.force_encoding('UTF-8'),
+      'response'  => response_data.force_encoding('UTF-8'),
+      'response_headers' => http_db.response_headers.force_encoding('UTF-8'),
+      'proto'     => http_db.proto.force_encoding('UTF-8'),
+      'domain'    => http_db.domain.force_encoding('UTF-8'),
+      'port'      => http_db.port.force_encoding('UTF-8'),
+      'path'      => http_db.path.force_encoding('UTF-8'),
       'date'      => http_db.request_date,
-      'has_ran'   => http_db.has_ran
+      'has_ran'   => http_db.has_ran.force_encoding('UTF-8')
     }
     
     @body = {'success' => 'true', 'result' => res}.to_json
