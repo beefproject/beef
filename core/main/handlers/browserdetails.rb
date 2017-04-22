@@ -70,7 +70,7 @@ module BeEF
           @http_headers = Hash.new
           http_header = @data['request'].env.select { |k, v| k.to_s.start_with? 'HTTP_' }
           .each { |key, value|
-            @http_headers[key.sub(/^HTTP_/, '')] = value
+            @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           }
           zombie.httpheaders = @http_headers.to_json
           zombie.save
