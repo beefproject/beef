@@ -13,7 +13,7 @@ echo "          BeEF Installer   "
 echo "======================================"
 echo ""
 
-echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environemnt and its dependencies." 
+echo "CAUTION: This installation script will install a number of BeEF dependencies including the Ruby-RVM environment and its dependencies." 
 echo "" 
 echo "In rare cases, this may lead to unexpected behaviour or package conflicts on some systems."
 echo ""
@@ -40,11 +40,11 @@ fi
 
 if [ "$OS" == "Darwin" ]; then
 	echo "Mac OSX Detected"
-	echo "Installing Ruby Version Manager (RVM) & Ruby 2.1.5.."
+	echo "Installing Ruby Version Manager (RVM) & Ruby 2.3.0.."
 	bash -s stable < <(curl -Ls https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
 	source ~/.bash_login
-	rvm install 2.1.5 --with-gcc=clang
-	rvm use 2.1.5
+	rvm install 2.3.0 --with-gcc=clang
+	rvm use 2.3.0
 	echo ""
 	echo "Downloading BeEF.."
 	
@@ -76,7 +76,7 @@ if [ "$Distro" == "Debian" ]; then
 
 
 
-sudo apt-get install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion nodejs
 
 curl -Lsk https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer | bash
 
@@ -86,12 +86,14 @@ source ~/.bashrc
 
 if [ -e $HOME/.rvm/scripts/rvm ]; then
 	source $HOME/.rvm/scripts/rvm
-else
+elif [ -e /usr/local/rvm/scripts/rvm ]; then
 	source /usr/local/rvm/scripts/rvm
+else
+	source /etc/profile.d/rvm.sh
 fi
 
-	rvm install 2.1.5
-	rvm use 2.1.5 --default
+	rvm install 2.3.0
+	rvm use 2.3.0 --default
 
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
@@ -116,17 +118,17 @@ fi
 if [ "$Distro" == "RedHat" ]; then
 	echo "Redhat/Fedora Detected"
 	echo "Installing Prerequisite Packages.."
-	sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
+	sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison iconv-devel sqlite-devel nodejs
 
 	echo ""
-	echo "Installing Ruby Version Manager (RVM) & Ruby 2.1.5"
+	echo "Installing Ruby Version Manager (RVM) & Ruby 2.3.0"
 	wget https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer
 	bash ./rvm-installer
 	source ~/.rvm/scripts/rvm
 	rvm pkg install openssl
-	rvm install 2.1.5 --with-openssl-dir=$rvm_path/usr
+	rvm install 2.3.0 --with-openssl-dir=$rvm_path/usr
 	source ~/.rvm/scripts/rvm
-	rvm use 2.1.5 --default
+	rvm use 2.3.0 --default
 	
 	echo "Downloading BeEF.."
 	git clone git://github.com/beefproject/beef.git
