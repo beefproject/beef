@@ -20,6 +20,7 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     super({
       'paths' => {
         '/send'           => method(:send_request),
+        '/delete'         => method(:delete_zombie_response),
         '/history.json'   => method(:get_zombie_history),
         '/response.json'  => method(:get_zombie_response)
       }
@@ -179,7 +180,28 @@ class Requester < BeEF::Extension::AdminUI::HttpController
     
     @body = {'success' => 'true', 'result' => res}.to_json
   end
-  
+ 
+  # Deletes a response from the requester history
+  def delete_zombie_response
+    # validate nonce
+    nonce = @params['nonce'] || nil
+    (self.err_msg "nonce is nil";return @body = '{success : false}') if nonce.nil?
+    (self.err_msg "nonce incorrect";return @body = '{success : false}') if @session.get_nonce != nonce
+    
+    # validate the http id
+    http_id = @params['http_id'] || nil
+    (self.err_msg "http_id is nil";return @body = '{success : false}') if http_id.nil?
+    
+    # validate that the http object exist in the dabatase
+    http_db = H.first(:id => http_id) || nil
+    (self.err_msg "http object could not be found in the database";return @body = '{success : false}') if http_db.nil?
+
+    # delete response
+    http_db.destroy
+
+    @body = {'success' => 'true'}.to_json
+  end
+ 
 end
 
 end

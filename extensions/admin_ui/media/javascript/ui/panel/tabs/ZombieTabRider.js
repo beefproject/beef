@@ -171,6 +171,24 @@ ZombieTab_Requester = function(zombie) {
 								genResultTab(grid.getStore().getAt(rowIndex).data, zombie, commands_statusbar);
 							}
 						}
+					},{
+						text: 'Delete Response',
+						iconCls: 'zombie-tree-ctxMenu-delete',
+						handler: function() {
+							var response_id = record.get('id');
+
+							if(record.get('has_ran') != "complete") {
+								commands_statusbar.update_fail("Response for this request has not been received yet.");
+								return;
+							} else {
+	                                                        if (!confirm('Are you sure you want to remove response [id: '+response_id+'] ?')) {
+									commands_statusbar.update_fail('Cancelled');
+									return;
+								}
+								commands_statusbar.update_sending('Removing network host [id: '+ response_id +'] ...');
+								deleteResponse(grid.getStore().getAt(rowIndex).data, zombie, commands_statusbar);
+							}
+						}
 					}]
 				});
 				grid.rowCtxMenu.showAt(e.getXY());
@@ -271,7 +289,35 @@ ZombieTab_Requester = function(zombie) {
 		panel.setTitle('Forge Request');
 		panel.add(form);
 	};
-	
+
+        // Function to delete a response from the requester history
+        //------------------------------------------------------------------
+        function deleteResponse(request, zombie, bar) {
+
+		Ext.Ajax.request({
+			url: '<%= @base_path %>/requester/delete',
+			loadMask: true,
+			
+			params: {
+				nonce: Ext.get("nonce").dom.value,
+				http_id: request.id
+			},
+			
+			success: function(response) {
+				var xhr = Ext.decode(response.responseText);
+				if (xhr['success'] == 'true') {
+					bar.update_sent("Deleted response.");
+				} else {
+					bar.update_fail("Error! Could not delete the response.");
+				}
+			},
+			
+			failure: function() {
+				bar.update_fail("Error! Could not delete the response.");
+			}
+		});
+	}	
+
 	// Function generating the panel that shows the results of a request
 	// This function is called when the user clicks on a row in the grid
 	// showing the results in the history.
@@ -292,7 +338,12 @@ ZombieTab_Requester = function(zombie) {
 			
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
-				
+
+				if (xhr['success'] !== 'true') {
+					bar.update_fail("Error! Could not load the response.");
+					return;
+				}
+
 				var tab_result_response_headers = new Ext.Panel({
 					title: 'Response Headers',
 					border: false,
