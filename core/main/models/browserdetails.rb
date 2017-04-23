@@ -37,17 +37,17 @@ module Models
     def self.set(session_id, detail_key, detail_value) 
       # if the details already exist don't re-add them
       return nil if not get(session_id, detail_key).nil?
-    
+
       # store the returned browser details
       browserdetails = BeEF::Core::Models::BrowserDetails.new(
               :session_id => session_id,
               :detail_key => detail_key,
-              :detail_value => detail_value)
+              :detail_value => detail_value || '')
 
       result = browserdetails.save
       # if the attempt to save the browser details fails return a bad request
       if result.nil?
-        print_error  "Failed to save browser details"
+        print_error  "Failed to save browser details: #{detail_key}=#{detail_value}"
       end
     
       browserdetails
