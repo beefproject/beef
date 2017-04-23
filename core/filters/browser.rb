@@ -87,6 +87,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid cookie characters
   def self.is_valid_cookies?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 2000
     true
@@ -96,6 +97,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid screen size characters
   def self.is_valid_screen_size?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
@@ -105,6 +107,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid window size characters
   def self.is_valid_window_size?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
@@ -114,6 +117,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid system platform characters
   def self.is_valid_system_platform?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
@@ -123,6 +127,7 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid date stamp characters
   def self.is_valid_date_stamp?(str)
+    return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200
     true
@@ -144,7 +149,7 @@ module Filters
   # @note This string can be empty if there are no browser plugins
   # @todo Verify if the ruby version statement is still necessary
   def self.is_valid_browser_plugins?(str)
-    return true unless is_non_empty_string?(str)
+    return false unless is_non_empty_string?(str)
     return false if str.length > 1000
     if str.encoding === Encoding.find('UTF-8')
       return (str =~ /[^\w\d\s()-.,';_!\302\256]/u).nil?
