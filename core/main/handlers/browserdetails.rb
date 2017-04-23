@@ -378,7 +378,7 @@ module BeEF
         end
 
         def get_param(query, key)
-          (query.class == Hash and query.has_key?(key)) ? query[key] : nil
+          (query.class == Hash and query.has_key?(key)) ? query[key].to_s : nil
         end
       end
 
