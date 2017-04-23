@@ -23,7 +23,7 @@ ZombieTab_XssRaysTab = function(zombie) {
 
      var xssrays_logs_store = new Ext.ux.data.PagingJsonStore({
         storeId: 'xssrays-logs-store-zombie-' + zombie.session,
-        url: '/<%= @base_path %>/xssrays/zombie.json',
+        url: '<%= @base_path %>/xssrays/zombie.json',
         remoteSort: false,
         autoDestroy: true,
         autoLoad: false,
