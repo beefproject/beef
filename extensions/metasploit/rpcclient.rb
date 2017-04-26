@@ -8,6 +8,7 @@ module Extension
 module Metasploit
   
 	class RpcClient < ::Msf::RPC::Client
+		require 'net/http'
 		
 		include Singleton
 
@@ -36,60 +37,51 @@ module Metasploit
 				print_warning("Warning: Connections to Metasploit RPC over SSLv3 are insecure. Use TLSv1 instead.")
 			end
 			#auto start msfrpcd
-			if (@config['auto_msfrpcd'] || false)
+			if (@config['auto_msfrpcd'])
 				launch_msf = ''
-				msf_os = ''
 				@config['msf_path'].each do |path|
 					if File.exist?(path['path'] + 'msfrpcd')
 						launch_msf = path['path'] + 'msfrpcd'
-						print_info 'Found msfrpcd: ' + launch_msf
-						msf_os = path['os'] 
+						print_info '[Metasploit] Found msfrpcd: ' + launch_msf
 					end
 				end
+
 				if (launch_msf.length > 0)
-					msf_url = ''
+					msf_url = 'https://'
 					argssl = ''
-					if not opts[:ssl]
+					unless opts[:ssl]
 						argssl = '-S'
 						msf_url = 'http://'
-					else
-						msf_url = 'https://'	
 					end
 
 					msf_url += opts[:host] + ':' + opts[:port].to_s() + opts[:uri]
-					if msf_os.eql? "win"
-						print_info 'Metasploit auto-launch is currently not supported in BeEF on MS Windows.'
-					else	
-						child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
+					child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
 				
-						print_info 'Attempt to start msfrpcd, this may take a while. PID: ' + child.pid.to_s
+					print_info '[Metasploit] Attempt to start msfrpcd, this may take a while. PID: ' + child.pid.to_s
 
-						#Give daemon time to launch
-						#poll and giveup after timeout 
-						retries = @config['auto_msfrpcd_timeout']
-						uri = URI(msf_url)
-						http = Net::HTTP.new(uri.host, uri.port)
+					# Give daemon time to launch
+					# poll and giveup after timeout
+					retries = @config['auto_msfrpcd_timeout']
+					uri = URI(msf_url)
+					http = Net::HTTP.new(uri.host, uri.port)
 
-						if opts[:ssl]
-							http.use_ssl = true
-							http.ssl_version = opts[:ssl_version]
-						end
-						if not @config['ssl_verify']
-							http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-						end
-						headers = {
-    							'Content-Type' => "binary/message-pack"
-						}
-						path = uri.path.empty? ? "/" : uri.path
-						begin
-							sleep 1
-							code = http.head(path, headers).code.to_i
-						rescue Exception
-							retry if (retries -= 1) > 0
-						end
+					if opts[:ssl]
+						http.use_ssl = true
+						http.ssl_version = opts[:ssl_version]
+					end
+					if not @config['ssl_verify']
+						http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+					end
+					headers = { 'Content-Type' => "binary/message-pack" }
+					path = uri.path.empty? ? "/" : uri.path
+					begin
+						sleep 1
+						code = http.head(path, headers).code.to_i
+					rescue => e
+						retry if (retries -= 1) > 0
 					end
 				else
-					print_error 'Please add a custom path for msfrpcd to the config-file.'
+					print_error '[Metasploit] Please add a custom path for msfrpcd to the config-file.'
 				end
 			end	
 			super(opts)
