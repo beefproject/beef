@@ -1,7 +1,7 @@
 class BeefRestAPI
 
 # initialize
-def initialize proto = 'http', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
+def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
   @user = user
   @pass = pass
   @url = "#{proto}://#{host}:#{port}/api/"
@@ -326,6 +326,51 @@ def dns_ruleset
     print_error "Could not retrieve DNS ruleset: #{e.message}"
   end
 end
+
+# add a rule
+def dns_add_rule(dns_pattern, dns_resource, dns_response)
+  dns_response = [dns_response] if dns_response.is_a?(String)
+  begin
+    print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
+    response = RestClient.post "#{@url}dns/rule?token=#{@token}", {
+      'pattern' => dns_pattern,
+      'resource' => dns_resource,
+      'response' => dns_response }.to_json,
+    :content_type => :json,
+    :accept => :json
+    details = JSON.parse(response.body)
+    print_good "Added rule [id: #{details['id']}]"
+    details
+  rescue => e
+    print_error "Could not add DNS rule: #{e.message}"
+  end
+end
+
+# get rule details
+def dns_get_rule(id)
+  begin
+    print_verbose "Retrieving DNS rule details [id: #{id}]"
+    response = RestClient.get "#{@url}dns/rule/#{id}", {:params => {:token => @token}}
+    details = JSON.parse(response.body)
+    print_good "Retrieved rule [id: #{details['id']}]"
+    details
+  rescue => e
+    print_error "Could not retrieve DNS rule: #{e.message}"
+  end
+end
+
+# delete a rule
+def dns_delete_rule(id)
+  begin
+    response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
+    details = JSON.parse(response.body)
+    print_good "Deleted rule [id: #{id}]"
+    details
+  rescue => e
+    print_error "Could not delete DNS rule: #{e.message}"
+  end
+end
+
 
 ################################################################################
 ### WebRTC

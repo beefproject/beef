@@ -66,10 +66,28 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 # Retrieve BeEF version
 @api.version
 
-# Retrieve online hooked browser list
-hooks = @api.online_browsers.flatten
-exit 1 if hooks.empty?
-print_debug hooks
+# Add a rule
+print_status "Adding a DNS rule"
+pattern = 'beefproject.com'
+resource = 'A'
+response = ['127.0.0.1', '127.0.0.2']
+result = @api.dns_add_rule(pattern, resource, response)
+print_debug result
+id = result['id']
+
+# Retrieve ruleset
+print_status "Retrieving DNS rule set"
+rules = @api.dns_ruleset
+print_debug rules
+
+# Retrieve rule details
+print_status "Retrieving details for rule [id: #{id}]"
+rule = @api.dns_get_rule(id)
+print_debug rule
+
+print_status "Deleting rule [id: #{id}]"
+result = @api.dns_delete_rule(id)
+print_debug result
 
 # Retrieve ruleset
 print_status "Retrieving DNS rule set"
