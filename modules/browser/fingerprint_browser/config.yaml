@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fingerprint_browser:
+            enable: true
+            category: "Browser"
+            name: "Fingerprint Browser"
+            description: "This module attempts to fingerprint the browser using <a href='https://github.com/Valve/fingerprintjs2'>FingerprintJS2</a>."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
