@@ -90,7 +90,6 @@ module BeEF
           ip_str = zombie.ip
           if config.get('beef.dns_hostname_lookup')
             begin
-              require 'resolv'
               host_name = Resolv.getname(zombie.ip).to_s
               if BeEF::Filters.is_valid_hostname?(host_name)
                 ip_str += " [#{host_name}]"
@@ -103,7 +102,6 @@ module BeEF
 
           # geolocation
           if config.get('beef.geoip.enable')
-            require 'geoip'
             geoip_file = config.get('beef.geoip.database')
             if File.exists? geoip_file
               geoip = GeoIP.new(geoip_file).city(zombie.ip)
