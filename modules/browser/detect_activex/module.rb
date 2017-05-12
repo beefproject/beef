@@ -9,6 +9,9 @@ class Detect_activex < BeEF::Core::Command
 		content = {}
 		content['activex'] = @datastore['activex']
 		save content
+          if @datastore['results'] =~ /^activex=(Yes|No)/
+            bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasActiveX', $1)
+          end
 	end
 
 end

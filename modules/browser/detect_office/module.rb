@@ -9,6 +9,9 @@ class Detect_office < BeEF::Core::Command
 		content = {}
 		content['office'] = @datastore['office']
 		save content
+          if @datastore['results'] =~ /^office=Office (\d+|Xp)/
+            bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasOffice', $1)
+          end
 	end
 
 end

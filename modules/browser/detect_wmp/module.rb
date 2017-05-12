@@ -9,6 +9,9 @@ class Detect_wmp < BeEF::Core::Command
 		content = {}
 		content['wmp'] = @datastore['wmp']
 		save content
+          if @datastore['results'] =~ /^wmp=(Yes|No)/
+            bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasWMP', $1)
+          end
 	end
 
 end

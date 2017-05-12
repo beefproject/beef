@@ -9,6 +9,9 @@ class Detect_foxit < BeEF::Core::Command
 		content = {}
 		content['foxit'] = @datastore['foxit']
 		save content
+          if @datastore['results'] =~ /^foxit=(Yes|No)/
+            bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasFoxit', $1)
+          end
 	end
 
 end

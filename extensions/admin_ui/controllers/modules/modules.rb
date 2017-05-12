@@ -92,6 +92,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'ActiveX',            'HasActiveX'],
         ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
         ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
+        ['Browser Components', 'Unity',              'HasUnity'],
+        ['Browser Components', 'Foxit',              'HasFoxit'],
 
         # Geolocation
         ['Location', 'City',          'LocationCity'],
