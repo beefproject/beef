@@ -2943,6 +2943,7 @@ beef.browser = {
         var has_googlegears = (beef.browser.hasGoogleGears()) ? "Yes" : "No";
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
         var has_web_worker = (beef.browser.hasWebWorker()) ? "Yes" : "No";
+        var has_web_gl = (beef.browser.hasWebGL()) ? "Yes" : "No";
         var has_webrtc = (beef.browser.hasWebRTC()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
@@ -2984,6 +2985,7 @@ beef.browser = {
         if (has_phonegap) details['HasPhonegap'] = has_phonegap;
         if (has_web_socket) details['HasWebSocket'] = has_web_socket;
         if (has_web_worker) details['HasWebWorker'] = has_web_worker;
+        if (has_web_gl) details['HasWebGL'] = has_web_gl;
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
         if (has_webrtc) details['HasWebRTC'] = has_webrtc;
         if (has_activex) details['HasActiveX'] = has_activex;
@@ -3096,6 +3098,22 @@ beef.browser = {
      * */
     hasWebWorker: function () {
         return (typeof(Worker) !== "undefined");
+    },
+
+    /**
+     * Checks if the zombie has WebGL enabled.
+     * @return: {Boolean} true or false.
+     *
+     * @from: https://github.com/idofilin/webgl-by-example/blob/master/detect-webgl/detect-webgl.js
+     * */
+    hasWebGL: function () {
+      try {
+        var canvas = document.createElement("canvas");
+        var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        return !!(gl && gl instanceof WebGLRenderingContext);
+      } catch(e) {
+        return false;
+      }
     },
 
     /**

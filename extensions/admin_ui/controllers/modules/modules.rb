@@ -85,6 +85,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Google Gears',       'HasGoogleGears'],
         ['Browser Components', 'Web Sockets',        'HasWebSocket'],
         ['Browser Components', 'Web Workers',        'HasWebWorker'],
+        ['Browser Components', 'WebGL',              'HasWebGL'],
         ['Browser Components', 'QuickTime',          'HasQuickTime'],
         ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
         ['Browser Components', 'Windows Media Player','HasWMP'],
