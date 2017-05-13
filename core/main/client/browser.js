@@ -2942,6 +2942,7 @@ beef.browser = {
         var has_phonegap = (beef.browser.hasPhonegap()) ? "Yes" : "No";
         var has_googlegears = (beef.browser.hasGoogleGears()) ? "Yes" : "No";
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
+        var has_web_worker = (beef.browser.hasWebWorker()) ? "Yes" : "No";
         var has_webrtc = (beef.browser.hasWebRTC()) ? "Yes" : "No";
         var has_activex = (beef.browser.hasActiveX()) ? "Yes" : "No";
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
@@ -2982,6 +2983,7 @@ beef.browser = {
         if (has_flash) details['HasFlash'] = has_flash;
         if (has_phonegap) details['HasPhonegap'] = has_phonegap;
         if (has_web_socket) details['HasWebSocket'] = has_web_socket;
+        if (has_web_worker) details['HasWebWorker'] = has_web_worker;
         if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
         if (has_webrtc) details['HasWebRTC'] = has_webrtc;
         if (has_activex) details['HasActiveX'] = has_activex;
@@ -3086,6 +3088,14 @@ beef.browser = {
      * */
     hasWebSocket: function () {
         return !!window.WebSocket || !!window.MozWebSocket;
+    },
+
+    /**
+     * Checks if the zombie has Web Workers enabled.
+     * @return: {Boolean} true or false.
+     * */
+    hasWebWorker: function () {
+        return (typeof(Worker) !== "undefined");
     },
 
     /**

@@ -320,7 +320,7 @@ module BeEF
           # get and store the yes|no value for browser components
           components = [
               'VBScriptEnabled', 'HasFlash', 'HasPhonegap', 'HasGoogleGears',
-              'HasWebSocket', 'HasWebRTC', 'HasActiveX',
+              'HasWebSocket', 'HasWebWorker', 'HasWebRTC', 'HasActiveX',
               'HasQuickTime', 'HasRealPlayer', 'HasWMP'
           ]
           components.each do |k|
