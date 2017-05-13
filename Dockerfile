@@ -27,5 +27,5 @@ RUN chown -R beef /beef \
 
 VOLUME /home/beef/.beef
 USER beef
-EXPOSE 3000
+EXPOSE 3000 6789 61985 61986
 ENTRYPOINT ["./beef"]
