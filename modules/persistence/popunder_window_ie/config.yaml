@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        popunder_window_ie:
+            enable: true
+            category: "Persistence"
+            name: "Create Pop Under (IE)"
+            description: "This module uses a <i>HTMLFile</i> ActiveX object to bypass the popup blocker and create a popunder window containing a BeEF hook. Internet Explorer only.<br/><br/> Based on <a href='https://www.cracking.com.ar/demos/iepopups/'>PoC</a> by <a href='https://twitter.com/magicmac2000'>@MagicMac2000</a>."
+            authors: ["bcoles", "ethicalhack3r", "@MagicMac2000"]
+            target:
+                user_notify:
+                    IE:
+                        min_ver: 11
+                        max_ver: latest
+                not_working: ["All"]
+
