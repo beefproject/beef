@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_coupon_printer:
+            enable: true
+            category: "Host"
+            name: "Detect Coupon Printer"
+            description: "This module attempts to detect Coupon Printer on localhost on the default WebSocket port 4004."
+            authors: ["bcoles"]
+            target:
+                working: ["ALL"]
