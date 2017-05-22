@@ -4,6 +4,7 @@ LABEL repository "https://github.com/beefproject/beef"
 
 ENV LANG C.UTF-8
 
+# Install debian packages
 RUN apt-get update \
   && apt-get install -y build-essential \
     git \
@@ -14,6 +15,7 @@ ADD . /beef
 
 WORKDIR /beef
 
+# Update rubygems and do bundle install
 RUN gem install rubygems-update \
   && update_rubygems \
   && gem update --system \
@@ -21,6 +23,7 @@ RUN gem install rubygems-update \
     bundler \
   && bundle install
 
+# Add regular user and do cleanup
 RUN useradd -m beef \
   && chown -R beef /beef \
   && apt-get -y purge git \
