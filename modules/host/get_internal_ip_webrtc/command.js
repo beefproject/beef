@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
-// Copyright (c) 2017 SkyLined - BeEF@skylined.nl
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
