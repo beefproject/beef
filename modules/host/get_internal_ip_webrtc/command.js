@@ -21,12 +21,11 @@ beef.execute(function() {
                 "iceServers": [ ],
             });
             iceGatherer.onlocalcandidate = function (evt) {
-                if (oEvent.candidate.type) {
+                if (evt.candidate.type) {
                   // There may be multiple IP addresses
-                  beef.debug(JSON.Stringify(evt.candidate));
                   if (evt.candidate.type == "host") {
                       // The ones marked "host" are local IP addresses
-                      processIPs(oEvent.candidate.ip);
+                      processIPs(evt.candidate.ip);
                   };
                 } else {
                   retResults();
