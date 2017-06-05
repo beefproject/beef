@@ -12,8 +12,9 @@ module BeEF
         module BeEFJS
 
           # Builds the default beefjs library (all default components of the library).
-          # @param [Object] req_host The request object
-          def build_beefjs!(req_host)
+          # @param [String] req_host Host name in the request object
+          # @param [Fixnum] req_port Port number in the request object
+          def build_beefjs!(req_host, req_port)
             config = BeEF::Core::Configuration.instance
             # @note set up values required to construct beefjs
             beef_js = ''
@@ -88,6 +89,9 @@ module BeEF
             # @note set the hook file path and BeEF's cookie name
             hook_session_config['hook_file'] = config.get("beef.http.hook_file")
             hook_session_config['hook_session_name'] = config.get("beef.http.hook_session_name")
+
+            # @note use port from the request object
+            hook_session_config['beef_port'] = req_port
 
             # @note if http_port <> public_port in config ini, use the public_port
             unless hook_session_config['beef_public_port'].nil?
