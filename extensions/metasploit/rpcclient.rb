@@ -100,6 +100,7 @@ module Metasploit
 		begin
 			ret = super(meth,*args)
 		rescue => e
+			print_error "Metasploit: #{e}"
 			return nil
 		end
 		ret
