@@ -7,8 +7,10 @@ ENV LANG C.UTF-8
 # Install debian packages
 RUN apt-get update \
   && apt-get install -y build-essential \
-    sqlite3 \
-    libsqlite3-dev
+                        sqlite3 \
+                        libsqlite3-dev \
+                        \
+  && rm -rf /var/lib/apt/lists/*
 
 ADD . /beef
 
@@ -26,8 +28,7 @@ RUN gem install rubygems-update \
 RUN useradd -m beef \
   && chown -R beef /beef \
   && apt-get -y purge build-essential \
-    libsqlite3-dev \
-  && rm -rf /var/lib/apt/lists/*
+    libsqlite3-dev
 
 USER beef
 VOLUME /home/beef/.beef
