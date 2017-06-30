@@ -6,7 +6,9 @@
 beef:
     extension:
         console:
-            enable: true 
+            # The console extension is no longer supported. Please do not use. It will break BeEF.
+            # See issue: https://github.com/beefproject/beef/issues/1090
+            enable: false
             name: 'Console'
             shell:
                 enable: false
