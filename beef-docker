@@ -1,0 +1,4 @@
+#!/bin/sh
+
+docker build -t beef-runner . && \
+docker run -it -p 3000:3000 -p 6789:6789 -p 61985:61985 -p 61986:61986 -v $HOME/.beef:/home/beef/.beef beef-runner
