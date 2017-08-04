@@ -47,9 +47,9 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     mojo_magick (0.5.6)
-    msfrpc-client (1.1.0)
-      msgpack
-      rex
+    msfrpc-client (1.1.1)
+      msgpack (~> 1)
+      rex (~> 2)
     msgpack (1.1.0)
     multi_json (1.12.1)
     nokogiri (1.7.2)
@@ -65,7 +65,7 @@ GEM
     rainbow (2.2.2)
       rake
     rake (12.0.0)
-    rb-readline (0.5.4)
+    rb-readline (0.5.5)
     rex (2.0.11)
       filesize
       jsobfu (~> 0.4.1)
