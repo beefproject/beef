@@ -163,7 +163,13 @@ module BeEF
               component_path = beefjs_components[k]
 
               # @note we output the component to the hooked browser
-              @body << File.read(component_path)+"\n\n"
+              config = BeEF::Core::Configuration.instance
+              if config.get("beef.extension.evasion.enable")
+                evasion = BeEF::Extension::Evasion::Evasion.instance
+                @body << evasion.obfuscate(File.read(component_path) + "\n\n")
+              else
+                @body << File.read(component_path) + "\n\n"
+              end
 
               # @note finally we add the component to the list of components already generated so it does not get generated numerous times.
               if @beef_js_cmps.eql? ''
