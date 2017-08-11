@@ -46,9 +46,9 @@ beef.execute(function() {
 	}
 
 	// validate target
-	if (!target_port || !target_ip || isNaN(target_port)) {
+	if (!target_port || !target_ip) {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=malformed target host or target port');
-	} else if (target_port > 65535 || target_port < 0) {
+	} else if (!beef.net.is_valid_port(target_port)) {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid target port');
 	// send request and wait for reply
 	} else {

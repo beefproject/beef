@@ -31,16 +31,11 @@ beef.execute(function() {
   }
 
   // set target ports
-  var is_valid_port = function(port) {
-    if (isNaN(port)) return false;
-    if (port > 65535 || port < 0) return false;
-    return true;
-  }
   ports = ports.split(',');
   var target_ports = new Array();
   for (var i=0; i<ports.length; i++) {
     var p = ports[i].replace(/(^\s+|\s+$)/g, '');
-    if (is_valid_port(p)) target_ports.push(p);
+    if (beef.net.is_valid_port(p)) target_ports.push(p);
   }
   ports = sort_unique(target_ports);
   if (ports.length == 0) {
@@ -49,18 +44,6 @@ beef.execute(function() {
   }
 
   // set target IP addresses
-  var is_valid_ip = function(ip) {
-    if (ip == null) return false;
-    var ip_match = ip.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
-    if (ip_match == null) return false;
-    return true;
-  }
-  var is_valid_ip_range = function(ip_range) {
-    if (ip_range == null) return false;
-    var range_match = ip_range.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
-    if (range_match == null || range_match[1] == null) return false;
-    return true;
-  }
   if (ips == 'common') {
     ips = [
       '192.168.0.1',
@@ -84,8 +67,8 @@ beef.execute(function() {
     var target_ips = new Array();
     for (var i=0; i<ips.length; i++) {
       var ip = ips[i].replace(/(^\s+|\s+$)/g, '');
-      if (is_valid_ip(ip)) target_ips.push(ip);
-      else if (is_valid_ip_range(ip)) {
+      if (beef.net.is_valid_ip(ip)) target_ips.push(ip);
+      else if (beef.net.is_valid_ip_range(ip)) {
         ipBounds   = ip.split('-');
         lowerBound = ipBounds[0].split('.')[3];
         upperBound = ipBounds[1].split('.')[3];

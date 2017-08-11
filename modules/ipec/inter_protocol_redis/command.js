@@ -23,7 +23,7 @@ beef.execute(function() {
 
 	// validate target port
 	var rport = "<%= @rport %>";
-	if (!rport || rport > 65535 || rport < 0 || isNaN(rport)) {
+	if (!beef.net.is_valid_port(rport)) {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=invalid target port');
 		return;
 	}
