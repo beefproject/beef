@@ -24,7 +24,7 @@ gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.7'
 
 if RUBY_PLATFORM.downcase.include?('linux')
-  gem 'therubyracer', '~> 0.12.2', '<= 0.12.2'
+  gem 'therubyracer', '~> 0.12.2', '<= 0.12.3'
 end
 
 # SQLite support
