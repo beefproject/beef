@@ -18,6 +18,8 @@ module Constants
     AGENT_MOZILLA_IMG     = 'mozilla.png'
     AGENT_IE_UA_STR       = 'MSIE'
     AGENT_IE_IMG          = 'msie.png'
+    AGENT_EDGE_UA_STR     = 'Edge'
+    AGENT_EDGE_IMG        = 'edge.png'
     AGENT_SAFARI_UA_STR   = 'Safari'
     AGENT_SAFARI_IMG      = 'safari.png'
     AGENT_KONQ_UA_STR     = 'Konqueror'

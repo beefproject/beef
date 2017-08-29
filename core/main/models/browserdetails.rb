@@ -67,6 +67,7 @@ module Models
       browser = get(session_id, 'BrowserName')
  
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_IMG      if browser.eql? 'IE' # Internet Explorer
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_EDGE_IMG    if browser.eql? 'E'  # Microsoft Edge
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_IMG if browser.eql? 'FF' # Firefox
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if browser.eql? 'S'  # Safari
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if browser.eql? 'C'  # Chrome

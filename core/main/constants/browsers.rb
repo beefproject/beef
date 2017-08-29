@@ -13,6 +13,7 @@ module Constants
     FF      = 'FF'       # Firefox
     M       = 'M'        # Mozilla
     IE      = 'IE'       # Internet Explorer
+    E       = 'E'        # Microsoft Edge
     S       = 'S'        # Safari
     K       = 'K'        # Konqueror
     C       = 'C'        # Chrome
@@ -27,6 +28,7 @@ module Constants
     FRIENDLY_FF_NAME  = 'Firefox'
     FRIENDLY_M_NAME   = 'Mozilla'
     FRIENDLY_IE_NAME  = 'Internet Explorer'
+    FRIENDLY_E_NAME   = 'Microsoft Edge'
     FRIENDLY_S_NAME   = 'Safari'
     FRIENDLY_K_NAME   = 'Konqueror'
     FRIENDLY_C_NAME   = 'Chrome'
@@ -46,6 +48,7 @@ module Constants
         when FF;       return FRIENDLY_FF_NAME
         when M ;       return FRIENDLY_M_NAME
         when IE;       return FRIENDLY_IE_NAME
+        when E ;       return FRIENDLY_E_NAME
         when S ;       return FRIENDLY_S_NAME
         when K ;       return FRIENDLY_K_NAME
         when C ;       return FRIENDLY_C_NAME

@@ -46,6 +46,7 @@ module Models
 
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG if agent.nil?
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_IMG      if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_UA_STR
+      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_EDGE_IMG    if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_EDGE_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MOZILLA_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_MOZILLA_UA_STR
       return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_UA_STR
