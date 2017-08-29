@@ -30,7 +30,7 @@ module BeEF
 
             if connected
               msf_module_config = {}
-              path = BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')
+              path = "#{$root_dir}/#{BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')}"
               if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")
                 print_debug "Attempting to use Metasploit exploits cache file"
                 raw = File.read("#{path}msf-exploits.cache")
