@@ -22,7 +22,7 @@ You can get in touch with the BeEF team. Just check out the following:
 
 __Please, send us pull requests!__
 
-__Web:__ http://beefproject.com/
+__Web:__ https://beefproject.com/
 
 __Bugs:__ https://github.com/beefproject/beef/issues
 
@@ -47,10 +47,13 @@ Quick Start
 
 __The following is for the impatient.__ 
 
-For full installation details, please refer to INSTALL.txt.
-We also have a Wiki page at https://github.com/beefproject/beef/wiki/Installation
+For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt).
+
+We also have an [Installation](https://github.com/beefproject/beef/wiki/Installation) page on the wiki.
 
        $ curl -L https://raw.githubusercontent.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
+
+Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration) page on the wiki for important details on configuring and securing BeEF.
 
 
 Usage 
