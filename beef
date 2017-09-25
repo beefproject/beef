@@ -122,10 +122,10 @@ BeEF::Core::Console::Banners.print_network_interfaces_routes
 # @note Warn and replace on default credentials
 if config.get("beef.credentials.user").eql?('beef') &&
    [/beef[0-9]*/, /passw[o0]rd[0-9]*/].select{|pattern| pattern.match(config.get("beef.credentials.passwd"))}.any?
-  print_warning "Warning: Default username and password in use!"
+  print_warning "Warning: Default username and weak password in use!"
   better_phrase = BeEF::Core::Crypto::secure_token(16)
   config.set("beef.credentials.passwd", better_phrase)
-  print_info "Password for this instance: #{better_phrase}"
+  print_more "New password for this instance: #{better_phrase}"
 end
 
 # @note create ~/.beef/
