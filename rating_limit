@@ -1,0 +1,15 @@
+Issue Number: #1333
+
+Looks like there is no rating limit in the BeeF Login Portal, a user can brute 'n' number of time to get actual credentials of BeEF.
+However: 
+
+Access to the management interface should be restricted using the IP subnet access controls in a production deployment. 
+This can be configured with the beef.restrictions.permitted_ui_subnet option in config.yaml.
+The default username and password should also be changed to something more secure using the beef.credentials.user and beef.credentials.passwd 
+options respectively.
+The panel path should also be changed using the beef.http.web_ui_basepath configuration option in config.yaml. 
+Admittedly this is security through obscurity and won't prevent attacks against the RESTful interface.
+
+
+Regards
+Dhiraj
