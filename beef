@@ -119,9 +119,12 @@ BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
 
-# @note Warn on default credentials
+# @note Warn and replace on default credentials
 if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
   print_warning "Warning: Default username and password in use!"
+  better_phrase = BeEF::Core::Crypto::secure_token(16)
+  config.set("beef.credentials.passwd", better_phrase)
+  print_info "Password for this instance: #{better_phrase}"
 end
 
 # @note create ~/.beef/
