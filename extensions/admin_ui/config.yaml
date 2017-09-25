@@ -10,6 +10,6 @@ beef:
             enable: true
             favicon_file_name: "favicon.ico"
             favicon_dir: "/images"
-            login_fail_delay: 1
+            beef.extensions.admin_ui.login_fail_delay: 1
             play_sound_on_new_zombie: false
 
