@@ -110,6 +110,15 @@ beef.browser = {
     },
 
     /**
+     *
+     * Returns true if Edge.
+     * @example: beef.browser.isEdge()
+     */
+    isEdge: function () {
+        return !beef.browser.isIE() && !!window.StyleMedia;
+    },
+
+    /**
      * Returns true if IE.
      * @example: beef.browser.isIE()
      */
@@ -565,13 +574,20 @@ beef.browser = {
         return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/55./) != null;
     },
 
+    /**
+     * Returns true if FF56
+     * @example: beef.browser.isFF56()
+     */
+    isFF56: function () {
+        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/56./) != null;
+    },
 
     /**
      * Returns true if FF.
      * @example: beef.browser.isFF()
      */
     isFF: function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56();
     },
 
     /**
@@ -1261,7 +1277,7 @@ beef.browser = {
     isC51iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 51) ? true : false);
     },
-    
+
     /**
      * Returns true if Chrome 52.
      * @example: beef.browser.isC52()
@@ -1269,15 +1285,15 @@ beef.browser = {
     isC52: function () {
         return (!!window.chrome && !!window.fetch && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 52) ? true : false);
     },
-    
+
     /**
-     * Returns true if Chrome for iOS 52.     
+     * Returns true if Chrome for iOS 52.
      * @example: beef.browser.isC52iOS()
      */
     isC52iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 52) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome 53.
      * @example: beef.browser.isC53()
@@ -1285,7 +1301,7 @@ beef.browser = {
     isC53: function () {
         return (!!window.chrome && !!window.fetch && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 53) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome for iOS 53.
      * @example: beef.browser.isC53iOS()
@@ -1293,7 +1309,7 @@ beef.browser = {
     isC53iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 53) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome 54.
      * @example: beef.browser.isC54()
@@ -1301,15 +1317,15 @@ beef.browser = {
     isC54: function () {
         return (!!window.chrome && !!window.fetch && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 54) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome for iOS 54.
      * @example: beef.browser.isC54iOS()
      */
     isC54iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 54) ? true : false);
-    },	
-	
+    },
+
     /**
      * Returns true if Chrome 55.
      * @example: beef.browser.isC55()
@@ -1317,15 +1333,15 @@ beef.browser = {
     isC55: function () {
         return (!!window.chrome && !!window.fetch && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 55) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome for iOS 55.
      * @example: beef.browser.isC55iOS()
      */
     isC55iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 55) ? true : false);
-    },	
-	
+    },
+
     /**
      * Returns true if Chrome 56.
      * @example: beef.browser.isC56()
@@ -1333,7 +1349,7 @@ beef.browser = {
     isC56: function () {
         return (!!window.chrome && !!window.fetch && !window.webkitPerformance && window.navigator.appVersion.match(/Chrome\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10) == 56) ? true : false);
     },
-	
+
     /**
      * Returns true if Chrome for iOS 56.
      * @example: beef.browser.isC56iOS()
@@ -1341,7 +1357,7 @@ beef.browser = {
     isC56iOS: function () {
         return (!window.webkitPerformance && window.navigator.appVersion.match(/CriOS\/(\d+)\./)) && ((parseInt(window.navigator.appVersion.match(/CriOS\/(\d+)\./)[1], 10) == 56) ? true : false);
     },
-    
+
     /**
      * Returns true if Chrome 57.
      * @example: beef.browser.isC57()
@@ -1546,7 +1562,6 @@ beef.browser = {
             C57iOS: this.isC57iOS(), // Chrome 57 on iOS
             C58: this.isC58(), // Chrome 58
             C58iOS: this.isC58iOS(), // Chrome 58 on iOS
-            
             C: this.isC(), // Chrome any version
 
             FF2: this.isFF2(), // Firefox 2
@@ -1605,6 +1620,7 @@ beef.browser = {
             FF53: this.isFF53(), // Firefox 53
             FF54: this.isFF54(), // Firefox 54
             FF55: this.isFF55(), // Firefox 55
+            FF56: this.isFF56(), // Firefox 56
             FF: this.isFF(),   // Firefox any version
 
             IE6: this.isIE6(), // Internet Explorer 6
@@ -2016,7 +2032,7 @@ beef.browser = {
         }
         ;   // Chrome 58 for iOS
 
-        
+
         if (this.isFF2()) {
             return '2'
         }
@@ -2241,6 +2257,10 @@ beef.browser = {
             return '55'
         }
         ;   // Firefox 55
+        if (this.isFF56()) {
+            return '56'
+        }
+        ;   // Firefox 56
 
         if (this.isIE6()) {
             return '6'
@@ -2266,6 +2286,11 @@ beef.browser = {
             return '11'
         }
         ;   // Internet Explorer 11
+
+        if (this.isEdge()) {
+            return '1'
+        }
+        ;   // Microsoft Edge
 
         if (this.isS4()) {
             return '4'
@@ -2333,6 +2358,10 @@ beef.browser = {
             return 'IE'
         }
         ;		// Internet Explorer any version
+        if (this.isEdge()) {
+            return 'E'
+        }
+        ;       // Microsoft Edge any version
         if (this.isO()) {
             return 'O'
         }

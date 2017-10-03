@@ -14,6 +14,12 @@ beef:
     # Used for generating secure tokens
     crypto_default_value_length: 80
 
+    # Credentials to authenticate in BeEF.
+    # Used by both the RESTful API and the Admin interface
+    credentials:
+        user:   "beef"
+        passwd: "beef"
+
     # Interface / IP restrictions
     restrictions:
         # subnet of IP addresses that can hook to the framework
@@ -108,12 +114,6 @@ beef:
         db_user: "beef"
         db_passwd: "beef"
         db_encoding: "UTF-8"
-
-    # Credentials to authenticate in BeEF.
-    # Used by both the RESTful API and the Admin_UI extension
-    credentials:
-        user:   "beef"
-        passwd: "beef"
 
     # Autorun Rule Engine
     autorun:
