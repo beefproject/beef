@@ -23,3 +23,8 @@ beef:
               to_address: receipient_email_address
               smtp_host: 127.0.0.1
               smtp_port: 25
+            pushover:
+              enable: true
+              user_key: pushover_user_key
+              app_key: pushover_api_key
+
