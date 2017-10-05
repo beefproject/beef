@@ -6,6 +6,7 @@
 
 require 'extensions/notifications/channels/tweet'
 require 'extensions/notifications/channels/email'
+require 'extensions/notifications/channels/pushover'
 
 module BeEF
 module Extension
@@ -38,6 +39,10 @@ module Notifications
       if @config.get('beef.extension.notifications.email.enable') == true
         to_address    = @config.get('beef.extension.notifications.email.to_address')
         BeEF::Extension::Notifications::Channels::Email.new(to_address,message)
+      end
+
+      if @config.get('beef.extension.notifications.pushover.enable') == true
+        BeEF::Extension::Notifications::Channels::Pushover.new(message)
       end
     end
 
