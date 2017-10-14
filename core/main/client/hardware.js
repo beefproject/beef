@@ -107,56 +107,56 @@ beef.hardware = {
   },
 
   /**
-   * Returns true if the browser is on a Mobile Phone
+   * Returns true if the browser is on a Mobile device
    * @return: {Boolean} true or false
    *
-   * @example: if(beef.hardware.isMobilePhone()) { ... }
+   * @example: if(beef.hardware.isMobileDevice()) { ... }
    **/
-  isMobilePhone: function() {
-    return DetectMobileQuick();
+  isMobileDevice: function() {
+    return MobileEsp.DetectMobileQuick();
   },
 
   getName: function() {
     var ua = navigator.userAgent.toLowerCase();
-    if(DetectIphone())              { return "iPhone"};
-    if(DetectIpod())                { return "iPod Touch"};
-    if(DetectIpad())                { return "iPad"};
+    if(MobileEsp.DetectIphone())              { return "iPhone"};
+    if(MobileEsp.DetectIpod())                { return "iPod Touch"};
+    if(MobileEsp.DetectIpad())                { return "iPad"};
     if (this.isHtc())               { return 'HTC'};
     if (this.isMotorola())          { return 'Motorola'};
     if (this.isZune())              { return 'Zune'};
     if (this.isGoogle())            { return 'Google Nexus One'};
     if (this.isEricsson())          { return 'Ericsson'};
-    if(DetectAndroidPhone())        { return "Android Phone"};
-    if(DetectAndroidTablet())       { return "Android Tablet"};
-    if(DetectS60OssBrowser())       { return "Nokia S60 Open Source"};
-    if(ua.search(deviceS60) > -1)   { return "Nokia S60"};
-    if(ua.search(deviceS70) > -1)   { return "Nokia S70"};
-    if(ua.search(deviceS80) > -1)   { return "Nokia S80"};
-    if(ua.search(deviceS90) > -1)   { return "Nokia S90"};
-    if(ua.search(deviceSymbian) > -1)   { return "Nokia Symbian"};
+    if(MobileEsp.DetectAndroidPhone())        { return "Android Phone"};
+    if(MobileEsp.DetectAndroidTablet())       { return "Android Tablet"};
+    if(MobileEsp.DetectS60OssBrowser())       { return "Nokia S60 Open Source"};
+    if(ua.search(MobileEsp.deviceS60) > -1)   { return "Nokia S60"};
+    if(ua.search(MobileEsp.deviceS70) > -1)   { return "Nokia S70"};
+    if(ua.search(MobileEsp.deviceS80) > -1)   { return "Nokia S80"};
+    if(ua.search(MobileEsp.deviceS90) > -1)   { return "Nokia S90"};
+    if(ua.search(MobileEsp.deviceSymbian) > -1)   { return "Nokia Symbian"};
     if (this.isNokia())             { return 'Nokia'};
-    if(DetectWindowsPhone7())       { return "Windows Phone 7"};
-    if(DetectWindowsMobile())       { return "Windows Mobile"};
-    if(DetectBlackBerryTablet())    { return "BlackBerry Tablet"};
-    if(DetectBlackBerryWebKit())    { return "BlackBerry OS 6"};
-    if(DetectBlackBerryTouch())     { return "BlackBerry Touch"};
-    if(DetectBlackBerryHigh())      { return "BlackBerry OS 5"};
-    if(DetectBlackBerry())          { return "BlackBerry"};
-    if(DetectPalmOS())              { return "Palm OS"};
-    if(DetectPalmWebOS())           { return "Palm Web OS"};
-    if(DetectGarminNuvifone())      { return "Gamin Nuvifone"};
-    if(DetectArchos())              { return "Archos"}
-    if(DetectBrewDevice())          { return "Brew"};
-    if(DetectDangerHiptop())        { return "Danger Hiptop"};
-    if(DetectMaemoTablet())         { return "Maemo Tablet"};
-    if(DetectSonyMylo())            { return "Sony Mylo"};
-    if(DetectAmazonSilk())          { return "Kindle Fire"};
-    if(DetectKindle())              { return "Kindle"};
-    if(DetectSonyPlaystation())                 { return "Playstation"};
-    if(ua.search(deviceNintendoDs) > -1)        { return "Nintendo DS"};
-    if(ua.search(deviceWii) > -1)               { return "Nintendo Wii"};
-    if(ua.search(deviceNintendo) > -1)          { return "Nintendo"};
-    if(DetectXbox())                            { return "Xbox"};
+    if(MobileEsp.DetectWindowsPhone7())       { return "Windows Phone 7"};
+    if(MobileEsp.DetectWindowsMobile())       { return "Windows Mobile"};
+    if(MobileEsp.DetectBlackBerryTablet())    { return "BlackBerry Tablet"};
+    if(MobileEsp.DetectBlackBerryWebKit())    { return "BlackBerry OS 6"};
+    if(MobileEsp.DetectBlackBerryTouch())     { return "BlackBerry Touch"};
+    if(MobileEsp.DetectBlackBerryHigh())      { return "BlackBerry OS 5"};
+    if(MobileEsp.DetectBlackBerry())          { return "BlackBerry"};
+    if(MobileEsp.DetectPalmOS())              { return "Palm OS"};
+    if(MobileEsp.DetectPalmWebOS())           { return "Palm Web OS"};
+    if(MobileEsp.DetectGarminNuvifone())      { return "Gamin Nuvifone"};
+    if(MobileEsp.DetectArchos())              { return "Archos"}
+    if(MobileEsp.DetectBrewDevice())          { return "Brew"};
+    if(MobileEsp.DetectDangerHiptop())        { return "Danger Hiptop"};
+    if(MobileEsp.DetectMaemoTablet())         { return "Maemo Tablet"};
+    if(MobileEsp.DetectSonyMylo())            { return "Sony Mylo"};
+    if(MobileEsp.DetectAmazonSilk())          { return "Kindle Fire"};
+    if(MobileEsp.DetectKindle())              { return "Kindle"};
+    if(MobileEsp.DetectSonyPlaystation())                 { return "Playstation"};
+    if(ua.search(MobileEsp.deviceNintendoDs) > -1)        { return "Nintendo DS"};
+    if(ua.search(MobileEsp.deviceWii) > -1)               { return "Nintendo Wii"};
+    if(ua.search(MobileEsp.deviceNintendo) > -1)          { return "Nintendo"};
+    if(MobileEsp.DetectXbox())                            { return "Xbox"};
     if(this.isLaptop())                         { return "Laptop"};
     if(this.isVirtualMachine())                 { return "Virtual Machine"};
 

@@ -52,7 +52,7 @@ beef.execute(function() {
 		result = "Not virtualized";
 	} else if (beef.hardware.isVirtualMachine()) {
 		result = "Virtualized";
-	} else if (beef.hardware.isMobilePhone()) {
+	} else if (beef.hardware.isMobileDevice()) {
 		result = "Not virtualized";
 	} else {
 		result = "This host is virtualized or uses an unrecognized screen resolution";
