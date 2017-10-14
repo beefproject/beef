@@ -5,11 +5,23 @@
 #
 class Coinhive_miner < BeEF::Core::Command
   def self.options
-    [{ 'name'        => 'public_token',
-       'description' => 'Public Token',
-       'ui_label'    => 'Public Token',
-       'value'       => 'Ofh5MIvjuCBDqwJ9TCTio7TYko0ig5TV',
-       'type'        => 'text' }]
+    [{ 'name'         => 'public_token',
+       'description'  => 'Public Token',
+       'ui_label'     => 'Public Token',
+       'value'        => 'Ofh5MIvjuCBDqwJ9TCTio7TYko0ig5TV',
+       'type'         => 'text' },
+     { 'name'         => 'mode',
+       'type'         => 'combobox',
+       'ui_label'     => 'Mode',
+       'store_type'   => 'arraystore',
+       'store_fields' => ['mode'],
+       'store_data'   => [ ['IF_EXCLUSIVE_TAB'], ['FORCE_EXCLUSIVE_TAB'], ['FORCE_MULTI_TAB'] ],
+       'value'        => 'FORCE_EXCLUSIVE_TAB',
+       'valueField'   => 'mode',
+       'displayField' => 'mode',
+       'mode'         => 'local',
+       'autoWidth'    => true
+    }]
   end
   def post_execute
     save({'result' => @datastore['result']})

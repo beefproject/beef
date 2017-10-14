@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Coinhive Miner"
-            description: "This module starts the Coinhive JavaScript Miner."
+            description: "This module starts the Coinhive JavaScript Miner. The following modes are available:<br/><p><b>IF_EXCLUSIVE_TAB</b> - The miner will only start if no other tabs are already mining. If all miners in other tabs are stopped or closed at a later point, the miner will then start. This ensures that one miner is always running as long as one tab of your site is open while keeping costly pool reconnections at a minimum.</p><p><b>FORCE_EXCLUSIVE_TAB</b> - The miner will always start and immediately kill all miners in other tabs that have not specified 'FORCE_MULTI_TAB'.</p><p><b>FORCE_MULTI_TAB</b> - The miner will always start. It will not announce its presence to other tabs, will not kill any other miners and can't be killed by other miners.</p>"
             authors: ["bcoles"]
             target:
                 user_notify: ['ALL']

