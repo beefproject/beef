@@ -2691,7 +2691,7 @@ beef.browser = {
         };
 
         // Things lacking navigator.plugins
-        if (!this.capabilities()["navigator.plugins"]) this.getPluginsIE();
+        if (!this.capabilities()["navigator.plugins"]) results = this.getPluginsIE();
 
         // All other browsers that support navigator.plugins
         else if (navigator.plugins && navigator.plugins.length > 0) {
