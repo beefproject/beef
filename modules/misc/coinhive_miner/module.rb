@@ -20,7 +20,11 @@ class Coinhive_miner < BeEF::Core::Command
        'valueField'   => 'mode',
        'displayField' => 'mode',
        'mode'         => 'local',
-       'autoWidth'    => true
+       'autoWidth'    => true },
+     { 'name'         => 'mobile_enabled',
+       'ui_label'     => 'Run on Mobile Devices',
+       'type'         => 'checkbox',
+       'checked'      => false
     }]
   end
   def post_execute

