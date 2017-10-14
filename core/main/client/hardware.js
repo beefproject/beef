@@ -49,6 +49,7 @@ beef.hardware = {
    * @return: {Boolean} true or false.
    **/
   isVirtualMachine: function() {
+    if (this.isMobileDevice()) return false;
     if (screen.width % 2 || screen.height % 2) return true;
     return false;
   },
@@ -57,6 +58,7 @@ beef.hardware = {
    * @return: {Boolean} true or false.
    **/
   isLaptop: function() {
+    if (this.isMobileDevice()) return false;
     // Most common laptop screen resolution
     if (screen.width == 1366 && screen.height == 768) return true;
     // Netbooks
@@ -68,7 +70,7 @@ beef.hardware = {
    * @return: {Boolean} true or false.
    **/
   isNokia: function() {
-    return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
+    return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)|(Lumia )')) ? true : false;
   },
 
   /*
@@ -116,6 +118,16 @@ beef.hardware = {
     return MobileEsp.DetectMobileQuick();
   },
 
+  /**
+   * Returns true if the browser is on a game console
+   * @return: {Boolean} true or false
+   *
+   * @example: if(beef.hardware.isGameConsole()) { ... }
+   **/
+  isGameConsole: function() {
+    return MobileEsp.DetectGameConsole();
+  },
+
   getName: function() {
     var ua = navigator.userAgent.toLowerCase();
     if(MobileEsp.DetectIphone())              { return "iPhone"};
@@ -136,6 +148,8 @@ beef.hardware = {
     if(ua.search(MobileEsp.deviceSymbian) > -1)   { return "Nokia Symbian"};
     if (this.isNokia())             { return 'Nokia'};
     if(MobileEsp.DetectWindowsPhone7())       { return "Windows Phone 7"};
+    if(MobileEsp.DetectWindowsPhone8())       { return "Windows Phone 8"};
+    if(MobileEsp.DetectWindowsPhone10())      { return "Windows Phone 10"};
     if(MobileEsp.DetectWindowsMobile())       { return "Windows Mobile"};
     if(MobileEsp.DetectBlackBerryTablet())    { return "BlackBerry Tablet"};
     if(MobileEsp.DetectBlackBerryWebKit())    { return "BlackBerry OS 6"};
