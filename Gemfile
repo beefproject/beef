@@ -60,6 +60,8 @@ end
 group :ext_notifications do
   # Pushover
   gem 'rushover'
+  # Slack
+  gem 'slack-notifier'
   # Twitter
   gem 'twitter', '>= 5.0.0'
 end
