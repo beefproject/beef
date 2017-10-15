@@ -3,6 +3,8 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'rubydns'
+
 module BeEF
   module Extension
     module Dns
