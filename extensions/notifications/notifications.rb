@@ -7,6 +7,7 @@
 require 'extensions/notifications/channels/tweet'
 require 'extensions/notifications/channels/email'
 require 'extensions/notifications/channels/pushover'
+require 'extensions/notifications/channels/slack_workspace'
 
 module BeEF
 module Extension
@@ -43,6 +44,10 @@ module Notifications
 
       if @config.get('beef.extension.notifications.pushover.enable') == true
         BeEF::Extension::Notifications::Channels::Pushover.new(message)
+      end
+
+      if @config.get('beef.extension.notifications.slack.enable') == true
+        BeEF::Extension::Notifications::Channels::SlackWorkspace.new(message)
       end
     end
 
