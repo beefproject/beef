@@ -23,3 +23,9 @@ beef:
               to_address: receipient_email_address
               smtp_host: 127.0.0.1
               smtp_port: 25
+            # Make sure you do 'gem install rushover' before enabling this feature.
+            pushover:
+              enable: false
+              user_key: pushover_user_key
+              app_key: pushover_api_key
+
