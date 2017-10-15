@@ -56,9 +56,12 @@ group :ext_msf do
   gem 'msfrpc-client'
 end
 
-# Twitter Notifications extension
-group :ext_twitter do
-  #gem 'twitter', '>= 5.0.0'
+# Notifications extension
+group :ext_notifications do
+  # Pushover
+  gem 'rushover'
+  # Twitter
+  gem 'twitter', '>= 5.0.0'
 end
 
 # DNS extension
