@@ -102,6 +102,7 @@ module BeEF
 
           # geolocation
           if config.get('beef.geoip.enable')
+            require 'geoip'
             geoip_file = config.get('beef.geoip.database')
             if File.exists? geoip_file
               geoip = GeoIP.new(geoip_file).city(zombie.ip)
