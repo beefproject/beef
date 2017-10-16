@@ -16,7 +16,7 @@ module Channels
             res = client.notify(@config.get('beef.extension.notifications.pushover.user_key'), message)
             print_error '[Notifications] Pushover notification failed' unless res.ok?
         rescue Exception => e
-            print_error "[Notifications] Pushover notification initalization failed: '#{e.message}'"
+            print_error "[Notifications] Pushover notification initialization failed: '#{e.message}'"
         end
     end
 end
