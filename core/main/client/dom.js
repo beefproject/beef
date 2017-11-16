@@ -230,6 +230,13 @@ beef.dom = {
 		return form;
 	},
 	
+	loadScript: function(url) {
+	  var s = document.createElement('script');
+	  s.type = 'text/javascript';
+	  s.src = url;
+	  $j('body').append(s);
+	},
+
 	/**
 	 * Get the location of the current page.
 	 * @return: the location.
