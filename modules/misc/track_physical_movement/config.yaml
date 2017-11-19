@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        track_physical_movement:
+            enable: true
+            category: "Misc"
+            name: "Track Physical Movement"
+            description: "This module will track the physical movement of the user's device. Ported from <a href='https://github.com/KrauseFx/whats-the-user-doing'>user.activity</a> by @KrauseFx."
+            authors: ["bcoles", "KrauseFx"]
+            target:
+                working:
+                    ALL:
+                        os: ["iOS"]
