@@ -108,8 +108,6 @@ beef:
 
         # db_file is only used for sqlite
         db_file: "beef.db"
-        #db_pool: 50             # Issues with sqlite locking.
-        #db_timeout: 500         # https://stackoverflow.com/questions/7154664/ruby-sqlite3busyexception-database-is-locked
 
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
