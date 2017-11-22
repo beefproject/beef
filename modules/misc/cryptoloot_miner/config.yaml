@@ -1,0 +1,19 @@
+#
+# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+# Module by Zaur Molotnikov, 2017
+# For the use in test purposes only
+# Inspired by coinhive integration (copied and modified)
+#
+beef:
+    module:
+        cryptoloot_miner:
+            enable: true
+            category: "Misc"
+            name: "Crypto-Loot Miner"
+            description: "This module starts the Crypto-Loot Miner."
+            authors: ["qutorial"]
+            target:
+                user_notify: ['ALL']
