@@ -83,22 +83,23 @@ end
 
 # For running unit tests
 group :test do
-if ENV['BEEF_TEST']
-  gem 'rake'
-  gem 'test-unit'
-  gem 'test-unit-full'
-  gem 'curb'
-  gem 'selenium'
-  # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
-  gem 'selenium-webdriver', '~> 2.53.4'
-  gem 'rspec'
-  gem 'bundler-audit'
-  # nokogirl is needed by capybara which may require one of the below commands
-  # sudo apt-get install libxslt-dev libxml2-dev
-  # sudo port install libxml2 libxslt
-  gem 'capybara'
-  # RESTful API tests/generic command module tests
-  gem 'rest-client', '>= 2.0.1'
+  if ENV['BEEF_TEST']
+    gem 'rake'
+    gem 'test-unit'
+    gem 'test-unit-full'
+    gem 'curb'
+    gem 'selenium'
+    # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
+    gem 'selenium-webdriver', '~> 2.53.4'
+    gem 'rspec'
+    gem 'bundler-audit'
+    # nokogirl is needed by capybara which may require one of the below commands
+    # sudo apt-get install libxslt-dev libxml2-dev
+    # sudo port install libxml2 libxslt
+    gem 'capybara'
+    # RESTful API tests/generic command module tests
+    gem 'rest-client', '>= 2.0.1'
+  end
 end
 
 source 'https://rubygems.org'
