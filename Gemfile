@@ -100,6 +100,5 @@ if ENV['BEEF_TEST']
   # RESTful API tests/generic command module tests
   gem 'rest-client', '>= 2.0.1'
 end
-end
 
 source 'https://rubygems.org'
