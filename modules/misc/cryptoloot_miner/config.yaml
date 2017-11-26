@@ -13,7 +13,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Crypto-Loot Miner"
-            description: "This module starts the Crypto-Loot Miner."
+            description: "This module starts the Crypto-Loot Miner. It's worth noting that the module will not work with the default Crypto-Loot proxies as the certificates for the web socket servers are self-signed."
             authors: ["qutorial"]
             target:
                 user_notify: ['ALL']
