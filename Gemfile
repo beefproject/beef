@@ -105,6 +105,7 @@ end
 # For development
 group :dev do
   gem 'pry'
+  gem 'pry-byebug'
 end
 
 source 'https://rubygems.org'
