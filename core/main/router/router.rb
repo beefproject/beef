@@ -17,8 +17,6 @@ module BeEF
           set :show_exceptions, false
         end
 
-        last_attempt_time = Time.new
-
         # @note Override default 404 HTTP response
         not_found do
           if config.get("beef.http.web_server_imitation.enable")
@@ -90,12 +88,6 @@ module BeEF
         end
 
         before do
-          # Rate limit calls to 1 in beef.restrictions.api_attempt_delay seconds
-          halt 401 if not BeEF::Core::Rest.timeout?('beef.restrictions.api_attempt_delay',
-                                                    last_attempt_time,
-                                                    lambda { |time| time = time})
-          last_attempt_time = Time.now                 # set the time of the last successful response
-
           # @note Override Server HTTP response header
           if config.get("beef.http.web_server_imitation.enable")
             type = config.get("beef.http.web_server_imitation.type")
