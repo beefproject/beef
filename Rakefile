@@ -3,6 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'yaml'
 
 task :default => ["quick"]
 
@@ -50,6 +51,14 @@ task :rdoc do
   Rake::Task['rdoc:rerdoc'].invoke
 end
 
+desc 'rest test examples'
+task :rest_test do
+  Rake::Task['beef_start'].invoke
+
+  sh "cd ./tools/rest_api_examples/; ./api_login -v -d --user '#{ENV['TEST_BEEF_USER']}' --pass '#{ENV['TEST_BEEF_PASS']}'"
+
+  Rake::Task['beef_stop'].invoke
+end
 
 ################################
 # run bundle-audit
@@ -162,21 +171,49 @@ end
 # BeEF environment set up
 
 @beef_process_id = nil;
+@beef_config_file = 'tmp/rake_beef_conf.yaml';
+
 
 task :beef_start => 'beef' do
+  # read environment param for creds or use bad_fred
+  test_user = ENV['TEST_BEEF_USER'] || 'bad_fred'
+  test_pass = ENV['TEST_BEEF_PASS'] || 'bad_fred_no_access'
+
+  # write a rake config file for beef
+  config = YAML.load(File.read('./config.yaml'))
+  config['beef']['credentials']['user'] = test_user
+  config['beef']['credentials']['passwd'] = test_pass
+  File.open(@beef_config_file, 'w') { |f| YAML.dump(config, f) }
+
+  # set the environment creds -- in case we're using bad_fred
+  ENV['TEST_BEEF_USER'] = test_user
+  ENV['TEST_BEEF_PASS'] = test_pass
+  config = nil
+  puts "Using config file: #{@beef_config_file}\n"
+
   printf "Starting BeEF (wait a few seconds)..."
-  @beef_process_id = IO.popen("ruby ./beef -x 2> /dev/null", "w+")
-  delays = [10, 10, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  @beef_process_id = IO.popen("ruby ./beef -c #{@beef_config_file} -x 2> /dev/null", "w+")
+  delays = [5, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   delays.each do |i| # delay for a few seconds
     printf '.'
     sleep (i)
   end
-  puts '.'
+  puts ".\n\n"
+
 end
 
 task :beef_stop do
-  puts "\nShutting down BeEF...\n"
+
+  # cleanup tmp/config files
+  puts "\nCleanup config file:\n"
+  rm_f @beef_config_file
+  ENV['TEST_BEEF_USER'] = nil
+  ENV['TEST_BEEF_PASS'] = nil
+
+  # shutting down
+  puts "Shutting down BeEF...\n"
   sh "ps -ef|grep beef|grep -v grep|awk '{print $2}'|xargs kill"
+
 end
 
 ################################
@@ -233,7 +270,7 @@ end
 
 ################################
 # Create CDE Package
-# This will download and make the CDE Executable and 
+# This will download and make the CDE Executable and
 # gnereate a CDE Package in cde-package
 
 task :cde do
@@ -270,5 +307,3 @@ end
 
 
 ################################
-
-
