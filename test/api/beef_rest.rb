@@ -3,6 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+
 require 'pry-byebug'
 require 'rest-client'
 require 'json'
@@ -17,16 +18,10 @@ passwds.push BEEF_PASSWD
 apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
 
 #binding.pry
-t0 = Time.now().usec
+t0 = Time.now()
 l = apis.length
 (0..50).each do |i|
-  t = Time.now().usec
+  t = Time.now()
   puts "#{i} : #{t - t0} : #{apis[i%l].auth()[:payload]}"
   t0 = t
 end
-
-
-#binding.pry
-#         response = @api.auth
-
-#@api.version if response[:success]

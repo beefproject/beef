@@ -4,6 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'yaml'
+require 'pry-byebug'
 
 task :default => ["quick"]
 
@@ -55,7 +56,7 @@ desc 'rest test examples'
 task :rest_test do
   Rake::Task['beef_start'].invoke
 
-  sh "cd ./tools/rest_api_examples/; ./api_login -v -d --user '#{ENV['TEST_BEEF_USER']}' --pass '#{ENV['TEST_BEEF_PASS']}'"
+  sh 'cd test/api/; ruby -W2 beef_rest.rb"
 
   Rake::Task['beef_stop'].invoke
 end
@@ -199,11 +200,9 @@ task :beef_start => 'beef' do
     sleep (i)
   end
   puts ".\n\n"
-
 end
 
 task :beef_stop do
-
   # cleanup tmp/config files
   puts "\nCleanup config file:\n"
   rm_f @beef_config_file
@@ -213,7 +212,6 @@ task :beef_stop do
   # shutting down
   puts "Shutting down BeEF...\n"
   sh "ps -ef|grep beef|grep -v grep|awk '{print $2}'|xargs kill"
-
 end
 
 ################################
