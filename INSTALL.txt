@@ -20,7 +20,7 @@ Installation
 
    1. Prerequisites (platform independent)
 
-      BeEF requires Ruby 2.1+ and the "bundler" gem. Bundler can be installed by:
+      BeEF requires Ruby 2.2+ and the "bundler" gem. Bundler can be installed by:
 
       gem install bundler
 

@@ -37,7 +37,7 @@ Requirements
 ------------
 
 * OSX 10.5.0 or higher, modern Linux
-* [Ruby](http://rubylang.org) 2.1 or higher
+* [Ruby](http://rubylang.org) version 2.2 or newer
 * [SQLite](http://sqlite.org) 3.x
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 
