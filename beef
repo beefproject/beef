@@ -17,8 +17,8 @@ if RUBY_VERSION < '2.2'
   exit 1
 end
 
-$:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), '.'))
-$root_dir = File.expand_path('..', __FILE__)
+$root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
+$:.unshift($root_dir)
 $home_dir = File.expand_path('~/.beef', __FILE__).freeze
 
 # @note Require core loader's
