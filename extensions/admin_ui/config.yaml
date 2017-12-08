@@ -7,7 +7,7 @@ beef:
     extension:
         admin_ui:
             name: 'Admin UI'
-            enable: true
+            enable: false
             favicon_file_name: "favicon.ico"
             favicon_dir: "/images"
             login_fail_delay: 1

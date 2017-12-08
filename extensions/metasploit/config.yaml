@@ -20,7 +20,7 @@ beef:
     extension:
         metasploit:
             name: 'Metasploit'
-            enable: true
+            enable: false
             # Metasploit msgrpc connection options
             host: "127.0.0.1"
             port: 55552

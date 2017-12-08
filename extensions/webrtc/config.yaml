@@ -7,7 +7,7 @@ beef:
     extension:
         webrtc:
             name: 'WebRTC'
-            enable: true
+            enable: false
             authors: ["xntrik"]
             stunservers: '["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302","turn:numb.viagenie.ca:3478"]'
             # stunservers: '["stun:stun.l.google.com:19302"]'

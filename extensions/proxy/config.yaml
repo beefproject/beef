@@ -7,8 +7,9 @@ beef:
     extension:
         proxy:
             name: 'Proxy'
-            enable: true 
+            enable: false
             address: "127.0.0.1"
             port: 6789
             authors: ["antisnatchor", "scotty"]
-
+            key: "beef_key.pem"
+            cert: "beef_cert.pem"

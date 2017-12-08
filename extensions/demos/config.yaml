@@ -6,7 +6,7 @@
 beef:
     extension:
         demos:
-            enable: true 
+            enable: false
             name: 'Demos'
             demo_path: "/demos/basic.html"
 

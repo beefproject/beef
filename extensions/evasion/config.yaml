@@ -6,7 +6,7 @@
 beef:
     extension:
         evasion:
-            enable: true
+            enable: false
             name: 'Evasion'
             authors: ["antisnatchor"]
             exclude_core_js: ["lib/jquery-1.12.4.min.js", "lib/json2.js", "lib/jools.min.js", "lib/mdetect.js"]

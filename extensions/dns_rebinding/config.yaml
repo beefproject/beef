@@ -1,7 +1,7 @@
 beef:
     extension:
         dns_rebinding:
-            enable: true
+            enable: false
             name: 'DNS Rebinding'
             authors: ['Milovanov T.I.']
             #Addresses are split into internal/external for more convenient attack

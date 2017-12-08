@@ -6,7 +6,7 @@
 beef:
     extension:
         xssrays:
-            enable: true
+            enable: false
             name: 'XSSRays'
             authors: ["antisnatchor"]
             clean_timeout: 3000

@@ -147,24 +147,26 @@ beef:
             enable: false
 
     # You may override default extension configuration parameters here
+    # Note: additional experimental extensions are available in the 'extensions' directory
+    #       and can be enabled via their respective 'config.yaml' file
     extension:
+        admin_ui:
+            enable: true
+        demos:
+            enable: true
+        events:
+            enable: true
+        evasion:
+            enable: false
         requester:
             enable: true
         proxy:
             enable: true
-            key: "beef_key.pem"
-            cert: "beef_cert.pem"
+        network:
+            enable: true
         metasploit:
             enable: false
         social_engineering:
             enable: true
-        evasion:
-            enable: false
-        ipec:
+        xssrays:
             enable: true
-        # this is still experimental..
-        dns:
-            enable: false
-        # this is still experimental..
-        dns_rebinding:
-            enable: false

@@ -7,5 +7,5 @@ beef:
     extension:
         requester:
             name: 'Requester'
-            enable: true
+            enable: false
             authors: ["antisnatchor", "scotty"]

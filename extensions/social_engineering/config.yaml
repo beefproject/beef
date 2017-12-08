@@ -6,7 +6,7 @@
 beef:
     extension:
         social_engineering:
-            enable: true 
+            enable: false
             name: 'Social Engineering'
             authors: ["antisnatchor"]
             web_cloner:
