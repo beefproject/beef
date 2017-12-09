@@ -17,8 +17,8 @@ class TC_Login < Test::Unit::TestCase
     sleep 2.0
     BeefTest.save_screenshot(session)
     session.should have_title('BeEF Authentication')
-    session.fill_in 'user', :with => 'beef'
-    session.fill_in 'pass', :with => 'beef'
+    session.fill_in 'user', :with => BEEF_USER
+    session.fill_in 'pass', :with => BEEF_PASSWD
     BeefTest.save_screenshot(session)
     session.click_button('Login')
     sleep 10.0
