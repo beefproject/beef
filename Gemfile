@@ -89,7 +89,8 @@ if ENV['BEEF_TEST']
   gem 'test-unit-full'
   gem 'curb'
   gem 'selenium'
-  gem 'selenium-webdriver'
+  # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
+  gem 'selenium-webdriver', '~> 2.53.4'
   gem 'rspec'
   gem 'bundler-audit'
   # nokogirl is needed by capybara which may require one of the below commands
