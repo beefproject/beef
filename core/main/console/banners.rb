@@ -76,8 +76,6 @@ module Banners
     # [14:06:48]    |   Hook URL: http://127.0.0.1:3000/hook.js
     # [14:06:48]    |   UI URL:   http://127.0.0.1:3000/ui/panel
     #
-
-
     def print_network_interfaces_routes
       configuration = BeEF::Core::Configuration.instance
       prototxt = configuration.get("beef.http.https.enable") == true ? "https" : "http"
@@ -111,8 +109,21 @@ module Banners
     
     #
     # Print loaded modules
+    #
     def print_loaded_modules
         print_info "#{BeEF::Modules::get_enabled.count} modules enabled."
+    end
+
+    #
+    # Print WebSocket servers
+    #
+    def print_websocket_servers
+      config = BeEF::Core::Configuration.instance
+      ws_poll_timeout = config.get('beef.http.websocket.ws_poll_timeout')
+      print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{ws_poll_timeout}]"
+      if config.get("beef.http.websocket.secure")
+        print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{ws_poll_timeout}]"
+      end
     end
   end
 end

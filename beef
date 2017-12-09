@@ -6,55 +6,84 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-# stop deprecation warning from being displayed
+#
+# @note stop deprecation warning from being displayed
+#
 $VERBOSE = nil
 
+#
 # @note Version check to ensure BeEF is running Ruby 2.2+
+#
 if RUBY_VERSION < '2.2'
-  puts "\n"
+  puts
   puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
-  puts "\n"
+  puts
   exit 1
 end
 
+#
+# @note Platform check to ensure BeEF is not running on Windows
+#
+if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
+  puts
+  puts "Ruby platform #{RUBY_PLATFORM} is no longer supported."
+  puts
+  exit 1
+end
+
+#
+# @note set load path, application root directory and user preferences directory
+#
 $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
 $:.unshift($root_dir)
-$home_dir = File.expand_path('~/.beef', __FILE__).freeze
+$home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
+#
 # @note Require core loader's
+#
 require 'core/loader'
 
+#
 # @note Check the system language settings for UTF-8 compatibility
+#
 env_lang = ENV['LANG']
 if env_lang !~ /(utf8|utf-8)/i
   print_warning "Warning: System language $LANG does not appear to be UTF-8 compatible."
   if env_lang =~ /\A([a-z]+_[a-z]+)\./i
     country = $1
-    if !RUBY_PLATFORM.downcase.include?('mswin') && !RUBY_PLATFORM.downcase.include?('mingw')
-      print_more "Try: export LANG=#{country}.utf8"
-    end
+    print_more "Try: export LANG=#{country}.utf8"
   end
 end
 
-# @note Initialize the Configuration object. Eventually loads a different config.yaml if -c flag was passed.
+#
+# @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
+#
 if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
   config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
 else
   config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
 end
 
+#
 # @note After the BeEF core is loaded, bootstrap the rest of the framework internals
+#
 require 'core/bootstrap'
 
+#
 # @note Loads enabled extensions
+#
 BeEF::Extensions.load
 
+#
 # @note Prints the BeEF ascii art if the -a flag was passed
+#
 if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
   BeEF::Core::Console::Banners.print_ascii_art
 end
 
+#
 # @note Check if port and WebSocket port need to be updated from command line parameters
+#
 unless BeEF::Core::Console::CommandLine.parse[:port].empty?
   config.set('beef.http.port', BeEF::Core::Console::CommandLine.parse[:port])
 end
@@ -63,21 +92,24 @@ unless BeEF::Core::Console::CommandLine.parse[:ws_port].empty?
   config.set('beef.http.websocket.port', BeEF::Core::Console::CommandLine.parse[:ws_port])
 end
 
-# @note Check if interactive was specified from the command line, therefore override the extension to enable
-if BeEF::Core::Console::CommandLine.parse[:interactive] == true
-  config.set('beef.extension.console.shell.enable',true)
-end
-
+#
 # @note Prints BeEF welcome message
+#
 BeEF::Core::Console::Banners.print_welcome_msg
 
+#
 # @note Loads enabled modules
+#
 BeEF::Modules.load
 
-# @note Disable reverse dns
+#
+# @note Disable reverse DNS
+#
 Socket.do_not_reverse_lookup = true
 
+#
 # @note Database setup - use DataMapper::Logger.new($stdout, :debug) for development debugging
+#
 case config.get("beef.database.driver")
   when "sqlite"
     DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
@@ -93,9 +125,12 @@ case config.get("beef.database.driver")
     )
   else
     print_error 'No default database selected. Please add one in config.yaml'
+    exit 1
 end
 
+#
 # @note Resets the database if the -x flag was passed
+#
 if BeEF::Core::Console::CommandLine.parse[:resetdb]
   print_info 'Resetting the database for BeEF.'
   DataMapper.auto_migrate!
@@ -103,23 +138,50 @@ else
   DataMapper.auto_upgrade!
 end
 
+#
 # @note Extensions may take a moment to load, thus we print out a please wait message
+#
 print_info 'BeEF is loading. Wait a few seconds...'
 
+#
 # @note Execute migration procedure, checks for new modules
+#
 BeEF::Core::Migration.instance.update_db!
 
+#
 # @note Create HTTP Server and prepare it to run
+#
 http_hook_server = BeEF::Core::Server.instance
 http_hook_server.prepare
 
+#
 # @note Prints information back to the user before running the server
+#
 BeEF::Core::Console::Banners.print_loaded_extensions
 BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
 
+#
+# @note Create ~/.beef/
+#
+begin
+  FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
+rescue => e
+  print_error "Could not create '#{$home_dir}': #{e.message}"
+end
+
+#
+# @note Check whether we load the Console Shell or not
+#
+if config.get("beef.extension.console.shell.enable") == true
+  print_error "The console extension is currently unsupported."
+  print_more "See issue #1090 - https://github.com/beefproject/beef/issues/1090"
+end
+
+#
 # @note Warn and replace on default credentials
+#
 if config.get("beef.credentials.user").eql?('beef') &&
    [/beef[0-9]*/, /passw[o0]rd[0-9]*/].select{|pattern| pattern.match(config.get("beef.credentials.passwd"))}.any?
   print_warning "Warning: Default username and weak password in use!"
@@ -128,56 +190,31 @@ if config.get("beef.credentials.user").eql?('beef') &&
   print_more "New password for this instance: #{better_phrase}"
 end
 
-# @note create ~/.beef/
-begin
-    FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
-rescue => e
-    print_error "Could not create '#{$home_dir}': #{e.message}"
-end
-
-#@note Prints the API key needed to use the RESTful API
+#
+# @note Prints the API key needed to use the RESTful API
+#
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
-#@note Starts the WebSocket server
-if config.get("beef.http.websocket.enable")
-  BeEF::Core::Websocket::Websocket.instance
-  print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{config.get("beef.http.websocket.ws_poll_timeout")}]"
-  if config.get("beef.http.websocket.secure")
-    print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{config.get("beef.http.websocket.ws_poll_timeout")}]"
-  end
-end
-
-
+#
 # @note Call the API method 'pre_http_start'
+#
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
-# Load any ARE (Autorun Rule Engine) rules scanning the <beef_root>/arerules/enabled directory
+#
+# @note Load any ARE (Autorun Rule Engine) rules scanning the <beef_root>/arerules/enabled directory
+#
 BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 
-# @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
-if config.get("beef.extension.console.shell.enable") == true
-  print_error "The console extension is currently unavailable."
-  print_more "See issue #1090 - https://github.com/beefproject/beef/issues/1090"
-  print_info 'BeEF server started (press control+c to stop)'
-  http_hook_server.start
-  # uncomment this when the console extension is fixed
-=begin
-  require 'extensions/console/shell'
-  puts ""
-  begin
-    log_dir = File.expand_path(config.get("beef.extension.console.shell.historyfolder"))
-    FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
-  rescue => e
-    print_error "Could not create log directory for shell history '#{log_dir}': #{e.message}"
-    exit 1
-  end
-  begin
-    BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt,
-                                        BeEF::Extension::Console::Shell::DefaultPromptChar, {'config' => config, 'http_hook_server' => http_hook_server}).run
-  rescue Interrupt
-  end
-=end
-else
-  print_info 'BeEF server started (press control+c to stop)'
-  http_hook_server.start
+#
+# @note Start the WebSocket server
+#
+if config.get("beef.http.websocket.enable")
+  BeEF::Core::Websocket::Websocket.instance
+  BeEF::Core::Console::Banners.print_websocket_servers
 end
+
+#
+# @note Start HTTP server
+#
+print_info 'BeEF server started (press control+c to stop)'
+http_hook_server.start
