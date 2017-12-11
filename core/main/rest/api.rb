@@ -87,16 +87,17 @@ module BeEF
       #
       # @return <boolean>
       def self.timeout?(config_delay_id, last_time_attempt, time_record_set_fn)
-        time = Time.new
+        success = true
+        time = Time.now()
         config = BeEF::Core::Configuration.instance
         fail_delay = config.get(config_delay_id)
 
         if (time - last_time_attempt < fail_delay.to_f)
           time_record_set_fn.call(time)
-          return false
+          success = false
         end
 
-        return true
+        success
       end
 
     end
