@@ -12,6 +12,12 @@ class BeefRestClient
     @token = nil
   end
 
+
+  def is_pass?(passwd)
+    @pass == passwd
+  end
+
+
   def auth
     begin
       response = RestClient.post "#{@url}admin/login",
@@ -24,8 +30,9 @@ class BeefRestClient
       {:success => result['success'], :payload => result}
     rescue => e
       {:success => false, :payload => e.message }
-       end
+    end
   end
+
 
   def version
     return {:success => false, :payload => 'no token'} if @token.nil?
@@ -37,6 +44,6 @@ class BeefRestClient
     rescue => e
       print_error "Could not retrieve BeEF version: #{e.message}"
       {:success => false, :payload => e.message}
-       end
+    end
   end
 end

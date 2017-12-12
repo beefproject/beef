@@ -165,7 +165,7 @@ end
 
 task :xserver_stop do
   puts "\nShutting down X11 Server...\n"
-  sh "ps -ef|grep Xvfb|grep -v grep|awk '{print $2}'|xargs kill"
+  sh "ps -ef|grep Xvfb|grep -v grep|grep -v rake|awk '{print $2}'|xargs kill"
 end
 
 ################################
@@ -211,7 +211,7 @@ task :beef_stop do
 
   # shutting down
   puts "Shutting down BeEF...\n"
-  sh "ps -ef|grep beef|grep -v grep|awk '{print $2}'|xargs kill"
+  sh "ps -ef|grep beef|grep -v grep|grep -v rake|awk '{print $2}'|xargs kill"
 end
 
 ################################
