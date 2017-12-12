@@ -172,7 +172,7 @@ end
 # BeEF environment set up
 
 @beef_process_id = nil;
-@beef_config_file = 'tmp/rake_beef_conf.yaml';
+@beef_config_file = 'tmp/rk_beef_conf.yaml';
 
 
 task :beef_start => 'beef' do
