@@ -20,8 +20,21 @@ apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BE
 #binding.pry
 t0 = Time.now()
 l = apis.length
-(0..50).each do |i|
-  t = Time.now()
-  puts "#{i} : #{t - t0} : #{apis[i%l].auth()[:payload]}"
-  t0 = t
+
+(0..2).each do |again|
+  puts "speed requesets"
+  (0..50).each do |i|
+    t = Time.now()
+    puts "#{i} : #{t - t0} : #{apis[i%l].auth()[:payload]}"
+    t0 = t
+  end
+
+  # again with more time
+  puts "delayed requests"
+  (0..(l*2)).each do |i|
+    t = Time.now()
+    puts "#{i} : #{t - t0} : #{apis[i%l].auth()[:payload]}"
+    sleep(0.5)
+    t0 = t
+  end
 end
