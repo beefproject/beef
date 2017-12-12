@@ -56,7 +56,7 @@ desc 'rest test examples'
 task :rest_test do
   Rake::Task['beef_start'].invoke
 
-  sh 'cd test/api/; ruby -W2 beef_rest.rb"
+  sh 'cd test/api/; ruby -W2 1333_auth_rate.rb'
 
   Rake::Task['beef_stop'].invoke
 end
