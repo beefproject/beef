@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'pry-byebug'
+
 #
 # Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
