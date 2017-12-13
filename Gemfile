@@ -99,13 +99,9 @@ group :test do
     gem 'capybara'
     # RESTful API tests/generic command module tests
     gem 'rest-client', '>= 2.0.1'
+    gem 'pry'
+    gem 'pry-byebug'
   end
-end
-
-# For development
-group :dev do
-  gem 'pry'
-  gem 'pry-byebug'
 end
 
 source 'https://rubygems.org'
