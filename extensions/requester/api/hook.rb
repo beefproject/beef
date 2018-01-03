@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -40,7 +40,7 @@ module BeEF
             # If we use WebSockets, just reply wih the component contents
             if config.get("beef.http.websocket.enable") && ws.getsocket(hb.session)
               content = File.read(find_beefjs_component_path 'beef.net.requester').gsub('//
-              //   Copyright (c) 2006-2017 Wade Alcorn - wade@bindshell.net
+              //   Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
               //   Browser Exploitation Framework (BeEF) - http://beefproject.com
               //   See the file \'doc/COPYING\' for copying permission
               //', "")
