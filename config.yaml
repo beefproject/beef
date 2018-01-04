@@ -27,6 +27,8 @@ beef:
         # subnet of IP addresses that can connect to the admin UI
         #permitted_ui_subnet: "127.0.0.1/32"
         permitted_ui_subnet: "0.0.0.0/0"
+        # slow API calls to 1 every  api_attempt_delay  seconds
+        api_attempt_delay: "0.05"
 
     # HTTP server
     http:
@@ -106,6 +108,8 @@ beef:
 
         # db_file is only used for sqlite
         db_file: "beef.db"
+        #db_pool: 50             # Issues with sqlite locking.
+        #db_timeout: 500         # https://stackoverflow.com/questions/7154664/ruby-sqlite3busyexception-database-is-locked
 
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
