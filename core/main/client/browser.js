@@ -647,6 +647,15 @@ beef.browser = {
     },
 
     /**
+     * Return true if Epiphany
+     * @example: beef.browser.isEph()
+     */
+    isEpi: function () {
+        return this.isS() && window.navigator.userAgent.match(/Epiphany\//) != null;
+    },
+
+
+    /**
      * Returns true if Chrome 5.
      * @example: beef.browser.isC5()
      */
@@ -1647,6 +1656,8 @@ beef.browser = {
             O12: this.isO12(), // Opera 12.xx
             O: this.isO(),   // Opera any version
 
+            Ep: this.isEpi(), // Epiphany any version
+
             S4: this.isS4(), // Safari 4.xx
             S5: this.isS5(), // Safari 5.xx
             S6: this.isS6(), // Safari 6.x
@@ -2379,6 +2390,10 @@ beef.browser = {
             return 'O'
         }
         ;		// Opera any version
+        if (this.isEpi()) {
+            return 'EP'
+        }
+        ;			// Ephipany any version
         if (this.isS()) {
             return 'S'
         }
