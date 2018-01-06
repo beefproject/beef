@@ -2317,6 +2317,18 @@ beef.browser = {
         }
         ;   // Microsoft Edge
 
+        if (this.isEpi()) {
+            // beleive the UserAgent string - until whenever
+            var epiphanyRe = /Epiphany\/(\d+)/;
+            var versionDetails = epiphanyRe.exec( beef.browser.getBrowserReportedName());
+            if (versionDetails.length > 1) {
+                return versionDetails[1];
+            } else {
+                return "UNKNOWN";
+            }
+        }
+        ;                       // Epihany
+
         if (this.isS4()) {
             return '4'
         }
