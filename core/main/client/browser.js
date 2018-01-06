@@ -648,9 +648,10 @@ beef.browser = {
 
     /**
      * Return true if Epiphany
-     * @example: beef.browser.isEph()
+     * @example: beef.browser.isEpi()
      */
     isEpi: function () {
+        // based on webkit -- therefore should look a bit like Safari
         return this.isS() && window.navigator.userAgent.match(/Epiphany\//) != null;
     },
 
@@ -1656,7 +1657,7 @@ beef.browser = {
             O12: this.isO12(), // Opera 12.xx
             O: this.isO(),   // Opera any version
 
-            Ep: this.isEpi(), // Epiphany any version
+            EP: this.isEpi(), // Epiphany any version
 
             S4: this.isS4(), // Safari 4.xx
             S5: this.isS5(), // Safari 5.xx
