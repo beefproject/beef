@@ -13,7 +13,7 @@ require 'optparse'
 require 'pp'
 
 require '../common/test_constants'
-require './lib/beef_rest_client'
+require_relative './lib/beef_rest_client'
 
 class TC_1333_auth_rate < Test::Unit::TestCase
 
