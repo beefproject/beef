@@ -652,7 +652,7 @@ beef.browser = {
      */
     isEpi: function () {
         // based on webkit -- therefore should look a bit like Safari
-        return this.isS() && window.navigator.userAgent.match(/Epiphany\//) != null;
+        return window.navigator.userAgent.match(/Epiphany\//) != null;
     },
 
 
@@ -2318,16 +2318,16 @@ beef.browser = {
         ;   // Microsoft Edge
 
         if (this.isEpi()) {
-            // beleive the UserAgent string - until whenever
+            // believe the UserAgent string for version info - until whenever
             var epiphanyRe = /Epiphany\/(\d+)/;
             var versionDetails = epiphanyRe.exec( beef.browser.getBrowserReportedName());
             if (versionDetails.length > 1) {
                 return versionDetails[1];
             } else {
-                return "UNKNOWN";
+                return "UNKNOWN"; // returns from here or it may take Safari version details
             }
         }
-        ;                       // Epihany
+        ;                       // Epiphany
 
         if (this.isS4()) {
             return '4'
@@ -2406,7 +2406,7 @@ beef.browser = {
         if (this.isEpi()) {
             return 'EP'
         }
-        ;			// Ephipany any version
+        ;			// Epiphany any version
         if (this.isS()) {
             return 'S'
         }
