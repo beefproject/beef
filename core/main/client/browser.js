@@ -647,12 +647,23 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Webkit based
+     */
+    isWebKitBased: function () {
+        // Currently, [2018-01-08], safari checks isS* provide evidence of webkit
+        // to avoid duplicating code and hence bugs, use the existing checks for Safari.
+        return this.isS4() || this.isS5() || this.isS6() || this.isS7() || this.isS8();
+    },
+
+    /**
      * Return true if Epiphany
      * @example: beef.browser.isEpi()
      */
     isEpi: function () {
-        // based on webkit -- therefore should look a bit like Safari
-        return window.navigator.userAgent.match(/Epiphany\//) != null;
+        // Epiphany is based on webkit
+        // due to the uncertainty of webkit version vs Epiphany versions tracking.
+        // -- do webkit based checking (i.e. do safari checks)
+        return this.isWebKitBased() &&  window.navigator.userAgent.match(/Epiphany\//) != null;
     },
 
 
@@ -1669,8 +1680,8 @@ beef.browser = {
     },
 
     /**
-     * Returns the type of browser being used.
-     * @return: {String} User agent software and version.
+     * Returns the major version of the browser being used.
+     * @return: {String} version number || 'UNKNOWN'.
      *
      * @example: beef.browser.getBrowserVersion()
      */
