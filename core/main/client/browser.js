@@ -648,11 +648,15 @@ beef.browser = {
 
     /**
      * Returns true if Webkit based
+     *
+     * **** DUPLICATE WARNING **** Changes here may aldo need addressed in /isS\d+/ functions.
      */
     isWebKitBased: function () {
-        // Currently, [2018-01-08], safari checks isS* provide evidence of webkit
-        // to avoid duplicating code and hence bugs, use the existing checks for Safari.
-        return this.isS4() || this.isS5() || this.isS6() || this.isS7() || this.isS8();
+        return (!window.opera && !window.chrome
+                && window.navigator.userAgent.match(/ Version\/\d/) != null
+                && !window.globalStorage
+                && !!window.getComputedStyle
+                && !("MozWebSocket" in window));
     },
 
     /**
