@@ -647,6 +647,31 @@ beef.browser = {
     },
 
     /**
+     * Returns true if Webkit based
+     *
+     * **** DUPLICATE WARNING **** Changes here may aldo need addressed in /isS\d+/ functions.
+     */
+    isWebKitBased: function () {
+        return (!window.opera && !window.chrome
+                && window.navigator.userAgent.match(/ Version\/\d/) != null
+                && !window.globalStorage
+                && !!window.getComputedStyle
+                && !("MozWebSocket" in window));
+    },
+
+    /**
+     * Return true if Epiphany
+     * @example: beef.browser.isEpi()
+     */
+    isEpi: function () {
+        // Epiphany is based on webkit
+        // due to the uncertainty of webkit version vs Epiphany versions tracking.
+        // -- do webkit based checking (i.e. do safari checks)
+        return this.isWebKitBased() &&  window.navigator.userAgent.match(/Epiphany\//) != null;
+    },
+
+
+    /**
      * Returns true if Chrome 5.
      * @example: beef.browser.isC5()
      */
@@ -1647,6 +1672,8 @@ beef.browser = {
             O12: this.isO12(), // Opera 12.xx
             O: this.isO(),   // Opera any version
 
+            EP: this.isEpi(), // Epiphany any version
+
             S4: this.isS4(), // Safari 4.xx
             S5: this.isS5(), // Safari 5.xx
             S6: this.isS6(), // Safari 6.x
@@ -1657,8 +1684,8 @@ beef.browser = {
     },
 
     /**
-     * Returns the type of browser being used.
-     * @return: {String} User agent software and version.
+     * Returns the major version of the browser being used.
+     * @return: {String} version number || 'UNKNOWN'.
      *
      * @example: beef.browser.getBrowserVersion()
      */
@@ -1667,47 +1694,47 @@ beef.browser = {
         if (this.isC5()) {
             return '5'
         }
-        ; 	// Chrome 5
+        ;   // Chrome 5
         if (this.isC6()) {
             return '6'
         }
-        ; 	// Chrome 6
+        ;   // Chrome 6
         if (this.isC7()) {
             return '7'
         }
-        ; 	// Chrome 7
+        ;   // Chrome 7
         if (this.isC8()) {
             return '8'
         }
-        ; 	// Chrome 8
+        ;   // Chrome 8
         if (this.isC9()) {
             return '9'
         }
-        ; 	// Chrome 9
+        ;   // Chrome 9
         if (this.isC10()) {
             return '10'
         }
-        ; 	// Chrome 10
+        ;   // Chrome 10
         if (this.isC11()) {
             return '11'
         }
-        ; 	// Chrome 11
+        ;   // Chrome 11
         if (this.isC12()) {
             return '12'
         }
-        ; 	// Chrome 12
+        ;   // Chrome 12
         if (this.isC13()) {
             return '13'
         }
-        ; 	// Chrome 13
+        ;   // Chrome 13
         if (this.isC14()) {
             return '14'
         }
-        ; 	// Chrome 14
+        ;   // Chrome 14
         if (this.isC15()) {
             return '15'
         }
-        ; 	// Chrome 15
+        ;   // Chrome 15
         if (this.isC16()) {
             return '16'
         }
@@ -1984,7 +2011,7 @@ beef.browser = {
             return '51'
         }
         ;   // Chrome 51 for iOS
-	    if (this.isC52()) {
+        if (this.isC52()) {
             return '52'
         }
         ;// Chrome 52
@@ -2305,6 +2332,18 @@ beef.browser = {
         }
         ;   // Microsoft Edge
 
+        if (this.isEpi()) {
+            // believe the UserAgent string for version info - until whenever
+            var epiphanyRe = /Epiphany\/(\d+)/;
+            var versionDetails = epiphanyRe.exec( beef.browser.getBrowserReportedName());
+            if (versionDetails.length > 1) {
+                return versionDetails[1];
+            } else {
+                return "UNKNOWN"; // returns from here or it may take Safari version details
+            }
+        }
+        ;                       // Epiphany
+
         if (this.isS4()) {
             return '4'
         }
@@ -2362,7 +2401,7 @@ beef.browser = {
         if (this.isC()) {
             return 'C'
         }
-        ; 	// Chrome any version
+        ;   // Chrome any version
         if (this.isFF()) {
             return 'FF'
         }
@@ -2379,6 +2418,10 @@ beef.browser = {
             return 'O'
         }
         ;		// Opera any version
+        if (this.isEpi()) {
+            return 'EP'
+        }
+        ;			// Epiphany any version
         if (this.isS()) {
             return 'S'
         }
@@ -2862,8 +2905,9 @@ beef.browser = {
      */
     getPluginsIE: function () {
         var results = '';
-        var plugins = {'AdobePDF6': {
-            'control': 'PDF.PdfCtrl',
+        var plugins = {
+            'AdobePDF6': {
+                'control': 'PDF.PdfCtrl',
             'return': function (control) {
                 version = control.getVersions().split(',');
                 version = version[0].split('=');
@@ -2981,14 +3025,14 @@ beef.browser = {
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
         var hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
         switch (document.location.protocol) {
-            case "http:":
-                var default_port = "80";
-                break;
-            case "https:":
-                var default_port = "443";
-                break
-            default:
-                var default_port = "";
+        case "http:":
+            var default_port = "80";
+            break;
+        case "https:":
+            var default_port = "443";
+            break
+        default:
+            var default_port = "";
         }
         var hostport = (document.location.port) ? document.location.port : default_port;
         var browser_plugins = beef.browser.getPlugins();
@@ -3175,13 +3219,13 @@ beef.browser = {
      * @from: https://github.com/idofilin/webgl-by-example/blob/master/detect-webgl/detect-webgl.js
      * */
     hasWebGL: function () {
-      try {
-        var canvas = document.createElement("canvas");
-        var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-        return !!(gl && gl instanceof WebGLRenderingContext);
-      } catch(e) {
-        return false;
-      }
+        try {
+            var canvas = document.createElement("canvas");
+            var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+            return !!(gl && gl instanceof WebGLRenderingContext);
+        } catch(e) {
+            return false;
+        }
     },
 
     /**
@@ -3339,7 +3383,7 @@ beef.browser = {
         if (scope == 'PER_DOMAIN')
             testUrl = "http://browserspy.dk/connections.php?img=1&amp;random=";
         else
-        // The token will be replaced by a different number with each request (different origin).
+            // The token will be replaced by a different number with each request (different origin).
             testUrl = "http://<token>.browserspy.dk/connections.php?img=1&amp;random=";
 
         var imagesLoaded = 0;			// Number of responding images before timeout.
