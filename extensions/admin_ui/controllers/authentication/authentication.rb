@@ -31,6 +31,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
   # Function managing the index web page
   def index 
     @headers['Content-Type']='text/html; charset=UTF-8'
+    @headers['X-Frame-Options']='sameorigin'
   end
   
   #
@@ -42,6 +43,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     password = @params['password-cfrm'] || ''
     config = BeEF::Core::Configuration.instance
     @headers['Content-Type']='application/json; charset=UTF-8'
+    @headers['X-Frame-Options']='sameorigin'
     ua_ip = @request.ip # get client ip address
     @body = '{ success : false }' # attempt to fail closed
           
@@ -87,6 +89,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     (print_error "invalid session";return @body = "{ success : true }") if not @session.valid_session?(@request)
     
     @headers['Content-Type']='application/json; charset=UTF-8'
+    @headers['X-Frame-Options']='sameorigin'
     
     # set the session to be log out
     @session.set_logged_out
