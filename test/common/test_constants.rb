@@ -12,8 +12,8 @@ ATTACK_URL = "http://" + ATTACK_DOMAIN + ":3000/ui/panel"
 VICTIM_URL = "http://" + VICTIM_DOMAIN + ":3000/demos/basic.html"
 
 # Credentials
-BEEF_USER = "beef"
-BEEF_PASSWD = "test"
+BEEF_USER = "beefuser"
+BEEF_PASSWD = "beefpass"
 
 # RESTful API root endpoints
 RESTAPI_HOOKS = "http://" + ATTACK_DOMAIN + ":3000/api/hooks"
