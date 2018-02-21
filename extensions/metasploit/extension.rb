@@ -6,7 +6,7 @@
 module BeEF
 module Extension
 module Metasploit
-  
+
   extend BeEF::API::Extension
 
       @short_name = 'msf'
@@ -26,7 +26,7 @@ module Metasploit
 		v['value'] = v['default'] if k != "URIPATH"
         	v['value']  =  BeEF::Core::Configuration.instance.get('beef.extension.metasploit.callback_host') if k == "LHOST"
 
-		
+
             when "bool"
                 v['type'] = 'checkbox'
             when "enum"
@@ -56,16 +56,16 @@ module Metasploit
        defaultPayload = 'generic/shell_bind_tcp' if values.include? 'generic/shell_bind_tcp'
 
        if values.length > 0
-           return { 
-                'name' => 'PAYLOAD', 
-                'type' => 'combobox', 
-                'ui_label' => 'Payload', 
+           return {
+                'name' => 'PAYLOAD',
+                'type' => 'combobox',
+                'ui_label' => 'Payload',
                 'store_type' => 'arraystore',
-                'store_fields' => ['payload'], 
+                'store_fields' => ['payload'],
                 'store_data' => values,
-                'valueField' => 'payload', 
-                'displayField' => 'payload', 
-                'mode' => 'local', 
+                'valueField' => 'payload',
+                'displayField' => 'payload',
+                'mode' => 'local',
                 'autoWidth' => true,
 		'defaultPayload' => defaultPayload,
 		'reloadOnChange' => true
@@ -83,8 +83,8 @@ module Metasploit
        }
        return values
   end
-  
-  
+
+
 end
 end
 end

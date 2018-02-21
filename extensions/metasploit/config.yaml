@@ -12,7 +12,7 @@
 #
 # Ensure that the IP address supplied to Metasploit with the 'ServerHost'
 # parameter is the same IP address as specified in beef.extension.metasploit.host
-# 
+#
 # Ensure that the IP address specified in beef.extension.metasploit.callback_host
 # is the publicly accessible IP address for victim connections to Metasploit.
 
@@ -37,7 +37,7 @@ beef:
             # Start msfrpcd automatically with BeEF
             auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
-            msf_path: [ 
+            msf_path: [
               {os: 'osx', path: '/opt/local/msf/'},
               {os: 'livecd', path: '/opt/metasploit-framework/'},
               {os: 'bt5r3', path: '/opt/metasploit/msf3/'},

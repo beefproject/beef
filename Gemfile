@@ -102,6 +102,7 @@ if ENV['BEEF_TEST']
   gem 'capybara'
   # RESTful API tests/generic command module tests
   gem 'rest-client', '>= 2.0.1'
+  gem 'byebug'
 end
 end
 
