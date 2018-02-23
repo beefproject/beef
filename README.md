@@ -40,7 +40,7 @@ Requirements
 * [Ruby](http://rubylang.org) version 2.2 or newer
 * [SQLite](http://sqlite.org) 3.x
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
-* brew install selenium-server-standalone
+* brew install selenium-server-standalone (See https://github.com/shvets/selenium)
 
 Quick Start
 -----------
