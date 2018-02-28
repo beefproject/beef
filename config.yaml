@@ -17,8 +17,8 @@ beef:
     # Credentials to authenticate in BeEF.
     # Used by both the RESTful API and the Admin interface
     credentials:
-        user:   "beefuser"
-        passwd: "beefpass"
+        user:   "beef"
+        passwd: "beef"
 
     # Interface / IP restrictions
     restrictions:
