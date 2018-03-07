@@ -23,7 +23,8 @@ module BeEF
           end
 
           # default index page
-          def index;
+          def index
+            @headers['X-Frame-Options']='sameorigin'
           end
 
           # return a JSON object contains all the updates for the hooked browser trees

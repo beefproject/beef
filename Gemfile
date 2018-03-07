@@ -69,6 +69,9 @@ end
 # DNS extension
 group :ext_dns do
   gem 'rubydns', '~> 0.7.3'
+  # rubydns requires rainbow
+  # which requires rake, but doesn't specify rake as a dependency
+  gem 'rake'
 end
 
 # network extension

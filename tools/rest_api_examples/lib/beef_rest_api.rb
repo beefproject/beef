@@ -55,6 +55,20 @@ def online_browsers
   end
 end
 
+# get offline hooked browsers
+def offline_browsers 
+  begin
+    print_verbose "Retrieving offline browsers"
+    response = RestClient.get "#{@url}hooks", {:params => {:token => @token}}
+    result = JSON.parse(response.body)
+    browsers = result["hooked-browsers"]["offline"]
+    print_good "Retrieved offline browser list [#{browsers.size} offline]"
+    browsers
+  rescue => e
+    print_error "Could not retrieve browser details: #{e.message}"
+  end
+end
+
 # get hooked browser details by session
 def browser_details session
   begin
@@ -65,6 +79,18 @@ def browser_details session
     details
   rescue => e
     print_error "Could not retrieve browser details: #{e.message}"
+  end
+end
+
+# delete a browser by session
+def delete_browser session
+  begin
+    print_verbose "Removing hooked browser [session: #{session}]"
+    response = RestClient.get "#{@url}hooks/#{session}/delete", {:params => {:token => @token}}
+    print_good "Removed browser [session: #{session}]" if response.code == 200
+    response
+  rescue => e
+    print_error "Could not delete hooked browser: #{e.message}"
   end
 end
 

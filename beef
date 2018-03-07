@@ -12,11 +12,11 @@
 $VERBOSE = nil
 
 #
-# @note Version check to ensure BeEF is running Ruby 2.2+
+# @note Version check to ensure BeEF is running Ruby 2.3+
 #
-if RUBY_VERSION < '2.2'
+if RUBY_VERSION < '2.3'
   puts
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.3 or later."
   puts
   exit 1
 end
