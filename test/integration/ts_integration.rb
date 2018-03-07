@@ -17,6 +17,7 @@ require './tc_debug_modules' # RESTful API tests (as well as debug modules)
 require './tc_login' # Basic log in and log out tests
 require './tc_proxy' # Basic tests for Proxy extension
 require './tc_network_rest' # Basic tests for Network extension RESTful API interface
+require '../api/1333_auth_rate' # API rate testing issue #1333'
 
 # Experimental extensions
 #require './tc_jools' # Basic tests for jools
@@ -34,6 +35,9 @@ class TS_BeefIntegrationTests
     suite << TC_Proxy.suite
     suite << TC_NetworkRest.suite
 
+    # issue raised
+    suite << TC_1333_auth_rate.suite
+
     # Tests for experimental extensions
     #suite << TC_SocialEngineeringRest.suite
     #suite << TC_Jools.suite
@@ -45,4 +49,3 @@ class TS_BeefIntegrationTests
 end
 
 Test::Unit::UI::Console::TestRunner.run(TS_BeefIntegrationTests)
-
