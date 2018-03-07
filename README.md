@@ -36,9 +36,9 @@ __Twitter:__ @beefproject
 Requirements
 ------------
 
-* OSX 10.5.0 or higher, modern Linux
-* [Ruby](http://rubylang.org) version 2.2 or newer
-* [SQLite](http://sqlite.org) 3.x
+* Operating System: Mac OSX 10.5.0 or higher / modern Linux
+* [Ruby](http://rubylang.org): 2.3 or newer
+* [SQLite](http://sqlite.org): 3.x
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 
 
@@ -47,11 +47,13 @@ Quick Start
 
 __The following is for the impatient.__ 
 
+The `install` script installs the required operating system packages and all the prerequisite Ruby gems:
+
+  $ ./install
+
 For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt).
 
 We also have an [Installation](https://github.com/beefproject/beef/wiki/Installation) page on the wiki.
-
-       $ curl -L https://raw.githubusercontent.com/beefproject/beef/a6a7536e/install-beef | bash -s stable
 
 Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration) page on the wiki for important details on configuring and securing BeEF.
 
