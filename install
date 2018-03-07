@@ -1,26 +1,133 @@
-#!/usr/bin/env ruby
-
+#!/bin/bash
 #
 # Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
-puts "\nWelcome to the BeEF installer!"
+set -euo pipefail
+IFS=$'\n\t'
 
-if RUBY_VERSION < '2.2'
-  puts "\n"
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
-  puts "\n"
-  exit 1
-end
+clear
 
-puts "\nPlease make sure you have installed SQLite before proceeding.  For instructions on how to do this please see the README file"
+if [ -f core/main/console/beef.ascii ] ; then
+  cat core/main/console/beef.ascii
+  echo
+fi
 
-puts "\nInstall Bundler: gem install bundler"
+echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+echo "                   -- [ BeEF Installer ] --                      "
+echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+echo
 
-puts "\nRun bundler in your BeEF folder: bundle install"
+command_exists () {
+  command -v "$1" /dev/null 2&>1
+}
 
-puts "\nRun BeEF: ./beef"
+info()  { echo "[INFO]   $*"; }
+warn()  { echo "[WARN]   $*"; }
+error() { echo "[ERROR]  $*"; }
+fatal() { echo "[FATAL]  $*"; exit 1 ; }
 
-#Testing fork regroup
+warn 'This script will install BeEF and its required dependencies (including operating system packages).'
+read -p  "Are you sure you wish to continue (Y/n)? " 
+if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" = "n" ] ; then
+  fatal 'Installation aborted'
+fi
+
+install_linux () {
+  info "Detecting Linux OS distribution..."
+  Distro=''
+  if [ -f /etc/redhat-release ] ; then
+    Distro='RedHat'
+  elif [ -f /etc/debian_version ] ; then
+    Distro='Debian'
+  elif [ -f /etc/os-release ] ; then
+    DISTRO_ID=`grep ^ID= /etc/os-release | cut -d= -f2-`
+    if [ "$DISTRO_ID" = 'kali' ] ; then
+      Distro='Kali'
+    fi
+  fi
+
+  if [ -z $Distro ] ; then
+    fatal "Unable to locate installer for your $OS distribution"
+  fi
+
+  readonly Distro
+  info "OS Distribution: $Distro"
+  info "Installing $Distro prerequisite packages..."
+  if [ "$Distro" = "Debian" -o "$Distro" = "Kali" ]; then
+    sudo apt-get update
+    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion nodejs
+  elif [ "$Distro" = "RedHat" ]; then
+    sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison iconv-devel sqlite-devel nodejs
+  fi
+}
+
+install_mac () {
+  echo
+}
+
+info "Detecting OS..."
+OS=`uname`
+readonly OS
+info "Operating System: $OS"
+if [ "${OS}" = "Linux" ] ; then
+  info "Launching Linux install..."
+  install_linux
+elif [ "$OS" = "Darwin" ]; then
+  info "Launching Mac OSX install..."
+  install_mac
+else
+  fatal "Unable to locate installer for your Operating system: $OS"
+fi
+
+info 'Detecting Ruby environment...'
+MIN_RUBY_VER='2.3'
+if command_exists ruby
+then
+  RUBY_VERSION=`ruby -e "puts RUBY_VERSION"`
+  info "Ruby version ${RUBY_VERSION} is installed"
+  if [ `ruby -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}"` = 'false' ]
+  then
+    fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+  fi
+else
+  fatal "Ruby is not installed. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+fi
+
+#if command_exists rbenv
+#then
+#  info 'rbenv is installed'
+#elif command_exists rvm
+#then
+#  info 'rvm is installed'
+#else
+#  fatal 'Could not find Ruby environment manager!
+#Please install either RVM or rbenv and restart the installer
+#For more information:
+#  * rbenv: https://github.com/rbenv/rbenv
+#  * rvm: https://rvm.io/rvm/install'
+#fi
+
+info 'Detecting bundler gem...'
+if command_exists bundler
+then
+  info 'bundler gem is installed'
+else
+  info 'Installing bundler gem'
+  gem install bundler
+fi
+
+echo "Installing required Ruby gems..."
+bundle install --without test development
+
+echo
+echo "=========================================="
+echo
+info "Install completed successfully!"
+info "Run './beef' to launch BeEF"
+echo
+echo "=========================================="
+echo
+
