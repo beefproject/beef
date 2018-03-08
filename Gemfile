@@ -8,8 +8,9 @@
 
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra'
-gem 'rack', '~> 1.6.5'
+gem 'sinatra', '~> 2.0.1'
+gem 'rack', '~> 2.0.4'
+gem 'rack-protection', '~>2.0.0'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
@@ -22,6 +23,8 @@ gem 'data_objects'
 gem 'rubyzip', '>= 1.2.1'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.7'
+gem 'rake'
+
 
 if RUBY_PLATFORM.downcase.include?('linux')
   gem 'therubyracer', '~> 0.12.2', '<= 0.12.2'
@@ -71,7 +74,6 @@ group :ext_dns do
   gem 'rubydns', '~> 0.7.3'
   # rubydns requires rainbow
   # which requires rake, but doesn't specify rake as a dependency
-  gem 'rake'
 end
 
 # network extension
@@ -87,7 +89,6 @@ end
 # For running unit tests
 group :test do
 if ENV['BEEF_TEST']
-  gem 'rake'
   gem 'test-unit'
   gem 'test-unit-full'
   gem 'curb'
