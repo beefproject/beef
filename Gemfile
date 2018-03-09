@@ -10,6 +10,7 @@ gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'
 gem 'rack', '~> 1.6.5'
+gem 'rack-protection', '~> 1.5.4'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
@@ -22,6 +23,7 @@ gem 'data_objects'
 gem 'rubyzip', '>= 1.2.1'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.7'
+gem 'rake'
 
 if RUBY_PLATFORM.downcase.include?('linux')
   gem 'therubyracer', '~> 0.12.2', '<= 0.12.2'
@@ -69,9 +71,6 @@ end
 # DNS extension
 group :ext_dns do
   gem 'rubydns', '~> 0.7.3'
-  # rubydns requires rainbow
-  # which requires rake, but doesn't specify rake as a dependency
-  gem 'rake'
 end
 
 # network extension
@@ -86,23 +85,24 @@ end
 
 # For running unit tests
 group :test do
-if ENV['BEEF_TEST']
-  gem 'rake'
-  gem 'test-unit'
-  gem 'test-unit-full'
-  gem 'curb'
-  gem 'selenium'
-  # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
-  gem 'selenium-webdriver', '~> 2.53.4'
-  gem 'rspec'
-  gem 'bundler-audit'
-  # nokogirl is needed by capybara which may require one of the below commands
-  # sudo apt-get install libxslt-dev libxml2-dev
-  # sudo port install libxml2 libxslt
-  gem 'capybara'
-  # RESTful API tests/generic command module tests
-  gem 'rest-client', '>= 2.0.1'
-end
+  if ENV['BEEF_TEST']
+    gem 'test-unit'
+    gem 'test-unit-full'
+    gem 'rspec'
+    # curb gem requires curl libraries
+    # sudo apt-get install libcurl4-openssl-dev
+    gem 'curb'
+    # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
+    gem 'selenium'
+    gem 'selenium-webdriver', '~> 2.53.4'
+    # nokogirl is needed by capybara which may require one of the below commands
+    # sudo apt-get install libxslt-dev libxml2-dev
+    # sudo port install libxml2 libxslt
+    gem 'capybara'
+    # RESTful API tests/generic command module tests
+    gem 'rest-client', '>= 2.0.1'
+    gem 'byebug'
+  end
 end
 
 source 'https://rubygems.org'

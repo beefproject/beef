@@ -6,98 +6,66 @@
 
 ===============================================================================
 
+Source
+------
+
+Obtain application source code either by downloading the latest archive:
+
+  $ wget https://github.com/beefproject/beef/archive/master.zip
+
+Or cloning the Git repository from Github:
+
+  $ git clone https://github.com/beefproject/beef
+
+
+Prerequisites
+--------------
+
+BeEF requires Ruby 2.3+.
+
+If your operating system package manager does not support Ruby version 2.3,
+you can add the brightbox ppa repository for the latest version of Ruby:
+
+  $ sudo apt-add-repository -y ppa:brightbox/ruby-ng
+
+Alternatively, consider using a Ruby environment manager such as rbenv or rvm
+to manager your Ruby versions. Refer to the following for more information:
+
+  * rbenv: https://github.com/rbenv/rbenv
+  * rvm: https://rvm.io/rvm/install'
+
+
 Installation
 ------------
 
-   1. Prerequisites (platform independent)
-   2. Prerequisites (Windows)
-   3. Prerequisites (Linux)
-   4. Prerequisites (Mac OSX)
-   5. Install instructions
-   6. Run instructions
+Once Ruby is installed, run the install script in the BeEF directory:
+
+  ./install
+
+This script installs the required operating system packages and all the
+prerequisite Ruby gems.
+
+Upon successful installation, be sure to read the Configuration page
+on the wiki for important details on configuring and securing BeEF.
+
+  https://github.com/beefproject/beef/wiki/Configuration
 
 
+Start BeEF
+----------
 
-   1. Prerequisites (platform independent)
+To start BeEF, simply run:
 
-      BeEF requires Ruby 2.2+ and the "bundler" gem. Bundler can be installed by:
-
-      gem install bundler
-
-      
-   2. Prerequisites (Windows)
-
-      Windows is no longer supported. The following instructions are outdated.
-
-      !!! This must be done PRIOR to running the bundle install command !!!
-      
-      Windows requires the sqlite.dll.  Simply grab the zip file below and extract it to your Ruby bin directory:
-
-      http://www.sqlite.org/sqlitedll-3_7_0_1.zip
-
-      Other than that, you also need TheRubyRacer. As it's painful to install it on Windows, you can download 2 pre-compiled V8 DLLs and 2 gems from https://github.com/eakmotion/therubyracer_for_windows.
-
-      Finally, edit beef's gem lock file by replacing the required ruby racer version with the version downloaded from the link above. 
-
-   3. Prerequisites (Linux)
-
-      !!! This must be done PRIOR to running the bundle install command !!!
-
-      On linux you will need to find the packages specific to your distribution for sqlite.  An example build script for Ubuntu 14.04 systems is:
-
-        # Set your prefered build dir
-        BUILDDIR=/opt && \
-        cd $BUILDDIR && \
-        \
-        # Install dependences
-        sudo apt-get update && \
-        sudo apt-get install -y \
-            build-essential \
-            git \
-            libsqlite3-dev \
-            software-properties-common \
-            sqlite3 \
-            sqlite3-doc && \
-        \
-        # Add brightbox ppa for the latest version of ruby
-        sudo apt-add-repository -y \
-            ppa:brightbox/ruby-ng && \
-        \
-        # Install ruby (2.2 in this example)
-        sudo apt-get update && \
-        sudo apt-get install -y \
-            ruby2.2 \
-            ruby2.2-dev && \
-        \
-        # Install bundler using gem
-        sudo gem install bundler
-
-      3.1. It is recommended not to use rvm. If you use rvm the ruby binaries are installed to locations outside of your default path which may cause problems later.
-  
-   4. Prerequisites (Mac OSX)
-   
-      - XCode: provides the sqlite support BeEF needs
-      
-      - Ruby 2.1
-      	To install RVM and Ruby 2.1.5 on Mac OS:
-      	$ bash -s stable < <(curl -Ls https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer) source ~/.bash_profile
-      	$ rvm install 2.1.5
-        $ rvm use 2.1.5
+  $ ./beef
 
 
-   5. Install instructions
-   
-      Obtain application code either by downloading an archive from https://github.com/beefproject/beef/archive/master.zip or cloning the GIT repo https://github.com/beefproject/beef.git
+Updating
+--------
 
-      Enter into the newly created BeEF directory, and type:
+Due to the fast-paced nature of web browser development and webappsec landscape,
+it's best to regularly update BeEF to the latest version.
 
-      bundle install
+If you're using BeEF from the GitHub repository, updating is as simple as:
 
-      Bundler installs all the pre-requisite gems.
-
-   6. Run instructions
-
-      Simply run:
-
-      ./beef -x
+  $ git pull
 

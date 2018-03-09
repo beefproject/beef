@@ -16,7 +16,7 @@ fatal() { echo -e "\\033[1;31m[FATAL]\\033[0m  $*"; exit 1 ; }
 
 command_exists () {
 
-  command -v "${1}" /dev/null 2&>1
+  command -v "$1" /dev/null 2&>/dev/null
 }
 
 
@@ -83,6 +83,7 @@ install_linux () {
 
 
 install_mac () {
+  # brew install ...
   echo
 }
 

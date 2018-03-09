@@ -76,7 +76,7 @@ class TC_Login < Test::Unit::TestCase
 
     attacker.should have_content(VICTIM_DOMAIN)
     attacker.should have_content('127.0.0.1')
-    attacker.click_on('127.0.0.1')
+    attacker.click_on("127.0.0.1", match: :first)
 
     sleep 1.0
 

@@ -102,3 +102,5 @@ $RECYCLE.BIN/
 # Project-level settings
 /.tgitconfig
 
+test/thirdparty/msf/unit/.byebug_history
+/load
