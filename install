@@ -119,15 +119,23 @@ else
   gem install bundler
 fi
 
-echo "Installing required Ruby gems..."
-bundle install --without test development
+}
 
-echo
-echo "=========================================="
-echo
-info "Install completed successfully!"
-info "Run './beef' to launch BeEF"
-echo
-echo "=========================================="
-echo
+
+install_beef () { 
+
+  echo "Installing required Ruby gems..."
+  bundle install --without test development
+
+  echo
+  echo "=========================================="
+  echo
+  info "Install completed successfully!"
+  info "Run './beef' to launch BeEF"
+  echo
+  echo "=========================================="
+  echo
+}
+
+
 
