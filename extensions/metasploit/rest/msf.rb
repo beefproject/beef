@@ -1,3 +1,4 @@
+require_relative '../../../core/main/router/router.rb'
 #
 # Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com

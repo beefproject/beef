@@ -7,7 +7,7 @@ module BeEF
 module Extension
 module AdminUI
 module API
-  
+
   #
   # We use this module to register all the http handler for the Administrator UI
   #
@@ -31,7 +31,7 @@ module API
       js_files = ""
 
       #NOTE: order counts! make sure you know what you're doing if you add files
-      esapi = %w(esapi/Class.create.js esapi/jquery-1.12.4.min.js esapi/jquery-encoder-0.1.0.js)
+      esapi = %w(esapi/Class.create.js esapi/jquery-3.3.1.min.js esapi/jquery-encoder-0.1.0.js)
       ux =  %w(ui/common/beef_common.js ux/PagingStore.js ux/StatusBar.js ux/TabCloseMenu.js)
       panel = %w(ui/panel/common.js ui/panel/DistributedEngine.js ui/panel/PanelStatusBar.js ui/panel/tabs/ZombieTabDetails.js ui/panel/tabs/ZombieTabLogs.js ui/panel/tabs/ZombieTabCommands.js ui/panel/tabs/ZombieTabRider.js ui/panel/tabs/ZombieTabXssRays.js wterm/wterm.jquery.js ui/panel/tabs/ZombieTabIpec.js ui/panel/tabs/ZombieTabAutorun.js ui/panel/PanelViewer.js ui/panel/DataGrid.js ui/panel/MainPanel.js ui/panel/ZombieTab.js ui/panel/ZombieTabs.js ui/panel/zombiesTreeList.js ui/panel/ZombiesMgr.js ui/panel/tabs/ZombieTabNetwork.js ui/panel/tabs/ZombieTabRTC.js ui/panel/Logout.js ui/panel/WelcomeTab.js ui/panel/ModuleSearching.js)
 
@@ -81,7 +81,7 @@ module API
         mod_name = File.basename http_module, '.rb'
         beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
       end
-      
+
       # mount the folder were we store static files (javascript, css, images) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
       beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
