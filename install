@@ -96,19 +96,6 @@ else
   fatal "Ruby is not installed. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
 fi
 
-#if command_exists rbenv
-#then
-#  info 'rbenv is installed'
-#elif command_exists rvm
-#then
-#  info 'rvm is installed'
-#else
-#  fatal 'Could not find Ruby environment manager!
-#Please install either RVM or rbenv and restart the installer
-#For more information:
-#  * rbenv: https://github.com/rbenv/rbenv
-#  * rvm: https://rvm.io/rvm/install'
-#fi
 
 
 
