@@ -21,7 +21,7 @@ echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
 echo
 
 command_exists () {
-  command -v "$1" /dev/null 2&>1
+  command -v "$1" /dev/null 2&>/dev/null
 }
 
 info()  { echo "[INFO]   $*"; }
@@ -65,6 +65,7 @@ install_linux () {
 }
 
 install_mac () {
+  # brew install ...
   echo
 }
 
@@ -119,14 +120,14 @@ else
   gem install bundler
 fi
 
-echo "Installing required Ruby gems..."
+info "Installing required Ruby gems..."
 bundle install --without test development
 
 echo
 echo "=========================================="
 echo
-info "Install completed successfully!"
-info "Run './beef' to launch BeEF"
+echo "  Install completed successfully!"
+echo "  Run './beef' to launch BeEF"
 echo
 echo "=========================================="
 echo
