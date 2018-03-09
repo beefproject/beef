@@ -22,6 +22,16 @@ echo
 
 command_exists () {
   command -v "$1" /dev/null 2&>1
+
+
+get_permission () {
+
+  warn 'This script will install BeEF and its required dependencies (including operating system packages).'
+
+  read -rp  "Are you sure you wish to continue (Y/n)? " 
+  if [ "$(echo "${REPLY}" | tr "[:upper:]" "[:lower:]")" = "n" ] ; then
+    fatal 'Installation aborted'
+  fi
 }
 
 info()  { echo "[INFO]   $*"; }
@@ -29,11 +39,6 @@ warn()  { echo "[WARN]   $*"; }
 error() { echo "[ERROR]  $*"; }
 fatal() { echo "[FATAL]  $*"; exit 1 ; }
 
-warn 'This script will install BeEF and its required dependencies (including operating system packages).'
-read -p  "Are you sure you wish to continue (Y/n)? " 
-if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" = "n" ] ; then
-  fatal 'Installation aborted'
-fi
 check_os () {
 
   info "Detecting OS..."
