@@ -34,6 +34,24 @@ read -p  "Are you sure you wish to continue (Y/n)? "
 if [ "`echo ${REPLY} | tr [:upper:] [:lower:]`" = "n" ] ; then
   fatal 'Installation aborted'
 fi
+check_os () {
+
+  info "Detecting OS..."
+
+  OS=$(uname)
+  readonly OS
+  info "Operating System: $OS"
+  if [ "${OS}" = "Linux" ] ; then
+    info "Launching Linux install..."
+    install_linux
+  elif [ "${OS}" = "Darwin" ]; then
+    info "Launching Mac OSX install..."
+    install_mac
+  else
+    fatal "Unable to locate installer for your Operating system: $OS"
+  fi
+}
+
 
 install_linux () {
   info "Detecting Linux OS distribution..."
@@ -67,20 +85,6 @@ install_linux () {
 install_mac () {
   echo
 }
-
-info "Detecting OS..."
-OS=`uname`
-readonly OS
-info "Operating System: $OS"
-if [ "${OS}" = "Linux" ] ; then
-  info "Launching Linux install..."
-  install_linux
-elif [ "$OS" = "Darwin" ]; then
-  info "Launching Mac OSX install..."
-  install_mac
-else
-  fatal "Unable to locate installer for your Operating system: $OS"
-fi
 
 
 check_ruby_version () {
