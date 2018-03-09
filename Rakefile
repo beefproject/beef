@@ -4,7 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'yaml'
-require 'pry-byebug'
+#require 'pry-byebug'
 
 task :default => ["quick"]
 

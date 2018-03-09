@@ -6,7 +6,7 @@
 
 require 'test/unit'
 
-require 'pry-byebug'
+#require 'pry-byebug'
 require 'rest-client'
 require 'json'
 require 'optparse'
