@@ -5,9 +5,9 @@
 #
 
 # @note Version check to ensure BeEF is running Ruby 2.0+
-if RUBY_VERSION < '2.2'
+if RUBY_VERSION < '2.3'
   puts "\n"
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.2 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.3 or later."
   puts "\n"
   exit 1
 end
