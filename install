@@ -110,15 +110,19 @@ fi
 #  * rvm: https://rvm.io/rvm/install'
 #fi
 
-info 'Detecting bundler gem...'
-if command_exists bundler
-then
-  info 'bundler gem is installed'
-else
-  info 'Installing bundler gem'
-  gem install bundler
-fi
 
+
+check_bundler () {
+
+  info 'Detecting bundler gem...'
+  
+  if command_exists bundler
+  then
+    info 'bundler gem is installed'
+  else
+    info 'Installing bundler gem'
+    gem install bundler
+  fi
 }
 
 
