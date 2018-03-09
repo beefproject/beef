@@ -95,7 +95,6 @@ group :test do
     # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
     gem 'selenium'
     gem 'selenium-webdriver', '~> 2.53.4'
-    gem 'bundler-audit'
     # nokogirl is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
     # sudo port install libxml2 libxslt
