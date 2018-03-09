@@ -54,30 +54,32 @@ check_os () {
 
 
 install_linux () {
+
   info "Detecting Linux OS distribution..."
+
   Distro=''
   if [ -f /etc/redhat-release ] ; then
     Distro='RedHat'
   elif [ -f /etc/debian_version ] ; then
     Distro='Debian'
   elif [ -f /etc/os-release ] ; then
-    DISTRO_ID=`grep ^ID= /etc/os-release | cut -d= -f2-`
-    if [ "$DISTRO_ID" = 'kali' ] ; then
+    DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
+    if [ "${DISTRO_ID}" = 'kali' ] ; then
       Distro='Kali'
     fi
   fi
 
-  if [ -z $Distro ] ; then
-    fatal "Unable to locate installer for your $OS distribution"
+  if [ -z "${Distro}" ] ; then
+    fatal "Unable to locate installer for your ${OS} distribution"
   fi
 
   readonly Distro
-  info "OS Distribution: $Distro"
-  info "Installing $Distro prerequisite packages..."
-  if [ "$Distro" = "Debian" -o "$Distro" = "Kali" ]; then
+  info "OS Distribution: ${Distro}"
+  info "Installing ${Distro} prerequisite packages..."
+  if [ "${Distro}" = "Debian" ] || [ "${Distro}" = "Kali" ]; then
     sudo apt-get update
     sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion nodejs
-  elif [ "$Distro" = "RedHat" ]; then
+  elif [ "${Distro}" = "RedHat" ]; then
     sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison iconv-devel sqlite-devel nodejs
   fi
 }
