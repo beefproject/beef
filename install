@@ -8,17 +8,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-clear
 
-if [ -f core/main/console/beef.ascii ] ; then
-  cat core/main/console/beef.ascii
-  echo
-fi
 
-echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
-echo "                   -- [ BeEF Installer ] --                      "
-echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
-echo
 
 command_exists () {
 
@@ -145,4 +136,19 @@ install_beef () {
 }
 
 
+main () {
 
+  clear
+
+  if [ -f core/main/console/beef.ascii ] ; then
+    cat core/main/console/beef.ascii
+    echo
+  fi
+
+  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo "                   -- [ BeEF Installer ] --                      "
+  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo
+}
+
+main "$@"
