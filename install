@@ -82,21 +82,24 @@ else
   fatal "Unable to locate installer for your Operating system: $OS"
 fi
 
-info 'Detecting Ruby environment...'
-MIN_RUBY_VER='2.3'
-if command_exists ruby
-then
-  RUBY_VERSION=`ruby -e "puts RUBY_VERSION"`
-  info "Ruby version ${RUBY_VERSION} is installed"
-  if [ `ruby -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}"` = 'false' ]
+
+check_ruby_version () {
+
+  info 'Detecting Ruby environment...'
+
+  MIN_RUBY_VER='2.3'
+  if command_exists ruby
   then
-    fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+    RUBY_VERSION=$(ruby -e "puts RUBY_VERSION")
+    info "Ruby version ${RUBY_VERSION} is installed"
+    if [ "$(ruby -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}")" = 'false' ]
+    then
+      fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+    fi
+  else
+    fatal "Ruby is not installed. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
   fi
-else
-  fatal "Ruby is not installed. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
-fi
-
-
+}
 
 
 check_bundler () {
