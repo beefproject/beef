@@ -9,6 +9,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 
+info()  { echo -e "\\033[1;36m[INFO]\\033[0m  $*"; }
+warn()  { echo -e "\\033[1;33m[WARNING]\\033[0m  $*"; }
+fatal() { echo -e "\\033[1;31m[FATAL]\\033[0m  $*"; exit 1 ; }
 
 
 command_exists () {
@@ -27,10 +30,6 @@ get_permission () {
   fi
 }
 
-info()  { echo "[INFO]   $*"; }
-warn()  { echo "[WARN]   $*"; }
-error() { echo "[ERROR]  $*"; }
-fatal() { echo "[FATAL]  $*"; exit 1 ; }
 
 check_os () {
 
