@@ -148,6 +148,12 @@ main () {
   echo "                   -- [ BeEF Installer ] --                      "
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
+
+  get_permission
+  check_os
+  check_ruby_version
+  check_bundler
+  install_beef
 }
 
 main "$@"
