@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Upload File"
-            description: "Upload files from device to a server of your choice."
+            description: "Upload files from device to a server of your choice. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

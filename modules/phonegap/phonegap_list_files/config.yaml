@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "List Files"
-            description: "Examine device file system."
+            description: "Examine device file system. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

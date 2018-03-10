@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Start Recording Audio"
-            description: "Start recording audio."
+            description: "Start recording audio. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

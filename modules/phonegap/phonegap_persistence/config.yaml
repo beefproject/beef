@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Persistence"
-            description: "Insert the BeEF hook into PhoneGap's index.html (iPhone only)"
+            description: "Insert the BeEF hook into PhoneGap's index.html (iPhone only). This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

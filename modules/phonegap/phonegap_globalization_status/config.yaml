@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Globalization Status"
-            description: "Examine device local settings"
+            description: "Examine device local settings. This module requires the PhoneGap API."
             authors: ["staregate"]
             target:
                 working: ["All"]

@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Keychain"
-            description: "Read/CreateUpdate/Delete Keychain Elements"
+            description: "Read/CreateUpdate/Delete Keychain Elements. This module requires the PhoneGap API."
             authors: ["staregate"]
             target:
                 working: ["All"]

@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Persist resume"
-            description: "Persist over applications sleep/wake events"
+            description: "Persist over applications sleep/wake events. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

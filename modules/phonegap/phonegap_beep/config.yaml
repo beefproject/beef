@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Beep"
-            description: "Make the phone beep"
+            description: "Make the phone beep. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

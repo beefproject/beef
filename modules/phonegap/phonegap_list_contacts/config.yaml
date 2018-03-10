@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "List Contacts"
-            description: "Examine device contacts."
+            description: "Examine device contacts. This module requires the PhoneGap API."
             authors: ["staregate"]
             target:
                 working: ["All"]

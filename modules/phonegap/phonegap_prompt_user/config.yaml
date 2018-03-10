@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Prompt User"
-            description: "Ask device user a question"
+            description: "Ask device user a question. This module requires the PhoneGap API."
             authors: ["staregate"]
             target:
                 working: ["All"]

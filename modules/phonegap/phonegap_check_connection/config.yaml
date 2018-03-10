@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Check Connection"
-            description: "Find out the network connection type e.g. Wifi, 3G."
+            description: "Find out the network connection type e.g. Wifi, 3G. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]

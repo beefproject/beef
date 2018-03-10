@@ -11,7 +11,7 @@ beef:
             enable: true
             category: "Phonegap"
             name: "Geolocation"
-            description: "Geo locate your victim."
+            description: "Geo locate your victim. This module requires the PhoneGap API."
             authors: ["mh"]
             target:
                 working: ["All"]
