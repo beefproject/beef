@@ -10,7 +10,7 @@ gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'
 gem 'rack', '~> 1.6.5'
-gem 'rack-protection', '~> 1.5.4'
+gem 'rack-protection', '~> 2.0.1'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
