@@ -13,6 +13,7 @@ info()  { echo -e "\\033[1;36m[INFO]\\033[0m  $*"; }
 warn()  { echo -e "\\033[1;33m[WARNING]\\033[0m  $*"; }
 fatal() { echo -e "\\033[1;31m[FATAL]\\033[0m  $*"; exit 1 ; }
 
+RUBYSUFFIX=''
 
 command_exists () {
 
@@ -44,6 +45,17 @@ check_os () {
   elif [ "${OS}" = "Darwin" ]; then
     info "Launching Mac OSX install..."
     install_mac
+  elif [ "${OS}" = "OpenBSD" ]; then
+    info "Launching OpenBSD install..."
+    for SUFX in 26 25 24 23
+    do
+      if command_exists ruby${SUFX}
+      then
+        RUBYSUFFIX=${SUFX}
+        break
+      fi
+    done
+    install_openbsd
   else
     fatal "Unable to locate installer for your Operating system: $OS"
   fi
@@ -81,6 +93,11 @@ install_linux () {
   fi
 }
 
+install_openbsd () {
+
+  sudo pkg_add curl git libyaml libxml libxslt bison node ruby${RUBYSUFFIX}-bundler lame espeak
+
+}
 
 install_mac () {
   # brew install ...
@@ -93,11 +110,11 @@ check_ruby_version () {
   info 'Detecting Ruby environment...'
 
   MIN_RUBY_VER='2.3'
-  if command_exists ruby
+  if command_exists ruby${RUBYSUFFIX}
   then
-    RUBY_VERSION=$(ruby -e "puts RUBY_VERSION")
+    RUBY_VERSION=$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION")
     info "Ruby version ${RUBY_VERSION} is installed"
-    if [ "$(ruby -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}")" = 'false' ]
+    if [ "$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}")" = 'false' ]
     then
       fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
     fi
@@ -111,12 +128,12 @@ check_bundler () {
 
   info 'Detecting bundler gem...'
   
-  if command_exists bundler
+  if command_exists bundler${RUBYSUFFIX}
   then
-    info 'bundler gem is installed'
+    info "bundler${RUBYSUFFIX} gem is installed"
   else
     info 'Installing bundler gem'
-    gem install bundler
+    gem${RUBYSUFFIX} install bundler
   fi
 }
 
@@ -124,7 +141,7 @@ check_bundler () {
 install_beef () { 
 
   echo "Installing required Ruby gems..."
-  bundle install --without test development
+  bundle${RUBYSUFFIX} install --without test development
 
   echo
   echo "=========================================="
