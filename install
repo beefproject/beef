@@ -45,6 +45,17 @@ check_os () {
   elif [ "${OS}" = "Darwin" ]; then
     info "Launching Mac OSX install..."
     install_mac
+  elif [ "${OS}" = "FreeBSD" ]; then
+    info "Launching FreeBSD install..."
+    for SUFX in 26 25 24 23
+    do
+      if command_exists ruby${SUFX}
+      then
+        RUBYSUFFIX=${SUFX}
+        break
+      fi
+    done
+    install_freebsd
   elif [ "${OS}" = "OpenBSD" ]; then
     info "Launching OpenBSD install..."
     for SUFX in 26 25 24 23
@@ -96,7 +107,11 @@ install_linux () {
 install_openbsd () {
 
   sudo pkg_add curl git libyaml libxml libxslt bison node ruby${RUBYSUFFIX}-bundler lame espeak
+}
 
+install_freebsd () {
+
+  sudo pkg install curl git libyaml libxslt devel/ruby-gems bison node espeak
 }
 
 install_mac () {
@@ -141,7 +156,12 @@ check_bundler () {
 install_beef () { 
 
   echo "Installing required Ruby gems..."
-  bundle${RUBYSUFFIX} install --without test development
+  if command_exists bundler${RUBYSUFFIX}
+  then
+    bundle${RUBYSUFFIX} install --without test development
+  else
+    bundle install --without test development
+  fi
 
   echo
   echo "=========================================="
