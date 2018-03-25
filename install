@@ -121,7 +121,7 @@ install_mac () {
   autoconf ncurses automake libtool \
   bison wget)
 
-  if command_exists brew; then
+  if ! command_exists brew; then
     fatal "Homebrew (https://brew.sh/) required to install dependencies"
   fi
   
