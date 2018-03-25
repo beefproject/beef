@@ -115,8 +115,29 @@ install_freebsd () {
 }
 
 install_mac () {
-  # brew install ...
-  echo
+
+  local mac_deps=(curl git nodejs python3 \
+  openssl readline libyaml sqlite3 libxml2 \
+  autoconf ncurses automake libtool \
+  bison wget)
+
+  if command_exists brew; then
+    fatal "Homebrew (https://brew.sh/) required to install dependencies"
+  fi
+  
+  info "Installing dependencies via brew"
+
+  brew update 
+
+  for package in "${mac_deps[@]}"; do
+
+    if brew install "${package}"; then
+      info "${package} installed"
+    else
+      fatal "Failed to install ${package}"
+    fi
+    
+  done
 }
 
 
