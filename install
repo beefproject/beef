@@ -83,9 +83,12 @@ install_linux () {
   elif [ -f /etc/debian_version ] ; then
     Distro='Debian'
   elif [ -f /etc/os-release ] ; then
-    DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
+    #DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
+    DISTRO_ID=$(cat /etc/os-release | grep  ID= | cut -d= -f2-)
     if [ "${DISTRO_ID}" = 'kali' ] ; then
       Distro='Kali'
+    elif [ "${DISTRO_ID}" = 'arch' ] ; then
+      Distro='Arch'
     fi
   fi
 
@@ -101,6 +104,9 @@ install_linux () {
     sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs
   elif [ "${Distro}" = "RedHat" ]; then
     sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
+  elif [ "${Distro}" = "Arch" ]; then
+    sudo pacman -Syu # Updates repo, dependencies, etc.
+    sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs # Installs dependencies
   fi
 }
 
