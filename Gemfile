@@ -26,11 +26,7 @@ gem 'nokogiri', '>= 1.7'
 gem 'rake'
 
 if RUBY_PLATFORM.downcase.include?('linux')
-  if File.readlines('/etc/os-release').grep(/^ID=(kali|parrot)/).any?
-    gem 'therubyracer', '0.12.2'
-  else
-    gem 'therubyracer', '0.12.3'
-  end
+  gem 'therubyracer', '0.12.3'
 end
 
 # SQLite support
