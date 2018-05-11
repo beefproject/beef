@@ -90,50 +90,56 @@ module BeEF
         # Rack mount points
         @rack_app = Rack::URLMap.new(@mounts)
 
-        if not @http_server
+        return if @http_server
 
-          # Set the logging level of Thin to match the config 
-          Thin::Logging.silent = true
-          if @configuration.get('beef.http.debug') == true
-            Thin::Logging.silent = false
-            Thin::Logging.debug = true
-          end
+        # Set the logging level of Thin to match the config 
+        Thin::Logging.silent = true
+        if @configuration.get('beef.http.debug') == true
+          Thin::Logging.silent = false
+          Thin::Logging.debug = true
+        end
 
-          # Create the BeEF http server
-          @http_server = Thin::Server.new(
-              @configuration.get('beef.http.host'),
-              @configuration.get('beef.http.port'),
-              @rack_app)
+        # Create the BeEF http server
+        @http_server = Thin::Server.new(
+          @configuration.get('beef.http.host'),
+          @configuration.get('beef.http.port'),
+          @rack_app)
 
-          if @configuration.get('beef.http.https.enable') == true
-            openssl_version = OpenSSL::OPENSSL_VERSION
-            if openssl_version =~ / 1\.0\.1([a-f])? /
-              print_warning "Warning: #{openssl_version} is vulnerable to Heartbleed (CVE-2014-0160)."
-              print_more "Upgrade OpenSSL to version 1.0.1g or newer."
-            end
-            @http_server.ssl = true
-            @http_server.ssl_options = {:private_key_file => File.expand_path(@configuration.get('beef.http.https.key'), $root_dir),
-                                      :cert_chain_file => File.expand_path(@configuration.get('beef.http.https.cert'), $root_dir),
-                                      :verify_peer => false}
-          end
+        # Configure SSL/TLS
+        return unless @configuration.get('beef.http.https.enable') == true
+
+        openssl_version = OpenSSL::OPENSSL_VERSION
+        if openssl_version =~ / 1\.0\.1([a-f])? /
+          print_warning "Warning: #{openssl_version} is vulnerable to Heartbleed (CVE-2014-0160)."
+          print_more "Upgrade OpenSSL to version 1.0.1g or newer."
+        end
+
+        cert_key = File.expand_path @configuration.get('beef.http.https.key'), $root_dir
+        cert = File.expand_path @configuration.get('beef.http.https.cert'), $root_dir
+        @http_server.ssl = true
+        @http_server.ssl_options = {
+          :private_key_file => cert_key,
+          :cert_chain_file  => cert,
+          :verify_peer      => false
+        }
+
+        if Digest::SHA256.hexdigest(File.read(cert)).eql?('ccbc5e0a998eac18c1b60bbb14b439529c26e7ea4d824172df4991c3acc49cc4') ||
+           Digest::SHA256.hexdigest(File.read(cert_key)).eql?('300266e04bbda70f9f81a38d33973572d161f8d20bc8e2d6758f2bd6130f3825')
+          print_warning 'Warning: Default SSL cert/key in use.'
+          print_more 'Use the ./tools/generate-certificate utility to generate a new certificate.'
         end
       end
 
       # Starts the BeEF http server
       def start
-        begin
-          @http_server.start # starts the web server
-        rescue RuntimeError => e
-          if e.message =~ /no acceptor/ # the port is in use
-            print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF to an invalid IP."
-            print_error "Is BeEF already running? Exiting..."
-            exit 127
-          else
-            raise
-          end
-        end
+        @http_server.start
+      rescue RuntimeError => e
+        # port is in use
+        raise unless e.message.include? 'no acceptor'
+        print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF to an invalid IP."
+        print_error "Is BeEF already running? Exiting..."
+        exit 127
       end
-
     end
   end
 end
