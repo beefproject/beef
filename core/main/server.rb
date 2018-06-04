@@ -114,8 +114,24 @@ module BeEF
           print_more "Upgrade OpenSSL to version 1.0.1g or newer."
         end
 
-        cert_key = File.expand_path @configuration.get('beef.http.https.key'), $root_dir
-        cert = File.expand_path @configuration.get('beef.http.https.cert'), $root_dir
+        cert_key = @configuration.get('beef.http.https.key')
+        unless cert_key.start_with? '/'
+          cert_key = File.expand_path cert_key, $root_dir
+        end
+        unless File.exist? cert_key
+          print_error "Error: #{cert_key} does not exist"
+          exit 1
+        end
+
+        cert = @configuration.get('beef.http.https.cert')
+        unless cert.start_with? '/'
+          cert = File.expand_path cert, $root_dir
+        end
+        unless File.exist? cert
+          print_error "Error: #{cert} does not exist"
+          exit 1
+        end
+
         @http_server.ssl = true
         @http_server.ssl_options = {
           :private_key_file => cert_key,

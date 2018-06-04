@@ -21,25 +21,46 @@ module BeEF
         MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
+          secure = @@config.get('beef.http.websocket.secure')
 
-
-          secure = @@config.get("beef.http.websocket.secure")
-          @root_dir = File.expand_path('../../../../../', __FILE__)
-
+          # @note Start a WSS server socket
           if (secure)
-            ws_secure_options = {:host => "0.0.0.0", :port => @@config.get("beef.http.websocket.secure_port"), :secure => true,
-                     :tls_options => {
-                         :private_key_file => @root_dir+"/"+@@config.get("beef.http.https.key"),
-                         :cert_chain_file => @root_dir+"/"+ @@config.get("beef.http.https.cert")
-                     }
+            cert_key = @@config.get('beef.http.https.key')
+            unless cert_key.start_with? '/'
+              cert_key = File.expand_path cert_key, $root_dir
+            end
+            unless File.exist? cert_key
+              print_error "Error: #{cert_key} does not exist"
+              exit 1
+            end
+
+            cert = @@config.get('beef.http.https.cert')
+            unless cert.start_with? '/'
+              cert = File.expand_path cert, $root_dir
+            end
+            unless File.exist? cert
+              print_error "Error: #{cert} does not exist"
+              exit 1
+            end
+
+            ws_secure_options = {
+              :host => '0.0.0.0',
+              :port => @@config.get('beef.http.websocket.secure_port'),
+              :secure => true,
+              :tls_options => {
+                :cert_chain_file  => cert,
+                :private_key_file => cert_key,
+              }
             }
-            # @note Start a WSS server socket
             start_websocket_server(ws_secure_options, true)
           end
 
           # @note Start a WS server socket
-          ws_options = {:host => "0.0.0.0", :port => @@config.get("beef.http.websocket.port")}
-          start_websocket_server(ws_options,false)
+          ws_options = {
+            :host => '0.0.0.0',
+            :port => @@config.get('beef.http.websocket.port')
+          }
+          start_websocket_server(ws_options, false)
         end
 
         def start_websocket_server(ws_options, secure)
