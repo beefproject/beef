@@ -6,15 +6,18 @@
 
 module BeEF
 module Core
-
   module Crypto
     
     # @note the minimum length of the security token
     TOKEN_MINIMUM_LENGTH = 15
     
+    #
     # Generate a secure random token
+    #
     # @param [Integer] len The length of the secure token
+    #
     # @return [String] Security token
+    #
     def self.secure_token(len = nil)
       # get default length from config
       config = BeEF::Core::Configuration.instance
@@ -24,12 +27,15 @@ module Core
       raise Exception::TypeError, "Token length is less than the minimum length enforced by the framework: #{TOKEN_MINIMUM_LENGTH}" if (token_length < TOKEN_MINIMUM_LENGTH)
       
       # return random hex string
-      return OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
+      OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
     end
 
+    #
     # Generate a secure random token, 20 chars, used as an auth token for the RESTful API.
     # After creation it's stored in the BeEF configuration object => conf.get('beef.api_token')
+    #
     # @return [String] Security token
+    #
     def self.api_token
       config = BeEF::Core::Configuration.instance
       token_length = 20
@@ -40,9 +46,11 @@ module Core
       token
     end
 
+    #
     # Generates a unique identifier for DNS rules.
     #
     # @return [String] 8-character hex identifier
+    #
     def self.dns_rule_id
       id = nil
       length = 4
@@ -56,7 +64,6 @@ module Core
 
       id.to_s
     end
-  
   end
 end
 end

@@ -32,6 +32,7 @@ require 'mime/types'
 require 'optparse'
 require 'resolv'
 require 'digest'
+require 'zip'
 
 # @note Include the filters
 require 'core/filters'

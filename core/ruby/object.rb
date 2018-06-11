@@ -35,4 +35,9 @@ class Object
     self.is_a?(Class)
   end
 
+  # Returns true if the object is nil, and empty string, or empty array
+  # @return [Boolean]
+  def blank?
+    self.respond_to?(:empty?) ? !!empty? : !self
+  end
 end

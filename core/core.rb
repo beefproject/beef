@@ -37,7 +37,3 @@ require 'core/main/migration'
 require 'core/main/console/commandline'
 require 'core/main/console/banners'
 
-# @note Include rubyzip lib
-require 'zip'
-
-

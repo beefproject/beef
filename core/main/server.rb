@@ -10,9 +10,7 @@ Thin::SERVER = nil
 
 module BeEF
   module Core
-
     class Server
-
       include Singleton
 
       # @note Grabs the version of beef the framework is deployed on
@@ -43,46 +41,56 @@ module BeEF
             'beef_public'   => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_hook'     => @configuration.get('beef.http.hook_file'),
-            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? "https" : "http",
-            'client_debug'  => @configuration.get("beef.client_debug")
+            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? 'https' : 'http',
+            'client_debug'  => @configuration.get('beef.client_debug')
         }
       end
 
+      #
       # Mounts a handler, can either be a hard or soft mount
+      #
       # @param [String] url The url to mount
       # @param [Class] http_handler_class Class to call once mount is triggered
       # @param args Arguments to pass to the http handler class
+      #
       def mount(url, http_handler_class, args = nil)
         # argument type checking
-        raise Exception::TypeError, '"url" needs to be a string' if not url.string?
+        raise Exception::TypeError, '"url" needs to be a string' unless url.string?
 
-        if args == nil
+        if args.nil?
           @mounts[url] = http_handler_class
         else
           @mounts[url] = http_handler_class, *args
         end
-        print_debug("Server: mounted handler '#{url}'")
+        print_debug "Server: mounted handler '#{url}'"
       end
 
+      #
       # Unmounts handler
+      #
       # @param [String] url URL to unmount.
+      #
       def unmount(url)
-        raise Exception::TypeError, '"url" needs to be a string' if not url.string?
-        @mounts.delete(url)
+        raise Exception::TypeError, '"url" needs to be a string' unless url.string?
+        @mounts.delete url
       end
 
+      #
       # Reload the URL map (used by the NetworkStack AssetHandler to mount new URLs at runtime)
+      #
       def remap
-        @rack_app.remap(@mounts)
+        @rack_app.remap @mounts
       end
 
+      #
       # Prepares the BeEF http server.
+      #
       def prepare
         # Create http handler for the javascript hook file
-        self.mount("#{@configuration.get("beef.http.hook_file")}", BeEF::Core::Handlers::HookedBrowsers.new)
+        mount(@configuration.get("beef.http.hook_file").to_s, BeEF::Core::Handlers::HookedBrowsers.new)
 
         # Create handler for the initialization checks (Browser Details)
-        self.mount("/init", BeEF::Core::Handlers::BrowserDetails)
+        mount('/init', BeEF::Core::Handlers::BrowserDetails)
 
         # Dynamically get the list of all the http handlers using the API and register them
         BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'mount_handler', self)
@@ -111,10 +119,10 @@ module BeEF
         openssl_version = OpenSSL::OPENSSL_VERSION
         if openssl_version =~ / 1\.0\.1([a-f])? /
           print_warning "Warning: #{openssl_version} is vulnerable to Heartbleed (CVE-2014-0160)."
-          print_more "Upgrade OpenSSL to version 1.0.1g or newer."
+          print_more 'Upgrade OpenSSL to version 1.0.1g or newer.'
         end
 
-        cert_key = @configuration.get('beef.http.https.key')
+        cert_key = @configuration.get 'beef.http.https.key'
         unless cert_key.start_with? '/'
           cert_key = File.expand_path cert_key, $root_dir
         end
@@ -123,7 +131,7 @@ module BeEF
           exit 1
         end
 
-        cert = @configuration.get('beef.http.https.cert')
+        cert = @configuration.get 'beef.http.https.cert'
         unless cert.start_with? '/'
           cert = File.expand_path cert, $root_dir
         end
@@ -146,14 +154,16 @@ module BeEF
         end
       end
 
+      #
       # Starts the BeEF http server
+      #
       def start
         @http_server.start
       rescue RuntimeError => e
         # port is in use
         raise unless e.message.include? 'no acceptor'
         print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF to an invalid IP."
-        print_error "Is BeEF already running? Exiting..."
+        print_error 'Is BeEF already running? Exiting...'
         exit 127
       end
     end
