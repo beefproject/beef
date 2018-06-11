@@ -6,7 +6,18 @@
 module BeEF
 module Extension
 module Events
-  
+
+  module PostLoad
+
+    BeEF::API::Registrar.instance.register(BeEF::Extension::Events::PostLoad, BeEF::API::Extensions, 'post_load')
+
+    def self.post_load
+      if BeEF::Core::Configuration.instance.get("beef.http.websocket.enable")
+        print_error 'Event Logger extension is not compatible with WebSockets command and control channel'
+      end
+    end
+  end
+
   module RegisterHttpHandler
 
     # Register API calls
