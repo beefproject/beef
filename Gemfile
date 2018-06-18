@@ -41,7 +41,7 @@ end
 
 # MySQL support
 group :mysql do
-  #gem dm-mysql-adapter
+  gem 'dm-mysql-adapter'
 end
 
 # Geolocation support
