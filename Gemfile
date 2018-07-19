@@ -52,6 +52,7 @@ gem 'dm-migrations'
 # Metasploit Integration extension
 group :ext_msf do
   gem 'msfrpc-client'
+  gem 'xmlrpc'
 end
 
 # Notifications extension
