@@ -41,7 +41,7 @@ Requirements
 * Operating System: Mac OSX 10.5.0 or higher / modern Linux
 * [Ruby](http://ruby-lang.org): 2.3 or newer
 * [SQLite](http://sqlite.org): 3.x
-* [Node.js] (https://nodejs.org): 6 or newer
+* [Node.js](https://nodejs.org): 6 or newer
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 * brew install selenium-server-standalone (See https://github.com/shvets/selenium)
 
