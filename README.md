@@ -1,3 +1,5 @@
+# NOTE: BeEF is no longer actively maintained
+
 ===============================================================================
 
     Copyright (c) 2006-2018 Wade Alcorn - wade@bindshell.net
