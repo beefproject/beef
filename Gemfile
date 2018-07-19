@@ -25,10 +25,6 @@ gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.7'
 gem 'rake'
 
-if RUBY_PLATFORM.downcase.include?('linux')
-  gem 'therubyracer', '0.12.3'
-end
-
 # SQLite support
 group :sqlite do
   gem 'dm-sqlite-adapter'
