@@ -12,5 +12,5 @@ beef:
             description: "Steal cookies, even HttpOnly cookies, providing the hooked extension has cookies access.<br />If a URL is not specified then <em>all</em> cookies are returned (this can be a lot!)"
             authors: ["mh"]
             target:
-                working: ["C"]
+                working: [""]
                 not_working: ["All"]

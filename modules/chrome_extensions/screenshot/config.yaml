@@ -12,5 +12,5 @@ beef:
             description: "Screenshots current tab the user is in, screenshot returned as base64d data for a dataurl"
             authors: ["mh"]
             target:
-                working: ["C"]
+                working: [""]
                 not_working: ["All"]
