@@ -82,6 +82,8 @@ install_linux () {
     Distro='RedHat'
   elif [ -f /etc/debian_version ] ; then
     Distro='Debian'
+  elif [ -f /etc/alpine-release ] ; then
+    Distro='Alpine'
   elif [ -f /etc/os-release ] ; then
     #DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
     DISTRO_ID=$(cat /etc/os-release | grep  ID= | cut -d= -f2-)
@@ -107,6 +109,9 @@ install_linux () {
   elif [ "${Distro}" = "Arch" ]; then
     sudo pacman -Syu # Updates repo, dependencies, etc.
     sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs ruby ruby-rdoc # Installs dependencies
+  elif [ "${Distro}" = "Alpine" ]; then
+    apk update # Updates repo, dependencies, etc.
+    apk add curl git build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs  # Installs dependencies
   fi
 }
 
