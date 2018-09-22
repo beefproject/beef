@@ -86,6 +86,7 @@ group :test do
     gem 'test-unit'
     gem 'test-unit-full'
     gem 'rspec'
+	gem 'rdoc'
     # curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
     gem 'curb'
