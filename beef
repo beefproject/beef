@@ -180,14 +180,12 @@ if config.get("beef.extension.console.shell.enable") == true
 end
 
 #
-# @note Warn and replace on default credentials
+# @note Exit on default credentials
 #
-if config.get("beef.credentials.user").eql?('beef') &&
-   [/beef[0-9]*/, /passw[o0]rd[0-9]*/].select{|pattern| pattern.match(config.get("beef.credentials.passwd"))}.any?
-  print_warning "Warning: Default username and weak password in use!"
-  better_phrase = BeEF::Core::Crypto::secure_token(16)
-  config.set("beef.credentials.passwd", better_phrase)
-  print_more "New password for this instance: #{better_phrase}"
+if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
+  print_error "ERROR: Default username and password in use!"
+  print_more "Change the beef.credentials.passwd in config.yaml"
+  exit 1
 end
 
 #
