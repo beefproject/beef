@@ -46,4 +46,4 @@ Please provide steps to reproduce this issue.
 
 #### Additional Information
 
-Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots.
+Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots. Debug output can be enabled by specifying `debug: true` in the `config.yaml` configuration file.
