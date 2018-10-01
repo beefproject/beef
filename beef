@@ -189,6 +189,19 @@ if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credenti
 end
 
 #
+# @note Validate beef.http.public and beef.http.public_port
+#
+unless BeEF::Filters.is_valid_hostname? config.get('beef.http.public')
+  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
+  exit 1
+end
+                                                                                                                
+unless BeEF::Filters.is_valid_port? config.get('beef.http.public_port')
+  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
+  exit 1
+end
+
+#
 # @note Prints the API key needed to use the RESTful API
 #
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
