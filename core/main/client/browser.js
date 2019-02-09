@@ -3973,17 +3973,6 @@ beef.browser = {
     },
 
     /**
-     * Returns zombie screen size and color depth.
-     */
-    getScreenSize: function () {
-        return {
-            width: window.screen.width,
-            height: window.screen.height,
-            colordepth: window.screen.colorDepth
-        }
-    },
-
-    /**
      * Returns zombie browser window size.
      * @from: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
      */
@@ -4047,7 +4036,7 @@ beef.browser = {
             else if (typeof value == 'object') return value;
             else return undefined;
         });
-        var screen_size = beef.browser.getScreenSize();
+        var screen_size = beef.hardware.getScreenSize();
         var window_size = beef.browser.getWindowSize();
         var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
         var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";

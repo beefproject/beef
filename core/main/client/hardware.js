@@ -37,6 +37,17 @@ beef.hardware = {
     return arch;
   },
 
+  /**
+   * Returns zombie screen size and color depth.
+   */
+  getScreenSize: function () {
+    return {
+      width: window.screen.width,
+      height: window.screen.height,
+      colordepth: window.screen.colorDepth
+    }
+  },
+
   /*
    * @return: {Boolean} true or false.
    **/
