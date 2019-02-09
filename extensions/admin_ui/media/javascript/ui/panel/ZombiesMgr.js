@@ -36,7 +36,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		text+= ip;
 
 		balloon_text = "IP: "                  + ip;
-                balloon_text+= "<br/>Origin: "         + domain + ":" + port;
+		balloon_text+= "<hr/>Origin: "         + domain + ":" + port;
 		balloon_text+= "<hr/>Browser: "        + browser_name + " " + browser_version;
 		balloon_text+= "<br/>System: "         + os_name;
 		balloon_text+= "<br/>Hardware: "       + hw_name;

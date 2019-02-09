@@ -11,7 +11,7 @@ beef.hardware = {
   /*
    * @return: {String} CPU type
    **/
-  getCpuType: function() {
+  getCpuArch: function() {
     var arch = 'UNKNOWN';
     // note that actually WOW64 means IE 32bit and Windows 64 bit. we are more interested
     // in detecting the OS arch rather than the browser build
@@ -35,6 +35,69 @@ beef.hardware = {
     // TODO we can infer the OS is 64 bit, if we first detect the OS type (os.js).
     // For example, if OSX is at least 10.7, most certainly is 64 bit.
     return arch;
+  },
+
+  /**
+   * Returns number of CPU cores
+   **/
+  getCpuCores: function() {
+    var cores = 'unknown';
+    try {
+      if(typeof navigator.hardwareConcurrency != 'undefined') {
+        cores = navigator.hardwareConcurrency;
+      }
+    } catch(e) {
+      cores = 'unknown';
+    }
+    return cores;
+  },
+
+  /**
+   * Returns CPU details
+   **/
+  getCpuDetails: function() {
+    return {
+      arch: beef.hardware.getCpuArch(),
+      cores: beef.hardware.getCpuCores()
+    }
+  },
+
+  /**
+   * Returns RAM (GiB)
+   **/
+  getMemory: function() {
+    var memory = 'unknown';
+    try {
+      if(typeof navigator.deviceMemory != 'undefined') {
+        memory = navigator.deviceMemory;
+      }
+    } catch(e) {
+      memory = 'unknown';
+    }
+    return memory;
+  },
+
+  /**
+   * Returns battery details
+   **/
+  getBatteryDetails: function() {
+    var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+
+    if (!!battery) {
+      return {
+        chargingStatus: battery.charging,
+        batteryLevel: battery.level * 100 + "%",
+        chargingTime: battery.chargingTime,
+        dischargingTime: battery.dischargingTime
+      }
+    } else {
+      return {
+        chargingStatus: 'unknown',
+        batteryLevel: 'unknown',
+        chargingTime: 'unknown',
+        dischargingTime: 'unknown'
+      }
+    }
   },
 
   /**
