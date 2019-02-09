@@ -19,11 +19,20 @@ module API
     def self.evaluate_and_minify(content, params, name)
       erubis = Erubis::FastEruby.new(content)
       evaluated = erubis.evaluate(params)
-      minified = Uglifier.compile(evaluated)
+      begin
+        minified = Uglifier.compile(evaluated)
+      rescue
+        print_error "Error: Could not minify JavaScript file: #{name}"
+        print_more "Ensure nodejs is installed and `node' is in `$PATH` !"
+        minified = evaluated
+      end
       write_to = File.new("#{File.dirname(__FILE__)}/../media/javascript-min/#{name}.js", "w+")
       File.open(write_to, 'w') { |file| file.write(minified) }
 
       File.path write_to
+    rescue => e
+      print_error "Error: #{e.message}"
+      puts e.backtrace
     end
 
     def self.build_javascript_ui(beef_server)
