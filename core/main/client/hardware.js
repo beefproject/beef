@@ -11,7 +11,7 @@ beef.hardware = {
   /*
    * @return: {String} CPU type
    **/
-  cpuType: function() {
+  getCpuType: function() {
     var arch = 'UNKNOWN';
     // note that actually WOW64 means IE 32bit and Windows 64 bit. we are more interested
     // in detecting the OS arch rather than the browser build

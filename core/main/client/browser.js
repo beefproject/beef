@@ -4028,7 +4028,7 @@ beef.browser = {
         var os_version = beef.os.getVersion();
         var default_browser = beef.os.getDefaultBrowser();
         var hw_name = beef.hardware.getName();
-        var cpu_type = beef.hardware.cpuType();
+        var cpu_type = beef.hardware.getCpuType();
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
