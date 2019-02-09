@@ -333,12 +333,20 @@ module BeEF
             end
           end
 
-          # get and store the value for CPU
-          cpu_type = get_param(@data['results'], 'CPU')
-          if BeEF::Filters.is_valid_cpu?(cpu_type)
-            BD.set(session_id, 'CPU', cpu_type)
+          # get and store the value for CpuArch
+          cpu_arch = get_param(@data['results'], 'CpuArch')
+          if BeEF::Filters.is_valid_cpu?(cpu_arch)
+            BD.set(session_id, 'CpuArch', cpu_arch)
           else
-            self.err_msg "Invalid value for CPU returned from the hook browser's initial connection."
+            self.err_msg "Invalid value for CpuArch returned from the hook browser's initial connection."
+          end
+
+          # get and store the value for CpuCores
+          cpu_cores = get_param(@data['results'], 'CpuCores')
+          if BeEF::Filters.alphanums_only?(cpu_cores)
+            BD.set(session_id, 'CpuCores', cpu_cores)
+          else
+            self.err_msg "Invalid value for CpuCores returned from the hook browser's initial connection."
           end
 
           # get and store the value for TouchEnabled

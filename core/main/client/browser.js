@@ -3973,17 +3973,6 @@ beef.browser = {
     },
 
     /**
-     * Returns zombie screen size and color depth.
-     */
-    getScreenSize: function () {
-        return {
-            width: window.screen.width,
-            height: window.screen.height,
-            colordepth: window.screen.colorDepth
-        }
-    },
-
-    /**
      * Returns zombie browser window size.
      * @from: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
      */
@@ -4039,7 +4028,8 @@ beef.browser = {
         var os_version = beef.os.getVersion();
         var default_browser = beef.os.getDefaultBrowser();
         var hw_name = beef.hardware.getName();
-        var cpu_type = beef.hardware.cpuType();
+        var cpu_arch = beef.hardware.getCpuArch();
+        var cpu_cores = beef.hardware.getCpuCores();
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
@@ -4047,7 +4037,7 @@ beef.browser = {
             else if (typeof value == 'object') return value;
             else return undefined;
         });
-        var screen_size = beef.browser.getScreenSize();
+        var screen_size = beef.hardware.getScreenSize();
         var window_size = beef.browser.getWindowSize();
         var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
         var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";
@@ -4085,7 +4075,8 @@ beef.browser = {
         if (os_version) details['OsVersion'] = os_version;
         if (default_browser) details['DefaultBrowser'] = default_browser;
         if (hw_name) details['Hardware'] = hw_name;
-        if (cpu_type) details['CPU'] = cpu_type;
+        if (cpu_arch) details['CpuArch'] = cpu_arch;
+        if (cpu_cores) details['CpuCores'] = cpu_cores;
         if (touch_enabled) details['TouchEnabled'] = touch_enabled;
         if (date_stamp) details['DateStamp'] = date_stamp;
         if (browser_platform) details['BrowserPlatform'] = browser_platform;

@@ -123,7 +123,8 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Host', 'Date',             'DateStamp'],
         ['Host', 'Operating System', 'OsName'],
         ['Host', 'Hardware',         'Hardware'],
-        ['Host', 'CPU',              'CPU'],
+        ['Host', 'CPU Arch',         'CpuArch'],
+        ['Host', 'CPU Cores',        'CpuCores'],
         ['Host', 'Default Browser',  'DefaultBrowser'],
         ['Host', 'Screen Size',      'ScreenSize'],
         ['Host', 'Touch Screen',     'TouchEnabled']
