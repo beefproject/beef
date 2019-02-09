@@ -3,7 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Get_system_info < BeEF::Core::Command
+class Get_system_info_java < BeEF::Core::Command
   
 	def pre_send
 		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_system_info/getSystemInfo.class','/getSystemInfo','class')
