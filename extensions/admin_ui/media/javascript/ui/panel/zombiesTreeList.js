@@ -257,7 +257,242 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		var exists = this.getNodeById(hb_id);
 		if(exists) return;
 
-		hooked_browser.qtip = hooked_browser.balloon_text;
+		// set zombie icons. this should eventually be replaced with CSS classes
+		var browser_icon = 'unknown.png';
+		switch (hooked_browser.browser_name) {
+			case "FF":
+				browser_icon = 'firefox.png';
+				break;
+			case "IE":
+				browser_icon = 'msie.png';
+				break;
+			case "E":
+				browser_icon = 'edge.png';
+				break;
+			case "EP":
+				browser_icon = 'epiphany.png';
+				break;
+			case "S":
+				browser_icon = 'safari.png';
+				break;
+			case "C":
+				browser_icon = 'chrome.png';
+				break;
+			case "O":
+				browser_icon = 'opera.ico';
+				break;
+			case "MI":
+				browser_icon = 'midori.png';
+				break;
+			case "OD":
+				browser_icon = 'odyssey.png';
+				break;
+			case "BR":
+				browser_icon = 'brave.png';
+				break;
+			default:
+				browser_icon = 'unknown.png';
+				break;
+		}
+
+		var os_icon = 'unknown.png';
+		switch (hooked_browser.os_name) {
+			case "Android":
+				os_icon = 'android.png';
+				break;
+			case "Windows":
+				os_icon = 'win.png';
+				break;
+			case "Linux":
+				os_icon = 'linux.png';
+				break;
+			case "Mac":
+				os_icon = 'mac.png';
+				break;
+			case "QNX":
+				os_icon = 'qnx.ico';
+				break;
+			case "SunOS":
+				os_icon = 'sunos.gif';
+				break;
+			case "BeOS":
+				os_icon = 'beos.png';
+				break;
+			case "OpenBSD":
+				os_icon = 'openbsd.ico';
+				break;
+			case "iOS":
+				os_icon = 'ios.png';
+				break;
+			case "iPhone":
+				os_icon = 'iphone.jpg';
+				break;
+			case "iPad":
+				os_icon = 'ipad.png';
+				break;
+			case "iPod":
+				os_icon = 'ipod.jpg';
+				break;
+			case "webOS":
+				os_icon = 'webos.png';
+				break;
+			case "AROS":
+				os_icon = 'icaros.png';
+				break;
+			case "Maemo":
+				os_icon = 'maemo.ico';
+				break;
+			case "BlackBerry":
+				os_icon = 'blackberry.png';
+				break;
+			default:
+				os_icon = 'unknown.png';
+				break;
+		}
+
+		var hw_icon = 'unknown.png';
+		switch (hooked_browser.hw_name) {
+			case "Virtual Machine":
+				hw_icon = 'vm.png';
+				break;
+			case "Laptop":
+				hw_icon = 'laptop.png';
+				break;
+			case "Android":
+				hw_icon = 'android.png';
+				break;
+			case "Android Phone":
+				hw_icon = 'android.png';
+				break;
+			case "Android Tablet":
+				hw_icon = 'android.png';
+				break;
+			case "iPhone":
+				hw_icon = 'iphone.jpg';
+				break;
+			case "iPod Touch":
+				hw_icon = 'ipod.jpg';
+				break;
+			case "iPad":
+				hw_icon = 'ipad.png';
+				break;
+			case "BlackBerry":
+				hw_icon = 'blackberry.png';
+				break;
+			case "BlackBerry Tablet":
+				hw_icon = 'blackberry.png';
+				break;
+			case "BlackBerry Touch":
+				hw_icon = 'blackberry.png';
+				break;
+			case "BlackBerry OS 5":
+				hw_icon = 'blackberry.png';
+				break;
+			case "BlackBerry OS 6":
+				hw_icon = 'blackberry.png';
+				break;
+			case "Nokia":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia S60 Open Source":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia S60":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia S70":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia S80":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia S90":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Nokia Symbian":
+				hw_icon = 'nokia.ico';
+				break;
+			case "Maemo Tablet":
+				hw_icon = 'maemo.ico';
+				break;
+			case "HTC":
+				hw_icon = 'htc.ico';
+				break;
+			case "Motorola":
+				hw_icon = 'motorola.png';
+				break;
+			case "Zune":
+				hw_icon = 'zune.gif';
+				break;
+			case "Kindle":
+				hw_icon = 'kindle.png';
+				break;
+			case "Kindle Fire":
+				hw_icon = 'kindle.png';
+				break;
+			case "Nexus":
+				hw_icon = 'nexus.png';
+				break;
+			case "Google Nexus One":
+				hw_icon = 'nexus.png';
+				break;
+			case "Ericsson":
+				hw_icon = 'sony_ericsson.png';
+				break;
+			case "Windows Phone":
+				hw_icon = 'win.png';
+				break;
+			case "Windows Phone 7":
+				hw_icon = 'win.png';
+				break;
+			case "Windows Phone 8":
+				hw_icon = 'win.png';
+				break;
+			case "Windows Phone 10":
+				hw_icon = 'win.png';
+				break;
+			case "Windows Mobile":
+				hw_icon = 'win.png';
+				break;
+			default:
+				hw_icon = 'pc.png';
+				break;
+		}
+
+		// set zombie hover balloon text for tree node
+		var balloon_text = "";
+		balloon_text += hooked_browser.ip;
+		balloon_text += "<hr/>"
+		balloon_text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/favicon.png' /> ";
+		balloon_text += "Origin: " + hooked_browser.domain + ":" + hooked_browser.port;
+		balloon_text += "<br/>";
+		balloon_text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
+		balloon_text += "Browser: " + hooked_browser.browser_name + " " + hooked_browser.browser_version;
+		balloon_text += "<br/>";
+		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
+		balloon_text += "OS: " + hooked_browser.os_name;
+		balloon_text += "<br/>";
+		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
+		balloon_text += "Hardware: " + hooked_browser.hw_name;
+		balloon_text += "<br/>";
+		//balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country/" + escape(hooked_browser.country_name) + ".png' /> ";
+		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
+		if (hooked_browser.country == 'Unknown' ) {
+			balloon_text += "Location: Unknown";
+		} else {
+			balloon_text += "Location: " + hooked_browser.city + ", " + hooked_browser.country;
+		}
+		balloon_text += "<hr/>";
+		balloon_text += "Local Date: " + hooked_browser.date;
+		hooked_browser.qtip = balloon_text;
+
+		// set zombie text label for tree node
+		var text = "";
+		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
+		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
+		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
+		text += hooked_browser.ip;
+		hooked_browser.text = text;
 
 		//save a new online HB
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {

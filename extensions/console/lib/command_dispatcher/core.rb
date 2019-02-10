@@ -507,20 +507,7 @@ class Core
     target_opts = %w{commands}
     print_status("If you're targeting a module, you can also specify: #{target_opts.join(", ")}")
   end
-  
-  def beef_logo_to_os(logo)
-	  case logo
-    when "mac.png"
-      hbos = "Mac OS X"
-    when "linux.png"
-      hbos = "Linux"
-    when "win.png"
-      hbos = "Microsoft Windows"
-    when "unknown.png"
-      hbos = "Unknown"
-    end
-  end
-  
+
 end
 
 end end end end

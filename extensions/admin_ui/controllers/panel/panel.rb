@@ -79,10 +79,7 @@ module BeEF
 
             browser_name    = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserName')
             browser_version = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'BrowserVersion')
-            browser_icon    = BeEF::Core::Models::BrowserDetails.browser_icon(hooked_browser.session)
-            os_icon         = BeEF::Core::Models::BrowserDetails.os_icon(hooked_browser.session)
             os_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'OsName')
-            hw_icon         = BeEF::Core::Models::BrowserDetails.hw_icon(hooked_browser.session)
             hw_name         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'Hardware')
             domain          = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HostName')
             has_flash       = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasFlash')
@@ -90,6 +87,8 @@ module BeEF
             has_webrtc      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasWebRTC')
             has_activex     = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'HasActiveX')
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
+            city            = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'LocationCity')
+            country         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'LocationCountry')
 
             return {
                 'session'         => hooked_browser.session,
@@ -98,16 +97,15 @@ module BeEF
                 'port'            => hooked_browser.port.to_s,
                 'browser_name'    => browser_name,
                 'browser_version' => browser_version,
-                'browser_icon'    => browser_icon,
-                'os_icon'         => os_icon,
                 'os_name'         => os_name,
-                'hw_icon'         => hw_icon,
                 'hw_name'         => hw_name,
                 'has_flash'       => has_flash,
                 'has_web_sockets' => has_web_sockets,
                 'has_webrtc'      => has_webrtc,
                 'has_activex'     => has_activex,
                 'date_stamp'      => date_stamp,
+                'city'            => city,
+                'country'         => country,
                 'hb_id'           => hooked_browser.id
             }
 

@@ -38,43 +38,7 @@ module Models
     def count!
       if not self.count.nil? then self.count += 1; else self.count = 1; end
     end
-  
-    # Returns the icon representing the browser type the hooked browser is using (i.e. Firefox, Internet Explorer)
-    # @return [String] String constant containing browser icon path
-    def browser_icon
-      agent = JSON.parse(self.httpheaders)['user-agent'].to_s || nil
-
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG if agent.nil?
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_IMG      if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_IE_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_EDGE_IMG    if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_EDGE_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_FIREFOX_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MOZILLA_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_MOZILLA_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_IMG  if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_SAFARI_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_KONQ_IMG    if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_KONQ_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_IMG  if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_CHROME_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_IMG   if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_OPERA_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_MIDORI_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_ODYSSEY_UA_STR
-      return BeEF::Extension::AdminUI::Constants::Agents::AGENT_BRAVE_IMG if agent.include? BeEF::Extension::AdminUI::Constants::Agents::AGENT_BRAVE_UA_STR
-
-      BeEF::Extension::AdminUI::Constants::Agents::AGENT_UNKNOWN_IMG
-    end
-  
-    # Returns the icon representing the os type the hooked browser is running (i.e. Windows, Linux)
-    # @return [String] String constant containing operating system icon path
-    def os_icon
-      agent = JSON.parse(self.httpheaders)['user-agent'].to_s || nil
-    
-      return BeEF::Core::Constants::Os::OS_UNKNOWN_IMG if agent.nil?
-      return BeEF::Core::Constants::Os::OS_WINDOWS_IMG if agent.include? BeEF::Core::Constants::Os::OS_WINDOWS_UA_STR
-      return BeEF::Core::Constants::Os::OS_LINUX_IMG if agent.include? BeEF::Core::Constants::Os::OS_LINUX_UA_STR
-      return BeEF::Core::Constants::Os::OS_MAC_IMG if agent.include? BeEF::Core::Constants::Os::OS_MAC_UA_STR
-    
-      BeEF::Core::Constants::Os::OS_UNKNOWN_IMG
-    end
-  
   end
-
 end
 end
 end
