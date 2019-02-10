@@ -135,11 +135,12 @@ beef:
 
     # IP Geolocation
     # NOTE: requires MaxMind database:
-    #   curl -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-    #   gunzip GeoLiteCity.dat.gz && mkdir /opt/GeoIP && mv GeoLiteCity.dat /opt/GeoIP
+    #   /usr/bin/curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+    #   /bin/gunzip GeoLite2-City.tar.gz && /bin/tar xvf GeoLite2-City.tar && /bin/rm GeoLite2-City.tar
+    #   /bin/mkdir -p /opt/GeoIP && /bin/mv GeoLite2-City_*/* /opt/GeoIP && /bin/rmdir GeoLite2-City_*
     geoip:
-        enable: false
-        database: '/opt/GeoIP/GeoLiteCity.dat'
+        enable: true
+        database: '/opt/GeoIP/GeoLite2-City.mmdb'
 
     # Integration with PhishingFrenzy
     # If enabled BeEF will try to get the UID parameter value from the hooked URI, as this is used by PhishingFrenzy
