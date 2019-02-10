@@ -29,7 +29,7 @@ module BeEF
         OS_IOS_UA_STR = 'iOS'
         OS_IOS_IMG = 'ios.png'
         OS_IPHONE_UA_STR = 'iPhone'
-        OS_WEBOS_UA_STR = 'webos.png'
+        OS_WEBOS_IMG = 'webos.png'
         OS_AROS_UA_STR = 'AROS'
         OS_AROS_IMG = 'icaros.png'
         OS_IPHONE_IMG = 'iphone.jpg'

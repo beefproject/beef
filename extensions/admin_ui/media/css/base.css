@@ -72,6 +72,75 @@
     background-image: url(../images/statusbar/accept.png);
 }
 
+/*
+ * Zombie Tree
+ ****************************************/
+.x-tree-node-leaf .x-tree-node-icon {
+	width: 13px;
+	height: 13px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+/*
+ * Zombie Tree Icons
+ ****************************************/
+.zombie-tree-icon {
+  padding-left: 3px;
+  padding-top: 3px;
+  width: 13px;
+  height: 13px;
+  border: 0;
+}
+
+/* these aren't used at the moment, but should be used rather than img tags */
+.zombie-tree-icon-browser-ff {
+   background-image: url(../images/icons/firefox.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-ie {
+   background-image: url(../images/icons/msie.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-e {
+   background-image: url(../images/icons/edge.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-ep {
+   background-image: url(../images/icons/epiphany.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-s {
+   background-image: url(../images/icons/safari.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-c {
+   background-image: url(../images/icons/chrome.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-o {
+   background-image: url(../images/icons/opera.ico) no-repeat;
+}
+
+.zombie-tree-icon-browser-mi {
+   background-image: url(../images/icons/midori.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-od {
+   background-image: url(../images/icons/odyssey.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-br {
+   background-image: url(../images/icons/brave.png) no-repeat;
+}
+
+.zombie-tree-icon-browser-unknown {
+   background-image: url(../images/icons/unknown.png) no-repeat;
+}
+
+/*
+ * Zombie Tree Context Menu
+ ****************************************/
 .zombie-tree-ctxMenu-proxy {
    background-image: url(../images/icons/proxy.gif);
 }
@@ -90,13 +159,6 @@
    background-image: url(../images/icons/delete.png);
    background-size: 32px 32px;
    background-repeat: no-repeat;
-}
-
-.x-tree-node-leaf .x-tree-node-icon {
-	width: 13px;
-	height: 13px;
-	padding-left: 3px;
-	padding-top: 3px;
 }
 
 /*

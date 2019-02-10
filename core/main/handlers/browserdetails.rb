@@ -101,6 +101,8 @@ module BeEF
           BD.set(session_id, 'IP', ip_str)
 
           # geolocation
+          BD.set(session_id, 'LocationCity', 'Unknown')
+          BD.set(session_id, 'LocationCountry', 'Unknown')
           if config.get('beef.geoip.enable')
             require 'geoip'
             geoip_file = config.get('beef.geoip.database')
