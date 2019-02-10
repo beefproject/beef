@@ -463,20 +463,20 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		var balloon_text = "";
 		balloon_text += hooked_browser.ip;
 		balloon_text += "<hr/>"
-		balloon_text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/favicon.png' /> ";
+		balloon_text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/favicon.png' /> ";
 		balloon_text += "Origin: " + hooked_browser.domain + ":" + hooked_browser.port;
 		balloon_text += "<br/>";
-		balloon_text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
+		balloon_text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
 		balloon_text += "Browser: " + hooked_browser.browser_name + " " + hooked_browser.browser_version;
 		balloon_text += "<br/>";
-		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
+		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
 		balloon_text += "OS: " + hooked_browser.os_name;
 		balloon_text += "<br/>";
-		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
+		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
 		balloon_text += "Hardware: " + hooked_browser.hw_name;
 		balloon_text += "<br/>";
-		//balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country/" + escape(hooked_browser.country_name) + ".png' /> ";
-		balloon_text += " <img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
+		//balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country/" + escape(hooked_browser.country_name) + ".png' /> ";
+		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
 		if (hooked_browser.country == 'Unknown' ) {
 			balloon_text += "Location: Unknown";
 		} else {
@@ -488,9 +488,9 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 
 		// set zombie text label for tree node
 		var text = "";
-		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
-		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
-		text += "<img class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
+		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
+		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
+		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
 		text += hooked_browser.ip;
 		hooked_browser.text = text;
 
