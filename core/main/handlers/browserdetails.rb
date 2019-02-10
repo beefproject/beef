@@ -103,32 +103,53 @@ module BeEF
           # geolocation
           BD.set(session_id, 'LocationCity', 'Unknown')
           BD.set(session_id, 'LocationCountry', 'Unknown')
-          if config.get('beef.geoip.enable')
-            require 'geoip'
-            geoip_file = config.get('beef.geoip.database')
-            if File.exists? geoip_file
-              geoip = GeoIP.new(geoip_file).city(zombie.ip)
-              if geoip.nil?
-                print_debug "[INIT] Geolocation failed - No results for IP address '#{zombie.ip}'"
-              else
-                #print_debug "[INIT] Geolocation results: #{geoip}"
-                BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", "#{zombie.id}")
-                BD.set(session_id, 'LocationCity', "#{geoip['city_name']}")
-                BD.set(session_id, 'LocationCountry', "#{geoip['country_name']}")
-                BD.set(session_id, 'LocationCountryCode2', "#{geoip['country_code2']}")
-                BD.set(session_id, 'LocationCountryCode3', "#{geoip['country_code3']}")
-                BD.set(session_id, 'LocationContinentCode', "#{geoip['continent_code']}")
-                BD.set(session_id, 'LocationPostCode', "#{geoip['postal_code']}")
-                BD.set(session_id, 'LocationLatitude', "#{geoip['latitude']}")
-                BD.set(session_id, 'LocationLongitude', "#{geoip['longitude']}")
-                BD.set(session_id, 'LocationDMACode', "#{geoip['dma_code']}")
-                BD.set(session_id, 'LocationAreaCode', "#{geoip['area_code']}")
-                BD.set(session_id, 'LocationTimezone', "#{geoip['timezone']}")
-                BD.set(session_id, 'LocationRegionName', "#{geoip['real_region_name']}")
-              end
+          if BeEF::Core::GeoIp.instance.enabled?
+            geoip = BeEF::Core::GeoIp.instance.lookup(zombie.ip)
+            if geoip.nil?
+              print_debug "[INIT] Geolocation failed - No results for IP address '#{zombie.ip}'"
             else
-              print_error "[INIT] Geolocation failed - Could not find MaxMind GeoIP database '#{geoip_file}'"
-              print_more "Download: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
+              # print_debug "[INIT] Geolocation results: #{geoip}"
+              BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", "#{zombie.id}")
+              BD.set(
+                session_id,
+                'LocationCity',
+                "#{geoip['city']['names']['en'] rescue 'Unknown'}")
+              BD.set(
+                session_id,
+                'LocationCountry',
+                "#{geoip['country']['names']['en'] rescue 'Unknown' }")
+              BD.set(
+                session_id,
+                'LocationCountryIsoCode',
+                "#{geoip['country']['iso_code'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationRegisteredCountry',
+                "#{geoip['registered_country']['names']['en'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationRegisteredCountryIsoCode',
+                "#{geoip['registered_country']['iso_code'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationContinent',
+                "#{geoip['continent']['names']['en'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationContinentCode',
+                "#{geoip['continent']['code'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationLatitude',
+                "#{geoip['location']['latitude'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationLongitude',
+                "#{geoip['location']['longitude'] rescue ''}")
+              BD.set(
+                session_id,
+                'LocationTimeZone',
+                "#{geoip['location']['time_zone'] rescue ''}")
             end
           end
 

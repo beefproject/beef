@@ -216,6 +216,11 @@ end
 print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
 #
+# @note Load the GeoIP database
+#
+BeEF::Core::GeoIp.instance
+
+#
 # @note Call the API method 'pre_http_start'
 #
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)

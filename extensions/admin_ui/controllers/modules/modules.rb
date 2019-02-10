@@ -98,18 +98,16 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         ['Browser Components', 'Foxit',              'HasFoxit'],
 
         # Geolocation
-        ['Location', 'City',          'LocationCity'],
-        ['Location', 'Country',       'LocationCountry'],
-        ['Location', 'CountryCode2',  'LocationCountryCode2'],
-        ['Location', 'CountryCode3',  'LocationCountryCode3'],
-        ['Location', 'Continent',     'LocationContinentCode'],
-        ['Location', 'Post Code',     'LocationPostCode'],
-        ['Location', 'Latitude',      'LocationLatitude'],
-        ['Location', 'Longitude',     'LocationLongitude'],
-        ['Location', 'DMA Code',      'LocationDMACode'],
-        ['Location', 'Area Code',     'LocationAreaCode'],
-        ['Location', 'Timezone',      'LocationTimezone'],
-        ['Location', 'Region',        'LocationRegionName'],
+        ['Location', 'City',                    'LocationCity'],
+        ['Location', 'Country',                 'LocationCountry'],
+        ['Location', 'Country Code',            'LocationCountryIsoCode'],
+        ['Location', 'Registered Country',      'LocationRegisteredCountry'],
+        ['Location', 'Registered Country Code', 'LocationRegisteredCountryIsoCode'],
+        ['Location', 'Continent',               'LocationContinent'],
+        ['Location', 'Continent Code',          'LocationContinentCode'],
+        ['Location', 'Latitude',                'LocationLatitude'],
+        ['Location', 'Longitude',               'LocationLongitude'],
+        ['Location', 'Time Zone',               'LocationTimeZone'],
 
         # Hooked Page
         ['Hooked Page', 'Page Title',    'PageTitle'],

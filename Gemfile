@@ -42,7 +42,7 @@ end
 
 # Geolocation support
 group :geoip do
-  gem 'geoip'
+  gem 'maxmind-db'
 end
 
 gem 'parseconfig'

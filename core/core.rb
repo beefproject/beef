@@ -32,6 +32,7 @@ require 'core/main/command'
 require 'core/main/crypto'
 require 'core/main/logger'
 require 'core/main/migration'
+require 'core/main/geoip'
 
 # @note Include the command line parser and the banner printer
 require 'core/main/console/commandline'
