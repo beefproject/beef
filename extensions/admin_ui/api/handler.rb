@@ -91,7 +91,7 @@ module API
         beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
       end
 
-      # mount the folder were we store static files (javascript, css, images) for the admin ui
+      # mount the folder were we store static files (javascript, css, images, audio) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
       beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
 

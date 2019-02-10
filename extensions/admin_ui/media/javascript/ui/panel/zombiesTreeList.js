@@ -498,7 +498,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		if(online && Ext.pluck(this.online_hooked_browsers_array, 'session').indexOf(hooked_browser.session)==-1) {
 			if (<%= BeEF::Core::Configuration.instance.get("beef.extension.admin_ui.play_sound_on_new_zombie") %>) {
 				try {
-					var sound = new Audio('/demos/new_zombie.mp3');
+					var sound = new Audio('<%= @base_path %>/media/audio/new_zombie.mp3');
 					sound.play();
 				} catch(e) {}
 			}
