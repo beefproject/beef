@@ -3341,6 +3341,170 @@ beef.browser = {
             return '58'
         }
         ;   // Firefox 58
+        if (this.isFF59()) {
+            return '59'
+        }
+        ;   // Firefox 59
+        if (this.isFF60()) {
+            return '60'
+        }
+        ;   // Firefox 60
+        if (this.isFF61()) {
+            return '61'
+        }
+        ;   // Firefox 61
+        if (this.isFF62()) {
+            return '62'
+        }
+        ;   // Firefox 62
+        if (this.isFF63()) {
+            return '63'
+        }
+        ;   // Firefox 63
+        if (this.isFF64()) {
+            return '64'
+        }
+        ;   // Firefox 64
+        if (this.isFF65()) {
+            return '65'
+        }
+        ;   // Firefox 65
+        if (this.isFF66()) {
+            return '66'
+        }
+        ;   // Firefox 66
+        if (this.isFF67()) {
+            return '67'
+        }
+        ;   // Firefox 67
+        if (this.isFF68()) {
+            return '68'
+        }
+        ;   // Firefox 68
+        if (this.isFF69()) {
+            return '69'
+        }
+        ;   // Firefox 69
+        if (this.isFF70()) {
+            return '70'
+        }
+        ;   // Firefox 70
+        if (this.isFF71()) {
+            return '71'
+        }
+        ;   // Firefox 71
+        if (this.isFF72()) {
+            return '72'
+        }
+        ;   // Firefox 72
+        if (this.isFF73()) {
+            return '73'
+        }
+        ;   // Firefox 73
+        if (this.isFF74()) {
+            return '74'
+        }
+        ;   // Firefox 74
+        if (this.isFF75()) {
+            return '75'
+        }
+        ;   // Firefox 75
+        if (this.isFF76()) {
+            return '76'
+        }
+        ;   // Firefox 76
+        if (this.isFF77()) {
+            return '77'
+        }
+        ;   // Firefox 77
+        if (this.isFF78()) {
+            return '78'
+        }
+        ;   // Firefox 78
+        if (this.isFF79()) {
+            return '79'
+        }
+        ;   // Firefox 79
+        if (this.isFF80()) {
+            return '80'
+        }
+        ;   // Firefox 80
+        if (this.isFF81()) {
+            return '81'
+        }
+        ;   // Firefox 81
+        if (this.isFF82()) {
+            return '82'
+        }
+        ;   // Firefox 82
+        if (this.isFF83()) {
+            return '83'
+        }
+        ;   // Firefox 83
+        if (this.isFF84()) {
+            return '84'
+        }
+        ;   // Firefox 84
+        if (this.isFF85()) {
+            return '85'
+        }
+        ;   // Firefox 85
+        if (this.isFF86()) {
+            return '86'
+        }
+        ;   // Firefox 86
+        if (this.isFF87()) {
+            return '87'
+        }
+        ;   // Firefox 87
+        if (this.isFF88()) {
+            return '88'
+        }
+        ;   // Firefox 88
+        if (this.isFF89()) {
+            return '89'
+        }
+        ;   // Firefox 89
+        if (this.isFF90()) {
+            return '90'
+        }
+        ;   // Firefox 90
+        if (this.isFF91()) {
+            return '91'
+        }
+        ;   // Firefox 91
+        if (this.isFF92()) {
+            return '92'
+        }
+        ;   // Firefox 92
+        if (this.isFF93()) {
+            return '93'
+        }
+        ;   // Firefox 93
+        if (this.isFF94()) {
+            return '94'
+        }
+        ;   // Firefox 94
+        if (this.isFF95()) {
+            return '95'
+        }
+        ;   // Firefox 95
+        if (this.isFF96()) {
+            return '96'
+        }
+        ;   // Firefox 96
+        if (this.isFF97()) {
+            return '97'
+        }
+        ;   // Firefox 97
+        if (this.isFF98()) {
+            return '98'
+        }
+        ;   // Firefox 98
+        if (this.isFF99()) {
+            return '99'
+        }
+        ;   // Firefox 99
 
         if (this.isIE6()) {
             return '6'
