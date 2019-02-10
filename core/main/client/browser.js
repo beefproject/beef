@@ -2649,6 +2649,48 @@ beef.browser = {
             FF56: this.isFF56(), // Firefox 56
             FF57: this.isFF57(), // Firefox 57
             FF58: this.isFF58(), // Firefox 58
+            FF59: this.isFF59(), // Firefox 59
+            FF60: this.isFF60(), // Firefox 60
+            FF61: this.isFF61(), // Firefox 61
+            FF62: this.isFF62(), // Firefox 62
+            FF63: this.isFF63(), // Firefox 63
+            FF64: this.isFF64(), // Firefox 64
+            FF65: this.isFF65(), // Firefox 65
+            FF66: this.isFF66(), // Firefox 66
+            FF67: this.isFF67(), // Firefox 67
+            FF68: this.isFF68(), // Firefox 68
+            FF69: this.isFF69(), // Firefox 69
+            FF70: this.isFF70(), // Firefox 70
+            FF71: this.isFF71(), // Firefox 71
+            FF72: this.isFF72(), // Firefox 72
+            FF73: this.isFF73(), // Firefox 73
+            FF74: this.isFF74(), // Firefox 74
+            FF75: this.isFF75(), // Firefox 75
+            FF76: this.isFF76(), // Firefox 76
+            FF77: this.isFF77(), // Firefox 77
+            FF78: this.isFF78(), // Firefox 78
+            FF79: this.isFF79(), // Firefox 79
+            FF80: this.isFF80(), // Firefox 70
+            FF81: this.isFF81(), // Firefox 81
+            FF82: this.isFF82(), // Firefox 82
+            FF83: this.isFF83(), // Firefox 83
+            FF84: this.isFF84(), // Firefox 85
+            FF85: this.isFF85(), // Firefox 85
+            FF86: this.isFF86(), // Firefox 85
+            FF87: this.isFF87(), // Firefox 87
+            FF88: this.isFF88(), // Firefox 85
+            FF89: this.isFF89(), // Firefox 85
+            FF90: this.isFF90(), // Firefox 80
+            FF91: this.isFF91(), // Firefox 95
+            FF92: this.isFF92(), // Firefox 92
+            FF93: this.isFF93(), // Firefox 95
+            FF94: this.isFF94(), // Firefox 94
+            FF95: this.isFF95(), // Firefox 95
+            FF96: this.isFF96(), // Firefox 96
+            FF97: this.isFF97(), // Firefox 97
+            FF98: this.isFF98(), // Firefox 98
+            FF99: this.isFF99(), // Firefox 99
+
             FF: this.isFF(),   // Firefox any version
 
             IE6: this.isIE6(), // Internet Explorer 6
