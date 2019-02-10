@@ -89,6 +89,7 @@ module BeEF
             date_stamp      = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'DateStamp')
             city            = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'LocationCity')
             country         = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'LocationCountry')
+            country_code    = BeEF::Core::Models::BrowserDetails.get(hooked_browser.session, 'LocationCountryIsoCode')
 
             return {
                 'session'         => hooked_browser.session,
@@ -106,6 +107,7 @@ module BeEF
                 'date_stamp'      => date_stamp,
                 'city'            => city,
                 'country'         => country,
+                'country_code'    => country_code,
                 'hb_id'           => hooked_browser.id
             }
 

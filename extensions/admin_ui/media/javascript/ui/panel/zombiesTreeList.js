@@ -475,13 +475,15 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
 		balloon_text += "Hardware: " + hooked_browser.hw_name;
 		balloon_text += "<br/>";
-		//balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country/" + escape(hooked_browser.country_name) + ".png' /> ";
-		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
-		if (hooked_browser.country == 'Unknown' ) {
+
+		if (hooked_browser.country == 'Unknown') {
+			balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
 			balloon_text += "Location: Unknown";
 		} else {
+			balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country-squared/" + escape(hooked_browser.country_code.toLowerCase()) + ".svg' /> ";
 			balloon_text += "Location: " + hooked_browser.city + ", " + hooked_browser.country;
 		}
+
 		balloon_text += "<hr/>";
 		balloon_text += "Local Date: " + hooked_browser.date;
 		hooked_browser.qtip = balloon_text;
@@ -491,6 +493,13 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
 		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
 		text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
+
+		if (hooked_browser.country == 'Unknown') {
+			text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/unknown.png' /> ";
+		} else {
+			text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country-squared/" + escape(hooked_browser.country_code.toLowerCase()) + ".svg' /> ";
+		}
+
 		text += hooked_browser.ip;
 		hooked_browser.text = text;
 

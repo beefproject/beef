@@ -22,6 +22,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 		var port               = zombie_array[index]["port"];
 		var city               = zombie_array[index]["city"];
 		var country            = zombie_array[index]["country"];
+		var country_code       = zombie_array[index]["country_code"];
 		var date_stamp         = zombie_array[index]["date_stamp"];
 
 		var new_zombie = {
@@ -37,6 +38,7 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			'hw_name': hw_name,
 			'city': city,
 			'country': country,
+			'country_code': country_code,
 			'date': date_stamp
 		};
 
