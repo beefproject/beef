@@ -156,7 +156,7 @@ check_ruby_version () {
 
   info 'Detecting Ruby environment...'
 
-  MIN_RUBY_VER='2.3'
+  MIN_RUBY_VER='2.4'
   if command_exists ruby${RUBYSUFFIX}
   then
     RUBY_VERSION=$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION")
@@ -170,6 +170,13 @@ check_ruby_version () {
   fi
 }
 
+check_rubygems () {
+  if command_exists gem${RUBYSUFFIX}
+  then
+    info 'Updating rubygems...'
+    gem${RUBYSUFFIX} update --system
+  fi
+}
 
 check_bundler () {
 
@@ -179,7 +186,7 @@ check_bundler () {
   then
     info "bundler${RUBYSUFFIX} gem is installed"
   else
-    info 'Installing bundler gem'
+    info 'Installing bundler gem...'
     gem${RUBYSUFFIX} install bundler
   fi
 }
@@ -223,6 +230,7 @@ main () {
   get_permission
   check_os
   check_ruby_version
+  check_rubygems
   check_bundler
   install_beef
 }
