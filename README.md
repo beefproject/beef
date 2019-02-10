@@ -36,12 +36,13 @@ __Twitter:__ @beefproject
 Requirements
 ------------
 
-* Operating System: Mac OSX 10.5.0 or higher / modern Linux
-* [Ruby](http://ruby-lang.org): 2.3 or newer
+* Operating System: Mac OSX 10.5.0 or higher / modern Linux. Note: Windows is not supported.
+* [Ruby](http://ruby-lang.org): 2.4 or newer
 * [SQLite](http://sqlite.org): 3.x
 * [Node.js](https://nodejs.org): 6 or newer
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
-* brew install selenium-server-standalone (See https://github.com/shvets/selenium)
+* Selenium is required on OSX: brew install selenium-server-standalone (See https://github.com/shvets/selenium)
+
 
 Quick Start
 -----------
@@ -50,7 +51,9 @@ __The following is for the impatient.__
 
 The `install` script installs the required operating system packages and all the prerequisite Ruby gems:
 
-  $ ./install
+```
+$ ./install
+```
 
 For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt).
 
@@ -64,4 +67,6 @@ Usage
 
 To get started, simply execute beef and follow the instructions:
 
-       $ ./beef
+```
+$ ./beef
+```

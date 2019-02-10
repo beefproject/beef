@@ -21,9 +21,9 @@ Or cloning the Git repository from Github:
 Prerequisites
 --------------
 
-BeEF requires Ruby 2.3+.
+BeEF requires Ruby 2.4+.
 
-If your operating system package manager does not support Ruby version 2.3,
+If your operating system package manager does not support Ruby version 2.4,
 you can add the brightbox ppa repository for the latest version of Ruby:
 
   $ sudo apt-add-repository -y ppa:brightbox/ruby-ng
@@ -32,7 +32,7 @@ Alternatively, consider using a Ruby environment manager such as rbenv or rvm
 to manager your Ruby versions. Refer to the following for more information:
 
   * rbenv: https://github.com/rbenv/rbenv
-  * rvm: https://rvm.io/rvm/install'
+  * rvm: https://rvm.io/rvm/install
 
 
 Installation
