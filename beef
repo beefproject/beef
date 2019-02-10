@@ -129,13 +129,22 @@ case config.get("beef.database.driver")
 end
 
 #
-# @note Resets the database if the -x flag was passed
+# @note Load the database
 #
-if BeEF::Core::Console::CommandLine.parse[:resetdb]
-  print_info 'Resetting the database for BeEF.'
-  DataMapper.auto_migrate!
-else
-  DataMapper.auto_upgrade!
+begin
+  # @note Resets the database if the -x flag was passed
+  if BeEF::Core::Console::CommandLine.parse[:resetdb]
+    print_info 'Resetting the database for BeEF.'
+    DataMapper.auto_migrate!
+  else
+    DataMapper.auto_upgrade!
+  end
+rescue => e
+  print_error "Could not connect to database: #{e.message}"
+  if config.get("beef.database.driver") == 'sqlite'
+    print_more "Ensure the #{config.get("beef.database.db_file")} database file is writable"
+  end
+  exit 1
 end
 
 #
