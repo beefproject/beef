@@ -79,6 +79,25 @@ module BeEF
 	  hb.destroy
 	end
 
+
+        #
+        # @note returns all zombies
+        #
+        get '/all' do
+          hbs = []
+          BeEF::Core::Models::HookedBrowser.all.each do |hook|
+            hbs << get_hb_details(hook)
+          end
+
+          output = {
+            'count' => hbs.length,
+            'zombies' => hbs
+          }
+
+          output.to_json
+        end
+
+
         #
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
@@ -167,7 +186,9 @@ module BeEF
               'ip' => hb.ip,
               'domain' => details.get(hb.session, 'HostName'),
               'port' => hb.port.to_s,
-              'page_uri' => details.get(hb.session, 'PageURI')
+              'page_uri' => details.get(hb.session, 'PageURI'),
+              'firstseen' => hb.firstseen,
+              'lastseen' => hb.lastseen,
           }
         end
 

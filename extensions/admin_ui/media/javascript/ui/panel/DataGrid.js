@@ -5,7 +5,7 @@
 //
 
 
-DataGrid = function(url, page, base) {
+LogsDataGrid = function(url, page, base) {
     this.page = page;
     this.url = url;
     this.base = typeof(base) != 'undefined' ? base : {};
@@ -72,7 +72,7 @@ DataGrid = function(url, page, base) {
 			width: 35
     }];
 
-    DataGrid.superclass.constructor.call(this, {
+    LogsDataGrid.superclass.constructor.call(this, {
         region: 'center',
         id: 'topic-grid',
         loadMask: {msg:'Loading Feed...'},
@@ -93,7 +93,7 @@ DataGrid = function(url, page, base) {
     });
 };
 
-Ext.extend(DataGrid, Ext.grid.GridPanel, {});
+Ext.extend(LogsDataGrid, Ext.grid.GridPanel, {});
 
 //Because we're using paging stores now, we have to override the PagingToolbar refresh
 Ext.override(Ext.PagingToolbar, {
