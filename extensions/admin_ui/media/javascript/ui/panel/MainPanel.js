@@ -29,8 +29,13 @@ MainPanel = function(){
         }
     });
 
-    this.grid = new DataGrid('<%= @base_path %>/logs/all.json',30);
-	this.grid.border = false;
+    
+    this.logs_grid = new LogsDataGrid('<%= @base_path %>/logs/all.json',30);
+    this.logs_grid.border = false;
+
+    this.zombies_grid = new ZombieDataGrid('/api/hooks/all', 30);
+    this.zombies_grid.border = false;
+
     this.welcome_tab = new WelcomeTab;
 
     MainPanel.superclass.constructor.call(this, {
@@ -53,13 +58,23 @@ MainPanel = function(){
             shadow:true,
             items:[
                 this.welcome_tab
-            ]},{
+            ]
+        },{
             id:'logs-view',
             layout:'border',
             title:'Logs',
             hideMode:'offsets',
             items:[
-                this.grid
+                this.logs_grid
+            ]
+        },
+        {
+            id:'zombies-view',
+            layout:'border',
+            title:'Zombies',
+            hideMode:'offsets',
+            items:[
+                this.zombies_grid
             ]
         }]
     });
