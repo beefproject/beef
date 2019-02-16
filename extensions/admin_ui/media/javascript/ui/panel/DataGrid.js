@@ -10,11 +10,18 @@ LogsDataGrid = function(url, page, base) {
     this.url = url;
     this.base = typeof(base) != 'undefined' ? base : {};
 
+    // RESTful API token
+    var token = BeefWUI.get_rest_token();
+
     this.store = new Ext.ux.data.PagingJsonStore({
         root: 'logs',
         autoDestroy: true,
-		autoLoad: false,
-        url: this.url,
+	autoLoad: false,
+    proxy: new Ext.data.HttpProxy({
+      method: 'GET',
+      url: url + '?token=' + token
+    }),
+
         storeId: 'myStore',
         baseParams: this.base,
         idProperty: 'id',

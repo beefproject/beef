@@ -30,7 +30,7 @@ MainPanel = function(){
     });
 
     
-    this.logs_grid = new LogsDataGrid('<%= @base_path %>/logs/all.json',30);
+    this.logs_grid = new LogsDataGrid('/api/logs',30);
     this.logs_grid.border = false;
 
     this.zombies_grid = new ZombieDataGrid('/api/hooks/all', 30);

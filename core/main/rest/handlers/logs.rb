@@ -62,7 +62,8 @@ module BeEF
                 'id' => log.id.to_i,
                 'date' => log.date.to_s,
                 'event' => log.event.to_s,
-                'type' => log.type.to_s
+                'type' => log.type.to_s,
+                'hooked_browser_id' => log.hooked_browser_id.to_s
             }
           end
 

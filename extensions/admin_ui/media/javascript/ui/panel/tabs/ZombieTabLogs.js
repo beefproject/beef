@@ -9,7 +9,7 @@
  */
 ZombieTab_LogTab = function(zombie) {
 
-	var zombieLog = new LogsDataGrid('<%= @base_path %>/logs/zombie.json',30,{session:zombie.session});
+	var zombieLog = new LogsDataGrid('/api/logs/' + zombie.session ,30);
 	zombieLog.border = false;
 
 	ZombieTab_LogTab.superclass.constructor.call(this, {
