@@ -6,243 +6,258 @@
 module BeEF
 module Extension
 module Metasploit
-  
-	class RpcClient < ::Msf::RPC::Client
-		require 'net/http'
-		
-		include Singleton
+  class RpcClient < ::Msf::RPC::Client
+    include Singleton
 
-        def initialize
-			@config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
+    def initialize
+      @config = BeEF::Core::Configuration.instance.get('beef.extension.metasploit')
 
-            if not (@config.key?('host') or @config.key?('uri') or @config.key?('port') or @config.key?('user') or @config.key?('pass'))
-				print_error 'There is not enough information to initalize Metasploit connectivity at this time'
-				print_error 'Please check your options in config.yaml to verify that all information is present'
-                BeEF::Core::Configuration.instance.set('beef.extension.metasploit.enabled', false)
-                BeEF::Core::Configuration.instance.set('beef.extension.metasploit.loaded', false)
-                return nil
-            end
-            		@lock = false
-			@lastauth = nil
-			@unit_test = false
-			opts = {
-				 :host => @config['host'] || '127.0.0.1',
-				 :port => @config['port'] || 55552,
-				 :uri => @config['uri'] || '/api/',
-				 :ssl => @config['ssl'] ,
-				 :ssl_version => @config['ssl_version'] ,
-				 :context => {}
- 			}
-			if opts[:ssl_version] =~ /SSLv3/i
-				print_warning("Warning: Connections to Metasploit RPC over SSLv3 are insecure. Use TLSv1 instead.")
-			end
-			#auto start msfrpcd
-			if (@config['auto_msfrpcd'])
-				launch_msf = ''
-				@config['msf_path'].each do |path|
-					if File.exist?(path['path'] + 'msfrpcd')
-						launch_msf = path['path'] + 'msfrpcd'
-						print_info '[Metasploit] Found msfrpcd: ' + launch_msf
-					end
-				end
+      unless @config.key?('host') || @config.key?('uri') || @config.key?('port') ||
+             @config.key?('user') || @config.key?('pass')
+        print_error 'There is not enough information to initalize Metasploit connectivity at this time'
+        print_error 'Please check your options in config.yaml to verify that all information is present'
+        BeEF::Core::Configuration.instance.set('beef.extension.metasploit.enabled', false)
+        BeEF::Core::Configuration.instance.set('beef.extension.metasploit.loaded', false)
+        return
+      end
 
-				if (launch_msf.length > 0)
-					msf_url = 'https://'
-					argssl = ''
-					unless opts[:ssl]
-						argssl = '-S'
-						msf_url = 'http://'
-					end
+      @lock = false
+      @lastauth = nil
+      @unit_test = false
+      @msf_path = nil
 
-					msf_url += opts[:host] + ':' + opts[:port].to_s() + opts[:uri]
-					child = IO.popen([launch_msf, "-f", argssl, "-P" , @config['pass'], "-U" , @config['user'], "-u" , opts[:uri], "-a" , opts[:host], "-p" , opts[:port].to_s()], 'r+')
-				
-					print_info '[Metasploit] Attempt to start msfrpcd, this may take a while. PID: ' + child.pid.to_s
+      opts = {
+        :host        => @config['host'] || '127.0.0.1',
+        :port        => @config['port'] || 55552,
+        :uri         => @config['uri'] || '/api/',
+        :ssl         => @config['ssl'],
+        :ssl_version => @config['ssl_version'],
+        :context     => {}
+      }
 
-					# Give daemon time to launch
-					# poll and giveup after timeout
-					retries = @config['auto_msfrpcd_timeout']
-					uri = URI(msf_url)
-					http = Net::HTTP.new(uri.host, uri.port)
+      if opts[:ssl_version].match?(/SSLv3/i)
+        print_warning '[Metasploit] Warning: Connections to Metasploit RPC over SSLv3 are insecure. Use TLSv1 instead.'
+      end
 
-					if opts[:ssl]
-						http.use_ssl = true
-						http.ssl_version = opts[:ssl_version]
-					end
-					if not @config['ssl_verify']
-						http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-					end
-					headers = { 'Content-Type' => "binary/message-pack" }
-					path = uri.path.empty? ? "/" : uri.path
-					begin
-						sleep 1
-						code = http.head(path, headers).code.to_i
-					rescue => e
-						retry if (retries -= 1) > 0
-					end
-				else
-					print_error '[Metasploit] Please add a custom path for msfrpcd to the config-file.'
-				end
-			end	
-			super(opts)
-	    end
-    
-        def get_lock()
-            sleep 0.2 while @lock 
-            @lock = true
+      if @config['auto_msfrpcd']
+        @config['msf_path'].each do |path|
+          if File.exist? "#{path['path']}/msfrpcd"
+            @msf_path = "#{path['path']}/msfrpcd"
+          end
         end
-    
-        def release_lock()
-            @lock = false
+
+        if @msf_path.nil?
+          print_error '[Metasploit] Please add a custom path for msfrpcd to the config file.'
+          return
         end
-	def call(meth, *args)
-		ret = nil
-		begin
-			ret = super(meth,*args)
-		rescue => e
-			print_error "Metasploit: #{e}"
-			return nil
-		end
-		ret
-	end
+
+        print_info "[Metasploit] Found msfrpcd: #{@msf_path}"
+
+        return unless launch_msfrpcd(opts)
+      end
+
+      super(opts)
+    end
+
+    #
+    # @note auto start msfrpcd
+    #
+    def launch_msfrpcd(opts)
+      if opts[:ssl]
+        argssl = '-S'
+        proto = 'http'
+      else
+        argssl = ''
+        proto = 'https'
+      end
+
+      msf_url = "#{proto}://#{opts[:host]}:#{opts[:port]}#{opts[:uri]}"
+
+      child = IO.popen([
+        @msf_path,
+        '-f',
+        argssl,
+        '-P' , @config['pass'],
+        '-U' , @config['user'],
+        '-u' , opts[:uri],
+        '-a' , opts[:host],
+        '-p' , opts[:port].to_s
+      ], 'r+')
+        
+      print_info "[Metasploit] Attempt to start msfrpcd, this may take a while. PID: #{child.pid}"
+
+      # Give daemon time to launch
+      # poll and giveup after timeout
+      retries = @config['auto_msfrpcd_timeout']
+      uri = URI(msf_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+
+      if opts[:ssl]
+        http.use_ssl = true
+        http.ssl_version = opts[:ssl_version]
+      end
+
+      unless @config['ssl_verify']
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+
+      headers = { 'Content-Type' => 'binary/message-pack' }
+      path = uri.path.empty? ? '/' : uri.path
+
+      begin
+        sleep 1
+        code = http.head(path, headers).code.to_i
+        print_debug "[Metasploit] Success - HTTP response: #{code}"
+      rescue => e
+        retry if (retries -= 1).positive?
+      end
+
+      true
+    end
+
+    def get_lock
+      sleep 0.2 while @lock
+      @lock = true
+    end
     
-	def unit_test_init
-		@unit_test = true
-	end
-        # login to metasploit
-		def login
-            		get_lock()
+    def release_lock
+      @lock = false
+    end
 
-			res = super(@config['user'] , @config['pass'])
-		 	if not res
-                		release_lock()
-                		print_error 'Could not authenticate to Metasploit MSGRPC.'
-				return false
-			end
-			if (!@lastauth)
-				print_info 'Successful connection with Metasploit.' if (!@unit_test)
-				print_debug "Metasploit: Received temporary token: #{self.token}"
-				# Generate permanent token
-				new_token = token_generate
-				if new_token.nil?
-					print_warning "Metasploit: Could not retrieve permanent Metasploit token. Connection to Metasploit will time out in 5 minutes."
-				else
-					self.token = new_token
-					print_debug "Metasploit: Received permanent token: #{self.token}"
-				end
-			end
-			@lastauth = Time.now
+    def call(meth, *args)
+      super(meth, *args)
+    rescue => e
+      print_error "[Metasploit] RPC call to '#{meth}' failed: #{e}"
+      puts e.backtrace
+      return
+    end
+    
+    def unit_test_init
+      @unit_test = true
+    end
+
+    # login to metasploit
+    def login
+      get_lock
+
+      res = super(@config['user'], @config['pass'])
+
+      unless res
+        print_error '[Metasploit] Could not authenticate to Metasploit RPC sevrice.'
+        return false
+      end
+
+      unless @lastauth
+        print_info '[Metasploit] Successful connection with Metasploit.' unless @unit_test
+        print_debug "[Metasploit] Received temporary token: #{token}"
+
+        # Generate permanent token
+        new_token = token_generate
+        if new_token.nil?
+          print_warning "[Metasploit] Could not retrieve permanent Metasploit token. Connection to Metasploit will time out in 5 minutes."
+        else
+          self.token = new_token
+          print_debug "[Metasploit] Received permanent token: #{token}"
+        end
+      end
+      @lastauth = Time.now
       
-            		release_lock()
-			true
-		end
+      true
+    ensure
+      release_lock
+    end
 
-		# generate a permanent auth token
-		def token_generate
-			res = self.call('auth.token_generate')
-			return if not res or not res['token']
-			res['token']
-		end
+    # generate a permanent auth token
+    def token_generate
+      res = call('auth.token_generate')
 
-		def browser_exploits()
-                
-      			get_lock()
-			res = self.call('module.exploits')
-			return [] if not res or not res['modules']
+      return unless res || res['token']
 
-			mods = res['modules']
-			ret = []
-			
-			mods.each do |m|
-				ret << m if(m.include? '/browser/')
-			end
-			
-      			release_lock()
-			ret.sort
-	  end
+      res['token']
+    end
 
-		def get_exploit_info(name)
-      			get_lock()
-			res = self.call('module.info','exploit',name)
-      			release_lock()
-			res || {}
-		end
-		
-		def get_payloads(name)
-      			get_lock()
-			res = self.call('module.compatible_payloads',name)
-      			release_lock()
-			res || {}
-		end
-		
-		def get_options(name)
-      			get_lock()
-			res = self.call('module.options','exploit',name)
-      			release_lock()
-			res || {}
-		end
-		
-		def payloads()
-      			get_lock()
-			res = self.call('module.payloads')
-      			release_lock()
-			return {} if not res or not res['modules']
-			res['modules']
-		end
-		
-		def payload_options(name)
-      			get_lock()
-			res = self.call('module.options','payload',name)
-      			release_lock
-			return {} if not res
-			res
-		end
-		
-		def launch_exploit(exploit,opts)
-      			get_lock()
-			begin
-				res = self.call('module.execute','exploit',exploit,opts)
-			rescue => e
-				print_error "Exploit failed for #{exploit} \n"
-        			release_lock()
-				return false
-			end
-      
-      			release_lock()
+    def browser_exploits
+      get_lock
+      res = call('module.exploits')
 
-			uri = ""
-			if opts['SSL'] 
-				uri += "https://"
-			else
-				uri += "http://"
-			end
+      return [] unless res || res['modules']
 
-			uri += @config['callback_host'] + ":#{opts['SRVPORT']}/" + opts['URIPATH']
+      res['modules'].select{|m| m.include?('/browser/') }.sort
+    ensure
+      release_lock
+    end
 
-			res['uri'] = uri
-			res
-		end
+    def get_exploit_info(name)
+      get_lock
+      res = call('module.info', 'exploit', name)
+      res || {}
+    ensure
+      release_lock
+    end
 
-		def launch_autopwn
-			opts = {
-				'LHOST' => @config['callback_host'] ,
-				'URIPATH' => @apurl
-				}
-      			get_lock()
-			begin
-				res = self.call('module.execute','auxiliary','server/browser_autopwn',opts)
-			rescue => e
-				print_error "Failed to launch autopwn\n"
-        			release_lock()
-				return false
-			end
-      			release_lock()
-			return res
+    def get_payloads(name)
+      get_lock
+      res = call('module.compatible_payloads', name)
+      res || {}
+    ensure
+      release_lock
+    end
 
-		end
-		
-	end
-	
+    def get_options(name)
+      get_lock
+      res = call('module.options', 'exploit', name)
+      res || {}
+    ensure
+      release_lock
+    end
+    
+    def payloads
+      get_lock
+      res = call('module.payloads')
+      return {} unless res || res['modules']
+      res['modules']
+    ensure
+      release_lock
+    end
+    
+    def payload_options(name)
+      get_lock
+      res = call('module.options', 'payload', name)
+      return {} unless res
+      res
+    rescue => e
+      return {}
+    ensure
+      release_lock
+    end
+
+    def launch_exploit(exploit, opts)
+      get_lock
+      res = call('module.execute', 'exploit', exploit, opts)
+      proto = opts['SSL'] ? 'https' : 'http'
+      res['uri'] = "#{proto}://#{@config['callback_host']}:#{opts['SRVPORT']}/#{opts['URIPATH']}"
+      res
+    rescue => e
+      print_error "Exploit failed for #{exploit} \n"
+      return false
+    ensure
+      release_lock
+    end
+
+    def launch_autopwn
+      opts = {
+        'LHOST' => @config['callback_host'],
+        'URIPATH' => @apurl
+      }
+      get_lock
+      call('module.execute', 'auxiliary', 'server/browser_autopwn', opts)
+    rescue => e
+      print_error "Failed to launch autopwn"
+      return false
+    ensure
+      release_lock
+    end
+  end
 end
 end
 end
