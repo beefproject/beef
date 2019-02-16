@@ -27,7 +27,7 @@ module BeEF
           # load certificate
           begin
             cert_file = @conf.get('beef.extension.proxy.cert')
-            cert = File.open(cert_file)
+            cert = File.read(cert_file)
             ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
           rescue
             print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
@@ -36,7 +36,7 @@ module BeEF
           # load key
           begin
             key_file = @conf.get('beef.extension.proxy.key')
-            key = File.open(key_file)
+            key = File.read(key_file)
             ssl_context.key = OpenSSL::PKey::RSA.new(key)
           rescue
             print_error "[Proxy] Could not load SSL key '#{key_file}'"

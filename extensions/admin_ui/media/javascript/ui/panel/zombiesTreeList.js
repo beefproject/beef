@@ -103,9 +103,10 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({
-                                url: '<%= @base_path %>/proxy/setTargetZombie',
+                                url: '/api/proxy/setTargetZombie?token=' + beefwui.get_rest_token(),
                                 method: 'POST',
-                                params: 'hb_id=' + escape(hb_id)
+                                headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                                jsonData: {'hb_id': escape(hb_id)}
                             });
                           break;
                        case 'xssrays_hooked_domain':

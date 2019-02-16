@@ -7,7 +7,6 @@ module BeEF
   module Extension
     module Proxy
       module API
-
         module RegisterHttpHandler
 
           BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'pre_http_start')
@@ -24,13 +23,9 @@ module BeEF
           end
 
           def self.mount_handler(beef_server)
-            beef_server.mount('/proxy', BeEF::Extension::Requester::Handler)
             beef_server.mount('/api/proxy', BeEF::Extension::Proxy::ProxyRest.new)
           end
-
         end
-
-
       end
     end
   end
