@@ -195,7 +195,12 @@ check_bundler () {
 install_beef () { 
 
   echo "Installing required Ruby gems..."
-  rm Gemfile.lock
+
+  if [ -w Gemfile.lock ]
+  then
+    /bin/rm Gemfile.lock
+  fi
+
   if command_exists bundler${RUBYSUFFIX}
   then
     bundle${RUBYSUFFIX} install --without test development
