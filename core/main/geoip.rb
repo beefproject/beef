@@ -48,7 +48,7 @@ module Core
     # @return [Hash] IP address lookup results
     #
     def lookup(ip)
-      raise Exception::TypeError, '"ip" needs to be a string' unless ip.string?
+      raise TypeError, '"ip" needs to be a string' unless ip.string?
 
       return unless @enabled
 

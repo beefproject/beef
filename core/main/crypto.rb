@@ -24,7 +24,7 @@ module Core
       token_length = len || config.get('beef.crypto_default_value_length').to_i
       
       # type checking
-      raise Exception::TypeError, "Token length is less than the minimum length enforced by the framework: #{TOKEN_MINIMUM_LENGTH}" if (token_length < TOKEN_MINIMUM_LENGTH)
+      raise TypeError, "Token length is less than the minimum length enforced by the framework: #{TOKEN_MINIMUM_LENGTH}" if (token_length < TOKEN_MINIMUM_LENGTH)
       
       # return random hex string
       OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]

@@ -16,15 +16,6 @@ module Filters
     true
   end
 
-  # Check if the command id valid
-  # @param [String] str String for testing
-  # @return [Boolean] If the string is a valid command id
-  def self.is_valid_command_id?(str)
-    return false unless is_non_empty_string?(str)
-    return false unless nums_only?(str)   
-    true
-  end
-
   # Check if the session id valid
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid hook session id characters

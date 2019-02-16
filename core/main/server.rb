@@ -55,7 +55,7 @@ module BeEF
       #
       def mount(url, http_handler_class, args = nil)
         # argument type checking
-        raise Exception::TypeError, '"url" needs to be a string' unless url.string?
+        raise TypeError, '"url" needs to be a string' unless url.string?
 
         if args.nil?
           @mounts[url] = http_handler_class
@@ -71,7 +71,7 @@ module BeEF
       # @param [String] url URL to unmount.
       #
       def unmount(url)
-        raise Exception::TypeError, '"url" needs to be a string' unless url.string?
+        raise TypeError, '"url" needs to be a string' unless url.string?
         @mounts.delete url
       end
 

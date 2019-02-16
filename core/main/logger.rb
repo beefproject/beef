@@ -34,9 +34,9 @@ module Core
       time_now = Time.now
       
       # arguments type checking
-      raise Exception::TypeError, '"from" needs to be a string' unless from.string?
-      raise Exception::TypeError, '"event" needs to be a string' unless event.string?
-      raise Exception::TypeError, '"Hooked Browser ID" needs to be an integer' unless hb.integer?
+      raise TypeError, '"from" needs to be a string' unless from.string?
+      raise TypeError, '"event" needs to be a string' unless event.string?
+      raise TypeError, '"Hooked Browser ID" needs to be an integer' unless hb.integer?
 
       # logging the new event into the database
       @logs.new(:type => from.to_s, :event => event.to_s, :date => time_now, :hooked_browser_id => hb).save

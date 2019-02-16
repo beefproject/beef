@@ -195,7 +195,7 @@ module BeEF
           command_status = data["status"]
 
           (print_error "BeEFhook is invalid"; return) unless BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
-          (print_error "command_id is invalid"; return) unless BeEF::Filters.is_valid_command_id?(command_id)
+          (print_error "command_id is invalid"; return) unless command_id.integer?
           (print_error "command name is empty"; return) if handler.empty?
           (print_error "command results are empty"; return) if command_results.empty?
           (print_error "command status is invalid"; return) unless command_status =~ /\A0|1|2|undefined\z/

@@ -12,9 +12,14 @@ module Models
     include DataMapper::Resource
   
     storage_names[:default] = 'core_commandmodules'
-  
+ 
+    # @note command module ID
     property :id, Serial
+
+    # @note command module name
     property :name, Text, :lazy => false
+
+    # @note command module path
     property :path, Text, :lazy => false
   
     has n, :commands

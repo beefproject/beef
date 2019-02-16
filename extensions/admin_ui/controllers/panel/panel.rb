@@ -49,7 +49,7 @@ module BeEF
                 },
 
                 # the rules for the distributed engine
-                'ditributed-engine-rules' => distributed_engine_rules
+                'distributed-engine-rules' => distributed_engine_rules
             }
 
             @body = ret.to_json

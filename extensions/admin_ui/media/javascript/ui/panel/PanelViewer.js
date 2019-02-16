@@ -58,7 +58,7 @@ Ext.TaskMgr.start({
 					var hr = document.getElementById("header-right");
 					hr.innerHTML = "You appear to be logged out. <a href='<%= @base_path %>/panel/'>Login</a>";
 				}
-				var distributed_engine_rules = (updates['ditributed-engine-rules']) ? updates['ditributed-engine-rules'] : null;
+				var distributed_engine_rules = (updates['distributed-engine-rules']) ? updates['distributed-engine-rules'] : null;
         beefwui.hooked_browsers = (updates['hooked-browsers']); //? updates['hooked-browsers'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;
 				

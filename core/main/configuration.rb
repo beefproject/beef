@@ -20,8 +20,8 @@ module BeEF
       # @param [String] configuration_file Configuration file to be loaded,
       #        by default loads $root_dir/config.yaml
       def initialize(config)
-        raise Exception::TypeError, "'config' needs to be a string" unless config.string?
-        raise Exception::TypeError, "Configuration file '#{config}' cannot be found" unless File.exist? config
+        raise TypeError, "'config' needs to be a string" unless config.string?
+        raise TypeError, "Configuration file '#{config}' cannot be found" unless File.exist? config
 
         begin
           #open base config
