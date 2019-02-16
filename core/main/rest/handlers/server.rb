@@ -50,6 +50,10 @@ module BeEF
           end
         end
 
+        get '/mounts' do
+          { 'mounts' => http_server.mounts }.to_json
+        end
+
         get '/version' do
           { 'version' => config.get('beef.version') }.to_json
         end

@@ -41,6 +41,18 @@ def version
   end
 end
 
+# get server mounts
+def mounts
+  begin
+    response = RestClient.get "#{@url}server/mounts", {:params => {:token => @token}}
+    result = JSON.parse(response.body)
+    print_good "Retrieved BeEF server mounts: #{result['mounts']}"
+    result['mounts']
+  rescue => e
+    print_error "Could not retrieve BeEF version: #{e.message}"
+  end
+end
+
 # get online hooked browsers
 def online_browsers
   begin
