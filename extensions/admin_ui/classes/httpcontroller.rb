@@ -79,7 +79,9 @@ module AdminUI
         @headers['Content-Type']='text/html; charset=UTF-8' # default content and charset type for all pages
         @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /\.json$/
       end
-
+    rescue => e
+      print_error "Error handling HTTP request: #{e.message}"
+      puts e.backtrace
     end
 
     # Constructs a html script tag (from media/javascript directory)
