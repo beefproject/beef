@@ -7,6 +7,12 @@
 # @note Include here all the gems we are using
 require 'rubygems'
 require 'bundler/setup'
+
+# For some reason, on Ruby 2.5+, msgpack needs to be loaded first,
+# else metasploit integration dies due to undefined `to_msgpack`.
+# Works fine on Ruby 2.4
+require 'msgpack'
+
 Bundler.require(:default)
 
 require 'cgi'
