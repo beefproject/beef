@@ -147,10 +147,10 @@ module BeEF
           :verify_peer      => false
         }
 
-        if Digest::SHA256.hexdigest(File.read(cert)).eql?('ccbc5e0a998eac18c1b60bbb14b439529c26e7ea4d824172df4991c3acc49cc4') ||
-           Digest::SHA256.hexdigest(File.read(cert_key)).eql?('300266e04bbda70f9f81a38d33973572d161f8d20bc8e2d6758f2bd6130f3825')
+        if Digest::SHA256.hexdigest(File.read(cert)).eql?('978f761fc30cbd174eab0c6ffd2d235849260c0589a99262f136669224c8d82a') ||
+           Digest::SHA256.hexdigest(File.read(cert_key)).eql?('446214bb608caf9e21dd105ce3d4ea65a3f32949906f3eb25a2c622a68623122')
           print_warning 'Warning: Default SSL cert/key in use.'
-          print_more 'Use the ./tools/generate-certificate utility to generate a new certificate.'
+          print_more 'Use the generate-certificate utility to generate a new certificate.'
         end
       end
 
