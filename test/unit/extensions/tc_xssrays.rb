@@ -40,7 +40,6 @@ class TC_XssRays < Test::Unit::TestCase
     assert(@@xssrays_config.has_key?('enable'))
     assert(@@xssrays_config.has_key?('clean_timeout'))
     assert(@@xssrays_config.has_key?('cross_domain'))
-    assert(@@xssrays_config.has_key?('js_console_logs'))
   end
 
   # Verifies public interface
