@@ -24,6 +24,10 @@ module AdminUI
     def initialize(data = {})
       @erubis = nil
       @status = 200 if data['status'].nil?
+      @session = BeEF::Extension::AdminUI::Session.instance
+
+      config = BeEF::Core::Configuration.instance
+      @bp = config.get "beef.extension.admin_ui.base_path"
 
       @headers = {'Content-Type' => 'text/html; charset=UTF-8'} if data['headers'].nil?
 
@@ -40,11 +44,8 @@ module AdminUI
     def run(request, response)
       @request = request
       @params = request.params
-      @session = BeEF::Extension::AdminUI::Session.instance
-      config = BeEF::Core::Configuration.instance
 
       # Web UI base path, like http://beef_domain/<bp>/panel
-      @bp = config.get "beef.http.web_ui_basepath"
       auth_url = "#{@bp}/authentication"
       
       # test if session is unauth'd and whether the auth functionality is requested
@@ -77,7 +78,6 @@ module AdminUI
       # set content type
       if @headers['Content-Type'].nil?
         @headers['Content-Type']='text/html; charset=UTF-8' # default content and charset type for all pages
-        @headers['Content-Type']='application/json; charset=UTF-8' if request.path =~ /\.json$/
       end
     rescue => e
       print_error "Error handling HTTP request: #{e.message}"
@@ -85,22 +85,27 @@ module AdminUI
     end
 
     # Constructs a html script tag (from media/javascript directory)
-    def script_tag(filename) "<script src=\"#{$url}#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>" end
+    def script_tag(filename)
+      "<script src=\"#{$url}#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>"
+    end
 
     # Constructs a html script tag (from media/javascript-min directory)
-    def script_tag_min(filename) "<script src=\"#{$url}#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>" end
+    def script_tag_min(filename)
+      "<script src=\"#{$url}#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>"
+    end
 
     # Constructs a html stylesheet tag
-    def stylesheet_tag(filename) "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />" end
+    def stylesheet_tag(filename)
+      "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />"
+    end
 
     # Constructs a hidden html nonce tag
     def nonce_tag 
-      @session = BeEF::Extension::AdminUI::Session.instance
-      "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"" + @session.get_nonce + "\"/>"
+      "<input type=\"hidden\" name=\"nonce\" id=\"nonce\" value=\"#{@session.get_nonce}\"/>"
     end
 
     def base_path
-      "#{@bp}"
+      @bp.to_s
     end
 
     private
@@ -108,10 +113,10 @@ module AdminUI
     @eruby
     
     # Unescapes a URL-encoded string.
-    def unescape(s); s.tr('+', ' ').gsub(/%([\da-f]{2})/in){[$1].pack('H*')} end
-    
+    def unescape(s)
+      s.tr('+', ' ').gsub(/%([\da-f]{2})/in){[$1].pack('H*')}
+    end
   end
-
 end
 end
 end

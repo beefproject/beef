@@ -152,6 +152,10 @@ module BeEF
           print_warning 'Warning: Default SSL cert/key in use.'
           print_more 'Use the generate-certificate utility to generate a new certificate.'
         end
+      rescue => e
+        print_error "Failed to prepare HTTP server: #{e.message}"
+	puts e.backtrace
+	exit 1
       end
 
       #
