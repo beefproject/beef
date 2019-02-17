@@ -35,7 +35,6 @@ module BeEF
             beefurl = BeEF::Core::Server.instance.url
             cross_domain = xs.cross_domain
             timeout = xs.clean_timeout
-            debug = config.get("beef.extension.xssrays.js_console_logs")
 
             ws = BeEF::Core::Websocket::Websocket.instance
 
@@ -51,7 +50,7 @@ module BeEF
               //   Browser Exploitation Framework (BeEF) - http://beefproject.com
               //   See the file \'doc/COPYING\' for copying permission
               //', "")
-              add_to_body xs.id, hb.session, beefurl, cross_domain, timeout, debug
+              add_to_body xs.id, hb.session, beefurl, cross_domain, timeout
 
               if config.get("beef.extension.evasion.enable")
                 evasion = BeEF::Extension::Evasion::Evasion.instance
@@ -62,19 +61,19 @@ module BeEF
             # If we use XHR-polling, add the component to the main hook file
             else
               build_missing_beefjs_components 'beef.net.xssrays'
-              add_to_body xs.id, hb.session, beefurl, cross_domain, timeout, debug
+              add_to_body xs.id, hb.session, beefurl, cross_domain, timeout
             end
 
-            print_debug("[XSSRAYS] Adding XssRays to the DOM. Scan id [#{xs.id}], started at [#{xs.scan_start}], cross domain [#{cross_domain}], clean timeout [#{timeout}], js console debug [#{debug}].")
+            print_debug("[XSSRAYS] Adding XssRays to the DOM. Scan id [#{xs.id}], started at [#{xs.scan_start}], cross domain [#{cross_domain}], clean timeout [#{timeout}].")
 
           end
 
-          def add_to_body(id, session, beefurl, cross_domain, timeout, debug)
+          def add_to_body(id, session, beefurl, cross_domain, timeout)
             config = BeEF::Core::Configuration.instance
 
             req = %Q{
               beef.execute(function() {
-                beef.net.xssrays.startScan('#{id}', '#{session}', '#{beefurl}', #{cross_domain}, #{timeout}, #{debug});
+                beef.net.xssrays.startScan('#{id}', '#{session}', '#{beefurl}', #{cross_domain}, #{timeout});
               });
             }
 
