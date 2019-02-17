@@ -131,10 +131,7 @@ beef:
     dns_hostname_lookup: false
 
     # IP Geolocation
-    # NOTE: requires MaxMind database:
-    #   /usr/bin/curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
-    #   /bin/gunzip GeoLite2-City.tar.gz && /bin/tar xvf GeoLite2-City.tar && /bin/rm GeoLite2-City.tar
-    #   /bin/mkdir -p /opt/GeoIP && /bin/mv GeoLite2-City_*/* /opt/GeoIP && /bin/rmdir GeoLite2-City_*
+    # NOTE: requires MaxMind database. Run ./updated-geoipdb to install.
     geoip:
         enable: true
         database: '/opt/GeoIP/GeoLite2-City.mmdb'
