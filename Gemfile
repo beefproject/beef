@@ -70,11 +70,6 @@ group :ext_dns do
   gem 'rubydns', '~> 0.7.3'
 end
 
-# network extension
-group :ext_network do
-  gem 'dm-serializer'
-end
-
 # QRcode extension
 group :ext_qrcode do
   gem 'qr4r'

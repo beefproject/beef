@@ -21,5 +21,4 @@ require 'extensions/network/models/network_host'
 require 'extensions/network/models/network_service'
 require 'extensions/network/api'
 require 'extensions/network/rest/network'
-require 'dm-serializer'
 
