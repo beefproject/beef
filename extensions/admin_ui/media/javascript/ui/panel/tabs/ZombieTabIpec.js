@@ -67,7 +67,7 @@ ZombieTab_IpecTab = function(zombie) {
         };
 
         $jwterm( document ).ready( function() {
-            $jwterm('#wterm').wterm( { WIDTH: '100%', HEIGHT: '100%', WELCOME_MESSAGE: 'Welcome to BeEF Bind interactive shell. To Begin Using type \'help\'' });
+            $jwterm('#wterm').wterm( { WIDTH: '100%', HEIGHT: '100%', WELCOME_MESSAGE: 'Welcome to BeEF Bind interactive shell. Unfortunately the IPEC shell is currently broken. See: https://github.com/beefproject/beef/issues/1394   - To Begin Using type \'help\'' });
         });
 
         var target_ip = "";

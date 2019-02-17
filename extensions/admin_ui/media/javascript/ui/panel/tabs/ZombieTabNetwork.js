@@ -80,11 +80,10 @@ ZombieTab_Network = function(zombie) {
 		}
 
 		nodes.push({id: 1000, label: '', image: DIR + '../beef.png', shape: 'image'});
-		nodes.push({id: 1001, label: '', image: DIR + 'System-Firewall-2-icon.png', shape: 'image'});
-		edges.push({from: 1000, to: 1001, length: EDGE_LENGTH_SUB});
-		var HB_ID = 1002;
+
+		var HB_ID = 1001;
 		nodes.push({id: HB_ID, label: 'Hooked Browser', image: DIR + 'Apps-internet-web-browser-icon.png', shape: 'image'});
-		edges.push({from: 1001, to: HB_ID, length: EDGE_LENGTH_SUB});
+		edges.push({from: 1000, to: HB_ID, length: EDGE_LENGTH_SUB});
 
 		// add subnet nodes
 		var subnets = [];
