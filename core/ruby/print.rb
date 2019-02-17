@@ -55,7 +55,12 @@ end
 # @note The string passed needs to be separated by the "\n" for multiple lines to be printed
 def print_more(s)
   time = Time.now.localtime.strftime("[%k:%M:%S]")
-  lines = s.split("\n")
+
+  if s.class == Array
+    lines = s
+  else
+    lines = s.split("\n")
+  end
 
   lines.each_with_index do |line, index|
     if ((index+1) == lines.size)
