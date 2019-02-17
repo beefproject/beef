@@ -22,64 +22,43 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
     super({
       'paths' => {
         '/set_scan_target' => method(:set_scan_target),
-        '/zombie.json'  => method(:get_xssrays_logs),
         '/createNewScan' => method(:create_new_scan)
       }
     })
   end
 
-  # called by the UI when rendering xssrays_details table content in the XssRays zombie tab
-  def get_xssrays_logs
-    # validate nonce
-    nonce = @params['nonce'] || nil
-    (print_error "nonce is nil";return @body = {'success' => 'false'}.to_json) if nonce.nil?
-    (print_error "nonce incorrect";return @body = {'success' => 'false'}.to_json) if @session.get_nonce != nonce
-
-    # validate that the hooked browser's session has been sent
-    zombie_session = @params['zombie_session'] || nil
-    (print_error "Zombie session is nil";return @body = {'success' => 'false'}.to_json) if zombie_session.nil?
-
-    # validate that the hooked browser exists in the db
-    zombie = Z.first(:session => zombie_session) || nil
-    (print_error "Invalid hooked browser session";return @body = {'success' => 'false'}.to_json) if zombie.nil?
-
-    logs = []
-    BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => zombie.id).each{|log|
-      logs << {
-        'id'      => log.id,
-        'vector_method'  => log.vector_method,
-        'vector_name'    => log.vector_name,
-        'vector_poc' => log.vector_poc
-      }
-    }
-
-    @body = {'success' => 'true', 'logs' => logs}.to_json
-  end
-
-   # called by the UI. needed to pass the hooked browser ID/session and store a new scan in the DB.
-   # This is called when right-clicking the hooked browser from the tree. Default config options are read from config.yaml
-   def set_scan_target
+  # called by the UI. needed to pass the hooked browser ID/session and store a new scan in the DB.
+  # This is called when right-clicking the hooked browser from the tree.
+  # Default config options are read from config.yaml
+  def set_scan_target
     hooked_browser = HB.first(:session => @params['hb_id'].to_s)
-    if(hooked_browser != nil)
-      xssrays_scan = XS.new(
-          :hooked_browser_id => hooked_browser.id,
-          :scan_start => Time.now,
-          :domain => hooked_browser.domain,
-          :cross_domain => CROSS_DOMAIN, #check also cross-domain URIs found by the spider
-          :clean_timeout => CLEAN_TIMEOUT #check also cross-domain URIs found by the spider
-      )
-      xssrays_scan.save
 
-      print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
+    if hooked_browser.nil?
+      print_error "[XSSRAYS] Invalid hooked browser ID"
+      return
     end
 
-   end
+    xssrays_scan = XS.new(
+      :hooked_browser_id => hooked_browser.id,
+      :scan_start => Time.now,
+      :domain => hooked_browser.domain,
+      :cross_domain => CROSS_DOMAIN, #check also cross-domain URIs found by the spider
+      :clean_timeout => CLEAN_TIMEOUT #check also cross-domain URIs found by the spider
+    )
+    xssrays_scan.save
 
-   # called by the UI, in the XssRays zombie tab
-   # Needed if we want to start a scan overriding default scan parameters without rebooting BeEF
+    print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip}], hooked domain [#{hooked_browser.domain}]")
+  end
+
+  # called by the UI, in the XssRays zombie tab
+  # Needed if we want to start a scan overriding default scan parameters without rebooting BeEF
   def create_new_scan
     hooked_browser = HB.first(:session => @params['zombie_session'].to_s)
-    if(hooked_browser != nil)
+
+    if hooked_browser.nil?
+      print_error "[XSSRAYS] Invalid hooked browser ID"
+      return
+    end
 
       # set Cross-domain settings
       cross_domain =  @params['cross_domain']
@@ -106,8 +85,7 @@ class Xssrays < BeEF::Extension::AdminUI::HttpController
       )
       xssrays_scan.save
 
-      print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip.to_s}], hooked domain [#{hooked_browser.domain.to_s}]")
-    end
+      print_info("[XSSRAYS] Starting XSSRays [ip:#{hooked_browser.ip}], hooked domain [#{hooked_browser.domain}]")
    end
 end
 

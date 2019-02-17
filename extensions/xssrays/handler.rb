@@ -56,16 +56,20 @@ module BeEF
           xssrays_scan = XS.first(:id => rays_scan_id)
           hooked_browser = HB.first(:session => params[:hbsess])
 
-          if (xssrays_scan != nil)
-            xssrays_detail = XD.new(
-                :hooked_browser_id => hooked_browser.id,
-                :vector_name => params[:n],
-                :vector_method => params[:m],
-                :vector_poc => params[:p],
-                :xssraysscan_id => xssrays_scan.id
-            )
-            xssrays_detail.save
+          if xssrays_scan.nil?
+            print_error "[XSSRAYS] Invalid scan"
+            return
           end
+
+          xssrays_detail = XD.new(
+              :hooked_browser_id => hooked_browser.session,
+              :vector_name => params[:n],
+              :vector_method => params[:m],
+              :vector_poc => params[:p],
+              :xssraysscan_id => xssrays_scan.id
+          )
+          xssrays_detail.save
+
           print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] received ray [ip:#{hooked_browser.ip}], hooked domain [#{hooked_browser.domain}]")
           print_debug("[XSSRAYS] Ray info: \n #{request.query_string}")
         end
@@ -74,10 +78,13 @@ module BeEF
         def finalize_scan(rays_scan_id)
           xssrays_scan = BeEF::Core::Models::Xssraysscan.first(:id => rays_scan_id)
 
-          if (xssrays_scan != nil)
-            xssrays_scan.update(:is_finished => true, :scan_finish => Time.now)
-            print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] finished at [#{xssrays_scan.scan_finish}]")
+          if xssrays_scan.nil?
+            print_error "[XSSRAYS] Invalid scan"
+            return
           end
+
+          xssrays_scan.update(:is_finished => true, :scan_finish => Time.now)
+          print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] finished at [#{xssrays_scan.scan_finish}]")
         end
       end
     end

@@ -8,45 +8,42 @@
  * The XssRays Tab panel for the selected zombie.
  */
 
-//TODO: fix positioning issues, probably because we are not creating a nested (fucking) panel
 ZombieTab_XssRaysTab = function(zombie) {
+  var commands_statusbar = new Beef_StatusBar('xssrays-bbar-zombie-'+zombie.session);
+  var req_pagesize = 30;
 
-	var commands_statusbar = new Beef_StatusBar('xssrays-bbar-zombie-'+zombie.session);
+  // RESTful API token
+  var token = BeefWUI.get_rest_token();
 
-     var req_pagesize = 30;
+  var xssrays_config_panel = new Ext.Panel({
+    id: 'xssrays-config-zombie-'+zombie.session,
+    title: 'Scan Config',
+    layout: 'fit'
+  });
 
-    var xssrays_config_panel = new Ext.Panel({
-		id: 'xssrays-config-zombie-'+zombie.session,
-		title: 'Scan Config',
-		layout: 'fit'
-	});
+  var xssrays_logs_store = new Ext.ux.data.PagingJsonStore({
+    storeId: 'xssrays-logs-store-zombie-' + zombie.session,
+    remoteSort: false,
+    autoDestroy: true,
+    autoLoad: false,
+    proxy: new Ext.data.HttpProxy({
+      method: 'GET',
+      url: '/api/xssrays/rays/' + zombie.session + '?token=' + token
+    }),
+    root: 'rays',
+    fields: ['id', 'vector_method', 'vector_name', 'vector_poc'],
+    sortInfo: {field: 'id', direction: 'DESC'},
+  });
 
-     var xssrays_logs_store = new Ext.ux.data.PagingJsonStore({
-        storeId: 'xssrays-logs-store-zombie-' + zombie.session,
-        url: '<%= @base_path %>/xssrays/zombie.json',
-        remoteSort: false,
-        autoDestroy: true,
-        autoLoad: false,
-        root: 'logs',
+  var xssrays_logs_bbar = new Ext.PagingToolbar({
+    pageSize: req_pagesize,
+    store: xssrays_logs_store,
+    displayInfo: true,
+    displayMsg: 'Displaying history {0} - {1} of {2}',
+    emptyMsg: 'No history to display'
+  });
 
-        fields: ['id', 'vector_method', 'vector_name', 'vector_poc'],
-        sortInfo: {field: 'id', direction: 'DESC'},
-
-        baseParams: {
-            nonce: Ext.get("nonce").dom.value,
-            zombie_session: zombie.session
-        }
-    });
-
-    var xssrays_logs_bbar = new Ext.PagingToolbar({
-        pageSize: req_pagesize,
-        store: xssrays_logs_store,
-        displayInfo: true,
-        displayMsg: 'Displaying history {0} - {1} of {2}',
-        emptyMsg: 'No history to display'
-    });
-
-    var xssrays_logs_grid = new Ext.grid.GridPanel({
+  var xssrays_logs_grid = new Ext.grid.GridPanel({
         id: 'xssrays-logs-grid-zombie-' + zombie.session,
         store: xssrays_logs_store,
         bbar: xssrays_logs_bbar,
@@ -75,9 +72,9 @@ ZombieTab_XssRaysTab = function(zombie) {
                 datagrid.store.reload({params:{start:0,limit:req_pagesize, sort: "date", dir:"DESC"}});
             }
         }
-    });
+  });
 
-    var xssrays_logs_panel = new Ext.Panel({
+  var xssrays_logs_panel = new Ext.Panel({
 		id: 'xssrays-logs-panel-zombie-'+zombie.session,
 		title: 'Logs',
 		items:[xssrays_logs_grid],
@@ -88,9 +85,9 @@ ZombieTab_XssRaysTab = function(zombie) {
 				xssrays_logs_panel.items.items[0].store.reload();
 			}
 		}
-	});
+  });
 
-    function genScanSettingsPanel(zombie, bar, value) {
+  function genScanSettingsPanel(zombie, bar, value) {
 		var form = new Ext.FormPanel({
 			title: 'Scan settings',
 			id: 'xssrays-config-form-zombie'+zombie.session,
@@ -157,7 +154,7 @@ ZombieTab_XssRaysTab = function(zombie) {
 				genScanSettingsPanel(zombie, commands_statusbar);
 			}
 		}
-	});
+  });
 };
 
 Ext.extend(ZombieTab_XssRaysTab, Ext.TabPanel, {} );
