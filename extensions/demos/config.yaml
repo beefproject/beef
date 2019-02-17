@@ -8,5 +8,4 @@ beef:
         demos:
             enable: false
             name: 'Demos'
-            demo_path: "/demos/basic.html"
 
