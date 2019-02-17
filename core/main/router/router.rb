@@ -130,7 +130,7 @@ module BeEF
         # @note Default root page
         get "/" do
           if config.get("beef.http.web_server_imitation.enable")
-            bp = config.get "beef.http.web_ui_basepath"
+            bp = config.get "beef.extension.admin_ui.base_path"
             type = config.get("beef.http.web_server_imitation.type")
             case type
               when "apache"

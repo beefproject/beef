@@ -8,8 +8,14 @@ beef:
         admin_ui:
             name: 'Admin UI'
             enable: false
+
+            # Admin UI base path
+            base_path: "/ui"
+
+            # Favicon
             favicon_file_name: "favicon.ico"
             favicon_dir: "/images"
+
             login_fail_delay: 1
             play_sound_on_new_zombie: false
 

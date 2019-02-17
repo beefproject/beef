@@ -51,7 +51,7 @@ module API
       end
 
       config = BeEF::Core::Configuration.instance
-      bp = config.get "beef.http.web_ui_basepath"
+      bp = config.get "beef.extension.admin_ui.base_path"
 
       # if more dynamic variables are needed in JavaScript files
       # add them here in the following Hash
@@ -75,7 +75,7 @@ module API
       config = BeEF::Core::Configuration.instance
 
       # Web UI base path, like http://beef_domain/<bp>/panel
-      bp = config.get "beef.http.web_ui_basepath"
+      bp = config.get "beef.extension.admin_ui.base_path"
 
       # registers the http controllers used by BeEF core (authentication, logs, modules and panel)
       Dir["#{$root_dir}/extensions/admin_ui/controllers/**/*.rb"].each do |http_module|

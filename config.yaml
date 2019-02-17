@@ -54,9 +54,6 @@ beef:
         #public: ""      # public hostname/IP address
         #public_port: "" # public port (experimental)
 
-        # Web Admin user interface URI
-        web_ui_basepath: "/ui"
-
         # Hook
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
@@ -155,6 +152,7 @@ beef:
     extension:
         admin_ui:
             enable: true
+            base_path: "/ui"
         demos:
             enable: true
         events:
