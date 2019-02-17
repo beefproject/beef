@@ -348,6 +348,57 @@ def network_services session
   end
 end
 
+
+################################################################################
+### XssRays API
+################################################################################
+
+# get all rays
+def xssrays_rays_all
+  print_verbose "Retrieving all rays"
+  response = RestClient.get "#{@url}xssrays/rays", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good "Retrieved #{details['count']} rays"
+  details
+rescue => e
+  print_error "Could not retrieve rays: #{e.message}"
+end
+
+# get rays by session
+def xssrays_rays session
+  print_verbose "Retrieving rays for hooked browser [session: #{session}]"
+  response = RestClient.get "#{@url}xssrays/rays/#{session}", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good "Retrieved #{details['count']} rays"
+  details
+rescue => e
+  print_error "Could not retrieve rays: #{e.message}"
+end
+
+# get all scans
+def xssrays_scans_all
+  print_verbose "Retrieving all scans"
+  response = RestClient.get "#{@url}xssrays/scans", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good "Retrieved #{details['count']} scans"
+  details
+rescue => e
+  print_error "Could not retrieve scans: #{e.message}"
+end
+
+# get scans by session
+def xssrays_scans session
+  print_verbose "Retrieving scans for hooked browser [session: #{session}]"
+  response = RestClient.get "#{@url}xssrays/scans/#{session}", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good "Retrieved #{details['count']} scans"
+  details
+rescue => e
+  print_error "Could not retrieve scans: #{e.message}"
+end
+
+
+
 ################################################################################
 ### DNS API
 ################################################################################

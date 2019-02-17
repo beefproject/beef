@@ -16,3 +16,5 @@ require 'extensions/xssrays/models/xssraysdetail'
 require 'extensions/xssrays/api/scan'
 require 'extensions/xssrays/handler'
 require 'extensions/xssrays/api'
+require 'extensions/xssrays/rest/xssrays'
+
