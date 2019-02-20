@@ -111,9 +111,8 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                           break;
                        case 'xssrays_hooked_domain':
                            Ext.Ajax.request({
-                                url: '<%= @base_path %>/xssrays/set_scan_target',
-                                method: 'POST',
-                                params: 'hb_id=' + escape(hb_id)
+                                url: '/api/xssrays/scan/' + escape(hb_id) + '?token=' + beefwui.get_rest_token(),
+                                method: 'POST'
                             });
                           break;
                        case 'rtc_caller':
