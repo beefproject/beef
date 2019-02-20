@@ -69,8 +69,16 @@ module Models
     # The date at which the http request has been saved.
     property :request_date, DateTime, :lazy => false
 
+    #
+    # Removes a request/response from the data store
+    #
+    def self.delete(id)
+      (print_error "Failed to remove response. Invalid response ID."; return) if id.to_s !~ /\A\d+\z/
+      r = BeEF::Core::Models::Http.get(id.to_i)
+      (print_error "Failed to remove response [id: #{id}]. Response does not exist."; return) if r.nil?
+      r.destroy
+    end
   end
-  
 end
 end
 end

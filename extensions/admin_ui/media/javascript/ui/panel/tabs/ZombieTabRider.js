@@ -56,19 +56,17 @@ ZombieTab_Requester = function(zombie) {
 	 ********************************************/
 	var history_panel_store = new Ext.ux.data.PagingJsonStore({
 		storeId: 'requester-history-store-zombie-'+zombie.session,
-		url: '<%= @base_path %>/requester/history.json',
+		proxy: new Ext.data.HttpProxy({
+			method: 'GET',
+			url: '/api/requester/requests/' + zombie.session + '?token=' + beefwui.get_rest_token(),
+		}),
 		remoteSort: false,
 		autoDestroy: true,
 		autoLoad: false,
-		root: 'history',
+		root: 'requests',
 
 		fields: ['proto', 'domain', 'port', 'method', 'request_date', 'response_date','id', 'has_ran', 'path','response_status_code', 'response_status_text', 'response_port_status'],
 		sortInfo: {field: 'request_date', direction: 'DESC'},
-		
-		baseParams: {
-			nonce: Ext.get("nonce").dom.value,
-			zombie_session: zombie.session
-		}
 	});
 
 	var req_pagesize = 30;
@@ -183,10 +181,9 @@ ZombieTab_Requester = function(zombie) {
 		title: 'History',
 		items:[history_panel_grid],
 		layout: 'fit',
-		
 		listeners: {
 			activate: function(history_panel) {
-				history_panel.items.items[0].store.reload({params:{url:'<%= @base_path %>/requester/history.json'}});
+				history_panel.items.items[0].store.reload({params: {nonce: Ext.get("nonce").dom.value}});
 			}
 		}
 	});
@@ -207,7 +204,7 @@ ZombieTab_Requester = function(zombie) {
 		var form = new Ext.FormPanel({
 			title: 'Forge Raw HTTP Request',
 			id: 'requester-request-form-zombie'+zombie.session,
-			url: '<%= @base_path %>/requester/send',
+			url: '/api/requester/send/' + zombie.session + '?token=' + beefwui.get_rest_token(),
 			hideLabels : true,
 			border: false,
 			padding: '3px 5px 0 5px',
@@ -238,13 +235,12 @@ ZombieTab_Requester = function(zombie) {
 					var use_ssl = Ext.getCmp('requester-forge-requests-ssl').getValue();
 					if (use_ssl) var proto = 'https'; else var proto = 'http';
 					var form = Ext.getCmp('requester-request-form-zombie'+zombie.session).getForm();
-					
+
 					bar.update_sending('Sending request to ' + zombie.ip + '...');
 					
 					form.submit({
 						params: {
-							nonce: Ext.get("nonce").dom.value,//insert the nonce with the form
-							zombie_session: zombie.session,
+							raw_request: Ext.getCmp('raw-request-zombie-'+zombie.session).getValue(),
 							proto: proto
 						},
 						success: function() {
@@ -277,13 +273,9 @@ ZombieTab_Requester = function(zombie) {
         function deleteResponse(request, zombie, bar) {
 
 		Ext.Ajax.request({
-			url: '<%= @base_path %>/requester/delete',
+			url: '/api/requester/response/' + request.id + '?token=' + beefwui.get_rest_token(),
+			method: 'DELETE',
 			loadMask: true,
-			
-			params: {
-				nonce: Ext.get("nonce").dom.value,
-				http_id: request.id
-			},
 			
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
@@ -310,14 +302,8 @@ ZombieTab_Requester = function(zombie) {
 		bar.update_sending('Getting response...');
 		
 		Ext.Ajax.request({
-			url: '<%= @base_path %>/requester/response.json',
+			url: '/api/requester/response/' + request.id + '?token=' + beefwui.get_rest_token(),
 			loadMask: true,
-			
-			params: {
-				nonce: Ext.get("nonce").dom.value,
-				http_id: request.id
-			},
-			
 			success: function(response) {
 				var xhr = Ext.decode(response.responseText);
 
