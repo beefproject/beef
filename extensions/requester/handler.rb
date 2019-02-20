@@ -17,26 +17,39 @@ module BeEF
 
         def initialize(data)
           @data = data
-          setup()
+          setup
         end
 
-        def setup()
-
+        def setup
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
-          (print_error "beefhook is null";return) if beef_hook.nil?
+          if beef_hook.nil?
+            print_error "beefhook is null"
+            return
+          end
 
           # validates the request id
-          request_id = @data['cid'] || nil
-          (print_error "Original request id (command id) is null";return) if request_id.nil?
+          request_id = @data['cid'].to_s
+          if request_id == ''
+            print_error "Original request id (command id) is null"
+            return
+          end
+
+          if !BeEF::Filters::nums_only?(request_id)
+            print_error "Original request id (command id) is invalid"
+            return
+          end
 
           # validates that a hooked browser with the beef_hook token exists in the db
           zombie_db = Z.first(:session => beef_hook) || nil
           (print_error "Invalid beefhook id: the hooked browser cannot be found in the database";return) if zombie_db.nil?
 
           # validates that we have such a http request saved in the db
-          http_db = H.first(:id => request_id.to_i, :hooked_browser_id => zombie_db.id) || nil
-          (print_error "Invalid http_db: no such request found in the database";return) if http_db.nil?
+          http_db = H.first(:id => request_id.to_i, :hooked_browser_id => zombie_db.session) || nil
+          if http_db.nil?
+            print_error "Invalid http_db: no such request found in the database"
+            return
+          end
 
           # validates that the http request has not been run before
           (print_error  "This http request has been saved before";return) if http_db.has_ran.eql? "complete"
@@ -59,6 +72,7 @@ module BeEF
           if http_db.response_headers =~ /Content-Type: image/
             http_db.response_data = http_db.response_data.unpack('a*')
           end
+
           http_db.save
         end
       end
