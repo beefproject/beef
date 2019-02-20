@@ -91,7 +91,7 @@ ZombieTab_XssRaysTab = function(zombie) {
 		var form = new Ext.FormPanel({
 			title: 'Scan settings',
 			id: 'xssrays-config-form-zombie'+zombie.session,
-			url: '<%= @base_path %>/xssrays/createNewScan',
+			url: '/api/xssrays/scan/' + zombie.session + '?token=' + token,
             labelWidth: 230,
 			border: false,
 			padding: '3px 5px 0 5px',
@@ -106,6 +106,7 @@ ZombieTab_XssRaysTab = function(zombie) {
                 padding: '10px 5px 0 5px'
             },{
                xtype:'checkbox',
+               id:'cross_domain',
                fieldLabel: 'Cross-domain (check for XSS on cross-domain resources)',
                name: 'cross_domain',
                checked: true
@@ -116,12 +117,10 @@ ZombieTab_XssRaysTab = function(zombie) {
 				handler: function() {
 					var form = Ext.getCmp('xssrays-config-form-zombie'+zombie.session).getForm();
 
-                    bar.update_sending('Saving settings and ready to start XssRays... ' + zombie.ip + '...');
-
+                    bar.update_sending('Starting XssRays on ' + zombie.ip + ' ...');
 					form.submit({
 						params: {
-							nonce: Ext.get("nonce").dom.value,
-							zombie_session: zombie.session
+							cross_domain: document.getElementById('cross_domain').checked
 						},
 						success: function() {
 							bar.update_sent("Scan settings saved for hooked browser [" + zombie.ip + "]. XssRays will be added to victim DOM on next polling.");

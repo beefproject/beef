@@ -7,22 +7,23 @@ module BeEF
   module Extension
     module Xssrays
 
-      # This class handles the routing of RESTful API requests for XssRays
+      # This class handles the routing of RESTful API requests for XSSRays
       class XssraysRest < BeEF::Core::Router::Router
-
-        HB = BeEF::Core::Models::HookedBrowser
-        XS = BeEF::Core::Models::Xssraysscan
-        XD = BeEF::Core::Models::Xssraysdetail
 
         # Filters out bad requests before performing any routing
         before do
           config = BeEF::Core::Configuration.instance
-          @nh = BeEF::Core::Models::NetworkHost
-          @ns = BeEF::Core::Models::NetworkService
 
           # Require a valid API token from a valid IP address
           halt 401 unless params[:token] == config.get('beef.api_token')
           halt 403 unless BeEF::Core::Rest.permitted_source?(request.ip)
+
+          CLEAN_TIMEOUT = config.get("beef.extension.xssrays.clean_timeout") || 3_000
+          CROSS_DOMAIN = config.get("beef.extension.xssrays.cross_domain") || true
+ 
+          HB = BeEF::Core::Models::HookedBrowser
+          XS = BeEF::Core::Models::Xssraysscan
+          XD = BeEF::Core::Models::Xssraysdetail
 
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
@@ -117,19 +118,58 @@ module BeEF
         end
 
         # Starts a new scan on the specified zombie ID
-=begin
         post '/scan/:id' do
           begin
-            # TODO
+            id = params[:id]
+
+            hooked_browser = HB.first(:session => id, :unique => true, :order => [:id.asc])
+
+            if hooked_browser.nil?
+              print_error "[XSSRAYS] Invalid hooked browser ID"
+              return
+            end
+
+            # set Cross-domain settings
+            cross_domain = params[:cross_domain].to_s
+            if cross_domain == ''
+              cross_domain = CROSS_DOMAIN
+            elsif cross_domain == 'false'
+              cross_domain = false
+            else
+              cross_domain = true
+            end
+
+            # set clean timeout settings
+            clean_timeout = params[:clean_timeout].to_s
+            if clean_timeout == '' || !Filters.alphanums_only?(clean_timeout)
+              clean_timeout = CLEAN_TIMEOUT
+            end
+
+            xssrays_scan = XS.new(
+              :hooked_browser_id => hooked_browser.id,
+              :scan_start => Time.now,
+              :domain => hooked_browser.domain,
+              # check also cross-domain URIs found by the crawler
+              :cross_domain => cross_domain,
+              # how long to wait before removing the iFrames from the DOM (5000ms default)
+              :clean_timeout => clean_timeout
+            )
+            xssrays_scan.save
+
+            print_info("[XSSRays] Starting XSSRays [ip:#{hooked_browser.ip}], hooked domain [#{hooked_browser.domain}], cross-domain: #{cross_domain}, clean timeout: #{clean_timeout}")
+
+            result = scan2hash(xssrays_scan)
+            print_debug "[XSSRays] New scan: #{result}"
+
+            #result.to_json
           rescue InvalidParamError => e
             print_error e.message
             halt 400
           rescue StandardError => e
-            print_error "Internal error while retrieving host with id #{id} (#{e.message})"
+            print_error "Internal error while creating XSSRays scan on zombie with id #{id} (#{e.message})"
             halt 500
           end
         end
-=end
 
         private
 
