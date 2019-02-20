@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Fingerprint Browser"
-            description: "This module attempts to fingerprint the browser using <a href='https://github.com/Valve/fingerprintjs2'>FingerprintJS2</a>."
+            description: "This module attempts to fingerprint the browser and browser capabilities using <a href='https://github.com/Valve/fingerprintjs2'>FingerprintJS2</a>."
             authors: ["bcoles"]
             target:
                 working: ["ALL"]
