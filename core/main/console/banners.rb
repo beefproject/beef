@@ -107,12 +107,12 @@ module Banners
     #
     def print_loaded_extensions
       extensions = BeEF::Extensions.get_loaded
-      print_info "#{extensions.size} extensions enabled."
+      print_info "#{extensions.size} extensions enabled:"
       output = ''
 
-      #extensions.each do |key,ext|
-      #  output += "#{ext['name']}\n"
-      #end
+      extensions.each do |key, ext|
+        output << "#{ext['name']}\n"
+      end
       
       print_more output
     end
@@ -130,9 +130,9 @@ module Banners
     def print_websocket_servers
       config = BeEF::Core::Configuration.instance
       ws_poll_timeout = config.get('beef.http.websocket.ws_poll_timeout')
-      print_info "Starting WebSocket server on port [#{config.get("beef.http.websocket.port").to_i}], timer [#{ws_poll_timeout}]"
+      print_info "Starting WebSocket server ws://#{config.get('beef.http.host')}:#{config.get("beef.http.websocket.port").to_i} [timer: #{ws_poll_timeout}]"
       if config.get("beef.http.websocket.secure")
-        print_info "Starting WebSocketSecure server on port [#{config.get("beef.http.websocket.secure_port").to_i}], timer [#{ws_poll_timeout}]"
+        print_info "Starting WebSocketSecure server on wss://[#{config.get('beef.http.host')}:#{config.get("beef.http.websocket.secure_port").to_i} [timer: #{ws_poll_timeout}]"
       end
     end
   end

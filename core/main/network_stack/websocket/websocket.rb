@@ -10,14 +10,17 @@ module BeEF
       require 'json'
       require 'base64'
       require 'em-websocket'
+      require 'socket'
+
       class Websocket
         include Singleton
         include BeEF::Core::Handlers::Modules::Command
 
-        @@activeSocket= Hash.new
-        @@lastalive= Hash.new
+        @@activeSocket = {}
+        @@lastalive = {}
         @@config = BeEF::Core::Configuration.instance
-        #@@wsopt=nil
+        @@debug = @@config.get('beef.http.debug')
+
         MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
@@ -44,7 +47,7 @@ module BeEF
             end
 
             ws_secure_options = {
-              :host => '0.0.0.0',
+              :host => @@config.get('beef.http.host'),
               :port => @@config.get('beef.http.websocket.secure_port'),
               :secure => true,
               :tls_options => {
@@ -52,177 +55,255 @@ module BeEF
                 :private_key_file => cert_key,
               }
             }
-            start_websocket_server(ws_secure_options, true)
+            start_websocket_server(ws_secure_options)
           end
 
           # @note Start a WS server socket
           ws_options = {
-            :host => '0.0.0.0',
-            :port => @@config.get('beef.http.websocket.port')
+            :host => @@config.get('beef.http.host'),
+            :port => @@config.get('beef.http.websocket.port'),
+            :secure => false
           }
-          start_websocket_server(ws_options, false)
+          start_websocket_server(ws_options)
         end
 
-        def start_websocket_server(ws_options, secure)
-          Thread.new {
-            sleep 2 # prevent issues when starting at the same time the TunnelingProxy, Thin and Evented WebSockets
-            EventMachine.run {
+        def start_websocket_server(ws_options)
+          secure = ws_options[:secure] || false
+
+          Thread.new do
+            # prevent issues when starting at the same time
+            # the TunnelingProxy, Thin and Evented WebSockets
+            sleep 2
+
+            EventMachine.run do
               EventMachine::WebSocket.start(ws_options) do |ws|
                 begin
-                  secure ? print_debug("New WebSocketSecure channel open.") : print_debug("New WebSocket channel open.")
-                  ws.onmessage { |msg|
+                  ws.onopen do |handshake|
+                    print_debug("[WebSocket] New #{secure ? 'WebSocketSecure' : 'WebSocket'} channel open.")
+                  end
+
+                  ws.onerror do |error|
+                    print_error "[WebSocket] Error: #{error}"
+                  end
+
+                  ws.onclose do |msg|
+                    print_debug "[WebSocket] Connection closed: #{msg}"
+                  end
+
+                  ws.onmessage do |msg, type|
                     begin
                       msg_hash = JSON.parse(msg)
+                      print_debug "[WebSocket] New message: #{msg_hash}" if @@debug
+                    rescue => e
+                      print_error "[WebSocket] Failed parsing WebSocket message: #{e.message}"
+                      puts e.backtrace
+                      next
+                    end
 
-                    if (msg_hash["cookie"]!= nil)
-                      print_debug("WebSocket - Browser says helo! WebSocket is running")
-                      #insert new connection in activesocket
+                    # new zombie
+                    unless msg_hash['cookie'].nil?
+                      print_debug("[WebSocket] Browser says helo! WebSocket is running")
+                      # insert new connection in activesocket
                       @@activeSocket["#{msg_hash["cookie"]}"] = ws
-                      print_debug("WebSocket - activeSocket content [#{@@activeSocket}]")
+                      print_debug("[WebSocket] activeSocket content [#{@@activeSocket}]")
 
                       hb_session = msg_hash["cookie"]
                       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hb_session)
-                      if hooked_browser != nil
-                        browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserName')
-                        browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserVersion')
-                        os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsName')
-                        os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsVersion')
-                        BeEF::Core::AutorunEngine::Engine.instance.run(hooked_browser.id, browser_name, browser_version, os_name, os_version)
-                      else
-                        print_error "WebSocket - Fingerprinting not finished yet. ARE rules were not triggered. You may want to trigger them manually via RESTful API."
+                      if hooked_browser.nil?
+                        print_error '[WebSocket] Fingerprinting not finished yet.'
+                        print_more 'ARE rules were not triggered. You may want to trigger them manually via REST API.'
+                        next
                       end
-                    elsif msg_hash["alive"] != nil
+
+                      browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserName')
+                      browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserVersion')
+                      os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsName')
+                      os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsVersion')
+                      BeEF::Core::AutorunEngine::Engine.instance.run(hooked_browser.id, browser_name, browser_version, os_name, os_version)
+
+                      next
+                    end
+
+                    # polling zombie
+                    unless msg_hash['alive'].nil?
                       hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => msg_hash["alive"])
-                      unless hooked_browser.nil?
-                        hooked_browser.lastseen = Time.new.to_i
-                        hooked_browser.count!
-                        hooked_browser.save
 
-                        #Check if new modules need to be sent
-                        zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
-                        zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
+                      # This will happen if you reset BeEF database (./beef -x),
+                      # and existing zombies try to connect. These zombies will be ignored,
+                      # as they are unknown and presumed invalid.
+                      #
+                      # @todo: consider fixing this. add zombies instead of ignoring them
+                      #        and report "Hooked browser X appears to have come back online"
+                      if hooked_browser.nil?
+                        # print_error "Could not find zombie with ID #{msg_hash['alive']}"
+                        next
+                      end
 
-                        # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
-                        are_body = ''
-                        are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hooked_browser.session)
-                        are_executions.each do |are_exec|
-                          are_body += are_exec.mod_body
-                          are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
-                        end
-                        @@activeSocket[hooked_browser.session].send(are_body) unless are_body.empty?
+                      hooked_browser.lastseen = Time.new.to_i
+                      hooked_browser.count!
+                      hooked_browser.save
 
-                        #@todo antisnatchor:
-                        #@todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions
-                        #Check if new forged requests need to be sent (Requester/TunnelingProxy)
+                      # Check if new modules need to be sent
+                      zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
+                      zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
+
+                      # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
+                      are_body = ''
+                      are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hooked_browser.session)
+                      are_executions.each do |are_exec|
+                        are_body += are_exec.mod_body
+                        are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
+                      end
+                      @@activeSocket[hooked_browser.session].send(are_body) unless are_body.empty?
+
+                      # @todo antisnatchor:
+                      # @todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions
+                      # Check if new forged requests need to be sent (Requester/TunnelingProxy)
+                      if @@config.get('beef.extension.requester.loaded')
                         dhook = BeEF::Extension::Requester::API::Hook.new
                         dhook.requester_run(hooked_browser, '')
+                      end
 
-                        #Check if new XssRays scan need to be started
+                      # Check if new XssRays scan need to be started
+                      if @@config.get('beef.extension.xssrays.loaded')
                         xssrays = BeEF::Extension::Xssrays::API::Scan.new
                         xssrays.start_scan(hooked_browser, '')
                       end
-                    else
-                      #json recv is a cmd response decode and send all to
-                      #we have to call dynamicreconstructor handler camp must be websocket
-                      #print_debug("Received from WebSocket #{messageHash}")
+
+                      next
+                    end
+
+                    # received request for a specific handler
+                    # the zombie is probably trying to return command module results
+                    # or call back to a running BeEF extension
+                    unless msg_hash['handler'].nil?
+                      # Call the handler for websocket cmd response
+                      # Base64 decode, parse JSON, and forward
                       execute(msg_hash)
+                      next
                     end
-                    rescue => e
-                      print_error "WebSocket - something wrong in msg handling - skipped: #{e}"
-                      print_debug "WebSocket - something wrong in msg handling - skipped: #{e.backtrace}"
-                    end
-                  }
-                rescue => e
-                  print_error "WebSocket staring error: #{e}"
+
+                    print_error "[WebSocket] Unexpected WebSocket message: #{msg_hash}"
+                  end
                 end
               end
-            }
-          }
-        end
-
-        #@note retrieve the right websocket channel given an hooked browser session
-        #@param [String] session the hooked browser session
-        def getsocket (session)
-          if (@@activeSocket[session] != nil)
-            true
-          else
-            false
+            end
           end
+        rescue => e
+          print_error "[WebSocket] Error: #{e.message}"
+          raise e
         end
 
-        #@note send a function to hooked and ws browser
-        #@param [String] fn the module to execute
-        #@param [String] session the hooked browser session
+        #
+        # @note retrieve the right websocket channel given an hooked browser session
+        # @param [String] session the hooked browser session
+        #
+        def getsocket (session)
+          !@@activeSocket[session].nil?
+        end
+
+        #
+        # @note send a function to hooked and ws browser
+        # @param [String] fn the module to execute
+        # @param [String] session the hooked browser session
+        #
         def send (fn, session)
           @@activeSocket[session].send(fn)
         end
 
-        # command result data comes back encoded like:
-        # beef.encode.base64.encode(beef.encode.json.stringify(results)
-        # we need to unescape the stringified data after base64 decoding.
-        def unescape_stringify(str)
-          chars = {
-              'a' => "\x07", 'b' => "\x08", 't' => "\x09", 'n' => "\x0a", 'v' => "\x0b", 'f' => "\x0c",
-              'r' => "\x0d", 'e' => "\x1b", "\\\\" => "\x5c", "\"" => "\x22", "'" => "\x27"
-          }
-          # Escape all the things
-          str.gsub(/\\(?:([#{chars.keys.join}])|u([\da-fA-F]{4}))|\\0?x([\da-fA-F]{2})/) {
-            if $1
-              if $1 == '\\'
-              then '\\'
-              else
-                chars[$1]
-              end
-            elsif $2
-              ["#$2".hex].pack('U*')
-            elsif $3
-              [$3].pack('H2')
-            end
-          }
-        end
-
-        #call the handler for websocket cmd response
-        #@param [Hash] data contains the answer of a command
+        #
+        # Call the handler for websocket cmd response
+        #
+        # @param [Hash] data contains the answer of a command
+        #
+        # @example data hash:
+        #
+        # {"handler"=>"/command/test_beef_debug.js",
+        # "cid"=>"1",
+        # "result"=>
+        #  "InJlc3VsdD1jYWxsZWQgdGhlIGJlZWYuZGVidWcoKSBmdW5jdGlvbi4gQ2hlY2sgdGhlIGRldmVsb3BlciBjb25zb2xlIGZvciB5b3VyIGRlYnVnIG1lc3NhZ2UuIg==",
+        # "status"=>"undefined",
+        # "callback"=>"undefined",
+        # "bh"=>
+        #  "jkERa2PIdTtwnwxheXiiGZsm4ukfAD6o84LpgcJBW0g7S8fIh0Uq1yUZxnC0Cr163FxPWCpPN3uOVyPZ"}
+        # => {"handler"=>"/command/test_beef_debug.js", "cid"=>"1", "result"=>"InJlc3VsdD1jYWxsZWQgdGhlIGJlZWYuZGVidWcoKSBmdW5jdGlvbi4gQ2hlY2sgdGhlIGRldmVsb3BlciBjb25zb2xlIGZvciB5b3VyIGRlYnVnIG1lc3NhZ2UuIg==", "status"=>"undefined", "callback"=>"undefined", "bh"=>"jkERa2PIdTtwnwxheXiiGZsm4ukfAD6o84LpgcJBW0g7S8fIh0Uq1yUZxnC0Cr163FxPWCpPN3uOVyPZ"}
+        #
         def execute (data)
-          command_results=Hash.new
+          if @@debug
+            print_debug data.inspect
+          end
 
-          # the last gsub is to remove leading/trailing double quotes from the result value.
-          command_results["data"] = unescape_stringify(Base64.decode64(data['result'])).gsub!(/\A"|"\Z/, '')
-          command_results["data"].force_encoding('UTF-8') if command_results["data"] != nil
-          hooked_browser = data["bh"]
-          handler = data["handler"]
-          command_id = data["cid"]
-          command_status = data["status"]
+          hooked_browser = data['bh']
+          unless BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
+            print_error "[Websocket] BeEF hook is invalid" 
+            return
+          end
 
-          (print_error "BeEFhook is invalid"; return) unless BeEF::Filters.is_valid_hook_session_id?(hooked_browser)
-          (print_error "command_id is invalid"; return) unless command_id.integer?
-          (print_error "command name is empty"; return) if handler.empty?
-          (print_error "command results are empty"; return) if command_results.empty?
-          (print_error "command status is invalid"; return) unless command_status =~ /\A0|1|2|undefined\z/
+          command_id = data['cid'].to_s
+          unless BeEF::Filters::nums_only?(command_id)
+            print_error "[Websocket] command_id is invalid"
+            return
+          end
+          command_id = command_id.to_i
+
+          handler = data['handler']
+          if handler.to_s.strip == ''
+            print_error "[Websocket] handler is invalid"
+            return
+          end
+
+          case data['status']
+          when '0', 'undefined'
+            status = 0
+          when '1'
+            status = 1
+          when '2'
+            status = 2
+          else
+            print_error "[Websocket] command status is invalid"
+            return
+          end
+
+          command_results = {}
+
+          command_results['data'] = JSON.parse(Base64.decode64(data['result']).force_encoding('UTF-8'))
+ 
+          if command_results.empty?
+            print_error "[Websocket] command results are empty"
+            return
+          end
 
           command_mod = "beef.module.#{handler.gsub('/command/','').gsub('.js','')}"
           command_name = @@config.get("#{command_mod}.class")
 
-          data["status"] == "undefined" ? status = 0 : status = data["status"].to_i
-
-          if handler.match(/command/)
-
+          # process results from command module
+          if handler.start_with?('/command/')
             command = BeEF::Core::Command.const_get(command_name.capitalize)
             command_obj = command.new(BeEF::Module.get_key_by_class(command_name))
-            command_obj.build_callback_datastore(command_results["data"], command_id, hooked_browser, nil, nil)
             command_obj.session_id = hooked_browser
+            command_obj.build_callback_datastore(
+              command_results['data'],
+              command_id,
+              hooked_browser,
+              nil,
+              nil
+            )
+
             if command_obj.respond_to?(:post_execute)
               command_obj.post_execute
             end
 
-            BeEF::Core::Models::Command.save_result(hooked_browser,
-              data["cid"],
+            BeEF::Core::Models::Command.save_result(
+              hooked_browser,
+              command_id,
               @@config.get("#{command_mod}.name"),
               command_results,
-              status)
-          else #processing results from extensions, call the right handler
+              status
+            )
+          else # processing results from extensions, call the right handler
             data["beefhook"] = hooked_browser
-            data["results"] = JSON.parse(Base64.decode64(data["result"]))
+            data["results"] = command_results['data']
+
             if MOUNTS.has_key?(handler)
               if MOUNTS[handler].class == Array and MOUNTS[handler].length == 2
                 MOUNTS[handler][0].new(data, MOUNTS[handler][1])
@@ -231,7 +312,9 @@ module BeEF
               end
             end
           end
-
+        rescue => e
+          print_error "Error in BeEF::Core::Websocket: #{e.message}"
+          raise e
         end
       end
     end
