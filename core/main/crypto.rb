@@ -47,16 +47,41 @@ module Core
     end
 
     #
+    # Generates a random alphanumeric string
+    # Note: this isn't securely random
+    # @todo use SecureRandom once Ruby 2.4 is EOL
+    #
+    # @param length integer length of returned string
+    #
+    def self.random_alphanum_string(length = 10)
+      raise TypeError, 'Invalid length' unless length.integer?
+      raise TypeError, 'Invalid length' unless length.positive?
+
+      [*('a'..'z'),*('A'..'Z'),*('0'..'9')].shuffle[0,length].join
+    end
+
+    #
+    # Generates a random hex string
+    #
+    # @param length integer length of returned string
+    #
+    def self.random_hex_string(length = 10)
+      raise TypeError, 'Invalid length' unless length.integer?
+      raise TypeError, 'Invalid length' unless length.positive?
+
+      OpenSSL::Random.random_bytes(length).unpack('H*').first[0...length]
+    end
+
+    #
     # Generates a unique identifier for DNS rules.
     #
     # @return [String] 8-character hex identifier
     #
     def self.dns_rule_id
       id = nil
-      length = 4
 
       begin
-        id = OpenSSL::Random.random_bytes(length).unpack('H*')[0]
+        id = random_hex_string(8)
         BeEF::Core::Models::Dns::Rule.each { |rule| throw StandardError if id == rule.id }
       rescue StandardError
         retry

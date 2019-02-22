@@ -9,14 +9,15 @@ module BeEF
       class Whitespace
         include Singleton
 
-        def need_bootstrap
+        def need_bootstrap?
           true
         end
         
         def get_bootstrap
-        # the decode function is in plain text - called IE-spacer - because trolling is always a good idea
-        decode_function =
+          # the decode function is in plain text - called IE-spacer - because trolling is always a good idea
+          decode_function =
 "//Dirty IE6 whitespace bug hack
+if (typeof IE_spacer === 'function') {} else {
 function IE_spacer(css_space) {
   var spacer = '';
   for(y = 0; y < css_space.length/8; y++)
@@ -35,15 +36,15 @@ function IE_spacer(css_space) {
     }
     spacer += String.fromCharCode(v);
   }return spacer;
-}"
+}}"
         end
 
         def execute(input, config)
           size = input.length
           encoded = encode(input)
-          var_name = BeEF::Extension::Evasion::Helper::random_string(3)
+          var_name = BeEF::Core::Crypto::random_alphanum_string(3)
           input = "var #{var_name}=\"#{encoded}\";[].constructor.constructor(IE_spacer(#{var_name}))();"
-          print_debug "[OBFUSCATION - WHITESPACE] #{size}byte of Javascript code has been Whitespaced"
+          print_debug "[OBFUSCATION - WHITESPACE] #{size} bytes of Javascript code has been Whitespaced"
           input
         end
 

@@ -9,13 +9,19 @@ beef:
             enable: false
             name: 'Evasion'
             authors: ["antisnatchor"]
+
+            # Exclude code JavaScript libraries
             exclude_core_js: ["lib/jquery-1.12.4.min.js", "lib/json2.js", "lib/jools.min.js", "lib/mdetect.js"]
-            scramble_variables: true
-            scramble_cookies: true
+
+            # Obfuscation methods are executed in the order in which they're provided here
+            # Available techniques: ["minify", "base_64", "whitespace"]
+            chain: ["minify", "base_64"]
+
+            # experimental (broken - do not use):
+            scramble_variables: false
+            scramble_cookies: false
             scramble:
               beef: "beef"
               Beef: "Beef"
               evercookie: "evercookie"
               BeEF: "BeEF"
-            chain: ["scramble", "minify"]
-# other available obfuscation techniques: ["minify", "base_64", "whitespace"]

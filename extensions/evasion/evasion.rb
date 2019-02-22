@@ -6,55 +6,86 @@
 module BeEF
   module Extension
     module Evasion
-        class Evasion
-          include Singleton
-          @@config = BeEF::Core::Configuration.instance
-          @@techniques = @@config.get('beef.extension.evasion.chain')
+      class Evasion
+        include Singleton
 
-          def initialize
+        @@config = BeEF::Core::Configuration.instance
+        @@enabled = @@config.get('beef.extension.evasion.enable')
+
+        def initialize
+          return unless @@enabled
+          @techniques ||= load_techniques
+
+          if @techniques.empty?
+            print_error '[Evasion] Initialization failed. No obfuscation techniques specified.'
+            @@config.set('beef.extension.evasion.enable', false)
+            return
           end
 
-          # Obfuscate the input JS applying the chain of techniques defined in the main config file.
-          def obfuscate(input)
-            @input = apply_chain(input, @@techniques)
-          end
-
-          def add_bootstrapper
-            @bootstrap = ''
-             # add stuff at the end, only once (when serving the initial init javascript)
-            @@techniques.each do |technique|
-              #1. get the ruby module inside the obfuscation directory: the file name will be the same of the string used in "chain"
-              #2. call the "execute" method of the ruby module, passing the input
-              #3. update the input in order that next technique will work on the pre-processed input.
-              if File.exists?("#{$root_dir}/extensions/evasion/obfuscation/#{technique}.rb")
-                klass = BeEF::Extension::Evasion.const_get(technique.capitalize).instance
-                is_bootstrap_needed = klass.need_bootstrap
-                if is_bootstrap_needed
-                  print_debug "[OBFUSCATION] Adding bootstrapper for technique [#{technique}]"
-                  @bootstrap += klass.get_bootstrap
-                end
-              end
-              @bootstrap
-            end
-            @bootstrap
-          end
-
-          def apply_chain(input, techniques)
-            @output = input
-            techniques.each do |technique|
-               #1. get the ruby module inside the obfuscation directory: the file name will be the same of the string used in "chain"
-               #2. call the "execute" method of the ruby module, passing the input
-               #3. update the input in order that next technique will work on the pre-processed input.
-               if File.exists?("#{$root_dir}/extensions/evasion/obfuscation/#{technique}.rb")
-                  print_debug "[OBFUSCATION] Applying technique [#{technique}]"
-                  klass = BeEF::Extension::Evasion.const_get(technique.capitalize).instance
-                  @output = klass.execute(@output, @@config)
-               end
-              @output
-            end
-            @output
-          end
+          print_debug "[Evasion] Loaded obfuscation chain: #{@techniques.join(', ')}"
         end
+
+        # load obfuscation technique chain
+        def load_techniques
+          techniques = @@config.get('beef.extension.evasion.chain') || []
+          return [] if techniques.empty?
+
+          chain = []
+          techniques.each do |technique|
+            unless File.exist?("#{$root_dir}/extensions/evasion/obfuscation/#{technique}.rb")
+              print_error "[Evasion] Failed to load obfuscation technique '#{technique}' - file does not exist"
+              next
+            end
+            chain << technique
+          end
+
+          chain
+        rescue => e
+          print_error "[Evasion] Failed to load obfuscation technique chain: #{e.message}"
+          []
+        end
+
+        # Obfuscate the input JS applying the chain of techniques defined in the main config file.
+        def obfuscate(input)
+          @input = apply_chain(input)
+        end
+
+        def add_bootstrapper
+          bootstrap = ''
+           # add stuff at the end, only once (when serving the initial init javascript)
+          @techniques.each do |technique|
+            # Call the "execute" method of the technique module, passing the input and update
+            # the input in preperation for the next technique in the chain
+            klass = BeEF::Extension::Evasion.const_get(technique.capitalize).instance
+            if klass.need_bootstrap?
+              print_debug "[Evasion] Adding bootstrapper for technique: #{technique}"
+              bootstrap << klass.get_bootstrap
+            end
+          end
+
+          bootstrap
+        rescue => e
+          print_error "[Evasion] Failed to bootstrap obfuscation technique: #{e.message}"
+          puts e.backtrace
+        end
+
+        def apply_chain(input)
+          output = input
+          @techniques.each do |technique|
+            # Call the "execute" method of the technique module, passing the input and update
+            # the input in preperation for the next technique in the chain
+            print_debug "[Evasion] Applying technique: #{technique}"
+            klass = BeEF::Extension::Evasion.const_get(technique.capitalize).instance
+            output = klass.execute(output, @@config)
+          end
+
+          print_debug "[Evasion] Obfuscation completed (#{output.length} bytes)"
+          output
+        rescue => e
+          print_error "[Evasion] Failed to apply obfuscation technique: #{e.message}"
+          puts e.backtrace
+        end
+      end
     end
   end
 end

@@ -10,19 +10,26 @@ module BeEF
       class Minify
         include Singleton
 
-        def need_bootstrap
+        def need_bootstrap?
           false
         end
 
         def execute(input, config)
-          begin 
-            input2 = Uglifier.compile(input)
-            print_debug "[OBFUSCATION - MINIFIER] Javascript has been minified"
-            input2
-          rescue
-            print_error "[OBFUSCATION - MINIFIER FAILED] Javascript couldn't be minified. Returning the input form."
-            input
-          end
+          opts = {
+            :output => {
+              :comments => :none
+            },
+            :compress => {
+              :dead_code => true,
+              :drop_console => (config.get('beef.client_debug') ? false : true)
+            }
+          }
+          output = Uglifier.compile(input, opts)
+          print_debug "[OBFUSCATION - Minifier] JavaScript has been minified"
+          output
+        rescue => e
+          print_error "[OBFUSCATION - Minifier] JavaScript couldn't be minified: #{e.messsage}"
+          input
         end
       end
     end
