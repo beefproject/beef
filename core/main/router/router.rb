@@ -104,24 +104,26 @@ module BeEF
                 headers "Server" => "nginx",
                         "Content-Type" => "text/html"
               else
-                print_error "You have an error in beef.http.web_server_imitation.type! Supported values are: apache, iis, nginx."
+                headers "Server" => '',
+                        "Content-Type" => "text/html"
+                print_error "You have an error in beef.http.web_server_imitation.type!"
+                print_more "Supported values are: apache, iis, nginx."
             end
-          end
-
-          # @note If CORS is enabled, expose the appropriate headers
-          # this apparently duplicate code is needed to reply to preflight OPTIONS requests, which need to respond with a 200
-          # and be able to handle requests with a JSON content-type
-          if request.request_method == 'OPTIONS' && config.get("beef.http.restful_api.allow_cors")
-            allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
-            headers "Access-Control-Allow-Origin" => allowed_domains,
-                    "Access-Control-Allow-Methods" => "POST, GET",
-                    "Access-Control-Allow-Headers" => "Content-Type"
-            halt 200
           end
 
           # @note If CORS is enabled, expose the appropriate headers
           if config.get("beef.http.restful_api.allow_cors")
             allowed_domains = config.get("beef.http.restful_api.cors_allowed_domains")
+
+            # Responses to preflight OPTIONS requests need to respond with hTTP 200
+            # and be able to handle requests with a JSON content-type
+            if request.request_method == 'OPTIONS'
+              headers "Access-Control-Allow-Origin" => allowed_domains,
+                      "Access-Control-Allow-Methods" => "POST, GET",
+                      "Access-Control-Allow-Headers" => "Content-Type"
+              halt 200
+            end
+
             headers "Access-Control-Allow-Origin" => allowed_domains,
                     "Access-Control-Allow-Methods" => "POST, GET"
           end

@@ -21,13 +21,6 @@ module BeEF
         end
 
         #
-        # @note Return a can of Leffe to the thirsty Bovine Security Team member. AthCon2012 joke /antisnatchor/
-        #
-        #get "/to/a/pub"
-        #  "BeER please"
-        #end
-
-        #
         # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
         #
         get '/' do
@@ -158,7 +151,8 @@ module BeEF
           BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'OsVersion', :detail_value => os_version).save
           BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch).save
 
-          #TODO if there where any ARE rules defined for this hooked browser, after updating OS/arch, force a retrigger of the rule.
+          # TODO if there where any ARE rules defined for this hooked browser,
+          # after updating OS/arch, force a retrigger of the rule.
           {'success' => true}.to_json
         end
 
@@ -176,19 +170,24 @@ module BeEF
           details = BeEF::Core::Models::BrowserDetails
 
           {
-              'id' => hb.id,
-              'session' => hb.session,
-              'name' => details.get(hb.session, 'BrowserName'),
-              'version' => details.get(hb.session, 'BrowserVersion'),
-              'os' => details.get(hb.session, 'OsName'),
-              'os_version' => details.get(hb.session, 'OsVersion'),
-              'platform' => details.get(hb.session, 'BrowserPlatform'),
-              'ip' => hb.ip,
-              'domain' => details.get(hb.session, 'HostName'),
-              'port' => hb.port.to_s,
-              'page_uri' => details.get(hb.session, 'PageURI'),
-              'firstseen' => hb.firstseen,
-              'lastseen' => hb.lastseen,
+              'id'           => hb.id,
+              'session'      => hb.session,
+              'name'         => details.get(hb.session, 'BrowserName'),
+              'version'      => details.get(hb.session, 'BrowserVersion'),
+              'os'           => details.get(hb.session, 'OsName'),
+              'os_version'   => details.get(hb.session, 'OsVersion'),
+              'platform'     => details.get(hb.session, 'BrowserPlatform'),
+              'hardware'     => details.get(hb.session, 'Hardware'),
+              'ip'           => hb.ip,
+              'domain'       => details.get(hb.session, 'HostName'),
+              'port'         => hb.port.to_s,
+              'page_uri'     => details.get(hb.session, 'PageURI'),
+              'firstseen'    => hb.firstseen,
+              'lastseen'     => hb.lastseen,
+              'date_stamp'   => details.get(hb.session, 'DateStamp'),
+              'city'         => details.get(hb.session, 'LocationCity'),
+              'country'      => details.get(hb.session, 'LocationCountry'),
+              'country_code' => details.get(hb.session, 'LocationCountryIsoCode'),
           }
         end
 

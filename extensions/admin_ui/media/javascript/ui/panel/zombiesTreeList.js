@@ -54,8 +54,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	
 	//saves the configuration for the tree
 	tree_configuration: {
-		'sub-branch' : 'domain',
-		'distributed' : false
+		'sub-branch' : 'domain'
 	},
 
 	
@@ -65,9 +64,6 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	//store the list of offline hooked browsers in an array
 	offline_hooked_browsers_array: new Array,
 	
-	//store the distributed engine rules
-	distributed_engine_rules: null,
-
     //add a context menu that will contain common action shortcuts for HBs
     contextMenu: new Ext.menu.Menu({
           items: [{
@@ -470,7 +466,11 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		balloon_text += "Browser: " + hooked_browser.browser_name + " " + hooked_browser.browser_version;
 		balloon_text += "<br/>";
 		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
-		balloon_text += "OS: " + hooked_browser.os_name;
+		if (hooked_browser.os_version == 'Unknown') {
+		  balloon_text += "OS: " + hooked_browser.os_name;
+		} else {
+		  balloon_text += "OS: " + hooked_browser.os_name + ' ' + hooked_browser.os_version;
+		}
 		balloon_text += "<br/>";
 		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
 		balloon_text += "Hardware: " + hooked_browser.hw_name;
@@ -657,14 +657,4 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 			this.reload();
 		}
 	},
-	
-	/*
-	 * Apply a new set of distributed engine rules to the nodes in the tree
-	 * @param: {Literal Objects} the rules set. See the zombie manager.
-	 */
-	applyRules: function(rules) {
-		//we return if the tree is not distributed
-		if(!this.tree_configuration["distributed"]) return;
-		
-	}
 });

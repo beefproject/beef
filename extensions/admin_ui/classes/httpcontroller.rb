@@ -60,7 +60,7 @@ module AdminUI
       path = request.path_info
       (print_error "path is invalid";return) if not BeEF::Filters.is_valid_path_info?(path)
       function = @paths[path] || @paths[path + '/'] # check hash for '<path>' and '<path>/'
-      (print_error "path does not exist";return) if function.nil?
+      (print_error "[Admin UI] Path does not exist: #{path}";return) if function.nil?
       
       # call the relevant mapped function
       function.call
@@ -86,17 +86,17 @@ module AdminUI
 
     # Constructs a html script tag (from media/javascript directory)
     def script_tag(filename)
-      "<script src=\"#{$url}#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>"
+      "<script src=\"#{@bp}/media/javascript/#{filename}\" type=\"text/javascript\"></script>"
     end
 
     # Constructs a html script tag (from media/javascript-min directory)
     def script_tag_min(filename)
-      "<script src=\"#{$url}#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>"
+      "<script src=\"#{@bp}/media/javascript-min/#{filename}\" type=\"text/javascript\"></script>"
     end
 
     # Constructs a html stylesheet tag
     def stylesheet_tag(filename)
-      "<link rel=\"stylesheet\" href=\"#{$url}#{@bp}/media/css/#{filename}\" type=\"text/css\" />"
+      "<link rel=\"stylesheet\" href=\"#{@bp}/media/css/#{filename}\" type=\"text/css\" />"
     end
 
     # Constructs a hidden html nonce tag

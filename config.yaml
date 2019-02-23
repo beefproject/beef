@@ -57,7 +57,6 @@ beef:
         # Hook
         hook_file: "/hook.js"
         hook_session_name: "BEEFHOOK"
-        session_cookie_name: "BEEFSESSION"
 
         # Allow one or multiple origins to access the RESTful API using CORS
         # For multiple origins use: "http://browserhacker.com, http://domain2.com"
