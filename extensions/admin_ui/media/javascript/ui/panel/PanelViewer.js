@@ -39,16 +39,17 @@ Ext.onReady(function() {
 /*
  * Panel Events Updater
  *
- * This event updater retrieves updates every 8 seconds. Those updates
- * are then pushed to various managers (i.e. the zombie manager).
+ * This event updater retrieves zombie updates every periodically.
+ * The poll timer is specified in befe.extension.admin_ui.panel_update_interval
+ * These updates are then pushed to various managers (i.e. the zombie manager).
  */
 var lastpoll = new Date().getTime();
 
 Ext.TaskMgr.start({
 	run: function() {
 		Ext.Ajax.request({
-			url: '<%= @base_path %>/panel/hooked-browser-tree-update.json',
-			method: 'POST',
+			url: '/api/hooks/?token=' + beefwui.get_rest_token(),
+			method: 'GET',
 			success: function(response) {
 				var updates;
 				try {
@@ -58,12 +59,10 @@ Ext.TaskMgr.start({
 					var hr = document.getElementById("header-right");
 					hr.innerHTML = "You appear to be logged out. <a href='<%= @base_path %>/panel/'>Login</a>";
 				}
-				var distributed_engine_rules = (updates['distributed-engine-rules']) ? updates['distributed-engine-rules'] : null;
-        beefwui.hooked_browsers = (updates['hooked-browsers']); //? updates['hooked-browsers'] : null;
 				var hooked_browsers = (updates['hooked-browsers']) ? updates['hooked-browsers'] : null;
 				
 				if(zombiesManager && hooked_browsers) {
-					zombiesManager.updateZombies(hooked_browsers, distributed_engine_rules);
+					zombiesManager.updateZombies(hooked_browsers);
 				}
 				lastpoll = new Date().getTime();
 				var hr = document.getElementById("header-right");
@@ -80,5 +79,5 @@ Ext.TaskMgr.start({
 		});
 	},
 	
-	interval: 8000
+	interval: <%= (BeEF::Core::Configuration.instance.get("beef.extension.admin_ui.panel_update_interval") || 10).to_i * 1_000 %>
 });

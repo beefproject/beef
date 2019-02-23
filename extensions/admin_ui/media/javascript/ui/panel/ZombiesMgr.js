@@ -14,10 +14,11 @@ var ZombiesMgr = function(zombies_tree_lists) {
 
 		var ip                 = zombie_array[index]["ip"];
 		var session            = zombie_array[index]["session"];
-		var browser_name       = zombie_array[index]["browser_name"];
-		var browser_version    = zombie_array[index]["browser_version"];
-		var os_name            = zombie_array[index]["os_name"];
-		var hw_name            = zombie_array[index]["hw_name"];
+		var browser_name       = zombie_array[index]["name"];
+		var browser_version    = zombie_array[index]["version"];
+		var os_name            = zombie_array[index]["os"];
+		var os_version         = zombie_array[index]["os_version"];
+		var hardware           = zombie_array[index]["hardware"];
 		var domain             = zombie_array[index]["domain"];
 		var port               = zombie_array[index]["port"];
 		var city               = zombie_array[index]["city"];
@@ -35,7 +36,8 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			'browser_name': browser_name,
 			'browser_version': browser_version,
 			'os_name': os_name,
-			'hw_name': hw_name,
+			'os_version': os_version,
+			'hw_name': hardware,
 			'city': city,
 			'country': country,
 			'country_code': country_code,
@@ -48,9 +50,8 @@ var ZombiesMgr = function(zombies_tree_lists) {
 	/*
 	 * Update the hooked browser trees
 	 * @param: {Literal Object} an object containing the list of offline and online hooked browsers.
-	 * @param: {Literal Object} an object containing the list of rules from the distributed engine.
 	 */
-	this.updateZombies = function(zombies, rules){
+	this.updateZombies = function(zombies){
 		var offline_hooked_browsers = zombies["offline"];
 		var online_hooked_browsers = zombies["online"];
     beefwui.hooked_browsers = zombies["online"];
@@ -72,9 +73,6 @@ var ZombiesMgr = function(zombies_tree_lists) {
 				var online_hooked_browser = this.zombieFactory(i, online_hooked_browsers);
 				hooked_browsers_tree.addZombie(online_hooked_browser, true, ((tree_type != 'basic') ? true : false));
 			}
-
-			//apply the rules to the tree
-			hooked_browsers_tree.applyRules(rules);
 
 			//expand the online hooked browser tree lists
 			if(hooked_browsers_tree.online_hooked_browsers_treenode.childNodes.length > 0) {

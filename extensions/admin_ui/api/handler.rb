@@ -36,16 +36,47 @@ module API
     end
 
     def self.build_javascript_ui(beef_server)
-      auth_js_file = File.read(File.dirname(__FILE__)+'/../media/javascript/ui/authentication.js') + "\n\n"
-      js_files = ""
-
       #NOTE: order counts! make sure you know what you're doing if you add files
-      esapi = %w(esapi/Class.create.js esapi/jquery-3.3.1.min.js esapi/jquery-encoder-0.1.0.js)
-      ux =  %w(ui/common/beef_common.js ux/PagingStore.js ux/StatusBar.js ux/TabCloseMenu.js)
-      panel = %w(ui/panel/common.js ui/panel/DistributedEngine.js ui/panel/PanelStatusBar.js ui/panel/tabs/ZombieTabDetails.js ui/panel/tabs/ZombieTabLogs.js ui/panel/tabs/ZombieTabCommands.js ui/panel/tabs/ZombieTabRider.js ui/panel/tabs/ZombieTabXssRays.js wterm/wterm.jquery.js ui/panel/tabs/ZombieTabIpec.js ui/panel/tabs/ZombieTabAutorun.js ui/panel/PanelViewer.js ui/panel/LogsDataGrid.js ui/panel/ZombieDataGrid.js ui/panel/MainPanel.js ui/panel/ZombieTab.js ui/panel/ZombieTabs.js ui/panel/zombiesTreeList.js ui/panel/ZombiesMgr.js ui/panel/tabs/ZombieTabNetwork.js ui/panel/tabs/ZombieTabRTC.js ui/panel/Logout.js ui/panel/WelcomeTab.js ui/panel/ModuleSearching.js)
+      esapi = %w(
+      esapi/Class.create.js
+      esapi/jquery-3.3.1.min.js
+      esapi/jquery-encoder-0.1.0.js)
+
+      ux = %w(
+      ui/common/beef_common.js
+      ux/PagingStore.js
+      ux/StatusBar.js
+      ux/TabCloseMenu.js)
+
+      panel = %w(
+      ui/panel/common.js
+      ui/panel/PanelStatusBar.js
+      ui/panel/tabs/ZombieTabDetails.js
+      ui/panel/tabs/ZombieTabLogs.js
+      ui/panel/tabs/ZombieTabCommands.js
+      ui/panel/tabs/ZombieTabRider.js
+      ui/panel/tabs/ZombieTabXssRays.js
+      vis.js/vis.min.js
+      wterm/wterm.jquery.js
+      ui/panel/tabs/ZombieTabIpec.js
+      ui/panel/tabs/ZombieTabAutorun.js
+      ui/panel/PanelViewer.js
+      ui/panel/LogsDataGrid.js
+      ui/panel/ZombieDataGrid.js
+      ui/panel/MainPanel.js
+      ui/panel/ZombieTab.js
+      ui/panel/ZombieTabs.js
+      ui/panel/zombiesTreeList.js
+      ui/panel/ZombiesMgr.js
+      ui/panel/tabs/ZombieTabNetwork.js
+      ui/panel/tabs/ZombieTabRTC.js
+      ui/panel/Logout.js
+      ui/panel/WelcomeTab.js
+      ui/panel/ModuleSearching.js)
 
       global_js = esapi + ux + panel
 
+      js_files = ''
       global_js.each do |file|
         js_files << File.read(File.dirname(__FILE__)+'/../media/javascript/'+file) + "\n\n"
       end
@@ -61,11 +92,11 @@ module API
 
       # process all JavaScript files, evaluating them with Erubis
       web_ui_all = self.evaluate_and_minify(js_files, params, 'web_ui_all')
+      auth_js_file = File.read(File.dirname(__FILE__)+'/../media/javascript/ui/authentication.js') + "\n\n"
       web_ui_auth = self.evaluate_and_minify(auth_js_file, params, 'web_ui_auth')
 
       beef_server.mount("#{bp}/web_ui_all.js", Rack::File.new(web_ui_all))
       beef_server.mount("#{bp}/web_ui_auth.js", Rack::File.new(web_ui_auth))
-
     end
 
     #
@@ -84,22 +115,16 @@ module API
         beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
       end
 
-      # registers the http controllers used by BeEF extensions (requester, proxy, xssrays, etc..)
-      Dir["#{$root_dir}/extensions/**/controllers/*.rb"].each do |http_module|
-        require http_module
-        mod_name = File.basename http_module, '.rb'
-        beef_server.mount("#{bp}/#{mod_name}", BeEF::Extension::AdminUI::Handlers::UI.new(mod_name))
-      end
-
       # mount the folder were we store static files (javascript, css, images, audio) for the admin ui
       media_dir = File.dirname(__FILE__)+'/../media/'
       beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
 
-      # mount the favicon file, if we're not imitating a web server.
+      # If we're not imitating a web server, mount the favicon to /favicon.ico
       if !config.get("beef.http.web_server_imitation.enable")
         BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind(
-            "/extensions/admin_ui/media#{config.get("beef.extension.admin_ui.favicon_dir")}/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
-            '/favicon.ico', 'ico')
+          "/extensions/admin_ui/media/images/#{config.get("beef.extension.admin_ui.favicon_file_name")}",
+          '/favicon.ico',
+          'ico')
       end
 
       self.build_javascript_ui beef_server

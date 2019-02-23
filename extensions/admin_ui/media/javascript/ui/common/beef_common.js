@@ -103,41 +103,6 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
 	    	});                                                     
             console.log(info);
             return info;
-
-      },
-
-      /**
-       * Get hooked browser info from ID
-       */
-      get_fullinfo_from_id: function(id) {
-	    	var info = {};
-	    	$jwterm.ajax({
-	    		type: 'POST',
-	    		url: "<%= @base_path %>/panel/hooked-browser-tree-update.json",
-	    		async: false,
-	    		processData: false,
-	    		success: function(data){                            
-                    for (var k in data['hooked-browsers']['online']) {
-                        if (data['hooked-browsers']['online'][k].id === id) {
-                            info = data['hooked-browsers']['online'][k];
-                        }
-                    }
-
-                    if ($jwterm.isEmptyObject(info)) {
-                      for (var k in data['hooked-browsers']['offline']) {
-                          if (data['hooked-browsers']['offline'][k].id === id) {
-                              info = data['hooked-browsers']['offline'][k];
-                          }
-                      }
-                    }
-	    		},
-	    		error: function(){                                  
-	    			commands_statusbar.update_fail("Error getting hb ip");
-	    		}
-	    	});                                                     
-            console.log(info);
-            return info;
-
       }
     };
 

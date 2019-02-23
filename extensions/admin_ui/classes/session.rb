@@ -90,7 +90,6 @@ class Session
   # Check if a session valid
   #
   def valid_session?(request)
-
     # check if a valid session exists
     return false if @id.nil?
     return false if @ip.nil?
@@ -99,7 +98,7 @@ class Session
     return false if not @ip.to_s.eql? request.ip
 
     # get session cookie name from config
-    session_cookie_name = BeEF::Core::Configuration.instance.get('beef.http.session_cookie_name')
+    session_cookie_name = BeEF::Core::Configuration.instance.get('beef.extension.admin_ui.session_cookie_name')
 
     # check session id matches
     request.cookies.each{|cookie|
@@ -110,9 +109,7 @@ class Session
     # not a valid session 
     false 
   end
-
 end
-
 end
 end
 end

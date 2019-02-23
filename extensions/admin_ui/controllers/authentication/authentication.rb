@@ -70,7 +70,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     @session.set_logged_in(ua_ip)
 
     # create session cookie
-    session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
+    session_cookie_name = config.get('beef.extension.admin_ui.session_cookie_name') # get session cookie name
     Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => @session.get_id, :path => "/", :httponly => true})
 
     BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully authenticated in the application.")
@@ -94,7 +94,7 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
 
     # clean up UA and expire the session cookie
     config = BeEF::Core::Configuration.instance
-    session_cookie_name = config.get('beef.http.session_cookie_name') # get session cookie name
+    session_cookie_name = config.get('beef.extension.admin_ui.session_cookie_name') # get session cookie name
     Rack::Utils.set_cookie_header!(@headers, session_cookie_name, {:value => "", :path => "/", :httponly => true, expires: Time.now})
 
     BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully logged out.")
