@@ -57,7 +57,6 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		'sub-branch' : 'domain'
 	},
 
-	
 	//store the list of online hooked browsers in an array
 	online_hooked_browsers_array: new Array,
 	
@@ -66,32 +65,50 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 	
     //add a context menu that will contain common action shortcuts for HBs
     contextMenu: new Ext.menu.Menu({
-          items: [{
-                        id: 'use_as_proxy',
-                        text: 'Use as Proxy',
-                        iconCls: 'zombie-tree-ctxMenu-proxy'
-                    },{
-                        id: 'xssrays_hooked_domain',
-                        text: 'Launch XssRays on Hooked Domain',
-                        iconCls: 'zombie-tree-ctxMenu-xssrays'
-                    },{
-                        id: 'rtc_caller',
-                        text: 'Set as WebRTC Caller',
-                        iconCls: 'zombie-tree-ctxMenu-rtc'
-                    },{
-                        id: 'rtc_receiver',
-                        text: 'Set as WebRTC Receiver and GO',
-                        iconCls: 'zombie-tree-ctxMenu-rtc',
-                        activated: false
-                    },{
-                        xtype: 'menuseparator'
-                    },{
-                        id: 'delete_zombie',
-                        text: 'Delete Zombie',
-                        iconCls: 'zombie-tree-ctxMenu-delete'
-                    }
+      items: <%=
+  context_menu = []
+  sep = { xtype: 'menuseparator' }
 
-          ],
+  if (BeEF::Core::Configuration.instance.get("beef.extension.proxy.enable"))
+    context_menu << {
+      id: 'use_as_proxy',
+      text: 'Use as Proxy',
+      iconCls: 'zombie-tree-ctxMenu-proxy'
+    }
+    context_menu << sep
+  end
+  if (BeEF::Core::Configuration.instance.get("beef.extension.xssrays.enable"))
+    context_menu << {
+      id: 'xssrays_hooked_domain',
+      text: 'Launch XssRays on Hooked Domain',
+      iconCls: 'zombie-tree-ctxMenu-xssrays'
+    }
+    context_menu << sep
+  end
+  if (BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable"))
+    context_menu << {
+      id: 'rtc_caller',
+      text: 'Set as WebRTC Caller',
+      iconCls: 'zombie-tree-ctxMenu-rtc'
+    }
+    context_menu << {
+      id: 'rtc_receiver',
+      text: 'Set as WebRTC Receiver and GO',
+      iconCls: 'zombie-tree-ctxMenu-rtc',
+      activated: false
+    }
+    context_menu << sep
+  end
+
+  context_menu << {
+    id: 'delete_zombie',
+    text: 'Delete Zombie',
+    iconCls: 'zombie-tree-ctxMenu-delete'
+  }
+
+  context_menu.to_json
+%>,
+
           listeners: {
               itemclick: function(item, object) {
                   var hb_id = this.contextNode.id.split('zombie-online-')[1];
@@ -173,6 +190,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                 //     });
                 // }
                 var c = node.getOwnerTree().contextMenu;
+try{
                 c.contextNode = node;
                 if (typeof(beefwui.rtc_caller) === 'undefined') {
                     c.items.get('rtc_receiver').disable();
@@ -181,14 +199,15 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                 } else {
                     c.items.get('rtc_receiver').enable();
                 }
-
+} catch(e) {
+  // could not render the webrtc context menu - is webrtc extenion disabled?
+}
                 // c.items['rtc_receiver'].disable();
                 // c.add({
                 //     id: 'rtc_caller',
                 //     text: 'Set as WebRTC Caller',
                 //     iconCls: 'zombie-tree-ctxMenu-xssrays'});
                 c.showAt(event.getXY());
-
         },
 		//update the set of rules when a checkbox is clicked
 		checkchange: function(node, checked) {
