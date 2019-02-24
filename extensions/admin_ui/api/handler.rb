@@ -19,11 +19,22 @@ module API
     def self.evaluate_and_minify(content, params, name)
       erubis = Erubis::FastEruby.new(content)
       evaluated = erubis.evaluate(params)
+
+      print_debug "[AdminUI] Minifying #{name} (#{evaluated.size} bytes)"
       begin
-        minified = Uglifier.compile(evaluated)
+        opts = {
+          :output => {
+            :comments => :none
+          },
+          :compress => {
+            :dead_code => true,
+          }
+        }
+        minified = Uglifier.compile(evaluated, opts)
+        print_debug "[AdminUI] Minified #{name} (#{minified.size} bytes)"
       rescue
-        print_error "Error: Could not minify JavaScript file: #{name}"
-        print_more "Ensure nodejs is installed and `node' is in `$PATH` !"
+        print_error "[AdminUI] Error: Could not minify JavaScript file: #{name}"
+        print_more "[AdminUI] Ensure nodejs is installed and `node' is in `$PATH` !"
         minified = evaluated
       end
       write_to = File.new("#{File.dirname(__FILE__)}/../media/javascript-min/#{name}.js", "w+")
@@ -31,7 +42,7 @@ module API
 
       File.path write_to
     rescue => e
-      print_error "Error: #{e.message}"
+      print_error "[AdminUI] Error: #{e.message}"
       puts e.backtrace
     end
 
@@ -56,7 +67,6 @@ module API
       ui/panel/tabs/ZombieTabCommands.js
       ui/panel/tabs/ZombieTabRider.js
       ui/panel/tabs/ZombieTabXssRays.js
-      vis.js/vis.min.js
       wterm/wterm.jquery.js
       ui/panel/tabs/ZombieTabIpec.js
       ui/panel/tabs/ZombieTabAutorun.js
@@ -91,6 +101,7 @@ module API
       }
 
       # process all JavaScript files, evaluating them with Erubis
+      print_debug "[AdminUI] Initializing admin panel ..."
       web_ui_all = self.evaluate_and_minify(js_files, params, 'web_ui_all')
       auth_js_file = File.read(File.dirname(__FILE__)+'/../media/javascript/ui/authentication.js') + "\n\n"
       web_ui_auth = self.evaluate_and_minify(auth_js_file, params, 'web_ui_auth')
