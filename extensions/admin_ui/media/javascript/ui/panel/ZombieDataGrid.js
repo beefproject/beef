@@ -16,7 +16,7 @@ ZombieDataGrid = function(url, page, base) {
   this.store = new Ext.ux.data.PagingJsonStore({
     root: 'zombies',
     autoDestroy: true,
-    autoLoad: false,
+    autoLoad: true,
     proxy: new Ext.data.HttpProxy({
       method: 'GET',
       url: url + '?token=' + token
@@ -24,7 +24,7 @@ ZombieDataGrid = function(url, page, base) {
     storeId: 'zombies-store',
     baseParams: this.base,
     idProperty: 'id',
-    fields: ['id','ip','domain','port','name','version', 'os', 'os_version', 'firstseen', 'lastseen'],
+    fields: ['id','session', 'ip','domain','port','name','version', 'os', 'os_version', 'firstseen', 'lastseen'],
     totalProperty: 'count',
     remoteSort: false,
     sortInfo: {field: "id", direction: "ASC"}
@@ -37,7 +37,7 @@ ZombieDataGrid = function(url, page, base) {
     displayMsg: 'Displaying zombies {0} - {1} of {2}',
     emptyMsg: 'No zombies to display'
   });
-	
+
   this.columns = [{
 		id: 'zombie-id',
 		header: 'ID',
@@ -45,6 +45,16 @@ ZombieDataGrid = function(url, page, base) {
 		dataIndex: 'id',
 		sortable: true,
 		width: 10
+  }, {
+		id: 'zombie-session',
+		header: "Session",
+		dataIndex: 'session',
+		sortable: true,
+    hidden: true,
+		width: 20,
+		renderer: function(value) {
+		  return $jEncoder.encoder.encodeForHTML(value);
+		}
   }, {
 		id: 'zombie-ip',
 		header: "IP",
@@ -142,14 +152,125 @@ ZombieDataGrid = function(url, page, base) {
     viewConfig: {
       forceFit: true
     },
-		
-		listeners: {
-			afterrender: function(datagrid) {
-				datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"id", dir:"ASC"}});
-			}
-		}
-  });
-};
+    listeners: {
+      afterrender: function(datagrid) {
+        datagrid.store.reload({params:{start:0, limit:datagrid.page, sort:"id", dir:"ASC"}});
+      },
+
+      rowclick: function(grid, rowIndex) {
+        var r = grid.getStore().getAt(rowIndex).data;
+      },
+      containercontextmenu: function(view, e) {
+        e.preventDefault();
+      },
+      rowcontextmenu: function(grid, rowIndex, e) {
+        e.preventDefault();
+        grid.getSelectionModel().selectRow(rowIndex);
+
+        if (!!grid.rowCtxMenu) {
+          grid.rowCtxMenu.destroy();
+        }
+        //var record = grid.selModel.getSelected();
+        grid.rowCtxMenu = new Ext.menu.Menu({
+          //add a context menu that will contain common action shortcuts for HBs
+          items: <%=
+  context_menu = []
+  sep = { xtype: 'menuseparator' }
+
+  if (BeEF::Core::Configuration.instance.get("beef.extension.proxy.enable"))
+    context_menu << {
+      id: 'zombie_grid_use_as_proxy',
+      text: 'Use as Proxy',
+      iconCls: 'zombie-tree-ctxMenu-proxy'
+    }
+    context_menu << sep
+  end
+  if (BeEF::Core::Configuration.instance.get("beef.extension.xssrays.enable"))
+    context_menu << {
+      id: 'zombie_grid_xssrays_hooked_domain',
+      text: 'Launch XssRays on Hooked Domain',
+      iconCls: 'zombie-tree-ctxMenu-xssrays'
+    }
+    context_menu << sep
+  end
+  if (BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable"))
+    context_menu << {
+      id: 'zombie_grid_rtc_caller',
+      text: 'Set as WebRTC Caller',
+      iconCls: 'zombie-tree-ctxMenu-rtc'
+    }
+    context_menu << {
+      id: 'zombie_grid_rtc_receiver',
+      text: 'Set as WebRTC Receiver and GO',
+      iconCls: 'zombie-tree-ctxMenu-rtc',
+      activated: false
+    }
+    context_menu << sep
+  end
+
+  context_menu << {
+    id: 'zombie_grid_delete_zombie',
+    text: 'Delete Zombie',
+    iconCls: 'zombie-tree-ctxMenu-delete'
+  }
+
+  context_menu.to_json
+%>,
+
+          listeners: {
+            itemclick: function(item, object) {
+              var record = grid.selModel.getSelected();
+              var hb_id = record.get('session');
+              switch (item.id) {
+              case 'zombie_grid_use_as_proxy':
+                Ext.Ajax.request({
+                  url: '/api/proxy/setTargetZombie?token=' + beefwui.get_rest_token(),
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                  jsonData: {'hb_id': escape(hb_id)}
+                });
+                break;
+              case 'zombie_grid_xssrays_hooked_domain':
+                Ext.Ajax.request({
+                  url: '/api/xssrays/scan/' + escape(hb_id) + '?token=' + beefwui.get_rest_token(),
+                  method: 'POST'
+                });
+                break;
+              case 'zombie_grid_rtc_caller':
+                beefwui.rtc_caller = hb_id;
+                break;
+              case 'zombie_grid_rtc_receiver':
+                beefwui.rtc_receiver = hb_id;
+                var url = "/api/webrtc/go?token=" + beefwui.get_rest_token();
+                Ext.Ajax.request({
+                  url: url,
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json; charset=UTF-8'},
+                  jsonData: {
+                    'from': beefwui.get_hb_id(beefwui.rtc_caller),
+                    'to': beefwui.get_hb_id(beefwui.rtc_receiver),
+                    'verbose': true
+                  }
+                });
+                break;
+              case 'zombie_grid_delete_zombie':
+                var token = beefwui.get_rest_token();
+                var hid = '';
+                var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
+                Ext.Ajax.request({
+                  url: url,
+                  method: 'GET'
+                });
+                break;
+              }
+            }
+          }
+        });
+        grid.rowCtxMenu.showAt(e.getXY());
+      }
+      }
+  })  // ZombieDataGrid.superclass
+}
 
 Ext.extend(ZombieDataGrid, Ext.grid.GridPanel, {});
 
