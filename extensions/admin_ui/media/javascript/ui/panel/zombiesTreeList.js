@@ -168,13 +168,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 		click: function(node, e) {
             globalnode = node;
 			if(!node.leaf) return;
-	   
-            mainPanel.remove(mainPanel.getComponent('current-browser'));
-			if(!mainPanel.getComponent('current-browser')) {
-				mainPanel.add(new ZombieTab(node.attributes));
-			}
-			
-			mainPanel.activate(mainPanel.getComponent('current-browser'));
+      window.location.hash = "#id=" + node.attributes.session;
 		},
         //show the context menu when a HB is right-clicked
         contextmenu: function(node, event){

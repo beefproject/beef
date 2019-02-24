@@ -32,6 +32,7 @@ Ext.onReady(function() {
 			mainPanel
          ]
     });
+  setTimeout("locationHashChanged()", 1000);
 	
 	new DoLogout();
 });
@@ -81,3 +82,34 @@ Ext.TaskMgr.start({
 	
 	interval: <%= (BeEF::Core::Configuration.instance.get("beef.extension.admin_ui.panel_update_interval") || 10).to_i * 1_000 %>
 });
+
+/*
+ * Allow selecting a browser with #id=<session> in the /ui/panel URL
+*/
+function locationHashChanged() {
+  var id = location_hash('id');
+
+  if (id === null) return;
+
+  id = id.replace(/[^a-z0-9]/gi, '');
+  console.log("Loading hooked browser with ID: " + id);
+  mainPanel.remove(mainPanel.getComponent('current-browser'));
+  if(!mainPanel.getComponent('current-browser')) {
+    mainPanel.add(new ZombieTab({session: id}));
+  }
+
+  mainPanel.activate(mainPanel.getComponent('current-browser'));
+  //removeHash();
+}
+
+function location_hash(key) {
+  var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
+  return matches ? matches[1] : null;
+}
+
+function removeHash () {
+  history.pushState("", document.title, window.location.pathname + window.location.search);
+}
+
+window.onhashchange = locationHashChanged;
+
