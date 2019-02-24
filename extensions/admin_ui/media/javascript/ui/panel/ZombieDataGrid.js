@@ -255,13 +255,18 @@ ZombieDataGrid = function(url, page, base) {
                 break;
               case 'zombie_grid_delete_zombie':
                 var token = beefwui.get_rest_token();
-                var hid = '';
-                var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
+                if (!confirm('Are you sure you want to delete zombie [id: ' + hb_id + '] ?\nWarning: this will remove all zombie related data, including logs and command results!')) {
+                  //commands_statusbar.update_fail('Cancelled');
+                  return;
+                }
+                //commands_statusbar.update_sending('Removing zombie [id: ' + hb_id + '] ...');
+                var url = "/api/hooks/" + escape(hb_id) + "/delete?token=" + token;
                 Ext.Ajax.request({
                   url: url,
                   method: 'GET'
                 });
                 break;
+
               }
             }
           }

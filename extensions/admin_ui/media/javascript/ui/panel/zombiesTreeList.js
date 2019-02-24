@@ -112,7 +112,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
           listeners: {
               itemclick: function(item, object) {
                   var hb_id = this.contextNode.id.split('zombie-online-')[1];
-		          var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
+		              var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({
@@ -146,19 +146,18 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
                           });
                           break;
                        case 'delete_zombie':
-			              var token = beefwui.get_rest_token();
-			              var hid = '';
-			              if (typeof hb_id_off === 'undefined'){
-			                 hid=hb_id;
-			              }else{
-			                 hid=hb_id_off;
-			              }
-			              var url = "/api/hooks/" + escape(hid) + "/delete?token=" + token;
-                          Ext.Ajax.request({
-                            url: url,
-                            method: 'GET'
-                          });
-                          break;
+			                   var token = beefwui.get_rest_token();
+                         if (!confirm('Are you sure you want to delete zombie [id: ' + hb_id + '] ?\nWarning: this will remove all zombie related data, including logs and command results!')) {
+                           //commands_statusbar.update_fail('Cancelled');
+                           return;
+                         }
+                         //commands_statusbar.update_sending('Removing zombie [id: ' + hb_id + '] ...');
+                         var url = "/api/hooks/" + escape(hb_id) + "/delete?token=" + token;
+                         Ext.Ajax.request({
+                           url: url,
+                           method: 'GET'
+                         });
+                         break;
                   }
               }
           }
