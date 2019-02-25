@@ -63,6 +63,40 @@ beef.hardware = {
   },
 
   /**
+   * Returns GPU details
+   **/
+  getGpuDetails: function() {
+    var gpu = 'unknown';
+    var vendor = 'unknown';
+    // use canvas technique:
+    // https://github.com/Valve/fingerprintjs2
+    // http://codeflow.org/entries/2016/feb/10/webgl_debug_renderer_info-extension-survey-results/
+    try {
+      var getWebglCanvas = function () {
+        var canvas = document.createElement('canvas')
+        var gl = null
+        try {
+          gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+        } catch (e) { }
+        if (!gl) { gl = null }
+        return gl;
+      }
+
+      var glContext = getWebglCanvas();
+      var extensionDebugRendererInfo = glContext.getExtension('WEBGL_debug_renderer_info');
+      var gpu = glContext.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL);
+      var vendor = glContext.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL);
+      beef.debug("GPU: " + gpu + " - Vendor: " + vendor);
+    } catch (e) {
+      beef.debug('Failed to detect WebGL renderer: ' + e.toString());
+    }
+    return {
+      gpu: gpu,
+      vendor: vendor
+    }
+  },
+
+  /**
    * Returns RAM (GiB)
    **/
   getMemory: function() {
@@ -123,8 +157,17 @@ beef.hardware = {
    * @return: {Boolean} true or false.
    **/
   isVirtualMachine: function() {
-    if (this.isMobileDevice()) return false;
-    if (screen.width % 2 || screen.height % 2) return true;
+    if (this.getGpuDetails().vendor.match('VMware, Inc'))
+      return true;
+
+    if (this.isMobileDevice())
+      return false;
+
+    // if the screen resolution is uneven, and it's not a known mobile device
+    // then it's probably a VM
+    if (screen.width % 2 || screen.height % 2)
+      return true;
+
     return false;
   },
 
