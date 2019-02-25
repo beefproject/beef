@@ -72,8 +72,20 @@ module BeEF
           host.destroy
         end
 
+        # Convert a Network Host object to JSON
+        def to_h
+          {
+            :id => id,
+            :hooked_browser_id => hooked_browser_id,
+            :ip => ip,
+            :hostname => hostname,
+            :type => type,
+            :os => os,
+            :mac => mac,
+            :lastseen => lastseen
+          }
+        end
       end
-
     end
   end
 end

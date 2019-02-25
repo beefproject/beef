@@ -36,7 +36,7 @@ module BeEF
             result[:count] = count
             result[:hosts] = []
             hosts.each do |host|
-              result[:hosts] << host2hash(host)
+              result[:hosts] << host.to_h
             end
 
             result.to_json
@@ -56,7 +56,7 @@ module BeEF
             result[:count] = count
             result[:services] = []
             services.each do |service|
-              result[:services] << service2hash(service)
+              result[:services] << service.to_h
             end
 
             result.to_json
@@ -78,7 +78,7 @@ module BeEF
             result[:count] = count
             result[:hosts] = []
             hosts.each do |host|
-              result[:hosts] << host2hash(host)
+              result[:hosts] << host.to_h
             end
 
             result.to_json
@@ -103,7 +103,7 @@ module BeEF
             result[:count] = count
             result[:services] = []
             services.each do |service|
-              result[:services] << service2hash(service)
+              result[:services] << service.to_h
             end
 
             result.to_json
@@ -125,7 +125,7 @@ module BeEF
             raise InvalidParamError, 'id' if host.nil?
             halt 404 if host.empty?
 
-            host2hash(host).to_json
+            host.to_h.to_json
           rescue InvalidParamError => e
             print_error e.message
             halt 400
@@ -165,7 +165,7 @@ module BeEF
             raise InvalidParamError, 'id' if service.nil?
             halt 404 if service.empty?
 
-            service2hash(service).to_json
+            service.to_h.to_json
           rescue InvalidParamError => e
             print_error e.message
             halt 400
@@ -173,34 +173,6 @@ module BeEF
             print_error "Internal error while retrieving service with id #{id} (#{e.message})"
             halt 500
           end
-        end
-
-        private
-
-        # Convert a Network Host object to JSON
-        def host2hash(host)
-          {
-            :id => host.id,
-            :hooked_browser_id => host.hooked_browser_id,
-            :ip => host.ip,
-            :hostname => host.hostname,
-            :type => host.type,
-            :os => host.os,
-            :mac => host.mac,
-            :lastseen => host.lastseen
-          }
-        end
-
-        # Convert a Network Service object to JSON
-        def service2hash(service)
-          {
-            :id => service.id,
-            :hooked_browser_id => service.hooked_browser_id,
-            :proto => service.proto,
-            :ip => service.ip,
-            :port => service.port,
-            :type => service.type,
-          }
         end
 
         # Raised when invalid JSON input is passed to an /api/network handler.

@@ -64,8 +64,18 @@ module BeEF
           network_service
         end
 
+        # Convert a Network Service object to JSON
+        def to_h
+          {
+            :id => id,
+            :hooked_browser_id => hooked_browser_id,
+            :proto => proto,
+            :ip => ip,
+            :port => port,
+            :type => type,
+          }
+        end
       end
-
     end
   end
 end
