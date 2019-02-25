@@ -1,0 +1,24 @@
+AllCops:
+  Exclude:
+    - 'test/**/*'
+    - 'tmp/**/*'
+    - 'tools/**/*'
+    - 'doc/**/*'
+  TargetRubyVersion: 2.4
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
