@@ -45,7 +45,7 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
          */
         get_hb_id: function(sess){
 	    	var id = "";
-	    	$jwterm.ajax({
+	    	jQuery.ajax({
 	    		type: 'GET',
 	    		url: "/api/hooks/?token=" + this.get_rest_token(),
 	    		async: false,
@@ -77,7 +77,7 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
        */
       get_info_from_id: function(id) {
 	    	var info = {};
-	    	$jwterm.ajax({
+	    	jQuery.ajax({
 	    		type: 'GET',
 	    		url: "/api/hooks/?token=" + this.get_rest_token(),
 	    		async: false,
@@ -89,7 +89,7 @@ if(typeof beefwui === 'undefined' && typeof window.beefwui === 'undefined') {
                         }
                     }
 
-                    if ($jwterm.isEmptyObject(info)) {
+                    if (jQuery.isEmptyObject(info)) {
                       for (var k in data['hooked-browsers']['offline']) {
                           if (data['hooked-browsers']['offline'][k].id === id) {
                               info = data['hooked-browsers']['offline'][k];
