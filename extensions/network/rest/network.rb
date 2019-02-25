@@ -6,10 +6,8 @@
 module BeEF
   module Extension
     module Network
-
       # This class handles the routing of RESTful API requests that interact with network services on the zombie's LAN
       class NetworkRest < BeEF::Core::Router::Router
-
         # Filters out bad requests before performing any routing
         before do
           config = BeEF::Core::Configuration.instance
@@ -29,7 +27,7 @@ module BeEF
         # Returns the entire list of network hosts for all zombies
         get '/hosts' do
           begin
-            hosts = @nh.all(:unique => true, :order => [:id.asc])
+            hosts = @nh.all(unique: true, order: [:id.asc])
             count = hosts.length
 
             result = {}
@@ -49,7 +47,7 @@ module BeEF
         # Returns the entire list of network services for all zombies
         get '/services' do
           begin
-            services = @ns.all(:unique => true, :order => [:id.asc])
+            services = @ns.all(unique: true, order: [:id.asc])
             count = services.length
 
             result = {}
@@ -71,7 +69,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hosts = @nh.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
+            hosts = @nh.all(hooked_browser_id: id, unique: true, order: [:id.asc])
             count = hosts.length
 
             result = {}
@@ -96,7 +94,7 @@ module BeEF
           begin
             id = params[:id]
 
-            services = @ns.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
+            services = @ns.all(hooked_browser_id: id, unique: true, order: [:id.asc])
             count = services.length
 
             result = {}
@@ -121,7 +119,7 @@ module BeEF
           begin
             id = params[:id]
 
-            host = @nh.all(:id => id)
+            host = @nh.all(id: id)
             raise InvalidParamError, 'id' if host.nil?
             halt 404 if host.empty?
 
@@ -139,9 +137,9 @@ module BeEF
         delete '/host/:id' do
           begin
             id = params[:id]
-            raise InvalidParamError, 'id' unless BeEF::Filters::nums_only?(id)
+            raise InvalidParamError, 'id' unless BeEF::Filters.nums_only?(id)
 
-            host = @nh.all(:id => id)
+            host = @nh.all(id: id)
             halt 404 if host.nil?
 
             result = {}
@@ -161,7 +159,7 @@ module BeEF
           begin
             id = params[:id]
 
-            service = @ns.all(:id => id)
+            service = @ns.all(id: id)
             raise InvalidParamError, 'id' if service.nil?
             halt 404 if service.empty?
 
@@ -177,7 +175,7 @@ module BeEF
 
         # Raised when invalid JSON input is passed to an /api/network handler.
         class InvalidJsonError < StandardError
-          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/network handler'
+          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/network handler'.freeze
 
           def initialize(message = nil)
             super(message || DEFAULT_MESSAGE)
@@ -186,11 +184,10 @@ module BeEF
 
         # Raised when an invalid named parameter is passed to an /api/network handler.
         class InvalidParamError < StandardError
-          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/network handler'
+          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/network handler'.freeze
 
           def initialize(message = nil)
-            str = "Invalid \"%s\" parameter passed to /api/network handler"
-            message = sprintf str, message unless message.nil?
+            message = "Invalid \"#{message}\" parameter passed to /api/network handler" unless message.nil?
             super(message)
           end
         end
