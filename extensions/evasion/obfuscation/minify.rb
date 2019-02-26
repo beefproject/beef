@@ -17,11 +17,17 @@ module BeEF
         def execute(input, config)
           opts = {
             :output => {
-              :comments => :none
+              comments: :none
             },
             :compress => {
-              :dead_code => true,
-              :drop_console => (config.get('beef.client_debug') ? false : true)
+              # show warnings in debug mode
+              warnings: (config.get('beef.debug') ? true : false),
+              # remove dead code
+              dead_code: true,
+              # remove all beef.debug calls (console.log wrapper) unless client debugging is enabled
+              pure_funcs: (config.get('beef.client_debug') ? [] : ['beef.debug']),
+              # remove all console.log calls unless client debugging is enabled
+              drop_console: (config.get('beef.client_debug') ? false : true)
             }
           }
           output = Uglifier.compile(input, opts)
