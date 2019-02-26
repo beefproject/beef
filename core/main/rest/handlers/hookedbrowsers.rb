@@ -143,12 +143,12 @@ module BeEF
           hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
           error 401 unless hb != nil
 
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'OsName').destroy
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'OsVersion').destroy
+          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.name').destroy
+          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.version').destroy
           #BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
 
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'OsName', :detail_value => os).save
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'OsVersion', :detail_value => os_version).save
+          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os).save
+          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version).save
           BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch).save
 
           # TODO if there where any ARE rules defined for this hooked browser,
@@ -172,22 +172,22 @@ module BeEF
           {
               'id'           => hb.id,
               'session'      => hb.session,
-              'name'         => details.get(hb.session, 'BrowserName'),
-              'version'      => details.get(hb.session, 'BrowserVersion'),
-              'os'           => details.get(hb.session, 'OsName'),
-              'os_version'   => details.get(hb.session, 'OsVersion'),
-              'platform'     => details.get(hb.session, 'BrowserPlatform'),
-              'hardware'     => details.get(hb.session, 'Hardware'),
+              'name'         => details.get(hb.session, 'browser.name'),
+              'version'      => details.get(hb.session, 'browser.version'),
+              'platform'     => details.get(hb.session, 'browser.platform'),
+              'os'           => details.get(hb.session, 'host.os.name'),
+              'os_version'   => details.get(hb.session, 'host.os.version'),
+              'hardware'     => details.get(hb.session, 'hardware.type'),
               'ip'           => hb.ip,
-              'domain'       => details.get(hb.session, 'HostName'),
+              'domain'       => details.get(hb.session, 'browser.window.hostname'),
               'port'         => hb.port.to_s,
-              'page_uri'     => details.get(hb.session, 'PageURI'),
+              'page_uri'     => details.get(hb.session, 'browser.window.uri'),
               'firstseen'    => hb.firstseen,
               'lastseen'     => hb.lastseen,
-              'date_stamp'   => details.get(hb.session, 'DateStamp'),
-              'city'         => details.get(hb.session, 'LocationCity'),
-              'country'      => details.get(hb.session, 'LocationCountry'),
-              'country_code' => details.get(hb.session, 'LocationCountryIsoCode'),
+              'date_stamp'   => details.get(hb.session, 'browser.date.datestamp'),
+              'city'         => details.get(hb.session, 'location.city'),
+              'country'      => details.get(hb.session, 'location.country'),
+              'country_code' => details.get(hb.session, 'location.country.isocode'),
           }
         end
 
@@ -199,9 +199,9 @@ module BeEF
             # TODO jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
 
             pfuid = details.get(hb.session, 'PhishingFrenzyUID') != nil ? details.get(hb.session, 'PhishingFrenzyUID') : 'n/a'
-            bname = details.get(hb.session, 'BrowserName') != nil ? details.get(hb.session, 'BrowserName') : 'n/a'
-            bversion = details.get(hb.session, 'BrowserVersion') != nil ? details.get(hb.session, 'BrowserVersion') : 'n/a'
-            bplugins = details.get(hb.session, 'BrowserPlugins') != nil ? details.get(hb.session, 'BrowserPlugins') : 'n/a'
+            bname = details.get(hb.session, 'browser.name') != nil ? details.get(hb.session, 'browser.name') : 'n/a'
+            bversion = details.get(hb.session, 'browser.version') != nil ? details.get(hb.session, 'browser.version') : 'n/a'
+            bplugins = details.get(hb.session, 'browser.plugins') != nil ? details.get(hb.session, 'browser.plugins') : 'n/a'
 
             hooked_browsers << [
                 hb.id,
@@ -209,14 +209,14 @@ module BeEF
                 pfuid,
                 bname,
                 bversion,
-                details.get(hb.session, 'OsName'),
-                details.get(hb.session, 'BrowserPlatform'),
-                details.get(hb.session, 'BrowserLanguage'),
+                details.get(hb.session, 'host.os.name'),
+                details.get(hb.session, 'browser.platform'),
+                details.get(hb.session, 'browser.language'),
                 bplugins,
-                details.get(hb.session, 'LocationCity'),
-                details.get(hb.session, 'LocationCountry'),
-                details.get(hb.session, 'LocationLatitude'),
-                details.get(hb.session, 'LocationLongitude')
+                details.get(hb.session, 'location.city'),
+                details.get(hb.session, 'location.country'),
+                details.get(hb.session, 'location.latitude'),
+                details.get(hb.session, 'location.longitude')
             ]
           end
           hooked_browsers

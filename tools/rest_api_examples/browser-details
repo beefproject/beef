@@ -77,7 +77,7 @@ hooks.each do |hook|
   print_status "Retrieving details for browser [id: #{hook['id']}]"
   details = @api.browser_details(hook['session'])
   print_debug details
-  print_verbose "Hooked Browser [id:#{hook['id']}, ip:#{details['IP']}, type:#{details['BrowserName']}-#{details['BrowserVersion']}, os:#{details['OsName']}] on [#{details['PageURI']}]"
+  print_verbose "Hooked Browser [id:#{hook['id']}, ip:#{hook['ip']}]:\n#{details.map{|d| "#{d['key']}: #{d['value']}" }.flatten.join("\n")}"
 end
 
 # Retrieve hooked browser logs

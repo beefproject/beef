@@ -84,10 +84,11 @@ end
 # get hooked browser details by session
 def browser_details session
   begin
-    print_verbose "Retrieving details for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}hooks/#{session}", {:params => {:token => @token}}
-    details = JSON.parse(response.body)
-    print_good "Retrieved browser details for #{details['IP']}"
+    print_verbose "Retrieving browser details for hooked browser [session: #{session}]"
+    response = RestClient.get "#{@url}browserdetails/#{session}", {:params => {:token => @token}}
+    result = JSON.parse(response.body)
+    details = result['details']
+    print_good "Retrieved #{details.size} browser details"
     details
   rescue => e
     print_error "Could not retrieve browser details: #{e.message}"

@@ -13,6 +13,12 @@ module BeEF
         end
       end
 
+      module RegisterBrowserDetailsHandler
+        def self.mount_handler(server)
+          server.mount('/api/browserdetails', BeEF::Core::Rest::BrowserDetails.new)
+        end
+      end
+
       module RegisterModulesHandler
         def self.mount_handler(server)
           server.mount('/api/modules', BeEF::Core::Rest::Modules.new)
@@ -50,6 +56,7 @@ module BeEF
       end
 
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterHooksHandler, BeEF::API::Server, 'mount_handler')
+      BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterBrowserDetailsHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterModulesHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterCategoriesHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterLogsHandler, BeEF::API::Server, 'mount_handler')

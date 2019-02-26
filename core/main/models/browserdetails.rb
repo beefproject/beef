@@ -48,6 +48,7 @@ module Models
       else
         # update the browser details key/value
         result = browserdetails.update(:detail_value => detail_value || '')
+        print_debug "Browser has updated '#{detail_key}' to '#{detail_value}'"
       end
 
       # if the attempt to save the browser details fails return a bad request

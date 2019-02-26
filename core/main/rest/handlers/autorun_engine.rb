@@ -59,10 +59,10 @@ module BeEF
             if online_hooks != nil
               online_hooks.each do |hb|
                 hb_details = BeEF::Core::Models::BrowserDetails
-                browser_name    = hb_details.get(hb.session, 'BrowserName')
-                browser_version = hb_details.get(hb.session, 'BrowserVersion')
-                os_name = hb_details.get(hb.session, 'OsName')
-                os_version = hb_details.get(hb.session, 'OsVersion')
+                browser_name    = hb_details.get(hb.session, 'browser.name')
+                browser_version = hb_details.get(hb.session, 'browser.version')
+                os_name = hb_details.get(hb.session, 'host.os.name')
+                os_version = hb_details.get(hb.session, 'host.os.version')
 
                 match_rules = are.match(browser_name, browser_version, os_name, os_version, rule_id)
                 are.trigger(match_rules, hb.id) if match_rules.length > 0

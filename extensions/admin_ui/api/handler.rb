@@ -72,6 +72,7 @@ module API
       ui/panel/tabs/ZombieTabAutorun.js
       ui/panel/PanelViewer.js
       ui/panel/LogsDataGrid.js
+      ui/panel/BrowserDetailsDataGrid.js
       ui/panel/ZombieDataGrid.js
       ui/panel/MainPanel.js
       ui/panel/ZombieTab.js

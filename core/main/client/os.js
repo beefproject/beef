@@ -212,6 +212,10 @@ beef.os = {
 		return 'unknown';
 	},
 
+  getArch: function() {
+    return 'unknown';
+  },
+
 	getVersion: function(){
 		//Windows
 		if(this.isWindows()) {

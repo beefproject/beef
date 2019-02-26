@@ -24,7 +24,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
         '/select/commandmodule.json'        => method(:select_command_module),
         '/select/command.json'              => method(:select_command),
         '/select/command_results.json'      => method(:select_command_results),
-        '/select/zombie_summary.json'       => method(:select_zombie_summary),
         '/commandmodule/commands.json'      => method(:select_command_module_commands),
         '/commandmodule/new'                => method(:attach_command_module),
         '/commandmodule/dynamicnew'         => method(:attach_dynamic_command_module),
@@ -44,135 +43,6 @@ class Modules < BeEF::Extension::AdminUI::HttpController
      @body = {
          'token' => BeEF::Core::Configuration.instance.get("beef.api_token")
      }.to_json
-  end
-
-  # Returns a JSON array containing the summary for a selected zombie.
-  def select_zombie_summary
-
-    # get the zombie
-    zombie_session = @params['zombie_session'] || nil
-    (print_error "Zombie session is nil";return) if zombie_session.nil?
-    zombie = BeEF::Core::Models::HookedBrowser.first(:session => zombie_session)
-    (print_error "Zombie is nil";return) if zombie.nil?
-
-    # init the summary grid
-    summary_grid_hash = {
-      'success' => 'true',
-      'results' => []
-    }
-
-    # zombie properties
-    # in the form of: category, UI label, value
-    zombie_properties = [
-
-        # Browser
-        ['Browser', 'Browser Name',       'BrowserName'],
-        ['Browser', 'Browser Version',    'BrowserVersion'],
-        ['Browser', 'Browser UA String',  'BrowserReportedName'],
-        ['Browser', 'Browser Language',   'BrowserLanguage'],
-        ['Browser', 'Browser Platform',   'BrowserPlatform'],
-        ['Browser', 'Browser Plugins',    'BrowserPlugins'],
-        ['Browser', 'Using Proxy',        'UsingProxy'],
-        ['Browser', 'Proxy Client',       'ProxyClient'],
-        ['Browser', 'Proxy Server',       'ProxyServer'],
-        ['Browser', 'Window Size',        'WindowSize'],
-
-        # Browser Components
-        ['Browser Components', 'Flash',              'HasFlash'],
-        ['Browser Components', 'Java',               'JavaEnabled'],
-        ['Browser Components', 'VBScript',           'VBScriptEnabled'],
-        ['Browser Components', 'PhoneGap',           'HasPhonegap'],
-        ['Browser Components', 'Google Gears',       'HasGoogleGears'],
-        ['Browser Components', 'Web Sockets',        'HasWebSocket'],
-        ['Browser Components', 'Web Workers',        'HasWebWorker'],
-        ['Browser Components', 'WebGL',              'HasWebGL'],
-        ['Browser Components', 'QuickTime',          'HasQuickTime'],
-        ['Browser Components', 'RealPlayer',         'HasRealPlayer'],
-        ['Browser Components', 'Windows Media Player','HasWMP'],
-        ['Browser Components', 'VLC',                'HasVLC'],
-        ['Browser Components', 'WebRTC',             'HasWebRTC'],
-        ['Browser Components', 'ActiveX',            'HasActiveX'],
-        ['Browser Components', 'Session Cookies',    'hasSessionCookies'],
-        ['Browser Components', 'Persistent Cookies', 'hasPersistentCookies'],
-        ['Browser Components', 'Unity',              'HasUnity'],
-        ['Browser Components', 'Foxit',              'HasFoxit'],
-
-        # Geolocation
-        ['Location', 'City',                    'LocationCity'],
-        ['Location', 'Country',                 'LocationCountry'],
-        ['Location', 'Country Code',            'LocationCountryIsoCode'],
-        ['Location', 'Registered Country',      'LocationRegisteredCountry'],
-        ['Location', 'Registered Country Code', 'LocationRegisteredCountryIsoCode'],
-        ['Location', 'Continent',               'LocationContinent'],
-        ['Location', 'Continent Code',          'LocationContinentCode'],
-        ['Location', 'Latitude',                'LocationLatitude'],
-        ['Location', 'Longitude',               'LocationLongitude'],
-        ['Location', 'Time Zone',               'LocationTimeZone'],
-
-        # Hooked Page
-        ['Hooked Page', 'Page Title',    'PageTitle'],
-        ['Hooked Page', 'Page URI',      'PageURI'],
-        ['Hooked Page', 'Page Referrer', 'PageReferrer'],
-        ['Hooked Page', 'Host Name/IP',  'HostName'],
-        ['Hooked Page', 'Cookies',       'Cookies'],
-
-        # Host
-        ['Host', 'Host Name/IP',     'IP'],
-        ['Host', 'Date',             'DateStamp'],
-        ['Host', 'Operating System', 'OsName'],
-        ['Host', 'Hardware',         'Hardware'],
-        ['Host', 'CPU Arch',         'CpuArch'],
-        ['Host', 'CPU Cores',        'CpuCores'],
-        ['Host', 'Default Browser',  'DefaultBrowser'],
-        ['Host', 'Screen Size',      'ScreenSize'],
-        ['Host', 'Touch Screen',     'TouchEnabled']
-    ]
-
-    # set and add the return values for each browser property
-    # in the form of: category, UI label, value
-    zombie_properties.each do |p|
-
-      case p[2]
-        when "BrowserName"
-          data   = BeEF::Core::Constants::Browsers.friendly_name(BD.get(zombie_session, p[2]))
-
-        when "ScreenSize"
-          screen_size = BD.get(zombie_session, "ScreenSize")
-          if screen_size.nil?
-            data = "Unknown"
-          else
-            screen_size_hash = JSON.parse(screen_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-            width  = screen_size_hash['width']
-            height = screen_size_hash['height']
-            cdepth = screen_size_hash['colordepth']
-            data   = "Width: #{width}, Height: #{height}, Colour Depth: #{cdepth}"
-          end
-        when "WindowSize"
-          window_size = BD.get(zombie_session, "WindowSize")
-          if window_size.nil?
-            data = "Unknown"
-          else
-            window_size_hash = JSON.parse(window_size.gsub(/\"\=\>/, '":')) # tidy up the string for JSON
-            width  = window_size_hash['width']
-            height = window_size_hash['height']
-            data   = "Width: #{width}, Height: #{height}"
-          end
-        else
-          data   = BD.get(zombie_session, p[2])
-      end
-
-      # add property to summary hash
-      if not data.nil?
-        summary_grid_hash['results'].push({
-          'category' => p[0],
-          'data'     => { p[1] => CGI.escapeHTML("#{data}") },
-          'from'     => 'Initialization'
-        })
-      end
-
-    end
-
-    @body = summary_grid_hash.to_json
   end
 
   # Returns the list of all command_modules in a JSON format
@@ -205,7 +75,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
       if hook_session_id == nil
           return BeEF::Core::Constants::CommandModule::VERIFIED_UNKNOWN
       end
-      return BeEF::Module.support(mod, {'browser' => BD.get(hook_session_id, 'BrowserName'), 'ver' => BD.get(hook_session_id, 'BrowserVersion'), 'os' => [BD.get(hook_session_id, 'OsName')]})
+      return BeEF::Module.support(mod, {
+        'browser' => BD.get(hook_session_id, 'browser.name'),
+        'ver' => BD.get(hook_session_id, 'browser.version'),
+        'os' => [BD.get(hook_session_id, 'host.os.name')]
+      })
   end
 
   # If we're adding a leaf to the command tree, and it's in a subfolder, we need to recurse
