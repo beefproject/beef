@@ -13,7 +13,7 @@ class Spyder_eye < BeEF::Core::Command
   end
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.js', '/h2c', 'js')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/spyder_eye/html2canvas.min.js', '/h2c', 'js')
   end
 
   def post_execute 
