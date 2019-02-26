@@ -24,7 +24,7 @@ class Spyder_eye < BeEF::Core::Command
     # save screenshot file
     begin
       timestamp = Time.now.localtime.strftime("%Y-%m-%d_%H-%M-%S")
-      ip = BeEF::Core::Models::BrowserDetails.get(session_id, 'IP')
+      ip = BeEF::Core::Models::BrowserDetails.get(session_id, 'browser.ipaddress')
       filename = "#{$home_dir}/screenshot_#{ip}_-_#{timestamp}_#{@datastore['cid']}.png"
       File.open(filename, 'wb') do |file|
         data = @datastore['results'].gsub(/^image=data:image\/(png|jpg);base64,/, "")

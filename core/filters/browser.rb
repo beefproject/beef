@@ -93,26 +93,6 @@ module Filters
     true
   end
 
-  # Verify the screen size is valid
-  # @param [String] str String for testing
-  # @return [Boolean] If the string has valid screen size characters
-  def self.is_valid_screen_size?(str)
-    return false unless is_non_empty_string?(str)
-    return false if has_non_printable_char?(str)
-    return false if str.length > 200
-    true
-  end
-
-  # Verify the window size is valid
-  # @param [String] str String for testing
-  # @return [Boolean] If the string has valid window size characters
-  def self.is_valid_window_size?(str)
-    return false unless is_non_empty_string?(str)
-    return false if has_non_printable_char?(str)
-    return false if str.length > 200
-    true
-  end
-
   # Verify the system platform is valid
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid system platform characters
@@ -137,6 +117,26 @@ module Filters
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid CPU type characters
   def self.is_valid_cpu?(str)
+    return false unless is_non_empty_string?(str)
+    return false if has_non_printable_char?(str)
+    return false if str.length > 200
+    true
+  end
+
+  # Verify the memory string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid memory type characters
+  def self.is_valid_memory?(str)
+    return false unless is_non_empty_string?(str)
+    return false if has_non_printable_char?(str)
+    return false if str.length > 200
+    true
+  end
+
+  # Verify the GPU type string is valid
+  # @param [String] str String for testing
+  # @return [Boolean] If the string has valid GPU type characters
+  def self.is_valid_gpu?(str)
     return false unless is_non_empty_string?(str)
     return false if has_non_printable_char?(str)
     return false if str.length > 200

@@ -115,10 +115,10 @@ module BeEF
                         next
                       end
 
-                      browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserName')
-                      browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'BrowserVersion')
-                      os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsName')
-                      os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'OsVersion')
+                      browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'browser.name')
+                      browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'browser.version')
+                      os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'host.os.name')
+                      os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'host.os.version')
                       BeEF::Core::AutorunEngine::Engine.instance.run(hooked_browser.id, browser_name, browser_version, os_name, os_version)
 
                       next
