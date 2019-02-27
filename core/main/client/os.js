@@ -212,10 +212,39 @@ beef.os = {
 		return 'unknown';
 	},
 
+  /**
+    * Get OS architecture.
+    * This may not be the same as the browser arch or CPU arch.
+    * ie, 32bit OS on 64bit hardware
+    */
   getArch: function() {
-    return 'unknown';
+    var arch = 'unknown';
+    try {
+      var arch = platform.os.architecture;
+      if (!!arch)
+        return arch;
+    } catch (e) {}
+
+    return arch;
   },
 
+  /**
+    * Get OS family
+    */
+  getFamily: function() {
+    var family = 'unknown';
+    try {
+      var family = platform.os.family;
+      if (!!family)
+        return family;
+    } catch (e) {}
+
+    return arch;
+  },
+
+  /**
+    * Get OS name
+    */
 	getVersion: function(){
 		//Windows
 		if(this.isWindows()) {

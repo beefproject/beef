@@ -20,6 +20,19 @@ beef.browser = {
     },
 
     /**
+     * Returns the underlying layout engine in use by the browser.
+     * @example: beef.browser.getBrowserEngine()
+     */
+    getBrowserEngine: function() {
+      try {
+        var engine = platform.layout;
+        if (!!engine)
+          return engine;
+      } catch (e) {}
+      return 'unknown';
+    },
+
+    /**
      * Returns true if Avant Browser.
      * @example: beef.browser.isA()
      */
@@ -2726,7 +2739,6 @@ beef.browser = {
      * @example: beef.browser.getBrowserVersion()
      */
     getBrowserVersion: function () {
-
         if (this.isC5()) {
             return '5'
         }
@@ -3591,6 +3603,13 @@ beef.browser = {
         }
         ;	// Opera 12.xx
 
+        // platform.js
+        try {
+          var version = platform.version;
+          if (!!version)
+            return version;
+        } catch (e) {}
+
         return 'UNKNOWN';				// Unknown UA
     },
 
@@ -4211,6 +4230,7 @@ beef.browser = {
 
         var browser_name = beef.browser.getBrowserName();
         var browser_version = beef.browser.getBrowserVersion();
+        var browser_engine = beef.browser.getBrowserEngine();
         var browser_reported_name = beef.browser.getBrowserReportedName();
         var browser_language = beef.browser.getBrowserLanguage();
         var page_title = (document.title) ? document.title : "Unknown";
@@ -4231,6 +4251,7 @@ beef.browser = {
         var browser_plugins = beef.browser.getPlugins();
         var date_stamp = new Date().toString();
         var os_name = beef.os.getName();
+        var os_family = beef.os.getFamily();
         var os_version = beef.os.getVersion();
         var os_arch = beef.os.getArch();
         var default_browser = beef.os.getDefaultBrowser();
@@ -4296,9 +4317,12 @@ beef.browser = {
         if (browser_type) details['browser.type'] = browser_type;
         if (browser_name) details['browser.name'] = browser_name;
         if (browser_version) details['browser.version'] = browser_version;
+        if (browser_engine) details['browser.engine'] = browser_engine;
         if (browser_reported_name) details['browser.name.reported'] = browser_reported_name;
         if (browser_platform) details['browser.platform'] = browser_platform;
         if (browser_language) details['browser.language'] = browser_language;
+        if (browser_plugins) details['browser.plugins'] = browser_plugins;
+
         if (page_title) details['browser.window.title'] = page_title;
         if (origin) details['browser.window.origin'] = origin;
         if (page_hostname) details['browser.window.hostname'] = page_hostname;
@@ -4307,10 +4331,10 @@ beef.browser = {
         if (page_referrer) details['browser.window.referrer'] = page_referrer;
         if (window_width) details['browser.window.size.width'] = window_width;
         if (window_height) details['browser.window.size.height'] = window_height;
-        if (browser_plugins) details['browser.plugins'] = browser_plugins;
         if (date_stamp) details['browser.date.datestamp'] = date_stamp;
 
         if (os_name) details['host.os.name'] = os_name;
+        if (os_family) details['host.os.family'] = os_family;
         if (os_version) details['host.os.version'] = os_version;
         if (os_arch) details['host.os.arch'] = os_arch;
 
@@ -4389,7 +4413,7 @@ beef.browser = {
         var result = false;
 
         try {
-            if (beef.browser.isIE()) {
+            if (beef.browser.isIE() || beef.browser.isEdge()) {
                 var slControl = new ActiveXObject('AgControl.AgControl');
                 result = true;
             } else if (navigator.plugins["Silverlight Plug-In"]) {
@@ -4522,7 +4546,7 @@ beef.browser = {
         var foxitplugin = false;
 
         try {
-            if (beef.browser.isIE()) {
+            if (beef.browser.isIE() || beef.browser.isEdge()) {
                 var foxitControl = new ActiveXObject('FoxitReader.FoxitReaderCtl.1');
                 foxitplugin = true;
             } else if (navigator.plugins['Foxit Reader Plugin for Mozilla']) {

@@ -234,6 +234,14 @@ module BeEF
             self.err_msg "Invalid value for 'browser.name.reported' returned from the hook browser's initial connection."
           end
 
+          # get and store browser engine
+          browser_engine = get_param(@data['results'], 'browser.engine')
+          if BeEF::Filters.is_valid_browserstring?(browser_engine)
+            BD.set(session_id, 'browser.engine', browser_engine)
+          else
+            self.err_msg "Invalid value for 'browser.engine' returned from the hook browser's initial connection."
+          end
+
           # get and store browser language
           browser_lang = get_param(@data['results'], 'browser.language')
           BD.set(session_id, 'browser.language', browser_lang)
@@ -252,6 +260,14 @@ module BeEF
             BD.set(session_id, 'host.os.name', os_name)
           else
             self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
+          end
+
+          # get and store the OS family
+          os_family = get_param(@data['results'], 'host.os.family')
+          if BeEF::Filters.is_valid_osname?(os_family)
+            BD.set(session_id, 'host.os.family', os_family)
+          else
+            self.err_msg "Invalid value for 'host.os.family' returned from the hook browser's initial connection."
           end
 
           # get and store the OS version
