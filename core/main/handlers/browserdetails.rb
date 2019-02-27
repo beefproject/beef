@@ -363,14 +363,6 @@ module BeEF
             self.err_msg "Invalid browser platform returned from the hook browser's initial connection."
           end
 
-          # get and store the hooked browser type
-          browser_type = get_param(@data['results'], 'browser.type')
-          if BeEF::Filters.is_valid_browsertype?(browser_type)
-            BD.set(session_id, 'browser.type', browser_type)
-          else
-            self.err_msg "Invalid hooked browser type returned from the hook browser's initial connection."
-          end
-
           # get and store the zombie screen color depth
           screen_colordepth = get_param(@data['results'], 'hardware.screen.colordepth')
           if BeEF::Filters.nums_only?(screen_colordepth)
@@ -417,6 +409,7 @@ module BeEF
             'browser.capabilities.vbscript',
             # 'browser.capabilities.java',
             'browser.capabilities.flash',
+            'browser.capabilities.silverlight',
             'browser.capabilities.phonegap',
             'browser.capabilities.googlegears',
             'browser.capabilities.activex',

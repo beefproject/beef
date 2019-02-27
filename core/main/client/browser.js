@@ -101,7 +101,7 @@ beef.browser = {
      * @example: beef.browser.isIE9()
      */
     isIE9: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints === "undefined";
     },
 
     /**
@@ -110,7 +110,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
@@ -2485,19 +2485,6 @@ beef.browser = {
     },
 
     /**
-     * Returns a hash of string keys representing a given capability
-     * @example: beef.browser.capabilities()["navigator.plugins"]
-     */
-    capabilities: function () {
-        var out = {};
-        var type = this.type();
-
-        out["navigator.plugins"] = (type.IE11 || !type.IE);
-
-        return out;
-    },
-
-    /**
      * Returns the type of browser being used.
      * @example: beef.browser.type().IE6
      * @example: beef.browser.type().FF
@@ -2739,6 +2726,15 @@ beef.browser = {
      * @example: beef.browser.getBrowserVersion()
      */
     getBrowserVersion: function () {
+        if (this.isEdge()) {
+          try {
+            return platform.version;
+          } catch(e) {
+            return 'unknown';
+          }
+        }
+        ;   // Microsoft Edge
+
         if (this.isC5()) {
             return '5'
         }
@@ -3620,7 +3616,10 @@ beef.browser = {
      * @example: beef.browser.getBrowserName()
      */
     getBrowserName: function () {
-
+        if (this.isEdge()) {
+            return 'E'
+        }
+        ;       // Microsoft Edge any version
         if (this.isC()) {
             return 'C'
         }
@@ -3633,10 +3632,6 @@ beef.browser = {
             return 'IE'
         }
         ;		// Internet Explorer any version
-        if (this.isEdge()) {
-            return 'E'
-        }
-        ;       // Microsoft Edge any version
         if (this.isO()) {
             return 'O'
         }
@@ -3699,31 +3694,30 @@ beef.browser = {
      * @example: if(beef.browser.hasFlash()) { ... }
      */
     hasFlash: function () {
-        if (!this.type().IE) {
-            return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
-        } else {
-            flash_versions = 12;
-            flash_installed = false;
+      if (!beef.browser.isIE()) {
+        return (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]);
+      }
 
+      if (!!navigator.plugins) {
+        return (navigator.plugins["Shockwave Flash"] != undefined);
+      }
 
-            if (this.type().IE11) {
-                flash_installed = (navigator.plugins["Shockwave Flash"] != undefined);
-            } else {
-                if (window.ActiveXObject != null) {
-                    for (x = 2; x <= flash_versions; x++) {
-                        try {
-                            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
-                            if (Flash) {
-                                flash_installed = true;
-                            }
-                        } catch (e) {
-                            beef.debug("Creating Flash ActiveX object failed: " + e.message);
-                        }
-                    }
-                }
+      // IE
+      var flash_versions = 12;
+      if (window.ActiveXObject != null) {
+        for (x = 2; x <= flash_versions; x++) {
+          try {
+            Flash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
+            if (Flash) {
+              return true;
             }
-            return flash_installed;
+          } catch (e) {
+            beef.debug("Creating Flash ActiveX object failed: " + e.message);
+          }
         }
+      }
+
+      return false;
     },
 
     /**
@@ -3733,38 +3727,25 @@ beef.browser = {
      * @example: if ( beef.browser.hasQuickTime() ) { ... }
      */
     hasQuickTime: function () {
-
-        var quicktime = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
+        if (!!navigator.plugins) {
             for (i = 0; i < navigator.plugins.length; i++) {
-
                 if (navigator.plugins[i].name.indexOf("QuickTime") >= 0) {
-                    quicktime = true;
+                    return true;
                 }
-
             }
-
-            // Has navigator.plugins
-        } else {
-
-            try {
-
-                var qt_test = new ActiveXObject('QuickTime.QuickTime');
-
-            } catch (e) {
-                beef.debug("Creating QuickTime ActiveX object failed: " + e.message);
-            }
-
-            if (qt_test) {
-                quicktime = true;
-            }
-
         }
 
-        return quicktime;
+        // IE
+        try {
+          var qt_test = new ActiveXObject('QuickTime.QuickTime');
+          if (qt_test) {
+            return true;
+          }
+        } catch (e) {
+          beef.debug("Creating QuickTime ActiveX object failed: " + e.message);
+        }
 
+        return false;
     },
 
     /**
@@ -3775,47 +3756,35 @@ beef.browser = {
      */
     hasRealPlayer: function () {
 
-        var realplayer = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
-
-            for (i = 0; i < navigator.plugins.length; i++) {
-
-                if (navigator.plugins[i].name.indexOf("RealPlayer") >= 0) {
-                    realplayer = true;
-                }
-
+        if (!!navigator.plugins) {
+          for (i = 0; i < navigator.plugins.length; i++) {
+            if (navigator.plugins[i].name.indexOf("RealPlayer") >= 0) {
+              return true;
             }
-
-            // has navigator.plugins
-        } else {
-
-            var definedControls = [
-                'RealPlayer',
-                'rmocx.RealPlayer G2 Control',
-                'rmocx.RealPlayer G2 Control.1',
-                'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
-                'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
-            ];
-
-            for (var i = 0; i < definedControls.length; i++) {
-
-                try {
-                    var rp_test = new ActiveXObject(definedControls[i]);
-                } catch (e) {
-                    beef.debug("Creating RealPlayer ActiveX object failed: " + e.message);
-                }
-
-                if (rp_test) {
-                    realplayer = true;
-
-                }
-            }
+          }
         }
 
-        return realplayer;
+        // IE
+        var definedControls = [
+          'RealPlayer',
+          'rmocx.RealPlayer G2 Control',
+          'rmocx.RealPlayer G2 Control.1',
+          'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
+          'RealVideo.RealVideo(tm) ActiveX Control (32-bit)'
+        ];
 
+        for (var i = 0; i < definedControls.length; i++) {
+          try {
+            var rp_test = new ActiveXObject(definedControls[i]);
+            if (rp_test) {
+              return true;
+            }
+          } catch (e) {
+            beef.debug("Creating RealPlayer ActiveX object failed: " + e.message);
+          }
+        }
+
+        return false;
     },
 
     /**
@@ -3825,39 +3794,25 @@ beef.browser = {
      * @example: if ( beef.browser.hasWMP() ) { ... }
      */
     hasWMP: function () {
-
-        var wmp = false;
-
-        if (this.capabilities()["navigator.plugins"]) {
-
-
-            for (i = 0; i < navigator.plugins.length; i++) {
-
-                if (navigator.plugins[i].name.indexOf("Windows Media Player") >= 0) {
-                    wmp = true;
-                }
-
-            }
-
-            // Has navigator.plugins
-        } else {
-
-            try {
-
-                var wmp_test = new ActiveXObject('WMPlayer.OCX');
-
-            } catch (e) {
-                beef.debug("Creating WMP ActiveX object failed: " + e.message);
-            }
-
-            if (wmp_test) {
-                wmp = true;
-            }
-
+      if (!!navigator.plugins) {
+        for (i = 0; i < navigator.plugins.length; i++) {
+          if (navigator.plugins[i].name.indexOf("Windows Media Player") >= 0) {
+            return true;
+          }
         }
+      }
 
-        return wmp;
+      // IE
+      try {
+        var wmp_test = new ActiveXObject('WMPlayer.OCX');
+        if (wmp_test) {
+          return true;
+        }
+      } catch (e) {
+        beef.debug("Creating WMP ActiveX object failed: " + e.message);
+      }
 
+      return false;
     },
 
     /**
@@ -3865,22 +3820,21 @@ beef.browser = {
      *  @return: {Boolean} true or false
      **/
     hasVLC: function () {
-        var vlc = false;
-        if (!this.type().IE) {
-            for (i = 0; i < navigator.plugins.length; i++) {
-                if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
-                    vlc = true;
-                }
-            }
-        } else {
-            try {
-                control = new ActiveXObject("VideoLAN.VLCPlugin.2");
-                vlc = true;
-            } catch (e) {
-                beef.debug("Creating VLC ActiveX object failed: " + e.message);
-            }
+      if (beef.browser.isIE() || beef.browser.isEdge()) {
+        try {
+          control = new ActiveXObject("VideoLAN.VLCPlugin.2");
+          return true;
+        } catch (e) {
+          beef.debug("Creating VLC ActiveX object failed: " + e.message);
         }
-        return vlc;
+      } else {
+        for (i = 0; i < navigator.plugins.length; i++) {
+          if (navigator.plugins[i].name.indexOf("VLC") >= 0) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
 
     /**
@@ -3890,9 +3844,7 @@ beef.browser = {
      * @example: if(beef.browser.javaEnabled()) { ... }
      */
     javaEnabled: function () {
-
-        return navigator.javaEnabled();
-
+      return navigator.javaEnabled();
     },
 
     /**
@@ -3970,10 +3922,11 @@ beef.browser = {
         };
 
         // Things lacking navigator.plugins
-        if (!this.capabilities()["navigator.plugins"]) results = this.getPluginsIE();
+        if (!navigator.plugins) 
+          return this.getPluginsIE();
 
         // All other browsers that support navigator.plugins
-        else if (navigator.plugins && navigator.plugins.length > 0) {
+        if (navigator.plugins && navigator.plugins.length > 0) {
             results = new Array();
             for (var i = 0; i < navigator.plugins.length; i++) {
 
@@ -4273,11 +4226,6 @@ beef.browser = {
         } catch(e) {}
         var touch_enabled = (beef.hardware.isTouchEnabled()) ? "Yes" : "No";
         var browser_platform = (typeof(navigator.platform) != "undefined" && navigator.platform != "") ? navigator.platform : 'Unknown';
-        var browser_type = JSON.stringify(beef.browser.type(), function (key, value) {
-            if (value == true) return value;
-            else if (typeof value == 'object') return value;
-            else return undefined;
-        });
         var screen_size = beef.hardware.getScreenSize();
         try {
           var screen_width = screen_size.width;
@@ -4291,6 +4239,7 @@ beef.browser = {
         } catch(e) {}
         var vbscript_enabled = (beef.browser.hasVBScript()) ? "Yes" : "No";
         var has_flash = (beef.browser.hasFlash()) ? "Yes" : "No";
+        var has_silverlight = (beef.browser.hasSilverlight()) ? "Yes" : "No";
         var has_phonegap = (beef.browser.hasPhonegap()) ? "Yes" : "No";
         var has_googlegears = (beef.browser.hasGoogleGears()) ? "Yes" : "No";
         var has_web_socket = (beef.browser.hasWebSocket()) ? "Yes" : "No";
@@ -4314,7 +4263,6 @@ beef.browser = {
             details['browser.window.cookies'] = '';
         }
 
-        if (browser_type) details['browser.type'] = browser_type;
         if (browser_name) details['browser.name'] = browser_name;
         if (browser_version) details['browser.version'] = browser_version;
         if (browser_engine) details['browser.engine'] = browser_engine;
@@ -4359,6 +4307,7 @@ beef.browser = {
 
         if (vbscript_enabled) details['browser.capabilities.vbscript'] = vbscript_enabled;
         if (has_flash) details['browser.capabilities.flash'] = has_flash;
+        if (has_silverlight) details['browser.capabilities.silverlight'] = has_silverlight;
         if (has_phonegap) details['browser.capabilities.phonegap'] = has_phonegap;
         if (has_web_socket) details['browser.capabilities.websocket'] = has_web_socket;
         if (has_webrtc) details['browser.capabilities.webrtc'] = has_webrtc;
@@ -4413,7 +4362,7 @@ beef.browser = {
         var result = false;
 
         try {
-            if (beef.browser.isIE() || beef.browser.isEdge()) {
+            if (beef.browser.hasActiveX()) {
                 var slControl = new ActiveXObject('AgControl.AgControl');
                 result = true;
             } else if (navigator.plugins["Silverlight Plug-In"]) {
@@ -4546,7 +4495,7 @@ beef.browser = {
         var foxitplugin = false;
 
         try {
-            if (beef.browser.isIE() || beef.browser.isEdge()) {
+            if (beef.browser.hasActiveX()) {
                 var foxitControl = new ActiveXObject('FoxitReader.FoxitReaderCtl.1');
                 foxitplugin = true;
             } else if (navigator.plugins['Foxit Reader Plugin for Mozilla']) {

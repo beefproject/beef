@@ -16,17 +16,6 @@ module Filters
     true
   end
 
-  # Check the browser type value - for example, {"FF5":true,"FF":true} & {"S":true}
-  # @param [String] str String for testing
-  # @return [Boolean] If the string has valid browser type characters
-  def self.is_valid_browsertype?(str)
-    return false unless is_non_empty_string?(str)
-    return false if str.length < 10
-    return false if str.length > 500 #CxF - had to increase this because the Chrome detection JSON String is getting bigger.
-    return false if has_non_printable_char?(str)
-    true
-  end
-
   # Check the Operating System name value - for example, 'Windows XP'
   # @param [String] str String for testing
   # @return [Boolean] If the string has valid Operating System name characters
