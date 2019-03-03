@@ -154,7 +154,7 @@ module BeEF
         end
       rescue => e
         print_error "Failed to prepare HTTP server: #{e.message}"
-	puts e.backtrace
+	print_error e.backtrace
 	exit 1
       end
 

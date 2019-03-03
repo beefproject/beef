@@ -102,9 +102,6 @@ beef:
         # Finally, run a 'bundle install' command and start BeEF.
         driver: "sqlite"
 
-        # db_file is only used for sqlite
-        db_file: "beef.db"
-
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
         db_port: 3306

@@ -30,8 +30,8 @@ module BeEF
           @config.default = nil
           @@config = config
         rescue => e
-          print_error "Fatal Error: cannot load configuration file"
-          print_debug e
+          print_error "Fatal Error: cannot load configuration file '#{file}' : #{e.message}"
+          print_error e.backtrace
         end
 
         @@instance = self
@@ -45,8 +45,35 @@ module BeEF
         raw = File.read file
         YAML.safe_load raw
       rescue => e
-        print_debug "Unable to load '#{file}' #{e}"
-        nil
+        print_debug "Unable to load configuration file '#{file}' : #{e.message}"
+        print_error e.backtrace
+      end
+
+      #
+      # @note balidate the configuration file
+      #
+      def validate
+        if @config.empty?
+          print_error 'Configuration file is empty'
+          return
+	end
+
+        if @config['beef'].nil?
+          print_error "Configuration file is malformed: 'beef' is nil"
+          return
+        end
+
+        if @config['beef']['credentials'].nil?
+          print_error "Configuration file is malformed: 'beef.credentials' is nil"
+          return
+        end
+
+        if @config['beef']['http'].nil?
+          print_error "Configuration file is malformed: 'beef.http' is nil"
+          return
+        end
+
+        true
       end
 
       #

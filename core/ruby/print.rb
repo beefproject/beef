@@ -8,12 +8,14 @@
 # @param [String] s String to be printed
 def print_error(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.red+' '+s
+  BeEF.logger.error s.to_s
 end
 
 # Function used to print information to the console
 # @param [String] s String to be printed
 def print_info(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'.blue+' '+s
+  BeEF.logger.info s.to_s
 end
 
 # Function used to print information to the console (wraps print_info)
@@ -26,6 +28,7 @@ end
 # @param [String] s String to be printed
 def print_warning(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'.yellow+' '+s.to_s
+  BeEF.logger.warn s.to_s
 end
 
 # Function used to print debug information
@@ -35,6 +38,7 @@ def print_debug(s)
   config = BeEF::Core::Configuration.instance
   if config.get('beef.debug') || BeEF::Core::Console::CommandLine.parse[:verbose]
     puts Time.now.localtime.strftime("[%k:%M:%S]")+'[>]'.yellow+' '+s.to_s
+    BeEF.logger.debug s.to_s
   end
 end
 
@@ -42,6 +46,7 @@ end
 # @param [String] s String to be printed
 def print_success(s)
   puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'.green+' '+s
+  BeEF.logger.info s.to_s
 end
 
 # Function used to print successes to the console (wraps print_success)
@@ -65,8 +70,10 @@ def print_more(s)
   lines.each_with_index do |line, index|
     if ((index+1) == lines.size)
       puts "#{time}    |_  #{line}"
+      BeEF.logger.info "#{time}    |_  #{line}"
     else
       puts "#{time}    |   #{line}"
+      BeEF.logger.info "#{time}    |   #{line}"
     end
   end
 end
@@ -77,4 +84,5 @@ end
 def print_over(s)
   time = Time.now.localtime.strftime("[%k:%M:%S]")
   print "\r#{time}"+"[*]".blue+" #{s}"
+  BeEF.logger.info s.to_s
 end

@@ -81,7 +81,7 @@ module AdminUI
       end
     rescue => e
       print_error "Error handling HTTP request: #{e.message}"
-      puts e.backtrace
+      print_error e.backtrace
     end
 
     # Constructs a html script tag (from media/javascript directory)
