@@ -70,15 +70,20 @@ module BeEF
       # This is from extensions/admin_ui/controllers/authentication/authentication.rb
       #
       def self.permitted_source?(ip)
-        # get permitted subnet
+        # test if supplied IP address is valid
+        return false unless BeEF::Filters::is_valid_ip?(ip)
+
+        # get permitted subnets
         permitted_ui_subnet = BeEF::Core::Configuration.instance.get("beef.restrictions.permitted_ui_subnet")
-        target_network = IPAddr.new(permitted_ui_subnet)
+	return false if permitted_ui_subnet.nil?
+	return false if permitted_ui_subnet.empty?
 
-        # test if supplied IP address is valid dot-decimal format
-        return false unless ip =~ /\A[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\z/
+        # test if ip within subnets
+	permitted_ui_subnet.each do |subnet|
+          return true if IPAddr.new(subnet).include?(ip)
+	end
 
-        # test if ip within subnet
-        return target_network.include?(ip)
+        false
       end
 
       #

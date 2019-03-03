@@ -47,8 +47,8 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
     ua_ip = @request.ip # get client ip address
     @body = '{ success : false }' # attempt to fail closed
 
-    # check if source IP address is permited to authenticate
-    if not permited_source?(ua_ip)
+    # check if source IP address is permitted to authenticate
+    if not permitted_source?(ua_ip)
       BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{@request.ip}) attempted to authenticate but is not within permitted subnet.")
       return
     end
@@ -105,19 +105,22 @@ class Authentication < BeEF::Extension::AdminUI::HttpController
   #
   # Check the UI browser source IP is within the permitted subnet
   #
-  def permited_source?(ip)
-    # get permitted subnet
-    config = BeEF::Core::Configuration.instance
-    permitted_ui_subnet = config.get('beef.restrictions.permitted_ui_subnet')
-    target_network = IPAddr.new(permitted_ui_subnet)
-    # test if supplied IP address is valid dot-decimal format
-    return false unless ip =~ /\A[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\z/
-    # test if ip within subnet
-    return target_network.include?(ip)
+  def permitted_source?(ip)
+    # test if supplied IP address is valid
+    return false unless BeEF::Filters::is_valid_ip?(ip)
+
+    # get permitted subnets
+    permitted_ui_subnet = BeEF::Core::Configuration.instance.get("beef.restrictions.permitted_ui_subnet")
+    return false if permitted_ui_subnet.nil?
+    return false if permitted_ui_subnet.empty?
+
+    # test if ip within subnets
+    permitted_ui_subnet.each do |subnet|
+      return true if IPAddr.new(subnet).include?(ip)
+    end
+
+    false
   end
-
-
-
 end
 
 end

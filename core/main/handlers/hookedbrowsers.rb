@@ -30,10 +30,19 @@ module Handlers
       
       # @note check source ip address of browser
       permitted_hooking_subnet = config.get('beef.restrictions.permitted_hooking_subnet')
-      target_network = IPAddr.new(permitted_hooking_subnet)
-      if not target_network.include?(request.ip)
-        BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from out of target range browser (#{request.ip}) rejected.")
-        error 500
+      if permitted_hooking_subnet.nil? || permitted_hooking_subnet.empty?
+        BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from outside of permitted hooking subnet (#{request.ip}) rejected.")
+	error 404
+      end
+
+      found = false
+      permitted_hooking_subnet.each do |subnet|
+        found = true if IPAddr.new(subnet).include?(request.ip)
+      end
+
+      unless found
+        BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from outside of permitted hooking subnet (#{request.ip}) rejected.")
+        error 404
       end
 
       # @note get zombie if already hooked the framework
