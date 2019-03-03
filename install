@@ -207,14 +207,23 @@ install_beef () {
   else
     bundle install --without test development
   fi
+}
 
+finish () {
   echo
-  echo "=========================================="
+  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
   info "Install completed successfully!"
   info "Run './beef' to launch BeEF"
   echo
-  echo "=========================================="
+  echo "Next steps:"
+  echo
+  echo "* Change the default password in config.yaml"
+  echo "* Run ./update-geoipdb to install the Maxmind GeoIP database"
+  echo "* Review the wiki for important configuration information:"
+  echo "  https://github.com/beefproject/beef/wiki/Configuration"
+  echo
+  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
 }
 
@@ -239,6 +248,7 @@ main () {
   check_rubygems
   check_bundler
   install_beef
+  finish
 }
 
 main "$@"
