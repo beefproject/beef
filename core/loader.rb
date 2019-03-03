@@ -40,6 +40,10 @@ require 'optparse'
 require 'resolv'
 require 'digest'
 require 'zip'
+require 'logger'
+
+# @note Logger
+require 'core/logger'
 
 # @note Include the filters
 require 'core/filters'

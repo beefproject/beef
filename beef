@@ -7,7 +7,7 @@
 #
 
 #
-# @note stop deprecation warning from being displayed
+# @note stop Fixnum deprecation warning from being displayed
 #
 $VERBOSE = nil
 
@@ -26,7 +26,7 @@ end
 #
 if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('mingw')
   puts
-  puts "Ruby platform #{RUBY_PLATFORM} is no longer supported."
+  puts "Ruby platform #{RUBY_PLATFORM} is not supported."
   puts
   exit 1
 end
@@ -39,21 +39,19 @@ $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
 #
+# @note Create ~/.beef/
+#
+begin
+  FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
+rescue => e
+  print_error "Could not create '#{$home_dir}': #{e.message}"
+  exit 1
+end
+
+#
 # @note Require core loader's
 #
 require 'core/loader'
-
-#
-# @note Check the system language settings for UTF-8 compatibility
-#
-env_lang = ENV['LANG']
-if env_lang !~ /(utf8|utf-8)/i
-  print_warning "Warning: System language $LANG does not appear to be UTF-8 compatible."
-  if env_lang =~ /\A([a-z]+_[a-z]+)\./i
-    country = $1
-    print_more "Try: export LANG=#{country}.utf8"
-  end
-end
 
 #
 # @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
@@ -65,20 +63,20 @@ else
 end
 
 #
-# @note After the BeEF core is loaded, bootstrap the rest of the framework internals
+# @note set log level
 #
-require 'core/bootstrap'
+BeEF.logger.level = config.get('beef.debug') ? Logger::DEBUG : Logger::WARN
 
 #
-# @note Loads enabled extensions
+# @note Check the system language settings for UTF-8 compatibility
 #
-BeEF::Extensions.load
-
-#
-# @note Prints the BeEF ascii art if the -a flag was passed
-#
-if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
-  BeEF::Core::Console::Banners.print_ascii_art
+env_lang = ENV['LANG']
+if env_lang !~ /(utf8|utf-8)/i
+  print_warning "Warning: System language $LANG '#{env_lang}' does not appear to be UTF-8 compatible."
+  if env_lang =~ /\A([a-z]+_[a-z]+)\./i
+    country = $1
+    print_more "Try: export LANG=#{country}.utf8"
+  end
 end
 
 #
@@ -93,9 +91,63 @@ unless BeEF::Core::Console::CommandLine.parse[:ws_port].empty?
 end
 
 #
+# @note Validate configuration file
+#
+unless BeEF::Core::Configuration.instance.validate
+  exit 1
+end
+
+#
+# @note Exit on default credentials
+#
+if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
+  print_error "ERROR: Default username and password in use!"
+  print_more "Change the beef.credentials.passwd in config.yaml"
+  exit 1
+end
+
+#
+# @note Validate beef.http.public and beef.http.public_port
+#
+unless config.get('beef.http.public').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public'))
+  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
+  exit 1
+end
+
+unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public_port'))
+  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
+  exit 1
+end
+
+#
+# @note Validate database driver
+#
+unless ['sqlite', 'postgres', 'mysql'].include? config.get('beef.database.driver')
+  print_error 'No default database selected. Please add one in config.yaml'
+  exit 1
+end
+
+#
+# @note After the BeEF core is loaded, bootstrap the rest of the framework internals
+#
+require 'core/bootstrap'
+
+#
+# @note Prints the BeEF ascii art if the -a flag was passed
+#
+if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
+  BeEF::Core::Console::Banners.print_ascii_art
+end
+
+#
 # @note Prints BeEF welcome message
 #
 BeEF::Core::Console::Banners.print_welcome_msg
+
+#
+# @note Loads enabled extensions
+#
+BeEF::Extensions.load
 
 #
 # @note Loads enabled modules
@@ -112,7 +164,7 @@ Socket.do_not_reverse_lookup = true
 #
 case config.get("beef.database.driver")
   when "sqlite"
-    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
+    DataMapper.setup(:default, "sqlite3://#{$home_dir}/beef.db")
   when "mysql", "postgres"
     DataMapper.setup(:default,
                      :adapter => config.get("beef.database.driver"),
@@ -142,7 +194,7 @@ begin
 rescue => e
   print_error "Could not connect to database: #{e.message}"
   if config.get("beef.database.driver") == 'sqlite'
-    print_more "Ensure the #{config.get("beef.database.db_file")} database file is writable"
+    print_more "Ensure the #{$home_dir}/beef.db database file is writable"
   end
   exit 1
 end
@@ -170,45 +222,6 @@ BeEF::Core::Console::Banners.print_loaded_extensions
 BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
-
-#
-# @note Create ~/.beef/
-#
-begin
-  FileUtils.mkdir_p($home_dir) unless File.directory?($home_dir)
-rescue => e
-  print_error "Could not create '#{$home_dir}': #{e.message}"
-end
-
-#
-# @note Check whether we load the Console Shell or not
-#
-if config.get("beef.extension.console.shell.enable") == true
-  print_error "The console extension is currently unsupported."
-  print_more "See issue #1090 - https://github.com/beefproject/beef/issues/1090"
-end
-
-#
-# @note Exit on default credentials
-#
-if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
-  print_error "ERROR: Default username and password in use!"
-  print_more "Change the beef.credentials.passwd in config.yaml"
-  exit 1
-end
-
-#
-# @note Validate beef.http.public and beef.http.public_port
-#
-unless config.get('beef.http.public').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public'))
-  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
-  exit 1
-end
-                                                                                                                
-unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public_port'))
-  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
-  exit 1
-end
 
 #
 # @note Prints the API key needed to use the RESTful API

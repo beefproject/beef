@@ -96,7 +96,7 @@ module BeEF
                       print_debug "[WebSocket] New message: #{msg_hash}" if @@debug
                     rescue => e
                       print_error "[WebSocket] Failed parsing WebSocket message: #{e.message}"
-                      puts e.backtrace
+                      print_error e.backtrace
                       next
                     end
 

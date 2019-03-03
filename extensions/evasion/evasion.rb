@@ -66,7 +66,7 @@ module BeEF
           bootstrap
         rescue => e
           print_error "[Evasion] Failed to bootstrap obfuscation technique: #{e.message}"
-          puts e.backtrace
+          print_error e.backtrace
         end
 
         def apply_chain(input)
@@ -83,7 +83,7 @@ module BeEF
           output
         rescue => e
           print_error "[Evasion] Failed to apply obfuscation technique: #{e.message}"
-          puts e.backtrace
+          print_error e.backtrace
         end
       end
     end

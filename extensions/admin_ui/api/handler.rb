@@ -43,7 +43,7 @@ module API
       File.path write_to
     rescue => e
       print_error "[AdminUI] Error: #{e.message}"
-      puts e.backtrace
+      print_error e.backtrace
     end
 
     def self.build_javascript_ui(beef_server)

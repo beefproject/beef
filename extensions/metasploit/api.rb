@@ -30,14 +30,15 @@ module BeEF
 
             if connected
               msf_module_config = {}
-              path = "#{$root_dir}/#{BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')}"
-              if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exists?("#{path}msf-exploits.cache")
-                print_debug "Attempting to use Metasploit exploits cache file"
-                raw = File.read("#{path}msf-exploits.cache")
+              path = "#{$root_dir}/#{BeEF::Core::Configuration.instance.get('beef.extension.metasploit.path')}/msf-exploits.cache"
+              if !BeEF::Core::Console::CommandLine.parse[:resetdb] && File.exist?(path)
+                print_debug 'Attempting to use Metasploit exploits cache file'
+                raw = File.read(path)
                 begin
                   msf_module_config = YAML.load(raw)
                 rescue => e
-                  puts e
+                  print_error "[Metasploit] #{e.message}"
+                  print_error e.backtrace
                 end
                 count = 1
                 msf_module_config.each { |k, v|
@@ -102,9 +103,9 @@ module BeEF
                   end
                 }
                 print "\r\n"
-                File.open("#{path}msf-exploits.cache", "w") do |f|
+                File.open(path, "w") do |f|
                   f.write(msf_module_config.to_yaml)
-                  print_debug "Wrote Metasploit exploits to cache file"
+                  print_debug "Wrote Metasploit exploits to cache file: #{path}"
                 end
               end
               BeEF::Core::Configuration.instance.set('beef.module', msf_module_config)

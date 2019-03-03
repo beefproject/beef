@@ -128,7 +128,7 @@ module Metasploit
       super(meth, *args)
     rescue => e
       print_error "[Metasploit] RPC call to '#{meth}' failed: #{e}"
-      puts e.backtrace
+      print_error e.backtrace
       return
     end
     
