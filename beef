@@ -39,6 +39,11 @@ $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
 #
+# @note Require core loader
+#
+require 'core/loader'
+
+#
 # @note Create ~/.beef/
 #
 begin
@@ -47,11 +52,6 @@ rescue => e
   print_error "Could not create '#{$home_dir}': #{e.message}"
   exit 1
 end
-
-#
-# @note Require core loader's
-#
-require 'core/loader'
 
 #
 # @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
