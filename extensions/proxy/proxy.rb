@@ -171,7 +171,7 @@ module BeEF
               header_key = line.split(': ')[0]
               header_value = line.split(': ')[1]
               next if header_key.nil?
-              next if ignore_headers.include?(header_key)
+              next if ignore_headers.any?{ |h| h.casecmp(header_key) == 0 }
               if header_value.nil?
                 #headers_hash[header_key] = ""
               else
