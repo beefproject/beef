@@ -164,7 +164,7 @@ Socket.do_not_reverse_lookup = true
 #
 case config.get("beef.database.driver")
   when "sqlite"
-    DataMapper.setup(:default, "sqlite3://#{$home_dir}/beef.db")
+    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
   when "mysql", "postgres"
     DataMapper.setup(:default,
                      :adapter => config.get("beef.database.driver"),
@@ -194,7 +194,7 @@ begin
 rescue => e
   print_error "Could not connect to database: #{e.message}"
   if config.get("beef.database.driver") == 'sqlite'
-    print_more "Ensure the #{$home_dir}/beef.db database file is writable"
+    print_error "Ensure the #{$root_dir}/#{config.get("beef.database.db_file")} database file is writable"
   end
   exit 1
 end
