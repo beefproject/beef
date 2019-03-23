@@ -30,7 +30,7 @@ module BeEF
           @config.default = nil
           @@config = config
         rescue => e
-          print_error "Fatal Error: cannot load configuration file '#{file}' : #{e.message}"
+          print_error "Fatal Error: cannot load configuration file '#{config}' : #{e.message}"
           print_error e.backtrace
         end
 
