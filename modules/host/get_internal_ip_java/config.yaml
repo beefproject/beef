@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_internal_ip_java:
+            enable: true
+            category: "Host"
+            name: "Get Internal IP (Java)"
+            description: "Retrieve the local network interface IP address of the victim machine using an unsigned Java applet.<br/><br/>The browser must have Java enabled and configured to allow execution of unsigned Java applets.<br/><br/>Note that modern Java (as of Java 7u51) will outright refuse to execute unsigned Java applets, and will also reject self-signed Java applets unless they're added to the exception list."
+            authors: ["antisnatchor"]
+            target:
+                 user_notify: ["ALL"]

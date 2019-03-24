@@ -3,10 +3,10 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Get_internal_ip < BeEF::Core::Command
+class Get_internal_ip_java < BeEF::Core::Command
 
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_internal_ip/get_internal_ip.class', '/get_internal_ip', 'class')
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_internal_ip_java/get_internal_ip.class', '/get_internal_ip', 'class')
   end
 
   #def self.options
