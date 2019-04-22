@@ -17,8 +17,8 @@ beef:
     # Credentials to authenticate in BeEF.
     # Used by both the RESTful API and the Admin interface
     credentials:
-        user:   "beef"
-        passwd: "beef"
+        user:   "komander"
+        passwd: "100416"
 
     # Interface / IP restrictions
     restrictions:
@@ -108,9 +108,9 @@ beef:
         # db connection information is only used for mysql/postgres
         db_host: "localhost"
         db_port: 3306
-        db_name: "beef"
-        db_user: "beef"
-        db_passwd: "beef"
+        db_name: "bebe"
+        db_user: "komander"
+        db_passwd: "100416"
         db_encoding: "UTF-8"
 
     # Autorun Rule Engine
