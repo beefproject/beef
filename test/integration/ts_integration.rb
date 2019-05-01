@@ -8,9 +8,10 @@
 require '../common/ts_common'
 
 require 'capybara'
+require 'capybara/rspec'
 Capybara.run_server = false # we need to run our own BeEF server
 
-require 'selenium/webdriver'
+require 'selenium-webdriver'
 
 require './check_environment' # Basic log in and log out tests
 require './tc_debug_modules' # RESTful API tests (as well as debug modules)
