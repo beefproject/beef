@@ -86,8 +86,9 @@ group :test do
     # sudo apt-get install libcurl4-openssl-dev
     gem 'curb'
     # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
-    gem 'selenium'
-    gem 'selenium-webdriver', '~> 2.53.4'
+    # gem 'selenium' # Requires old version of selenium which is no longer available
+    gem 'geckodriver-helper'
+    gem 'selenium-webdriver'
     # nokogirl is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
     # sudo port install libxml2 libxslt
