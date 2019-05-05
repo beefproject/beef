@@ -6,7 +6,7 @@
 class Get_system_info_java < BeEF::Core::Command
   
 	def pre_send
-		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_system_info/getSystemInfo.class','/getSystemInfo','class')
+		BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/host/get_system_info_java/getSystemInfo.class','/getSystemInfo','class')
 	end
   
 	def post_execute

