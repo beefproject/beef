@@ -15,5 +15,4 @@ beef:
                 not_working:
                     ALL:
                         os: ["iOS", "Macintosh"]
-                working: ["O", "FF", "S", "IE"]
-                user_notify: ["C"]
+                user_notify: ["C", "O", "FF", "S", "IE"]
