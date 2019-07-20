@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        hook_microsoft_edge:
+            enable: true
+            category: "Host"
+            name: "Hook Microsoft Edge"
+            description: "This module will use the 'microsoft-edge:' protocol handler to attempt to hook Microsoft Edge (assuming it isn't currently hooked).<br/><br/>Note: the user will be prompted to open Microsoft Edge."
+            authors: ["bcoles"]
+            target:
+                user_notify: ["C"]
