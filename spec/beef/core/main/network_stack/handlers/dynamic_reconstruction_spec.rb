@@ -1,7 +1,7 @@
 RSpec.describe 'BeEF Dynamic Reconsturction' do
 
   before(:all) do
-    @port = 2000
+    @port = 2001
     config = {}
     config[:BindAddress] = '127.0.0.1'
     config[:Port] = @port.to_s

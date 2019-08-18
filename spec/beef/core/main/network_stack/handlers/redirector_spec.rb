@@ -1,7 +1,7 @@
 RSpec.describe 'BeEF Redirector' do
 
   before(:all) do
-    @port = 2001
+    @port = 2002
     config = {}
     config[:BindAddress] = '127.0.0.1'
     config[:Port] = @port.to_s
