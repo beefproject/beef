@@ -12,6 +12,7 @@ $root_dir = Dir.pwd
 require 'core/bootstrap.rb'
 require 'rack/test'
 require 'curb'
+require 'rest-client'
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
