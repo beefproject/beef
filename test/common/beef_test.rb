@@ -6,9 +6,10 @@
 require 'test/unit'
 
 require 'capybara'
+require 'capybara/rspec'
 Capybara.run_server = false # we need to run our own BeEF server
 
-require 'selenium/webdriver'
+require 'selenium-webdriver'
 
 class BeefTest
 
@@ -18,7 +19,7 @@ class BeefTest
   end
 
   def self.login(session = nil)
-    session = Capybara::Session.new(:selenium) if session.nil?
+    session = Capybara::Session.new(:selenium_headless) if session.nil?
     session.visit(ATTACK_URL)
     sleep 2.0
     session.has_content?('BeEF Authentication')
@@ -41,7 +42,7 @@ class BeefTest
   end
 
   def self.new_victim
-    victim = Capybara::Session.new(:selenium)
+    victim = Capybara::Session.new(:selenium_headless)
     victim.visit(VICTIM_URL)
     victim
   end
