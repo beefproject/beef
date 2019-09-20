@@ -34,7 +34,6 @@ class TC_Filesystem < Test::Unit::TestCase
     user_cred=YAML.load_file(test_file)
     x= user_cred['beef']['credentials']
     assert_equal({"passwd"=>"beef", "user"=>"beef"}, x, 'The default creds are not set' )
-    exit 1
   end
 
   def test_install_file

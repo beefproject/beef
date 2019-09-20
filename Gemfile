@@ -77,19 +77,6 @@ end
 
 # For running unit tests
 group :test do
-
-  if defined?(RUBY_ENGINE) && RUBY_ENGINE == "ruby"
-    module Kernel
-      alias :_at_exit :at_exit
-      def at_exit(&block)
-        _at_exit do
-        exit_status = $!.status if $!.is_a?(SystemExit)
-        block.call
-        exit exit_status if exit_status
-      end
-      end
-    end
-  end
   if ENV['BEEF_TEST']
     gem 'test-unit'
     gem 'test-unit-full'
