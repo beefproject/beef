@@ -6,7 +6,7 @@
 require 'yaml'
 #require 'pry-byebug'
 
-task :default => ["all"]
+task :default => ["quick"]
 
 desc "Run quick tests"
 task :quick do
