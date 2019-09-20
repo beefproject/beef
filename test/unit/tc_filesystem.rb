@@ -4,6 +4,7 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'test/unit'
+require 'yaml'
 
 class TC_Filesystem < Test::Unit::TestCase
 
@@ -30,8 +31,9 @@ class TC_Filesystem < Test::Unit::TestCase
 
   def test_config_file
     test_file = '../../config.yaml'
-    
-    basic_file_test(test_file)
+    user_cred=YAML.load_file(test_file)
+    x= user_cred['beef']['credentials']
+    assert_equal({"passwd"=>"beef", "user"=>"beef"}, x, 'this shall not work' )
   end
 
   def test_install_file
