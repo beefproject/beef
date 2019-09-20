@@ -21,6 +21,4 @@ addons:
       - zlib1g-dev
       - liblzma-dev
       - libcurl4-openssl-dev
-script:
-  - bundle exec rake build
-  - bundle exec rake builddoc
+
