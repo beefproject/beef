@@ -6,6 +6,19 @@
 require 'yaml'
 #require 'pry-byebug'
 
+if defined?(RUBY_ENGINE) && RUBY_ENGINE == "ruby"
+  module Kernel
+    alias :_at_exit :at_exit
+    def at_exit(&block)
+      _at_exit do
+      exit_status = $!.status if $!.is_a?(SystemExit)
+      block.call
+      exit exit_status if exit_status
+    end
+    end
+  end
+end
+
 task :default => ["quick"]
 
 desc "Run quick tests"
@@ -279,15 +292,3 @@ end
 
 ################################
 
-if defined?(RUBY_ENGINE) && RUBY_ENGINE == "ruby"
-  module Kernel
-    alias :_at_exit :at_exit
-    def at_exit(&block)
-      _at_exit do
-      exit_status = $!.status if $!.is_a?(SystemExit)
-      block.call
-      exit exit_status if exit_status
-    end
-    end
-  end
-end
