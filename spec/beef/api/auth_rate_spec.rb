@@ -7,6 +7,8 @@
 RSpec.describe 'BeEF API Rate Limit' do
 
 	before(:all) do
+		# Note: rake spec passes --patterns which causes BeEF to pickup this argument via optparse. I can't see a better way at the moment to filter this out. Therefore ARGV=[] for this test.
+		ARGV = []
 		DataMapper.setup(:default, 'sqlite3::memory:')
 		DataMapper.auto_migrate!
 		@config = BeEF::Core::Configuration.instance

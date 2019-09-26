@@ -7,59 +7,11 @@ require 'yaml'
 #require 'pry-byebug'
 
 
-task :default => ["quick"]
-
-desc "Run quick tests"
-task :quick do
-  Rake::Task['unit'].invoke # run unit tests
-end
-
-desc "Run all tests"
-task :all do
-  Rake::Task['integration'].invoke # run integration tests
-  Rake::Task['unit'].invoke # run unit tests
-  Rake::Task['msf'].invoke # run msf tests
-end
-
-desc "Run automated tests (for Jenkins)"
-task :automated do
-  Rake::Task['xserver_start'].invoke
-  Rake::Task['all'].invoke
-  Rake::Task['xserver_stop'].invoke
-end
-
-desc "Run integration unit tests"
-task :integration => ["install"] do
-  Rake::Task['beef_start'].invoke
-  sh "export DISPLAY=:0; cd test/integration;ruby -W0 ts_integration.rb"
-  Rake::Task['beef_stop'].invoke
-end
-
-desc "Run integration unit tests"
-task :unit => ["install"] do
-  sh "cd test/unit;ruby -W0 ts_unit.rb"
-end
-
-desc "Run MSF unit tests"
-task :msf => ["install", "msf_install"] do
-  Rake::Task['msf_update'].invoke
-  Rake::Task['msf_start'].invoke
-  sh "cd test/thirdparty/msf/unit/;ruby -W0 ts_metasploit.rb"
-  Rake::Task['msf_stop'].invoke
-end
+task :default => ["spec"]
 
 desc 'Generate API documentation to doc/rdocs/index.html'
 task :rdoc do
   Rake::Task['rdoc:rerdoc'].invoke
-end
-
-desc 'rest test examples'
-task :rest_test do
-  Rake::Task['beef_start'].invoke
-
-  sh 'cd test/api/; ruby -W2 1333_auth_rate.rb'
-
-  Rake::Task['beef_stop'].invoke
 end
 
 ## RSPEC
