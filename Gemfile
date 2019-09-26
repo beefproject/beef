@@ -24,6 +24,7 @@ gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.10.4'
 gem 'rake'
+gem 'therubyracer'
 
 # SQLite support
 group :sqlite do
@@ -77,7 +78,6 @@ end
 
 # For running unit tests
 group :test do
-  if ENV['BEEF_TEST']
     gem 'test-unit'
     gem 'test-unit-full'
     gem 'rspec'
@@ -96,7 +96,6 @@ group :test do
     # RESTful API tests/generic command module tests
     gem 'rest-client', '>= 2.0.1'
     gem 'byebug'
-  end
 end
 
 source 'https://rubygems.org'

@@ -15,7 +15,8 @@ module Core
       @config = BeEF::Core::Configuration.instance
 
       # if notifications are enabled create a new instance
-      @notifications = BeEF::Extension::Notifications::Notifications unless @config.get('beef.extension.notifications.enable') == false
+	  notifications_enabled = @config.get('beef.extension.notifications.enable')
+      @notifications = BeEF::Extension::Notifications::Notifications unless (notifications_enabled == false or notifications_enabled.nil?)
     end
 
     #

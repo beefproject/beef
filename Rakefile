@@ -62,6 +62,13 @@ task :rest_test do
   Rake::Task['beef_stop'].invoke
 end
 
+## RSPEC
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+
+
+
+
 ################################
 # SSL/TLS certificate
 
