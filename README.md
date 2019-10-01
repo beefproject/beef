@@ -70,3 +70,24 @@ To get started, simply execute beef and follow the instructions:
 ```
 $ ./beef
 ```
+
+Docker
+------
+
+Replace beef_cert.pem and beef_key.pem with your TLS certificates.
+
+Edit config.yaml with your desired password, public hostname, and CORS allowed domains.
+
+Note: If you plan to expose this to the Internet, edit config.yaml and replace permitted_ui_subnet 0.0.0.0/0 with your IP address /32.
+
+Build:
+```
+docker build -t [name]/beef .
+```
+
+Example `docker build -t scampbell/beef .`
+
+Run:
+```
+docker run --rm -it -p 3000:3000 -p 6789:6789 -p 61985:61985 -p 61986:61986 scampbell/beef
+```
