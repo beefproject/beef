@@ -7,22 +7,10 @@ module BeEF
 module Core
 module Models
 
-  class CommandModule
+  class CommandModule < BeEF::Core::Model
   
-    include DataMapper::Resource
+    has_many :commands
   
-    storage_names[:default] = 'core_commandmodules'
- 
-    # @note command module ID
-    property :id, Serial
-
-    # @note command module name
-    property :name, Text, :lazy => false
-
-    # @note command module path
-    property :path, Text, :lazy => false
-  
-    has n, :commands
   end
   
 end

@@ -11,15 +11,8 @@ module Models
   #
   # For example, the type and version of browser the hooked browsers are using.
   #
-  class BrowserDetails
+  class BrowserDetails < BeEF::Core::Model
   
-    include DataMapper::Resource
-    
-    storage_names[:default] = 'core_browserdetails'
-    property :session_id, String, :length => 255, :key => true
-    property :detail_key, String, :length => 255, :lazy => false, :key => true
-    property :detail_value, Text, :lazy => false  
-     
     #
     # Returns the requested value from the data store
     #

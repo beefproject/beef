@@ -7,17 +7,10 @@ module BeEF
 module Core
 module Models
 
-  class Log
+  class Log < BeEF::Core::Model
+
+    has_one :hooked_browser
   
-    include DataMapper::Resource
-  
-    storage_names[:default] = 'core_logs'
-  
-    property :id, Serial
-    property :type, Text, :lazy => false
-    property :event, Text, :lazy => false
-    property :date, DateTime, :lazy => false
-    property :hooked_browser_id, Text, :lazy => false
   
   end
 end

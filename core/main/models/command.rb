@@ -9,19 +9,9 @@ module Core
 module Models
 
   # @note Table stores the commands that have been sent to the Hooked Browsers.
-  class Command
+  class Command < BeEF::Core::Model
 
-    include DataMapper::Resource
-
-    storage_names[:default] = 'commands'
-
-    property :id, Serial
-    property :data, Text
-    property :creationdate, String, :length => 15, :lazy => false
-    property :label, Text, :lazy => false
-    property :instructions_sent, Boolean, :default => false
-
-    has n, :results
+    has_many :results
 
     #
     # Save results and flag that the command has been run on the hooked browser
