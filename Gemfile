@@ -17,29 +17,14 @@ gem 'mime-types'
 gem 'execjs'
 gem 'ansi'
 gem 'term-ansicolor', :require => 'term/ansicolor'
-gem 'dm-core'
 gem 'json'
-gem 'data_objects'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.10.4'
 gem 'rake'
 gem 'therubyracer'
-
-# SQLite support
-group :sqlite do
-  gem 'dm-sqlite-adapter'
-end
-
-# PostgreSQL support
-group :postgres do
-  #gem dm-postgres-adapter
-end
-
-# MySQL support
-group :mysql do
-  #gem dm-mysql-adapter
-end
+gem 'otr-activerecord'
+gem 'sqlite3'
 
 # Geolocation support
 group :geoip do
@@ -48,7 +33,6 @@ end
 
 gem 'parseconfig'
 gem 'erubis'
-gem 'dm-migrations'
 
 # Metasploit Integration extension
 group :ext_msf do
