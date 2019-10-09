@@ -30,8 +30,6 @@ require 'core/main/network_stack/assethandler'
 require 'core/main/network_stack/api'
 
 # @note Include the autorun engine
-require 'core/main/autorun_engine/models/rule'
-require 'core/main/autorun_engine/models/execution'
 require 'core/main/autorun_engine/parser'
 require 'core/main/autorun_engine/engine'
 require 'core/main/autorun_engine/rule_loader'
