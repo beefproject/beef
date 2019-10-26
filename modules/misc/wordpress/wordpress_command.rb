@@ -15,7 +15,7 @@ class WordPressCommand < BeEF::Core::Command
   # If we could retrive the hooked URL, we could try to determine the wp_path to be set below
   def self.options
     [
-      { 'name' => 'wp_path', 'ui_label' => 'WordPress Path', 'value' => '/wordpress-5.2.4/' }
+      { 'name' => 'wp_path', 'ui_label' => 'WordPress Path', 'value' => '/' }
     ]
   end
   
