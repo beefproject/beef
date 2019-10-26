@@ -14,6 +14,6 @@ beef:
             category: Misc
             name: WordPress Add User
             description: Adds a WordPress User. No email will be sent to the email address entered, and weak password are allowed.
-            authors: ['Erwan LR']
+            authors: ['hiburn8 @hbrn8', 'Erwan LR']
             target:
                 working: ['ALL']
