@@ -1,0 +1,20 @@
+#
+# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        wordpress_upload_rce_plugin:
+            enable: true
+            category: Misc
+            name: WordPress Upload RCE Plugin
+            description: |
+              This module attempts to upload and activate a malicious wordpress plugin, which will be hidden from the plugins list in the dashboard.
+              Afterwards, the URI to trigger is: http://vulnerable-wordpress.site/wp-content/plugins/beefbind/beefbind.php, 
+              and the command to execute can be send by a POST-parameter named 'cmd'.
+              However, there are more stealthy ways to send the POST request to execute the command, depending on the target.
+              CORS headers have been added to allow bidirectional crossdomain communication.
+            authors: ['Bart Leppens', 'Erwan LR']
+            target:
+                working: ['ALL']
