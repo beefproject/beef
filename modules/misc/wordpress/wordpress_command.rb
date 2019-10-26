@@ -5,6 +5,8 @@
 # Author Erwan LR (@erwan_lr | WPScanTeam) - https://wpscan.org/
 #
 
+require 'securerandom'
+
 class WordPressCommand < BeEF::Core::Command
   def pre_send
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/misc/wordpress/wp.js', '/wp', 'js')
@@ -13,7 +15,7 @@ class WordPressCommand < BeEF::Core::Command
   # If we could retrive the hooked URL, we could try to determine the wp_path to be set below
   def self.options
     [
-      { 'name' => 'wp_path', 'ui_label' => 'WordPress Path', 'value' => '/' }
+      { 'name' => 'wp_path', 'ui_label' => 'WordPress Path', 'value' => '/wordpress-5.2.4/' }
     ]
   end
   

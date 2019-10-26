@@ -13,7 +13,7 @@ class Wordpress_add_user < WordPressCommand
   def self.options
     super() + [
       { 'name' => 'username', 'ui_label' => 'Username', 'value' => 'beef' }, 
-      { 'name' => 'password', 'ui_label' => 'Pwd', 'value' => [*('a'..'z'), *('0'..'9')].shuffle[0, 8].join },
+      { 'name' => 'password', 'ui_label' => 'Pwd', 'value' => SecureRandom.hex(5) },
       { 'name' => 'email', 'ui_label' => 'Email', 'value' => '' },
       { 'name' => 'role',
         'type'         => 'combobox',

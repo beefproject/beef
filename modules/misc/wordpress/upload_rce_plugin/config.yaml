@@ -12,7 +12,7 @@ beef:
             description: |
               This module attempts to upload and activate a malicious wordpress plugin, which will be hidden from the plugins list in the dashboard.
               Afterwards, the URI to trigger is: http://vulnerable-wordpress.site/wp-content/plugins/beefbind/beefbind.php, 
-              and the command to execute can be send by a POST-parameter named 'cmd'.
+              and the command to execute can be send by a POST-parameter named 'cmd', with a 'BEEF' header containing the value of the auth_key option.
               However, there are more stealthy ways to send the POST request to execute the command, depending on the target.
               CORS headers have been added to allow bidirectional crossdomain communication.
             authors: ['Bart Leppens', 'Erwan LR']
