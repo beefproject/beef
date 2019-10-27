@@ -76,7 +76,7 @@ beef.execute(function() {
                 result_text = xhr.responseXML.getElementById('message').innerText;
 
                 if (/plugin activated/i.test(result_text)) {
-                  log('Plugin installed and activated!', 'success');
+                  log('Plugin installed and activated! - Auth Key: <%= @auth_key %>', 'success');
                 }
                 else {
                   log('Error while activating the plugin: ' + result_text, 'error');
