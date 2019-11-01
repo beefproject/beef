@@ -8,9 +8,9 @@
 
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra', '~> 2.0'
-gem 'rack', '~> 2.0'
-gem 'rack-protection', '~> 2.0'
+gem 'sinatra'
+gem 'rack'
+gem 'rack-protection'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
@@ -79,7 +79,8 @@ group :test do
     gem 'capybara'
     # RESTful API tests/generic command module tests
     gem 'rest-client', '>= 2.0.1'
-    gem 'byebug'
+    gem 'irb'
+    gem 'pry-byebug'
 end
 
 source 'https://rubygems.org'
