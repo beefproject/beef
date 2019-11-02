@@ -108,7 +108,7 @@ module BeEF
                       print_debug("[WebSocket] activeSocket content [#{@@activeSocket}]")
 
                       hb_session = msg_hash["cookie"]
-                      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hb_session)
+                      hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => hb_session).first
                       if hooked_browser.nil?
                         print_error '[WebSocket] Fingerprinting not finished yet.'
                         print_more 'ARE rules were not triggered. You may want to trigger them manually via REST API.'
@@ -126,7 +126,7 @@ module BeEF
 
                     # polling zombie
                     unless msg_hash['alive'].nil?
-                      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => msg_hash["alive"])
+                      hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => msg_hash["alive"]).first
 
                       # This will happen if you reset BeEF database (./beef -x),
                       # and existing zombies try to connect. These zombies will be ignored,
@@ -141,15 +141,15 @@ module BeEF
 
                       hooked_browser.lastseen = Time.new.to_i
                       hooked_browser.count!
-                      hooked_browser.save
+                      hooked_browser.save!
 
                       # Check if new modules need to be sent
-                      zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
+                      zombie_commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
                       zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
 
                       # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
                       are_body = ''
-                      are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hooked_browser.session)
+                      are_executions = BeEF::Core::Models::Execution.where(:is_sent => false, :session => hooked_browser.session)
                       are_executions.each do |are_exec|
                         are_body += are_exec.mod_body
                         are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
