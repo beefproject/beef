@@ -225,10 +225,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 
     # if dynamic modules are found in the DB, then we don't have yaml config for them
     # and loading must proceed in a different way.
-    dynamic_modules = BeEF::Core::Models::CommandModule.all(:path.like => "Dynamic/")
+    dynamic_modules = BeEF::Core::Models::CommandModule.where('path LIKE ?', 'Dynamic/')
 
     if(dynamic_modules != nil)
-         all_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+         all_modules = BeEF::Core::Models::CommandModule.all.order(:id)
          all_modules.each{|dyn_mod|
          next if !dyn_mod.path.split('/')[1].match(/^metasploit/)
          command_mod_name = dyn_mod["name"]
@@ -257,7 +257,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def select_command_module
     command_module_id = @params['command_module_id'] || nil
     (print_error "command_module_id is nil";return) if command_module_id.nil?
-    command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
+    command_module = BeEF::Core::Models::CommandModule.find(command_module_id)
     key = BeEF::Module.get_key_by_database_id(command_module_id)
 
     payload_name = @params['payload_name'] || nil
@@ -284,12 +284,12 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     (print_error "nonce incorrect";return) if @session.get_nonce != nonce
 
     # get the browser id
-    zombie = Z.first(:session => zombie_session)
+    zombie = Z.where(:session => zombie_session).first
     (print_error "Zombie is nil";return) if zombie.nil?
     zombie_id = zombie.id
     (print_error "Zombie id is nil";return) if zombie_id.nil?
 
-    C.all(:command_module_id => command_module_id, :hooked_browser_id => zombie_id).each do |command|
+    C.where(:command_module => command_module_id, :hooked_browser => zombie_id).each do |command|
       commands.push({
         'id' => i,
         'object_id' => command.id,
@@ -346,7 +346,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # get params
     command_id = @params['command_id'] || nil
     (print_error "Command id is nil";return) if command_id.nil?
-    command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
+    command = BeEF::Core::Models::Command.find(command_id.to_i) || nil
     (print_error "Command is nil";return) if command.nil?
     # validate nonce
     nonce = @params['nonce'] || nil
@@ -382,11 +382,11 @@ class Modules < BeEF::Extension::AdminUI::HttpController
 	  oc.save
     }
 
-    zombie = Z.first(:session => zombie_session)
+    zombie = Z.where(:session => zombie_session).first
     (print_error "Zombie is nil";return) if zombie.nil?
     zombie_id = zombie.id
     (print_error "Zombie id is nil";return) if zombie_id.nil?
-    command_module = BeEF::Core::Models::CommandModule.get(command_module_id)
+    command_module = BeEF::Core::Models::CommandModule.find(command_module_id)
 
     if(command_module != nil && command_module.path.match(/^Dynamic/))
       dyn_mod_name = command_module.path.split('/').last
@@ -423,14 +423,14 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # get params
     command_id = @params['command_id']|| nil
     (print_error "Command id is nil";return) if command_id.nil?
-    command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
+    command = BeEF::Core::Models::Command.find(command_id.to_i) || nil
     (print_error "Command is nil";return) if command.nil?
 
     # get command_module
-    command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
+    command_module = BeEF::Core::Models::CommandModule.find(command.command_module_id)
     (print_error "command_module is nil";return) if command_module.nil?
 
-    resultsdb = BeEF::Core::Models::Result.all(:command_id => command_id)
+    resultsdb = BeEF::Core::Models::Result.where(:command_id => command_id)
     (print_error "Command id result is nil";return) if resultsdb.nil?
 
     resultsdb.each{ |result| results.push({'date' => result.date, 'data' => JSON.parse(result.data)}) }
@@ -450,10 +450,10 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     # get params
     command_id = @params['command_id'] || nil
     (print_error "Command id is nil";return) if command_id.nil?
-    command = BeEF::Core::Models::Command.first(:id => command_id.to_i) || nil
+    command = BeEF::Core::Models::Command.find(command_id.to_i) || nil
     (print_error "Command is nil";return) if command.nil?
 
-    command_module = BeEF::Core::Models::CommandModule.get(command.command_module_id)
+    command_module = BeEF::Core::Models::CommandModule.find(command.command_module_id)
     (print_error "command_module is nil";return) if command_module.nil?
 
     if(command_module.path.split('/').first.match(/^Dynamic/))
@@ -503,7 +503,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def dynamic_modules2json(id)
     command_modules_json = {}
 
-    mod = BeEF::Core::Models::CommandModule.first(:id => id)
+    mod = BeEF::Core::Models::CommandModule.find(id)
 
     # if the module id is not in the database return false
     return {'success' => 'false'}.to_json if(not mod)
@@ -525,7 +525,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
   def dynamic_payload2json(id, payload_name)
     command_modules_json = {}
 
-    command_module = BeEF::Core::Models::CommandModule.get(id)
+    command_module = BeEF::Core::Models::CommandModule.find(id)
     (print_error "Module does not exists";return 'success' => 'false') if command_module.nil?
 
     payload_options = BeEF::Module.get_payload_options(command_module.name,payload_name)
