@@ -179,7 +179,7 @@ module BeEF
           return
         end
 
-        command = BeEF::Core::Models::Command.first(:id => @command_id)
+        command = BeEF::Core::Models::Command.find(@command_id)
 
         @eruby = Erubis::FastEruby.new(File.read(f))
 
@@ -237,7 +237,7 @@ module BeEF
 
       # @todo TODO Document
       def oc_value(name)
-        option = BeEF::Core::Models::OptionCache.first(:name => name)
+        option = BeEF::Core::Models::OptionCache.where(:name => name).first
         return nil unless option
         option.value
       end
