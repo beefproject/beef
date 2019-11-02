@@ -52,7 +52,7 @@ module BeEF
                 print_more "Exec order: #{exec_order}"
                 print_more "Exec delay: #{exec_delay}"
               end
-              are_rule = BeEF::Core::AutorunEngine::Models::Rule.new(
+              are_rule = BeEF::Core::Models::Rule.new(
                   :name => name,
                   :author => author,
                   :browser => browser,
