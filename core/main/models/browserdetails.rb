@@ -17,7 +17,7 @@ module Models
     # Returns the requested value from the data store
     #
     def self.get(session_id, key) 
-      browserdetail = first(:session_id => session_id, :detail_key => key)
+      browserdetail = self.where(:session_id => session_id, :detail_key => key).first
       
       return nil if browserdetail.nil?
       return nil if browserdetail.detail_value.nil?
@@ -28,19 +28,20 @@ module Models
     # Stores or updates an existing key->value pair in the data store
     #
     def self.set(session_id, detail_key, detail_value) 
-      browserdetails = BeEF::Core::Models::BrowserDetails.all(
+      browserdetails = BeEF::Core::Models::BrowserDetails.where(
         :session_id => session_id,
-        :detail_key => detail_key )
-      if browserdetails.nil? || browserdetails.empty?
+        :detail_key => detail_key ).first
+      if browserdetails.nil?
         # store the new browser details key/value
         browserdetails = BeEF::Core::Models::BrowserDetails.new(
               :session_id   => session_id,
               :detail_key   => detail_key,
               :detail_value => detail_value || '')
-        result = browserdetails.save
+        result = browserdetails.save!
       else
         # update the browser details key/value
-        result = browserdetails.update(:detail_value => detail_value || '')
+        browserdetails.detail_value = detail_value || ''
+        result = browserdetails.save!
         print_debug "Browser has updated '#{detail_key}' to '#{detail_value}'"
       end
 

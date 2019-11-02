@@ -12,6 +12,8 @@ module Models
   class Command < BeEF::Core::Model
 
     has_many :results
+    has_one :command_module
+    has_one :hooked_browser
 
     #
     # Save results and flag that the command has been run on the hooked browser
@@ -30,12 +32,12 @@ module Models
       raise TypeError, '"status" needs to be an integer' unless status.integer?
 
       # @note get the hooked browser structure and id from the database
-      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) || nil
+      hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => hook_session_id).first || nil
       raise TypeError, "hooked_browser is nil" if hooked_browser.nil?
       raise TypeError, "hooked_browser.id is nil" if hooked_browser.id.nil?
 
       # @note get the command module data structure from the database
-      command = first(:id => command_id, :hooked_browser_id => hooked_browser.id) || nil
+      command = self.where(:id => command_id, :hooked_browser_id => hooked_browser.id).first || nil
       raise TypeError, "command is nil" if command.nil?
 
       # @note create the entry for the results 
@@ -45,7 +47,7 @@ module Models
         :status => status,
         :date => Time.now.to_i
       )
-      command.save
+      command.save!
 
       s = show_status(status)
       log = "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}]"
