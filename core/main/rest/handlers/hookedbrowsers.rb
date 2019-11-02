@@ -24,8 +24,8 @@ module BeEF
         # @note Get online and offline hooked browsers details (like name, version, os, ip, port, ...)
         #
         get '/' do
-          online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
-          offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+          online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
+          offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
 
           output = {
               'hooked-browsers' => {
@@ -37,33 +37,33 @@ module BeEF
         end
 
 	get '/:session/delete' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+      hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
 	  details.destroy
 
-	  logs = BeEF::Core::Models::Log.all(:hooked_browser_id => hb.id)
+	  logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
 	  logs.destroy
 
-	  commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hb.id)
+	  commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id)
 	  commands.destroy
 
-	  results = BeEF::Core::Models::Result.all(:hooked_browser_id => hb.id)
+	  results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id)
 	  results.destroy
 
 	  begin
-	    requester = BeEF::Core::Models::Http.all(:hooked_browser_id => hb.id)
+	    requester = BeEF::Core::Models::Http.where(:hooked_browser_id => hb.id)
 	    requester.destroy
 	  rescue => e
 	    #the requester module may not be enabled
 	  end
 
 	  begin
-	    xssraysscans = BeEF::Core::Models::Xssraysscan.all(:hooked_browser_id => hb.id)
+	    xssraysscans = BeEF::Core::Models::Xssraysscan.where(:hooked_browser_id => hb.id)
 	    xssraysscans.destroy
 
-	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.all(:hooked_browser_id => hb.id)
+	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(:hooked_browser_id => hb.id)
 	    xssraysdetails.destroy
 	  rescue => e
 	    #the xssraysscan module may not be enabled
@@ -96,7 +96,7 @@ module BeEF
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
         get '/pf/online' do
-          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15)))
+          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
 
           output = {
               'aaData' => online_hooks
@@ -109,7 +109,7 @@ module BeEF
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
         #
         get '/pf/offline' do
-          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.all(:lastseen.lt => (Time.new.to_i - 15)))
+          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
 
           output = {
               'aaData' => offline_hooks
@@ -121,10 +121,10 @@ module BeEF
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
           result = {}
           details.each do |property|
             result[property.detail_key] = property.detail_value
@@ -140,16 +140,16 @@ module BeEF
           os_version = body['os_version']
           arch = body['arch']
 
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.name').destroy
-          BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'host.os.version').destroy
+          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.name').destroy
+          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.version').destroy
           #BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
 
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os).save
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version).save
-          BeEF::Core::Models::BrowserDetails.new(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch).save
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os)
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version)
+          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch)
 
           # TODO if there where any ARE rules defined for this hooked browser,
           # after updating OS/arch, force a retrigger of the rule.
