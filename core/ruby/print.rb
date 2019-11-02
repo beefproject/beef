@@ -7,14 +7,14 @@
 # Function used to print errors to the console
 # @param [String] s String to be printed
 def print_error(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[!]'+' '+s.to_s
   BeEF.logger.error s.to_s
 end
 
 # Function used to print information to the console
 # @param [String] s String to be printed
 def print_info(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[*]'+' '+s.to_s
   BeEF.logger.info s.to_s
 end
 
@@ -45,7 +45,7 @@ end
 # Function used to print successes to the console
 # @param [String] s String to be printed
 def print_success(s)
-  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'+' '+s
+  puts Time.now.localtime.strftime("[%k:%M:%S]")+'[+]'+' '+s.to_s
   BeEF.logger.info s.to_s
 end
 
