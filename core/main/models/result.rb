@@ -8,6 +8,9 @@ module Core
 module Models
 
   class Result < BeEF::Core::Model
+
+    has_one :command
+    has_one :hooked_browser
   
   end
   

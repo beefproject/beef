@@ -41,13 +41,13 @@ module Models
       raise TypeError, "command is nil" if command.nil?
 
       # @note create the entry for the results 
-      command.results.new(
+      BeEF::Core::Models::Result.create(
         :hooked_browser_id => hooked_browser.id,
+        :command_id => command.id,
         :data => result.to_json,
         :status => status,
         :date => Time.now.to_i
       )
-      command.save!
 
       s = show_status(status)
       log = "Hooked browser [id:#{hooked_browser.id}, ip:#{hooked_browser.ip}]"

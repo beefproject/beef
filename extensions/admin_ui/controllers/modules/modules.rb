@@ -289,7 +289,7 @@ class Modules < BeEF::Extension::AdminUI::HttpController
     zombie_id = zombie.id
     (print_error "Zombie id is nil";return) if zombie_id.nil?
 
-    C.where(:command_module => command_module_id, :hooked_browser => zombie_id).each do |command|
+    C.where(:command_module_id => command_module_id, :hooked_browser_id => zombie_id).each do |command|
       commands.push({
         'id' => i,
         'object_id' => command.id,

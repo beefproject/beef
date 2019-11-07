@@ -8,7 +8,7 @@ class CreateCommands < ActiveRecord::Migration[6.0]
 			t.text :data
 			t.datetime :creationdate
 			t.text :label
-			t.boolean :instructions_sent
+			t.boolean :instructions_sent, default: false
 		end
 
 	end
