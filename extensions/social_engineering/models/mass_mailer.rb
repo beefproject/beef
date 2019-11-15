@@ -9,7 +9,7 @@ module BeEF
 
       class Massmailer < ActiveRecord::Base
 
-        attribute :id, Serial
+        attribute :id, :Serial
 
         #todo fields
       end
