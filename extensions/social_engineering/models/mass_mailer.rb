@@ -7,13 +7,9 @@ module BeEF
   module Core
     module Models
 
-      class Massmailer
+      class Massmailer < ActiveRecord::Base
 
-        include DataMapper::Resource
-
-        storage_names[:default] = 'extension_seng_massmailer'
-
-        property :id, Serial
+        attribute :id, Serial
 
         #todo fields
       end

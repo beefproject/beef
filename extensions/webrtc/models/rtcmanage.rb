@@ -9,23 +9,18 @@ module Models
   #
   # Table stores the queued up JS commands for managing the client-side webrtc logic.
   #
-  class Rtcmanage
-  
-    include DataMapper::Resource
-    
-    storage_names[:default] = 'extension_webrtc_rtcmanage'
-    
-    property :id, Serial
+  class Rtcmanage < ActiveRecord::Base
+    attribute :id, :Serial
 
     # The hooked browser id
-    property :hooked_browser_id, Text, :lazy => false
+    attribute :hooked_browser_id, :Text, :lazy => false
 
     # The message
-    property :message, Text, :lazy => true
+    attribute :message, :Text, :lazy => true
 
     # Boolean value to say if the signal has been sent to the target peer
-    property :has_sent, Text, :lazy => false, :default => "waiting"
-
+    attribute :has_sent, :Text, :lazy => false, :default => "waiting"
+   
     # Starts the RTCPeerConnection process, establishing a WebRTC connection between the caller and the receiver
     def self.initiate(caller, receiver, verbosity = false)
       stunservers = BeEF::Core::Configuration.instance.get("beef.extension.webrtc.stunservers")

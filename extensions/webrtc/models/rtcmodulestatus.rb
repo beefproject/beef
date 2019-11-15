@@ -13,32 +13,28 @@ module Models
   #
   
 
-  class Rtcmodulestatus
-  
-    include DataMapper::Resource
-    
-    storage_names[:default] = 'extension_webrtc_rtcmodulestatus'
-    
-    property :id, Serial
+  class Rtcmodulestatus < ActiveRecord::Base
+    attribute :id, :Serial
 
     # The hooked browser id
-    property :hooked_browser_id, Text, :lazy => false
+    attribute :hooked_browser_id, :Text, :lazy => false
 
     # The hooked browser's IP
-    # property :hooked_browser_ip, Text, :lazy => false
+    attribute :hooked_browser_ip, :Text, :lazy => false
 
     # The target hooked browser id
-    property :target_hooked_browser_id, Text, :lazy => false
+    attribute :target_hooked_browser_id, :Text, :lazy => false
 
     # The command module ID
-    property :command_module_id, Text, :lazy => false
+    attribute :command_module_id, :Text, :lazy => false
 
     # The status field
-    property :status, Text, :lazy => true
+    attribute :status, :Text, :lazy => true
 
     # Timestamps
-    property :created_at, DateTime
-    property :updated_at, DateTime
+    attribute :created_at, DateTime
+    attribute :updated_at, DateTime
+  
 
   end
   

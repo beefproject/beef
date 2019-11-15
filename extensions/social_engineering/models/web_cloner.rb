@@ -6,19 +6,13 @@
 module BeEF
   module Core
     module Models
-      class Webcloner
+      class Webcloner <  ActiveRecord::Base
+        attribute :id, :Serial
 
-        include DataMapper::Resource
+        attribute :uri, :Text, :lazy => false
+        attribute :mount, :Text, :lazy => false
 
-        storage_names[:default] = 'extension_seng_webcloner'
-
-        property :id, Serial
-
-        property :uri, Text, :lazy => false
-        property :mount, Text, :lazy => false
-
-        has n, :extension_seng_interceptor, 'Interceptor'
-
+        belongs_tos :extension_seng_interceptor, 'Interceptor'
       end
 
     end

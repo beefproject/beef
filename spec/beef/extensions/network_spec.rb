@@ -4,8 +4,10 @@ require 'extensions/network/models/network_host'
 RSpec.describe 'BeEF Extension Network' do
 
   before(:all) do
-    DataMapper.setup(:default, 'sqlite3::memory:')
-    DataMapper.auto_migrate!
+    ActiveRecord::Base.establish_connection(
+      database: "beef.db",
+      adapter:	"sqlite3"
+    )
   end
 
   it 'add good host' do

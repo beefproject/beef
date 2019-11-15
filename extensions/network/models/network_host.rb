@@ -9,20 +9,15 @@ module BeEF
       #
       # Table stores each host identified on the zombie browser's network(s)
       #
-      class NetworkHost
-        include DataMapper::Resource
-        storage_names[:default] = 'network_host'
-
-        property :id, Serial
-
-        property :hooked_browser_id, Text, lazy: false
-        property :ip, Text, lazy: false
-        property :hostname, String, lazy: false
-        property :type, String, lazy: false # proxy, router, gateway, dns, etc
-        property :os, String, lazy: false
-        property :mac, String, lazy: false
-        property :lastseen, String, length: 15
-
+      class NetworkHost < ActiveRecord::Base
+        attribute :id, :Serial
+        attribute :hooked_browser_id, :Text, lazy: false
+        attribute :ip, :Text, lazy: false
+        attribute :hostname, :String, lazy: false
+        attribute :type, :String, lazy: false # proxy, router, gateway, dns, etc
+        attribute :os, :String, lazy: false
+        attribute :mac, :String, lazy: false
+        attribute :lastseen, :String, length: 15
         #
         # Stores a network host in the data store
         #

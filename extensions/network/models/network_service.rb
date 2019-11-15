@@ -9,19 +9,15 @@ module BeEF
       #
       # Table stores each open port identified on the zombie browser's network(s)
       #
-      class NetworkService
-        include DataMapper::Resource
-        storage_names[:default] = 'network_service'
+      class NetworkService < ActiveRecord::Base
+        
+        attribute :id, :Serial
+        attribute :hooked_browser_id, :Text, lazy: false
+        attribute :proto, :String, lazy: false
+        attribute :ip, :Text, lazy: false
+        attribute :port, :String, lazy: false
+        attribute :type, :String, lazy: false
 
-        property :id, Serial
-
-        property :hooked_browser_id, Text, lazy: false
-        property :proto, String, lazy: false
-        property :ip, Text, lazy: false
-        property :port, String, lazy: false
-        property :type, String, lazy: false
-
-        #
         # Stores a network service in the data store
         #
         def self.add(service = {})

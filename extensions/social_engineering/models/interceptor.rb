@@ -6,15 +6,10 @@
 module BeEF
   module Core
     module Models
-      class Interceptor
-
-        include DataMapper::Resource
-
-        storage_names[:default] = 'extension_seng_interceptor'
-
-        property :id, Serial
-        property :ip, Text, :lazy => false
-        property :post_data, Text, :lazy => false
+      class Interceptor < ActiveRecord::Base
+        attribute :id, :Serial
+        attribute :ip, :Text, :lazy => false
+        attribute :post_data, :Text, :lazy => false
 
         belongs_to :webcloner
 

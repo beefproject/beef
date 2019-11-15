@@ -9,28 +9,23 @@ module Models
   #
   # Store the XssRays scans started and finished, with relative ID
   #
-  class Xssraysscan
+  class Xssraysscan < ActiveRecord::Base
 
-    include DataMapper::Resource
+    attribute :id, :Serial
 
-    storage_names[:default] = 'extension_xssrays_scans'
+    attribute :hooked_browser_id, :Text, :lazy => false
 
-    property :id, Serial
+    attribute :scan_start, :DateTime, :lazy => true
+    attribute :scan_finish, :DateTime, :lazy => true
 
-    property :hooked_browser_id, Text, :lazy => false
+    attribute :domain, :Text, :lazy => true
+    attribute :cross_domain, :Text, :lazy => true
+    attribute :clean_timeout, :Integer, :lazy => false
 
-    property :scan_start, DateTime, :lazy => true
-    property :scan_finish, DateTime, :lazy => true
+    attribute :is_started, :Boolean, :lazy => false, :default => false
+    attribute :is_finished, :Boolean, :lazy => false, :default => false
 
-    property :domain, Text, :lazy => true
-    property :cross_domain, Text, :lazy => true
-    property :clean_timeout, Integer, :lazy => false
-
-    property :is_started, Boolean, :lazy => false, :default => false
-    property :is_finished, Boolean, :lazy => false, :default => false
-
-    has n, :extension_xssrays_details, 'Xssraysdetail'
-
+    belongs_to :extension_xssrays_details
   end
 
 end

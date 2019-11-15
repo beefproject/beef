@@ -25,9 +25,11 @@ class TC_Proxy < Test::Unit::TestCase
       @@proxy_config = config.get('beef.extension.proxy')
       @@proxy = "#{@@proxy_config['address']}:#{@@proxy_config['port']}"
 
-      # set up datamapper
-      DataMapper.setup(:default, 'sqlite3::memory:')
-      DataMapper.auto_migrate!
+      # set up active record
+      ActiveRecord::Base.establish_connection(
+        database: "beef.db"
+        adapter:	"sqlite3"
+      )
 
       # set headers for rest requests
       @@headers = { :content_type => :json, :accept => :json }

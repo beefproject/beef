@@ -9,19 +9,14 @@ module BeEF
       module Dns
 
         # Represents an individual DNS rule.
-        class Rule
-          include DataMapper::Resource
-
-          storage_names[:default] = 'extension_dns_rules'
-
-          property :id, String, :key => true
-          property :pattern, Object, :required => true
-          property :resource, Object, :required => true
-          property :response, Object, :required => true
-          property :callback, Object, :required => true
-
+        class Rule < ActiveRecord::Base
+        attribute :id, :String, :key => true
+        attribute :pattern, :Object, :required => true
+        attribute :resource, :Object, :required => true
+        attribute :response, :Object, :required => true
+        attribute :callback, :Object, :required => true
           # Hooks the model's "save" event. Validates pattern/response and generates a rule identifier.
-          before :save do |rule|
+          before_save do |rule|
             begin
               validate_pattern(rule.pattern)
               rule.callback = format_callback(rule.resource, rule.response)
