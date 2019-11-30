@@ -32,7 +32,7 @@ module Events
       end
 
       # validates that a hooked browser with the beef_hook token exists in the db
-      zombie = Z.first(:session => beef_hook) || nil
+      zombie = Z.where(:session => beef_hook).first || nil
       if zombie.nil?
         print_error "[EVENTS] Invalid beef hook id: the hooked browser cannot be found in the database"
         return
