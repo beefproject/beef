@@ -34,7 +34,7 @@ class Get_http_servers < BeEF::Core::Command
         session_id = @datastore['beefhook']
         if !ip.nil? && BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found HTTP Server [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => "HTTP Server")
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => "HTTP Server")
         end
       end
 

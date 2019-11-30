@@ -26,7 +26,7 @@ class Detect_cups < BeEF::Core::Command
         type = 'CUPS'
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found 'CUPS' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
     end
