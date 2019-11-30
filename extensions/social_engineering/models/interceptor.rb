@@ -6,10 +6,7 @@
 module BeEF
   module Core
     module Models
-      class Interceptor < ActiveRecord::Base
-        attribute :id, :Serial
-        attribute :ip, :Text, :lazy => false
-        attribute :post_data, :Text, :lazy => false
+      class Interceptor < BeEF::Core::Model
 
         belongs_to :webcloner
 

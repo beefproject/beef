@@ -6,13 +6,10 @@
 module BeEF
   module Core
     module Models
-      class Webcloner <  ActiveRecord::Base
-        attribute :id, :Serial
+      class Webcloner < BeEF::Core::Model
 
-        attribute :uri, :Text, :lazy => false
-        attribute :mount, :Text, :lazy => false
+        has_many :interceptors
 
-        belongs_tos :extension_seng_interceptor, 'Interceptor'
       end
 
     end

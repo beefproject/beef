@@ -7,11 +7,8 @@ module BeEF
   module Core
     module Models
 
-      class Massmailer < ActiveRecord::Base
+      class Massmailer < BeEF::Core::Model
 
-        attribute :id, :Serial
-
-        #todo fields
       end
 
     end
