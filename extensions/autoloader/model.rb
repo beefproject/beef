@@ -7,12 +7,9 @@ module BeEF
 module Core
 module Models
   
-class Autoloading < ActiveRecord::Base
+class Autoloading < BeEF::Core::Model
 
-  attribute :id, :Serial
-  attribute :in_use, :Boolean
-  
-  belongs_to :command
+    belongs_to :command
   
 end
   
