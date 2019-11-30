@@ -9,15 +9,11 @@ module BeEF
       #
       # Table stores each open port identified on the zombie browser's network(s)
       #
-      class NetworkService < ActiveRecord::Base
-        
-        attribute :id, :Serial
-        attribute :hooked_browser_id, :Text, lazy: false
-        attribute :proto, :String, lazy: false
-        attribute :ip, :Text, lazy: false
-        attribute :port, :String, lazy: false
-        attribute :type, :String, lazy: false
+      class NetworkService < BeEF::Core::Model
+          belongs_to :hooked_browser
 
+
+        #
         # Stores a network service in the data store
         #
         def self.add(service = {})
@@ -44,19 +40,20 @@ module BeEF
           end
 
           # store the returned network host details
-          BeEF::Core::Models::NetworkHost.add(
+          BeEF::Core::Models::NetworkHost.create(
             hooked_browser_id: service[:hooked_browser_id],
             ip: service[:ip]
           )
 
           # prevent duplicates
-          return unless BeEF::Core::Models::NetworkService.all(
+          total = BeEF::Core::Models::NetworkService.where(
             hooked_browser_id: service[:hooked_browser_id],
             proto: service[:proto],
             ip: service[:ip],
             port: service[:port],
-            type: service[:type]
-          ).empty?
+            ntype: service[:ntype]
+          ).length
+          return if total > 0
 
           # store the returned network service details
           network_service = BeEF::Core::Models::NetworkService.new(
@@ -64,10 +61,9 @@ module BeEF
             proto: service[:proto],
             ip: service[:ip],
             port: service[:port],
-            type: service[:type]
+            ntype: service[:ntype]
           )
-          result = network_service.save
-          if result.nil?
+          if network_service.save
             print_error 'Failed to save network service'
             return
           end
@@ -83,7 +79,7 @@ module BeEF
             proto: proto,
             ip: ip,
             port: port,
-            type: type
+            ntype: ntype
           }
         end
       end
