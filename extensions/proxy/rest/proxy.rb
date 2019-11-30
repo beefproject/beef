@@ -35,8 +35,8 @@ module BeEF
             result['success'] = false
             return result.to_json if hb_id.nil?
 
-            hooked_browser = @hb.first(:session => hb_id)
-            previous_proxy_hb = @hb.first(:is_proxy => true)
+            hooked_browser = @hb.where(:session => hb_id).first
+            previous_proxy_hb = @hb.where(:is_proxy => true).first
 
             # if another HB is currently set as tunneling proxy, unset it
             unless previous_proxy_hb.nil?
