@@ -8,7 +8,7 @@
 class Msf_module < BeEF::Core::Command
         def output
 
-	command = BeEF::Core::Models::Command.first(:id => @command_id)
+	command = BeEF::Core::Models::Command.find(@command_id)
 	data = JSON.parse(command['data'])
 	sploit_url =  data[0]['sploit_url']
 
