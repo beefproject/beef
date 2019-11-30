@@ -9,23 +9,10 @@ module Models
   #
   # Store the XssRays scans started and finished, with relative ID
   #
-  class Xssraysscan < ActiveRecord::Base
+  class Xssraysscan < BeEF::Core::Model
 
-    attribute :id, :Serial
+    has_many :xssrays_details
 
-    attribute :hooked_browser_id, :Text, :lazy => false
-
-    attribute :scan_start, :DateTime, :lazy => true
-    attribute :scan_finish, :DateTime, :lazy => true
-
-    attribute :domain, :Text, :lazy => true
-    attribute :cross_domain, :Text, :lazy => true
-    attribute :clean_timeout, :Integer, :lazy => false
-
-    attribute :is_started, :Boolean, :lazy => false, :default => false
-    attribute :is_finished, :Boolean, :lazy => false, :default => false
-
-    belongs_to :extension_xssrays_details
   end
 
 end

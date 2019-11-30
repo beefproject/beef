@@ -9,21 +9,8 @@ module Models
   #
   # Store the rays details, basically verified XSS vulnerabilities
   #
-  class Xssraysdetail < ActiveRecord::Base
-    attribute :id, :Serial
-
-    # The hooked browser id
-    attribute :hooked_browser_id, :Text, :lazy => false
-
-    # The XssRays vector name for the vulnerability
-    attribute :vector_name, :Text, :lazy => true
-
-    # The XssRays vector method (GET or POST) for the vulnerability
-    attribute :vector_method, :Text, :lazy => true
-
-    # The XssRays Proof of Concept for the vulnerability
-    attribute :vector_poc, :Text, :lazy => true
-
+  class Xssraysdetail < BeEF::Core::Model
+    belongs_to :hooked_browser
     belongs_to :xssraysscan
   end
   

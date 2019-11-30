@@ -18,7 +18,7 @@ module BeEF
           # raise an error if it's null or not found in the DB
           beef_hook = params[:hbsess] || nil
 
-          if beef_hook.nil? || HB.first(:session => beef_hook).nil?
+          if beef_hook.nil? || HB.where(:session => beef_hook).first.nil?
             print_error "[XSSRAYS] Invalid beef hook ID: the hooked browser cannot be found in the database"
             return
           end
@@ -53,8 +53,8 @@ module BeEF
 
         # parse incoming rays: rays are verified XSS, as the attack vector is calling back BeEF when executed.
         def parse_rays(rays_scan_id)
-          xssrays_scan = XS.first(:id => rays_scan_id)
-          hooked_browser = HB.first(:session => params[:hbsess])
+          xssrays_scan = XS.find(rays_scan_id)
+          hooked_browser = HB.where(:session => params[:hbsess]).first
 
           if xssrays_scan.nil?
             print_error "[XSSRAYS] Invalid scan"
@@ -76,7 +76,7 @@ module BeEF
 
         # finalize the XssRays scan marking the scan as finished in the db
         def finalize_scan(rays_scan_id)
-          xssrays_scan = BeEF::Core::Models::Xssraysscan.first(:id => rays_scan_id)
+          xssrays_scan = BeEF::Core::Models::Xssraysscan.find(rays_scan_id)
 
           if xssrays_scan.nil?
             print_error "[XSSRAYS] Invalid scan"
