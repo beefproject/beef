@@ -3,25 +3,18 @@ require 'extensions/network/models/network_host'
 
 RSpec.describe 'BeEF Extension Network' do
 
-  before(:all) do
-    ActiveRecord::Base.establish_connection(
-      database: "beef.db",
-      adapter:	"sqlite3"
-    )
-  end
-
   it 'add good host' do
     expect {
-      BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => '1234', :ip => '127.0.0.1')
+      BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => '1234', :ip => '127.0.0.1')
     }.to_not raise_error
-    expect(BeEF::Core::Models::NetworkHost.all(hooked_browser_id: '1234', ip: '127.0.0.1')).to_not be_empty
+    expect(BeEF::Core::Models::NetworkHost.where(hooked_browser_id: '1234', ip: '127.0.0.1')).to_not be_empty
   end
 
   it 'add good service' do
     expect {
-      BeEF::Core::Models::NetworkService.add(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :type => 'Apache')
+      BeEF::Core::Models::NetworkService.create(:hooked_browser_id => '1234', :proto => 'http', :ip => '127.0.0.1', :port => 80, :ntype => 'Apache')
     }.to_not raise_error
-    expect(BeEF::Core::Models::NetworkService.all(hooked_browser_id: '1234', ip: '127.0.0.1')).to_not be_empty
+    expect(BeEF::Core::Models::NetworkService.where(hooked_browser_id: '1234', ip: '127.0.0.1')).to_not be_empty
 
   end
 

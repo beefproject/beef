@@ -21,10 +21,25 @@ end
 
 ENV['RACK_ENV'] ||= 'test'
 
+ActiveRecord::Base.logger = nil
+OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:':memory:')
+ActiveRecord::Schema.verbose = false
+context = ActiveRecord::Migration.new.migration_context
+if context.needs_migration?
+  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+end
+
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.include Rack::Test::Methods
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+  config.around do |example|
+    ActiveRecord::Base.transaction do
+      example.run
+      raise ActiveRecord::Rollback
+    end
   end
 end

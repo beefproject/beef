@@ -3,10 +3,6 @@ require 'extensions/ipec/extension'
 RSpec.describe 'BeEF Extension IPEC' do
 
   before(:all) do
-    ActiveRecord::Base.establish_connection(
-      database: "beef.db",
-      adapter:	"sqlite3"
-    )
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
   end

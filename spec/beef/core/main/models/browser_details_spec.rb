@@ -2,10 +2,6 @@ RSpec.describe 'BeEF BrowserDetails' do
 
   before(:all) do
     @session = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
-    ActiveRecord::Base.establish_connection(
-      database: "beef.db",
-      adapter:	"sqlite3"
-    )  
   end
 
   it 'set nil value' do
