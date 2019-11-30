@@ -9,26 +9,28 @@ module BeEF
       module Dns
 
         # Represents an individual DNS rule.
-        class Rule < ActiveRecord::Base
-        attribute :id, :String, :key => true
-        attribute :pattern, :Object, :required => true
-        attribute :resource, :Object, :required => true
-        attribute :response, :Object, :required => true
-        attribute :callback, :Object, :required => true
+        class Rule < BeEF::Core::Model
+
           # Hooks the model's "save" event. Validates pattern/response and generates a rule identifier.
-          before_save do |rule|
+          before_save :check_rule
+          self.table_name = 'dns_rule'
+          serialize :response, Array
+
+        private
+
+          def check_rule
             begin
-              validate_pattern(rule.pattern)
-              rule.callback = format_callback(rule.resource, rule.response)
+              validate_pattern(self.pattern)
+              self.callback = format_callback(self.resource.constantize, self.response)
             rescue InvalidDnsPatternError, UnknownDnsResourceError, InvalidDnsResponseError => e
               print_error e.message
               throw :halt
             end
 
-            rule.id = BeEF::Core::Crypto.dns_rule_id
+            #self.id = BeEF::Core::Crypto.dns_rule_id
+
           end
 
-        private
           # Verifies that the given pattern is valid (i.e. non-empty, no null's or printable characters).
           def validate_pattern(pattern)
             raise InvalidDnsPatternError unless BeEF::Filters.is_non_empty_string?(pattern) &&
