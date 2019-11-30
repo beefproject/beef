@@ -18,8 +18,8 @@ class ShellInterface
 
   def settarget(id)
     begin
-      self.targetsession = BeEF::Core::Models::HookedBrowser.first(:id => id).session
-      self.targetip = BeEF::Core::Models::HookedBrowser.first(:id => id).ip
+      self.targetsession = BeEF::Core::Models::HookedBrowser.find(id).session
+      self.targetip = BeEF::Core::Models::HookedBrowser.find(id).ip
       self.targetid = id
     rescue
       return nil
@@ -28,8 +28,8 @@ class ShellInterface
 
   def setofflinetarget(id)
     begin
-      self.targetsession = BeEF::Core::Models::HookedBrowser.first(:id => id).session
-      self.targetip = "(OFFLINE) " + BeEF::Core::Models::HookedBrowser.first(:id => id).ip
+      self.targetsession = BeEF::Core::Models::HookedBrowser.find(id).session
+      self.targetip = "(OFFLINE) " + BeEF::Core::Models::HookedBrowser.find(id).ip
       self.targetid = id
     rescue
       return nil
@@ -80,10 +80,10 @@ class ShellInterface
 
     # if dynamic modules are found in the DB, then we don't have yaml config for them
     # and loading must proceed in a different way.
-    dynamic_modules = BeEF::Core::Models::CommandModule.all(:path.like => "Dynamic/")
+    dynamic_modules = BeEF::Core::Models::CommandModule.where('path LIKE ?', 'Dynamic/')
 
     if(dynamic_modules != nil)
-      all_modules = BeEF::Core::Models::CommandModule.all(:order => [:id.asc])
+      all_modules = BeEF::Core::Models::CommandModule.all.order(:id)
       all_modules.each{|dyn_mod|
         next if !dyn_mod.path.split('/').first.match(/^Dynamic/)
 
@@ -151,7 +151,7 @@ class ShellInterface
     commands = []
     i = 0
 
-    BeEF::Core::Models::Command.all(:command_module_id => cmdid, :hooked_browser_id => self.targetid).each do |command|
+    BeEF::Core::Models::Command.where(:command_module_id => cmdid, :hooked_browser_id => self.targetid).each do |command|
       commands.push({
         'id' => i,
         'object_id' => command.id,
@@ -167,7 +167,7 @@ class ShellInterface
   def getindividualresponse(cmdid)
     results = []
     begin
-      BeEF::Core::Models::Result.all(:command_id => cmdid).each { |result|
+      BeEF::Core::Models::Result.where(:command_id => cmdid).each { |result|
         results.push({'date' => result.date, 'data' => JSON.parse(result.data)})
       }
     rescue
@@ -380,7 +380,7 @@ class ShellInterface
       'results' => []
     }
     @nh = BeEF::Core::Models::NetworkHost
-    hosts = @nh.all(:hooked_browser_id => self.targetsession)
+    hosts = @nh.where(:hooked_browser_id => self.targetsession)
 
     # add property to summary hash
     if not hosts.empty?
@@ -418,7 +418,7 @@ class ShellInterface
       'results' => []
     }
     @ns = BeEF::Core::Models::NetworkService
-    services = @ns.all(:hooked_browser_id => self.targetsession)
+    services = @ns.where(:hooked_browser_id => self.targetsession)
 
     # add property to summary hash
     if not services.empty?
