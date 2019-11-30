@@ -20,7 +20,7 @@ module BeEF
             @body = body
             # Generate all the requests and output them to the hooked browser
             output = []
-            BeEF::Core::Models::Http.all(:hooked_browser_id => hb.session, :has_ran => "waiting").each { |h|
+            BeEF::Core::Models::Http.where(:hooked_browser_id => hb.session, :has_ran => "waiting").each { |h|
               output << self.requester_parse_db_request(h)
             }
 

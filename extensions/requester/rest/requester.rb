@@ -33,7 +33,7 @@ module BeEF
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters::nums_only?(id)
 
-            requests = H.all(:id => id)
+            requests = H.find(id)
             halt 404 if requests.nil?
 
             result = {}
@@ -59,7 +59,7 @@ module BeEF
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters.is_valid_hook_session_id?(id)
 
-            requests = H.all(:hooked_browser_id => id)
+            requests = H.where(:hooked_browser_id => id)
             halt 404 if requests.nil?
 
             result = {}
@@ -85,7 +85,7 @@ module BeEF
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters::nums_only?(id)
 
-            responses = H.first(:id => id) || nil
+            responses = H.find(id) || nil
             halt 404 if responses.nil?
 
             result = {}
@@ -108,7 +108,7 @@ module BeEF
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters::nums_only?(id)
 
-            responses = H.first(:id => id) || nil
+            responses = H.find(id) || nil
             halt 404 if responses.nil?
 
             result = {}
@@ -130,7 +130,7 @@ module BeEF
             proto = params[:proto].to_s || 'http'
             raw_request = params['raw_request'].to_s
 
-            zombie = HB.first(:session => id) || nil
+            zombie = HB.where(:session => id).first || nil
             halt 404 if zombie.nil?
 
 
