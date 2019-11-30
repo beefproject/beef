@@ -9,21 +9,9 @@ module Models
   #
   # Table stores the webrtc signals from a hooked_browser, directed to a target_hooked_browser
   #
-  class Rtcsignal < ActiveRecord::Base
-    attribute :id, :Serial
+  class Rtcsignal < BeEF::Core::Model
 
-    # The hooked browser id
-    attribute :hooked_browser_id, :Text, :lazy => false
-
-    # The target hooked browser id
-    attribute :target_hooked_browser_id, :Text, :lazy => false
-
-    # The WebRTC signal to submit. In clear text.
-    attribute :signal , :Text, :lazy => true
-
-    # Boolean value to say if the signal has been sent to the target peer
-    attribute :has_sent, :Text, :lazy => false, :default => "waiting"
-  
+    belongs_to :hooked_browser
 
   end
   

@@ -13,28 +13,9 @@ module Models
   #
   
 
-  class Rtcstatus < ActiveRecord::Base
-    attribute :id, :Serial
-
-    # The hooked browser id
-    attribute :hooked_browser_id, :Text, :lazy => false
-
-    # The hooked browser's IP
-    # property :hooked_browser_ip, Text, :lazy => false
-
-    # The target hooked browser id
-    attribute :target_hooked_browser_id, :Text, :lazy => false
-
-    # The target hooked browser's IP
-    # property :target_hooked_browser_ip, Text, :lazy => false
-
-    # The status field
-    attribute :status, :Text, :lazy => true
-
-    # Timestamps
-    attribute :created_at, DateTime
-    attribute :updated_at, DateTime
+  class Rtcstatus < BeEF::Core::Model
   
+    belongs_to :hooked_browser
 
   end
   
