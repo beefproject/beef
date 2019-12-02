@@ -31,6 +31,8 @@ RSpec.describe 'BeEF API Rate Limit' do
 		passwds.push BEEF_PASSWD
 		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
 		l = apis.length
+		#If this is failing with expect(test_api.auth()[:payload]["success"]).to be(true) expected true but received nil
+		#make sure in config.yaml the password = BEEF_PASSWD, which is currently 'beef'
 		(0..2).each do |again|      # multiple sets of auth attempts
 		  # first pass -- apis in order, valid passwd on 9th attempt
 		  # subsequent passes apis shuffled
