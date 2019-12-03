@@ -1,0 +1,19 @@
+#
+# Copyright (c) Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+# 
+# This is a complete rewrite of the original module exploits/wordpress_add_admin which was not working anymore
+#
+#  Original Author: Daniel Reece (@HBRN8).
+#  Rewritten by Erwan LR (@erwan_lr | WPScanTeam) - https://wpscan.org/
+# 
+beef:
+    module:
+        wordpress_add_user:
+            enable: true
+            category: Misc
+            name: WordPress Add User
+            description: Adds a WordPress User. No email will be sent to the email address entered, and weak password are allowed.
+            authors: ['hiburn8 @hbrn8', 'Erwan LR']
+            target:
+                working: ['ALL']

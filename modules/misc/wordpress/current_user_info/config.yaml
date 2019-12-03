@@ -1,0 +1,16 @@
+#
+# Copyright (c) Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+# Author @erwan_lr (WPscanTeam) - https://wpscan.org/
+#
+beef:
+    module:
+        wordpress_current_user_info:
+            enable: true
+            category: Misc
+            name: WordPress Current User Info
+            description: Get the current logged in user information (such as username, email etc)
+            authors: ['Erwan LR']
+            target:
+                working: ['ALL']
