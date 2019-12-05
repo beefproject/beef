@@ -14,17 +14,23 @@ RSpec.describe 'BeEF API Rate Limit' do
 		@config = BeEF::Core::Configuration.instance
 		http_hook_server = BeEF::Core::Server.instance
 		http_hook_server.prepare
-		BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+		@pids = fork do
+			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+		end
 		@pid = fork do
 			http_hook_server.start
 		end
 		# wait for server to start
 		sleep 1
 	end
-
-	after(:all) do
-		Process.kill("INT",@pid)
-	end
+    # wait for server to start
+  
+  	after(:all) do
+	
+	 Process.kill("INT",@pid)
+	 Process.kill("INT",@pids)
+	
+ 	end
 
 	it 'adheres to auth rate limits' do
 		passwds = (1..9).map { |i| "broken_pass"}
@@ -59,7 +65,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 			# t0 = t
 		  end
 		  apis.shuffle! # new order for next iteration
-		  apis.reverse if (apis[0].is_pass?(BEEF_PASSWD)) # prevent the first from having valid passwd
+		  apis = apis.reverse if (apis[0].is_pass?(BEEF_PASSWD)) # prevent the first from having valid passwd
 		end                         # multiple sets of auth attempts
 	end
  
