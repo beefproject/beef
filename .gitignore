@@ -15,6 +15,7 @@ extensions/metasploit/msf-exploits.cache
 # ruby debugging
 .byebug_history
 
+
 # The following lines were created by https://www.gitignore.io
 
 ### Linux ###
