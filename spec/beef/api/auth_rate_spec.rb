@@ -14,7 +14,9 @@ RSpec.describe 'BeEF API Rate Limit' do
     @config = BeEF::Core::Configuration.instance
     http_hook_server = BeEF::Core::Server.instance
     http_hook_server.prepare
-    BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+    @pids = fork do
+			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+		end
     @pid = fork do
       http_hook_server.start
     end
@@ -24,6 +26,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 
   after(:all) do
     Process.kill("INT",@pid)
+    Process.kill("INT",@pids)
   end
 
   it 'adheres to auth rate limits' do
