@@ -23,10 +23,10 @@ ENV['RACK_ENV'] ||= 'test'
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
+  config.bisect_runner = :shell
   config.include Rack::Test::Methods
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-  config.order = :random
-  Kernel.srand config.seed
+ 
 end
