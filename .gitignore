@@ -6,10 +6,15 @@ custom-config.yaml
 .DS_Store
 .gitignore
 .rvmrc
+beef.log
 
 *.lock
 
 extensions/metasploit/msf-exploits.cache
+
+# ruby debugging
+.byebug_history
+
 
 # The following lines were created by https://www.gitignore.io
 
