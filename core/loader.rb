@@ -40,7 +40,7 @@ require 'resolv'
 require 'digest'
 require 'zip'
 require 'logger'
-
+require 'byebug'
 # @note Logger
 require 'core/logger'
 
