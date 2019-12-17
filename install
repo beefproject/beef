@@ -156,7 +156,7 @@ check_ruby_version () {
 
   info 'Detecting Ruby environment...'
 
-  MIN_RUBY_VER='2.4'
+  MIN_RUBY_VER='2.5'
   if command_exists ruby${RUBYSUFFIX}
   then
     RUBY_VERSION=$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION")

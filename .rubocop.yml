@@ -4,7 +4,7 @@ AllCops:
     - 'tmp/**/*'
     - 'tools/**/*'
     - 'doc/**/*'
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 Metrics/AbcSize:
   Enabled: false
