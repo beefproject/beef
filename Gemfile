@@ -22,8 +22,8 @@ gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.10.4'
 gem 'rake'
-
-gem 'otr-activerecord'
+#ruby 2.4 isnt compatible with a higher version of active-record
+gem 'otr-activerecord' 
 gem 'sqlite3'
 
 # Geolocation support
