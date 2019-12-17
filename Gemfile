@@ -23,7 +23,6 @@ gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.10.4'
 gem 'rake'
 #ruby 2.4 isnt compatible with a higher version of active-record
-gem 'activerecord' ,'~> 5.2.4'
 gem 'otr-activerecord' 
 gem 'sqlite3'
 
