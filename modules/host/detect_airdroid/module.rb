@@ -26,7 +26,7 @@ class Detect_airdroid < BeEF::Core::Command
         type = 'Airdroid'
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found 'Airdroid' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
     end

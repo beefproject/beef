@@ -1,5 +1,6 @@
 ### BeEF ###
 beef.db
+beef.log
 test/msf-test
 extensions/admin_ui/media/javascript-min/
 custom-config.yaml

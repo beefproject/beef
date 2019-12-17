@@ -41,7 +41,7 @@ module BeEF
           hb_session = hb.session
 
           rule_ids.each do |rule_id|
-            rule = BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)
+            rule = BeEF::Core::Models::Rule.find(rule_id)
             modules = JSON.parse(rule.modules)
 
             execution_order = JSON.parse(rule.execution_order)
@@ -57,7 +57,7 @@ module BeEF
             rule_token = SecureRandom.hex(5)
 
             modules.each do |cmd_mod|
-              mod = BeEF::Core::Models::CommandModule.first(:name => cmd_mod['name'])
+              mod = BeEF::Core::Models::CommandModule.where(:name => cmd_mod['name']).first
               options = []
               replace_input = false
               cmd_mod['options'].each do|k,v|
@@ -85,7 +85,7 @@ module BeEF
                 # TODO catch error, which should never happen as values are checked way before ;-)
             end
 
-            are_exec = BeEF::Core::AutorunEngine::Models::Execution.new(
+            are_exec = BeEF::Core::Models::Execution.new(
                 :session => hb_session,
                 :mod_count => modules.length,
                 :mod_successful => 0,
@@ -94,7 +94,7 @@ module BeEF
                 :is_sent => false,
                 :rule_id => rule_id
             )
-            are_exec.save
+            are_exec.save!
             # Once Engine.check() verified that the hooked browser match a Rule, trigger the Rule ;-)
             print_more "Triggering ruleset #{rule_ids.to_s} on HB #{hb_id}"
           end
@@ -272,9 +272,9 @@ module BeEF
                 :creationdate => Time.new.to_i,
                 :instructions_sent => true
             )
-            command.save
+            command.save!
 
-            command_module = BeEF::Core::Models::CommandModule.first(:id => mod.id)
+            command_module = BeEF::Core::Models::CommandModule.find(mod.id)
             if (command_module.path.match(/^Dynamic/))
               # metasploit and similar integrations
               command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
@@ -385,9 +385,9 @@ module BeEF
         def match(browser, browser_version, os, os_version, rule_id=nil)
           match_rules = []
           if rule_id != nil
-            rules = [BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)]
+            rules = [BeEF::Core::Models::Rule.find(rule_id)]
           else
-            rules = BeEF::Core::AutorunEngine::Models::Rule.all()
+            rules = BeEF::Core::Models::Rule.all
           end
           return nil if rules == nil
           return nil unless rules.length > 0

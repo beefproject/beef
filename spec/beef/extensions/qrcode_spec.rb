@@ -3,8 +3,6 @@ require 'extensions/qrcode/extension'
 RSpec.describe 'BeEF Extension QRCode' do
 
   before(:all) do
-    DataMapper.setup(:default, 'sqlite3::memory:')
-    DataMapper.auto_migrate!
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
   end

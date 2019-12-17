@@ -2,8 +2,6 @@ RSpec.describe 'BeEF BrowserDetails' do
 
   before(:all) do
     @session = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
-    DataMapper.setup(:default, 'sqlite3::memory:')
-    DataMapper.auto_migrate!
   end
 
   it 'set nil value' do

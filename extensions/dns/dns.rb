@@ -48,9 +48,10 @@ module BeEF
             pattern = Regexp.new(rule[:pattern], Regexp::IGNORECASE)
             $VERBOSE = verbose
 
-            @database.first_or_create(
-              { :resource => rule[:resource], :pattern => pattern.source },
-              { :response => rule[:response] }
+            @database.find_or_create_by(
+              :resource => rule[:resource].to_s,
+              :pattern => pattern.source,
+              :response => rule[:response]
             ).id
           end
         end
@@ -62,9 +63,11 @@ module BeEF
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
-            if is_valid_id?(id)
-              rule = @database.get(id)
-              rule.nil? ? {} : to_hash(rule)
+            begin
+              rule = @database.find(id)
+              return to_hash(rule)
+            rescue ActiveRecord::RecordNotFound
+              return nil
             end
           end
         end
@@ -76,10 +79,15 @@ module BeEF
         # @return [Boolean] true if rule was removed, otherwise false
         def remove_rule!(id)
           @lock.synchronize do
-            if is_valid_id?(id)
-              rule = @database.get(id)
-              rule.nil? ? false : rule.destroy
+            begin
+              rule = @database.find(id)
+              if not rule.nil? and rule.destroy
+                return true
+              end
+            rescue ActiveRecord::RecordNotFound
+              return nil
             end
+            return false
           end
         end
 
@@ -94,14 +102,18 @@ module BeEF
         #
         # @return [Array<Hash>] DNS ruleset (empty array if no rules are currently defined)
         def get_ruleset
-          @lock.synchronize { @database.collect { |rule| to_hash(rule) } }
+          @lock.synchronize { @database.all { |rule| to_hash(rule) } }
         end
 
         # Removes the entire DNS ruleset.
         #
         # @return [Boolean] true if ruleset was destroyed, otherwise false
         def remove_ruleset!
-          @lock.synchronize { @database.destroy }
+          @lock.synchronize do 
+            if @database.destroy_all
+              return true
+            end
+          end
         end
 
         # Starts the DNS server.
@@ -161,7 +173,7 @@ module BeEF
 
             catch (:done) do
               # Find rules matching the requested resource class
-              resources = @database.all(:resource => resource)
+              resources = @database.where(:resource => resource)
               throw :done if resources.length == 0
 
               # Narrow down search by finding a matching pattern
@@ -257,7 +269,7 @@ module BeEF
         #
         # @return [String] resource name stripped of any module/class names
         def format_resource(resource)
-          /::(\w+)$/.match(resource.name)[1]
+          /::(\w+)$/.match(resource)[1]
         end
 
       end

@@ -38,7 +38,7 @@ module BeEF
         get '/rule/delete/:rule_id' do
           begin
             rule_id = params[:rule_id]
-            rule = BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)
+            rule = BeEF::Core::AutorunEngine::Models::Rule.find(rule_id)
             rule.destroy
             { 'success' => true}.to_json
           rescue => e
@@ -53,13 +53,13 @@ module BeEF
           begin
             rule_id = params[:rule_id]
 
-            online_hooks = BeEF::Core::Models::HookedBrowser.all(:lastseen.gte => (Time.new.to_i - 15))
+            online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15))
             are = BeEF::Core::AutorunEngine::Engine.instance
 
             if online_hooks != nil
               online_hooks.each do |hb|
                 hb_details = BeEF::Core::Models::BrowserDetails
-                browser_name    = hb_details.get(hb.session, 'browser.name')
+                browser_name = hb_details.get(hb.session, 'browser.name')
                 browser_version = hb_details.get(hb.session, 'browser.version')
                 os_name = hb_details.get(hb.session, 'host.os.name')
                 os_version = hb_details.get(hb.session, 'host.os.version')

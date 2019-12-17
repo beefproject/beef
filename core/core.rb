@@ -10,6 +10,7 @@ end
 end
 
 # @note Includes database models - the order must be consistent otherwise DataMapper goes crazy
+require 'core/main/model'
 require 'core/main/models/commandmodule'
 require 'core/main/models/hookedbrowser'
 require 'core/main/models/log'
@@ -17,6 +18,8 @@ require 'core/main/models/command'
 require 'core/main/models/result'
 require 'core/main/models/optioncache'
 require 'core/main/models/browserdetails'
+require 'core/main/models/rule'
+require 'core/main/models/execution'
 
 # @note Include the constants
 require 'core/main/constants/browsers'

@@ -29,7 +29,7 @@ module BeEF
             rtcmanagementoutput = []
 
             # Get all RTCSignals for this browser
-            BeEF::Core::Models::Rtcsignal.all(:target_hooked_browser_id => hb.id, :has_sent => "waiting").each { |h|
+            BeEF::Core::Models::Rtcsignal.where(:target_hooked_browser_id => hb.id, :has_sent => "waiting").each { |h|
               # output << self.requester_parse_db_request(h)
               rtcsignaloutput << h.signal
               h.has_sent = "sent"
@@ -37,7 +37,7 @@ module BeEF
             }
 
             # Get all RTCManagement messages for this browser
-            BeEF::Core::Models::Rtcmanage.all(:hooked_browser_id => hb.id, :has_sent => "waiting").each {|h|
+            BeEF::Core::Models::Rtcmanage.where(:hooked_browser_id => hb.id, :has_sent => "waiting").each {|h|
               rtcmanagementoutput << h.message
               h.has_sent = "sent"
               h.save

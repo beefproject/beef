@@ -3,8 +3,6 @@ require 'extensions/xssrays/extension'
 RSpec.describe 'BeEF Extension XSSRays' do
 
   before(:all) do
-    DataMapper.setup(:default, 'sqlite3::memory:')
-    DataMapper.auto_migrate!
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
   end

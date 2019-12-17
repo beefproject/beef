@@ -27,7 +27,7 @@ module BeEF
         # Returns the entire list of network hosts for all zombies
         get '/hosts' do
           begin
-            hosts = @nh.all(unique: true, order: [:id.asc])
+            hosts = @nh.all.distinct.order(:id)
             count = hosts.length
 
             result = {}
@@ -47,7 +47,7 @@ module BeEF
         # Returns the entire list of network services for all zombies
         get '/services' do
           begin
-            services = @ns.all(unique: true, order: [:id.asc])
+            services = @ns.all.distinct.order(:id)
             count = services.length
 
             result = {}
@@ -69,7 +69,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hosts = @nh.all(hooked_browser_id: id, unique: true, order: [:id.asc])
+            hosts = @nh.where(hooked_browser_id: id).distinct.order(:id)
             count = hosts.length
 
             result = {}
@@ -94,7 +94,7 @@ module BeEF
           begin
             id = params[:id]
 
-            services = @ns.all(hooked_browser_id: id, unique: true, order: [:id.asc])
+            services = @ns.where(hooked_browser_id: id).distinct.order(:id)
             count = services.length
 
             result = {}
@@ -119,7 +119,7 @@ module BeEF
           begin
             id = params[:id]
 
-            host = @nh.all(id: id)
+            host = @nh.find(id)
             raise InvalidParamError, 'id' if host.nil?
             halt 404 if host.empty?
 
@@ -139,7 +139,7 @@ module BeEF
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters.nums_only?(id)
 
-            host = @nh.all(id: id)
+            host = @nh.find(id)
             halt 404 if host.nil?
 
             result = {}
@@ -159,7 +159,7 @@ module BeEF
           begin
             id = params[:id]
 
-            service = @ns.all(id: id)
+            service = @ns.find(id)
             raise InvalidParamError, 'id' if service.nil?
             halt 404 if service.empty?
 

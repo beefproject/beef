@@ -8,37 +8,23 @@
 
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra', '~> 2.0'
-gem 'rack', '~> 2.0'
-gem 'rack-protection', '~> 2.0'
+gem 'sinatra'
+gem 'rack'
+gem 'rack-protection'
 gem 'em-websocket' # WebSocket support
 gem 'uglifier'
 gem 'mime-types'
 gem 'execjs'
 gem 'ansi'
 gem 'term-ansicolor', :require => 'term/ansicolor'
-gem 'dm-core'
 gem 'json'
-gem 'data_objects'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'nokogiri', '>= 1.10.4'
 gem 'rake'
 
-# SQLite support
-group :sqlite do
-  gem 'dm-sqlite-adapter'
-end
-
-# PostgreSQL support
-group :postgres do
-  #gem dm-postgres-adapter
-end
-
-# MySQL support
-group :mysql do
-  #gem dm-mysql-adapter
-end
+gem 'otr-activerecord'
+gem 'sqlite3'
 
 # Geolocation support
 group :geoip do
@@ -47,7 +33,6 @@ end
 
 gem 'parseconfig'
 gem 'erubis'
-gem 'dm-migrations'
 
 # Metasploit Integration extension
 group :ext_msf do
@@ -94,7 +79,8 @@ group :test do
     gem 'capybara'
     # RESTful API tests/generic command module tests
     gem 'rest-client', '>= 2.0.1'
-    gem 'byebug'
+    gem 'irb'
+    gem 'pry-byebug'
 end
 
 source 'https://rubygems.org'

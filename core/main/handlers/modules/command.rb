@@ -21,7 +21,7 @@ module BeEF
 
             config = BeEF::Core::Configuration.instance
             # @note get the command module
-            command_module = BeEF::Core::Models::CommandModule.first(:id => command.command_module_id)
+            command_module = BeEF::Core::Models::CommandModule.where(:id => command.command_module_id).first
             (print_error "command_module is nil"; return) if command_module.nil?
             (print_error "command_module.path is nil"; return) if command_module.path.nil?
 
@@ -70,7 +70,7 @@ module BeEF
 
             # @note flag that the command has been sent to the hooked browser
             command.instructions_sent = true
-            command.save
+            command.save!
           end
 
         end

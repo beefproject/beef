@@ -118,7 +118,7 @@ module BeEF
             msf = BeEF::Extension::Metasploit::RpcClient.instance
             if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'exploit', msf_key)
-              com = BeEF::Core::Models::CommandModule.first(:name => mod)
+              com = BeEF::Core::Models::CommandModule.where(:name => mod).first
               if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
                 options << {
@@ -193,7 +193,7 @@ module BeEF
             if msf_key != nil && msf.login
               msf_module_options = msf.call('module.options', 'payload', payload)
 
-              com = BeEF::Core::Models::CommandModule.first(:name => mod)
+              com = BeEF::Core::Models::CommandModule.where(:name => mod).first
               if msf_module_options
                 options = BeEF::Extension::Metasploit.translate_options(msf_module_options)
                 return options

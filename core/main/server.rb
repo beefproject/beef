@@ -162,7 +162,9 @@ module BeEF
       # Starts the BeEF http server
       #
       def start
-        @http_server.start
+        @http_server.start do
+          use OTR::ActiveRecord::ConnectionManagement
+        end
       rescue RuntimeError => e
         # port is in use
         raise unless e.message.include? 'no acceptor'

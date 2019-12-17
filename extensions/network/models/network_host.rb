@@ -9,19 +9,8 @@ module BeEF
       #
       # Table stores each host identified on the zombie browser's network(s)
       #
-      class NetworkHost
-        include DataMapper::Resource
-        storage_names[:default] = 'network_host'
-
-        property :id, Serial
-
-        property :hooked_browser_id, Text, lazy: false
-        property :ip, Text, lazy: false
-        property :hostname, String, lazy: false
-        property :type, String, lazy: false # proxy, router, gateway, dns, etc
-        property :os, String, lazy: false
-        property :mac, String, lazy: false
-        property :lastseen, String, length: 15
+      class NetworkHost < BeEF::Core::Model
+          belongs_to :hooked_browser
 
         #
         # Stores a network host in the data store
@@ -50,23 +39,24 @@ module BeEF
           new_host[:hooked_browser_id] = host[:hooked_browser_id]
           new_host[:ip] = host[:ip]
           new_host[:hostname] = host[:hostname] unless host[:hostname].nil?
-          new_host[:type] = host[:type] unless host[:type].nil?
+          new_host[:ntype] = host[:ntype] unless host[:ntype].nil?
           new_host[:os] = host[:os] unless host[:os].nil?
           new_host[:mac] = host[:mac] unless host[:mac].nil?
 
           # if host already exists in data store with the same details
           # then update lastseen and return
-          existing_host = BeEF::Core::Models::NetworkHost.all(new_host)
+          existing_host = BeEF::Core::Models::NetworkHost.where(hooked_browser_id: new_host[:hooked_browser_id], ip: new_host[:ip]).limit(1)
           unless existing_host.empty?
-            existing_host.update(lastseen: Time.new.to_i)
+            existing_host = existing_host.first
+            existing_host.lastseen = Time.new.to_i
+            existing_host.save!
             return
           end
 
           # store the new network host details
           new_host[:lastseen] = Time.new.to_i
           network_host = BeEF::Core::Models::NetworkHost.new(new_host)
-          result = network_host.save
-          if result.nil?
+          if network_host.save
             print_error 'Failed to save network host'
             return
           end
@@ -83,7 +73,7 @@ module BeEF
             return
           end
 
-          host = BeEF::Core::Models::NetworkHost.get(id.to_i)
+          host = BeEF::Core::Models::NetworkHost.find(id.to_i)
           if host.nil?
             print_error "Failed to remove network host [id: #{id}]. Host does not exist."
             return
@@ -100,7 +90,7 @@ module BeEF
             hooked_browser_id: hooked_browser_id,
             ip: ip,
             hostname: hostname,
-            type: type,
+            ntype: ntype,
             os: os,
             mac: mac,
             lastseen: lastseen

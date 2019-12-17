@@ -16,7 +16,7 @@ class Detect_burp < BeEF::Core::Command
         session_id = @datastore['beefhook']
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => 'http', :ip => ip, :port => port, :type => 'Burp Proxy')
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => 'http', :ip => ip, :port => port, :type => 'Burp Proxy')
         end
       end
     end

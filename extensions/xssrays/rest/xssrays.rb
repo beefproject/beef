@@ -34,7 +34,7 @@ module BeEF
         # Returns the entire list of rays for all zombies
         get '/rays' do
           begin
-            rays = XD.all(:unique => true, :order => [:id.asc])
+            rays = XD.all.distinct.order(:id)
             count = rays.length
 
             result = {}
@@ -55,7 +55,7 @@ module BeEF
           begin
             id = params[:id]
 
-            rays = XD.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
+            rays = XD.where(:hooked_browser_id => id).distinct.order(:id)
             count = rays.length
 
             result = {}
@@ -77,7 +77,7 @@ module BeEF
         # Returns the entire list of scans for all zombies
         get '/scans' do
           begin
-            scans = XS.all(:unique => true, :order => [:id.asc])
+            scans = XS.distinct.order(:id)
             count = scans.length
 
             result = {}
@@ -98,7 +98,7 @@ module BeEF
           begin
             id = params[:id]
 
-            scans = XS.all(:hooked_browser_id => id, :unique => true, :order => [:id.asc])
+            scans = XS.where(:hooked_browser_id => id).distinct.order(:id)
             count = scans.length
 
             result = {}
@@ -122,7 +122,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hooked_browser = HB.first(:session => id, :unique => true, :order => [:id.asc])
+            hooked_browser = HB.where(:session => id).distinct.order(:id)
 
             if hooked_browser.nil?
               print_error "[XSSRAYS] Invalid hooked browser ID"

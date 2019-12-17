@@ -4,6 +4,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'yaml'
+require 'bundler/setup'
+load 'tasks/otr-activerecord.rake'
 #require 'pry-byebug'
 
 
@@ -236,6 +238,10 @@ task :cde_beef_start => 'beef' do
   puts '.'
 end
 
-
 ################################
-
+# ActiveRecord
+namespace :db do
+  task :environment do
+    require_relative "beef"
+  end
+end

@@ -30,7 +30,7 @@ module BeEF
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
           (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
-          hooked_browser = HB.first(:session => session_id)
+          hooked_browser = HB.where(:session => session_id).first
           return if not hooked_browser.nil? # browser is already registered with framework
 
           # create the structure representing the hooked browser
@@ -73,7 +73,7 @@ module BeEF
             @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           }
           zombie.httpheaders = @http_headers.to_json
-          zombie.save
+          zombie.save!
           #print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
 
           # add a log entry for the newly hooked browser
@@ -211,7 +211,7 @@ module BeEF
               if config.get("beef.extension.network.enable") == true
                 if proxy_server =~ /^([\d\.]+):([\d]+)$/
                   print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
-                  BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy')
+                  BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy')
                 end
               end
             end
@@ -504,7 +504,7 @@ module BeEF
           # add localhost as network host
           if config.get('beef.extension.network.enable')
             print_debug("Hooked browser has network interface 127.0.0.1")
-            BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
           end
 
           # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel

@@ -43,7 +43,7 @@ module BeEF
         end
 
         get '/search/:mod_name' do
-          mod = BeEF::Core::Models::CommandModule.first(:name => params[:mod_name])
+          mod = BeEF::Core::Models::CommandModule.where(:name => params[:mod_name]).first
           result = {}
           if mod != nil
             result = {'id' => mod.id}
@@ -55,7 +55,7 @@ module BeEF
         # @note Get the module definition (info, options)
         #
         get '/:mod_id' do
-          cmd = BeEF::Core::Models::CommandModule.get(params[:mod_id])
+          cmd = BeEF::Core::Models::CommandModule.find(params[:mod_id])
           error 404 unless cmd != nil
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
           error 404 unless modk != nil
@@ -81,12 +81,12 @@ module BeEF
         #{"date":"1331637093","data":"{\"data\":\"text=michele\"}"}
         #
         get '/:session/:mod_id/:cmd_id' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
-          cmd = BeEF::Core::Models::Command.first(:hooked_browser_id => hb.id,
-                                                  :command_module_id => params[:mod_id], :id => params[:cmd_id])
+          cmd = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id,
+                                                  :command_module_id => params[:mod_id], :id => params[:cmd_id]).first
           error 404 unless cmd != nil
-          results = BeEF::Core::Models::Result.all(:hooked_browser_id => hb.id, :command_id => cmd.id)
+          results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id, :command_id => cmd.id)
           error 404 unless results != nil
 
           results_hash = {}
@@ -137,7 +137,7 @@ module BeEF
         #{"success":"true","command_id":"not_available"}
         #
         post '/:session/:mod_id' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
           error 404 unless modk != nil
@@ -198,7 +198,7 @@ module BeEF
             # run on all hooked browsers currently online?
             if hb_ids.first =~ /\Aall_online\z/i
               hb_ids = []
-              BeEF::Core::Models::HookedBrowser.all(
+              BeEF::Core::Models::HookedBrowser.where(
                 :lastseen.gte => (Time.new.to_i - 15)).each {|hb| hb_ids << hb.id }
             # run on all hooked browsers?
             elsif hb_ids.first =~ /\Aall\z/i
@@ -208,7 +208,7 @@ module BeEF
 
             # run modules
             hb_ids.each do |hb_id|
-              hb = BeEF::Core::Models::HookedBrowser.first(:id => hb_id)
+              hb = BeEF::Core::Models::HookedBrowser.find(hb_id)
               if hb == nil
                 results[hb_id] = 0
                 next
@@ -256,7 +256,7 @@ module BeEF
           request.body.rewind
           begin
             body = JSON.parse request.body.read
-            hb = BeEF::Core::Models::HookedBrowser.first(:session => body["hb"])
+            hb = BeEF::Core::Models::HookedBrowser.where(:session => body["hb"]).first
             error 401 unless hb != nil
 
             results = Hash.new

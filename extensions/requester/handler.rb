@@ -41,11 +41,11 @@ module BeEF
           end
 
           # validates that a hooked browser with the beef_hook token exists in the db
-          zombie_db = Z.first(:session => beef_hook) || nil
+          zombie_db = Z.where(:session => beef_hook).first || nil
           (print_error "Invalid beefhook id: the hooked browser cannot be found in the database";return) if zombie_db.nil?
 
           # validates that we have such a http request saved in the db
-          http_db = H.first(:id => request_id.to_i, :hooked_browser_id => zombie_db.session) || nil
+          http_db = H.where(:id => request_id.to_i, :hooked_browser_id => zombie_db.session).first || nil
           if http_db.nil?
             print_error "Invalid http_db: no such request found in the database"
             return

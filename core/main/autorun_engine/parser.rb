@@ -53,7 +53,7 @@ module BeEF
 
             # check if module names, conditions and options are ok
             modules.each do |cmd_mod|
-              mod = BeEF::Core::Models::CommandModule.first(:name => cmd_mod['name'])
+              mod = BeEF::Core::Models::CommandModule.where(:name => cmd_mod['name']).first
               if mod != nil
                 modk = BeEF::Module.get_key_by_database_id(mod.id)
                 mod_options = BeEF::Module.get_options(modk)

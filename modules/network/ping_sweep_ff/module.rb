@@ -37,7 +37,7 @@ class Ping_sweep_ff < BeEF::Core::Command
         ip = $1
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser has network interface #{ip}")
-          BeEF::Core::Models::NetworkHost.add(:hooked_browser_id => session_id, :ip => ip)
+          BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => ip)
         end
       end
     end

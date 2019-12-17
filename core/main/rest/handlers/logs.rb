@@ -24,7 +24,7 @@ module BeEF
         # @note Get all global logs
         #
         get '/' do
-          logs = BeEF::Core::Models::Log.all()
+          logs = BeEF::Core::Models::Log.all
           logs_to_json(logs)
         end
 
@@ -44,10 +44,10 @@ module BeEF
         # @note Get hooked browser logs
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 401 unless hb != nil
 
-          logs = BeEF::Core::Models::Log.all(:hooked_browser_id => hb.id)
+          logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
           logs_to_json(logs)
         end
 
@@ -62,7 +62,7 @@ module BeEF
                 'id' => log.id.to_i,
                 'date' => log.date.to_s,
                 'event' => log.event.to_s,
-                'type' => log.type.to_s,
+                'logtype' => log.logtype.to_s,
                 'hooked_browser_id' => log.hooked_browser_id.to_s
             }
           end
@@ -84,7 +84,7 @@ module BeEF
             logs.reverse.each do |log|
               maker.items.new_item do |item|
                 item.id      = log.id.to_s
-                item.title   = "[#{log.type}] #{log.event}"
+                item.title   = "[#{log.logtype}] #{log.event}"
                 item.updated = log.date.to_s
               end
             end

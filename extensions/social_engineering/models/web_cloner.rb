@@ -6,18 +6,9 @@
 module BeEF
   module Core
     module Models
-      class Webcloner
+      class Webcloner < BeEF::Core::Model
 
-        include DataMapper::Resource
-
-        storage_names[:default] = 'extension_seng_webcloner'
-
-        property :id, Serial
-
-        property :uri, Text, :lazy => false
-        property :mount, Text, :lazy => false
-
-        has n, :extension_seng_interceptor, 'Interceptor'
+        has_many :interceptors
 
       end
 

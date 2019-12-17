@@ -24,10 +24,10 @@ module BeEF
         # @note Get all browser details for the specified session
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.first(:session => params[:session])
+          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
           error 404 if hb.nil?
 
-          details = BeEF::Core::Models::BrowserDetails.all(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
           error 404 if details.nil?
 
           result = []

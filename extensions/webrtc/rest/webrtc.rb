@@ -177,7 +177,7 @@ module BeEF
           begin
             id = params[:id]
 
-            events = BeEF::Core::Models::Rtcstatus.all(:hooked_browser_id => id)
+            events = BeEF::Core::Models::Rtcstatus.where(:hooked_browser_id => id)
 
             events_json = []
             count = events.length
@@ -227,7 +227,7 @@ module BeEF
           begin
             id = params[:id]
 
-            events = BeEF::Core::Models::Rtcmodulestatus.all(:hooked_browser_id => id)
+            events = BeEF::Core::Models::Rtcmodulestatus.where(:hooked_browser_id => id)
 
             events_json = []
             count = events.length
@@ -301,13 +301,13 @@ module BeEF
             raise InvalidParamError, 'message' if message.nil?
 
             if message === "!gostealth"
-              stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => fromhb.to_i, :target_hooked_browser_id => tohb.to_i) || nil
+              stat = BeEF::Core::Models::Rtcstatus.where(:hooked_browser_id => fromhb.to_i, :target_hooked_browser_id => tohb.to_i).first || nil
               unless stat.nil?
                 stat.status = "Selected browser has commanded peer to enter stealth"
                 stat.updated_at = Time.now
                 stat.save
               end
-              stat2 = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => tohb.to_i, :target_hooked_browser_id => fromhb.to_i) || nil
+              stat2 = BeEF::Core::Models::Rtcstatus.where(:hooked_browser_id => tohb.to_i, :target_hooked_browser_id => fromhb.to_i).first || nil
               unless stat2.nil?
                 stat2.status = "Peer has commanded selected browser to enter stealth"
                 stat2.updated_at = Time.now
@@ -382,8 +382,7 @@ module BeEF
               # Find the module, modify it, send it to be executed on the tohb
               
               # Validate the command module by ID
-              command_module = BeEF::Core::Models::CommandModule.first(
-                  :id => cmdid)
+              command_module = BeEF::Core::Models::CommandModule.find(cmdid)
               error 404 if command_module.nil?
               error 404 if command_module.path.nil?
 

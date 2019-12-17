@@ -137,10 +137,10 @@ module BeEF
 
           # Wait for the HTTP response to be stored in the db.
           # TODO: re-implement this with EventMachine or with the Observer pattern.
-          while H.first(:id => http.id).has_ran != "complete"
+          while H.find(http.id).has_ran != "complete"
             sleep 0.5
           end
-          @response = H.first(:id => http.id)
+          @response = H.find(http.id)
           print_debug "[PROXY] <-- Response for request ##{@response.id} to [#{@response.path}] on domain [#{@response.domain}:#{@response.port}] correctly processed"
 
           response_body = @response['response_data']
@@ -191,7 +191,7 @@ module BeEF
         end
 
         def get_tunneling_proxy
-          proxy_browser = HB.first(:is_proxy => true)
+          proxy_browser = HB.where(:is_proxy => true).first
           unless proxy_browser.nil?
             return proxy_browser.session.to_s
           end

@@ -31,8 +31,7 @@ require 'execjs'
 require 'ansi'
 require 'term/ansicolor'
 require 'json'
-require 'data_objects'
-require 'dm-do-adapter'
+require 'otr-activerecord'
 require 'parseconfig'
 require 'erubis'
 require 'mime/types'
@@ -41,7 +40,6 @@ require 'resolv'
 require 'digest'
 require 'zip'
 require 'logger'
-
 # @note Logger
 require 'core/logger'
 

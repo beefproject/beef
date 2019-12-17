@@ -24,7 +24,7 @@ module Handlers
     # and deploy some command modules or extensions to the hooked browser.
     get '/' do
       @body = ''
-      @params = request.query_string
+      params = request.query_string
       #@response = Rack::Response.new(body=[], 200, header={})
       config = BeEF::Core::Configuration.instance
       
@@ -48,7 +48,12 @@ module Handlers
       # @note get zombie if already hooked the framework
       hook_session_name = config.get('beef.http.hook_session_name')
       hook_session_id = request[hook_session_name]
-      hooked_browser = BeEF::Core::Models::HookedBrowser.first(:session => hook_session_id) if not hook_session_id.nil?
+      begin
+        raise ActiveRecord::RecordNotFound if hook_session_id.nil?
+        hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => hook_session_id).first
+      rescue ActiveRecord::RecordNotFound
+        hooked_browser = false
+      end
 
       # @note is a new browser so return instructions to set up the hook
       if not hooked_browser 
@@ -82,21 +87,21 @@ module Handlers
         end
       
         hooked_browser.count!
-        hooked_browser.save
+        hooked_browser.save!
         
         # @note add all available command module instructions to the response
-        zombie_commands = BeEF::Core::Models::Command.all(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
+        zombie_commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hooked_browser.id, :instructions_sent => false)
         zombie_commands.each{|command| add_command_instructions(command, hooked_browser)}
 
         # @note Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
-        are_executions = BeEF::Core::AutorunEngine::Models::Execution.all(:is_sent => false, :session => hook_session_id)
+        are_executions = BeEF::Core::Models::Execution.where(:is_sent => false, :session_id => hook_session_id)
         are_executions.each do |are_exec|
           @body += are_exec.mod_body
           are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
         end
 
         # @note We dynamically get the list of all browser hook handler using the API and register them
-        BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, @params, request, response)
+        BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, params, request, response)
       end
 
       # @note set response headers and body

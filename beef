@@ -120,14 +120,6 @@ unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_val
 end
 
 #
-# @note Validate database driver
-#
-unless ['sqlite', 'postgres', 'mysql'].include? config.get('beef.database.driver')
-  print_error 'No default database selected. Please add one in config.yaml'
-  exit 1
-end
-
-#
 # @note After the BeEF core is loaded, bootstrap the rest of the framework internals
 #
 require 'core/bootstrap'
@@ -160,43 +152,25 @@ BeEF::Modules.load
 Socket.do_not_reverse_lookup = true
 
 #
-# @note Database setup - use DataMapper::Logger.new($stdout, :debug) for development debugging
+# @note Database setup
 #
-case config.get("beef.database.driver")
-  when "sqlite"
-    DataMapper.setup(:default, "sqlite3://#{$root_dir}/#{config.get("beef.database.db_file")}")
-  when "mysql", "postgres"
-    DataMapper.setup(:default,
-                     :adapter => config.get("beef.database.driver"),
-                     :host => config.get("beef.database.db_host"),
-                     :port => config.get("beef.database.db_port"),
-                     :username => config.get("beef.database.db_user"),
-                     :password => config.get("beef.database.db_passwd"),
-                     :database => config.get("beef.database.db_name"),
-                     :encoding => config.get("beef.database.db_encoding")
-    )
-  else
-    print_error 'No default database selected. Please add one in config.yaml'
-    exit 1
-end
-
 #
 # @note Load the database
 #
-begin
-  # @note Resets the database if the -x flag was passed
-  if BeEF::Core::Console::CommandLine.parse[:resetdb]
-    print_info 'Resetting the database for BeEF.'
-    DataMapper.auto_migrate!
-  else
-    DataMapper.auto_upgrade!
-  end
-rescue => e
-  print_error "Could not connect to database: #{e.message}"
-  if config.get("beef.database.driver") == 'sqlite'
-    print_error "Ensure the #{$root_dir}/#{config.get("beef.database.db_file")} database file is writable"
-  end
-  exit 1
+db_file = config.get('beef.database.file')
+# @note Resets the database if the -x flag was passed
+if BeEF::Core::Console::CommandLine.parse[:resetdb]
+  print_info 'Resetting the database for BeEF.'
+  File.delete(db_file) if File.exists?(db_file)
+end
+# Connect to DB
+ActiveRecord::Base.logger = nil
+OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:db_file)
+# Migrate (if required)
+context = ActiveRecord::Migration.new.migration_context
+if context.needs_migration?
+  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
 end
 
 #

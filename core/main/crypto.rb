@@ -82,7 +82,7 @@ module Core
 
       begin
         id = random_hex_string(8)
-        BeEF::Core::Models::Dns::Rule.each { |rule| throw StandardError if id == rule.id }
+        BeEF::Core::Models::Dns::Rule.all.each { |rule| throw StandardError if id == rule.id }
       rescue StandardError
         retry
       end

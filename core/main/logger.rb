@@ -40,7 +40,7 @@ module Core
       raise TypeError, '"Hooked Browser ID" needs to be an integer' unless hb.integer?
 
       # logging the new event into the database
-      @logs.new(:type => from.to_s, :event => event.to_s, :date => time_now, :hooked_browser_id => hb).save
+      @logs.create(:logtype => from.to_s, :event => event.to_s, :date => time_now, :hooked_browser_id => hb).save!
       print_debug "Event: #{event}"
       # if notifications are enabled send the info there too
       if @notifications

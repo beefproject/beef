@@ -23,7 +23,7 @@ class Cross_origin_scanner_cors < BeEF::Core::Command
         type = 'HTTP Server (CORS)'
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-          BeEF::Core::Models::NetworkService.add(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => type)
         end
       end
     end
