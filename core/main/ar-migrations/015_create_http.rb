@@ -2,7 +2,7 @@ class CreateHttp < ActiveRecord::Migration[6.0]
 
 	def change
 
-		create_table :http do |t|
+		create_table :https do |t|
             t.references :hooked_browser
             # The http request to perform. In clear text.
             t.text :request
