@@ -28,8 +28,6 @@ __Bugs:__ https://github.com/beefproject/beef/issues
 
 __Security Bugs:__ security@beefproject.com
 
-__IRC:__ ircs://irc.freenode.net/beefproject
-
 __Twitter:__ @beefproject
 
 
