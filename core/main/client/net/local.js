@@ -1,13 +1,12 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.net.local
- * 
+/**
  * Provides networking functions for the local/internal network of the zombie.
+ * @namespace beef.net.local
  */
 beef.net.local = {
 	
@@ -22,7 +21,6 @@ beef.net.local = {
 	 * is invalid:
 	 * sock: new java.net.Socket();
 	 */
-
 	initializeSocket: function() {
 		if(this.checkJava){	
 			if(!beef.browser.hasJava()) {
@@ -50,8 +48,8 @@ beef.net.local = {
 	
 	/**
 	 * Returns the internal IP address of the zombie.
-	 * @return: {String} the internal ip of the zombie.
-	 * @error: return -1 if the internal ip cannot be retrieved.
+	 * @return {String} the internal ip of the zombie.
+	 * @error return -1 if the internal ip cannot be retrieved.
 	 */
 	getLocalAddress: function() {
 		if(!this.hasJava) return false;
@@ -68,8 +66,8 @@ beef.net.local = {
 	
 	/**
 	 * Returns the internal hostname of the zombie.
-	 * @return: {String} the internal hostname of the zombie.
-	 * @error: return -1 if the hostname cannot be retrieved.
+	 * @return {String} the internal hostname of the zombie.
+	 * @error return -1 if the hostname cannot be retrieved.
 	 */
 	getLocalHostname: function() {
 		if(!this.hasJava) return false;

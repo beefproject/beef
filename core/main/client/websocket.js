@@ -1,16 +1,15 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
 
 /**
- * @Literal object: beef.websocket
- *
  * Manage the WebSocket communication channel.
  * This channel is much faster and responsive, and it's used automatically
  * if the browser supports WebSockets AND beef.http.websocket.enable = true.
+ * @namespace beef.websocket
  */
 
 beef.websocket = {

@@ -1,3 +1,12 @@
+/**
+ * @namespace browser_jools
+ */
+
+/**
+ * @memberof browser_jools
+ * @param file 
+ * @param cwd 
+ */
 var require = function (file, cwd) {
     var resolved = require.resolve(file, cwd || '/');
     var mod = require.modules[resolved];
@@ -19,7 +28,9 @@ require._core = {
     'path': true,
     'vm': true
 };
-
+/**
+ * @memberof browser_jools
+ */
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
@@ -104,7 +115,9 @@ require.resolve = (function () {
         }
     };
 })();
-
+/**
+ * @memberof browser_jools
+ */
 require.alias = function (from, to) {
     var path = require.modules.path();
     var res = null;
@@ -133,7 +146,9 @@ require.alias = function (from, to) {
         }
     }
 };
-
+/**
+ * @memberof browser_jools
+ */
 require.define = function (filename, fn) {
     var dirname = require._core[filename]
         ? ''
@@ -215,10 +230,15 @@ function filter (xs, fn) {
     return res;
 }
 
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
+/**
+ * resolves . and .. elements in a path array with directory names there
+ * must be no slashes, empty elements, or device names (c:\) in the array
+ * (so also no leading and trailing slashes - it does not distinguish
+ * relative and absolute paths)
+ * @memberof browser_jools
+ * @param parts 
+ * @param allowAboveRoot 
+ */
 function normalizeArray(parts, allowAboveRoot) {
   // if the path tries to go above the root, `up` ends up > 0
   var up = 0;
@@ -357,6 +377,7 @@ var utils = require('./utils')
 
 /**
  * version
+ * @memberof browser_jools
  */
 exports.version = '0.0.1';
 
@@ -367,7 +388,7 @@ exports.version = '0.0.1';
  *   - Descriptive name
  *   - One or more conditions
  *   - One or more consequences, which are fired when all conditions evaluate to true.
- *
+ * @memberof browser_jools
  * @param {Object} rules
  */
 function Jools(rules) {
@@ -426,7 +447,7 @@ module.exports = Jools;
 require.define("/node_modules/jools/lib/utils.js", function (require, module, exports, __dirname, __filename) {
 /**
  * Returns an array of parameter names of the function f
- *
+ * @memberof browser_jools
  * @param {Function} f
  */
 module.exports.paramNames = function (f) {
@@ -443,7 +464,7 @@ module.exports.paramNames = function (f) {
 
 /**
  * Creates an array of arguments
- *
+ * @memberof browser_jools
  * @param {Object} obj
  * @param {Array} params
  */

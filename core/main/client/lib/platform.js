@@ -1,8 +1,9 @@
-/*!
+/**
  * Platform.js
  * Copyright 2014-2018 Benjamin Tan
  * Copyright 2011-2013 John-David Dalton
  * Available under MIT license
+ * @namespace platform
  */
 ;(function() {
   'use strict';
@@ -1032,7 +1033,7 @@
     /**
      * The platform object.
      *
-     * @name platform
+     * @memberof platform
      * @type Object
      */
     var platform = {};

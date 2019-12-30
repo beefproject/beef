@@ -1,34 +1,35 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @Literal object: beef.updater
- *
+/**
  * Object in charge of getting new commands from the BeEF framework and execute them.
  * The XHR-polling channel is managed here. If WebSockets are enabled,
  * websocket.ls is used instead.
+ * @namespace beef.updater
  */
 beef.updater = {
 	
-	// XHR-polling timeout.
-    xhr_poll_timeout: "<%= @xhr_poll_timeout %>",
+	/** XHR-polling timeout. */ 
+	xhr_poll_timeout: "<%= @xhr_poll_timeout %>",
+	
+	/** Hook session name. */ 
     beefhook: "<%= @hook_session_name %>",
 	
-	// A lock.
+	/** A lock. */ 
 	lock: false,
 	
-	// An object containing all values to be registered and sent by the updater.
+	/** An object containing all values to be registered and sent by the updater. */
 	objects: new Object(),
 	
-	/*
+	/**
 	 * Registers an object to always send when requesting new commands to the framework.
-	 * @param: {String} the name of the object.
-	 * @param: {String} the value of that object.
+	 * @param {String} key the name of the object.
+	 * @param {String} value the value of that object.
 	 * 
-	 * @example: beef.updater.regObject('java_enabled', 'true');
+	 * @example beef.updater.regObject('java_enabled', 'true');
 	 */
 	regObject: function(key, value) {
 		this.objects[key] = escape(value);

@@ -1,13 +1,12 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.session
- *
+/**
  * Provides basic session functions.
+ * @namespace beef.session
  */
 beef.session = {
 	

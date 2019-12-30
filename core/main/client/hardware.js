@@ -1,16 +1,20 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
+
+/**
+ * @namespace beef.hardware
+ */
 
 beef.hardware = {
 
   ua: navigator.userAgent,
 
-  /*
-   * @return: {String} CPU type
-   **/
+  /**
+   * @return {String} CPU type
+   */
   getCpuArch: function() {
     var arch = 'UNKNOWN';
     // note that actually WOW64 means IE 32bit and Windows 64 bit. we are more interested
@@ -39,7 +43,8 @@ beef.hardware = {
 
   /**
    * Returns number of CPU cores
-   **/
+   * @return {String}
+   */
   getCpuCores: function() {
     var cores = 'unknown';
     try {
@@ -54,7 +59,8 @@ beef.hardware = {
 
   /**
    * Returns CPU details
-   **/
+   * @return {String}
+   */
   getCpuDetails: function() {
     return {
       arch: beef.hardware.getCpuArch(),
@@ -64,7 +70,8 @@ beef.hardware = {
 
   /**
    * Returns GPU details
-   **/
+   * @return {object}
+   */
   getGpuDetails: function() {
     var gpu = 'unknown';
     var vendor = 'unknown';
@@ -98,7 +105,8 @@ beef.hardware = {
 
   /**
    * Returns RAM (GiB)
-   **/
+   * @return {String}
+   */
   getMemory: function() {
     var memory = 'unknown';
     try {
@@ -113,7 +121,8 @@ beef.hardware = {
 
   /**
    * Returns battery details
-   **/
+   * @return {Object}
+   */
   getBatteryDetails: function() {
     var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
 
@@ -136,6 +145,7 @@ beef.hardware = {
 
   /**
    * Returns zombie screen size and color depth.
+   * @return {Object}
    */
   getScreenSize: function () {
     return {
@@ -145,17 +155,19 @@ beef.hardware = {
     }
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is touch enabled?
+   * @return {Boolean} true or false.
+   */
   isTouchEnabled: function() {
     if ('ontouchstart' in document) return true;
     return false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is virtual machine?
+   * @return {Boolean} true or false.
+   */
   isVirtualMachine: function() {
     if (this.getGpuDetails().vendor.match('VMware, Inc'))
       return true;
@@ -171,9 +183,10 @@ beef.hardware = {
     return false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is a Laptop?
+   * @return {Boolean} true or false.
+   */
   isLaptop: function() {
     if (this.isMobileDevice()) return false;
     // Most common laptop screen resolution
@@ -183,64 +196,70 @@ beef.hardware = {
     return false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is Nokia?
+   * @return {Boolean} true or false.
+   */
   isNokia: function() {
     return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)|(Lumia )')) ? true : false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is Zune?
+   * @return {Boolean} true or false.
+   */
   isZune: function() {
     return (this.ua.match('ZuneWP7')) ? true : false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is HTC?
+   * @return {Boolean} true or false.
+   */
   isHtc: function() {
     return (this.ua.match('HTC')) ? true : false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is Ericsson?
+   * @return {Boolean} true or false.
+   */
   isEricsson: function() {
     return (this.ua.match('Ericsson')) ? true : false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is Motorola?
+   * @return {Boolean} true or false.
+   */
   isMotorola: function() {
     return (this.ua.match('Motorola')) ? true : false;
   },
 
-  /*
-   * @return: {Boolean} true or false.
-   **/
+  /**
+   * Is Google?
+   * @return {Boolean} true or false.
+   */
   isGoogle: function() {
     return (this.ua.match('Nexus One')) ? true : false;
   },
 
   /**
    * Returns true if the browser is on a Mobile device
-   * @return: {Boolean} true or false
+   * @return {Boolean} true or false
    *
    * @example: if(beef.hardware.isMobileDevice()) { ... }
-   **/
+   */
   isMobileDevice: function() {
     return MobileEsp.DetectMobileQuick();
   },
 
   /**
    * Returns true if the browser is on a game console
-   * @return: {Boolean} true or false
+   * @return {Boolean} true or false
    *
    * @example: if(beef.hardware.isGameConsole()) { ... }
-   **/
+   */
   isGameConsole: function() {
     return MobileEsp.DetectGameConsole();
   },

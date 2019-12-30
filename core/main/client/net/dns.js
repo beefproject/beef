@@ -1,23 +1,29 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.net.dns
+/**
  * 
  * request object structure:
  * + msgId: {Integer} Unique message ID for the request.
  * + domain: {String} Remote domain to retrieve the data.
  * + wait: {Integer} Wait time between requests (milliseconds) - NOT IMPLEMENTED
  * + callback: {Function} Callback function to receive the number of requests sent.
+ * @namespace beef.net.dns
  */
 
 beef.net.dns = {
 
 	handler: "dns",
-
+    /**
+     * 
+     * @param msgId 
+     * @param data 
+     * @param domain 
+     * @param callback 
+     */
 	send: function(msgId, data, domain, callback) {
 
         var encode_data = function(str) {

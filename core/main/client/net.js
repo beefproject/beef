@@ -1,12 +1,10 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.net
- *
+/**
  * Provides basic networking functions,
  * like beef.net.request and beef.net.forgeRequest,
  * used by BeEF command modules and the Requester extension,
@@ -15,6 +13,8 @@
  *
  * Also, it contains the core methods used by the XHR-polling
  * mechanism (flush, queue)
+ * @namespace beef.net
+ *
  */
 beef.net = {
 
@@ -82,11 +82,11 @@ beef.net = {
 
     /**
      * Queues the specified command results.
-     * @param: {String} handler: the server-side handler that will be called
-     * @param: {Integer} cid: command id
-     * @param: {String} results: the data to send
-     * @param: {Integer} status: the result of the command execution (-1, 0 or 1 for 'error', 'unknown' or 'success')
-     * @param: {Function} callback: the function to call after execution
+     * @param {String} handler the server-side handler that will be called
+     * @param {Integer} cid command id
+     * @param {String} results the data to send
+     * @param {Integer} status the result of the command execution (-1, 0 or 1 for 'error', 'unknown' or 'success')
+     * @param {Function} callback the function to call after execution
      */
     queue: function (handler, cid, results, status, callback) {
         if (typeof(handler) === 'string' && typeof(cid) === 'number' && (callback === undefined || typeof(callback) === 'function')) {
@@ -105,12 +105,12 @@ beef.net = {
      * NOTE: Always send Browser Fingerprinting results
      * (beef.net.browser_details(); -> /init handler) using normal XHR-polling,
      * even if WebSockets are enabled.
-     * @param: {String} handler: the server-side handler that will be called
-     * @param: {Integer} cid: command id
-     * @param: {String} results: the data to send
-     * @param: {Integer} exec_status: the result of the command execution (-1, 0 or 1 for 'error', 'unknown' or 'success')
-     * @param: {Function} callback: the function to call after execution
-     * @return: {Integer} exec_status: the command module execution status (defaults to 0 - 'unknown' if status is null)
+     * @param {String} handler the server-side handler that will be called
+     * @param {Integer} cid command id
+     * @param {String} results the data to send
+     * @param {Integer} exec_status the result of the command execution (-1, 0 or 1 for 'error', 'unknown' or 'success')
+     * @param {Function} callback the function to call after execution
+     * @return {Integer} the command module execution status (defaults to 0 - 'unknown' if status is null)
      */
     send: function (handler, cid, results, exec_status, callback) {
         // defaults to 'unknown' execution status if no parameter is provided, otherwise set the status
@@ -173,8 +173,8 @@ beef.net = {
 
     /**
      * Split the input data into chunk lengths determined by the amount parameter.
-     * @param: {String} str: the input data
-     * @param: {Integer} amount: chunk length
+     * @param {String} str the input data
+     * @param {Integer} amount chunk length
      */
     chunk: function (str, amount) {
         if (typeof amount == 'undefined') n = 2;
@@ -184,7 +184,7 @@ beef.net = {
     /**
      * Push the input stream back to the BeEF server-side components.
      * It uses beef.net.request to send back the data.
-     * @param: {Object} stream: the stream object to be sent back.
+     * @param {Object} stream the stream object to be sent back.
      */
     push: function (stream, callback) {
         //need to implement wait feature here eventually
@@ -203,18 +203,18 @@ beef.net = {
 
     /**
      * Performs http requests
-     * @param: {String} scheme: HTTP or HTTPS
-     * @param: {String} method: GET or POST
-     * @param: {String} domain: bindshell.net, 192.168.3.4, etc
-     * @param: {Int} port: 80, 5900, etc
-     * @param: {String} path: /path/to/resource
-     * @param: {String} anchor: this is the value that comes after the # in the URL
-     * @param: {String} data: This will be used as the query string for a GET or post data for a POST
-     * @param: {Int} timeout: timeout the request after N seconds
-     * @param: {String} dataType: specify the data return type expected (ie text/html/script)
-     * @param: {Function} callback: call the callback function at the completion of the method
+     * @param {String} scheme HTTP or HTTPS
+     * @param {String} method GET or POST
+     * @param {String} domain bindshell.net, 192.168.3.4, etc
+     * @param {Int} port 80, 5900, etc
+     * @param {String} path /path/to/resource
+     * @param {String} anchor this is the value that comes after the # in the URL
+     * @param {String} data This will be used as the query string for a GET or post data for a POST
+     * @param {Int} timeout timeout the request after N seconds
+     * @param {String} dataType specify the data return type expected (ie text/html/script)
+     * @param {Function} callback call the callback function at the completion of the method
      *
-     * @return: {Object} response: this object contains the response details
+     * @return {Object} this object contains the response details
      */
     request: function (scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
         //check if same domain or cross domain
@@ -307,7 +307,7 @@ beef.net = {
         return response;
     },
 
-    /*
+    /**
      * Similar to beef.net.request, except from a few things that are needed when dealing with forged requests:
      *  - requestid: needed on the callback
      *  - allowCrossDomain: set cross-domain requests as allowed or blocked
@@ -490,8 +490,9 @@ beef.net = {
         return response;
     },
 
-    //this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
-    //http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
+    /** this is a stub, as associative arrays are not parsed by JSON, all key / value pairs should use new Object() or {}
+     *  http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
+     */
     clean: function (r) {
         if (this.array_has_string_key(r)) {
             var obj = {};
@@ -502,7 +503,7 @@ beef.net = {
         return r;
     },
 
-    //Detects if an array has a string key
+    /** Detects if an array has a string key */
     array_has_string_key: function (arr) {
         if ($j.isArray(arr)) {
             try {
