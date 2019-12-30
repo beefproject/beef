@@ -12,7 +12,6 @@ end
 ## @note Include the BeEF router
 require 'core/main/router/router'
 require 'core/main/router/api'
-require 'core/main/router/error_responses'
 
 
 ## @note Include http server functions for beef
