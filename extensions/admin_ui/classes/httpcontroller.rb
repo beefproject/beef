@@ -10,7 +10,7 @@ module AdminUI
   #
   # Handle HTTP requests and call the relevant functions in the derived classes
   #
-  class HttpController
+  class HttpController 
     
     attr_accessor :headers, :status, :body, :paths, :currentuser, :params
     
@@ -26,8 +26,8 @@ module AdminUI
       @status = 200 if data['status'].nil?
       @session = BeEF::Extension::AdminUI::Session.instance
 
-      config = BeEF::Core::Configuration.instance
-      @bp = config.get "beef.extension.admin_ui.base_path"
+      @config = BeEF::Core::Configuration.instance
+      @bp = @config.get "beef.extension.admin_ui.base_path"
 
       @headers = {'Content-Type' => 'text/html; charset=UTF-8'} if data['headers'].nil?
 
@@ -37,6 +37,60 @@ module AdminUI
         @paths = data['paths']
       end
     end
+
+    # 
+    # Authentication check. Confirm the request to access the UI comes from a permitted IP address
+    # 
+    def authenticate_request(ip)
+      auth = BeEF::Extension::AdminUI::Controllers::Authentication.new
+      if !auth.permitted_source?(ip)
+        if @config.get("beef.http.web_server_imitation.enable")
+          type = @config.get("beef.http.web_server_imitation.type")
+          case type
+            when "apache"
+              @body = BeEF::Core::Router::APACHE_BODY
+              @status = 404
+              @headers = BeEF::Core::Router::APACHE_HEADER
+              return false
+            when "iis"
+              @body = BeEF::Core::Router::IIS_BODY
+              @status = 404
+              @headers = BeEF::Core::Router::IIS_HEADER
+              return false
+            when "nginx"
+              @body = BeEF::Core::Router::APACHE_BODY
+              @status = 404
+              @headers = BeEF::Core::Router::APACHE_HEADER
+              return false
+            else
+              @body = "Not Found."
+              @status = 404
+              @headers = {"Content-Type" => "text/html"}
+              return false
+          end
+        else
+          @body = "Not Found."
+          @status = 404
+          @headers = {"Content-Type" => "text/html"}
+          return false
+        end
+      else
+        return true
+      end
+    end
+
+    # 
+    # Check if reverse proxy has been enabled and return the correct client IP address
+    # 
+    def get_ip(request)
+      if !@config.get("beef.http.allow_reverse_proxy")
+        ua_ip = request.get_header('REMOTE_ADDR') # Get client remote ip address
+      else
+        ua_ip = request.ip # Get client x-forwarded-for ip address
+      end
+      ua_ip
+    end
+    
     
     #
     # Handle HTTP requests and call the relevant functions in the derived classes
@@ -47,7 +101,12 @@ module AdminUI
 
       # Web UI base path, like http://beef_domain/<bp>/panel
       auth_url = "#{@bp}/authentication"
-      
+
+      # If access to the UI is not permitted for the request IP address return a 404
+      if !authenticate_request(get_ip(@request))
+        return
+      end
+
       # test if session is unauth'd and whether the auth functionality is requested
       if not @session.valid_session?(@request) and not self.class.eql?(BeEF::Extension::AdminUI::Controllers::Authentication)
         @body = ''
