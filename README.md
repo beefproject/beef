@@ -61,10 +61,14 @@ $ ./install
 
 For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt).
 
+
+Wiki
+---
 We also have an [Installation](https://github.com/beefproject/beef/wiki/Installation) page on the wiki.
 
-Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration) page on the wiki for important details on configuring and securing BeEF.
+Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration)page on the wiki for important details on configuring and securing BeEF.
 
+Go to beefproject.github.io/beef/index.html in order to view the JSdocs for BeEF.
 
 Usage
 -----
