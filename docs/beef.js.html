@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: beef.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: beef.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+/*!
+ * BeEF JS Library &lt;%= @beef_version %>
+ * Register the BeEF JS on the window object.
+ */
+
+$j = jQuery.noConflict();
+
+if(typeof beef === 'undefined' &amp;&amp; typeof window.beef === 'undefined') {
+
+    /**
+     * Register the BeEF JS on the window object.
+     * @namespace {Object} BeefJS 
+     * @property {string} version BeEf Version
+     * @property {boolean} pageIsLoaded This gets set to true during window.onload(). It's a useful hack when messing with document.write().
+     * @property {array} onpopstate An array containing functions to be executed by the window.onpopstate() method.
+     * @property {array} onclose An array containing functions to be executed by the window.onclose() method.
+     * @property {array} commands An array containing functions to be executed by Beef.
+     * @property {array} components An array containing all the BeEF JS components.
+     */
+
+    var BeefJS = {
+        
+        version: '&lt;%= @beef_version %>',
+        pageIsLoaded: false,
+        onpopstate: new Array(),
+        onclose: new Array(),
+        commands: new Array(),
+        components: new Array(),
+
+        /**
+         * Adds a function to display debug messages (wraps console.log())
+         * @param: {string} the debug string to return
+         */
+        debug: function(msg) {
+            isDebug = '&lt;%= @client_debug %>'
+            if (typeof console == "object" &amp;&amp; typeof console.log == "function" &amp;&amp; isDebug.localeCompare("true")) {
+                var currentdate = new Date();
+                var pad = function(n){return ("0" + n).slice(-2);}
+                var datetime = currentdate.getFullYear() + "-"
+                + pad(currentdate.getMonth()+1)  + "-"
+                + pad(currentdate.getDate()) + " "
+                + pad(currentdate.getHours()) + ":"
+                + pad(currentdate.getMinutes()) + ":"
+                + pad(currentdate.getSeconds());
+                console.log('['+datetime+'] '+msg);
+            } else {
+                // TODO: maybe add a callback to BeEF server for debugging purposes
+                //window.alert(msg);
+            }
+        },
+
+        /**
+        * Adds a function to execute.
+        * @param: {Function} the function to execute.
+        */
+        execute: function(fn) {
+                if ( typeof  beef.websocket == "undefined"){
+                    this.commands.push(fn);
+                }else{
+                    fn();
+                }
+        },
+
+       /**
+        * Registers a component in BeEF JS.
+        * @params: {String} the component.
+        *
+        * Components are very important to register so the framework does not
+        * send them back over and over again.
+        */
+        regCmp: function(component) {
+                this.components.push(component);
+        }
+
+    };
+
+    window.beef = BeefJS;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li><li><a href="BeefJS.html">BeefJS</a></li><li><a href="browser_jools.html">browser_jools</a></li><li><a href="platform.html">platform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Jan 02 2020 16:29:11 GMT+1000 (Australian Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -13,23 +13,24 @@ $j = jQuery.noConflict();
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 
+    /**
+     * Register the BeEF JS on the window object.
+     * @namespace {Object} BeefJS 
+     * @property {string} version BeEf Version
+     * @property {boolean} pageIsLoaded This gets set to true during window.onload(). It's a useful hack when messing with document.write().
+     * @property {array} onpopstate An array containing functions to be executed by the window.onpopstate() method.
+     * @property {array} onclose An array containing functions to be executed by the window.onclose() method.
+     * @property {array} commands An array containing functions to be executed by Beef.
+     * @property {array} components An array containing all the BeEF JS components.
+     */
+
     var BeefJS = {
-
+        
         version: '<%= @beef_version %>',
-
-        // This get set to true during window.onload(). It's a useful hack when messing with document.write().
         pageIsLoaded: false,
-
-        // An array containing functions to be executed by the window.onpopstate() method.
         onpopstate: new Array(),
-
-        // An array containing functions to be executed by the window.onclose() method.
         onclose: new Array(),
-
-        // An array containing functions to be executed by Beef.
         commands: new Array(),
-
-        // An array containing all the BeEF JS components.
         components: new Array(),
 
         /**
@@ -37,8 +38,8 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
          * @param: {string} the debug string to return
          */
         debug: function(msg) {
-            if (!<%= @client_debug %>) return;
-            if (typeof console == "object" && typeof console.log == "function") {
+            isDebug = '<%= @client_debug %>'
+            if (typeof console == "object" && typeof console.log == "function" && isDebug.localeCompare("true")) {
                 var currentdate = new Date();
                 var pad = function(n){return ("0" + n).slice(-2);}
                 var datetime = currentdate.getFullYear() + "-"

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -13,7 +13,7 @@ module BeEF
 
           # Hooks the model's "save" event. Validates pattern/response and generates a rule identifier.
           before_save :check_rule
-          self.table_name = 'dns_rule'
+          self.table_name = 'dns_rules'
           serialize :response, Array
 
         private

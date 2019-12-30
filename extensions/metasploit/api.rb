@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -35,7 +35,7 @@ module BeEF
                 print_debug 'Attempting to use Metasploit exploits cache file'
                 raw = File.read(path)
                 begin
-                  msf_module_config = YAML.load(raw)
+                  msf_module_config = YAML.safe_load(raw)
                 rescue => e
                   print_error "[Metasploit] #{e.message}"
                   print_error e.backtrace

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -115,7 +115,7 @@ task :beef_start => 'beef' do
   test_pass = ENV['TEST_BEEF_PASS'] || 'bad_fred_no_access'
 
   # write a rake config file for beef
-  config = YAML.load(File.read('./config.yaml'))
+  config = YAML.safe_load(File.read('./config.yaml'))
   config['beef']['credentials']['user'] = test_user
   config['beef']['credentials']['passwd'] = test_pass
   Dir.mkdir('tmp') unless Dir.exists?('tmp')

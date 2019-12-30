@@ -1,19 +1,22 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
-// beef.net.connection - wraps Mozilla's Network Information API
-// https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation
-// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection
+/**
+ * beef.net.connection - wraps Mozilla's Network Information API
+ * https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation
+ * https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection
+ * @namespace beef.net.connection
+ */
 beef.net.connection = {
 
-  /* Returns the connection type
-   * @example: beef.net.connection.type()
-   * @note: https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/type
-   * @return: {String} connection type or 'unknown'.
-   **/
+  /**
+   * Returns the connection type. https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/type
+   * @example beef.net.connection.type()
+   * @return {String} connection type or 'unknown'.
+   */
   type: function () {
     try {
       var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
@@ -25,11 +28,11 @@ beef.net.connection = {
     }
   },
 
-  /* Returns the maximum downlink speed of the connection
-   * @example: beef.net.connection.downlinkMax()
-   * @note: https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/downlinkMax
-   * @return: {String} downlink max or 'unknown'.
-   **/
+  /** 
+   * Returns the maximum downlink speed of the connection. https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/downlinkMax
+   * @example beef.net.connection.downlinkMax()
+   * @return {String} downlink max or 'unknown'.
+   */
   downlinkMax: function () {
     try {
       var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;

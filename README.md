@@ -1,6 +1,6 @@
 ===============================================================================
 
-    Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 
@@ -27,8 +27,6 @@ __Web:__ https://beefproject.com/
 __Bugs:__ https://github.com/beefproject/beef/issues
 
 __Security Bugs:__ security@beefproject.com
-
-__IRC:__ ircs://irc.freenode.net/beefproject
 
 __Twitter:__ @beefproject
 
@@ -63,10 +61,14 @@ $ ./install
 
 For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt).
 
+
+Wiki
+---
 We also have an [Installation](https://github.com/beefproject/beef/wiki/Installation) page on the wiki.
 
-Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration) page on the wiki for important details on configuring and securing BeEF.
+Upon successful installation, be sure to read the [Configuration](https://github.com/beefproject/beef/wiki/Configuration)page on the wiki for important details on configuring and securing BeEF.
 
+Go to beefproject.github.io/beef/index.html in order to view the JSdocs for BeEF.
 
 Usage
 -----

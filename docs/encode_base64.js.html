@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: encode/base64.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: encode/base64.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+// Base64 code from http://stackoverflow.com/questions/3774622/how-to-base64-encode-inside-of-javascript/3774662#3774662
+
+beef.encode = {};
+
+/** 
+ * Base64 code from http://stackoverflow.com/questions/3774622/how-to-base64-encode-inside-of-javascript/3774662#3774662
+ * @namespace beef.encode.base64 
+ */
+beef.encode.base64 = {
+	
+	keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} input
+     * @return {string}
+     */
+    encode : function (input) {
+        if (window.btoa) {
+           return btoa(unescape(encodeURIComponent(input)));
+        }
+
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+
+        input = beef.encode.base64.utf8_encode(input);
+
+        while (i &lt; input.length) {
+
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 &amp; 3) &lt;&lt; 4) | (chr2 >> 4);
+            enc3 = ((chr2 &amp; 15) &lt;&lt; 2) | (chr3 >> 6);
+            enc4 = chr3 &amp; 63;
+
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+
+            output = output +
+            this.keyStr.charAt(enc1) + this.keyStr.charAt(enc2) +
+            this.keyStr.charAt(enc3) + this.keyStr.charAt(enc4);
+
+        }
+
+        return output;
+    },
+
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} input
+     * @return {string}
+     */
+    decode : function (input) {
+        if (window.atob) {
+            return escape(atob(input));
+        }
+
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
+
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+        while (i &lt; input.length) {
+
+            enc1 = this.keyStr.indexOf(input.charAt(i++));
+            enc2 = this.keyStr.indexOf(input.charAt(i++));
+            enc3 = this.keyStr.indexOf(input.charAt(i++));
+            enc4 = this.keyStr.indexOf(input.charAt(i++));
+
+            chr1 = (enc1 &lt;&lt; 2) | (enc2 >> 4);
+            chr2 = ((enc2 &amp; 15) &lt;&lt; 4) | (enc3 >> 2);
+            chr3 = ((enc3 &amp; 3) &lt;&lt; 6) | enc4;
+
+            output = output + String.fromCharCode(chr1);
+
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
+
+        }
+
+        output = beef.encode.base64.utf8_decode(output);
+
+        return output;
+
+    },
+
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} string
+     * @return {string}
+     */
+    utf8_encode : function (string) {
+        string = string.replace(/\r\n/g,"\n");
+        var utftext = "";
+
+        for (var n = 0; n &lt; string.length; n++) {
+
+            var c = string.charCodeAt(n);
+
+            if (c &lt; 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if((c > 127) &amp;&amp; (c &lt; 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c &amp; 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) &amp; 63) | 128);
+                utftext += String.fromCharCode((c &amp; 63) | 128);
+            }
+
+        }
+
+        return utftext;
+    },
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} utftext
+     * @return {string} 
+     */
+    utf8_decode : function (utftext) {
+        var string = "";
+        var i = 0;
+        var c = c1 = c2 = 0;
+
+        while ( i &lt; utftext.length ) {
+
+            c = utftext.charCodeAt(i);
+
+            if (c &lt; 128) {
+                string += String.fromCharCode(c);
+                i++;
+            }
+            else if((c > 191) &amp;&amp; (c &lt; 224)) {
+                c2 = utftext.charCodeAt(i+1);
+                string += String.fromCharCode(((c &amp; 31) &lt;&lt; 6) | (c2 &amp; 63));
+                i += 2;
+            }
+            else {
+                c2 = utftext.charCodeAt(i+1);
+                c3 = utftext.charCodeAt(i+2);
+                string += String.fromCharCode(((c &amp; 15) &lt;&lt; 12) | ((c2 &amp; 63) &lt;&lt; 6) | (c3 &amp; 63));
+                i += 3;
+            }
+
+        }
+
+        return string;
+    }
+
+};
+
+beef.regCmp('beef.encode.base64');
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li><li><a href="BeefJS.html">BeefJS</a></li><li><a href="browser_jools.html">browser_jools</a></li><li><a href="platform.html">platform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Jan 02 2020 16:29:11 GMT+1000 (Australian Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

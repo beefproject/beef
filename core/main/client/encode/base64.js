@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2019 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -8,10 +8,18 @@
 
 beef.encode = {};
 
+/** 
+ * Base64 code from http://stackoverflow.com/questions/3774622/how-to-base64-encode-inside-of-javascript/3774662#3774662
+ * @namespace beef.encode.base64 
+ */
 beef.encode.base64 = {
 	
 	keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} input
+     * @return {string}
+     */
     encode : function (input) {
         if (window.btoa) {
            return btoa(unescape(encodeURIComponent(input)));
@@ -49,7 +57,11 @@ beef.encode.base64 = {
         return output;
     },
 
-
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} input
+     * @return {string}
+     */
     decode : function (input) {
         if (window.atob) {
             return escape(atob(input));
@@ -90,8 +102,12 @@ beef.encode.base64 = {
 
     },
 
-
-   utf8_encode : function (string) {
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} string
+     * @return {string}
+     */
+    utf8_encode : function (string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
 
@@ -116,7 +132,11 @@ beef.encode.base64 = {
 
         return utftext;
     },
-
+    /** 
+     * @memberof beef.encode.base64 
+     * @param {string} utftext
+     * @return {string} 
+     */
     utf8_decode : function (utftext) {
         var string = "";
         var i = 0;

