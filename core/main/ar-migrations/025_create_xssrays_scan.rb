@@ -2,7 +2,7 @@ class CreateXssraysScan < ActiveRecord::Migration[6.0]
 
 	def change
 
-		create_table :xssrays_scans do |t|
+		create_table :xssraysscans do |t|
             t.references :hooked_browser
             t.datetime :scan_start
             t.datetime :scan_finish
