@@ -110,3 +110,13 @@ $RECYCLE.BIN/
 
 test/thirdparty/msf/unit/.byebug_history
 /load
+
+### JSDoc ###
+# Dependency directories
+node_modules/
+
+# Generated files
+out/
+
+# User-specific files
+conf.json
