@@ -117,6 +117,7 @@ node_modules/
 
 # Generated files
 out/
+doc/rdoc/
 
 # User-specific files
 conf.json
