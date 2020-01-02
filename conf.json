@@ -1,0 +1,16 @@
+{
+    "source": {
+        "include": ["./core/main/client"],
+        "includePattern": ".js$"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "opts": {
+        "encoding": "utf8",
+        "readme": "./README.md",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true
+    }
+}
