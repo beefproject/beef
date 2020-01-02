@@ -26,11 +26,12 @@
  * (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
  */
 
-/*
+/**
  * XssRays 0.5.5 ported to BeEF by Michele "antisnatchor" Orru'
  * The XSS detection mechanisms has been rewritten from scratch: instead of using the location hash trick (that doesn't work anymore),
  * if the vulnerability is triggered the JS code vector will contact back BeEF.
  * Other aspects of the original code have been simplified and improved.
+ * @namespace beef.net.xssrays
  */
 beef.net.xssrays = {
     handler: "xssrays",
@@ -72,7 +73,10 @@ beef.net.xssrays = {
     rays: [],
     stack: [],
 
-    // return true is the attack vector can be launched to the current browser type.
+    /**
+     * return true is the attack vector can be launched to the current browser type.
+     * @param {array} vector_array_index 
+     */
     checkBrowser:function(vector_array_index){
         var result = false;
         var browser_id = this.vectors[vector_array_index].browser;
@@ -101,7 +105,14 @@ beef.net.xssrays = {
         return result;
     },
 
-    // main function, where all starts :-)
+    /**
+     * main function, where all starts :-)
+     * @param xssraysScanId 
+     * @param hookedBrowserSession 
+     * @param beefUrl 
+     * @param crossDomain 
+     * @param timeout 
+     */
     startScan:function(xssraysScanId, hookedBrowserSession, beefUrl, crossDomain, timeout) {
 
         this.xssraysScanId = xssraysScanId;
@@ -284,7 +295,14 @@ beef.net.xssrays = {
         return str;
     },
 
-    // this is the main core function with the detection mechanisms...
+    /**
+     * this is the main core function with the detection mechanisms...
+     * @param url 
+     * @param method 
+     * @param vector 
+     * @param params 
+     * @param urlencode 
+     */
     run: function(url, method, vector, params, urlencode) {
         this.stack.push(function() {
 
@@ -429,7 +447,9 @@ beef.net.xssrays = {
         });
     },
 
-    // run the jobs (run functions added to the stack), and clean the shit (iframes) from the DOM after a timeout value
+    /**
+     * run the jobs (run functions added to the stack), and clean the shit (iframes) from the DOM after a timeout value
+     */
     runJobs: function() {
         var that = this;
         this.totalConnections = this.stack.length;

@@ -4,10 +4,9 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.session
- *
+/**
  * Provides basic session functions.
+ * @namespace beef.session
  */
 beef.session = {
 	

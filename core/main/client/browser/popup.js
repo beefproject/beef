@@ -4,16 +4,14 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.browser.popup
- * 
+/**
  * Provides fuctions for working with cookies. 
  * Several functions adopted from http://davidwalsh.name/popup-block-javascript
  * Original author unknown.
- * 
+ * @namespace beef.browser.popup
  */
 beef.browser.popup = {
-	
+		/** @memberof beef.browser.popup */
 		blocker_enabled: function ()
 		{
 			screenParams = beef.hardware.getScreenSize();

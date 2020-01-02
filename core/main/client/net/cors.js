@@ -1,3 +1,7 @@
+/**
+ * @namespace beef.net.cors
+ */
+
 beef.net.cors = {
 
   handler: "cors",

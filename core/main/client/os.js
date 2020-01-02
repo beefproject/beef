@@ -4,6 +4,8 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
+/** @namespace beef.os */
+
 beef.os = {
 
 	ua: navigator.userAgent,
@@ -12,6 +14,7 @@ beef.os = {
 	  * Detect default browser (IE only)
 	  * Written by unsticky
 	  * http://ha.ckers.org/blog/20070319/detecting-default-browser-in-ie/
+	  * @return {string}
 	  */
 	getDefaultBrowser: function() {
 		var result = "Unknown"
@@ -29,144 +32,221 @@ beef.os = {
 		}
 		return result;
 	},
-
+	
 	// the likelihood that we hook Windows 3.11 (which has only Win in the UA string) is zero in 2015
+	/**
+	 * @return {boolean}
+	 */
 	isWin311: function() {
 		return (this.ua.match('(Win16)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWinNT4: function() {
 		return (this.ua.match('(Windows NT 4.0)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin95: function() {
 		return (this.ua.match('(Windows 95)|(Win95)|(Windows_95)')) ? true : false;
 	},
+	/**
+	 * @return {boolean}
+	 */
 	isWinCE: function() {
 		return (this.ua.match('(Windows CE)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin98: function() {
 		return (this.ua.match('(Windows 98)|(Win98)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWinME: function() {
 		return (this.ua.match('(Windows ME)|(Win 9x 4.90)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin2000: function() {
 		return (this.ua.match('(Windows NT 5.0)|(Windows 2000)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isWin2000SP1: function() {
 		return (this.ua.match('Windows NT 5.01 ')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWinXP: function() {
 		return (this.ua.match('(Windows NT 5.1)|(Windows XP)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWinServer2003: function() {
 		return (this.ua.match('(Windows NT 5.2)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWinVista: function() {
 		return (this.ua.match('(Windows NT 6.0)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin7: function() {
 		return (this.ua.match('(Windows NT 6.1)|(Windows NT 7.0)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isWin8: function() {
 		return (this.ua.match('(Windows NT 6.2)')) ? true : false;
 	},	
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin81: function() {
 		return (this.ua.match('(Windows NT 6.3)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isWin10: function() {
 		return (this.ua.match('Windows NT 10.0')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isOpenBSD: function() {
 		return (this.ua.indexOf('OpenBSD') != -1) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isSunOS: function() {
 		return (this.ua.indexOf('SunOS') != -1) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isLinux: function() {
 		return (this.ua.match('(Linux)|(X11)')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isMacintosh: function() {
 		return (this.ua.match('(Mac_PowerPC)|(Macintosh)|(MacIntel)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isOsxYosemite: function(){ // TODO
 		return (this.ua.match('(OS X 10_10)|(OS X 10.10)')) ? true : false;
 	},
+	/**
+	 * @return {boolean}
+	 */
 	isOsxMavericks: function(){ // TODO
 		return (this.ua.match('(OS X 10_9)|(OS X 10.9)')) ? true : false;
 	},
+	/**
+	 * @return {boolean}
+	 */
 	isOsxSnowLeopard: function(){ // TODO
 		return (this.ua.match('(OS X 10_8)|(OS X 10.8)')) ? true : false;
 	},
+	/**
+	 * @return {boolean}
+	 */
 	isOsxLeopard: function(){ // TODO
 		return (this.ua.match('(OS X 10_7)|(OS X 10.7)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isWinPhone: function() {
 		return (this.ua.match('(Windows Phone)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isIphone: function() {
 		return (this.ua.indexOf('iPhone') != -1) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isIpad: function() {
 		return (this.ua.indexOf('iPad') != -1) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isIpod: function() {
 		return (this.ua.indexOf('iPod') != -1) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isNokia: function() {
 		return (this.ua.match('(Maemo Browser)|(Symbian)|(Nokia)')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isAndroid: function() {
 		return (this.ua.match('Android')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isBlackBerry: function() {
 		return (this.ua.match('BlackBerry')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isWebOS: function() {
 		return (this.ua.match('webOS')) ? true : false;
 	},
-
+	/**
+	 * @return {boolean}
+	 */
 	isQNX: function() {
 		return (this.ua.match('QNX')) ? true : false;
 	},
-	
+	/**
+	 * @return {boolean}
+	 */
 	isBeOS: function() {
 		return (this.ua.match('BeOS')) ? true : false;
 	},
-
-        isAros: function() {
-                return (this.ua.match('AROS')) ? true : false;
-        },
-
+	/**
+	 * @return {boolean}
+	 */
+	isAros: function() {
+			return (this.ua.match('AROS')) ? true : false;
+	},
+	/**
+	 * @return {boolean}
+	 */
 	isWindows: function() {
 		return (this.ua.match('Windows')) ? true : false;
 	},
-	
+	/**
+	 * @return {string}
+	 */
 	getName: function() {
 		
 		if(this.isWindows()){
@@ -244,6 +324,7 @@ beef.os = {
 
   /**
     * Get OS name
+	* @return {string}
     */
 	getVersion: function(){
 		//Windows

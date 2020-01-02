@@ -4,10 +4,16 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-// Json code from Brantlye Harris-- http://code.google.com/p/jquery-json/
+/** 
+ * Json code from Brantlye Harris-- http://code.google.com/p/jquery-json/
+ * @namespace beef.encode.json
+ */
 
 beef.encode.json = {
-	
+	/**
+     * @memberof beef.encode.json
+     * @param o 
+     */
 	stringify: function(o) {
         if (typeof(JSON) == 'object' && JSON.stringify) {
             // Error on stringifying cylcic structures caused polling to die
@@ -97,7 +103,10 @@ beef.encode.json = {
             return "{" + pairs.join(", ") + "}";
         }
     },
-
+    /**
+     * @memberof beef.encode.json
+     * @param string 
+     */
     quoteString: function(string) {
         if (string.match(this._escapeable))
         {

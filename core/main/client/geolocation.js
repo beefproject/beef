@@ -4,22 +4,27 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.geolocation
- *
+/**
  * Provides functionalities to use the geolocation API.
+ * @namespace beef.geolocation
  */
+
 beef.geolocation = {
 
     /**
-     * check if browser supports the geolocation API
+     * Check if browser supports the geolocation API
+     * @return {boolean}
      */
     isGeolocationEnabled: function(){
 		return !!navigator.geolocation;
     },
 
-    /*
-     * given latitude/longitude retrieves exact street position of the zombie
+    /** 
+     * Given latitude/longitude retrieves exact street position of the zombie
+     * @param command_url
+     * @param command_id
+     * @param latitude
+     * @param longitude
      */
     getOpenStreetMapAddress: function(command_url, command_id, latitude, longitude){
 
@@ -56,8 +61,10 @@ beef.geolocation = {
 
     },
 
-    /*
-     * retrieve latitude/longitude using the geolocation API
+    /**
+     * Retrieve latitude/longitude using the geolocation API
+     * @param command_url
+     * @param command_id
      */
     getGeolocation: function (command_url, command_id){
 

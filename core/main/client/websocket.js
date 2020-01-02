@@ -6,11 +6,10 @@
 
 
 /**
- * @Literal object: beef.websocket
- *
  * Manage the WebSocket communication channel.
  * This channel is much faster and responsive, and it's used automatically
  * if the browser supports WebSockets AND beef.http.websocket.enable = true.
+ * @namespace beef.websocket
  */
 
 beef.websocket = {
