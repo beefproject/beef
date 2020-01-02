@@ -5,9 +5,8 @@
 //
 
 /**
- * @literal object: beef.browser
- *
  * Basic browser functions.
+ * @namespace beef.browser
  */
 beef.browser = {
 
@@ -997,10 +996,13 @@ beef.browser = {
 
     /**
      * Returns true if Webkit based
-     *
-     * **** DUPLICATE WARNING **** Changes here may aldo need addressed in /isS\d+/ functions.
      */
+
+
     isWebKitBased: function () {
+        /*
+        * **** DUPLICATE WARNING **** Changes here may aldo need addressed in /isS\d+/ functions.
+        */
         return (!window.opera && !window.chrome
                 && window.navigator.userAgent.match(/ Version\/\d/) != null
                 && !window.globalStorage
@@ -4579,17 +4581,19 @@ beef.browser = {
      *  This code is based on research from browserspy.dk
      *
      * @parameter {ENUM: 'PER_DOMAIN', 'GLOBAL'=>default}
-     * @return {Deferred promise} A jQuery deferred object promise, which when resolved passes
+     * @return {Object} A jQuery deferred object promise, which when resolved passes
      *    the number of connections to the callback function as "this"
-     *
-     *    example usage:
-     *        $j.when(getMaxConnections()).done(function(){
-     *            console.debug("Max Connections: " + this);
-     *            });
-     *
      */
-    getMaxConnections: function (scope) {
 
+
+
+    getMaxConnections: function (scope) {
+        /*
+        *    example usage:
+        *        $j.when(getMaxConnections()).done(function(){
+        *            console.debug("Max Connections: " + this);
+        *            }); 
+        */
         var imagesCount = 30;		// Max number of images to test
         var secondsTimeout = 5;		// Image load timeout threashold
         var testUrl = "";		// The image testing service URL

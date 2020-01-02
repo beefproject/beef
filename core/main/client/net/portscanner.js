@@ -4,18 +4,24 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.net.portscanner
- * 
+/**
  * Provides port scanning functions for the zombie. A mod of pdp's scanner
  * 
  * Version: '0.1',
  * author: 'Petko Petkov',
  * homepage: 'http://www.gnucitizen.org'
+ * @namespace beef.net.portscanner
  */
 
 beef.net.portscanner = {
 
+		/**
+		 * 
+		 * @param callback 
+		 * @param target 
+		 * @param port 
+		 * @param timeout 
+		 */
 		scanPort: function(callback, target, port, timeout) 
 		{
 			var timeout = (timeout == null)?100:timeout;
@@ -38,7 +44,13 @@ beef.net.portscanner = {
 			}, timeout);
 
 		},
-
+		/**
+		 * 
+		 * @param callback 
+		 * @param target 
+		 * @param ports_str 
+		 * @param timeout 
+		 */
 		scanTarget: function(callback, target, ports_str, timeout)
 		{
 			var ports = ports_str.split(",");

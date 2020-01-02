@@ -4,10 +4,9 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.logger
- *
+/**
  * Provides logging capabilities.
+ * @namespace beef.logger
  */
 beef.logger = {
 	

@@ -4,16 +4,15 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * @literal object: beef.browser.cookie
- * 
+/**
  * Provides fuctions for working with cookies. 
  * Several functions adopted from http://techpatterns.com/downloads/javascript_cookies.php
  * Original author unknown.
- * 
+ * @namespace beef.browser.cookie
  */
 beef.browser.cookie = {
 	
+		/** @memberof beef.browser.cookie */
 		setCookie: function (name, value, expires, path, domain, secure) 
 		{
 	
@@ -32,7 +31,7 @@ beef.browser.cookie = {
 				( ( domain ) ? ";domain=" + domain : "" ) +
 				( ( secure ) ? ";secure" : "" );
 		},
-
+		/** @memberof beef.browser.cookie */
 		getCookie: function(name) 
 		{
 			var a_all_cookies = document.cookie.split( ';' );
@@ -63,7 +62,7 @@ beef.browser.cookie = {
 				return null;
 			}
 		},
-
+		/** @memberof beef.browser.cookie */
 		deleteCookie: function (name, path, domain) 
 		{
 			if ( this.getCookie(name) ) document.cookie = name + "=" +
@@ -72,7 +71,7 @@ beef.browser.cookie = {
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 		},
 
-	    /* Never stop the madness dear C. */
+	    /** @memberof beef.browser.cookie */
 		veganLol: function (){
 			var to_hell= '';
 			var min = 17;
@@ -99,7 +98,7 @@ beef.browser.cookie = {
 			}
 			return to_hell;
 		},
-		
+		/** @memberof beef.browser.cookie */
 		hasSessionCookies: function (name){
 			this.setCookie( name, beef.browser.cookie.veganLol(), '', '/', '', '' );
 
@@ -108,7 +107,7 @@ beef.browser.cookie = {
 			return cookiesEnabled;
 			
 		},
-
+		/** @memberof beef.browser.cookie */
 		hasPersistentCookies: function (name){
 			this.setCookie( name, beef.browser.cookie.veganLol(), 1, '/', '', '' );
 
