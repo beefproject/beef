@@ -3,14 +3,14 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'securerandom'
 
 module BeEF
 module Core
   module Crypto
-    
     # @note the minimum length of the security token
     TOKEN_MINIMUM_LENGTH = 15
-    
+   
     #
     # Generate a secure random token
     #
@@ -27,7 +27,7 @@ module Core
       raise TypeError, "Token length is less than the minimum length enforced by the framework: #{TOKEN_MINIMUM_LENGTH}" if (token_length < TOKEN_MINIMUM_LENGTH)
       
       # return random hex string
-      OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
+      SecureRandom.random_bytes(token_length).unpack("H*")[0]
     end
 
     #
@@ -37,11 +37,12 @@ module Core
     # @return [String] Security token
     #
     def self.api_token
+     
       config = BeEF::Core::Configuration.instance
       token_length = 20
 
       # return random hex string
-      token = OpenSSL::Random.random_bytes(token_length).unpack("H*")[0]
+      token = SecureRandom.random_bytes(token_length).unpack("H*")[0]
       config.set('beef.api_token', token)
       token
     end
@@ -69,7 +70,7 @@ module Core
       raise TypeError, 'Invalid length' unless length.integer?
       raise TypeError, 'Invalid length' unless length.positive?
 
-      OpenSSL::Random.random_bytes(length).unpack('H*').first[0...length]
+      SecureRandom.random_bytes(length).unpack('H*').first[0...length]
     end
 
     #
