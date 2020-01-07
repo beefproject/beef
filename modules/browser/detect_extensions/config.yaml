@@ -15,7 +15,7 @@ beef:
                 working:
                     FF:
                         min_ver: 1
-                        max_ver: latest
+                        max_ver: 50
                     C:
                         min_ver: 1
                         max_ver: 18

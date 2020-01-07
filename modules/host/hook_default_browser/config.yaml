@@ -14,6 +14,6 @@ beef:
             target:
                 not_working:
                     ALL:
-                        os: ["iOS"]
+                        os: ["iOS","Macintosh"]
                 working: ["All"]
                 user_notify: ["FF", "C"]
