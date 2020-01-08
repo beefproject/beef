@@ -55,9 +55,9 @@ module BeEF
                 @options[:ws_port] = ws_port
               end
 
-              #opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
-              #  @options[:interactive] = true
-              #end
+              opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
+               @options[:interactive] = true
+              end
             end
 
             optparse.parse!

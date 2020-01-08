@@ -5,7 +5,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-
+gem 'rex'
 gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'

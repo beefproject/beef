@@ -80,17 +80,6 @@ if env_lang !~ /(utf8|utf-8)/i
 end
 
 #
-# @note Check if port and WebSocket port need to be updated from command line parameters
-#
-unless BeEF::Core::Console::CommandLine.parse[:port].empty?
-  config.set('beef.http.port', BeEF::Core::Console::CommandLine.parse[:port])
-end
-
-unless BeEF::Core::Console::CommandLine.parse[:ws_port].empty?
-  config.set('beef.http.websocket.port', BeEF::Core::Console::CommandLine.parse[:ws_port])
-end
-
-#
 # @note Validate configuration file
 #
 unless BeEF::Core::Configuration.instance.validate
@@ -167,11 +156,13 @@ end
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:db_file)
+
+
 # Migrate (if required)
-context = ActiveRecord::Migration.new.migration_context
-if context.needs_migration?
-  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-end
+# context = ActiveRecord::Migration.new.migration_context
+# if context.needs_migration?
+#   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+# end
 
 #
 # @note Extensions may take a moment to load, thus we print out a please wait message
@@ -186,8 +177,8 @@ BeEF::Core::Migration.instance.update_db!
 #
 # @note Create HTTP Server and prepare it to run
 #
-http_hook_server = BeEF::Core::Server.instance
-http_hook_server.prepare
+# http_hook_server = BeEF::Core::Server.instance
+# http_hook_server.prepare
 
 #
 # @note Prints information back to the user before running the server
@@ -200,62 +191,35 @@ BeEF::Core::Console::Banners.print_network_interfaces_routes
 #
 # @note Prints the API key needed to use the RESTful API
 #
-print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
+# print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
 
 #
 # @note Load the GeoIP database
 #
-BeEF::Core::GeoIp.instance
+# BeEF::Core::GeoIp.instance
 
 #
 # @note Call the API method 'pre_http_start'
 #
-BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+# BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
 #
 # @note Load any ARE (Autorun Rule Engine) rules scanning the <beef_root>/arerules/enabled directory
 #
-BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
+# BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 
 #
 # @note Start the WebSocket server
 #
-if config.get("beef.http.websocket.enable")
-  BeEF::Core::Websocket::Websocket.instance
-  BeEF::Core::Console::Banners.print_websocket_servers
-end
+# if config.get("beef.http.websocket.enable")
+#   BeEF::Core::Websocket::Websocket.instance
+#   BeEF::Core::Console::Banners.print_websocket_servers
+# end
 
-#
-# @note Start HTTP server
-#
-
-# @note Start the HTTP Server, we additionally check whether we load the Console Shell or not
-if BeEF::Core::Console::CommandLine.parse[:interactive]#config.get("beef.extension.console.shell.enable") == true
-
-#   # XXX
-#   # http_hook_server.start
-
-#   require 'extensions/console/shell'
-#   puts ""
-#   begin
-#     FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
-#     BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt, 
-#         BeEF::Extension::Console::Shell::DefaultPromptChar,
-#         {'config' => config, 'http_hook_server' => http_hook_server}).run
-    
-#   rescue Interrupt
-#   end
-  require 'extensions/console/shell'
+require 'extensions/console/shell'
   puts ""
   begin 
     FileUtils.mkdir_p(File.expand_path(config.get("beef.extension.console.shell.historyfolder")))
     BeEF::Extension::Console::Shell.new(BeEF::Extension::Console::Shell::DefaultPrompt, BeEF::Extension::Console::Shell::DefaultPromptChar, {'config' => config}).run
   rescue Interrupt
   end
-else
-  print_info 'BeEF server started (press control+c to stop)'
-  http_hook_server.start
-end
-
-# print_info 'BeEF server started (press control+c to stop)'
-# http_hook_server.start

@@ -268,7 +268,7 @@ class Core
     end
 
     onlinezombies = []
-    BeEF::Core::Models::HookedBrowser.where('lastseen > ?' (Time.new.to_i - 30)).each do |z|
+    BeEF::Core::Models::HookedBrowser.where('lastseen > ?', (Time.new.to_i - 30)).each do |z|
       onlinezombies << z.id
     end
 

@@ -8,6 +8,7 @@
 Thin.send :remove_const, :SERVER
 Thin::SERVER = nil
 
+
 module BeEF
   module Core
     class Server

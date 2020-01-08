@@ -4,12 +4,15 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-require 'rex'
-require 'rex/ui'
+
 
 module BeEF
 module Extension
 module Console
+
+
+require 'rex'
+require 'rex/ui'
 
 class Shell
   
@@ -24,10 +27,10 @@ class Shell
     require 'extensions/console/lib/command_dispatcher'
     require 'extensions/console/lib/shellinterface'
     
-    self.http_hook_server = opts['http_hook_server']
+    # self.http_hook_server = opts['http_hook_server']
     self.config = opts['config']
-    self.jobs = Rex::JobContainer.new
     self.interface = BeEF::Extension::Console::ShellInterface.new(self.config)
+    self.jobs = Rex::JobContainer.new
     
     super(prompt, prompt_char, File.expand_path(self.config.get("beef.extension.console.shell.historyfolder").to_s + self.config.get("beef.extension.console.shell.historyfile").to_s))
     
@@ -38,17 +41,22 @@ class Shell
     
     enstack_dispatcher(CommandDispatcher::Core)
     
-    #To prevent http_hook_server from blocking, we kick it off as a background job here.
-    self.jobs.start_bg_job(
-      "http_hook_server",
-      self,
-      Proc.new { |ctx_| self.http_hook_server.start }
-    )
+    #To prevent http_hook_server from blocking, we kick it off as a background job here
+    # self.jobs.start_bg_job(
+    #   "http_hook_server",
+    #   self,
+    #   Proc.new { |ctx_| self.http_hook_server.start},
+    #   Proc.new { |ctx_| self.cleanup}
+    # )
     
   end
   
   def stop
     super
+  end
+
+  def cleanup
+    puts "cleaning up..."
   end
   
   #New method to determine if a particular command dispatcher it already .. enstacked .. gooood
