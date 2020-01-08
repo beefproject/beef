@@ -8,7 +8,7 @@ beef:
         link_rewrite_tel:
             enable: true
             category: ["Browser", "Hooked Domain"]
-            name: "Replace HREFs (TEL)"
+            name: "Link Rewrite (TEL)"
             description: "This module will rewrite all the href attributes of telephone links (ie, tel:5558585) to call a number of your choice."
             authors: ["bcoles"]
             target:
