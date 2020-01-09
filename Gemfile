@@ -52,7 +52,7 @@ end
 
 # DNS extension
 group :ext_dns do
-  gem 'rubydns', '~> 0.7.3'
+  gem 'async-dns'
 end
 
 # QRcode extension
