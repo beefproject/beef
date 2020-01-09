@@ -192,8 +192,14 @@ class Core
           'Hardware'
         ])
     
-    BeEF::Core::Models::HookedBrowser.where('lastseen < ?', (Time.new.to_i - 30)).each do |zombie|
-      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"HostName").to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserName').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'BrowserVersion').to_s,BeEF::Core::Models::BrowserDetails.get(zombie.session, 'OsName'),BeEF::Core::Models::BrowserDetails.get(zombie.session, 'Hardware')]
+     BeEF::Core::Models::HookedBrowser.where('lastseen < ?', (Time.new.to_i - 30)).each do |zombie|
+      tbl << [zombie.id,zombie.ip,BeEF::Core::Models::BrowserDetails.get(zombie.session,"host.os.name").to_s,
+        
+        BeEF::Core::Models::BrowserDetails.get(zombie.session, 'browser.name.friendly').to_s+"-"+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'browser.version').to_s,
+        
+        BeEF::Core::Models::BrowserDetails.get(zombie.session, 'host.os.name'),
+
+        BeEF::Core::Models::BrowserDetails.get(zombie.session, 'hardware.screen.size.width')+'x'+BeEF::Core::Models::BrowserDetails.get(zombie.session, 'hardware.screen.size.height')]
     end
     
     puts "\n"
