@@ -8,6 +8,8 @@ module Extension
 module Console
 module CommandDispatcher
 
+require 'byebug'
+
 class Core
   include BeEF::Extension::Console::CommandDispatcher
   
@@ -31,7 +33,8 @@ class Core
       "target"  => "Target a particular online hooked browser",
       "rtcgo"   => "Initiate the WebRTC connectivity between two browsers",
       "rtcmsg"  => "Send a message from a browser to its peers",
-      "rtcstatus" => "Check a browsers WebRTC status"
+      "rtcstatus" => "Check a browsers WebRTC status",
+      "modules" => "show available modules (only when targetting)"
     }
   end
   
@@ -39,6 +42,21 @@ class Core
     "Core"
   end
   
+
+  def cmd_modules(*args)
+    # from all the enabled modules,
+    # find ones that support current target
+    # and print them
+    
+    puts "available modules: "
+    BeEF::Modules::get_enabled.each do |m|
+      puts m[1]['db']['id'].to_s + " " +  m[1]["name"] + " " +  m[1]["target"].to_s
+    end
+
+
+  end
+
+
   def cmd_back(*args)
 	if (driver.current_dispatcher.name == 'Command')
 	  driver.remove_dispatcher('Command')
@@ -225,36 +243,31 @@ class Core
       cmd_target_help
       return
     end
+
+    target = args[0]#.split(',')
     
     onlinezombies = []
     BeEF::Core::Models::HookedBrowser.where('lastseen > ?', (Time.new.to_i - 30)).each do |zombie|
-      onlinezombies << zombie.id
-    end
-
-	targets = args[0].split(',')
-	targets.each {|t|
-        if not onlinezombies.include?(t.to_i)
-          print_status("Browser [id:"+t.to_s+"] does not appear to be online.")
-          return false
-        end
-		#print_status("Adding browser [id:"+t.to_s+"] to target list.")
-    }
- 
-    if not driver.interface.settarget(targets).nil?
+        onlinezombies << zombie.id
     
-      if (driver.dispatcher_stack.size > 1 and
-	      driver.current_dispatcher.name != 'Core')
-	      driver.destack_dispatcher
-          driver.update_prompt('')
-      end
-
-      driver.enstack_dispatcher(Target)
-      if driver.interface.targetid.length > 1
-        driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
-      else
-        driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
-      end
+        if not onlinezombies.include?(target.to_i)
+              print_status("Browser [id:"+target.to_s+"] does not appear to be online.")
+              return false
+        end
     end
+
+  driver.interface.settarget(target)
+
+  print_status("Adding browser [id:"+target.to_s+"] to target list.")
+
+
+    # if driver.interface.targetid.length > 1
+    #     driver.update_prompt("(%bld%redMultiple%clr) ["+driver.interface.targetid.join(",")+"] ")
+    #   else
+    #     driver.update_prompt("(%bld%red"+driver.interface.targetip+"%clr) ["+driver.interface.targetid.first.to_s+"] ")
+    #   end
+    # end
+
   end
   
   def cmd_target_help(*args)
@@ -416,7 +429,6 @@ class Core
     offlinezombies = []
     BeEF::Core::Models::HookedBrowser.where('lastseen < ?', (Time.new.to_i - 30)).each do |zombie|
       offlinezombies << zombie.id
-    end
     
     targets = args[0].split(',')
     targets.each {|t|
@@ -424,13 +436,16 @@ class Core
           print_status("Browser [id:"+t.to_s+"] does not appear to be offline.")
           return false
         end
-    #print_status("Adding browser [id:"+t.to_s+"] to target list.")
-    }
+        print_status("Adding browser [id:"+t.to_s+"] to target list.")
+        
 
-    # if not offlinezombies.include?(args[0].to_i)
-    #   print_status("Browser does not appear to be offline..")
-    #   return false
-    # end
+        if not offlinezombies.include?(args[0].to_i)
+          print_status("Browser does not appear to be offline..")
+          return false
+        end
+      }
+
+    end
     
     if not driver.interface.setofflinetarget(targets).nil?
       if (driver.dispatcher_stack.size > 1 and
@@ -470,7 +485,7 @@ class Core
       when 'offline'
         driver.run_single("offline")
       when 'commands'
-        if driver.dispatched_enstacked(Target)
+        if driver.interface.targetsession != nil
           if args[1] == "-s" and not args[2].nil?
            driver.run_single("commands #{args[1]} #{args[2]}")
            return
@@ -481,7 +496,7 @@ class Core
           print_error("You aren't targeting a zombie yet")
         end
       when 'info'
-        if driver.dispatched_enstacked(Target)
+        if driver.interface.targetsession != nil #driver.dispatched_enstacked(Target)
           driver.run_single("info")
         else
           print_error("You aren't targeting a zombie yet")

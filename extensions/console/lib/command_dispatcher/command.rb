@@ -40,6 +40,8 @@ class Command
   @@bare_opts = Rex::Parser::Arguments.new(
 	  "-h" => [ false, "Help."              ])
   
+
+
   def cmd_cmdinfo(*args)
     @@bare_opts.parse(args) {|opt, idx, val|
       case opt
