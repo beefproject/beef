@@ -8,7 +8,7 @@ beef:
         link_rewrite_click_events:
             enable: true
             category: ["Browser", "Hooked Domain"]
-            name: "Replace HREFs (Click Events)"
+            name: "Link Rewrite (Click Events)"
             description: "This module will rewrite all the href attributes of all matched links using Bilawal Hameed's updating of click event handling. This will hide the target site for all updated links."
             authors: ["xntrik", "@bilawalhameed", "passbe"]
             target:

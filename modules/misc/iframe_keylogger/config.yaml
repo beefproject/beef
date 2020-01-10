@@ -8,7 +8,7 @@ beef:
         iframe_keylogger:
             enable: true
             category: "Misc"
-            name: "iFrame Event Logger"
+            name: "iFrame Event Key Logger"
             description: "Creates a 100% by 100% iFrame overlay with event logging. The content of the overlay is set in the 'iFrame Src' option."
             authors: ["antisnatchor"]
             target:

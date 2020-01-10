@@ -11,7 +11,7 @@ module BeEF
       # using a rule-based system. A list of user-defined rules is used to match against incoming
       # DNS requests. These rules generate a response that is either a resource record or a
       # failure code.
-      class Server < RubyDNS::Server
+      class Server < Async::DNS::Server
 
         include Singleton
 
@@ -127,26 +127,31 @@ module BeEF
             Thread.new do
               EventMachine.next_tick do
                 upstream = options[:upstream] || nil
+
                 listen = options[:listen] || nil
+                # listen is called enpoints in Async::DNS
+                @endpoints = listen
 
                 if upstream
-                  resolver = RubyDNS::Resolver.new(upstream)
+                  resolver = Async::DNS::Resolver.new(upstream)
                   @otherwise = Proc.new { |t| t.passthrough!(resolver) }
                 end
 
                 begin
-                  super(:listen => listen)
-                rescue RuntimeError => e
-                  if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
-                    print_error "[DNS] Another process is already listening on port #{options[:listen]}"
-                    print_error "Exiting..."
-                    exit 127
-                  else
-                    raise
+                  # super(:listen => listen)
+                  Thread.new { super() }
+                  rescue RuntimeError => e
+                    if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
+                      print_error "[DNS] Another process is already listening on port #{options[:listen]}"
+                      print_error "Exiting..."
+                      exit 127
+                    else
+                      raise
+                    end
                   end
-                end
 
-              end
+
+                end
             end
           end
         end
@@ -159,7 +164,10 @@ module BeEF
         # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
         def process(name, resource, transaction)
           @lock.synchronize do
-	        print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
+
+            resource = resource.to_s
+
+	          print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
 
             # no need to parse AAAA resources when data is extruded from client. Also we check if the FQDN starts with the 0xb3 string.
             # this 0xb3 is convenient to clearly separate DNS requests used to extrude data from normal DNS requests than should be resolved by the DNS server.

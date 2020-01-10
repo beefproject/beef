@@ -8,7 +8,7 @@ beef:
         link_rewrite:
             enable: true
             category: ["Browser", "Hooked Domain"]
-            name: "Replace HREFs"
+            name: "Link Rewrite"
             description: "This module will rewrite all the href attributes of all matched links."
             authors: ["passbe"]
             target:
