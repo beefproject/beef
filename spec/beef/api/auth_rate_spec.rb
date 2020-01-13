@@ -30,7 +30,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 	
  	end
 
-	it 'adheres to auth rate limits' do
+	xit 'adheres to auth rate limits' do
 		passwds = (1..9).map { |i| "broken_pass"}
 		passwds.push BEEF_PASSWD
 		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }

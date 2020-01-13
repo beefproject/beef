@@ -20,7 +20,6 @@ Dir['spec/support/*.rb'].each do |f|
 end
 
 ENV['RACK_ENV'] ||= 'test'
-ARGV = []
 
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
@@ -34,8 +33,6 @@ end
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.bisect_runner = :shell
-  config.order = :random
-  Kernel.srand config.seed
   config.include Rack::Test::Methods
   config.expect_with :rspec do |c|
     c.syntax = :expect
