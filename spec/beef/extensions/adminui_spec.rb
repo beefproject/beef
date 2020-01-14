@@ -3,10 +3,12 @@
 # 
 
 require 'extensions/admin_ui/classes/httpcontroller'
+require 'extensions/admin_ui/classes/session'
 require 'extensions/admin_ui/controllers/authentication/authentication'
 
 RSpec.describe 'BeEF Extension AdminUI' do
   before(:all) do
+    @session = BeEF::Extension::AdminUI::Session.instance
     @config = BeEF::Core::Configuration.instance
   end
 
