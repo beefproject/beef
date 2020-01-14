@@ -1,6 +1,8 @@
 Thanks for submitting a PR! Please fill in this template where appropriate:
 
-## Category: (Bug | module | extension | core functionality | documentation)
+## Category
+
+(Bug / module / extension / core functionality / documentation)
 
 ## Feature/Issue Description
 
