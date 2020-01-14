@@ -12,6 +12,5 @@ This module is added to ...
 
 spec/beef/extensions/example_extension.rb
 
-## Relevant links
+## Relevant wiki page
 
-e.g. link to wiki page
