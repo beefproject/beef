@@ -10,6 +10,7 @@ class CreateExecutions < ActiveRecord::Migration[6.0]
 			t.text :exec_time
 			t.text :rule_token
 			t.boolean :is_sent
+			t.integer :rule_id
 		end
 
 	end

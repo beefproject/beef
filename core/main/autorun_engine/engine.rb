@@ -86,7 +86,7 @@ module BeEF
             end
 
             are_exec = BeEF::Core::Models::Execution.new(
-                :session => hb_session,
+                :session_id => hb_session,
                 :mod_count => modules.length,
                 :mod_successful => 0,
                 :rule_token => rule_token,
