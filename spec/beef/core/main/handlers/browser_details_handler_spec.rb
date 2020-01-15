@@ -25,26 +25,9 @@ RSpec.describe 'Browser details handler' do
 		http_hook_server = BeEF::Core::Server.instance
 		http_hook_server.prepare
 		@pids = fork do
-			if ENV['RAILS_ENV'] == 'test' or ENV["COVERAGE"]
-				require 'simplecov'
-				# Give our new forked process a unique command name, to prevent problems
-				# when merging coverage results.
-				puts 'starting simplecov in fork..'
-				SimpleCov.command_name SecureRandom.uuid
-				SimpleCov.start
-			 end
 			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 		end
 		@pid = fork do
-			if ENV['RAILS_ENV'] == 'test' or ENV["COVERAGE"]
-				puts 'starting simplecov in fork..'
-				require 'simplecov'
-				# Give our new forked process a unique command name, to prevent problems
-				# when merging coverage results.
-				SimpleCov.command_name SecureRandom.uuid
-				SimpleCov.start
-			 end
-
 			http_hook_server.start
 		end
 		# wait for server to start
