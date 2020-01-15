@@ -5,7 +5,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-gem 'simplecov', require: false, group: :test
+#gem 'simplecov', require: false, group: :test
 gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'
