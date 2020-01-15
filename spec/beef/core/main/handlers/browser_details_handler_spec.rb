@@ -78,14 +78,14 @@ RSpec.describe 'Browser details handler' do
 
       	j = JSON.parse(response.body)
 
-      	response = RestClient.get "#{RESTAPI_HOOKS}/#{j['hooked-browsers']['offline']['0']['session']}" , {:params => {:token => @token}}
-      	puts "getting browser details:"
+      	# response = RestClient.get "#{RESTAPI_HOOKS}/#{j['hooked-browsers']['online']['0']['session']}" , {:params => {:token => @token}}
+      	# puts "getting browser details:"
       	
-      	details = JSON.parse(response.body)
+      	# details = JSON.parse(response.body)
 
       	
-      	# require 'byebug';byebug
-      	expect(victim.driver.browser.browser.to_s.downcase).to eql (details["browser.name.friendly"].downcase)
+      	# # require 'byebug';byebug
+      	# expect(victim.driver.browser.browser.to_s.downcase).to eql (details["browser.name.friendly"].downcase)
 
       	
 	end
