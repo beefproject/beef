@@ -42,6 +42,10 @@ class BeefTest
   end
 
   def self.new_victim
+    if ENV['RAILS_ENV'] == 'test' or ENV["COVERAGE"]
+        puts 'starting simplecov in fork..'
+        require 'simplecov'
+    end
     victim = Capybara::Session.new(:selenium_headless)
     victim.visit(VICTIM_URL)
     victim

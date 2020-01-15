@@ -27,9 +27,9 @@ class BeefRestClient
                                  :accept => :json
       result = JSON.parse(response.body)
       @token = result['token']
-      {:success => result['success'], :payload => result}
+      {:success => result['success'], :payload => result, :token => @token}
     rescue => e
-      {:success => false, :payload => e.message }
+      {:success => false, :payload => e.message}
     end
   end
 
