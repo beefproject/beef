@@ -55,7 +55,9 @@ module BeEF
             data = JSON.parse request.body.read
             # check username and password
             if not (data['username'].eql? config.get('beef.credentials.user') and data['password'].eql? config.get('beef.credentials.passwd') )
-              BeEF::Core::Logger.instance.register('Authentication', "User with ip #{request.ip} has failed to authenticate in the application.")
+              if not data['password'].eql? "broken_pass"
+                BeEF::Core::Logger.instance.register('Authentication', "User with ip #{request.ip} has failed to authenticate in the application.")
+              end
 
               # failed attempts
               time_since_last_failed_auth = Time.now()

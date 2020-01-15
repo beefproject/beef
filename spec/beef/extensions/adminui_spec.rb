@@ -12,6 +12,10 @@ RSpec.describe 'BeEF Extension AdminUI' do
     @config = BeEF::Core::Configuration.instance
   end
 
+  after(:all) do
+    @config.set('beef.restrictions.permitted_ui_subnet',["0.0.0.0/0", "::/0"])
+  end
+
   it 'loads configuration' do
     expect(@config.get('beef.restrictions')).to have_key('permitted_ui_subnet')
   end
