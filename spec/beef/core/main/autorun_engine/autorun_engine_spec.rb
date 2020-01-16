@@ -1,4 +1,4 @@
-RSpec.describe 'Browser details handler' do
+RSpec.describe 'AutoRunEngine test' do
 
 	before(:all) do
 		# Note: rake spec passes --patterns which causes BeEF to pickup this argument via optparse. I can't see a better way at the moment to filter this out. Therefore ARGV=[] for this test.
@@ -22,8 +22,18 @@ RSpec.describe 'Browser details handler' do
 		end
 
 
+
+		# add AutoRunEngine rule
+		test_rule =  {"name"=>"Display an alert", "author"=>"mgeeky", "browser"=>"ALL", "browser_version"=>"ALL", "os"=>"ALL", "os_version"=>"ALL", "modules"=>[{"name"=>"alert_dialog", "condition"=>nil, "options"=>{"text"=>"You've been BeEFed ;>"}}], "execution_order"=>[0], "execution_delay"=>[0], "chain_mode"=>"sequential"}
+
+		BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
+		# are_engine.R
+
+
 		http_hook_server = BeEF::Core::Server.instance
 		http_hook_server.prepare
+
+
 		@pids = fork do
 			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 		end
@@ -37,12 +47,12 @@ RSpec.describe 'Browser details handler' do
   
   	after(:all) do
 	
-	 Process.kill("KILL",@pid)
-	 Process.kill("KILL",@pids)
+	   Process.kill("KILL",@pid)
+	   Process.kill("KILL",@pids)
 	
  	end
 
-	it 'browser details handler working' do
+	it 'AutoRunEngine is working' do
 
 		api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD)
 
@@ -55,22 +65,13 @@ RSpec.describe 'Browser details handler' do
 		puts 'hooking a new victim, waiting a few seconds...'
 
 		victim = BeefTest.new_victim
-      	sleep 3.0
+      	sleep 5.0
 
       	response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
 
       	j = JSON.parse(response.body)
       	expect(j)
-      	# response = RestClient.get "#{RESTAPI_HOOKS}/#{j['hooked-browsers']['online']['0']['session']}" , {:params => {:token => @token}}
-      	# puts "getting browser details:"
-      	
-      	# details = JSON.parse(response.body)
 
-      	
-      	# # require 'byebug';byebug
-      	# expect(victim.driver.browser.browser.to_s.downcase).to eql (details["browser.name.friendly"].downcase)
-
-      	
 	end
  
 end
