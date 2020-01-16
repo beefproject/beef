@@ -60,7 +60,7 @@ RSpec.describe 'Browser details handler' do
       	response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
 
       	j = JSON.parse(response.body)
-
+      	expect(j)
       	# response = RestClient.get "#{RESTAPI_HOOKS}/#{j['hooked-browsers']['online']['0']['session']}" , {:params => {:token => @token}}
       	# puts "getting browser details:"
       	
