@@ -27,8 +27,8 @@ RSpec.describe 'BeEF API Rate Limit' do
   
   	after(:all) do
 	
-	 Process.kill("INT",@pid)
-	 Process.kill("INT",@pids)
+	 Process.kill("KILL",@pid)
+	 Process.kill("KILL",@pids)
 	
  	end
 
