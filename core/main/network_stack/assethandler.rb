@@ -36,6 +36,9 @@ module Handlers
       @http_server.remap
       print_info "Redirector to [" + target + "] bound to url [" + url + "]"
       url
+    rescue => e
+      print_error "Failed to mount #{path} : #{e.message}"
+      print_error e.backtrace
     end
 
     # Binds raw HTTP to a mount point
@@ -54,6 +57,9 @@ module Handlers
       @http_server.remap
       print_info "Raw HTTP bound to url [" + url + "]"
       url
+    rescue => e
+      print_error "Failed to mount #{path} : #{e.message}"
+      print_error e.backtrace
     end
 
     # Binds a file to a mount point
@@ -64,8 +70,13 @@ module Handlers
     # @return [String] URL Path of mounted asset
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind(file, path=nil, extension=nil, count=-1)
+        unless File.exist? "#{root_dir}#{file}"
+          print_error "Failed to mount file #{root_dir}#{file}. File does not exist"
+          return
+        end
+
         url = build_url(path, extension)
-        @allocations[url] = {'file' => "#{root_dir}"+file,
+        @allocations[url] = {'file' => "#{root_dir}#{file}",
                              'path' => path,
                              'extension' => extension,
                              'count' => count}
@@ -87,6 +98,9 @@ module Handlers
         print_info "File [#{file}] bound to Url [#{url}] using Content-type [#{content_type}]"
 
         url
+    rescue => e
+      print_error "Failed to mount file '#{root_dir}#{file}' to #{path} : #{e.message}"
+      print_error e.backtrace
     end
 
     # Binds a file to a mount point (cached for 1 year)
@@ -97,8 +111,13 @@ module Handlers
     # @return [String] URL Path of mounted asset
     # @todo This function should accept a hooked browser session to limit the mounted file to a certain session
     def bind_cached(file, path=nil, extension=nil, count=-1)
+        unless File.exist? "#{root_dir}#{file}"
+          print_error "Failed to mount file #{root_dir}#{file}. File does not exist"
+          return
+        end
+
         url = build_url(path, extension)
-        @allocations[url] = {'file' => "#{root_dir}"+file,
+        @allocations[url] = {'file' => "#{root_dir}#{file}",
                              'path' => path,
                              'extension' => extension,
                              'count' => count}
@@ -124,6 +143,9 @@ module Handlers
         print_info "File [#{file}] bound to Url [#{url}] using Content-type [#{content_type}]"
 
         url
+    rescue => e
+      print_error "Failed to mount file '#{root_dir}#{file}' to #{path} : #{e.message}"
+      print_error e.backtrace
     end
 
     # Unbinds a file from a mount point
@@ -133,50 +155,50 @@ module Handlers
         @allocations.delete(url)
         @http_server.unmount(url)
         @http_server.remap
-        print_info "Url [" + url + "] unmounted"
+        print_info "Url [#{url}] unmounted"
     end
 
     # use it like: bind_socket("irc","0.0.0.0",6667)
     def bind_socket(name, host, port)
-      if @sockets[name] != nil
+      unless @sockets[name].nil?
         print_error "Bind Socket [#{name}] is already listening on [#{host}:#{port}]."
-      else
-        t = Thread.new {
-          server = TCPServer.new(host,port)
-          loop do
-            Thread.start(server.accept) do |client|
-              data = ""
-              recv_length = 1024
-              threshold = 1024 * 512
-              while (tmp = client.recv(recv_length))
-                data += tmp
-                break if tmp.length < recv_length || tmp.length == recv_length
-                # 512 KB max of incoming data
-                break if data > threshold
-              end
-              if  data.size > threshold
-                print_error "More than 512 KB of data incoming for Bind Socket [#{name}]. For security purposes client connection is closed, and data not saved."
-              else
-                @sockets[name] = {'thread' => t, 'data' => data}
-                print_info "Bind Socket [#{name}] received [#{data.size}] bytes of data."
-                print_debug "Bind Socket [#{name}] received:\n#{data}"
-              end
-              client.close
-            end
-          end
-        }
-        print_info "Bind socket [#{name}] listening on [#{host}:#{port}]."
+        return
       end
+
+      t = Thread.new {
+        server = TCPServer.new(host,port)
+        loop do
+          Thread.start(server.accept) do |client|
+            data = ""
+            recv_length = 1024
+            threshold = 1024 * 512
+            while (tmp = client.recv(recv_length))
+              data += tmp
+              break if tmp.length < recv_length || tmp.length == recv_length
+              # 512 KB max of incoming data
+              break if data > threshold
+            end
+            if  data.size > threshold
+              print_error "More than 512 KB of data incoming for Bind Socket [#{name}]. For security purposes client connection is closed, and data not saved."
+            else
+              @sockets[name] = {'thread' => t, 'data' => data}
+              print_info "Bind Socket [#{name}] received [#{data.size}] bytes of data."
+              print_debug "Bind Socket [#{name}] received:\n#{data}"
+            end
+            client.close
+          end
+        end
+      }
+
+      print_info "Bind socket [#{name}] listening on [#{host}:#{port}]."
     end
 
     def get_socket_data(name)
-      data = nil
-      if @sockets[name] != nil
-        data = @sockets[name]['data']
-      else
+      if @sockets[name].nil?
         print_error "Bind Socket [#{name}] does not exists."
+        return
       end
-      data
+      @sockets[name]['data']
     end
 
     def unbind_socket(name)
@@ -205,20 +227,23 @@ module Handlers
     # @param [String] url URL Path of mounted file
     # @return [Boolean] Returns true if the file is mounted
     def check(url)
-        if @allocations.has_key?(url)
-            count = @allocations[url]['count']
-            if count == -1
-                return true
-            end
-            if count > 0 
-                if (count - 1) == 0
-                    unbind(url)
-                else
-                    @allocations[url]['count'] = count - 1
-                end
-                return true
-            end
+        return false unless @allocations.has_key?(url)
+
+        count = @allocations[url]['count']
+
+        if count == -1
+            return true
         end
+
+        if count > 0
+            if (count - 1) == 0
+                unbind(url)
+            else
+                @allocations[url]['count'] = count - 1
+            end
+            return true
+        end
+
         false
     end
    
