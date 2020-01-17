@@ -70,8 +70,9 @@ RSpec.describe 'BeEF Extension Requester' do
 
     # get victim session
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
+    puts "hooks response: #{response}"
     hb_details = JSON.parse(response.body)
-    
+    puts "json: #{hb_details}"
 
     hb_session = hb_details["hooked-browsers"]["online"]["0"]["session"]
 
