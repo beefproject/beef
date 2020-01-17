@@ -82,15 +82,27 @@ module BeEF
         # Return a response by ID
         get '/response/:id' do
           begin
+
+            # super debugging
+
+            error = {}
+
+            error[:code]=0
+
             id = params[:id]
             raise InvalidParamError, 'id' unless BeEF::Filters::nums_only?(id)
+            error[:code]=1
 
             responses = H.find(id) || nil
+            error[:code]=2
             halt 404 if responses.nil?
-
+            error[:code]=3
             result = {}
             result[:success] = 'true'
+            error[:code]=4
+
             result[:result] = response2hash(responses)
+            error[:code]=5
 
             result.to_json
           rescue InvalidParamError => e
@@ -98,7 +110,11 @@ module BeEF
             halt 400
           rescue StandardError => e
             print_error "Internal error while retrieving response with id #{id} (#{e.message})"
-            halt 500
+            
+            error[:id] = id
+            error[:message] = e.message
+            error.to_json
+            # halt 500
           end
         end
 
@@ -195,6 +211,9 @@ module BeEF
               :allow_cross_domain => "true",
             )
 
+            print_debug "added new http request for #{zombie.session}"
+            print_debug http.to_json
+
             if verb.eql?('POST') || verb.eql?('PUT')
               req_parts.each_with_index do |value, index|
                  if value.match(/^Content-Length/i)
@@ -238,18 +257,24 @@ module BeEF
 
         # Convert a response object to Hash
         def response2hash(http)
-          if http.response_data.length > (1024 * 100) # more thank 100K
-            response_data = http.response_data[0..(1024*100)]
-            response_data += "\n<---------- Response Data Truncated---------->"
-          else
-            response_data = http.response_data
+
+          response_data = ""
+
+          if not http.response_data.nil?
+            if http.response_data.length > (1024 * 100) # more thank 100K
+                response_data = http.response_data[0..(1024*100)]
+                response_data += "\n<---------- Response Data Truncated---------->"
+            end
           end
+
+          response_headers = ""
+          response_headers = http.response_headers if not http.response_headers.nil?
 
           {
             :id               => http.id,
             :request          => http.request.force_encoding('UTF-8'),
             :response         => response_data.force_encoding('UTF-8'),
-            :response_headers => http.response_headers.force_encoding('UTF-8'),
+            :response_headers => response_headers.force_encoding('UTF-8'),
             :proto            => http.proto.force_encoding('UTF-8'),
             :domain           => http.domain.force_encoding('UTF-8'),
             :port             => http.port.force_encoding('UTF-8'),

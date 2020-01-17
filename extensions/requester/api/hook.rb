@@ -20,10 +20,12 @@ module BeEF
             @body = body
             # Generate all the requests and output them to the hooked browser
             output = []
+            print_debug hb.to_json
             BeEF::Core::Models::Http.where(:hooked_browser_id => hb.session, :has_ran => "waiting").each { |h|
               output << self.requester_parse_db_request(h)
             }
 
+            
             return if output.empty?
             config = BeEF::Core::Configuration.instance
             ws = BeEF::Core::Websocket::Websocket.instance
@@ -52,6 +54,7 @@ module BeEF
               end
             # if we use XHR-polling, add the component to the main hook file
             else
+
               build_missing_beefjs_components 'beef.net.requester'
               # Send the command to perform the requests to the hooked browser
               add_to_body output
@@ -94,6 +97,9 @@ module BeEF
 
             @host = http_db_object.domain
             @port = http_db_object.port
+
+            print_debug "http_db_object:"
+            print_debug http_db_object.to_json
 
             #@note: retrieve HTTP headers values needed later, and the \r\n that indicates the start of the post-data (if any)
             req_parts.each_with_index do |value, index|
@@ -155,6 +161,9 @@ module BeEF
 
             #@note: parse HTTP headers Hash, adding them to the object that will be used by beef.net.requester.send
             headers.keys.each { |key| http_request_object['headers'][key] = headers[key] }
+            
+            print_debug "result http_request_object"
+            print_debug http_request_object.to_json
 
             http_request_object
           end

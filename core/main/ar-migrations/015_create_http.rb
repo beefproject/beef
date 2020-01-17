@@ -3,7 +3,7 @@ class CreateHttp < ActiveRecord::Migration[6.0]
 	def change
 
 		create_table :https do |t|
-            t.references :hooked_browser
+            t.text :hooked_browser_id
             # The http request to perform. In clear text.
             t.text :request
             # Boolean value as string to say whether cross-domain requests are allowed
