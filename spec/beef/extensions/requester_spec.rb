@@ -18,6 +18,7 @@ RSpec.describe 'BeEF Extension Requester' do
     expect(requester).to respond_to(:requester_parse_db_request)
   end
 
+  # default skipped because browser hooking not working properly in travis-CI
   xit 'requester works' do
     # start beef server
     
