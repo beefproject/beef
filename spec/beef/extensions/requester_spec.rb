@@ -64,7 +64,7 @@ RSpec.describe 'BeEF Extension Requester' do
     puts "authenticated. api token: #{@token}"
     puts 'hooking a new victim, waiting a few seconds...'
     victim = BeefTest.new_victim
-    sleep 1
+    sleep 3
 
 
 
