@@ -18,7 +18,7 @@ RSpec.describe 'BeEF Extension Requester' do
     expect(requester).to respond_to(:requester_parse_db_request)
   end
 
-  it 'requester works' do
+  xit 'requester works' do
     # start beef server
     
     @config = BeEF::Core::Configuration.instance
@@ -77,7 +77,7 @@ RSpec.describe 'BeEF Extension Requester' do
       puts "hooks response: #{response}"
       hb_details = JSON.parse(response.body)
       puts "json: #{hb_details}"
-      puts "hb_details is empty: #{hb_details.empty?}"
+      puts "online hooked browsers empty: #{hb_details["hooked-browsers"]["online"].empty?}"
 
       
     end
