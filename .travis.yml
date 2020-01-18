@@ -3,6 +3,7 @@ rvm:
   - 2.5.3
   - 2.6.0
   - 2.6.5
+  - 2.7.0
 notifications:
   email:
     recipients:
