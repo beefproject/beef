@@ -92,7 +92,7 @@ module BeEF
           end
 
           if BeEF::Filters.is_valid_ip?(zombie.ip)
-            BD.set(session_id, 'host.ipaddress', zombie.ip)
+            BD.set(session_id, 'network.ipaddress', zombie.ip)
           else
             self.err_msg "Invalid IP address returned from the hook browser's initial connection."
           end
@@ -199,14 +199,14 @@ module BeEF
 
           # store and log proxy details
           if using_proxy == true
-            BD.set(session_id, 'UsingProxy', "#{using_proxy}")
+            BD.set(session_id, 'network.proxy', 'Yes')
             proxy_log_string = "#{zombie.ip} is using a proxy"
             unless proxy_clients.empty?
-              BD.set(session_id, 'ProxyClient', "#{proxy_clients.sort.uniq.join(',')}")
+              BD.set(session_id, 'network.proxy.client', "#{proxy_clients.sort.uniq.join(',')}")
               proxy_log_string += " [client: #{proxy_clients.sort.uniq.join(',')}]"
             end
             unless proxy_server.nil?
-              BD.set(session_id, 'ProxyServer', "#{proxy_server}")
+              BD.set(session_id, 'network.proxy.server', "#{proxy_server}")
               proxy_log_string += " [server: #{proxy_server}]"
               if config.get("beef.extension.network.enable") == true
                 if proxy_server =~ /^([\d\.]+):([\d]+)$/
