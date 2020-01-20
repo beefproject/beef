@@ -35,47 +35,40 @@ module BeEF
           }
           output.to_json
         end
-#Using Destroy all to make the multiple events with that share the primary key get destroyed.
+
 	get '/:session/delete' do
-    hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first  
-      error 401 unless hb != nil
-        
-    details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
-    
-    details.destroy_all
+      hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
+          error 401 unless hb != nil
+
+          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
+	  details.destroy
 
 	  logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
-
-    logs.destroy_all
+	  logs.destroy
 
 	  commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id)
-
-    commands.destroy_all
+	  commands.destroy
 
 	  results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id)
-    
-    results.destroy_all
+	  results.destroy
 
 	  begin
-      requester = BeEF::Core::Models::Http.where(:hooked_browser_id => hb.id)
-     
-	    requester.destroy_all
+	    requester = BeEF::Core::Models::Http.where(:hooked_browser_id => hb.id)
+	    requester.destroy
 	  rescue => e
 	    #the requester module may not be enabled
 	  end
 
 	  begin
 	    xssraysscans = BeEF::Core::Models::Xssraysscan.where(:hooked_browser_id => hb.id)
-  
-      xssraysscans.destroy_all
+	    xssraysscans.destroy
 
 	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(:hooked_browser_id => hb.id)
-  
-      xssraysdetails.destroy_all
+	    xssraysdetails.destroy
 	  rescue => e
 	    #the xssraysscan module may not be enabled
 	  end
-  
+
 	  hb.destroy
 	end
 
