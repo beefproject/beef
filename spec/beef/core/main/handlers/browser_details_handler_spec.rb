@@ -72,5 +72,14 @@ RSpec.describe 'Browser details handler' do
 
       	
 	end
- 
+	
+	it 'can successfully hook a browser' do
+		@token  = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD).auth()[:token]
+		victim = BeefTest.new_victim
+		sleep(3)
+      	response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
+		  x = JSON.parse(response.body)
+		  puts x
+		expect(x)
+	end
 end
