@@ -55,7 +55,8 @@ check_perms() {
 
 install() {
   info 'Downloading MaxMind GeoLite2-City database ...'
-  /usr/bin/curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+  #/usr/bin/curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+  /usr/bin/curl -O https://web.archive.org/web/20191227182209/https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 
   info 'Extracting GeoLite2-City.tar.gz ...'
   /bin/gunzip GeoLite2-City.tar.gz
