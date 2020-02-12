@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        get_autocomplete_creds:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Get Autocomplete Credentials"
+            description: "This module steals saved credentials for the hooked domain.<br/><br/>Tested on Firefox 68 and Chrome 49.<br/><br/>Note: On Firefox, the window must have focus."
+            authors: ["bcoles"]
+            target:
+                working: ["FF", "C"]
+                not_working: ["ALL"]
