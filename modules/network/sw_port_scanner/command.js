@@ -115,7 +115,8 @@ fetch('http://' + ipaddress+":"+port, {mode: 'no-cors'})
 console.log(Number.isInteger(res.status))
 }
 ).catch(function(ex){
-// If we caught an error this could be one of two things. It's closed (because
+// If we caught an error this could be one of two things. It's closed (because there was no service), it's open (because the system does not
+// respond with http). Therefore we can split on 500 ms response time on a websocket (>500 ms close, <500ms open but not http)
 check_socket(ipaddress, port)
 })
 
