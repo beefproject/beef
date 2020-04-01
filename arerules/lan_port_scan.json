@@ -12,10 +12,10 @@
     },
     {"name": "port_scanner",
       "condition": "status==1",
-      "code": "var s=get_internal_ip_webrtc_mod_output.split('.');var start = s[0]+'.'+s[1]+'.'+s[2]+'.1'; var end = s[0]+'.'+s[1]+'.'+s[2]+'.255'; var mod_input = start+'-'+end;",
+      "code": "var s=get_internal_ip_webrtc_mod_output.split('.');var start = s[0]+'.'+s[1]+'.'+s[2]+'.'+s[3]; var mod_input = start;",
       "options": {
         "ipHost":"<<mod_input>>",
-        "port":"80,8080"
+        #"port":"80,8080"
       }
     }
   ],
