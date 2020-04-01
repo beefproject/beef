@@ -40,7 +40,7 @@ class Port_scanner < BeEF::Core::Command
         proto = 'http'
         if BeEF::Filters.is_valid_ip?(ip)
           print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
-          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :type => service)
+          BeEF::Core::Models::NetworkService.create(:hooked_browser_id => session_id, :proto => proto, :ip => ip, :port => port, :ntype => service)
         end
       end
 
