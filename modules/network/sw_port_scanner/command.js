@@ -112,27 +112,13 @@ fetch('http://' + ipaddress+":"+port, {mode: 'no-cors'})
 .then(function(res){ 
 // If there is a status returned then Mozilla Firefox 68.5.0esr made a successful connection
 // This includes where it is not http and open
-console.log(Number.isInteger(res.status))
+  console.log(Number.isInteger(res.status))
 }
 ).catch(function(ex){
 // If we caught an error this could be one of two things. It's closed (because there was no service), it's open (because the system does not
 // respond with http). Therefore we can split on 500 ms response time on a websocket (>500 ms close, <500ms open but not http)
-check_socket(ipaddress, port)
+  start=Date.now();let socket = new WebSocket("ws://192.168.74.155:9999"); socket.onerror = function(error) { end=Date.now(); console.log(end-start);};
 })
-
-
-// If we get to this stage
-Function check_socket(ipaddress,port){
-let socket = new WebSocket("ws://");
-
-
-socket.onopen = function(e) {  alert("[open] Connection established");  alert("Sending to server");  socket.send("My name is John");};
-socket.onmessage = function(event) {  alert(`[message] Data received from server: ${event.data}`);};
-socket.onclose = function(event) {  if (event.wasClean) {    alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);  } else {    // e.g. server process killed or network down    // event.code is usually 1006 in this case    alert('[close] Connection died');  }};
-socket.onerror = function(error) {  alert(`[error] ${error.message}`);};
-}
-
-
 
 });
 
