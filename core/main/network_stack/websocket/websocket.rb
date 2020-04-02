@@ -149,7 +149,7 @@ module BeEF
 
                       # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
                       are_body = ''
-                      are_executions = BeEF::Core::Models::Execution.where(:is_sent => false, :session => hooked_browser.session)
+                      are_executions = BeEF::Core::Models::Execution.where(:is_sent => false, :session_id => hooked_browser.session)
                       are_executions.each do |are_exec|
                         are_body += are_exec.mod_body
                         are_exec.update(:is_sent => true, :exec_time => Time.new.to_i)
