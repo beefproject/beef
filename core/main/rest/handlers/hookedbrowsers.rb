@@ -3,7 +3,6 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-require 'byebug'
 
 module BeEF
   module Core
