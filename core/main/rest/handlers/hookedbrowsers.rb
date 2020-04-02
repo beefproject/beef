@@ -36,13 +36,6 @@ module BeEF
             offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - timeout)))
           end
 
-          else
-            timeout = (config.get('beef.http.websocket.ws_poll_timeout').to_i / 1000) + 5
-            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - timeout)))
-            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - timeout)))
-          end
-          
->>>>>>> 6ebb8a0e04541f26c0aeb5f9034b7c99695c6ddd
           output = {
               'hooked-browsers' => {
                   'online' => online_hooks,
