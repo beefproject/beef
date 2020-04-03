@@ -25,7 +25,7 @@ class Sw_port_scanner < BeEF::Core::Command
  
        # log the network service
        # will need to once the datastore is confirmed. 
-       # This should basically try and hook the browser which can potentially be cool
+       # This should basically try and hook the browser
       
       
      end
@@ -33,5 +33,4 @@ class Sw_port_scanner < BeEF::Core::Command
    end
    
  end
- 
  
