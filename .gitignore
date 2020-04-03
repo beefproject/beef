@@ -122,4 +122,4 @@ out/
 doc/rdoc/
 
 # User-specific files
-
+config.yaml
