@@ -15,7 +15,7 @@ beef:
     crypto_default_value_length: 80
 
     # Testif variable
-    testif: false
+    testif: true
 
     # Credentials to authenticate in BeEF.
     # Used by both the RESTful API and the Admin interface

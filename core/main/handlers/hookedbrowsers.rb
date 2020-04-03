@@ -12,6 +12,7 @@ module Handlers
 
 
     include BeEF::Core::Handlers::Modules::BeEFJS
+    include BeEF::Core::Handlers::Modules::LegacyBeEFJS
     include BeEF::Core::Handlers::Modules::Command
 
     #antisnatchor: we don't want to have anti-xss/anti-framing headers in the HTTP response for the hook file.
@@ -61,8 +62,11 @@ module Handlers
         # @note generate the instructions to hook the browser
         host_name = request.host
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
-        build_beefjs!(host_name)
-
+        if config.get("beef.testif")
+          build_beefjs!(host_name)
+        else
+          legacy_build_beefjs!(host_name)
+        end
       # @note is a known browser so send instructions
       else
         # @note Check if we haven't seen this browser for a while, log an event if we haven't

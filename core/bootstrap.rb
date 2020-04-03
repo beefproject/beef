@@ -18,6 +18,7 @@ require 'core/main/router/error_responses'
 ## @note Include http server functions for beef
 require 'core/main/server'
 require 'core/main/handlers/modules/beefjs'
+require 'core/main/handlers/modules/legacybeefjs'
 require 'core/main/handlers/modules/command'
 require 'core/main/handlers/commands'
 require 'core/main/handlers/hookedbrowsers'
