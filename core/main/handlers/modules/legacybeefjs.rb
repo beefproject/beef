@@ -9,11 +9,11 @@ module BeEF
       module Modules
 
         # @note Purpose: avoid rewriting several times the same code.
-        module BeEFJS
+        module LegacyBeEFJS
 
           # Builds the default beefjs library (all default components of the library).
           # @param [Object] req_host The request object
-          def build_beefjs!(req_host)
+          def legacy_build_beefjs!(req_host)
             config = BeEF::Core::Configuration.instance
             # @note set up values required to construct beefjs
             beef_js = ''
@@ -133,7 +133,7 @@ module BeEF
           # Finds the path to js components
           # @param [String] component Name of component
           # @return [String|Boolean] Returns false if path was not found, otherwise returns component path
-          def find_beefjs_component_path(component)
+          def legacy_find_beefjs_component_path(component)
             component_path = component
             component_path.gsub!(/beef./, '')
             component_path.gsub!(/\./, '/')
@@ -146,7 +146,7 @@ module BeEF
 
           # Builds missing beefjs components.
           # @param [Array] beefjs_components An array of component names
-          def build_missing_beefjs_components(beefjs_components)
+          def legacy_build_missing_beefjs_components(beefjs_components)
             # @note verifies that @beef_js_cmps is not nil to avoid bugs
             @beef_js_cmps = '' if @beef_js_cmps.nil?
 

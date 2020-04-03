@@ -14,6 +14,9 @@ beef:
     # Used for generating secure tokens
     crypto_default_value_length: 80
 
+    # Testif variable
+    testif: false
+
     # Credentials to authenticate in BeEF.
     # Used by both the RESTful API and the Admin interface
     credentials:

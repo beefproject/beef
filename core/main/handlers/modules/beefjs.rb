@@ -11,15 +11,16 @@ module BeEF
         # @note Purpose: avoid rewriting several times the same code.
         module BeEFJS
 
-          include BeEF::Core::Handlers::Modules::legacyBeEFJS
 
           # Builds the default beefjs library (all default components of the library).
           # @param [Object] req_host The request object
           def build_beefjs!(req_host)
-            if config.get("beef.testif.enable")
+            config = BeEF::Core::Configuration.instance
+            if config.get("beef.testif")
               print("beefnew")
             else
-              legacy_build_beefjs!(req_host)
+              legacy = BeEF::Core::Handlers::Modules::LegacyBeEFJS
+              legacy.legacy_build_beefjs!(req_host)
             end
           end
 
@@ -27,20 +28,24 @@ module BeEF
           # @param [String] component Name of component
           # @return [String|Boolean] Returns false if path was not found, otherwise returns component path
           def find_beefjs_component_path(component)
-            if config.get("beef.testif.enable")
+            config = BeEF::Core::Configuration.instance
+            if config.get("beef.testif")
               print("beefnew")
             else
-              legacy_find_beefjs_component_path(component)
+              legacy = BeEF::Core::Handlers::Modules::LegacyBeEFJS
+              legacy.legacy_find_beefjs_component_path(component)
             end
           end
 
           # Builds missing beefjs components.
           # @param [Array] beefjs_components An array of component names
           def build_missing_beefjs_components(beefjs_components)
-            if config.get("beef.testif.enable")
+            config = BeEF::Core::Configuration.instance
+            if config.get("beef.testif")
               print("beefnew")
             else
-              build_missing_beefjs_components(beefjs_components)
+              legacy = BeEF::Core::Handlers::Modules::LegacyBeEFJS
+              legacy.legacy_build_missing_beefjs_components(beefjs_components)
             end
           end
         end
