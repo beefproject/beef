@@ -62,7 +62,9 @@ module Handlers
         # @note generate the instructions to hook the browser
         host_name = request.host
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
-        if config.get("beef.testif")
+
+        # Generate the hook js provided to the hookwed browser (the magic happens here)
+        if BeEF::Core::Configuration.instance.get("beef.http.websocket.enable")
           build_beefjs!(host_name)
         else
           legacy_build_beefjs!(host_name)
