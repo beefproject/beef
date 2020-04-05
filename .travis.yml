@@ -10,6 +10,10 @@ notifications:
       - wade@bindshell.net
     on_success: always
     on_failure: always
+# safelist
+branches:
+  only:
+  - master
 addons:
   apt:
     packages:
