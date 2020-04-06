@@ -102,7 +102,6 @@ for (var i=0; i<blocked_ports.length; i++) {
                           beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
                 }
                       else {
-                    console.log(end-start)
                     // This is a little sketchy but the only way to tell in Chrome/Chromium if the port is open. Basically sub 11ms connection was refused
                           if ((end - start) < 11 ) {
                               beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
