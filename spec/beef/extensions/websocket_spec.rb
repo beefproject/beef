@@ -1,7 +1,6 @@
 require 'rest-client'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
-require 'byebug'
 
 RSpec.describe 'BeEF Extension WebSockets' do
 
