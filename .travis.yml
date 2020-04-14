@@ -22,4 +22,5 @@ addons:
       - libcurl4-openssl-dev
   browserstack:
     username: "greggregory4"
-    access_key: "Vyo52yEzjPkDmqANH6qH"
+    access_key:
+      secure: "gXYr5fVYXFdbbJYMfoo7hMDDlrd6VA873MI64o/lwbVyvEf2CrRWE5RgHIqdUZ9mI8cVp/u52Sr/BWeqxSKmQFg4kWxRY9OqMSuZPLccnuTk765YZtph36GzxjY+x6264coa426fu24l+s3FPWdETdQe8uzisJyyQXDRomNxZLV48x+RKWyg2d4JNeWKhmD8NSo//8WA+IrHQP91YbDyeSEmHJhLWC2xz9wjWsi1J7ahNr7PMaqpsqUBwyj88xmGQ1mUUzIMCPOy2zs7CNKllvi4can7iAiJPYATanf1VoL1BDBpN1l8QIDyeeXtlAsw3c5OXYg0Xr8Q8Wf5qNkOpbVeL464uCi46bGPhL/QMVIn56bPUP99rZevwxYKdeDs4rDPRciSKaBgZ0bk2jBLrdqTlM6OLT4RVG47EX10SuURbJaQjPma5hOxiOqcuS8ajOHCDqC3zj3Ot1KLlI9vaX2xo+jaOjZ9l6sm3f+IgIYG22N86H/q8c6QeehqOastGTWb5QV1v4/+JtpKCwhU/TAxKa5td9we4Nu5E5RPTlOoA48GeQecToaOvcuofZB0JeNtiREGCfxY1VgFBHk07eEo5RTIbYch896p89K0Ybpi4HqQC8BeIaOyK6W71UM3R7bJR4cu5QnfR6vyZ1i+Q9z5zzwTeWL7Pb/kR7RSRUc="
