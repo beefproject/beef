@@ -1,0 +1,18 @@
+server: "hub-cloud.browserstack.com"
+user: "greggregory4"
+key: "Vyo52yEzjPkDmqANH6qH"
+
+common_caps:
+  "build": "rspec-browserstack"
+  "browserstack.debug": true
+  "name": "BStack-[RSpec] Local Test"
+
+browser_caps:
+  -
+    "browser": "chrome"
+  -
+    "browser": "firefox"
+  -
+    "browser": "internet explorer"
+  -
+    "browser": "safari"
