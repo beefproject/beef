@@ -5,14 +5,10 @@ key: "Vyo52yEzjPkDmqANH6qH"
 common_caps:
   "build": "rspec-browserstack"
   "browserstack.debug": true
-  "name": "BStack-[RSpec] Local Test"
+  "name": "BStack-[RSpec] Test"
 
 browser_caps:
   -
     "browser": "chrome"
   -
     "browser": "firefox"
-  -
-    "browser": "internet explorer"
-  -
-    "browser": "safari"
