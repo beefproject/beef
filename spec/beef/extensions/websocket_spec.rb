@@ -1,6 +1,6 @@
 require 'rest-client'
 require 'core/main/network_stack/websocket/websocket'
-require 'em-websocket-client'
+require 'websocket-client-simple'
 
 RSpec.describe 'BeEF Extension WebSockets' do
 
@@ -10,26 +10,31 @@ RSpec.describe 'BeEF Extension WebSockets' do
     @cert = @config.get('beef.http.https.cert')
     @port = @config.get('beef.http.websocket.port')
     @secure_port = @config.get('beef.http.websocket.secure_port')
+    @config.set('beef.http.websocket.secure', false)
+    @ws = BeEF::Core::Websocket::Websocket.instance
   end
 
-  it 'Create Websocket Server' do
-        ws = BeEF::Core::Websocket::Websocket.instance
-	server= ws.start_websocket_server(:host => '127.0.0.1',
-					  :port => @port ,
-					  :secure => false)
-	expect(server).to be_a_kind_of(Thread)
+  after(:all) do
+    @config.set('beef.http.websocket.secure', true)
   end
 
-  it 'Create Websocket Secure Server' do
-        ws = BeEF::Core::Websocket::Websocket.instance
-	server= ws.start_websocket_server(:host => '127.0.0.1', 
-					  :port => @secure_port , 
-					  :secure => true,
-					  :tls_options => {
-					     :cert_chain_file  => @cert,
-					     :private_key_file => @cert_key
-					  })
-	expect(server).to be_a_kind_of(Thread)
+  it 'confirms that a websocket server has been started' do
+	  expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
+  end
+
+  it 'confirms that a secure websocket server has been started' do
+    @config.set('beef.http.websocket.secure', true)
+    wss = BeEF::Core::Websocket::Websocket.instance
+    expect(wss).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
+  end
+
+  it 'confirms that a websocket client can connect to the BeEF Websocket Server' do
+    sleep(3)
+    client = WebSocket::Client::Simple.connect "ws://127.0.0.1:#{@port}"
+    sleep(1)
+    expect(client).to be_a_kind_of(WebSocket::Client::Simple::Client)
+    expect(client.open?).to be true
+    client.close
   end
 
 end
