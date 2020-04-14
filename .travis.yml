@@ -5,12 +5,6 @@ rvm:
   - 2.6.3
   - 2.6.5
   - 2.7.0
-notifications:
-  email:
-    recipients:
-      - wade@bindshell.net
-    on_success: always
-    on_failure: always
 # safelist
 branches:
   only:
@@ -25,4 +19,7 @@ addons:
       - zlib1g-dev
       - liblzma-dev
       - libcurl4-openssl-dev
-
+  browserstack:
+    username: "greggregory4"
+    access_key:
+      secure: "Z/yWXnO4ymwx8mxIU0MqoYClgRniXU/UkUHMdNQIkxYf79EGPBrRJ9j3Ytbq1FzVbruLjTeg8ZGOJb5SlVngfo6jEdCMEuWjJ8nPMNp4Taq0BdaWPc5N1yIWxtpcPUhed9Wmo6JG2F/n4FFj24ko7VukA9EsY7LZwY6CmRSlOgCU/Ln0VPjlibqV89bEx1lak0qY4OrjcBp3ySF8M7ydv3Cjqt4hpL6Tgcd3M1gd0cHDKxhplyjl2E53MFraYoybltlubTeDpnKAq5V0pQoRjnbkRABx/PVFjdA5fCoNHQrpQkBdS0oSHmtKYlbBKs+SX4pg3sAnSMO2vb6+1uZTuVYiKdBNlRPzl3IJrUq2CzLwFC4flq+HLRdK+7Rx7VFi/6YY55lOGgCaB66GjRMZ31MXUJX4Rpg8W0bSbowBVTxHME4FGoSIef+TZgmTdP2e2fpTsoV/rnL2MKNpC7+Pqy6SCz1xGlPtzQaRYFzk92rpqVe7AMlLRLyylsLDKa7Ccxq2I17TGY1jzB1e2V1/Reap1aDTBHQmQsYxRJBHipqOVupVFzkNFikkx7WOfWpZJqa2Mvi+diLvu/+C24biXJRXLBm1/di1r+zz4Sr+TK3W/Hwqdo9/9E3mpdnDK4rGJDKxJDbNOWPL7sufH5gaDuu50gfybILkI54BnICIFj4="
