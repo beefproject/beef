@@ -15,7 +15,6 @@ require 'curb'
 require 'rest-client'
 require 'yaml'
 require 'selenium-webdriver'
-require 'byebug'
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
@@ -41,7 +40,6 @@ CONFIG_NAME = ENV['CONFIG_NAME'] || 'windows_chrome'
 CONFIG = YAML.safe_load(File.read("./spec/support/#{CONFIG_NAME}.config.yml"))
 CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || CONFIG['user']
 CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || CONFIG['key']
-byebug
 
 ## DB config
 ActiveRecord::Base.logger = nil
