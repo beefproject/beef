@@ -60,6 +60,4 @@ RSpec.describe 'BeEF Extension WebRTC' do
   #   expect(browsers).to_not be_nil
   #   expect(browsers.length).to be >= 2
   # end
-
-
 end

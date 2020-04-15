@@ -1,14 +1,33 @@
 server: "hub-cloud.browserstack.com"
-user: "greggregory4"
-key: "Vyo52yEzjPkDmqANH6qH"
+user: "craigdonaldson1"
+key: "qGsnjShFp9PbmT7dvgQC"
 
 common_caps:
   "build": "rspec-browserstack"
   "browserstack.debug": true
-  "name": "BStack-[RSpec] Test"
+  "name": "BStack Test Run"
 
 browser_caps:
+  # OS Specific Browsers
+  -
+    "browser": "safari"
+    "os": "OS X"
+  -
+    "browser": "edge"
+    "os": "Windows"
+  -
+    "browser": "internet explorer"
+    "os": "Windows"
+  # Multi-OS Browsers
   -
     "browser": "chrome"
+    "os": "OS X"
+  -
+    "browser": "chrome"
+    "os": "Windows"
   -
     "browser": "firefox"
+    "os": "OS X"
+  -
+    "browser": "firefox"
+    "os": "Windows"
