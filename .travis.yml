@@ -1,26 +1,28 @@
 language: ruby
 rvm:
-  - 2.5.3
-  - 2.6.0
-  - 2.6.3
-  - 2.6.5
-  - 2.7.0
-# safelist
+- 2.5.3
+- 2.6.0
+- 2.6.3
+- 2.6.5
+- 2.7.0
 branches:
   only:
-    - master
-    - browserstack
+  - master
+  - browserstack
 addons:
   apt:
     packages:
-      - libsqlite3-dev
-      - build-essential
-      - patch
-      - ruby-dev
-      - zlib1g-dev
-      - liblzma-dev
-      - libcurl4-openssl-dev
+    - libsqlite3-dev
+    - build-essential
+    - patch
+    - ruby-dev
+    - zlib1g-dev
+    - liblzma-dev
+    - libcurl4-openssl-dev
   browserstack:
-    username: 'craigdonaldson1'
+    username: craigdonaldson1
     access_key:
-      secure: 'ayO0krAdcapEPxbs9GyUfN2vDV0974vo+gMIRH4xSJ6/QStV38qfVKaHMMuDcmnLCboFaAnsPdklWfuR4fd5NSO26iOyby4ByjVA6tjO1DwVy31+Aw0Vd1KPLSil4n6eujpSpXqQwYnhCfdex3pgJ4csUGwdR0NPQ/b8PjV2KGzENscdGunYh+o2W67msWT+B3UH0lRVmGMYdUNplVBI3c7iviSAsEMJMSW7mjU3FKEAbsQR9OHscUkt883Axlgal3NxKjODgwaBNjfpVTFWOzcKDy0/eOAEmP02Wi+x1k8TU4zxOduzmiJZ18yYOzPlcbpBD3NSnFB0QbhQmPNRJghenF0zS/pRyAWRRt3r2p+VvbqmOlgcnlf3QaBARqCvCLIM/UpAz+pR0ICumFdP/z7ejX3RJCE/vOrLui+yow6A13yVElvpgbVBdt6uhubVlAblTOYdrooJNSqJh0zvprOcneaF0Di+MEx8FE9hp35YNBL8sdPtoWGWxLgKEmOTZysXj5VtPSnxpJcSSkdRGMBeKULtYVkCd0H+O4pfVvU7UGy6QcwtRO1WNa4VcFUi9m+wZ/Pkhoc1ZB7fv/dX99TEGMjRhqgCsR8VwCVoUlAvU5uhtbajmqoIt8gaK4P/rh+l5+HR+w2qmbfPt+3w1pU2Le8+n+ue5AMe+WcsnHk='
+      secure: ayO0krAdcapEPxbs9GyUfN2vDV0974vo+gMIRH4xSJ6/QStV38qfVKaHMMuDcmnLCboFaAnsPdklWfuR4fd5NSO26iOyby4ByjVA6tjO1DwVy31+Aw0Vd1KPLSil4n6eujpSpXqQwYnhCfdex3pgJ4csUGwdR0NPQ/b8PjV2KGzENscdGunYh+o2W67msWT+B3UH0lRVmGMYdUNplVBI3c7iviSAsEMJMSW7mjU3FKEAbsQR9OHscUkt883Axlgal3NxKjODgwaBNjfpVTFWOzcKDy0/eOAEmP02Wi+x1k8TU4zxOduzmiJZ18yYOzPlcbpBD3NSnFB0QbhQmPNRJghenF0zS/pRyAWRRt3r2p+VvbqmOlgcnlf3QaBARqCvCLIM/UpAz+pR0ICumFdP/z7ejX3RJCE/vOrLui+yow6A13yVElvpgbVBdt6uhubVlAblTOYdrooJNSqJh0zvprOcneaF0Di+MEx8FE9hp35YNBL8sdPtoWGWxLgKEmOTZysXj5VtPSnxpJcSSkdRGMBeKULtYVkCd0H+O4pfVvU7UGy6QcwtRO1WNa4VcFUi9m+wZ/Pkhoc1ZB7fv/dX99TEGMjRhqgCsR8VwCVoUlAvU5uhtbajmqoIt8gaK4P/rh+l5+HR+w2qmbfPt+3w1pU2Le8+n+ue5AMe+WcsnHk=
+env:
+  global:
+    secure: fNlG7a68RQC4xYz1/2B5+xcNd9pTx0vFKz1QnXCSaiP43Ci1M+4kShQeGKMGJ5XuVYHC1+Adc3gAqvUVMPEFB1py2hVsdXetV/NtJj0XD3VeduWks90qw0p4cgvryMm3Kid6BPhl10RrV/yySJf1UABYkTarYa2L9ye75d1GcLWW601kDkJhWLonIY7xtejLxbjgyw+qxC8f2E231IA2gROH0CNVaM9RX09nyOt+UOai7lvnCJdeZLpRon7N7mujgEzQzqShzkFgwaeWkFP4g3CSdnjcNffzuvK0VtwruhDzm1ZQ8OpC5AFb4JQq6V0y1KztbOudQwilDdgZarmgt10O31edjHDN9l7MYrjHn3bnRijhkfqWiMutKU41S+2LW4aen4XgYvvUGRmLYJgQ8utG6OBVGnL8IzDFLBKj4fOKFghay+Nq7TERbWcTH5LyRaNtxzea+mLzaUmX+v6jW8hapB/L6gQTqTz9mOizTOx+jn9YDYfSqe+BWWc8oXN7DIvWsw1Qr2PLcFAqguvx5KSWJT6kEKDNQkBm1Oc+o01qBNSwDL7GSfGzegKA6hoMAT3wG2F4IxKTB3i7Qlt9dz234kHTsjbRQgM9hBs0F3VvGI6eDtztFelM/W7kZwJ4MKXn/grU5Zwo6HflL7i7U8pV4wdUdqXrrsLAA2AOBHM=
