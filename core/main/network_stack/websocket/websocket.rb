@@ -102,7 +102,7 @@ module BeEF
 
                     # new zombie
                     unless msg_hash['cookie'].nil?
-                      print_debug("[WebSocket] Browser says helo! WebSocket is running")
+                      print_debug("[WebSocket] Browser says hello! WebSocket is running")
                       # insert new connection in activesocket
                       @@activeSocket["#{msg_hash["cookie"]}"] = ws
                       print_debug("[WebSocket] activeSocket content [#{@@activeSocket}]")

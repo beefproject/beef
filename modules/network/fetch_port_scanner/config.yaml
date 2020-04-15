@@ -5,11 +5,11 @@
 #
 beef:
     module:
-        sw_port_scanner:
+        fetch_port_scanner:
             enable: true
             category: "Network"
-            name: "SW Port Scanner"
-            description: " Uses web workers to port scan"
+            name: "Fetch Port Scanner"
+            description: " Uses fetch to test the response in order to determine if a port is open or not"
             authors: ["Crimes by Will", "jcrew99"]
             # http://caniuse.com/cors
             target:
