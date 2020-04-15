@@ -17,7 +17,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         @username = @config.get('beef.credentials.user')
         @password = @config.get('beef.credentials.passwd')
 
-        # Load BeEF exetensions and modules
+        # Load BeEF extensions and modules
         BeEF::Extensions.load
 
         sleep 10

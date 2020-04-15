@@ -15,8 +15,8 @@ require 'curb'
 require 'rest-client'
 require 'yaml'
 require 'selenium-webdriver'
-require 'browserstack/local'
-require 'byebug'
+require 'capybara/cucumber'
+
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
@@ -26,13 +26,24 @@ end
 ENV['RACK_ENV'] ||= 'test'
 ARGV = []
 
-# BrowserStack config
+## BrowserStack config
+
+# Monkey patch to avoid reset sessions
+class Capybara::Selenium::Driver < Capybara::Driver::Base
+  def reset!
+    if @browser
+      @browser.navigate.to('about:blank')
+    end
+  end
+end
+
 TASK_ID = (ENV['TASK_ID'] || 0).to_i
 CONFIG_NAME = ENV['CONFIG_NAME'] || 'browserstack'
 CONFIG = YAML.safe_load(File.read("./spec/support/#{CONFIG_NAME}.config.yml"))
 CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || CONFIG['user']
 CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || CONFIG['key']
 
+## DB config
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:':memory:')
@@ -59,28 +70,28 @@ RSpec.configure do |config|
   end
   # BrowserStack
   config.around(:example, :run_on_browserstack => true) do |example|
-    @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-    @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
-    enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+    Capybara.register_driver :browserstack do |app|
+      @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 
-    # Code to start browserstack local before start of test
-    if enable_local
-      @bs_local = BrowserStack::Local.new
-      bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
-      @bs_local.start(bs_local_args)
-      @caps["browserstack.local"] = true
+      # Code to start browserstack local before start of test
+      if @caps['browserstack.local'] && @caps['browserstack.local'].to_s == 'true';
+        @bs_local = BrowserStack::Local.new
+        bs_local_args = {"key" => "#{CONFIG['key']}"}
+        @bs_local.start(bs_local_args)
+      end
+
+      Capybara::Selenium::Driver.new(app,
+        :browser => :remote,
+        :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+        :desired_capabilities => @caps
+      )
     end
 
-    @driver = Selenium::WebDriver.for(:remote,
-      :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-      :desired_capabilities => @caps)
+    Capybara.default_driver = :browserstack
 
-    begin
-      example.run
-    ensure 
-      @driver.quit
-      # Code to stop browserstack local after end of test
-      @bs_local.stop if enable_local
+    # Code to stop browserstack local after end of test
+    at_exit do
+      @bs_local.stop unless @bs_local.nil? 
     end
   end
 end
