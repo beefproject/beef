@@ -36,7 +36,7 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
 end
 
 TASK_ID = (ENV['TASK_ID'] || 0).to_i
-CONFIG_NAME = ENV['CONFIG_NAME'] || 'browserstack'
+CONFIG_NAME = ENV['CONFIG_NAME'] || 'windows_chrome'
 CONFIG = YAML.safe_load(File.read("./spec/support/#{CONFIG_NAME}.config.yml"))
 CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || CONFIG['user']
 CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || CONFIG['key']

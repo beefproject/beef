@@ -1,0 +1,13 @@
+server: "hub-cloud.browserstack.com"
+user: "craigdonaldson1"
+key: "qGsnjShFp9PbmT7dvgQC"
+
+common_caps:
+  "build": "rspec-browserstack"
+  "browserstack.debug": true
+  "name": "BStack Test Run"
+
+browser_caps:
+  -
+    "browser": "edge"
+    "os": "Windows"
