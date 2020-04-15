@@ -15,8 +15,6 @@ require 'curb'
 require 'rest-client'
 require 'yaml'
 require 'selenium-webdriver'
-require 'capybara/cucumber'
-
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
@@ -70,28 +68,28 @@ RSpec.configure do |config|
   end
   # BrowserStack
   config.around(:example, :run_on_browserstack => true) do |example|
-    Capybara.register_driver :browserstack do |app|
-      @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+    @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+    @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
+    enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
 
-      # Code to start browserstack local before start of test
-      if @caps['browserstack.local'] && @caps['browserstack.local'].to_s == 'true';
-        @bs_local = BrowserStack::Local.new
-        bs_local_args = {"key" => "#{CONFIG['key']}"}
-        @bs_local.start(bs_local_args)
-      end
-
-      Capybara::Selenium::Driver.new(app,
-        :browser => :remote,
-        :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-        :desired_capabilities => @caps
-      )
+    # Code to start browserstack local before start of test
+    if enable_local
+      @bs_local = BrowserStack::Local.new
+      bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+      @bs_local.start(bs_local_args)
+      @caps["browserstack.local"] = true
     end
 
-    Capybara.default_driver = :browserstack
+    @driver = Selenium::WebDriver.for(:remote,
+      :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+      :desired_capabilities => @caps)
 
-    # Code to stop browserstack local after end of test
-    at_exit do
-      @bs_local.stop unless @bs_local.nil? 
+    begin
+      example.run
+    ensure 
+      @driver.quit
+      # Code to stop browserstack local after end of test
+      @bs_local.stop if enable_local
     end
   end
 end

@@ -82,9 +82,10 @@ group :test do
     gem 'irb'
     gem 'pry-byebug'
     gem "websocket-client-simple", "~> 0.3.0"
-    gem 'browserstack-local'
 end
 
 source 'https://rubygems.org'
+
+
 
 
