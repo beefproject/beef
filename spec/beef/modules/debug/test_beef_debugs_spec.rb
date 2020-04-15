@@ -33,13 +33,13 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         end
 
         # Load up DB and migrate if necessary
-		ActiveRecord::Base.logger = nil
-		OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+        ActiveRecord::Base.logger = nil
+        OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
         OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
 
-		context = ActiveRecord::Migration.new.migration_context
-		if context.needs_migration?
-		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+        context = ActiveRecord::Migration.new.migration_context
+        if context.needs_migration?
+          ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
         end
 
         sleep 10
@@ -51,15 +51,15 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         http_hook_server.prepare
 
         # Generate a token for the server to respond with
-		BeEF::Core::Crypto::api_token
+        BeEF::Core::Crypto::api_token
        
         # Initiate server start-up
         @pids = fork do
             BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-		end
-		@pid = fork do
-			http_hook_server.start
-		end
+        end
+        @pid = fork do
+          http_hook_server.start
+        end
         
         # Give the server time to start-up
         sleep 1
@@ -80,7 +80,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
 
     after(:all) do
         Process.kill("KILL",@pid)
-	    Process.kill("KILL",@pids)
+        Process.kill("KILL",@pids)
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
