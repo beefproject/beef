@@ -8,6 +8,8 @@ require 'rest-client'
 require 'json'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
+require_relative '../../../../core/module'
+require 'byebug'
 
 RSpec.describe 'BeEF Debug Command Modules:' do
 
@@ -18,11 +20,18 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         @password = @config.get('beef.credentials.passwd')
 
         # Load BeEF extensions and modules
-        BeEF::Extensions.load
+        if @config.get('beef.extension').keys.length == 10
+            BeEF::Extensions.load
 
-        sleep 10
+            sleep 5
+        end
 
-        BeEF::Modules.load
+
+        if @config.get('beef.module').nil?
+            BeEF::Modules.load
+
+            sleep 5
+        end
 
         # Grab DB file and regenerate if requested
         db_file = @config.get('beef.database.file')
@@ -42,7 +51,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
           ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
         end
 
-        sleep 10
+        sleep 5
 
         BeEF::Core::Migration.instance.update_db!
         
