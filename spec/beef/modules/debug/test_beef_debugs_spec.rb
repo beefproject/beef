@@ -92,7 +92,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_beef_debug']
+        cmd_mod_id = @debug_mod_names_ids['Test_beef_debug']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}", 
                                    { "msg": "test" }.to_json, 
                                    :content_type => :json
@@ -101,7 +101,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Return ASCII Characters command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_return_ascii_chars']
+        cmd_mod_id = @debug_mod_names_ids['Test_return_ascii_chars']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
@@ -110,7 +110,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Return Image command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_return_image']
+        cmd_mod_id = @debug_mod_names_ids['Test_return_image']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
@@ -120,7 +120,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
 
 
     it 'The Test HTTP Redirect command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_http_redirect']
+        cmd_mod_id = @debug_mod_names_ids['Test_http_redirect']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
@@ -129,7 +129,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test Returning Results/Long String command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_return_long_string']
+        cmd_mod_id = @debug_mod_names_ids['Test_return_long_string']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "repeat": 20,
                                 "repeat_string": "beef" }.to_json,
@@ -139,7 +139,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test Network Request command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_network_request']
+        cmd_mod_id = @debug_mod_names_ids['Test_network_request']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "scheme": "http",
                                     "method": "GET",
@@ -156,7 +156,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test DNS Tunnel command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_dns_tunnel_client']
+        cmd_mod_id = @debug_mod_names_ids['Test_dns_tunnel_client']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "domain": "example.com",
                                     "data": "Lorem ipsum" }.to_json,
@@ -166,7 +166,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test CORS Request command module successfully executes' do
-        cmd_mod_id = debug_mod_names_ids['Test_cors_request']
+        cmd_mod_id = @debug_mod_names_ids['Test_cors_request']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "method": "GET",
                                     "url": "example.com",
