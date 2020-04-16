@@ -17,7 +17,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         @username = @config.get('beef.credentials.user')
         @password = @config.get('beef.credentials.passwd')
 
-        # Load BeEF exetensions and modules
+        # Load BeEF extensions and modules
         BeEF::Extensions.load
 
         sleep 10
@@ -76,6 +76,14 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         # Identify Session ID of victim generated above
         @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
         @session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
+
+        # Grab Command Module IDs as they can differ from machine to machine
+        @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
+        @debug_mod_names_ids = {}
+        @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
+                                    .map do |debug_mod|
+                                        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
+                                    end
     end
 
     after(:all) do
@@ -84,7 +92,8 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/27?token=#{@token}", 
+        cmd_mod_id = debug_mod_names_ids['Test_beef_debug']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}", 
                                    { "msg": "test" }.to_json, 
                                    :content_type => :json
         result_data = JSON.parse(response.body)
@@ -92,15 +101,17 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     it 'The Return ASCII Characters command module successfully executes' do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/25?token=#{@token}",
+        cmd_mod_id = debug_mod_names_ids['Test_return_ascii_chars']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"    
     end
 
-    it "The Return Image command module successfully executes" do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/22?token=#{@token}",
+    it 'The Return Image command module successfully executes' do
+        cmd_mod_id = debug_mod_names_ids['Test_return_image']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
         result_data = JSON.parse(response.body)
@@ -109,15 +120,17 @@ RSpec.describe 'BeEF Debug Command Modules:' do
 
 
     it 'The Test HTTP Redirect command module successfully executes' do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/24?token=#{@token}",
+        cmd_mod_id = debug_mod_names_ids['Test_http_redirect']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
                                 :content_type => :json
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
     end
 
-    it "The Test Returning Results/Long String command module successfully executes" do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/29?token=#{@token}",
+    it 'The Test Returning Results/Long String command module successfully executes' do
+        cmd_mod_id = debug_mod_names_ids['Test_return_long_string']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "repeat": 20,
                                 "repeat_string": "beef" }.to_json,
                                 :content_type => :json
@@ -125,8 +138,9 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it "The Test Network Request command module successfully executes" do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/29?token=#{@token}",
+    it 'The Test Network Request command module successfully executes' do
+        cmd_mod_id = debug_mod_names_ids['Test_network_request']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "scheme": "http",
                                     "method": "GET",
                                     "domain": "#{ATTACK_DOMAIN}",
@@ -141,8 +155,9 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it "The Test DNS Tunnel command module successfully executes" do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/26?token=#{@token}",
+    it 'The Test DNS Tunnel command module successfully executes' do
+        cmd_mod_id = debug_mod_names_ids['Test_dns_tunnel_client']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "domain": "example.com",
                                     "data": "Lorem ipsum" }.to_json,
                                 :content_type => :json
@@ -150,8 +165,9 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it "The Test CORS Request command module successfully executes" do
-        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/30?token=#{@token}",
+    it 'The Test CORS Request command module successfully executes' do
+        cmd_mod_id = debug_mod_names_ids['Test_cors_request']
+        response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "method": "GET",
                                     "url": "example.com",
                                     "data": {
