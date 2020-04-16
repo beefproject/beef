@@ -43,7 +43,7 @@ beef.websocket = {
     },
 
     /**
-     * Send Helo message to the BeEF server and start async polling.
+     * Send Hello message to the BeEF server and start async polling.
      */
     start:function () {
         new beef.websocket.init();

@@ -3,7 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-class Sw_port_scanner < BeEF::Core::Command
+class Fetch_port_scanner < BeEF::Core::Command
   
   # set and return all options for this module
    def self.options
