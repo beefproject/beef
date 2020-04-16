@@ -8,8 +8,6 @@ require 'rest-client'
 require 'json'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
-require_relative '../../../../core/module'
-require 'byebug'
 
 RSpec.describe 'BeEF Debug Command Modules:' do
 
@@ -80,7 +78,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         # Hook new victim
         @victim = BeefTest.new_victim
 
-        sleep 5
+        sleep 3
 
         # Identify Session ID of victim generated above
         @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
