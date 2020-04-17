@@ -10,24 +10,24 @@ beef:
             category: "Network"
             name: "Fetch Port Scanner"
             description: " Uses fetch to test the response in order to determine if a port is open or not"
-            authors: ["Crimes by Will", "jcrew99"]
+            authors: ["Crimes by Will", "jcrew99", "salmong1t"]
             # http://caniuse.com/cors
             target:
-                working: ["ALL"]
+                working: ["FF", "C", "E", "EP"]
                 not_working:
-                    # CORS is partially supported on IE 8 & 9
                     IE:
-                        min_ver: 6
-                        max_ver: 7
+                        min_ver: 1
+                        max_ver: 11
+
                     O:
                         min_ver: 1
                         max_ver: 11
                     C:
                         min_ver: 1
-                        max_ver: 3
+                        max_ver: 5
                     S:
-                        min_ver: 1
-                        max_ver: 3
-                    F:
-                        min_ver: 1
-                        max_ver: 3
+                        min_ver: 3
+                        max_ver: 5
+                    FF:
+                        min_ver: 3
+                        max_ver: 60
