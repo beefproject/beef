@@ -13,52 +13,47 @@ RSpec.describe 'BeEF Extension WebSockets' do
     @secure_port = @config.get('beef.http.websocket.secure_port')
     @config.set('beef.http.websocket.secure', true)
     @config.set('beef.http.websocket.enable', true)
+   #set config parameters
+   @config.set('beef.credentials.user', "beef")
+   @config.set('beef.credentials.passwd', "beef")
+   @username = @config.get('beef.credentials.user')
+   @password = @config.get('beef.credentials.passwd')
+   #load extensions, best practice is to reload as previous tests can potentially cause issues.
+   BeEF::Extensions.load
+   sleep 2
+   if @config.get('beef.module').nil?
+     puts "loading modules"
+     BeEF::Modules.load
+     sleep 2
+   end
+   #generate token for the api to use
+   BeEF::Core::Crypto::api_token
+   # load up DB
+   # Connect to DB
+   ActiveRecord::Base.logger = nil
+   OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+   OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
+   
+   # Migrate (if required)
+   context = ActiveRecord::Migration.new.migration_context
+   if context.needs_migration?
+     puts "migrating db"
+     ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+   end
+   #start the hook server instance, for it out to track the pids for graceful closure
+   http_hook_server = BeEF::Core::Server.instance
+   http_hook_server.prepare
+   @pids = fork do
+     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+   end
+   @pid = fork do
+     http_hook_server.start
+   end
+   # wait for server to start
+   sleep 1
   end
 
   it 'can hook a browser with websockets' do
-    # start beef server
-    @config = BeEF::Core::Configuration.instance
-    #set config parameters
-    @config.set('beef.credentials.user', "beef")
-    @config.set('beef.credentials.passwd', "beef")
-    @username = @config.get('beef.credentials.user')
-    @password = @config.get('beef.credentials.passwd')
-    #load extensions, best practice is to reload as previous tests can potentially cause issues.
-    BeEF::Extensions.load
-    sleep 2
-    if @config.get('beef.module').nil?
-      puts "loading modules"
-      BeEF::Modules.load
-      sleep 2
-    end
-    #generate token for the api to use
-    BeEF::Core::Crypto::api_token
-
-    # load up DB
-    # Connect to DB
-    ActiveRecord::Base.logger = nil
-    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-    OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
-    
-    # Migrate (if required)
-    context = ActiveRecord::Migration.new.migration_context
-    if context.needs_migration?
-      puts "migrating db"
-      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-    end
-
-    #start the hook server instance, for it out to track the pids for graceful closure
-    http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
-    @pids = fork do
-      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-    end
-    @pid = fork do
-      http_hook_server.start
-    end
-    # wait for server to start
-    sleep 1
-
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
 
@@ -87,20 +82,18 @@ RSpec.describe 'BeEF Extension WebSockets' do
     hb_session = hb_details["hooked-browsers"]["online"]["0"]["session"]
     #show the address of what is being hooked
     #puts "hooked browser: #{hb_session}"
-    expect(hb_session).not_to be_nil
-    #I am cleaning up here for now, potentially move to after all if someoen wants 
-    # cleanup: delete test browser entries and session
-    # kill the server
-    #if @pid.nil?
-    #  break
-    #else
-    Process.kill("KILL", @pid)
-    #if @pids.nil?
-    #  break
-    #else
-    Process.kill("KILL", @pids)
-    puts "waiting for server to die.."
-    sleep 1
+    expect(hb_session).not_to be_nil  
+    #cannot do it in the after:all
     https.where(:hooked_browser_id => hb_session).delete_all
   end
+
+  after(:all) do
+    # cleanup: delete test browser entries and session
+    # kill the server
+    @config.set('beef.http.websocket.enable', false)
+    Process.kill("KILL", @pid)
+    Process.kill("KILL", @pids)
+    puts "waiting for server to die.."
+  end
+
 end
