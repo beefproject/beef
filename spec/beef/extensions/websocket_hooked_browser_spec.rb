@@ -3,7 +3,7 @@ require 'rest-client'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
-RSpec.describe 'BeEF Extension WebSockets' do
+RSpec.describe 'BeEF WebSockets enabled' do
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
