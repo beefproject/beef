@@ -18,15 +18,12 @@ RSpec.describe 'Browser details handler' do
 		@password = @config.get('beef.credentials.passwd')
 		
 		# Load BeEF extensions and modules
-		if @config.get('beef.extension').keys.length == 10
-			print_info "Loading in BeEF::Extensions"
-			BeEF::Extensions.load
+		# Always load Extensions, as previous changes to the config from other tests may affect
+		# whether or not this test passes.
+		BeEF::Extensions.load
+		sleep 2
 
-			sleep 2
-		else
-				print_info "Extensions already loaded"
-		end
-
+		# Check if modules already loaded. No need to reload.
 		if @config.get('beef.module').nil?
 			print_info "Loading in BeEF::Modules"
 			BeEF::Modules.load
