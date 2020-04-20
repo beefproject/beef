@@ -23,13 +23,10 @@ RSpec.describe 'BeEF API Rate Limit' do
 		# wait for server to start
 		sleep 1
 	end
-    # wait for server to start
   
-  	after(:all) do
-	
-	 Process.kill("KILL",@pid)
-	 Process.kill("KILL",@pids)
-	
+	after(:all) do
+		Process.kill("KILL",@pid)
+		Process.kill("KILL",@pids)
  	end
 
 	it 'adheres to auth rate limits' do

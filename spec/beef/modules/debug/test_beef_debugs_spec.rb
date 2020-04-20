@@ -19,19 +19,26 @@ RSpec.describe 'BeEF Debug Command Modules:' do
 
         # Load BeEF extensions and modules
         if @config.get('beef.extension').keys.length == 10
+            print_info "Loading in BeEF::Extensions"
             BeEF::Extensions.load
 
-            sleep 5
+            sleep 2
+        else
+            print_info "Extensions already loaded"
         end
 
 
         if @config.get('beef.module').nil?
             BeEF::Modules.load
+            print_info "Loading in BeEF::Modules"
 
-            sleep 5
+            sleep 2
+        else
+            print_info "Modules already loaded"
         end
 
         # Grab DB file and regenerate if requested
+        print_info "Loading database"
         db_file = @config.get('beef.database.file')
 
         if BeEF::Core::Console::CommandLine.parse[:resetdb]
@@ -49,11 +56,12 @@ RSpec.describe 'BeEF Debug Command Modules:' do
           ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
         end
 
-        sleep 5
+        sleep 2
 
         BeEF::Core::Migration.instance.update_db!
         
         # Spawn HTTP Server
+        print_info "Starting HTTP Hook Server"
         http_hook_server = BeEF::Core::Server.instance
         http_hook_server.prepare
 
@@ -76,6 +84,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         @token = JSON.parse(@response)['token']
 
         # Hook new victim
+		print_info 'Hooking a new victim, waiting a few seconds...'
         @victim = BeefTest.new_victim
 
         sleep 3
@@ -94,6 +103,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
     after(:all) do
+        print_info "Shutting down server"
         Process.kill("KILL",@pid)
         Process.kill("KILL",@pids)
     end
