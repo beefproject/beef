@@ -6,7 +6,7 @@
 beef:
     module:
         test_get_variable:
-            enable: false
+            enable: true
             category: "Debug"
             name: "Test JS variable passing"
             description: "Test for JS variable passing from another BeEF's script via Window object"
