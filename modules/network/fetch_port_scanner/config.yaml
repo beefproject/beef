@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        fetch_port_scanner:
+            enable: true
+            category: "Network"
+            name: "Fetch Port Scanner"
+            description: " Uses fetch to test the response in order to determine if a port is open or not"
+            authors: ["Crimes by Will", "jcrew99", "salmong1t"]
+            # http://caniuse.com/cors
+            target:
+                working: ["FF", "C", "E", "EP"]
+                not_working:
+                    IE:
+                        min_ver: 1
+                        max_ver: 11
+
+                    O:
+                        min_ver: 1
+                        max_ver: 11
+                    C:
+                        min_ver: 1
+                        max_ver: 5
+                    S:
+                        min_ver: 3
+                        max_ver: 5
+                    FF:
+                        min_ver: 3
+                        max_ver: 60
