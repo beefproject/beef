@@ -1,12 +1,12 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows Firefox"
-  "browserstack.debug": true
+  "build": "Windows Chrome"
   "name": "BStack Test Run"
   "project": "My Project"
+  "browserstack.local": true
 
 browser_caps:
   -
-    "browser": "firefox"
-    "os": "Windows"
+    "browser": "chrome"
+    "os": "windows"

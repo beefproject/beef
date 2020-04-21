@@ -36,10 +36,10 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
 end
 
 TASK_ID = (ENV['TASK_ID'] || 0).to_i
-CONFIG_NAME = ENV['CONFIG_NAME'] || 'windows_chrome'
-CONFIG = YAML.safe_load(File.read("./spec/support/#{CONFIG_NAME}.config.yml"))
-CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || CONFIG['user']
-CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || CONFIG['key']
+CONFIG_FILE = ENV['CONFIG_FILE'] || 'windows/windows_chrome_latest.config.yml'
+CONFIG = YAML.safe_load(File.read("./spec/support/browserstack/#{CONFIG_FILE}"))
+CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || ''
+CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || ''
 
 ## DB config
 ActiveRecord::Base.logger = nil

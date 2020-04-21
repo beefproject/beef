@@ -89,3 +89,5 @@ source 'https://rubygems.org'
 
 
 
+
+gem "browserstack-local", "~> 1.3"

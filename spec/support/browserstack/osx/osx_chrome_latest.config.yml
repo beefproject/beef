@@ -1,12 +1,12 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Safari"
-  "browserstack.debug": true
+  "build": "OSX Chrome"
   "name": "BStack Test Run"
   "project": "My Project"
+  "browserstack.local": true
 
 browser_caps:
   -
-    "browser": "safari"
+    "browser": "chrome"
     "os": "OS X"

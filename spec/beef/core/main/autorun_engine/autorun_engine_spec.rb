@@ -21,6 +21,7 @@ RSpec.describe 'AutoRunEngine test' do
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.
+		print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
 		sleep 2
 
@@ -86,6 +87,19 @@ RSpec.describe 'AutoRunEngine test' do
 		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
 		@token = JSON.parse(@response)['token']
 	end
+
+	before(:each) do
+			# Hook new victim
+			print_info 'Hooking a new victim, waiting a few seconds...'
+			@victim = @driver.navigate.to "#{VICTIM_URL}"
+
+			# Give time for browser hook to occur
+			sleep 3
+
+			# Identify Session ID of victim generated above
+			@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+			@session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
+	end
   
 	after(:all) do
 		print_info "Shutting down server"
@@ -93,12 +107,7 @@ RSpec.describe 'AutoRunEngine test' do
 		Process.kill("KILL",@pids)
  	end
 
-	it 'AutoRunEngine is working' do
-		print_info 'Hooking a new victim, waiting a few seconds...'
-		victim = BeefTest.new_victim
-
-    sleep 3
-
+	it 'AutoRunEngine is working', :run_on_browserstack => true do
 		response = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
 		result_data = JSON.parse(response)
 

@@ -19,6 +19,7 @@ RSpec.describe 'BeEF WebSockets enabled' do
    @username = @config.get('beef.credentials.user')
    @password = @config.get('beef.credentials.passwd')
    #load extensions, best practice is to reload as previous tests can potentially cause issues.
+   print_info "Loading in BeEF::Extensions"
    BeEF::Extensions.load
    sleep 2
    if @config.get('beef.module').nil?
@@ -53,7 +54,7 @@ RSpec.describe 'BeEF WebSockets enabled' do
    sleep 1
   end
 
-  it 'can hook a browser with websockets' do
+  it 'can hook a browser with websockets', :run_on_browserstack => true do
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
 
@@ -62,22 +63,20 @@ RSpec.describe 'BeEF WebSockets enabled' do
     api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD)
     response = api.auth()
     @token = response[:token]
-    puts 'hooking a new victim, waiting a few seconds...'
-    victim = BeefTest.new_victim
-    sleep 2
+
+		# Hook new victim
+		print_info 'Hooking a new victim, waiting a few seconds...'
+		victim = @driver.navigate.to "#{VICTIM_URL}"
+
+		# Give time for browser hook to occur
+		sleep 3
+
     #Uses the response and hooked browser details to get the response
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
     #test for the response if errors and weirdness there
     # puts "#{response} from the rest client " 
     hb_details = JSON.parse(response.body)
-    while hb_details["hooked-browsers"]["online"].empty?
-      # get victim session
-      response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
-      hb_details = JSON.parse(response.body)
-      puts "json: #{hb_details}"
-      puts "can hook a browser"
-      puts "online hooked browsers empty: #{hb_details["hooked-browsers"]["online"].empty?}"
-    end
+
     #get the hooked browser details
     hb_session = hb_details["hooked-browsers"]["online"]["0"]["session"]
     #show the address of what is being hooked

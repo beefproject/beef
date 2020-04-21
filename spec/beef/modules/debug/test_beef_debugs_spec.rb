@@ -19,7 +19,8 @@ RSpec.describe 'BeEF Debug Command Modules:' do
 
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
-		# whether or not this test passes.
+        # whether or not this test passes.
+        print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
 		sleep 2
 
@@ -79,16 +80,6 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         @response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
         @token = JSON.parse(@response)['token']
 
-        # Hook new victim
-		print_info 'Hooking a new victim, waiting a few seconds...'
-        @victim = BeefTest.new_victim
-
-        sleep 3
-
-        # Identify Session ID of victim generated above
-        @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-        @session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
-
         # Grab Command Module IDs as they can differ from machine to machine
         @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
         @debug_mod_names_ids = {}
@@ -96,6 +87,19 @@ RSpec.describe 'BeEF Debug Command Modules:' do
                                     .map do |debug_mod|
                                         @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
                                     end
+    end
+
+    before(:each) do
+        # Hook new victim
+		print_info 'Hooking a new victim, waiting a few seconds...'
+        @victim = @driver.navigate.to "#{VICTIM_URL}"
+
+        # Give time for browser hook to occur
+        sleep 3
+
+        # Identify Session ID of victim generated above
+        @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+        @session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
     end
 
     after(:all) do

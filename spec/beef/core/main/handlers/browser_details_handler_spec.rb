@@ -20,6 +20,7 @@ RSpec.describe 'Browser details handler' do
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.
+		print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
 		sleep 2
 
@@ -78,15 +79,19 @@ RSpec.describe 'Browser details handler' do
 		# Authenticate to REST API & pull the token from the response
 		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
 		@token = JSON.parse(@response)['token']
+	end
 
+	before(:each) do
 		# Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
-		@victim = BeefTest.new_victim
+		@victim = @driver.navigate.to "#{VICTIM_URL}"
 
-    sleep 3
+		# Give time for browser hook to occur
+		sleep 3
 
 		# Identify Session ID of victim generated above
-		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+		@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+		@session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
 	end
   
 	after(:all) do
@@ -95,18 +100,16 @@ RSpec.describe 'Browser details handler' do
 		Process.kill("KILL",@pids)
 	end
 
-	it 'can successfully hook a browser' do
-    expect(@hooks['hooked-browsers']['online']).not_to be_empty
+	it 'can successfully hook a browser', :run_on_browserstack => true do
+    expect(JSON.parse(@hooks)['hooked-browsers']['online']).not_to be_empty
 	end
 
-	it 'browser details handler working' do
-		session_id = @hooks['hooked-browsers']['online']['0']['session']
-		
+	it 'browser details handler working', :run_on_browserstack => true do
 		print_info "Getting browser details"
-		response = RestClient.get "#{RESTAPI_HOOKS}/#{session_id}?token=#{@token}"
+		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
 		details = JSON.parse(response.body)
-		
-		expect(@victim.driver.browser.browser.to_s.downcase).to eql (details['browser.name.friendly'].downcase)
+
+		expect(@driver.browser.to_s.downcase).to eql (details['browser.name.friendly'].downcase)
 	end
 	
 

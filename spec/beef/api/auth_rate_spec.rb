@@ -16,6 +16,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.
+		print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
 		sleep 2
 
