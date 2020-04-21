@@ -52,12 +52,6 @@ RSpec.describe 'BeEF API Rate Limit' do
 
 		BeEF::Core::Migration.instance.update_db!
 
-		# add AutoRunEngine rule
-		test_rule =  {"name"=>"Display an alert", "author"=>"mgeeky", "browser"=>"ALL", "browser_version"=>"ALL", "os"=>"ALL", "os_version"=>"ALL", "modules"=>[{"name"=>"alert_dialog", "condition"=>nil, "options"=>{"text"=>"You've been BeEFed ;>"}}], "execution_order"=>[0], "execution_delay"=>[0], "chain_mode"=>"sequential"}
-
-		BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
-		# are_engine.R
-
 		# Spawn HTTP Server
 		print_info "Starting HTTP Hook Server"
 		http_hook_server = BeEF::Core::Server.instance
