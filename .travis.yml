@@ -11,8 +11,8 @@ branches:
   - browserstack
 script:
   # - bundle exec rake
-  - CONFIG_NAME=windows/windows_chrome_latest.config.yaml bundle exec rspec --tag run_on_browserstack
-  - CONFIG_NAME=osx/osx_safari_latest.config.yaml bundle exec rspec --tag run_on_browserstack
+  - CONFIG_NAME=windows/windows_chrome_latest.config.yml bundle exec rspec --tag run_on_browserstack
+  - CONFIG_NAME=osx/osx_safari_latest.config.yml bundle exec rspec --tag run_on_browserstack
 addons:
   apt:
     packages:
