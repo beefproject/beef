@@ -5,6 +5,7 @@ common_caps:
   "name": "BStack Test Run"
   "project": "My Project"
   "browserstack.local": true
+  "browserstack.video": false
 
 browser_caps:
   -

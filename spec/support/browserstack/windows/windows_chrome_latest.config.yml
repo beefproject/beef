@@ -4,6 +4,7 @@ common_caps:
   "build": "Windows Chrome Latest"
   "project": "BeEF"
   "browserstack.local": true
+  "browserstack.video": false
 
 browser_caps:
   -

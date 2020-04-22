@@ -4,6 +4,7 @@ common_caps:
   "build": "Windows 10 Chrome 51"
   "project": "BeEF"
   "browserstack.local": true
+  "browserstack.video": false
 
 browser_caps:
   -

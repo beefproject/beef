@@ -4,6 +4,7 @@ common_caps:
   "build": "Windows XP Chrome 36"
   "project": "BeEF"
   "browserstack.local": true
+  "browserstack.video": false
 
 browser_caps:
   -
