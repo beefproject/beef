@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Catalina Firefox 68 ESR"
+  "build": "OSX El Capitan Firefox 68 ESR"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -11,4 +11,4 @@ browser_caps:
     "browser": "firefox"
     "browser_version": "68.0"
     "os": "osx"
-    "os_version": "catalina"
+    "os_version": "el capitan"

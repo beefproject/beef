@@ -87,9 +87,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
                                     .map do |debug_mod|
                                         @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
                                     end
-    end
 
-    before(:each) do
         # Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
         @victim = @driver.navigate.to "#{VICTIM_URL}"

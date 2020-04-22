@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "chrome"
-    "browser_version": "81.0"
+    "browser_version": "49.0"
     "os": "osx"
-    "os_version": "catalina"
+    "os_version": "snow leopard"

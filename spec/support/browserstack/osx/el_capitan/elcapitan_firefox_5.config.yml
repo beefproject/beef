@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Catalina Firefox 11"
+  "build": "OSX El Capitan Firefox 5"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "firefox"
-    "browser_version": "11.0"
+    "browser_version": "5.0"
     "os": "osx"
-    "os_version": "catalina"
+    "os_version": "el capitan"
