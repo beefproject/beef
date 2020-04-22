@@ -64,12 +64,12 @@ RSpec.describe 'BeEF Extension Requester' do
     @token = response[:token]
     puts "authenticated. api token: #{@token}"
 
-		# Hook new victim
-		print_info 'Hooking a new victim, waiting a few seconds...'
-		victim = @driver.navigate.to "#{VICTIM_URL}"
+		# # Hook new victim
+		# print_info 'Hooking a new victim, waiting a few seconds...'
+		# victim = @driver.navigate.to "#{VICTIM_URL}"
 
-		# Give time for browser hook to occur
-		sleep 2
+		# # Give time for browser hook to occur
+		# sleep 2
 
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
     puts "hooks response: #{response}"
