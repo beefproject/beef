@@ -69,7 +69,7 @@ RSpec.describe 'BeEF WebSockets enabled' do
 		victim = @driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-		sleep 3
+		sleep 4
 
     #Uses the response and hooked browser details to get the response
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}

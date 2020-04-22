@@ -1,0 +1,13 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "Windows 8 Chrome Latest"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "chrome"
+    "os": "windows"
+    "os_version": "8"
