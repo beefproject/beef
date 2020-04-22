@@ -14,7 +14,7 @@ before_script:
   - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
   - yes | ./update-geoipdb
 env:
-  - CONFIG_FILE=osx/catalina/catalina_chrome_39.config.yml
+  # - CONFIG_FILE=osx/catalina/catalina_chrome_39.config.yml
   # - CONFIG_FILE=osx/catalina/catalina_chrome_59.config.yml
   # - CONFIG_FILE=osx/catalina/catalina_chrome_81.config.yml
   # - CONFIG_FILE=osx/catalina/catalina_firefox_11.config.yml
@@ -31,7 +31,7 @@ env:
   # - CONFIG_FILE=osx/snow_leopard/snowleopard_chrome_49.config.yml
   # - CONFIG_FILE=osx/snow_leopard/snowleopard_firefox_5.config.yml
   # - CONFIG_FILE=osx/snow_leopard/snowleopard_firefox_42.config.yml
-  # - CONFIG_FILE=windows/windows_chrome_latest.config.yml
+  - CONFIG_FILE=windows/windows_chrome_latest.config.yml
   # - CONFIG_FILE=windows/windows_chrome_latest.config.yml
   # - CONFIG_FILE=windows/windows_chrome_latest.config.yml
   # - CONFIG_FILE=windows/windows_chrome_latest.config.yml
