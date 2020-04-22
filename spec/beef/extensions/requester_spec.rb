@@ -69,7 +69,7 @@ RSpec.describe 'BeEF Extension Requester' do
 		victim = @driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-		sleep 5
+		sleep 2
 
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
     puts "hooks response: #{response}"
