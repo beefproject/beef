@@ -15,23 +15,23 @@ before_script:
   - yes | ./update-geoipdb
 env:
   - CONFIG_FILE=windows/windows_chrome_latest.config.yml
-jobs:
-  include:
-    - name: "Full Test Suite 2.5.3"
-      rvm: 2.5.3
-      script: bundle exec rake
-    - name: "Full Test Suite 2.6.0"
-      rvm: 2.6.0
-      script: bundle exec rake
-    - name: "Full Test Suite 2.6.3"
-      rvm: 2.6.3
-      script: bundle exec rake
-    - name: "Full Test Suite 2.6.5"
-      rvm: 2.6.5
-      script: bundle exec rake
-    - name: "Full Test Suite 2.7.0"
-      rvm: 2.7.0
-      script: bundle exec rake
+# jobs:
+#   include:
+#     - name: "Full Test Suite 2.5.3"
+#       rvm: 2.5.3
+#       script: bundle exec rake
+#     - name: "Full Test Suite 2.6.0"
+#       rvm: 2.6.0
+#       script: bundle exec rake
+#     - name: "Full Test Suite 2.6.3"
+#       rvm: 2.6.3
+#       script: bundle exec rake
+#     - name: "Full Test Suite 2.6.5"
+#       rvm: 2.6.5
+#       script: bundle exec rake
+#     - name: "Full Test Suite 2.7.0"
+#       rvm: 2.7.0
+#       script: bundle exec rake
 script:
   - bundle exec rspec --tag run_on_browserstack
 addons:
