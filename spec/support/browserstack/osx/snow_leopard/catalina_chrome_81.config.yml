@@ -1,14 +1,14 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows 10 Firefox 32"
+  "build": "OSX Catalina Chrome 81"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
 
 browser_caps:
   -
-    "browser": "firefox"
-    "browser_version": "32.0"
-    "os": "windows"
-    "os_version": "10"
+    "browser": "chrome"
+    "browser_version": "81.0"
+    "os": "osx"
+    "os_version": "catalina"
