@@ -91,22 +91,22 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
 
     before(:each) do
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-        @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
+        @caps["name"] = ENV['name'] || 'no-name'
         enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
         puts "enable_local is #{enable_local.to_s.upcase}"
 
         # Code to start browserstack local before start of test
         if enable_local
-        @bs_local = BrowserStack::Local.new
-        bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
-        @bs_local.start(bs_local_args)
-        @caps["browserstack.local"] = true
-        @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+            @bs_local = BrowserStack::Local.new
+            bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+            @bs_local.start(bs_local_args)
+            @caps["browserstack.local"] = true
+            @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
         end
 
         @driver = Selenium::WebDriver.for(:remote,
-        :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-        :desired_capabilities => @caps)
+            :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+            :desired_capabilities => @caps)
 
         # Hook new victim
         print_info 'Hooking a new victim, waiting a few seconds...'
