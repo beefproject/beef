@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows Chrome"
+  "build": "Windows XP Chrome Latest"
   "name": "BStack Test Run"
   "project": "My Project"
   "browserstack.local": true

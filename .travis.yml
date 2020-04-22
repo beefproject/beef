@@ -10,7 +10,7 @@ branches:
   - master
   - browserstack
 before_script:
-  - RUBY_VERSION=rvm current
+  - RUBY_VERSION=/bin/bash rvm current
   - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
 script:
   # - bundle exec rake

@@ -1,14 +1,13 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows Chrome"
-  "name": "BStack Test Run"
-  "project": "My Project"
+  "build": "Windows 10 Chrome 51"
+  "project": "BeEF"
   "browserstack.local": true
 
 browser_caps:
   -
     "browser": "chrome"
-    "browser_version": "43.0"
+    "browser_version": "51.0"
     "os": "windows"
-    "os_version": "xp"
+    "os_version": "10"
