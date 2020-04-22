@@ -94,7 +94,7 @@ RSpec.describe 'AutoRunEngine test' do
 			@victim = @driver.navigate.to "#{VICTIM_URL}"
 
 			# Give time for browser hook to occur
-			sleep 4
+			sleep 2.5
 
 			# Identify Session ID of victim generated above
 			@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
