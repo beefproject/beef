@@ -16,6 +16,7 @@ require 'rest-client'
 require 'yaml'
 require 'selenium-webdriver'
 require 'browserstack/local'
+require 'byebug'
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
@@ -82,6 +83,7 @@ RSpec.configure do |config|
       @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
     end
 
+    puts @caps['browserstack.localIdentifier']
     @driver = Selenium::WebDriver.for(:remote,
       :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
       :desired_capabilities => @caps)
