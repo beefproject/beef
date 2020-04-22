@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows 10 Chrome Latest"
+  "build": "Windows 10 Chrome 37"
   "name": "BStack Test Run"
   "project": "My Project"
   "browserstack.local": true
@@ -9,5 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "chrome"
+    "browser_version": "37.0"
     "os": "windows"
     "os_version": "10"

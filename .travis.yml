@@ -10,9 +10,8 @@ branches:
   - master
   - browserstack
 before_script:
-  - cat /home/travis/.rvm/gems/ruby-2.5.3/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
-  - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/ruby-2.5.3/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
-  - cat /home/travis/.rvm/gems/ruby-2.5.3/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
+  - RUBY_VERSION=rvm current
+  - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
 script:
   # - bundle exec rake
   - CONFIG_NAME='windows/windows_chrome_latest.config.yml' bundle exec rspec --tag run_on_browserstack
