@@ -10,11 +10,12 @@ branches:
   - master
   - browserstack
 before_script:
-  # - sed -i 's/system\((.*?)\)/''/g' INPUTFILE
+  - sed -i 's/system\((.*?)\)/''/g' /home/travis/.rvm/gems/ruby-2.5.3/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
   - gem environment
 script:
   # - bundle exec rake
-  - bundle exec rspec --tag run_on_browserstack
+  - CONFIG_NAME='windows/windows_chrome_latest.config.yml' bundle exec rspec --tag run_on_browserstack
+  - CONFIG_NAME='osx/osx_safari_latest.config.yml' bundle exec rspec --tag run_on_browserstack
 addons:
   apt:
     packages:
