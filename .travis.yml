@@ -9,6 +9,9 @@ branches:
   only:
   - master
   - browserstack
+before_script:
+  # - sed -i 's/system\((.*?)\)/''/g' INPUTFILE
+  - gem environment
 script:
   # - bundle exec rake
   - bundle exec rspec --tag run_on_browserstack
