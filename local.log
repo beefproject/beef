@@ -1982,3 +1982,27 @@ You can now access your local server(s) in our remote browser.
 Press Ctrl-C to exit
 
 
+       
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+       
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+

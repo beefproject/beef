@@ -68,6 +68,7 @@ RSpec.configure do |config|
       raise ActiveRecord::Rollback
     end
   end
+
   # BrowserStack
   config.around(:example, :run_on_browserstack => true) do |example|
     @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
@@ -77,7 +78,7 @@ RSpec.configure do |config|
     # Code to start browserstack local before start of test
     if enable_local
       @bs_local = BrowserStack::Local.new
-      bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+      bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true, "force" => true }
       @bs_local.start(bs_local_args)
       @caps["browserstack.local"] = true
       @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
@@ -92,12 +93,8 @@ RSpec.configure do |config|
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-		sleep 2
-
-		# Identify Session ID of victim generated above
-		@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-		@session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
-
+    sleep 2
+    
     begin
       example.run
     ensure 
