@@ -86,17 +86,6 @@ RSpec.describe 'AutoRunEngine test' do
 		# Authenticate to REST API & pull the token from the response
 		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
 		@token = JSON.parse(@response)['token']
-
-		# Hook new victim
-		print_info 'Hooking a new victim, waiting a few seconds...'
-		@victim = @driver.navigate.to "#{VICTIM_URL}"
-
-		# Give time for browser hook to occur
-		sleep 2
-
-		# Identify Session ID of victim generated above
-		@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-		@session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
 	end
 
 	after(:all) do

@@ -87,6 +87,17 @@ RSpec.configure do |config|
       :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
       :desired_capabilities => @caps)
 
+		# Hook new victim
+		print_info 'Hooking a new victim, waiting a few seconds...'
+		@driver.navigate.to "#{VICTIM_URL}"
+
+		# Give time for browser hook to occur
+		sleep 2
+
+		# Identify Session ID of victim generated above
+		@hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+		@session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
+
     begin
       example.run
     ensure 
