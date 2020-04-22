@@ -54,7 +54,16 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
    sleep 1
   end
 
-  it 'can hook a browser with websockets' do
+  after(:all) do
+    # cleanup: delete test browser entries and session
+    # kill the server
+    @config.set('beef.http.websocket.enable', false)
+    Process.kill("KILL", @pid)
+    Process.kill("KILL", @pids)
+    puts "waiting for server to die.."
+  end
+
+  xit 'can hook a browser with websockets' do
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
 
@@ -78,14 +87,4 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
     #cannot do it in the after:all
     https.where(:hooked_browser_id => hb_session).delete_all
   end
-
-  after(:all) do
-    # cleanup: delete test browser entries and session
-    # kill the server
-    @config.set('beef.http.websocket.enable', false)
-    Process.kill("KILL", @pid)
-    Process.kill("KILL", @pids)
-    puts "waiting for server to die.."
-  end
-
 end

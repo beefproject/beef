@@ -87,11 +87,11 @@ RSpec.describe 'Browser details handler', :run_on_browserstack => true do
 		Process.kill("KILL",@pids)
 	end
 
-	it 'can successfully hook a browser', :run_on_browserstack => true do
+	xit 'can successfully hook a browser' do
     expect(JSON.parse(@hooks)['hooked-browsers']['online']).not_to be_empty
 	end
 
-	it 'browser details handler working', :run_on_browserstack => true do
+	xit 'browser details handler working' do
 		print_info "Getting browser details"
 		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
 		details = JSON.parse(response.body)

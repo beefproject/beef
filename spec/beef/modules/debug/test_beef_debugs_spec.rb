@@ -89,10 +89,47 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
                                     end
     end
 
+    before(:each) do
+        @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+        @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
+        enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+        puts "enable_local is #{enable_local.to_s.upcase}"
+
+        # Code to start browserstack local before start of test
+        if enable_local
+        @bs_local = BrowserStack::Local.new
+        bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+        @bs_local.start(bs_local_args)
+        @caps["browserstack.local"] = true
+        @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+        end
+
+        @driver = Selenium::WebDriver.for(:remote,
+        :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+        :desired_capabilities => @caps)
+
+        # Hook new victim
+        print_info 'Hooking a new victim, waiting a few seconds...'
+        @driver.navigate.to "#{VICTIM_URL}"
+
+        # Give time for browser hook to occur
+        sleep 2
+
+        @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+        @session = @hooks['hooked-browsers']['online']['0']['session']
+    end
+
     after(:all) do
         print_info "Shutting down server"
         Process.kill("KILL",@pid)
         Process.kill("KILL",@pids)
+    end
+
+    after(:each) do
+        @driver.quit
+
+        # Code to stop browserstack local after end of test
+        @bs_local.stop if enable_local
     end
 
     it 'The Test_beef.debug() command module successfully executes' do

@@ -94,7 +94,7 @@ RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
 		Process.kill("KILL",@pids)
  	end
 
-	it 'AutoRunEngine is working' do
+	xit 'AutoRunEngine is working' do
 		response = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
 		result_data = JSON.parse(response)
 
