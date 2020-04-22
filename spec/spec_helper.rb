@@ -69,7 +69,7 @@ RSpec.configure do |config|
     end
   end
   # BrowserStack
-  config.around(:example, :run_on_browserstack => true) do |example|
+  config.around(:run_on_browserstack => true) do |test|
     @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
     @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
     enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
@@ -83,13 +83,12 @@ RSpec.configure do |config|
       @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
     end
 
-    puts @caps['browserstack.localIdentifier']
     @driver = Selenium::WebDriver.for(:remote,
       :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
       :desired_capabilities => @caps)
 
     begin
-      example.run
+      test.run
     ensure 
       @driver.quit
       # Code to stop browserstack local after end of test
