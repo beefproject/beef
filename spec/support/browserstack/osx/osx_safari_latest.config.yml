@@ -1,10 +1,10 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Safari"
-  "name": "BStack Test Run"
-  "project": "My Project"
+  "build": "OSX Safari Latest"
+  "project": "BeEF"
   "browserstack.local": true
+  "browserstack.video": false
 
 browser_caps:
   -
