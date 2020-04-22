@@ -9,7 +9,7 @@ require 'json'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
 
-RSpec.describe 'BeEF Debug Command Modules:' do
+RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
 
     before(:all) do
         # Grab config and set creds in variables for ease of access
@@ -87,17 +87,6 @@ RSpec.describe 'BeEF Debug Command Modules:' do
                                     .map do |debug_mod|
                                         @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
                                     end
-
-        # # Hook new victim
-		# print_info 'Hooking a new victim, waiting a few seconds...'
-        # @victim = @driver.navigate.to "#{VICTIM_URL}"
-
-        # # Give time for browser hook to occur
-        # sleep 2
-
-        # # Identify Session ID of victim generated above
-        # @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-        # @session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
     end
 
     after(:all) do
@@ -106,7 +95,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         Process.kill("KILL",@pids)
     end
 
-    it 'The Test_beef.debug() command module successfully executes', :run_on_browserstack => true do
+    it 'The Test_beef.debug() command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_beef_debug']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}", 
                                    { "msg": "test" }.to_json, 
@@ -115,7 +104,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it 'The Return ASCII Characters command module successfully executes', :run_on_browserstack => true do
+    it 'The Return ASCII Characters command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_return_ascii_chars']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
@@ -124,7 +113,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"    
     end
 
-    it 'The Return Image command module successfully executes', :run_on_browserstack => true do
+    it 'The Return Image command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_return_image']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
@@ -134,7 +123,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
     end
 
 
-    it 'The Test HTTP Redirect command module successfully executes', :run_on_browserstack => true do
+    it 'The Test HTTP Redirect command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_http_redirect']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { }.to_json,
@@ -143,7 +132,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it 'The Test Returning Results/Long String command module successfully executes', :run_on_browserstack => true do
+    it 'The Test Returning Results/Long String command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_return_long_string']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "repeat": 20,
@@ -153,7 +142,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it 'The Test Network Request command module successfully executes', :run_on_browserstack => true do
+    it 'The Test Network Request command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_network_request']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "scheme": "http",
@@ -170,7 +159,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it 'The Test DNS Tunnel command module successfully executes', :run_on_browserstack => true do
+    it 'The Test DNS Tunnel command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_dns_tunnel_client']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "domain": "example.com",
@@ -180,7 +169,7 @@ RSpec.describe 'BeEF Debug Command Modules:' do
         expect(result_data['success']).to eq "true"
     end
 
-    it 'The Test CORS Request command module successfully executes', :run_on_browserstack => true do
+    it 'The Test CORS Request command module successfully executes' do
         cmd_mod_id = @debug_mod_names_ids['Test_cors_request']
         response = RestClient.post "#{RESTAPI_MODULES}/#{@session}/#{cmd_mod_id}?token=#{@token}",
                                 { "method": "GET",

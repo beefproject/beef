@@ -19,7 +19,7 @@ RSpec.describe 'BeEF Extension Requester' do
   end
 
   # default skipped because browser hooking not working properly in travis-CI
-  xit 'requester works', :run_on_browserstack => true do
+  xit 'requester works' do
     # start beef server
     
     @config = BeEF::Core::Configuration.instance
@@ -63,13 +63,6 @@ RSpec.describe 'BeEF Extension Requester' do
     response = api.auth()
     @token = response[:token]
     puts "authenticated. api token: #{@token}"
-
-		# # Hook new victim
-		# print_info 'Hooking a new victim, waiting a few seconds...'
-		# victim = @driver.navigate.to "#{VICTIM_URL}"
-
-		# # Give time for browser hook to occur
-		# sleep 2
 
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
     puts "hooks response: #{response}"

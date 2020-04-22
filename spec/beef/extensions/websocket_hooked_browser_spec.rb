@@ -3,7 +3,7 @@ require 'rest-client'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
-RSpec.describe 'BeEF WebSockets enabled' do
+RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
@@ -54,7 +54,7 @@ RSpec.describe 'BeEF WebSockets enabled' do
    sleep 1
   end
 
-  it 'can hook a browser with websockets', :run_on_browserstack => true do
+  it 'can hook a browser with websockets' do
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
 
@@ -63,13 +63,6 @@ RSpec.describe 'BeEF WebSockets enabled' do
     api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD)
     response = api.auth()
     @token = response[:token]
-
-		# # Hook new victim
-		# print_info 'Hooking a new victim, waiting a few seconds...'
-		# victim = @driver.navigate.to "#{VICTIM_URL}"
-
-		# # Give time for browser hook to occur
-		# sleep 2
 
     #Uses the response and hooked browser details to get the response
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}

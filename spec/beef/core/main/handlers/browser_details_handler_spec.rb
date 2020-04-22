@@ -9,7 +9,7 @@ require 'json'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
-RSpec.describe 'Browser details handler' do
+RSpec.describe 'Browser details handler', :run_on_browserstack => true do
 	before(:all) do
 		@config = BeEF::Core::Configuration.instance
 		@config.set('beef.credentials.user', "beef")
@@ -79,17 +79,6 @@ RSpec.describe 'Browser details handler' do
 		# Authenticate to REST API & pull the token from the response
 		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
 		@token = JSON.parse(@response)['token']
-
-		# # Hook new victim
-		# print_info 'Hooking a new victim, waiting a few seconds...'
-		# @victim = @driver.navigate.to "#{VICTIM_URL}"
-
-		# # Give time for browser hook to occur
-		# sleep 2
-
-		# # Identify Session ID of victim generated above
-		# @hooks = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-		# @session = JSON.parse(@hooks)['hooked-browsers']['online']['0']['session']
 	end
 
 	after(:all) do

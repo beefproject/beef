@@ -9,7 +9,7 @@ require 'json'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
-RSpec.describe 'AutoRunEngine test' do
+RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
 
 	before(:all) do
 		@config = BeEF::Core::Configuration.instance
@@ -94,7 +94,7 @@ RSpec.describe 'AutoRunEngine test' do
 		Process.kill("KILL",@pids)
  	end
 
-	it 'AutoRunEngine is working', :run_on_browserstack => true do
+	it 'AutoRunEngine is working' do
 		response = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
 		result_data = JSON.parse(response)
 

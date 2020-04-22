@@ -1,14 +1,14 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Catalina Chrome 81"
+  "build": "OSX Snow Leopard Firefox 48 ESR"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
 
 browser_caps:
   -
-    "browser": "chrome"
-    "browser_version": "49.0"
+    "browser": "firefox"
+    "browser_version": "48.0"
     "os": "osx"
     "os_version": "snow leopard"
