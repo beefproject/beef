@@ -13,10 +13,13 @@ before_script:
   - RUBY_VERSION=/bin/bash rvm current
   - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
   - yes | ./update-geoipdb
-script:
-  # - bundle exec rake
-  - CONFIG_FILE='windows/windows_chrome_latest.config.yml' bundle exec rspec --tag run_on_browserstack
-  - CONFIG_FILE='osx/osx_safari_latest.config.yml' bundle exec rspec --tag run_on_browserstack
+jobs:
+  - name: "Standard Test Suite"
+    env: CONFIG_FILE=windows/windows_chrome_latest.config.yaml
+    script: bundle exec rake
+  - name: "OSX Safari Latest"
+    env: CONFIG_FILE=osx/osx_safari_latest_config.yaml
+    script: bundle exec rspec --tag run_on_browserstack
 addons:
   apt:
     packages:
