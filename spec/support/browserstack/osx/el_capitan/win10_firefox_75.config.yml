@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "Windows 10 Firefox 75"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "firefox"
+    "browser_version": "75.0"
+    "os": "windows"
+    "os_version": "10"

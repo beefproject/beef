@@ -71,7 +71,7 @@ RSpec.configure do |config|
   # BrowserStack
   config.around(:run_on_browserstack => true) do |test|
     @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-    @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
+    @caps["name"] = ENV['name'] || test.metadata[:name] || test.metadata[:file_path].split('/').last.split('.').first
     enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
 
     # Code to start browserstack local before start of test
