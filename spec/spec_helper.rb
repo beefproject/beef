@@ -79,6 +79,7 @@ RSpec.configure do |config|
       bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
       @bs_local.start(bs_local_args)
       @caps["browserstack.local"] = true
+      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
     end
 
     @driver = Selenium::WebDriver.for(:remote,
