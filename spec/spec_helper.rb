@@ -15,7 +15,7 @@ require 'curb'
 require 'rest-client'
 require 'yaml'
 require 'selenium-webdriver'
-require 'browserstack-local'
+require 'browserstack/local'
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
