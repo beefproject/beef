@@ -74,6 +74,7 @@ RSpec.configure do |config|
     @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
     @caps["name"] = ENV['name'] || example.metadata[:name] || example.metadata[:file_path].split('/').last.split('.').first
     enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+    puts "enable_local is #{enable_local.to_s.upcase}"
 
     # Code to start browserstack local before start of test
     if enable_local
