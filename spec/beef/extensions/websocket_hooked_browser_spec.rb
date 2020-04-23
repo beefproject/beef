@@ -91,7 +91,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts "waiting for server to die.."
   end
 
-  it 'can hook a browser with websockets' do
+  xit 'can hook a browser with websockets' do
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
     
