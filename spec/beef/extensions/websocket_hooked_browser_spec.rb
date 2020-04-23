@@ -28,7 +28,7 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
      sleep 2
    end
    #generate token for the api to use
-   BeEF::Core::Crypto::api_token
+   @token= BeEF::Core::Crypto::api_token
    # load up DB
    # Connect to DB
    ActiveRecord::Base.logger = nil
@@ -55,8 +55,8 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 
 
 		# Authenticate to REST API & pull the token from the response
-		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
-		@token = JSON.parse(@response)['token']
+		# @response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
+		# @token = JSON.parse(@response)['token']
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
@@ -103,10 +103,6 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
     https = BeEF::Core::Models::Http
 
     ### hook a new victim, use rest API to send request and get the token and victim
-
-    api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD)
-    response = api.auth()
-    @token = response[:token]
 
     #Uses the response and hooked browser details to get the response
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
