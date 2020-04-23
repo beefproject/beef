@@ -7,8 +7,8 @@
 
 require 'rest-client'
 require 'json'
-require_relative '../support/constants'
-require_relative '../support/beef_test'
+require_relative '../../support/constants'
+require_relative '../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
