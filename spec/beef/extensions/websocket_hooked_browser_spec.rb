@@ -76,7 +76,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-    sleep 15
+    sleep 2
 
     puts @driver.current_url
 
@@ -86,9 +86,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   after(:all) do
 		@driver.quit
-
-		# Code to stop browserstack local after end of test
-		# @bs_local.stop if @enable_local
 
     # cleanup: delete test browser entries and session
     # kill the server
