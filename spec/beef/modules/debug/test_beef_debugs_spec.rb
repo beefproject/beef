@@ -80,16 +80,8 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         @response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
         @token = JSON.parse(@response)['token']
 
-        # Grab Command Module IDs as they can differ from machine to machine
-        @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-        @debug_mod_names_ids = {}
-        @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
-                                    .map do |debug_mod|
-                                        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
-                                    end
-
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-        @caps["name"] = ENV['name'] || 'no-name'
+        @caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
         @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
         puts "enable_local is #{@enable_local.to_s.upcase}"
 
@@ -115,6 +107,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
 
         @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
         @session = @hooks['hooked-browsers']['online']['0']['session']
+
+        # Grab Command Module IDs as they can differ from machine to machine
+        @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
+        @debug_mod_names_ids = {}
+        @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
+                                    .map do |debug_mod|
+                                        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
+                                    end
     end
 
     after(:all) do

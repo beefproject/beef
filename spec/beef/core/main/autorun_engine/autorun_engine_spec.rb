@@ -80,25 +80,48 @@ RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
 			http_hook_server.start
 		end
 
-		# Give the server time to start-up
-		sleep 1
+		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+		@caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
+		@enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+		puts "enable_local is #{@enable_local.to_s.upcase}"
 
-		# Authenticate to REST API & pull the token from the response
-		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
-		@token = JSON.parse(@response)['token']
+		# Code to start browserstack local before start of test
+		if @enable_local && 
+				@bs_local = BrowserStack::Local.new
+				bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+				@bs_local.start(bs_local_args)
+				@caps["browserstack.local"] = true
+				@caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+		end
+
+		@driver = Selenium::WebDriver.for(:remote,
+				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+				:desired_capabilities => @caps)
+
+		# Hook new victim
+		print_info 'Hooking a new victim, waiting a few seconds...'
+		@driver.navigate.to "#{VICTIM_URL}"
+
+		# Give time for browser hook to occur
+		sleep 2
+
+		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+		@session = @hooks['hooked-browsers']['online']['0']['session']
 	end
 
 	after(:all) do
+		@driver.quit
+
+		# Code to stop browserstack local after end of test
+		@bs_local.stop if @enable_local
+
 		print_info "Shutting down server"
 		Process.kill("KILL",@pid)
 		Process.kill("KILL",@pids)
  	end
 
 	xit 'AutoRunEngine is working' do
-		response = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-		result_data = JSON.parse(response)
-
-    expect(result_data['hooked-browsers']['online']).not_to be_empty
+    expect(@hooks['hooked-browsers']['online']).not_to be_empty
 	end
  
 end

@@ -17,17 +17,17 @@ RSpec.describe 'BeEF Extension WebSockets' do
     @config.set('beef.http.websocket.secure', true)
   end
 
-  xit 'confirms that a websocket server has been started' do
+  it 'confirms that a websocket server has been started' do
 	  expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
   end
 
-  xit 'confirms that a secure websocket server has been started' do
+  it 'confirms that a secure websocket server has been started' do
     @config.set('beef.http.websocket.secure', true)
     wss = BeEF::Core::Websocket::Websocket.instance
     expect(wss).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
   end
 
-  xit 'confirms that a websocket client can connect to the BeEF Websocket Server' do
+  it 'confirms that a websocket client can connect to the BeEF Websocket Server' do
     sleep(3)
     client = WebSocket::Client::Simple.connect "ws://127.0.0.1:#{@port}"
     sleep(1)
