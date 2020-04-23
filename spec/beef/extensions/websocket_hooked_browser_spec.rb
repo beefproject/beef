@@ -28,7 +28,7 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
      sleep 2
    end
    #generate token for the api to use
-   @token= BeEF::Core::Crypto::api_token
+   @token = BeEF::Core::Crypto::api_token
    # load up DB
    # Connect to DB
    ActiveRecord::Base.logger = nil
@@ -81,7 +81,10 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-		sleep 2
+    sleep 2
+
+    @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+    @session = @hooks['hooked-browsers']['online']
   end
 
   after(:all) do
@@ -101,23 +104,6 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
   end
 
   it 'can hook a browser with websockets' do
-    #prepare for the HTTP model
-    https = BeEF::Core::Models::Http
-
-    ### hook a new victim, use rest API to send request and get the token and victim
-
-    #Uses the response and hooked browser details to get the response
-    response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
-    #test for the response if errors and weirdness there
-    # puts "#{response} from the rest client " 
-    hb_details = JSON.parse(response.body)
-
-    #get the hooked browser details
-    hb_session = hb_details["hooked-browsers"]["online"]["0"]["session"]
-    #show the address of what is being hooked
-    #puts "hooked browser: #{hb_session}"
-    expect(hb_session).not_to be_nil  
-    #cannot do it in the after:all
-    https.where(:hooked_browser_id => hb_session).delete_all
+    expect(@session).not_to be_empty
   end
 end
