@@ -114,7 +114,9 @@ RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
 	end
 
 	after(:all) do
-		# @driver.quit
+    puts @driver
+    puts @driver.class
+		@driver.quit
 
 		# Code to stop browserstack local after end of test
 		# @bs_local.stop if @enable_local
