@@ -10,6 +10,7 @@ require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
 RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
+  ENV['name'] = self.metadata[:file_path].split('/').last.split('.').first
 
 	before(:all) do
 		@config = BeEF::Core::Configuration.instance

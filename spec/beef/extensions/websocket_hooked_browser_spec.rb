@@ -1,9 +1,19 @@
 # encoding: UTF-8
+#
+# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
 require 'rest-client'
+require 'json'
+require_relative '../../../../support/constants'
+require_relative '../../../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
 RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
+  ENV['name'] = self.metadata[:file_path].split('/').last.split('.').first
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
