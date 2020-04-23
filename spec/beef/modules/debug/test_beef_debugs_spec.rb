@@ -10,8 +10,6 @@ require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
 
 RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
-  ENV['name'] = self.metadata[:file_path].split('/').last.split('.').first
-
     before(:all) do
         # Grab config and set creds in variables for ease of access
         @config = BeEF::Core::Configuration.instance
@@ -82,7 +80,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         # @token = JSON.parse(@response)['token']
 
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-        @caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
+        @caps["name"] = self.class.description || ENV['name'] || 'no-name'
         @caps["browserstack.local"] = true
         @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
         # @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
@@ -119,8 +117,6 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
     end
 
     after(:all) do
-        puts @driver
-        puts @driver.class
         @driver.quit
 
         # Code to stop browserstack local after end of test

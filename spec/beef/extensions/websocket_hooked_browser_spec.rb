@@ -12,8 +12,7 @@ require_relative '../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
-RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
-  ENV['name'] = self.metadata[:file_path].split('/').last.split('.').first
+RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true do
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
@@ -69,7 +68,7 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 		# @token = JSON.parse(@response)['token']
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-		@caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
+		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
     @caps["browserstack.local"] = true
     @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
 		# @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
@@ -91,15 +90,15 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-    sleep 6
+    sleep 10
+
+    puts @driver.current_url
 
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     @session = @hooks['hooked-browsers']['online']
   end
 
   after(:all) do
-    puts @driver
-    puts @driver.class
 		@driver.quit
 
 		# Code to stop browserstack local after end of test
