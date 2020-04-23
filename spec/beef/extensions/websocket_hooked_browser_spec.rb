@@ -62,16 +62,10 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
    # wait for server to start
    sleep 1
 
-
-		# Authenticate to REST API & pull the token from the response
-		# @response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
-		# @token = JSON.parse(@response)['token']
-
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
     @caps["browserstack.local"] = true
     @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
-		@enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
 
 		@driver = Selenium::WebDriver.for(:remote,
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
