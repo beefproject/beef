@@ -114,8 +114,13 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
   end
 
   it 'can hook a browser with websockets' do
+    #prepare for the HTTP model
+    https = BeEF::Core::Models::Http
+
     puts @hooks
     puts @session
     expect(@session).not_to be_empty
+
+    https.where(:hooked_browser_id => @session['0']['session']).delete_all
   end
 end
