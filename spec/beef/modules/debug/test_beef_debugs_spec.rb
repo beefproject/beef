@@ -93,7 +93,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
         @caps["name"] = ENV['name'] || 'no-name'
         @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
-        puts "enable_local is #{enable_local.to_s.upcase}"
+        puts "enable_local is #{@enable_local.to_s.upcase}"
 
         # Code to start browserstack local before start of test
         if @enable_local
