@@ -2006,3 +2006,11 @@ To test HTML files, run:
 Example:
 ./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
 
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
