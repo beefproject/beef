@@ -74,14 +74,18 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		# Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		@driver.navigate.to "#{VICTIM_URL}"
+    puts @driver.current_url
 
 		# Give time for browser hook to occur
     sleep 2
 
-    puts @driver.current_url
-
-    @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-    @session = @hooks['hooked-browsers']['online']
+    # Grab Command Module IDs as they can differ from machine to machine
+    @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
+    @debug_mod_names_ids = {}
+    @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
+                                .map do |debug_mod|
+                                    @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
+                                end
   end
 
   after(:all) do
@@ -99,8 +103,9 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     #prepare for the HTTP model
     https = BeEF::Core::Models::Http
 
-    puts @hooks
-    puts @session
+    @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+    @session = @hooks['hooked-browsers']['online']
+    
     expect(@session).not_to be_empty
 
     https.where(:hooked_browser_id => @session['0']['session']).delete_all
