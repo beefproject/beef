@@ -104,6 +104,8 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
   end
 
   it 'can hook a browser with websockets' do
+    puts @hooks
+    puts @session
     expect(@session).not_to be_empty
   end
 end
