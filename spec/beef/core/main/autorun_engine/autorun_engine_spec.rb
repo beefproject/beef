@@ -126,7 +126,7 @@ RSpec.describe 'AutoRunEngine test', :run_on_browserstack => true do
 		Process.kill("KILL",@pids)
  	end
 
-	xit 'AutoRunEngine is working' do
+	it 'AutoRunEngine is working' do
     expect(@hooks['hooked-browsers']['online']).not_to be_empty
 	end
  
