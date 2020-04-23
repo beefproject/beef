@@ -92,11 +92,11 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
     before(:each) do
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
         @caps["name"] = ENV['name'] || 'no-name'
-        enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+        @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
         puts "enable_local is #{enable_local.to_s.upcase}"
 
         # Code to start browserstack local before start of test
-        if enable_local
+        if @enable_local
             @bs_local = BrowserStack::Local.new
             bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
             @bs_local.start(bs_local_args)
@@ -129,7 +129,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         @driver.quit
 
         # Code to stop browserstack local after end of test
-        @bs_local.stop if enable_local
+        @bs_local.stop if @enable_local
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
