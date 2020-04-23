@@ -81,7 +81,7 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-    sleep 4
+    sleep 6
 
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     @session = @hooks['hooked-browsers']['online']
