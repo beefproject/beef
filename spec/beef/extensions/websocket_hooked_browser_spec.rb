@@ -60,17 +60,17 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = @caps['name'] || ENV['name'] || 'no-name'
-		@enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
-		puts "enable_local is #{@enable_local.to_s.upcase}"
+    @caps["browserstack.local"] = true
+    @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+		# @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
+		# puts "enable_local is #{@enable_local.to_s.upcase}"
 
-		# Code to start browserstack local before start of test
-		if @enable_local && 
-				@bs_local = BrowserStack::Local.new
-				bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
-				@bs_local.start(bs_local_args)
-				@caps["browserstack.local"] = true
-				@caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
-		end
+		# # Code to start browserstack local before start of test
+		# if @enable_local && 
+		# 		@bs_local = BrowserStack::Local.new
+		# 		bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
+		# 		@bs_local.start(bs_local_args)
+		# end
 
 		@driver = Selenium::WebDriver.for(:remote,
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
@@ -88,7 +88,7 @@ RSpec.describe 'BeEF WebSockets enabled', :run_on_browserstack => true do
 		# @driver.quit
 
 		# Code to stop browserstack local after end of test
-		@bs_local.stop if @enable_local
+		# @bs_local.stop if @enable_local
 
     # cleanup: delete test browser entries and session
     # kill the server
