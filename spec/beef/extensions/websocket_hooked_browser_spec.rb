@@ -77,7 +77,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts @driver.current_url
 
 		# Give time for browser hook to occur
-    sleep 2
+    sleep 2.5
   end
 
   after(:all) do
@@ -96,7 +96,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     https = BeEF::Core::Models::Http
     
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-    puts
+    puts @debug_mod_ids['0']
 
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     @session = @hooks['hooked-browsers']['online']
