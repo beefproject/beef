@@ -94,16 +94,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         puts "enable_local is #{@enable_local.to_s.upcase}"
 
         # Code to start browserstack local before start of test
-        if @enable_local
+        if @enable_local && 
             @bs_local = BrowserStack::Local.new
             bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
             @bs_local.start(bs_local_args)
             @caps["browserstack.local"] = true
             @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
         end
-    end
 
-    before(:each) do
         @driver = Selenium::WebDriver.for(:remote,
             :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
             :desired_capabilities => @caps)
@@ -120,16 +118,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
     end
 
     after(:all) do
-        print_info "Shutting down server"
-        Process.kill("KILL",@pid)
-        Process.kill("KILL",@pids)
-    end
-
-    after(:each) do
         @driver.quit
 
         # Code to stop browserstack local after end of test
         @bs_local.stop if @enable_local
+
+        print_info "Shutting down server"
+        Process.kill("KILL",@pid)
+        Process.kill("KILL",@pids)
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
