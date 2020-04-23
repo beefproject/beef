@@ -87,9 +87,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
                                     .map do |debug_mod|
                                         @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[0]
                                     end
-    end
 
-    before(:each) do
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
         @caps["name"] = ENV['name'] || 'no-name'
         @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
@@ -103,7 +101,9 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
             @caps["browserstack.local"] = true
             @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
         end
+    end
 
+    before(:each) do
         @driver = Selenium::WebDriver.for(:remote,
             :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
             :desired_capabilities => @caps)
