@@ -71,15 +71,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
     @caps["browserstack.local"] = true
     @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
-		# @enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
-		# puts "enable_local is #{@enable_local.to_s.upcase}"
-
-		# # Code to start browserstack local before start of test
-		# if @enable_local && 
-		# 		@bs_local = BrowserStack::Local.new
-		# 		bs_local_args = { "key" => CONFIG['key'], "forcelocal" => true }
-		# 		@bs_local.start(bs_local_args)
-		# end
+		@enable_local = @caps["browserstack.local"] && @caps["browserstack.local"].to_s == "true"
 
 		@driver = Selenium::WebDriver.for(:remote,
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
@@ -90,7 +82,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-    sleep 10
+    sleep 15
 
     puts @driver.current_url
 
