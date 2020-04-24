@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "OSX Snow Leopard Firefox 6"
+  "build": "OSX Snow Leopard Firefox 7"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "firefox"
-    "browser_version": "6.0"
+    "browser_version": "7.0"
     "os": "osx"
     "os_version": "snow leopard"
