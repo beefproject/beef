@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows 7 Chrome 14"
+  "build": "OSX Catalina Chrome 41"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "chrome"
-    "browser_version": "14.0"
-    "os": "windows"
-    "os_version": "7"
+    "browser_version": "41.0"
+    "os": "osx"
+    "os_version": "catalina"
