@@ -28,7 +28,7 @@ env:
   # - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_14.config.yml
   # - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_35.config.yml
   # - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_49.config.yml
-  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_7.config.yml
+  # - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_7.config.yml
   # - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_38esr.config.yml
   # - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_42.config.yml
   # - CONFIG_FILE=osx/snowleopard/snowleopard_safari_5-1.config.yml
@@ -49,7 +49,7 @@ env:
   # - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
   # - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
   # - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
-  - CONFIG_FILE=windows/xp/xp_firefox_7.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_8.config.yml
   # - CONFIG_FILE=windows/xp/xp_firefox_45esr.config.yml
   # - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
   # - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
