@@ -34,7 +34,6 @@ env:
   - CONFIG_FILE=osx/snowleopard/snowleopard_safari_5-1.config.yml
   - CONFIG_FILE=windows/win10/win10_chrome_37.config.yml
   - CONFIG_FILE=windows/win10/win10_chrome_59.config.yml
-  - CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
