@@ -2495,6 +2495,7 @@ beef.browser = {
     type: function () {
 
         return {
+            E: this.isEdge(), // Edge any version
             C5: this.isC5(), // Chrome 5
             C6: this.isC6(), // Chrome 6
             C7: this.isC7(), // Chrome 7
