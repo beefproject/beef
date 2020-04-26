@@ -127,7 +127,7 @@ beef.browser = {
      * @example: beef.browser.isEdge()
      */
     isEdge: function () {
-        return !beef.browser.isIE() && !!window.StyleMedia && (window.navigator.userAgent.match(/Edg\/\d+\.\d/) || window.navigator.userAgent.match(/Edge\/\d+\.\d/));
+        return !beef.browser.isIE() && !!window.styleMedia && (/Edg\/\d+\.\d/.test(window.navigator.userAgent) || /Edge\/\d+\.\d/.test(window.navigator.userAgent));
     },
 
     /**

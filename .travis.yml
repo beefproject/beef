@@ -19,7 +19,7 @@ env:
 #   - CONFIG_FILE=osx/catalina/catalina_firefox_11.config.yml
 #   - CONFIG_FILE=osx/catalina/catalina_firefox_68esr.config.yml
 #   - CONFIG_FILE=osx/catalina/catalina_firefox_75.config.yml
-  - CONFIG_FILE=osx/catalina/catalina_safari_13.config.yml
+#   - CONFIG_FILE=osx/catalina/catalina_safari_13.config.yml
 #   - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_14.config.yml
 #   - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_81.config.yml
 #   - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_6.config.yml
@@ -37,7 +37,7 @@ env:
 #   - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
 #   - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
 #   - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
-  # - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
+  - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
 #   - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
 #   - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
 #   - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
@@ -48,8 +48,8 @@ env:
 #   - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
 #   - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
 #   - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
-  - CONFIG_FILE=windows/xp/xp_firefox_10.config.yml
-  - CONFIG_FILE=windows/xp/xp_firefox_25.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_11.config.yml
+#   - CONFIG_FILE=windows/xp/xp_firefox_25.config.yml
 #   - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
 #   - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
 # jobs:
