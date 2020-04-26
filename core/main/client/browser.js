@@ -127,7 +127,7 @@ beef.browser = {
      * @example: beef.browser.isEdge()
      */
     isEdge: function () {
-        return !beef.browser.isIE() && !!window.StyleMedia;
+        return !beef.browser.isIE() && !!window.StyleMedia && (window.navigator.userAgent.match(/Edg\/\d+\.\d/) || window.navigator.userAgent.match(/Edge\/\d+\.\d/));
     },
 
     /**
@@ -2495,6 +2495,7 @@ beef.browser = {
     type: function () {
 
         return {
+            E: this.isEdge(), // Edge any version
             C5: this.isC5(), // Chrome 5
             C6: this.isC6(), // Chrome 6
             C7: this.isC7(), // Chrome 7
