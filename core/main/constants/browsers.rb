@@ -29,7 +29,7 @@ module Constants
     FRIENDLY_FF_NAME  = 'Firefox'
     FRIENDLY_M_NAME   = 'Mozilla'
     FRIENDLY_IE_NAME  = 'Internet Explorer'
-    FRIENDLY_E_NAME   = 'Microsoft Edge'
+    FRIENDLY_E_NAME   = 'MSEdge'
     FRIENDLY_S_NAME   = 'Safari'
     FRIENDLY_EP_NAME  = 'Epiphany'
     FRIENDLY_K_NAME   = 'Konqueror'
