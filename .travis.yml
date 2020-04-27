@@ -37,7 +37,7 @@ env:
 #   - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
 #   - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
 #   - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
-  - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
+#   - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
 #   - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
 #   - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
 #   - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
