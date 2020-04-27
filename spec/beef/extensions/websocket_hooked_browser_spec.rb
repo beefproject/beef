@@ -16,6 +16,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
+    puts
     @cert_key = @config.get('beef.http.https.key')
     @cert = @config.get('beef.http.https.cert')
     @port = @config.get('beef.http.websocket.port')
@@ -95,13 +96,15 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     #prepare for the HTTP model
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
-    
+    puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
     puts @debug_mod_ids
 
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+    puts @hooks
+    puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
-
+    puts @session
     expect(@session).not_to be_empty
 
     https.where(:hooked_browser_id => @session['0']['session']).delete_all
