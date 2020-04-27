@@ -72,7 +72,10 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		# Spawn HTTP Server
 		print_info "Starting HTTP Hook Server"
 		http_hook_server = BeEF::Core::Server.instance
-		http_hook_server.prepare
+    http_hook_server.prepare
+ 		# Generate a token for the server to respond with
+		@token = BeEF::Core::Crypto::api_token
+
     @pids = fork do
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
     end
