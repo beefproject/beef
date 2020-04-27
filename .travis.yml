@@ -37,7 +37,7 @@ env:
   - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
- - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
+  - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
   - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
   - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
   - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
@@ -60,25 +60,25 @@ env:
       script: bundle exec rake
       fast_finish: true
   - name: "Full Test Suite 2.6.0"
-       rvm: 2.6.0
-       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-       script: bundle exec rake
-       fast_finish: true
+      rvm: 2.6.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rake
+      fast_finish: true
   - name: "Full Test Suite 2.6.3"
-       rvm: 2.6.3
-       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-       script: bundle exec rake
-       fast_finish: true
+      rvm: 2.6.3
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rake
+      fast_finish: true
   - name: "Full Test Suite 2.6.5"
-       rvm: 2.6.5
-       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-       script: bundle exec rake
-       fast_finish: true
+      rvm: 2.6.5
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rake
+      fast_finish: true
   - name: "Full Test Suite 2.7.0"
-       rvm: 2.7.0
-       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-       script: bundle exec rake
-       fast_finish: true
+      rvm: 2.7.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rake
+      fast_finish: true
 script:
   - bundle exec rspec --tag run_on_browserstack
 addons:
