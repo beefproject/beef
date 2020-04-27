@@ -51,6 +51,16 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
      puts "migrating db"
      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
    end
+   http_hook_server = BeEF::Core::Server.instance
+   http_hook_server.prepare
+   @pids = fork do
+    BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+   end
+   @pid = fork do
+    http_hook_server.start
+   end
+   # wait for server to start
+   sleep 1
 
   end
 
@@ -67,16 +77,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   it 'can hook a browser with websockets' do
     #start the hook server instance, for it out to track the pids for graceful closure
-    http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
-    @pids = fork do
-     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-    end
-    @pid = fork do
-     http_hook_server.start
-    end
-    # wait for server to start
-    sleep 1
+    
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
@@ -100,14 +101,14 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
     puts @debug_mod_ids
-
+    puts @driver 'driver one'
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     puts @hooks
     puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
     puts @session
     expect(@session).not_to be_empty
-
+    puts @driver 'driver two'
     https.where(:hooked_browser_id => @session['0']['session']).delete_all
   end
 end
