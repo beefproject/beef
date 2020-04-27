@@ -53,7 +53,7 @@ env:
   - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
   - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
 jobs:
-  
+  fast_finish: true
   include:
     - name: "Full Test Suite 2.5.3"
       rvm: 2.5.3
