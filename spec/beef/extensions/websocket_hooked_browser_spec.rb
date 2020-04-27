@@ -16,7 +16,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
-    puts
     @cert_key = @config.get('beef.http.https.key')
     @cert = @config.get('beef.http.https.cert')
     @port = @config.get('beef.http.websocket.port')
@@ -88,11 +87,13 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
 				:desired_capabilities => @caps)
 
-		# Hook new victim
+    # Hook new victim
+    puts @driver
 		print_info 'Hooking a new victim, waiting a few seconds...'
-		@driver.navigate.to "#{VICTIM_URL}"
+    @driver.navigate.to "#{VICTIM_URL}"
+    puts "driver variable below"
     puts @driver.current_url
-
+    puts "driver variable above"
 		# Give time for browser hook to occur
     sleep 2.5
     #prepare for the HTTP model
@@ -101,14 +102,15 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
     puts @debug_mod_ids
-    puts @driver 'driver one'
+
+    puts "driver 1 #@driver"
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     puts @hooks
     puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
     puts @session
     expect(@session).not_to be_empty
-    puts @driver 'driver two'
+    puts "driver two = #@driver"
     https.where(:hooked_browser_id => @session['0']['session']).delete_all
   end
 end

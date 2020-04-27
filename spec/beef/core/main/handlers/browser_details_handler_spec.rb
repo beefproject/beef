@@ -85,10 +85,13 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
 				:desired_capabilities => @caps)
 
+		puts "@driver below"
+		puts @driver 
 		# Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		@driver.navigate.to "#{VICTIM_URL}"
-
+		puts "@driver navigate to victum url below"
+		puts @driver.navigate.to "#{VICTIM_URL}"
 		# Give time for browser hook to occur
 		sleep 2.5
 
@@ -112,7 +115,10 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		print_info "Getting browser details"
 		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
 		details = JSON.parse(response.body)
-
+		puts response 
+		puts "details is below"
+		puts details
+		
 		expect(@driver.browser.to_s.downcase).to eq(details['browser.name.friendly'].downcase).or eq('internet_explorer').or eq('msedge')
 	end
 end
