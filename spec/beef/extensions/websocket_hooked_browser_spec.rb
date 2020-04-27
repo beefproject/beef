@@ -91,8 +91,9 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts "waiting for server to die.."
   end
 
-  xit 'can hook a browser with websockets' do
+  it 'can hook a browser with websockets' do
     #prepare for the HTTP model
+    #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
     
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
