@@ -22,44 +22,45 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     @secure_port = @config.get('beef.http.websocket.secure_port')
     @config.set('beef.http.websocket.secure', true)
     @config.set('beef.http.websocket.enable', true)
-   #set config parameters
-   @config.set('beef.credentials.user', "beef")
-   @config.set('beef.credentials.passwd', "beef")
-   @username = @config.get('beef.credentials.user')
-   @password = @config.get('beef.credentials.passwd')
-   #load extensions, best practice is to reload as previous tests can potentially cause issues.
-   print_info "Loading in BeEF::Extensions"
-   BeEF::Extensions.load
-   sleep 2
-   if @config.get('beef.module').nil?
-     puts "loading modules"
-     BeEF::Modules.load
-     sleep 2
-   end
-   #generate token for the api to use
-   @token = BeEF::Core::Crypto::api_token
-   # load up DB
-   # Connect to DB
-   ActiveRecord::Base.logger = nil
-   OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-   OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
+    #set config parameters
+    @config.set('beef.credentials.user', "beef")
+    @config.set('beef.credentials.passwd', "beef")
+    @username = @config.get('beef.credentials.user')
+    @password = @config.get('beef.credentials.passwd')
+    #load extensions, best practice is to reload as previous tests can potentially cause issues.
+    print_info "Loading in BeEF::Extensions"
+    BeEF::Extensions.load
+    sleep 2
+    if @config.get('beef.module').nil?
+      puts "loading modules"
+      BeEF::Modules.load
+      sleep 2
+    end
+
+    # load up DB
+    # Connect to DB
+    ActiveRecord::Base.logger = nil
+    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
    
-   # Migrate (if required)
-   context = ActiveRecord::Migration.new.migration_context
-   if context.needs_migration?
+    # Migrate (if required)
+    context = ActiveRecord::Migration.new.migration_context
+    if context.needs_migration?
      puts "migrating db"
      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-   end
-   http_hook_server = BeEF::Core::Server.instance
-   http_hook_server.prepare
-   @pids = fork do
+    end
+    http_hook_server = BeEF::Core::Server.instance
+    http_hook_server.prepare
+    #generate token for the api to use
+    @token = BeEF::Core::Crypto::api_token
+    @pids = fork do
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-   end
-   @pid = fork do
+    end
+    @pid = fork do
     http_hook_server.start
-   end
-   # wait for server to start
-   sleep 1
+    end
+    # wait for server to start
+    sleep 1
 
   end
 
