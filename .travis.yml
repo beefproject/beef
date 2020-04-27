@@ -52,7 +52,7 @@ env:
   - CONFIG_FILE=windows/xp/xp_firefox_25.config.yml
   - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
   - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
- jobs:
+jobs:
   include:
   - name: "Full Test Suite 2.5.3"
       rvm: 2.5.3
