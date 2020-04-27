@@ -126,8 +126,5 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     expect(@session).not_to be_empty
     puts "driver two " 
     puts @driver
-    https.where(:hooked_browser_id => @session['0']['session']).delete_all
-    puts "driver three = "
-    puts @driver
   end
 end
