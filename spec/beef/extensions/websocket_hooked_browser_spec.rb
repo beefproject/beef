@@ -98,7 +98,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   it 'can hook a browser with websockets' do
     #start the hook server instance, for it out to track the pids for graceful closure
-    
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
@@ -118,14 +117,17 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-    puts "driver 1 #@driver"
+    puts "driver 1"
+    puts @driver
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
     puts @session
     expect(@session).not_to be_empty
-    puts "driver two = #@driver"
+    puts "driver two " 
+    puts @driver
     https.where(:hooked_browser_id => @session['0']['session']).delete_all
-    puts "driver three = #@driver"
+    puts "driver three = "
+    puts @driver
   end
 end
