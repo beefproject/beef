@@ -51,17 +51,32 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
      puts "migrating db"
      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
    end
-   #start the hook server instance, for it out to track the pids for graceful closure
-   http_hook_server = BeEF::Core::Server.instance
-   http_hook_server.prepare
-   @pids = fork do
+
+  end
+
+  after(:all) do
+		@driver.quit
+
+    # cleanup: delete test browser entries and session
+    # kill the server
+    @config.set('beef.http.websocket.enable', false)
+    Process.kill("KILL", @pid)
+    Process.kill("KILL", @pids)
+    puts "waiting for server to die.."
+  end
+
+  it 'can hook a browser with websockets' do
+    #start the hook server instance, for it out to track the pids for graceful closure
+    http_hook_server = BeEF::Core::Server.instance
+    http_hook_server.prepare
+    @pids = fork do
      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-   end
-   @pid = fork do
+    end
+    @pid = fork do
      http_hook_server.start
-   end
-   # wait for server to start
-   sleep 1
+    end
+    # wait for server to start
+    sleep 1
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
@@ -79,20 +94,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
 		# Give time for browser hook to occur
     sleep 2.5
-  end
-
-  after(:all) do
-		@driver.quit
-
-    # cleanup: delete test browser entries and session
-    # kill the server
-    @config.set('beef.http.websocket.enable', false)
-    Process.kill("KILL", @pid)
-    Process.kill("KILL", @pids)
-    puts "waiting for server to die.."
-  end
-
-  it 'can hook a browser with websockets' do
     #prepare for the HTTP model
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
