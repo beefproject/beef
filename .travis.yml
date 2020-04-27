@@ -48,7 +48,7 @@ env:
 #   - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
 #   - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
 #   - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
-  - CONFIG_FILE=windows/xp/xp_firefox_15.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_16.config.yml
 #   - CONFIG_FILE=windows/xp/xp_firefox_25.config.yml
 #   - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
 #   - CONFIG_FILE=windows/xp/xp_ie_7.config.yml

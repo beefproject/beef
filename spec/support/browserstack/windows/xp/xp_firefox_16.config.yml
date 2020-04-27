@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows XP Firefox 15"
+  "build": "Windows XP Firefox 16"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "firefox"
-    "browser_version": "15.0"
+    "browser_version": "16.0"
     "os": "windows"
     "os_version": "xp"
