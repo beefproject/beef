@@ -27,32 +27,52 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     @config.set('beef.credentials.passwd', "beef")
     @username = @config.get('beef.credentials.user')
     @password = @config.get('beef.credentials.passwd')
-    #load extensions, best practice is to reload as previous tests can potentially cause issues.
-    print_info "Loading in BeEF::Extensions"
-    BeEF::Extensions.load
-    sleep 2
-    if @config.get('beef.module').nil?
-      puts "loading modules"
-      BeEF::Modules.load
-      sleep 2
-    end
+    
+    
+		# Load BeEF extensions and modules
+		# Always load Extensions, as previous changes to the config from other tests may affect
+		# whether or not this test passes.
+		print_info "Loading in BeEF::Extensions"
+		BeEF::Extensions.load
+		sleep 2
 
-    # load up DB
-    # Connect to DB
-    ActiveRecord::Base.logger = nil
-    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-    OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
-   
-    # Migrate (if required)
-    context = ActiveRecord::Migration.new.migration_context
-    if context.needs_migration?
-     puts "migrating db"
-     ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-    end
-    http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
-    #generate token for the api to use
-    @token = BeEF::Core::Crypto::api_token
+		# Check if modules already loaded. No need to reload.
+		if @config.get('beef.module').nil?
+			print_info "Loading in BeEF::Modules"
+			BeEF::Modules.load
+
+			sleep 2
+		else
+				print_info "Modules already loaded"
+		end
+
+		# Grab DB file and regenerate if requested
+		print_info "Loading database"
+		db_file = @config.get('beef.database.file')
+
+		if BeEF::Core::Console::CommandLine.parse[:resetdb]
+			print_info 'Resetting the database for BeEF.'
+			File.delete(db_file) if File.exists?(db_file)
+		end
+
+		# Load up DB and migrate if necessary
+		ActiveRecord::Base.logger = nil
+		OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+		OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
+
+		context = ActiveRecord::Migration.new.migration_context
+		if context.needs_migration?
+		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+		end
+
+		sleep 2
+
+		BeEF::Core::Migration.instance.update_db!
+
+		# Spawn HTTP Server
+		print_info "Starting HTTP Hook Server"
+		http_hook_server = BeEF::Core::Server.instance
+		http_hook_server.prepare
     @pids = fork do
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
     end
@@ -65,7 +85,8 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
   end
 
   after(:all) do
-		@driver.quit
+    
+  @driver.quit
 
     # cleanup: delete test browser entries and session
     # kill the server
@@ -89,24 +110,16 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 				:desired_capabilities => @caps)
 
     # Hook new victim
-    puts @driver
 		print_info 'Hooking a new victim, waiting a few seconds...'
     @driver.navigate.to "#{VICTIM_URL}"
-    puts "driver variable below"
-    puts @driver.current_url
-    puts "driver variable above"
 		# Give time for browser hook to occur
     sleep 2.5
     #prepare for the HTTP model
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
-    puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-    puts @debug_mod_ids
-
     puts "driver 1 #@driver"
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-    puts @hooks
     puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
     puts @session
