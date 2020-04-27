@@ -109,7 +109,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
