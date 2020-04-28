@@ -93,7 +93,8 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 		@driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
-		sleep 3.5
+		wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+		wait.until { @driver.execute_script("return !!window.beef.session").equal? true}
 
 		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
 		@session = @hooks['hooked-browsers']['online']['0']['session']
