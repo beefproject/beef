@@ -20,8 +20,9 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		p "This is the /n #@config "
 		@config.set('beef.credentials.user', "beef")
     @config.set('beef.credentials.passwd', "beef")
-#    @config.set('beef.http.websocket.secure', true)
-#    @config.set('beef.http.websocket.enable', true)
+    @config.set('beef.http.websocket.secure', false)
+    @config.set('beef.http.websocket.enable', true)
+    @ws = BeEF::Core::Websocket::Websocket.instance
 		@username = @config.get('beef.credentials.user')
 		p "This is the /n #@username "
 		@password = @config.get('beef.credentials.passwd')
@@ -114,6 +115,21 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		Process.kill("KILL",@pid)
 		Process.kill("KILL",@pids)
 	end
+
+  it 'confirms a websocket server has been started' do
+    p @ws
+    expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
+  
+  end
+
+  it 'confirms a secure websocket server has been started' do
+    @config.set('beef.http.websocket.secure', true)
+    wss = BeEF::Core::Websocket::Websocket.instance
+    p wss
+    expect(wss).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
+  end
+
+
 
 	it 'can successfully hook a browser' do
     expect(@hooks['hooked-browsers']['online']).not_to be_empty
