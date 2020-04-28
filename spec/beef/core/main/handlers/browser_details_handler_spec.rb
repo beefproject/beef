@@ -12,11 +12,13 @@ require_relative '../../../../support/beef_test'
 RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 	before(:all) do
 		@config = BeEF::Core::Configuration.instance
+		puts "This is the /n #@config "
 		@config.set('beef.credentials.user', "beef")
 		@config.set('beef.credentials.passwd', "beef")
 		@username = @config.get('beef.credentials.user')
+		puts "This is the /n #@username "
 		@password = @config.get('beef.credentials.passwd')
-		
+		puts "This is the /n #@password "	
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.

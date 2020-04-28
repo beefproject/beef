@@ -13,60 +13,62 @@ require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
 RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true do
-
   before(:all) do
-    @config = BeEF::Core::Configuration.instance
-    @secure_port = @config.get('beef.http.websocket.secure_port')
-    @config.set('beef.http.websocket.secure', true)
-    @config.set('beef.http.websocket.enable', true)
-    #set config parameters
-    @username = @config.get('beef.credentials.user')
-    @password = @config.get('beef.credentials.passwd')
+      @config = BeEF::Core::Configuration.instance
+      puts "This is the /n #@config "
+      @secure_port = @config.get('beef.http.websocket.secure_port')
+      puts "This is the /n #@secure_port"
+      @config.set('beef.http.websocket.secure', true)
+      @config.set('beef.http.websocket.enable', true)
+      #set config parameters
+      @username = @config.get('beef.credentials.user')
+      puts "This is the /n #@username "
+      @password = @config.get('beef.credentials.passwd')
+      puts "This is the /n #@password "
     
-    
-		# Load BeEF extensions and modules
-		# Always load Extensions, as previous changes to the config from other tests may affect
-		# whether or not this test passes.
-		print_info "Loading in BeEF::Extensions"
-		BeEF::Extensions.load
-		sleep 2
+		  # Load BeEF extensions and modules
+	  	# Always load Extensions, as previous changes to the config from other tests may affect
+		  # whether or not this test passes.
+	  	print_info "Loading in BeEF::Extensions"
+	  	BeEF::Extensions.load
+	  	sleep 2
 
-		# Check if modules already loaded. No need to reload.
-		if @config.get('beef.module').nil?
-			print_info "Loading in BeEF::Modules"
-			BeEF::Modules.load
+		  # Check if modules already loaded. No need to reload.
+	  	if @config.get('beef.module').nil?
+		  	print_info "Loading in BeEF::Modules"
+		  	BeEF::Modules.load
 
-			sleep 2
-		else
-				print_info "Modules already loaded"
-		end
+		  	sleep 2
+		  else
+		  		print_info "Modules already loaded"
+		  end
 
-		# Grab DB file and regenerate if requested
-		print_info "Loading database"
-		db_file = @config.get('beef.database.file')
+		  # Grab DB file and regenerate if requested
+		  print_info "Loading database"
+	  	db_file = @config.get('beef.database.file')
 
-		if BeEF::Core::Console::CommandLine.parse[:resetdb]
-			print_info 'Resetting the database for BeEF.'
-			File.delete(db_file) if File.exists?(db_file)
-		end
+	  	if BeEF::Core::Console::CommandLine.parse[:resetdb]
+		  	print_info 'Resetting the database for BeEF.'
+		  	File.delete(db_file) if File.exists?(db_file)
+		  end
 
-		# Load up DB and migrate if necessary
-		ActiveRecord::Base.logger = nil
-		OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-		OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
+	  	# Load up DB and migrate if necessary
+	  	ActiveRecord::Base.logger = nil
+	  	OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+		  OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
 
-		context = ActiveRecord::Migration.new.migration_context
-		if context.needs_migration?
-		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-		end
+		  context = ActiveRecord::Migration.new.migration_context
+	  	if context.needs_migration?
+		    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+	  	end
 
-		sleep 2
+	  	sleep 2
 
-		BeEF::Core::Migration.instance.update_db!
+		  BeEF::Core::Migration.instance.update_db!
 
-		# Spawn HTTP Server
-		print_info "Starting HTTP Hook Server"
-		http_hook_server = BeEF::Core::Server.instance
+	  	# Spawn HTTP Server
+	  	print_info "Starting HTTP Hook Server"
+		  http_hook_server = BeEF::Core::Server.instance
     http_hook_server.prepare
     
     		# Generate a token for the server to respond with
