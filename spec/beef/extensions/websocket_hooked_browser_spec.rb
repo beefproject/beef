@@ -77,7 +77,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts @driver.current_url
 
 		# Give time for browser hook to occur
-    sleep 3
+    sleep 3.5
   end
 
   after(:all) do
