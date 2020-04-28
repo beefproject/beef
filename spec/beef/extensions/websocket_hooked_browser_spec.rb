@@ -79,22 +79,8 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     http_hook_server.start
     end
     # wait for server to start
-    sleep 1
+    sleep 2
 
-  end
-
-  after(:all) do
-    puts @driver 
-  #  @driver.quit
-    # cleanup: delete test browser entries and session
-    # kill the server
-    @config.set('beef.http.websocket.enable', false)
-    Process.kill("KILL", @pid)
-    Process.kill("KILL", @pids)
-    puts "waiting for server to die.."
-  end
-
-  it 'can hook a browser with websockets' do
     #start the hook server instance, for it out to track the pids for graceful closure
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
@@ -111,8 +97,25 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		# Give time for browser hook to occur
     sleep 2.5
     #prepare for the HTTP model
+
+
+  end
+
+  after(:all) do
+    puts @driver 
+  #  @driver.quit
+    # cleanup: delete test browser entries and session
+    # kill the server
+    @config.set('beef.http.websocket.enable', false)
+    Process.kill("KILL", @pid)
+    Process.kill("KILL", @pids)
+    puts "waiting for server to die.."
+  end
+
+  it 'can hook a browser with websockets' do
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
+    puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
     @session = @hooks['hooked-browsers']['online']
