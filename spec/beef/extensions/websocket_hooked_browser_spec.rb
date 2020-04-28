@@ -15,16 +15,16 @@ require 'websocket-client-simple'
 RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true do
   before(:all) do
       @config = BeEF::Core::Configuration.instance
-      puts "This is the /n #@config "
+      p "This is the /n #@config "
       @secure_port = @config.get('beef.http.websocket.secure_port')
-      puts "This is the /n #@secure_port"
+      p "This is the /n #@secure_port"
       @config.set('beef.http.websocket.secure', true)
       @config.set('beef.http.websocket.enable', true)
       #set config parameters
       @username = @config.get('beef.credentials.user')
-      puts "This is the /n #@username "
+      p "This is the /n #@username "
       @password = @config.get('beef.credentials.passwd')
-      puts "This is the /n #@password "
+      p "This is the /n #@password "
     
 		  # Load BeEF extensions and modules
 	  	# Always load Extensions, as previous changes to the config from other tests may affect
@@ -36,12 +36,13 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		  # Check if modules already loaded. No need to reload.
 	  	if @config.get('beef.module').nil?
 		  	print_info "Loading in BeEF::Modules"
-		  	BeEF::Modules.load
+	  		BeEF::Modules.load
+        sleep 2
+        p BeEF::Modules.load
 
-		  	sleep 2
-		  else
-		  		print_info "Modules already loaded"
-		  end
+	  	else
+	  			print_info "Modules already loaded"
+	  	end
 
 		  # Grab DB file and regenerate if requested
 		  print_info "Loading database"
