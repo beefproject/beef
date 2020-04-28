@@ -120,6 +120,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     puts "this is th https session that gets deleted"
     puts https.where(:hooked_browser_id => @session['0']['session'])
     expect(@session).not_to be_empty
-    https.where(:hooked_browser_id => @session['0']['session']).delete_all
+    #https.where(:hooked_browser_id => @session['0']['session']).delete_all
   end
 end
