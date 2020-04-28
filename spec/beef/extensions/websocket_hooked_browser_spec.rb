@@ -22,7 +22,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
     @config.set('beef.credentials.passwd', "beef")
     @config.set('beef.http.websocket.secure', false)
     @config.set('beef.http.websocket.enable', true)
-    @ws = BeEF::Core::Websocket::Websocket.instance
+#    @ws = BeEF::Core::Websocket::Websocket.instance
 		@username = @config.get('beef.credentials.user')
 		p "This is the /n #@username "
 		@password = @config.get('beef.credentials.passwd')
