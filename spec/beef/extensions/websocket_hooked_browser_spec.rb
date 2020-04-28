@@ -103,7 +103,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
       #prepare for the HTTP model
       @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
       p @hooks
-      @session = @hooks['hooked-browsers']['online']
+      @session = @hooks['hooked-browsers']
       p @session
 
   end
