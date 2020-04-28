@@ -17,16 +17,13 @@ require 'websocket-client-simple'
 RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true do
 	before(:all) do
 		@config = BeEF::Core::Configuration.instance
-		p "This is the /n #@config "
 		@config.set('beef.credentials.user', "beef")
     @config.set('beef.credentials.passwd', "beef")
     @config.set('beef.http.websocket.secure', false)
     @config.set('beef.http.websocket.enable', true)
-#    @ws = BeEF::Core::Websocket::Websocket.instance
+    @ws = BeEF::Core::Websocket::Websocket.instance
 		@username = @config.get('beef.credentials.user')
-		p "This is the /n #@username "
-		@password = @config.get('beef.credentials.passwd')
-		p "This is the /n #@password "	
+		@password = @config.get('beef.credentials.passwd')	
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.
@@ -42,39 +39,30 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 			p BeEF::Modules.load
 		else
 				print_info "Modules already loaded"
-		end
-
+    end
 		# Grab DB file and regenerate if requested
 		print_info "Loading database"
 		db_file = @config.get('beef.database.file')
-    p db_file
 		if BeEF::Core::Console::CommandLine.parse[:resetdb]
 			print_info 'Resetting the database for BeEF.'
 			File.delete(db_file) if File.exists?(db_file)
 		end
-
 		# Load up DB and migrate if necessary
 		ActiveRecord::Base.logger = nil
 		OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 		OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
-
 		context = ActiveRecord::Migration.new.migration_context
 		if context.needs_migration?
 		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
 		end
-
 		sleep 2
-
 		BeEF::Core::Migration.instance.update_db!
-
 		# Spawn HTTP Server
 		print_info "Starting HTTP Hook Server"
 		http_hook_server = BeEF::Core::Server.instance
 		http_hook_server.prepare
-
 		# Generate a token for the server to respond with
 		@token = BeEF::Core::Crypto::api_token
-
 		# Initiate server start-up
 		@pids = fork do
 			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
@@ -82,10 +70,8 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		@pid = fork do
 			http_hook_server.start
 		end
-
 		# Give the server time to start-up
 		sleep 1
-
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
 		@caps["browserstack.local"] = true
@@ -94,8 +80,6 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		@driver = Selenium::WebDriver.for(:remote,
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
 				:desired_capabilities => @caps)
-
-
 		# Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		@driver.navigate.to "#{VICTIM_URL}"
@@ -103,9 +87,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		sleep 2.5
 
 		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-		p @hooks
 		@session = @hooks['hooked-browsers']['online']['0']['session']
-		p @session
 	end
 
 	after(:all) do
@@ -117,19 +99,14 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 	end
 
   it 'confirms a websocket server has been started' do
-    p @ws
     expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
-  
   end
 
   it 'confirms a secure websocket server has been started' do
     @config.set('beef.http.websocket.secure', true)
     wss = BeEF::Core::Websocket::Websocket.instance
-    p wss
     expect(wss).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
   end
-
-
 
 	it 'can successfully hook a browser' do
     expect(@hooks['hooked-browsers']['online']).not_to be_empty
