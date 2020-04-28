@@ -114,9 +114,11 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 
 	it 'browser details handler working' do
 		print_info "Getting browser details"
+		
 		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
+		p response
 		details = JSON.parse(response.body)
-
+		p details
 		expect(@driver.browser.to_s.downcase).to eq(details['browser.name.friendly'].downcase).or eq('internet_explorer').or eq('msedge')
 	end
 end

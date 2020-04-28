@@ -20,8 +20,8 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		p "This is the /n #@config "
 		@config.set('beef.credentials.user', "beef")
     @config.set('beef.credentials.passwd', "beef")
-    @config.set('beef.http.websocket.secure', true)
-    @config.set('beef.http.websocket.enable', true)
+#    @config.set('beef.http.websocket.secure', true)
+#    @config.set('beef.http.websocket.enable', true)
 		@username = @config.get('beef.credentials.user')
 		p "This is the /n #@username "
 		@password = @config.get('beef.credentials.passwd')
@@ -46,7 +46,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		# Grab DB file and regenerate if requested
 		print_info "Loading database"
 		db_file = @config.get('beef.database.file')
-
+    p db_file
 		if BeEF::Core::Console::CommandLine.parse[:resetdb]
 			print_info 'Resetting the database for BeEF.'
 			File.delete(db_file) if File.exists?(db_file)
@@ -117,14 +117,5 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 
 	it 'can successfully hook a browser' do
     expect(@hooks['hooked-browsers']['online']).not_to be_empty
-	end
-
-	it 'can hook a browser via websocket' do
-		print_info "Getting browser details"
-		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
-    p response
-    details = JSON.parse(response.body)
-    p details
-		expect(@driver.browser.to_s.downcase).to eq(details['browser.name.friendly'].downcase).or eq('internet_explorer').or eq('msedge')
 	end
 end
