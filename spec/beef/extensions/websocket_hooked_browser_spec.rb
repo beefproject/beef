@@ -85,7 +85,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   after(:all) do
     puts @driver 
-    @driver.quit
+  #  @driver.quit
     # cleanup: delete test browser entries and session
     # kill the server
     @config.set('beef.http.websocket.enable', false)
