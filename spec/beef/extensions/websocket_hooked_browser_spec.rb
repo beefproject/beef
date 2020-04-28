@@ -36,7 +36,6 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 			print_info "Loading in BeEF::Modules"
 			BeEF::Modules.load
 			sleep 2
-			p BeEF::Modules.load
 		else
 				print_info "Modules already loaded"
     end
