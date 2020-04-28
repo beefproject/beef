@@ -16,15 +16,10 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   before(:all) do
     @config = BeEF::Core::Configuration.instance
-    @cert_key = @config.get('beef.http.https.key')
-    @cert = @config.get('beef.http.https.cert')
-    @port = @config.get('beef.http.websocket.port')
     @secure_port = @config.get('beef.http.websocket.secure_port')
     @config.set('beef.http.websocket.secure', true)
     @config.set('beef.http.websocket.enable', true)
     #set config parameters
-    @config.set('beef.credentials.user', "beef")
-    @config.set('beef.credentials.passwd', "beef")
     @username = @config.get('beef.credentials.user')
     @password = @config.get('beef.credentials.passwd')
     
@@ -73,9 +68,10 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 		print_info "Starting HTTP Hook Server"
 		http_hook_server = BeEF::Core::Server.instance
     http_hook_server.prepare
- 		# Generate a token for the server to respond with
-		@token = BeEF::Core::Crypto::api_token
-
+    
+    		# Generate a token for the server to respond with
+    @token = BeEF::Core::Crypto::api_token
+    
     @pids = fork do
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
     end
@@ -89,8 +85,7 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   after(:all) do
     
-   @driver.quit
-
+    @driver.quit
     # cleanup: delete test browser entries and session
     # kill the server
     @config.set('beef.http.websocket.enable', false)
@@ -101,7 +96,6 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
 
   it 'can hook a browser with websockets' do
     #start the hook server instance, for it out to track the pids for graceful closure
-
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'
     @caps["browserstack.local"] = true
@@ -120,14 +114,12 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     #require 'byebug'; byebug
     https = BeEF::Core::Models::Http
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-    puts "driver 1"
-    puts @driver
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-    puts @hooks['hooked-browsers']
     @session = @hooks['hooked-browsers']['online']
     puts @session
+    puts "this is th https session that gets deleted"
+    puts https.where(:hooked_browser_id => @session['0']['session'])
     expect(@session).not_to be_empty
-    puts "driver two " 
-    puts @driver
+    https.where(:hooked_browser_id => @session['0']['session']).delete_all
   end
 end
