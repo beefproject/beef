@@ -95,7 +95,9 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		sleep 2.5
 
 		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+		p @hooks
 		@session = @hooks['hooked-browsers']['online']['0']['session']
+		p @session
 	end
 
 	after(:all) do
