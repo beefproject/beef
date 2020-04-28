@@ -117,7 +117,9 @@ RSpec.describe 'BeEF WebSockets: Browser Hooking', :run_on_browserstack => true 
     https = BeEF::Core::Models::Http
     puts https
     @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
+    puts @debug_mod_ids
     @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+    puts @hooks
     @session = @hooks['hooked-browsers']['online']
     puts @session
     puts "this is th https session that gets deleted"
