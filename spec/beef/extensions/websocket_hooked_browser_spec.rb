@@ -1,3 +1,6 @@
+
+
+
 #
 # Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
@@ -6,8 +9,8 @@
 
 require 'rest-client'
 require 'json'
-require_relative '../../../../support/constants'
-require_relative '../../../../support/beef_test'
+require_relative '../../support/constants'
+require_relative '../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
@@ -116,7 +119,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
     expect(@hooks['hooked-browsers']['online']).not_to be_empty
 	end
 
-	it 'browser details handler working' do
+	it 'can hook a browser via websocket' do
 		print_info "Getting browser details"
 		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
     p response
