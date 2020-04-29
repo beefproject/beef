@@ -89,19 +89,21 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		@driver.navigate.to "#{VICTIM_URL}"
 
-		sleep 20
+		sleep 1
 
 		# Give time for browser hook to occur
 		wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
-		wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
+		sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
 
-		sleep 20
-
-		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-		if @hooks['hooked-browsers']['online'].empty?
-				@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
+		if RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}".code != 200
+			@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
 		else
+			@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+			if @hooks['hooked-browsers']['online'].empty?
 				@session = @hooks['hooked-browsers']['online']['0']['session']
+			else
+				@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
+			end
 		end
 	end
 
