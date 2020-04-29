@@ -63,7 +63,7 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		http_hook_server.prepare
 
 		# Generate a token for the server to respond with
-		BeEF::Core::Crypto::api_token
+		@token = BeEF::Core::Crypto::api_token
 
 		# Initiate server start-up
 		@pids = fork do
@@ -75,9 +75,6 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 
 		# Give the server time to start-up
 		sleep 1
-
-		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
-		@token = JSON.parse(@response)['token']
 
 		@caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
 		@caps["name"] = self.class.description || ENV['name'] || 'no-name'

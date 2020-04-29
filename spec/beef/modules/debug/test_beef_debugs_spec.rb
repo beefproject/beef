@@ -62,7 +62,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         http_hook_server.prepare
 
         # Generate a token for the server to respond with
-        BeEF::Core::Crypto::api_token
+        @token = BeEF::Core::Crypto::api_token
        
         # Initiate server start-up
         @pids = fork do
