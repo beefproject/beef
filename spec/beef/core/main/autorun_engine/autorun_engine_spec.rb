@@ -98,7 +98,7 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 		wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
 		sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
 
-		if RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}".code != 200
+		if RestClient.get("#{RESTAPI_HOOKS}?token=#{@token}").code != 200
 			@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
 		else
 			@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
