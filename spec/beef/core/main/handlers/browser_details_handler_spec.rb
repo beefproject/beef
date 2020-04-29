@@ -15,12 +15,14 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		@config.set('beef.credentials.user', "beef")
 		@config.set('beef.credentials.passwd', "beef")
 		@username = @config.get('beef.credentials.user')
-		@password = @config.get('beef.credentials.passwd')	
+		@password = @config.get('beef.credentials.passwd')
+		
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.
 		print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
+		
 		sleep 2
 
 		# Check if modules already loaded. No need to reload.
@@ -83,7 +85,6 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
 				:desired_capabilities => @caps)
 
-
 		# Hook new victim
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		@driver.navigate.to "#{VICTIM_URL}"
@@ -108,7 +109,6 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 
 	it 'browser details handler working' do
 		print_info "Getting browser details"
-		
 		response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{@token}"
 		details = JSON.parse(response.body)
 		expect(@driver.browser.to_s.downcase).to eq(details['browser.name.friendly'].downcase).or eq('internet_explorer').or eq('msedge')
