@@ -95,7 +95,6 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 		# Give time for browser hook to occur
 		wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
 		wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
-		puts @driver.execute_script("return window.beef.session.get_hook_session_id()")
 
 		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
 		if @hooks['hooked-browsers']['online'].empty?
@@ -114,9 +113,13 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
  	end
 
 	it 'AutoRunEngine is working' do
+		puts @hooks['hooked-browsers']['online']
+		puts @hooks['hooked-browsers']['online'].empty?
 		if @hooks['hooked-browsers']['online'].empty?
+			puts 'in browser block'
 			expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script("return window.beef.session.get_hook_session_id()"))).to eq true
 		else
+			puts 'in api block'
 			expect(@hooks['hooked-browsers']['online']).not_to be_empty
 		end
 	end
