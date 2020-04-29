@@ -115,7 +115,7 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 
 	it 'AutoRunEngine is working' do
 		if @hooks['hooked-browsers']['online'].empty?
-			expect(@driver.execute_script("return window.beef.session.get_hook_session_id()").length).to eq 80
+			expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script("return window.beef.session.get_hook_session_id()"))).to eq true
 		else
 			expect(@hooks['hooked-browsers']['online']).not_to be_empty
 		end
