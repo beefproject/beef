@@ -91,9 +91,13 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         print_info 'Hooking a new victim, waiting a few seconds...'
         @driver.navigate.to "#{VICTIM_URL}"
 
+		sleep 20
+
         # Give time for browser hook to occur
         wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
-		sleep 15 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
+        wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
+        
+		sleep 20
 
         @hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
         if @hooks['hooked-browsers']['online'].empty?
