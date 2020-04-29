@@ -95,7 +95,11 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		puts @driver.execute_script("return window.beef.session.get_hook_session_id()")
 
 		@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
-		@session = @hooks['hooked-browsers']['online']['0']['session'] || @driver.execute_script("return window.beef.session.get_hook_session_id()")
+		if @hooks['hooked-browsers']['online'].empty?
+				@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
+		else
+				@session = @hooks['hooked-browsers']['online']['0']['session']
+		end
 	end
 
 	after(:all) do
