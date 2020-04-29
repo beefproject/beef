@@ -13,67 +13,67 @@ before_script:
   - RUBY_VERSION=/bin/bash rvm current
   - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
 env:
-#   - CONFIG_FILE=osx/catalina/catalina_chrome_41.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_chrome_59.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_chrome_81.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_firefox_11.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_firefox_68esr.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_firefox_75.config.yml
-#   - CONFIG_FILE=osx/catalina/catalina_safari_13.config.yml
-#   - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_14.config.yml
-#   - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_81.config.yml
-#   - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_7.config.yml
-#   - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_75.config.yml
-#   - CONFIG_FILE=osx/elcapitan/elcapitan_safari_9-1.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_14.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_35.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_49.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_7.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_38esr.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_42.config.yml
-#   - CONFIG_FILE=osx/snowleopard/snowleopard_safari_5-1.config.yml
-#   - CONFIG_FILE=windows/win10/win10_chrome_37.config.yml
-#   - CONFIG_FILE=windows/win10/win10_chrome_59.config.yml
-#   - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
-#   - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_chrome_41.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_chrome_59.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_chrome_81.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_11.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_68esr.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_75.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_safari_13.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_14.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_81.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_7.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_75.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_safari_9-1.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_14.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_35.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_49.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_7.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_38esr.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_42.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_safari_5-1.config.yml
+  - CONFIG_FILE=windows/win10/win10_chrome_37.config.yml
+  - CONFIG_FILE=windows/win10/win10_chrome_59.config.yml
+  - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
+  - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
   - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
-#   - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
-#   - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
-#   - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
-#   - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
-#   - CONFIG_FILE=windows/win8/win8_firefox_32.config.yml
-#   - CONFIG_FILE=windows/win8/win8_firefox_75.config.yml
-#   - CONFIG_FILE=windows/win8/win8_edge_81.config.yml
-#   - CONFIG_FILE=windows/win8/win8_ie_10.config.yml
-#   - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
-#   - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
-#   - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
-#   - CONFIG_FILE=windows/xp/xp_firefox_16.config.yml
-#   - CONFIG_FILE=windows/xp/xp_firefox_26.config.yml
-#   - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
-#   - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
-# jobs:
-#   include:
-#     - name: "Full Test Suite 2.5.3"
-#       rvm: 2.5.3
-#       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-#       script: bundle exec rspec
-#     - name: "Full Test Suite 2.6.0"
-#       rvm: 2.6.0
-#       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-#       script: bundle exec rspec
-#     - name: "Full Test Suite 2.6.3"
-#       rvm: 2.6.3
-#       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-#       script: bundle exec rspec
-#     - name: "Full Test Suite 2.6.5"
-#       rvm: 2.6.5
-#       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-#       script: bundle exec rspec
-#     - name: "Full Test Suite 2.7.0"
-#       rvm: 2.7.0
-#       env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
-#       script: bundle exec rspec
+  - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
+  - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
+  - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
+  - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
+  - CONFIG_FILE=windows/win8/win8_firefox_32.config.yml
+  - CONFIG_FILE=windows/win8/win8_firefox_75.config.yml
+  - CONFIG_FILE=windows/win8/win8_edge_81.config.yml
+  - CONFIG_FILE=windows/win8/win8_ie_10.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_16.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_26.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_47.config.yml
+  - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
+jobs:
+  include:
+    - name: "Full Test Suite 2.5.3"
+      rvm: 2.5.3
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.0"
+      rvm: 2.6.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.3"
+      rvm: 2.6.3
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.5"
+      rvm: 2.6.5
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.7.0"
+      rvm: 2.7.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
 script:
   - bundle exec rspec --tag run_on_browserstack
 addons:
