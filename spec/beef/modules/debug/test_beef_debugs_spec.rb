@@ -75,9 +75,6 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         # Give the server time to start-up
         sleep 1
 
-		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
-		@token = JSON.parse(@response)['token']
-
         @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
         @caps["name"] = self.class.description || ENV['name'] || 'no-name'
         @caps["browserstack.local"] = true
