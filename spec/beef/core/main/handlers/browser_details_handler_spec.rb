@@ -89,7 +89,7 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		print_info 'Hooking a new victim, waiting a few seconds...'
 		wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
 
-		sleep 1 until wait.until { @driver.navigate.to "#{VICTIM_URL}" }
+		sleep 1 until @driver.navigate.to "#{VICTIM_URL}"
 
 		# Give time for browser hook to occur
 		sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
