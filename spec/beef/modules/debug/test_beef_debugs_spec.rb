@@ -90,6 +90,8 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
 
         @driver.navigate.to "#{VICTIM_URL}"
 
+        sleep 3
+
         # Give time for browser hook to occur
         sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
 
