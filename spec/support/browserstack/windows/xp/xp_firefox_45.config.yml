@@ -1,14 +1,15 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows 8 Chrome 75"
+  "build": "Windows XP Firefox 45"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
+  "browserstack.selenium_version": "2.53.0"
 
 browser_caps:
   -
-    "browser": "chrome"
-    "browser_version": "75.0"
+    "browser": "firefox"
+    "browser_version": "45.0"
     "os": "windows"
-    "os_version": "8"
+    "os_version": "xp"

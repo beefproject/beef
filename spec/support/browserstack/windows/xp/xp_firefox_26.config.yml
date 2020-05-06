@@ -5,6 +5,7 @@ common_caps:
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
+  "browserstack.selenium_version": "2.53.0"
 
 browser_caps:
   -
