@@ -22,13 +22,13 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
 		# whether or not this test passes.
 		print_info "Loading in BeEF::Extensions"
 		BeEF::Extensions.load
+		
 		sleep 2
 
 		# Check if modules already loaded. No need to reload.
 		if @config.get('beef.module').nil?
 			print_info "Loading in BeEF::Modules"
 			BeEF::Modules.load
-
 			sleep 2
 		else
 				print_info "Modules already loaded"
