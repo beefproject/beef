@@ -100,11 +100,12 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 		sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
 
 		begin
-			@hooks = JSON.parse(RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}")
+			@hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+			@hooks = JSON.parse(@hook_request)
 			if @hooks['hooked-browsers']['online'].empty?
-				puts @hooks['hooked-browsers']['online']
 				@session = @hooks['hooked-browsers']['online']['0']['session']
-			else
+			els e
+        print_info "Cannot find online session server-side continuing to grab Session ID from client"
 				@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
 			end
 		rescue => exception
@@ -115,11 +116,15 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 	end
 
 	after(:all) do
-		@driver.quit
-
-		print_info "Shutting down server"
-		Process.kill("KILL",@pid)
-		Process.kill("KILL",@pids)
+    begin
+      @driver.quit
+    rescue => exception
+      print_info "Error closing BrowserStack connection: #{exception}"
+    ensure
+      print_info "Shutting down server"
+      Process.kill("KILL",@pid)
+      Process.kill("KILL",@pids)
+    end
  	end
 
 	it 'AutoRunEngine is working' do
@@ -133,6 +138,9 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
       if exception.include?('Errno::ETIMEDOUT:')
         print_info "Encountered possible false negative timeout error checking exception."
         expect(exception).to include('Failed to open TCP connection to hub-cloud.browserstack.com:80')
+      elsif exception.include?('401 Unauthorized')
+        print_info "Encountered possible false negative un-auth exception due to a failed hook."
+        expect(@hook_request.code).to eq (401)
       else
         print_info "Encountered Exception: #{exception}"
         print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
