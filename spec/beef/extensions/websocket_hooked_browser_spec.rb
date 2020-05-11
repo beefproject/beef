@@ -131,7 +131,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
         expect(@hooks['hooked-browsers']['online']).not_to be_empty
       end
     rescue => exception
-      if exception.include?('Errno::ETIMEDOUT:')
+      if exception.include?('ETIMEDOUT')
         print_info "Encountered possible false negative timeout error checking exception."
         expect(exception).to include('Failed to open TCP connection to hub-cloud.browserstack.com:80')
       elsif exception.include?('401 Unauthorized')
