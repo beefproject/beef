@@ -104,8 +104,9 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 			@hooks = JSON.parse(@hook_request)
 			if @hooks['hooked-browsers']['online'].empty?
 				@session = @hooks['hooked-browsers']['online']['0']['session']
-			els e
-        print_info "Cannot find online session server-side continuing to grab Session ID from client"
+			else
+        print_info "Cannot find online session server-side"
+        print_info "Continuing to grab Session ID from client"
 				@session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
 			end
 		rescue => exception
@@ -135,9 +136,9 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
         expect(@hooks['hooked-browsers']['online']).not_to be_empty
       end
     rescue => exception
-      if exception.include?('ETIMEDOUT')
-        print_info "Encountered possible false negative timeout error checking exception."
-        expect(exception).to include('Failed to open TCP connection to hub-cloud.browserstack.com:80')
+      if exception.include?('Failed to open TCP connection')
+        print_info "Encountered possible false negative timeout error. Checking exception."
+        expect(exception).to include('hub-cloud.browserstack.com:80')
       elsif exception.include?('401 Unauthorized')
         print_info "Encountered possible false negative un-auth exception due to a failed hook."
         expect(@hook_request.code).to eq (401)
