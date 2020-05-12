@@ -10,7 +10,7 @@ Below are the steps needed to add code to BeEF on Github to the master branch:
 
 3. Run the existing tests to make sure they pass
 
-See https://github.com/beefproject/beef/wiki/BeEF-Testing for steps to do so
+See https://github.com/beefproject/beef/wiki/BeEF-Testing for steps to write tests.
 
 TL;DR: 
 ```
@@ -30,3 +30,5 @@ bundle exec rake spec
 	- what you have added
 	- where to find help about it (link to wiki page)
 
+If you're brand new to contributing to open-source projects, check out Githubs guide:
+https://github.com/firstcontributions/first-contributions/blob/master/README.md
