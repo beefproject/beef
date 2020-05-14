@@ -18,8 +18,8 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
 
       # Load BeEF extensions and modules
       # Always load Extensions, as previous changes to the config from other tests may affect
-          # whether or not this test passes.
-          print_info "Loading in BeEF::Extensions"
+      # whether or not this test passes.
+      print_info "Loading in BeEF::Extensions"
       BeEF::Extensions.load
       sleep 2
 
@@ -124,7 +124,12 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
       begin
         @driver.quit
       rescue => exception
-        print_info "Error closing BrowserStack connection: #{exception}"
+        if exception.include?('Failed to open TCP connection')
+          print_info "Encountered possible false negative timeout error checking exception."
+          expect(exception).to include('hub-cloud.browserstack.com:80')
+        else
+          print_info "Error closing BrowserStack connection: #{exception}"
+        end
       ensure
         print_info "Shutting down server"
         Process.kill("KILL",@pid)
@@ -141,10 +146,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -164,10 +166,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"    
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -187,15 +186,12 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
           print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
+          print_info 'Issue retrieving hooked browser information - checking instead that client session ID exists'
           expect(@session).not_to be_empty
         end
       end
@@ -211,10 +207,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -235,10 +228,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -266,10 +256,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -290,10 +277,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else
@@ -317,10 +301,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('ETIMEDOUT')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('Failed to open TCP connection to hub-cloud.browserstack.com:80')
-        elsif exception.include?('401 Unauthorized')
+        if exception.include?('401 Unauthorized')
           print_info "Encountered possible false negative un-auth exception due to a failed hook."
           expect(@hook_request.code).to eq (401)
         else

@@ -120,7 +120,12 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
     begin
       @driver.quit
     rescue => exception
-      print_info "Error closing BrowserStack connection: #{exception}"
+      if exception.include?('Failed to open TCP connection')
+        print_info "Encountered possible false negative timeout error checking exception."
+        expect(exception).to include('hub-cloud.browserstack.com:80')
+      else
+        print_info "Error closing BrowserStack connection: #{exception}"
+      end
     ensure
       print_info "Shutting down server"
       Process.kill("KILL",@pid)
@@ -136,10 +141,7 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
         expect(@hooks['hooked-browsers']['online']).not_to be_empty
       end
     rescue => exception
-      if exception.include?('Failed to open TCP connection')
-        print_info "Encountered possible false negative timeout error. Checking exception."
-        expect(exception).to include('hub-cloud.browserstack.com:80')
-      elsif exception.include?('401 Unauthorized')
+      if exception.include?('401 Unauthorized')
         print_info "Encountered possible false negative un-auth exception due to a failed hook."
         expect(@hook_request.code).to eq (401)
       else
