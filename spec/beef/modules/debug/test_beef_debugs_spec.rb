@@ -98,7 +98,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
       begin
         @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
         @hooks = JSON.parse(@hook_request)
-        if @hooks['hooked-browsers']['online'].empty?
+        unless @hooks['hooked-browsers']['online'].empty?
           @session = @hooks['hooked-browsers']['online']['0']['session']
         else
           print_info "Cannot find online session server-side."
@@ -126,6 +126,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
       rescue => exception
         if exception.class == NoMethodError && exception.message.include?('Failed to open TCP connection')
           print_info "Encountered possible false negative timeout error checking exception."
+          expect(exception).to include('hub-cloud.browserstack.com:80')
         else
           print_info "Error closing BrowserStack connection: #{exception}"
         end

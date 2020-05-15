@@ -88,7 +88,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 		begin
 			@hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
 			@hooks = JSON.parse(@hook_request)
-			if @hooks['hooked-browsers']['online'].empty?
+		  unless @hooks['hooked-browsers']['online'].empty?
 				@session = @hooks['hooked-browsers']['online']['0']['session']
 			else
         print_info "Cannot find online session server-side."
