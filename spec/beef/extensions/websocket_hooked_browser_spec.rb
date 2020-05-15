@@ -106,7 +106,7 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
     begin
       @driver.quit
     rescue => exception
-      if exception.include?('Failed to open TCP connection')
+      if exception.class == NoMethodError && exception.message.include?('Failed to open TCP connection')
         print_info "Encountered possible false negative timeout error checking exception."
         expect(exception).to include('hub-cloud.browserstack.com:80')
       else
