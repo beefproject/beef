@@ -126,7 +126,6 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
       rescue => exception
         if exception.class == NoMethodError && exception.message.include?('Failed to open TCP connection')
           print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
         else
           print_info "Error closing BrowserStack connection: #{exception}"
         end
