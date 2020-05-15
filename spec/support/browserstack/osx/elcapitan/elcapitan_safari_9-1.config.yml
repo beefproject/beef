@@ -12,3 +12,4 @@ browser_caps:
     "browser_version": "9.1"
     "os": "osx"
     "os_version": "el capitan"
+    "browserstack.selenium_version": "3.5.2"
