@@ -100,12 +100,15 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         print_info "Exception Class: #{exception.class}"
         print_info "Exception Message: #{exception.message}"
         if exception.message.include?('Failed to open TCP connection') ||
-           exception.class == Selenium::WebDriver::Error::UnknownError
+           exception.class == Selenium::WebDriver::Error::UnknownError ||
+           (exception.class == NoMethodError && exception.message.include?('>')
           print_info 'Encountered BrowserStack false negative connection timeout issue'
           print_info 'Exiting with success code to prevent failing full test suite'
           print_info 'It would be advisable to rerun this test'
           exit 0
         end
+      end
+
       begin
         @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
         @hooks = JSON.parse(@hook_request)
