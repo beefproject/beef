@@ -80,8 +80,11 @@ RSpec.describe 'Browser hooking with Websockets', :run_on_browserstack => true d
 				:url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
 				:desired_capabilities => @caps)
 		# Hook new victim
-		print_info 'Hooking a new victim, waiting a few seconds...'
-		@driver.navigate.to "#{VICTIM_URL}"
+    print_info 'Hooking a new victim, waiting a few seconds...'
+    wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+
+    @driver.navigate.to "#{VICTIM_URL}"
+    
 		# Give time for browser hook to occur
     sleep 3
 
