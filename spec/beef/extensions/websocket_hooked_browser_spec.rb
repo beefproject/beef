@@ -68,39 +68,38 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     # Give the server time to start-up
     sleep 1
     begin
-        @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-        @caps['name'] = self.class.description || ENV['name'] || 'no-name'
-        @caps['browserstack.local'] = true
-        @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+      @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+      @caps['name'] = self.class.description || ENV['name'] || 'no-name'
+      @caps['browserstack.local'] = true
+      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
 
-        @driver = Selenium::WebDriver.for(:remote,
-                                          url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-                                          desired_capabilities: @caps)
-        # Hook new victim
-        print_info 'Hooking a new victim, waiting a few seconds...'
-        wait = Selenium::WebDriver::Wait.new(timeout: 30) # seconds
+      @driver = Selenium::WebDriver.for(:remote,
+                                        url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+                                        desired_capabilities: @caps)
+      # Hook new victim
+      print_info 'Hooking a new victim, waiting a few seconds...'
+      wait = Selenium::WebDriver::Wait.new(timeout: 30) # seconds
 
-        @driver.navigate.to VICTIM_URL.to_s
+      @driver.navigate.to VICTIM_URL.to_s
 
-        # Give time for browser hook to occur
-        sleep 3
+      # Give time for browser hook to occur
+      sleep 3
 
-        sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
+      sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
-        @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-        @hooks = JSON.parse(@hook_request)
+      @session = @driver.execute_script('return window.beef.session.get_hook_session_id().length')
     rescue StandardError => e
       print_info "Exception: #{e}"
       print_info "Exception Class: #{e.class}"
       print_info "Exception Message: #{e.message}"
-      print_info "Exception Stack Trace: #{e.stacktrace}"
+      print_info "Exception Stack Trace: #{e.backtrace}"
       if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
          e.class == NoMethodError
         exit 1
       else
         exit 0
       end
-      end
+    end
   end
 
   after(:all) do
@@ -118,7 +117,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   end
 
   it 'can successfully hook a browser' do
-    expect(@hooks['hooked-browsers']['online']).not_to be_empty
+    expect(@session).not_to be_nil
   rescue StandardError => e
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"

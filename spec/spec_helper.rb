@@ -76,6 +76,7 @@ RSpec.configure do |config|
       print_info "Exception: #{exception}"
       print_info "Exception Class: #{exception.class}"
       print_info "Exception Message: #{exception.message}"
+      print_info "Exception Stack Trace: #{exception.backtrace}"
       exit 0
     ensure
       print_info "Shutting down server"

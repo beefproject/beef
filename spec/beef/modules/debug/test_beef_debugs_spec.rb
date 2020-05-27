@@ -107,7 +107,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       print_info "Exception: #{e}"
       print_info "Exception Class: #{e.class}"
       print_info "Exception Message: #{e.message}"
-      print_info "Exception Stack Trace: #{e.stacktrace}"
+      print_info "Exception Stack Trace: #{e.backtrace}"
       if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
          e.class == NoMethodError
         exit 1
@@ -132,7 +132,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -152,7 +152,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -172,7 +172,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -192,7 +192,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -213,8 +213,8 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
-    print_info "Exception Message: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
+    print_info "Exception Message: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -242,7 +242,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -263,7 +263,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
@@ -287,7 +287,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
     if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
        e.class == NoMethodError
       exit 1
