@@ -71,7 +71,7 @@ RSpec.configure do |config|
 
   def server_teardown(webdriver, server_pid, server_pids)
     begin
-      driver.quit
+      webdriver.quit
     rescue => exception
       print_info "Exception: #{exception}"
       print_info "Exception Class: #{exception.class}"
@@ -79,8 +79,8 @@ RSpec.configure do |config|
       exit 0
     ensure
       print_info "Shutting down server"
-      Process.kill("KILL", pid)
-      Process.kill("KILL", pids)
+      Process.kill("KILL", server_pid)
+      Process.kill("KILL", server_pids)
     end
   end
 end
