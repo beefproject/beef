@@ -123,11 +123,7 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
 
 	it 'AutoRunEngine is working' do
     begin
-      if @hooks['hooked-browsers']['online'].empty?
-        expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script("return window.beef.session.get_hook_session_id()"))).to eq true
-      else
-        expect(@hooks['hooked-browsers']['online']).not_to be_empty
-      end
+      expect(@hooks['hooked-browsers']['online']).not_to be_empty
     rescue => exception
       print_info "Exception: #{exception}"
       print_info "Exception Class: #{exception.class}"
@@ -136,7 +132,7 @@ RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
         exception.class == NoMethodError
         exit 1
       else
-        exit 0
+        expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script("return window.beef.session.get_hook_session_id()"))).to eq true
       end
     end
 	end
