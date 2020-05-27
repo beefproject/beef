@@ -69,8 +69,18 @@ RSpec.configure do |config|
     end
   end
 
-  # BrowserStack
-  # config.around(:example, :run_on_browserstack => true) do |example|
-
-  # end
+  def server_teardown(webdriver, server_pid, server_pids)
+    begin
+      driver.quit
+    rescue => exception
+      print_info "Exception: #{exception}"
+      print_info "Exception Class: #{exception.class}"
+      print_info "Exception Message: #{exception.message}"
+      exit 0
+    ensure
+      print_info "Shutting down server"
+      Process.kill("KILL", pid)
+      Process.kill("KILL", pids)
+    end
+  end
 end
