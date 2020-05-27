@@ -130,6 +130,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
 
   it 'browser details handler working' do
     print_info 'Getting browser details'
+    puts BeEF::Core::Models::HookedBrowser.all.first
     hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => @session).first
     puts hooked_browser
     details = BeEF::Core::Models::BrowserDetails.where(:session_id => hooked_browser.session)
