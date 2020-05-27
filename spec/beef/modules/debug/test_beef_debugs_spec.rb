@@ -99,11 +99,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
         @hooks = JSON.parse(@hook_request)
 
-        if @hooks['hooked-browsers']['online'].empty?
-          @session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
-        else
-          @session = @hooks['hooked-browsers']['online'][0]['session']
-        end
+        @session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
 
         # Grab Command Module IDs as they can differ from machine to machine
         @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
