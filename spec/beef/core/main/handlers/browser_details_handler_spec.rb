@@ -133,7 +133,8 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     hooked_browser = BeEF::Core::Models::HookedBrowser.all.first
     details = RestClient.get "#{RESTAPI_HOOKS}/#{hooked_browser.session}?token=#{@token}"
     puts details
-    puts details['browser.name.friendly']
+    puts details['browser.name.friendly'].value
+    puts details['browser.name.friendly'].class
     puts @driver.browser.to_s
 
     if details['browser.name.friendly'].downcase == 'internet explorer'
