@@ -102,7 +102,7 @@ RSpec.describe 'Browser Details Handler', :run_on_browserstack => true do
       if @hooks['hooked-browsers']['online'].empty?
         @session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
       else
-        @session = @hooks['hooked-browsers']['online'][0]
+        @session = @hooks['hooked-browsers']['online'][0]['session']
       end
     rescue => exception
       print_info "Exception: #{exception}"
