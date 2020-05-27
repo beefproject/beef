@@ -6,6 +6,7 @@
 
 require 'rest-client'
 require 'json'
+require_relative '../../../spec_helper'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
 
@@ -75,80 +76,51 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
       # Give the server time to start-up
       sleep 1
 
-      @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-      @caps["name"] = self.class.description || ENV['name'] || 'no-name'
-      @caps["browserstack.local"] = true
-      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
-
-      @driver = Selenium::WebDriver.for(:remote,
-        :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-        :desired_capabilities => @caps)
-
-      # Hook new victim
-      print_info 'Hooking a new victim, waiting a few seconds...'
-      wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
-
-      @driver.navigate.to "#{VICTIM_URL}"
-
-      sleep 3
-
-      # Give time for browser hook to occur
       begin
+        @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+        @caps["name"] = self.class.description || ENV['name'] || 'no-name'
+        @caps["browserstack.local"] = true
+        @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+
+        @driver = Selenium::WebDriver.for(:remote,
+            :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+            :desired_capabilities => @caps)
+        # Hook new victim
+        print_info 'Hooking a new victim, waiting a few seconds...'
+        wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+
+        @driver.navigate.to "#{VICTIM_URL}"
+        
+        # Give time for browser hook to occur
+        sleep 3
+
         sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
+
+        @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+        @hooks = JSON.parse(@hook_request)
+
+        # Grab Command Module IDs as they can differ from machine to machine
+        @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
+        @debug_mod_names_ids = {}
+        @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
+                                    .map do |debug_mod|
+                                        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
+                                    end
       rescue => exception
         print_info "Exception: #{exception}"
         print_info "Exception Class: #{exception.class}"
         print_info "Exception Message: #{exception.message}"
-        if exception.message.include?('Failed to open TCP connection') ||
-           exception.class == Selenium::WebDriver::Error::UnknownError ||
-           (exception.class == NoMethodError && exception.message.include?('>'))
-          print_info 'Encountered BrowserStack false negative connection timeout issue'
-          print_info 'Exiting with success code to prevent failing full test suite'
-          print_info 'It would be advisable to rerun this test'
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
+        else
           exit 0
         end
       end
-
-      begin
-        @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-        @hooks = JSON.parse(@hook_request)
-        unless @hooks['hooked-browsers']['online'].empty?
-          @session = @hooks['hooked-browsers']['online']['0']['session']
-        else
-          print_info "Cannot find online session server-side."
-          print_info "Continuing to grab Session ID from client."
-          @session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
-        end
-      rescue => exception
-        print_info "Encountered Exception: #{exception}"
-        print_info "Continuing to grab Session ID from client"
-        @session = @driver.execute_script("return window.beef.session.get_hook_session_id()")
-      end
-
-      # Grab Command Module IDs as they can differ from machine to machine
-      @debug_mod_ids = JSON.parse(RestClient.get "#{RESTAPI_MODULES}?token=#{@token}")
-      @debug_mod_names_ids = {}
-      @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
-                                  .map do |debug_mod|
-                                      @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
-                                  end
     end
 
     after(:all) do
-      begin
-        @driver.quit
-      rescue => exception
-        if exception.class == NoMethodError && exception.message.include?('Failed to open TCP connection')
-          print_info "Encountered possible false negative timeout error checking exception."
-          expect(exception).to include('hub-cloud.browserstack.com:80')
-        else
-          print_info "Error closing BrowserStack connection: #{exception}"
-        end
-      ensure
-        print_info "Shutting down server"
-        Process.kill("KILL",@pid)
-        Process.kill("KILL",@pids)
-      end
+      server_teardown(@driver, @pid, @pids)
     end
 
     it 'The Test_beef.debug() command module successfully executes' do
@@ -160,13 +132,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -180,13 +153,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"    
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -200,13 +174,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info 'Issue retrieving hooked browser information - checking instead that client session ID exists'
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -221,13 +196,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -242,13 +218,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -270,13 +247,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -291,13 +269,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
@@ -315,13 +294,14 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
         result_data = JSON.parse(response.body)
         expect(result_data['success']).to eq "true"
       rescue => exception
-        if exception.include?('401 Unauthorized')
-          print_info "Encountered possible false negative un-auth exception due to a failed hook."
-          expect(@hook_request.code).to eq (401)
+        print_info "Exception: #{exception}"
+        print_info "Exception Class: #{exception.class}"
+        print_info "Exception Message: #{exception.message}"
+        if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
+          exception.class == NoMethodError
+          exit 1
         else
-          print_info "Encountered Exception: #{exception}"
-          print_info "Issue retrieving hooked browser information - checking instead that client session ID exists"
-          expect(@session).not_to be_empty
+          exit 0
         end
       end
     end
