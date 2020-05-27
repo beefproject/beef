@@ -94,9 +94,6 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
 
       sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
-      @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-      @hooks = JSON.parse(@hook_request)
-
       @session = @driver.execute_script('return window.beef.session.get_hook_session_id()')
 
       # Grab Command Module IDs as they can differ from machine to machine
