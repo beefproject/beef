@@ -10,131 +10,128 @@ require_relative '../../../../spec_helper'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
-RSpec.describe 'AutoRunEngine Test', :run_on_browserstack => true do
-	before(:all) do
-		@config = BeEF::Core::Configuration.instance
-		@config.set('beef.credentials.user', "beef")
-		@config.set('beef.credentials.passwd', "beef")
-		@username = @config.get('beef.credentials.user')
-		@password = @config.get('beef.credentials.passwd')
-		
-		# Load BeEF extensions and modules
-		# Always load Extensions, as previous changes to the config from other tests may affect
-		# whether or not this test passes.
-		print_info "Loading in BeEF::Extensions"
-		BeEF::Extensions.load
-		sleep 2
+RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
+  before(:all) do
+    @config = BeEF::Core::Configuration.instance
+    @config.set('beef.credentials.user', 'beef')
+    @config.set('beef.credentials.passwd', 'beef')
+    @username = @config.get('beef.credentials.user')
+    @password = @config.get('beef.credentials.passwd')
 
-		# Check if modules already loaded. No need to reload.
-		if @config.get('beef.module').nil?
-			print_info "Loading in BeEF::Modules"
-			BeEF::Modules.load
+    # Load BeEF extensions and modules
+    # Always load Extensions, as previous changes to the config from other tests may affect
+    # whether or not this test passes.
+    print_info 'Loading in BeEF::Extensions'
+    BeEF::Extensions.load
+    sleep 2
 
-			sleep 2
-		else
-				print_info "Modules already loaded"
-		end
+    # Check if modules already loaded. No need to reload.
+    if @config.get('beef.module').nil?
+      print_info 'Loading in BeEF::Modules'
+      BeEF::Modules.load
 
-		# Grab DB file and regenerate if requested
-		print_info "Loading database"
-		db_file = @config.get('beef.database.file')
+      sleep 2
+    else
+      print_info 'Modules already loaded'
+    end
 
-		if BeEF::Core::Console::CommandLine.parse[:resetdb]
-			print_info 'Resetting the database for BeEF.'
-			File.delete(db_file) if File.exists?(db_file)
-		end
+    # Grab DB file and regenerate if requested
+    print_info 'Loading database'
+    db_file = @config.get('beef.database.file')
 
-		# Load up DB and migrate if necessary
-		ActiveRecord::Base.logger = nil
-		OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-		OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
+    if BeEF::Core::Console::CommandLine.parse[:resetdb]
+      print_info 'Resetting the database for BeEF.'
+      File.delete(db_file) if File.exist?(db_file)
+    end
 
-		context = ActiveRecord::Migration.new.migration_context
-		if context.needs_migration?
-		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-		end
+    # Load up DB and migrate if necessary
+    ActiveRecord::Base.logger = nil
+    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: db_file)
 
-		sleep 2
+    context = ActiveRecord::Migration.new.migration_context
+    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
 
-		BeEF::Core::Migration.instance.update_db!
+    sleep 2
 
-		# add AutoRunEngine rule
-		test_rule =  {"name"=>"Display an alert", "author"=>"mgeeky", "browser"=>"ALL", "browser_version"=>"ALL", "os"=>"ALL", "os_version"=>"ALL", "modules"=>[{"name"=>"alert_dialog", "condition"=>nil, "options"=>{"text"=>"You've been BeEFed ;>"}}], "execution_order"=>[0], "execution_delay"=>[0], "chain_mode"=>"sequential"}
+    BeEF::Core::Migration.instance.update_db!
 
-		BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
-		# are_engine.R
+    # add AutoRunEngine rule
+    test_rule = { 'name' => 'Display an alert', 'author' => 'mgeeky', 'browser' => 'ALL', 'browser_version' => 'ALL', 'os' => 'ALL', 'os_version' => 'ALL', 'modules' => [{ 'name' => 'alert_dialog', 'condition' => nil, 'options' => { 'text' => "You've been BeEFed ;>" } }], 'execution_order' => [0], 'execution_delay' => [0], 'chain_mode' => 'sequential' }
 
-		# Spawn HTTP Server
-		print_info "Starting HTTP Hook Server"
-		http_hook_server = BeEF::Core::Server.instance
-		http_hook_server.prepare
+    BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
+    # are_engine.R
 
-		# Generate a token for the server to respond with
-		@token = BeEF::Core::Crypto::api_token
+    # Spawn HTTP Server
+    print_info 'Starting HTTP Hook Server'
+    http_hook_server = BeEF::Core::Server.instance
+    http_hook_server.prepare
 
-		# Initiate server start-up
-		@pids = fork do
-			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-		end
-		@pid = fork do
-			http_hook_server.start
-		end
+    # Generate a token for the server to respond with
+    @token = BeEF::Core::Crypto.api_token
+
+    # Initiate server start-up
+    @pids = fork do
+      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+    end
+    @pid = fork do
+      http_hook_server.start
+    end
 
     sleep 1
 
     begin
-      @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
-      @caps["name"] = self.class.description || ENV['name'] || 'no-name'
-      @caps["browserstack.local"] = true
-      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+        @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
+        @caps['name'] = self.class.description || ENV['name'] || 'no-name'
+        @caps['browserstack.local'] = true
+        @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
 
-      @driver = Selenium::WebDriver.for(:remote,
-          :url => "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-          :desired_capabilities => @caps)
-      # Hook new victim
-      print_info 'Hooking a new victim, waiting a few seconds...'
-      wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+        @driver = Selenium::WebDriver.for(:remote,
+                                          url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
+                                          desired_capabilities: @caps)
+        # Hook new victim
+        print_info 'Hooking a new victim, waiting a few seconds...'
+        wait = Selenium::WebDriver::Wait.new(timeout: 30) # seconds
 
-      @driver.navigate.to "#{VICTIM_URL}"
-      
-      # Give time for browser hook to occur
-      sleep 3
+        @driver.navigate.to VICTIM_URL.to_s
 
-      sleep 1 until wait.until { @driver.execute_script("return window.beef.session.get_hook_session_id().length") > 0}
+        # Give time for browser hook to occur
+        sleep 3
 
-      @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
-      @hooks = JSON.parse(@hook_request)
-    rescue => exception
-      print_info "Exception: #{exception}"
-      print_info "Exception Class: #{exception.class}"
-      print_info "Exception Message: #{exception.message}"
-      if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
-        exception.class == NoMethodError
+        sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
+
+        @hook_request = RestClient.get "#{RESTAPI_HOOKS}?token=#{@token}"
+        @hooks = JSON.parse(@hook_request)
+    rescue StandardError => e
+      print_info "Exception: #{e}"
+      print_info "Exception Class: #{e.class}"
+      print_info "Exception Message: #{e.message}"
+      print_info "Exception Stack Trace: #{e.stacktrace}"
+      if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
+         e.class == NoMethodError
         exit 1
       else
         exit 0
       end
-		end
-	end
+      end
+  end
 
   after(:all) do
     server_teardown(@driver, @pid, @pids)
- 	end
+  end
 
-	it 'AutoRunEngine is working' do
-    begin
-      expect(@hooks['hooked-browsers']['online']).not_to be_empty
-    rescue => exception
-      print_info "Exception: #{exception}"
-      print_info "Exception Class: #{exception.class}"
-      print_info "Exception Message: #{exception.message}"
-      if @driver.execute_script("return window.beef.session.get_hook_session_id().length").nil? &&
-        exception.class == NoMethodError
-        exit 1
-      else
-        expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script("return window.beef.session.get_hook_session_id()"))).to eq true
-      end
+  it 'AutoRunEngine is working' do
+    expect(@hooks['hooked-browsers']['online']).not_to be_empty
+  rescue StandardError => e
+    print_info "Exception: #{e}"
+    print_info "Exception Class: #{e.class}"
+    print_info "Exception Message: #{e.message}"
+    print_info "Exception Stack Trace: #{e.stacktrace}"
+    if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
+       e.class == NoMethodError
+      exit 1
+    else
+      expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script('return window.beef.session.get_hook_session_id()'))).to eq true
     end
-	end
- 
+  end
 end
