@@ -136,11 +136,11 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     puts details['browser.name.friendly']
     puts @driver.browser.to_s
 
-    browser_name = if details['browser.name.friendly'].downcase == 'internet explorer'
-                     'internet_explorer'
-                   else
-                     details['browser.name.friendly'].downcase
-                   end
+    if details['browser.name.friendly'].downcase == 'internet explorer'
+      browser_name = 'internet_explorer'
+    else
+      browser_name = details['browser.name.friendly'].downcase
+    end
 
     expect(@driver.browser.to_s.downcase).to eq(browser_name)
   rescue StandardError => e
