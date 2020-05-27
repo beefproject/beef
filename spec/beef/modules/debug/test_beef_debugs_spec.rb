@@ -278,7 +278,7 @@ RSpec.describe 'BeEF Debug Command Modules:', :run_on_browserstack => true do
           exception.class == NoMethodError
           exit 1
         else
-          true
+          exit 0
         end
       end
     end
