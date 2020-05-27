@@ -131,17 +131,13 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   it 'browser details handler working' do
     print_info 'Getting browser details'
     hooked_browser = BeEF::Core::Models::HookedBrowser.all.first
-    details = RestClient.get "#{RESTAPI_HOOKS}/#{hooked_browser.session}?token=#{@token}"
-    puts details
-    puts details['browser.name.friendly'].value
-    puts details['browser.name.friendly'].class
-    puts @driver.browser.to_s
+    details = JSON.parse(RestClient.get("#{RESTAPI_HOOKS}/#{hooked_browser.session}?token=#{@token}"))
 
-    if details['browser.name.friendly'].downcase == 'internet explorer'
-      browser_name = 'internet_explorer'
-    else
-      browser_name = details['browser.name.friendly'].downcase
-    end
+    browser_name = if details['browser.name.friendly'].downcase == 'internet explorer'
+                     'internet_explorer'
+                   else
+                     details['browser.name.friendly'].downcase
+                   end
 
     expect(@driver.browser.to_s.downcase).to eq(browser_name)
   rescue StandardError => e
