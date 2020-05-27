@@ -62,7 +62,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     http_hook_server.prepare
 
     # Generate a token for the server to respond with
-    BeEF::Core::Crypto.api_token
+    @token = BeEF::Core::Crypto.api_token
 
     # Initiate server start-up
     @pids = fork do
@@ -130,9 +130,8 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
 
   it 'browser details handler working' do
     print_info 'Getting browser details'
-		token = JSON.parse(RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json)['token']
-    response = RestClient.get "#{RESTAPI_HOOKS}/#{@session}?token=#{token}"
-    details = JSON.parse(response.body)
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(:session => @session).first
+    details = BeEF::Core::Models::BrowserDetails.where(:session_id => hooked_browser.session)
 
     browser_name = if details['browser.name.friendly'].downcase == 'internet explorer'
                      'internet_explorer'
@@ -145,7 +144,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.backtrace}"
+    print_info "Exception Stack Trace: #{e.backtrace.each { |stack| puts stack }}"
     exit 0
   end
 end
