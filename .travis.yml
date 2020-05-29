@@ -5,6 +5,12 @@ rvm:
 - 2.6.3
 - 2.6.5
 - 2.7.0
+notifications:
+  email:
+    recipients:
+      - wade@bindshell.net
+  on_success: always
+  on_failure: always
 branches:
   only:
   - master
