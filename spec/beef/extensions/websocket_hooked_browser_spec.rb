@@ -93,8 +93,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
       print_info "Exception Class: #{e.class}"
       print_info "Exception Message: #{e.message}"
       print_info "Exception Stack Trace: #{e.backtrace}"
-      if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
-         e.class == NoMethodError
+      if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil?
         exit 1
       else
         exit 0
@@ -123,8 +122,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
     print_info "Exception Stack Trace: #{e.stacktrace}"
-    if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil? &&
-       e.class == NoMethodError
+    if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil?
       exit 1
     else
       expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script('return window.beef.session.get_hook_session_id()'))).to eq true
