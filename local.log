@@ -1,0 +1,2117 @@
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+       
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+       
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+Press Ctrl-C to exit
+
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+
+
+BrowserStackLocal v7.6
+
+You can now access your local server(s) in our remote browser.
+
+
+BrowserStackLocal v7.6
+
+ *** Error: Either another browserstack local client is running on your machine or some server is listening on port 45691
+
+To test an internal server, run:
+./BrowserStackLocal --key <KEY>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1
+
+To test HTML files, run:
+./BrowserStackLocal --key <KEY> --folder <full path to local folder>
+Example:
+./BrowserStackLocal --key DsVSdoJPBi2z44sbGFx1 --folder /Applications/MAMP/htdocs/example/
+
+
+The following options are available:
+  -k, --key                  Browserstack Access Key. This information is available in the local testing section of the Settings page: https://www.browserstack.com/accounts/settings
+  -f, --folder               Specify the Local folder to be used for testing. This option is to be used when testing a local folder. Example: /home/ubuntu/mysite/ or C:\windows\mysite\
+  -h, --help                 Display the help text.
+  -V, --version              Display the current version of the binary.
+  -F, --force                Using this option kills all other instances of BrowserStack Local binary running on this machine with the same --local-identifier options. This option will not affect binaries running in remote servers and instances running with different --local-identifier options.
+  --only                     If you want to restrict BrowserStackLocal Binary access to few local servers and/or folders, use this option to restrict them. Usage: host1,port1,ssl?,host2,port2,ssl?. Example: localhost,8000,0,abc.example.com,8080,1
+  --force-local              Route all traffic via machine where BrowserStackLocal Binary is running. Local tries to fetch public urls directly, unless this option is specified.
+  --verbose                  This option sets the level of logging required. Set 1 to debug issues related to setting up connections. Set 2 for logs related to network information. Set 3 to dump all communication to local servers for each request and response. The default value for this option is 1.
+  --only-automate            This option restricts Binary usage to Automate product, and it cannot be used for Live/Screenshot testing.
+  --proxy-host               If you are behind corporate proxy setup, please specify your proxy host using this option.
+  --proxy-port               If you are behind corporate proxy setup, please specify your proxy port using this option. Default value is 3128.
+  --proxy-user               If you are behind corporate proxy which requires authentication, please specify your proxy username using this option. As of now, only HTTP Basic authentication is supported.
+  --proxy-pass               If you are behind corporate proxy which requires authentication, please specify your proxy password using this option. As of now, only HTTP Basic authentication is supported.
+  --local-identifier         If you are running multiple copies of BrowserStackLocal binary (for better performance or other reasons), please specify unique strings for BrowserStack to uniquely identify them. You will need to specify the same string in Automate tests as well.
+  --force-proxy              This options routes all traffic via the proxy specified - otherwise, binary tries to connect directly as well for better performance.
+  --local-proxy-host         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy host using this option.
+  --local-proxy-port         If your local server is behind a proxy or you are using a proxy to log all communication to your local servers - please specify your proxy port using this option. Default assumed is 8081.
+  --local-proxy-user         If your local server is behind a proxy, and it requies authentication - please specify your proxy username using this option.
+  --local-proxy-pass         If your local server is behind a proxy, and it requies authentication - please specify your proxy password using this option.
+  --daemon                   Starts or stop the binary as a daemon. Accepts only 2 commands: start, stop. Start will start binary in background. Primarily used in Continous Integration server scripts.
+  --enable-logging-for-api   Include this option to make sure this binary is exposed to Local API for debugging. For more information refer to https://www.browserstack.com/local-testing#local-api-debugging
+  --log-file                 Logs all the output to the file specified.
+  --pac-file                 Path to pac file with which the proxy needs to be set.
+  --parallel-runs            Specify the number of parallel runs.
+  --disable-proxy-discovery  Disables the Auto-Proxy Discovery
+  --debug-utility            Start BrowserStackLocal in debug mode.
+  --debug-url                Internal/Staging URL BrowserStackLocal will try to connect when started in debug mode.
+  --https-ports              If you want to test local HTTPS server which behind a proxy, in addition to port 443, please pass comma separated port values. Example: --https-ports 8443,9443
+
+View more configuration options at https://www.browserstack.com/local-testing
+

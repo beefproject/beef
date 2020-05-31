@@ -3,7 +3,6 @@ require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
 RSpec.describe 'BeEF Extension WebSockets' do
-
   before(:all) do
     @config = BeEF::Core::Configuration.instance
     @cert_key = @config.get('beef.http.https.key')
@@ -36,5 +35,4 @@ RSpec.describe 'BeEF Extension WebSockets' do
     expect(client.open?).to be true
     client.close
   end
-
 end

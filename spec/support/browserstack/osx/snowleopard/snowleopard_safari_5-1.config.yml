@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "OSX Snow Leopard Safari 5.1"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "safari"
+    "browser_version": "5.1"
+    "os": "osx"
+    "os_version": "snow leopard"

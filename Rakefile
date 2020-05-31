@@ -18,10 +18,10 @@ end
 
 ## RSPEC
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
 
-
-
+RSpec::Core::RakeTask.new(:spec) do |task|
+  task.rspec_opts = ['--tag ~run_on_browserstack']
+end
 
 ################################
 # SSL/TLS certificate

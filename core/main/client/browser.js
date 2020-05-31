@@ -109,7 +109,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest && !window.chrome && !window.opera && !!document.documentMode && !!window.XDomainRequest && !!window.performance && typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
@@ -127,7 +127,7 @@ beef.browser = {
      * @example: beef.browser.isEdge()
      */
     isEdge: function () {
-        return !beef.browser.isIE() && !!window.StyleMedia;
+        return !beef.browser.isIE() && !!window.styleMedia && (/Edg\/\d+\.\d/.test(window.navigator.userAgent) || /Edge\/\d+\.\d/.test(window.navigator.userAgent));
     },
 
     /**
@@ -2495,6 +2495,7 @@ beef.browser = {
     type: function () {
 
         return {
+            E: this.isEdge(), // Edge any version
             C5: this.isC5(), // Chrome 5
             C6: this.isC6(), // Chrome 6
             C7: this.isC7(), // Chrome 7

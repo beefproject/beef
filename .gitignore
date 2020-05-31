@@ -19,6 +19,9 @@ extensions/metasploit/msf-exploits.cache
 #simplecov
 coverage/
 
+# BrowserStack
+local.log
+
 # The following lines were created by https://www.gitignore.io
 
 ### Linux ###

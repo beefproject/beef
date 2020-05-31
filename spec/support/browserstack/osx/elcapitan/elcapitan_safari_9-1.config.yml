@@ -1,0 +1,15 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "OSX El Capitan Safari 9.1"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "safari"
+    "browser_version": "9.1"
+    "os": "osx"
+    "os_version": "el capitan"
+    "browserstack.selenium_version": "3.5.2"

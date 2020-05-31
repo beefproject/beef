@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "OSX El Capitan Chrome 81"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "chrome"
+    "browser_version": "81.0"
+    "os": "osx"
+    "os_version": "el capitan"

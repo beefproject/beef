@@ -65,7 +65,7 @@ group :test do
     gem 'test-unit'
     gem 'test-unit-full'
     gem 'rspec'
-	gem 'rdoc'
+    gem 'rdoc'
     # curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
     gem 'curb'
@@ -82,8 +82,12 @@ group :test do
     gem 'irb'
     gem 'pry-byebug'
     gem "websocket-client-simple", "~> 0.3.0"
+    gem "browserstack-local", "~> 1.3"
 end
 
 source 'https://rubygems.org'
+
+
+
 
 

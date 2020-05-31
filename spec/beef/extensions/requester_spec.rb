@@ -63,10 +63,6 @@ RSpec.describe 'BeEF Extension Requester' do
     response = api.auth()
     @token = response[:token]
     puts "authenticated. api token: #{@token}"
-    puts 'hooking a new victim, waiting a few seconds...'
-    victim = BeefTest.new_victim
-    sleep 3
-
 
     response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @token}}
     puts "hooks response: #{response}"

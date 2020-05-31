@@ -1,28 +1,99 @@
 language: ruby
 rvm:
-  - 2.5.3
-  - 2.6.0
-  - 2.6.3
-  - 2.6.5
-  - 2.7.0
+- 2.5.3
+- 2.6.0
+- 2.6.3
+- 2.6.5
+- 2.7.0
 notifications:
   email:
     recipients:
       - wade@bindshell.net
-    on_success: always
-    on_failure: always
-# safelist
+  on_success: always
+  on_failure: always
 branches:
   only:
   - master
+  - browserstack
+before_script:
+  - RUBY_VERSION=/bin/bash rvm current
+  - sed -i -E 's/system\((.*?)\)/""/g' /home/travis/.rvm/gems/$RUBY_VERSION/gems/browserstack-local-1.3.0/lib/browserstack/local.rb
+env:
+  - CONFIG_FILE=osx/catalina/catalina_chrome_41.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_chrome_59.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_chrome_81.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_11.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_68esr.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_firefox_75.config.yml
+  - CONFIG_FILE=osx/catalina/catalina_safari_13.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_14.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_chrome_81.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_7.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_firefox_75.config.yml
+  - CONFIG_FILE=osx/elcapitan/elcapitan_safari_9-1.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_14.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_35.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_chrome_49.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_7.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_38esr.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_firefox_42.config.yml
+  - CONFIG_FILE=osx/snowleopard/snowleopard_safari_5-1.config.yml
+  - CONFIG_FILE=windows/win10/win10_chrome_37.config.yml
+  - CONFIG_FILE=windows/win10/win10_chrome_59.config.yml
+  - CONFIG_FILE=windows/win10/win10_firefox_32.config.yml
+  - CONFIG_FILE=windows/win10/win10_firefox_68esr.config.yml
+  - CONFIG_FILE=windows/win10/win10_firefox_75.config.yml
+  - CONFIG_FILE=windows/win10/win10_edge_81.config.yml
+  - CONFIG_FILE=windows/win10/win10_ie_11.config.yml
+  - CONFIG_FILE=windows/win8/win8_chrome_22.config.yml
+  - CONFIG_FILE=windows/win8/win8_chrome_81.config.yml
+  - CONFIG_FILE=windows/win8/win8_firefox_32.config.yml
+  - CONFIG_FILE=windows/win8/win8_firefox_75.config.yml
+  - CONFIG_FILE=windows/win8/win8_edge_81.config.yml
+  - CONFIG_FILE=windows/win8/win8_ie_10.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_14.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_28.config.yml
+  - CONFIG_FILE=windows/xp/xp_chrome_43.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_16.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_26.config.yml
+  - CONFIG_FILE=windows/xp/xp_firefox_45.config.yml
+  - CONFIG_FILE=windows/xp/xp_ie_7.config.yml
+jobs:
+  include:
+    - name: "Full Test Suite 2.5.3"
+      rvm: 2.5.3
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.0"
+      rvm: 2.6.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.3"
+      rvm: 2.6.3
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.6.5"
+      rvm: 2.6.5
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+    - name: "Full Test Suite 2.7.0"
+      rvm: 2.7.0
+      env: CONFIG_FILE=windows/win10/win10_chrome_81.config.yml
+      script: bundle exec rspec
+script:
+  - bundle exec rspec --tag run_on_browserstack
 addons:
   apt:
     packages:
-      - libsqlite3-dev
-      - build-essential
-      - patch
-      - ruby-dev
-      - zlib1g-dev
-      - liblzma-dev
-      - libcurl4-openssl-dev
-
+    - libsqlite3-dev
+    - build-essential
+    - patch
+    - ruby-dev
+    - zlib1g-dev
+    - liblzma-dev
+    - libcurl4-openssl-dev
+  browserstack:
+    username:
+      secure: "Yj+a2jY56dFqJwXdU6JdSXeKhhS01CiToBoB922SXVnA2D2WclGOFiTi0YrkAS9PuOJX5AjC9eUw7VFUcp8DiLmeDGLWo8klYrWQoJOH55FmSWKjdkqDopJFYr0ZXk/ZuXzzpuMvKkCT5MGFnySXyheTW8aUj33GetJ6/sNq5BoA36jH04OE3iPgdBaFPRNDVXEIWLaLUDQsAyZsHNNYC+/cj3cxjXLHu+mbNuXsXEHgrHJ2A94EWdrdGODWL8mRtlSDNkIaYHZKCBnUlHWwCwBitLsjhzdy0YFrIGVbX96FV+C41sjPWLFjZhjAaNDuJ3FoTplbzFNvrw5oxQAAI8ZZqUwF4MRIrQbN8BLFVISX7JooQjfyrNVWvhpZWGPB4GZTN4CThrlQ7G7CJRYDVyqZ7nen6y0+osBr9DRKN+EemlVG73aNP3mXaZr6BmS1BpQJ6tlqDdLCvC5j/PdguKwvt4EmgHA8Pzn20UElV+8BPblcYGjsWplk/cxW1adW0pu2vIxskKxDKJ/ReY3l5yUpiQPZHbuMidq2ffSX0B3yALe7vx+3AvMb2Fk9yWh52EVJXPkVlLvhP7wDd22MHCemvrC2nLhkVR4MglLWs7dZKHswExlKJdWK4OSXprOStjZSA47sjF2nPdztWTpdI77SKaBcoLGR5WOV+JtcQgk="
+    access_key:
+      secure: "KHlR8NHPnoF9U1CJKgUhS1YhPSeTILI2lIu+JilQ5Xeo7rcbWg9lT2xwQQNnLYrISG1vC6OzsbkcnC/3ZnAv7jYff4iUTc3Syszs5wIhhvnhBx4qCxM+/UD78TJNQ0AuY7NOIK6OXcmwbpZrOBUojZkooEkc8bpG56nb2v7dOIafFLV+tv9xcc5DtMSfh7FavhqRFRO+PCybqOW8yWMc2NiMYy3p9jKBC3qYRqme4hx1NRrLo5BZQ+UIcO3Rf+vAjUP+3gGuhWeu2kDCvZYDnI2GN1/WacRVY2cqDPGiYlD6pHNMqU0raYKyWdK0QD4KwYpfjxBGRmwBfz8xU8KWUEZ3P11mJn+BvIt0qe3VpomR0/60/fok1BEso3nea8oENXur5G/5SOfpkPLjzd4P4f7JYnST1PeeWwpzV305wktDv9aLc+Ne9cFCaxSaaCnOk82rKDhtnktwnK7krFj1lM6oygtOD+arAytPKaURRgV2izaoophiXuLFb+9XKSkMGtJ3e+rQATonnDPaFTzouKaXSEPxZQQ2bnsp9tETAReDrYIwPHuYL778UbbBICgNk54CZSfTeRFLroRGNPb/0gPXbu6SryPnknfCMNd7ksSndVoyKsDo1plTHQJGVweP2hxR3R/9syk9Z6DU6H5H3dc/RbkkmoRPVooUtR/mZ/c="

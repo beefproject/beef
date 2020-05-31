@@ -46,5 +46,4 @@ class BeefTest
     victim.visit(VICTIM_URL)
     victim
   end
-
 end

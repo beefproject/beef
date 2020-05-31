@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "Windows 8 IE 10"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "internet explorer"
+    "browser_version": "10.0"
+    "os": "windows"
+    "os_version": "8"

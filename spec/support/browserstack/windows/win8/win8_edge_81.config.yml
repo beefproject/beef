@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "Windows 8 Edge 81"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "edge"
+    "browser_version": "81.0"
+    "os": "windows"
+    "os_version": "8"

@@ -1,0 +1,14 @@
+server: "hub-cloud.browserstack.com"
+
+common_caps:
+  "build": "OSX Catalina Safari 13"
+  "project": "BeEF"
+  "browserstack.local": true
+  "browserstack.video": false
+
+browser_caps:
+  -
+    "browser": "safari"
+    "browser_version": "13.0"
+    "os": "osx"
+    "os_version": "catalina"
