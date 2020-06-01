@@ -1,3 +1,5 @@
+# Submit Issue
+
 Verify first that your issue/request has not been posted previously:
 
 * https://github.com/beefproject/beef/issues
@@ -5,45 +7,51 @@ Verify first that your issue/request has not been posted previously:
 
 Ensure you're using the [latest version of BeEF](https://github.com/beefproject/beef/releases/tag/beef-0.5.0.0).
 
+Please do your best to provide as much information as possible. It greatly aids us in identifying the root cause of your issue :)
 
-#### Environment
+**If we request additional information and we don't hear back from you within a week, we will be closing the ticket off.**
+Feel free to open it back up if you continue to have issues. 
 
-What version/revision of BeEF are you using?
+## Summary
 
-On what version of Ruby?
+**Q:** Please provide a brief summary of the issue that you experienced.
+**A:**
 
-On what browser?
+## Environment
 
-On what operating system?
+*Please identify the environment in which your issue occurred.*
 
+1. **BeEF Version:**
 
-#### Configuration
+2. **Ruby Version:**
 
-Are you using a non-default configuration?
+3. **Browser Details (e.g. Chrome v81.0):**
 
-Have you enabled or disabled any BeEF extensions?
-
-
-#### Summary
-
-Please provide a summary of the issue.
-
-
-#### Expected Behaviour
-
-What was the expected result?
+4. **Operating System (e.g. OSX Catalina):**
 
 
-#### Actual Behaviour
+## Configuration
 
-What was the actual result?
+**Q:** Have you made any changes to your BeEF configuration? 
+**A:**
+
+**Q:** Have you enabled or disabled any BeEF extensions?
+**A:**
+
+## Expected vs. Actual Behaviour
+
+**Expected Behaviour:** 
+<br />
+**Actual Behaviour:**
+<br />
+
+## Steps to Reproduce
+
+*Please provide steps to reproduce this issue.*
+
+1.
 
 
-#### Steps to Reproduce
+## Additional Information
 
-Please provide steps to reproduce this issue.
-
-
-#### Additional Information
-
-Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots. Debug output can be enabled by specifying `debug: true` in the `config.yaml` configuration file.
+Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots. Debug output can be enabled by specifying `debug: true` in the `config.yaml` configuration file in the root directory of BeEF.
