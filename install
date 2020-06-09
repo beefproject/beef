@@ -103,12 +103,24 @@ install_linux () {
   info "Installing ${Distro} prerequisite packages..."
   if [ "${Distro}" = "Debian" ] || [ "${Distro}" = "Kali" ]; then
     sudo apt-get update
-    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs ruby-dev libcurl4-openssl-dev
+    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs libcurl4-openssl-dev gcc-9-base libgcc-9-dev
+    if command_exists rvm || command_exists rbenv version; then
+      info "Ruby package Manager exists - Ruby install skipped"
+    else
+      info "No Ruby package manager detected - will install Ruby"
+      sudo apt-get install ruby-dev
+    fi
   elif [ "${Distro}" = "RedHat" ]; then
     sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
   elif [ "${Distro}" = "Arch" ]; then
     sudo pacman -Syu # Updates repo, dependencies, etc.
-    sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs ruby ruby-rdoc # Installs dependencies
+    sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs # Installs dependencies
+    if command_exists rvm || command_exists rbenv version; then
+      info "Ruby package Manager exists - Ruby install skipped"
+    else
+      info "No Ruby package manager detected - will install Ruby"
+      sudo pacman -S ruby ruby-rdoc
+    fi
   elif [ "${Distro}" = "Alpine" ]; then
     apk update # Updates repo, dependencies, etc.
     apk add curl git build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs  # Installs dependencies
@@ -157,7 +169,23 @@ check_ruby_version () {
   info 'Detecting Ruby environment...'
 
   MIN_RUBY_VER='2.5'
-  if command_exists ruby${RUBYSUFFIX}
+  if command_exists rvm
+  then
+    RUBY_VERSION=$(rvm current | cut -d'-' -f 2)
+    info "Ruby version ${RUBY_VERSION} is installed"
+    if RUBY_VERSION -le MIN_RUBY_VER
+    then 
+      fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+    fi
+  elif command_exists rbenv version
+  then
+    RUBY_VERSION=$(rbenv version | cut -d' ' -f 2)
+    info "Ruby version ${RUBY_VERSION} is installed"
+    if RUBY_VERSION -le MIN_RUBY_VER
+    then 
+      fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+    fi
+  elif command_exists ruby${RUBYSUFFIX}
   then
     RUBY_VERSION=$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION")
     info "Ruby version ${RUBY_VERSION} is installed"
@@ -174,7 +202,7 @@ check_rubygems () {
   if command_exists gem${RUBYSUFFIX}
   then
     info 'Updating rubygems...'
-    gem${RUBYSUFFIX} update --system
+    sudo gem${RUBYSUFFIX} update --system
   fi
 }
 
@@ -187,7 +215,7 @@ check_bundler () {
     info "bundler${RUBYSUFFIX} gem is installed"
   else
     info 'Installing bundler gem...'
-    gem${RUBYSUFFIX} install bundler
+    sudo gem${RUBYSUFFIX} install bundler
   fi
 }
 
