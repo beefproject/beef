@@ -1,0 +1,29 @@
+{"name": "LAN Port Scan",
+  "author": "aburro & aussieklutz",
+  "browser": "ALL",
+  "browser_version": "ALL",
+  "os": "ALL",
+  "os_version": "ALL",
+  "modules": [
+    {"name": "get_internal_ip_webrtc",
+      "condition": null,
+      "code": null,
+      "options": {}
+    },
+    {"name": "port_scanner",
+      "condition": "status==1",
+      "code": "var s=get_internal_ip_webrtc_mod_output.split('.');var start = s[0]+'.'+s[1]+'.'+s[2]+'.'+s[3]; var mod_input = start;",
+      "options": {
+        "ipHost":"<<mod_input>>",
+        "ports":"80,8080",
+        "closetimeout":"1100",
+        "opentimeout":"2500",
+        "delay":"600",
+        "debug":"false"
+      }
+    }
+  ],
+  "execution_order": [0, 1],
+  "execution_delay": [0, 0],
+  "chain_mode": "nested-forward"
+}

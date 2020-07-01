@@ -1,0 +1,18 @@
+{"name": "Xxx",
+  "author": "mgeeky",
+  "browser": "ALL",
+  "browser_version": "ALL",
+  "os": "ALL",
+  "os_version": "ALL",
+  "modules": [
+    {"name": "detect_antivirus",
+      "condition": null,
+      "options": {
+        "text":"Xxxx"
+      }
+    }
+  ],
+  "execution_order": [0],
+  "execution_delay": [0],
+  "chain_mode": "sequential"
+}
