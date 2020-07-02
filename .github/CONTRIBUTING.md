@@ -4,11 +4,13 @@ Anyone is welcome to make BeEF better!
 
 Below are the steps needed to add code to BeEF on Github to the master branch:
 
-1. Clone the repository and create a new branch
+1. Fork the repository and create a new branch
 
 2. Write and commit your new code to that branch
 
 3. Run the existing tests to make sure they pass
+
+4. Make a pull request from the forked branch to BeEF master
 
 See https://github.com/beefproject/beef/wiki/BeEF-Testing for steps to write tests.
 
