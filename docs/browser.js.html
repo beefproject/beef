@@ -3944,12 +3944,12 @@ beef.browser = {
     getPlugins: function () {
 
         var results;
-        Array.prototype.unique = function () {
-            var o = {}, i, l = this.length, r = [];
-            for (i = 0; i &lt; l; i += 1) o[this[i]] = this[i];
-            for (i in o) r.push(o[i]);
-            return r;
-        };
+
+        function unique(array) {
+          return $.grep(array, function(el, index) {
+            return index === $.inArray(el, array);
+          });
+        }
 
         // Things lacking navigator.plugins
         if (!navigator.plugins) 
@@ -3968,7 +3968,7 @@ beef.browser = {
                 // Sometimes store the version in description (Real, Adobe)
                 else results[i] = navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
             }
-            results = results.unique().toString();
+            results = unique(results).toString();
 
             // All browsers that don't support navigator.plugins
         } else {
