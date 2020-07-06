@@ -92,7 +92,7 @@ module BeEF
                 :rule_token => rule_token,
                 :mod_body => wrapper,
                 :is_sent => false,
-                :rule_id => rule_id
+                :id => rule_id
             )
             are_exec.save!
             # Once Engine.check() verified that the hooked browser match a Rule, trigger the Rule ;-)
