@@ -16,12 +16,7 @@ Please do your best to provide as much information as possible. It will help sub
 4. Retrieve your server-side logs from `~/.beef/beef.log`
 5. **If using `beef-xss`:** Retrieve your service logs using `journalctl -u beef-xss`
 
-
-
-
-
 Thank you, this will greatly aid us in identifying the root cause of your issue :)
-
 
 **If we request additional information and we don't hear back from you within a week, we will be closing the ticket off.**
 Feel free to open it back up if you continue to have issues. 

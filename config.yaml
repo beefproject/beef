@@ -8,9 +8,9 @@
 beef:
     version: '0.5.0.0-alpha-pre'
     # More verbose messages (server-side)
-    debug: true
+    debug: false
     # More verbose messages (client-side)
-    client_debug: true
+    client_debug: false
     # Used for generating secure tokens
     crypto_default_value_length: 80
 
@@ -18,7 +18,7 @@ beef:
     # Used by both the RESTful API and the Admin interface
     credentials:
         user:   "beef"
-        passwd: "beef1"
+        passwd: "beef"
 
     # Interface / IP restrictions
     restrictions:
