@@ -63,4 +63,4 @@ Feel free to open it back up if you continue to have issues.
 
 ## Additional Information
 
-Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots. Debug output can be enabled by specifying `debug: true` in the `config.yaml` configuration file in the root directory of BeEF.
+Please provide any additional information which may be useful in resolving this issue, such as debugging output and relevant screen shots. Debug output can be retrieved by following the instructions towards the top of the issue template.
