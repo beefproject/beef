@@ -29,6 +29,7 @@ module BeEF
 
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
+          print_debug "[INIT] Processing Browser Details for session #{session_id}"
           (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
           hooked_browser = HB.where(:session => session_id).first
           return if not hooked_browser.nil? # browser is already registered with framework
@@ -402,6 +403,17 @@ module BeEF
             BD.set(session_id, 'browser.window.size.width', window_width)
           else
             self.err_msg "Invalid value for 'browser.window.size.width' returned from the hook browser's initial connection."
+          end
+
+          # store and log IP details of host
+          print_debug("Hooked browser [id:#{zombie.id}] has IP [ip: #{zombie.ip}]")
+
+          if os_name != nil and os_version != nil
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host', :os => os_name + "-" + os_version)
+          elsif os_name != nil
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host', :os => os_name)
+          else
+            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host')
           end
 
           # get and store the yes|no value for browser capabilities
