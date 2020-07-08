@@ -8,11 +8,11 @@
 #gem 'simplecov', require: false, group: :test
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra'
-gem 'rack'
-gem 'rack-protection'
+gem 'sinatra', '>= 2.0.2'
+gem 'rack', '>= 2.2.3'
+gem 'rack-protection', '>= 2.0.0'
 gem 'em-websocket' # WebSocket support
-gem 'uglifier'
+gem 'uglifier', '>= 2.7.2'
 gem 'mime-types'
 gem 'execjs'
 gem 'ansi'
@@ -20,10 +20,9 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'json'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
-gem 'nokogiri', '>= 1.10.4'
-gem 'rake'
-#ruby 2.4 isnt compatible with a higher version of active-record
-gem 'otr-activerecord' 
+gem 'nokogiri', '>= 1.10.8'
+gem 'rake', '>= 12.3.3'
+gem 'otr-activerecord'
 gem 'sqlite3'
 
 # Geolocation support
