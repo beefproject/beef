@@ -42,7 +42,7 @@ module Events
 
       # push events to logger
         logger = BeEF::Core::Logger.instance
-        events.each do |value|
+        events.each do |key,value|
             logger.register('Event', parse(value), zombie.id)
         end
     end

