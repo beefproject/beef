@@ -3919,8 +3919,8 @@ beef.browser = {
         var results;
 
         function unique(array) {
-          return $.grep(array, function(el, index) {
-            return index === $.inArray(el, array);
+          return $j.grep(array, function(el, index) {
+            return index === $j.inArray(el, array);
           });
         }
 
