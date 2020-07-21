@@ -13,6 +13,7 @@ module BeEF
           config = BeEF::Core::Configuration.instance
           @nh = BeEF::Core::Models::NetworkHost
           @ns = BeEF::Core::Models::NetworkService
+          @hb = BeEF::Core::Models::HookedBrowser
 
           # Require a valid API token from a valid IP address
           halt 401 unless params[:token] == config.get('beef.api_token')
@@ -69,7 +70,8 @@ module BeEF
           begin
             id = params[:id]
 
-            hosts = @nh.where(hooked_browser_id: id).distinct.order(:id)
+            hooked_browser = @hb.where(session: id).distinct
+            hosts = @nh.where(hooked_browser: hooked_browser).distinct.order(:hooked_browser)
             count = hosts.length
 
             result = {}
@@ -121,7 +123,7 @@ module BeEF
 
             host = @nh.find(id)
             raise InvalidParamError, 'id' if host.nil?
-            halt 404 if host.empty?
+            halt 404 if host.nil?
 
             host.to_h.to_json
           rescue InvalidParamError => e
