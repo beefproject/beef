@@ -48,13 +48,13 @@ module Handlers
 
       excluded_hooking_subnet = config.get('beef.restrictions.excluded_hooking_subnet')
       unless excluded_hooking_subnet.nil? || excluded_hooking_subnet.empty?
-        found = false
+        excluded_ip_hooked = false
 
         excluded_hooking_subnet.each do |subnet|
-          found = true if IPAddr.new(subnet).include?(request.ip)
+          excluded_ip_hooked = true if IPAddr.new(subnet).include?(request.ip)
         end
 
-        if found
+        if excluded_ip_hooked
           BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from excluded hooking subnet (#{request.ip}) rejected.")
           error 404 
         end
