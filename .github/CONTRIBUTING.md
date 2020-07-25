@@ -1,36 +1,85 @@
-# Contributing to BeEF
+# Contributing
+### Anyone is welcome to make BeEF better!
+Thank you for wanting to contribute to BeEF. It's effort like yours that helps make BeEF such a great tool.
 
-Anyone is welcome to make BeEF better!
+Following these guidelines shows that you respect the time of the developers developing this open source project and helps them help you. In response to this, they should return that respect in addressing your issue, assisting with changes, and helping you finalize your pull requests.
 
-Below are the steps needed to add code to BeEF on Github to the master branch:
 
-1. Fork the repository and create a new branch
+###  We want any form helpful of contributions!
 
-2. Write and commit your new code to that branch
+ BeEF is an open source project and we love to receive contributions from the community! There are many ways to contribute, from writing tutorials or blog posts, improving or translating the documentation, answering questions on the project, submitting bug reports and feature requests or writing or reviewing code which can be merged into BeEF itself.
 
-3. Run the existing tests to make sure they pass
 
-4. Make a pull request from the forked branch to BeEF master
 
-See https://github.com/beefproject/beef/wiki/BeEF-Testing for steps to write tests.
+# Ground Rules
 
-TL;DR: 
-```
-bundle install --with test
-bundle exec rake spec
-```
+###  Responsibilities
+> * When making an issue, ensure the issue template is filled out, failure to do so can and will result in a closed ticket and a delay in support.
+> * We now have a two-week of unresponsiveness period before closing a ticket, if this happens, just comment responding and @ whoever closed the ticket. 
+> * Ensure cross-platform compatibility for every change that's accepted. Mac and Linux are currently supported.
+> * Create issues for any major changes and enhancements that you wish to make. Discuss things transparently and get community feedback.
+> * Ensure language is as respectful and appropriate as possible. 
+> * Keep merges as straightforward as possible, only address one issue per commit where possible.
+> * Be welcoming to newcomers and try to assist where possible, everyone needs help. 
 
-4. Write tests in RSpec for your new code (module, extension etc.)
+# Where to start
+### Looking to make your first contribution 
 
-5. Run all tests again to make sure they all pass
+ Unsure where to begin contributing to BeEF? You can start by looking through these issues:
 
-6. Edit existing wiki page / add a new one explaining the new features, including:
+ * Good First Issue - issues which should only require a few changes, and are good to start with.
+ * Question - issues which are a question and need a response. A good way to learn more about BeEF is to try to solve a problem.
+
+At this point, you're ready to make your changes! Feel free to ask for help; everyone is a beginner at first.
+
+If a maintainer asks you to "rebase" your PR, they're saying that code has changed, and that you need to update your branch so it's easier to merge.
+
+### Ruby best practise 
+Do read through: https://rubystyle.guide
+Try and follow through with the practices throughout, even going through it once will help keep the codebase consistent.
+
+# Getting started
+
+### How to submit a contribution.
+
+1. Create your own fork of the code
+
+2. Checkout the master branch
+> git checkout master
+
+3. Create a new branch for your feature
+> git checkout -b my-cool-new-feature
+
+4. Add your new files
+> git add modules/my-cool-new-module
+
+5. Modify or write a test case/s in Rspec for your changes
+
+6. Commit your changes with a relevant message
+> git commit
+
+7. Push your changes to GitHub
+> git push origin my-cool-new-feature
+
+8. Run all tests again to make sure they all pass
+
+9. Edit existing wiki page / add a new one explaining the new features, including:
 	- sample usage (command snippets, steps and/or screenshots)
 	- internal working (code snippets & explanation)
 
-7. Submit a Pull Request, explaining:
-	- what you have added
-	- where to find help about it (link to wiki page)
+10. Now browse to the following URL and create your pull request from your fork to beef master
+    - Fill out the Pull Request Template
+    - https://github.com/beefproject/beef/pulls
 
-If you're brand new to contributing to open-source projects, check out Githubs guide:
-https://github.com/firstcontributions/first-contributions/blob/master/README.md
+
+# How to report a bug
+### Explain security disclosures first!
+
+If you find a security vulnerability, do NOT open an issue. Email security@beefproject.com instead.
+
+When the security team receives a security bug email, they will assign it to a primary handler.
+This person will coordinate the fix and release process, involving the following steps:
+
+* Confirm the problem and find the affected versions.
+* Audit code to find any potential similar problems.
+* Prepare fixes 
