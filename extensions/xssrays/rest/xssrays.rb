@@ -122,7 +122,7 @@ module BeEF
           begin
             id = params[:id]
 
-            hooked_browser = HB.where(:session => id).distinct.order(:id)
+            hooked_browser = HB.where(:session => id).distinct.order(:id).first
 
             if hooked_browser.nil?
               print_error "[XSSRAYS] Invalid hooked browser ID"
