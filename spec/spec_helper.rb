@@ -2,8 +2,9 @@ require 'core/loader.rb'
 
 # Notes
 # We need to load vairables that 'beef' usually does for us
-## config
+## config (this isn't used or is shadowed by the monkey patching, needs a further look to fix properly)
 config = BeEF::Core::Configuration.new('config.yaml')
+## I haven't been able to work out why these are global variables, best practive says it needs to be changed but its used in beef.
 ## home_dir
 $home_dir = Dir.pwd
 ## root_dir
@@ -31,9 +32,7 @@ ARGV = []
 # Monkey patch to avoid reset sessions
 class Capybara::Selenium::Driver < Capybara::Driver::Base
   def reset!
-    if @browser
-      @browser.navigate.to('about:blank')
-    end
+    @browser.navigate.to('about:blank') if @browser
   end
 end
 
@@ -46,12 +45,10 @@ CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || ''
 ## DB config
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:':memory:')
+OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: ':memory:')
 ActiveRecord::Schema.verbose = false
 context = ActiveRecord::Migration.new.migration_context
-if context.needs_migration?
-  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
-end
+ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
@@ -70,18 +67,16 @@ RSpec.configure do |config|
   end
 
   def server_teardown(webdriver, server_pid, server_pids)
-    begin
-      webdriver.quit
-    rescue => exception
-      print_info "Exception: #{exception}"
-      print_info "Exception Class: #{exception.class}"
-      print_info "Exception Message: #{exception.message}"
-      print_info "Exception Stack Trace: #{exception.backtrace}"
-      exit 0
-    ensure
-      print_info "Shutting down server"
-      Process.kill("KILL", server_pid)
-      Process.kill("KILL", server_pids)
-    end
+    webdriver.quit
+  rescue ExceptionErrorPrint => e
+    print_info "Exception: #{e}"
+    print_info "Exception Class: #{e.class}"
+    print_info "Exception Message: #{e.message}"
+    print_info "Exception Stack Trace: #{e.backtrace}"
+    exit 0
+  ensure
+    print_info 'Shutting down server'
+    Process.kill('KILL', server_pid)
+    Process.kill('KILL', server_pids)
   end
 end
