@@ -18,17 +18,16 @@ class BeefRestClient
 
   def auth
     response = RestClient.post "#{@url}admin/login",
-                               { 'username': "#{@user}",
-                                 'password': "#{@pass}" }.to_json,
-                               content_type: :json,
-                               accept: :json
+                                { 'username': "#{@user}",
+                                  'password': "#{@pass}" }.to_json,
+                                content_type: :json,
+                                accept: :json
     result = JSON.parse(response.body)
     @token = result['token']
     { success: result['success'], payload: result, token: @token }
-  rescue AuthenticationError => e
+  rescue StandardError => e
     { success: false, payload: e.message }
   end
-
   def version
     return { success: false, payload: 'no token' } if @token.nil?
 

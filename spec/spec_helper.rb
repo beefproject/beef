@@ -68,7 +68,7 @@ RSpec.configure do |config|
 
   def server_teardown(webdriver, server_pid, server_pids)
     webdriver.quit
-  rescue ExceptionErrorPrint => e
+  rescue StandardError => e
     print_info "Exception: #{e}"
     print_info "Exception Class: #{e.class}"
     print_info "Exception Message: #{e.message}"
