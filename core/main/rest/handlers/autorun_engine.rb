@@ -38,7 +38,7 @@ module BeEF
         get '/rule/delete/:rule_id' do
           begin
             rule_id = params[:rule_id]
-            rule = BeEF::Core::AutorunEngine::Models::Rule.find(rule_id)
+            rule = BeEF::Core::Models::Rule.find(rule_id)
             rule.destroy
             { 'success' => true}.to_json
           rescue => e
@@ -84,7 +84,7 @@ module BeEF
             rule_id = params[:rule_id]
             if rule_id == 'all'
               result = Array.new
-              rules = BeEF::Core::AutorunEngine::Models::Rule.all
+              rules = BeEF::Core::Models::Rule.all
               rules.each do |rule|
                 {
                     'id' => rule.id,
@@ -103,7 +103,7 @@ module BeEF
               end
             else
               result = nil
-              rule = BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)
+              rule = BeEF::Core::Models::Rule.find(rule_id)
               if rule != nil
                 result = {
                     'id' => rule.id,
