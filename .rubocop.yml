@@ -4,21 +4,75 @@ AllCops:
     - 'tmp/**/*'
     - 'tools/**/*'
     - 'doc/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
+
+Layout/LineLength:
+  Enabled: true
+  Max: 180
 
 Metrics/AbcSize:
   Enabled: false
+
 Metrics/BlockLength:
   Enabled: false
+
 Metrics/ClassLength:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
+
 Metrics/MethodLength:
   Enabled: false
+
 Metrics/PerceivedComplexity:
   Enabled: false
+
 Metrics/CyclomaticComplexity:
   Enabled: false
+
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# TODO: review these
+Layout/SpaceBeforeBrackets:
+  Enabled: false
+Lint/AmbiguousAssignment:
+  Enabled: false
+Lint/DeprecatedConstants:
+  Enabled: false
+Lint/DuplicateBranch:
+  Enabled: false
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: false
+Lint/EmptyBlock:
+  Enabled: false
+Lint/EmptyClass:
+  Enabled: false
+Lint/LambdaWithoutLiteralBlock:
+  Enabled: false
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: false
+Lint/RedundantDirGlobSort:
+  Enabled: false
+Lint/ToEnumArguments:
+  Enabled: false
+Lint/UnexpectedBlockArity:
+  Enabled: false
+Lint/UnmodifiedReduceAccumulator:
+  Enabled: false
+Style/ArgumentsForwarding:
+  Enabled: false
+Style/CollectionCompact:
+  Enabled: false
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
+Style/EndlessMethod:
+  Enabled: false
+Style/HashExcept:
+  Enabled: false
+Style/NegatedIfElseCondition:
+  Enabled: false
+Style/NilLambda:
+  Enabled: false
+Style/RedundantArgument:
+  Enabled: false
+Style/SwapValues:
   Enabled: false
