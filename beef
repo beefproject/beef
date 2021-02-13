@@ -66,7 +66,6 @@ end
 # @note set log level
 #
 BeEF.logger.level = config.get('beef.debug') ? Logger::DEBUG : Logger::WARN
-
 #
 # @note Check the system language settings for UTF-8 compatibility
 #

