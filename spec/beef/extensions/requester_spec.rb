@@ -112,12 +112,10 @@ RSpec.describe 'BeEF Extension Requester' do
     https.where(:hooked_browser_id => hb_session).delete_all
 
     # kill the server
-    Process.kill("KILL",@pid)
-    Process.kill("KILL",@pids)
+    Process.kill('KILL', @pid)
+    Process.kill('KILL', @pids)
 
     puts "waiting for server to die.."
     sleep 1
-
   end
-
 end

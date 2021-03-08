@@ -1,7 +1,6 @@
 require 'extensions/xssrays/extension'
 
 RSpec.describe 'BeEF Extension XSSRays' do
-
   before(:all) do
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config

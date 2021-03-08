@@ -1,7 +1,6 @@
 require 'rest-client'
 
 RSpec.describe 'BeEF Extension WebRTC' do
-
   before(:all) do
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
