@@ -10,7 +10,7 @@ Ensure you're using the [latest version of BeEF](https://github.com/beefproject/
 Please do your best to provide as much information as possible. It will help substantially if you can enable and provide debugging logs with your issue. Instructions for enabling debugging logs are below:
 
 1. In the `config.yaml` file of your BeEF root folder set debug and client_debug (lines 11 & 13 respectively) to `true`
-   * If using a standard installation of `beef-xss` the root folder will typicaly be `/usr/share/beef-xss`
+   * If using a standard installation of `beef-xss` the root folder will typically be `/usr/share/beef-xss`
 2. Reproduce your error
 3. Retrieve your client-side logs from your browser's developer console (Ctrl + Shift + I)
 4. Retrieve your server-side logs from `~/.beef/beef.log`
