@@ -43,7 +43,7 @@ check_os () {
     info "Launching Linux install..."
     install_linux
   elif [ "${OS}" = "Darwin" ]; then
-    info "Launching Mac OSX install..."
+    info "Launching macOS install..."
     install_mac
   elif [ "${OS}" = "FreeBSD" ]; then
     info "Launching FreeBSD install..."
@@ -146,7 +146,7 @@ install_mac () {
   local mac_deps=(curl git nodejs python3 \
   openssl readline libyaml sqlite3 libxml2 \
   autoconf ncurses automake libtool \
-  bison wget)
+  bison wget selenium-server-standalone)
 
   if ! command_exists brew; then
     fatal "Homebrew (https://brew.sh/) required to install dependencies"
@@ -176,16 +176,21 @@ check_ruby_version () {
   if command_exists rvm
   then
     RUBY_VERSION=$(rvm current | cut -d'-' -f 2)
-    info "Ruby version ${RUBY_VERSION} is installed"
-    if RUBY_VERSION -le MIN_RUBY_VER
+    if [ "${RUBY_VERSION}" = 'system' ]
     then 
-      fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+      fatal "System Ruby is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+    else
+      info "Ruby version ${RUBY_VERSION} is installed"
+      if [ "${MIN_RUBY_VER}" = "`echo -e "${MIN_RUBY_VER}\n${RUBY_VERSION}" | sort -V | head -n1`" ]
+      then
+        fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
+      fi
     fi
   elif command_exists rbenv version
   then
-    RUBY_VERSION=$(rbenv version | cut -d' ' -f 2)
+    RUBY_VERSION=$(rbenv version | cut -d' ' -f 1)
     info "Ruby version ${RUBY_VERSION} is installed"
-    if RUBY_VERSION -le MIN_RUBY_VER
+    if [ "${RUBY_VERSION}" = "`echo -e "${RUBY_VERSION}\n${MIN_RUBY_VER}" | sort -V | head -n1`" ]
     then 
       fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
     fi
@@ -206,7 +211,20 @@ check_rubygems () {
   if command_exists gem${RUBYSUFFIX}
   then
     info 'Updating rubygems...'
-    sudo gem${RUBYSUFFIX} update --system
+    if command_exists rvm
+    then
+      gem${RUBYSUFFIX} update --system
+    elif command_exists rbenv version
+    then
+      eval "$(rbenv init -)"
+      rbenv shell "${RUBY_VERSION}"
+      gem${RUBYSUFFIX} update --system
+    elif [ "${OS}" != "Darwin" ]
+    then
+      sudo gem${RUBYSUFFIX} update --system
+    else
+      fatal "Recent ${OS} variants do not allow writing in system folders: Ruby package Manager (or similar local setup) required"
+    fi
   fi
 }
 
@@ -235,15 +253,17 @@ install_beef () {
 
   if command_exists bundler${RUBYSUFFIX}
   then
-    bundle${RUBYSUFFIX} install --without test development
+    bundle${RUBYSUFFIX} config set without development test
+    bundle${RUBYSUFFIX} install
   else
-    bundle install --without test development
+    bundle config set without development test
+    bundle install
   fi
 }
 
 finish () {
   echo
-  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo '#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#'
   echo
   info "Install completed successfully!"
   info "Run './beef' to launch BeEF"
@@ -255,7 +275,7 @@ finish () {
   echo "* Review the wiki for important configuration information:"
   echo "  https://github.com/beefproject/beef/wiki/Configuration"
   echo
-  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo '#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#'
   echo
 }
 
@@ -269,9 +289,9 @@ main () {
     echo
   fi
 
-  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo '#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#'
   echo "                   -- [ BeEF Installer ] --                      "
-  echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
+  echo '#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#'
   echo
 
   get_permission
