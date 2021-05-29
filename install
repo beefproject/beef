@@ -181,7 +181,7 @@ check_ruby_version () {
       fatal "System Ruby is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
     else
       info "Ruby version ${RUBY_VERSION} is installed"
-      if [ "${MIN_RUBY_VER}" = "`echo -e "${MIN_RUBY_VER}\n${RUBY_VERSION}" | sort -V | head -n1`" ]
+      if [ "${RUBY_VERSION}" = "`echo -e "${RUBY_VERSION}\n${MIN_RUBY_VER}" | sort -V | head -n1`" ]
       then
         fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
       fi
