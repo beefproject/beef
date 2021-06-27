@@ -1,0 +1,18 @@
+{"name": "do_browser_fingerprinting",
+  "author": "torito",
+  "browser": "ALL",
+  "browser_version": "ALL",
+  "os": "ALL",
+  "os_version": "ALL",
+  "modules": [
+    {"name": "fingerprint_browser",
+      "condition": null,
+      "options": {
+        "text":"Xxxx"
+      }
+    }
+  ],
+  "execution_order": [0],
+  "execution_delay": [0],
+  "chain_mode": "sequential"
+}
