@@ -67,7 +67,7 @@ if(typeof beef === 'undefined' &amp;&amp; typeof window.beef === 'undefined') {
          */
         debug: function(msg) {
             isDebug = '&lt;%= @client_debug %>'
-            if (typeof console == "object" &amp;&amp; typeof console.log == "function" &amp;&amp; isDebug.localeCompare("true")) {
+            if (typeof console == "object" &amp;&amp; typeof console.log == "function" &amp;&amp; isDebug === '-1') {
                 var currentdate = new Date();
                 var pad = function(n){return ("0" + n).slice(-2);}
                 var datetime = currentdate.getFullYear() + "-"
