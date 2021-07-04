@@ -12,7 +12,6 @@ module BeEF
     #
     class Registrar
       include Singleton
-
       #
       # Create registrar
       #

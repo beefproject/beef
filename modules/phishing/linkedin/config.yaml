@@ -1,0 +1,10 @@
+beef:
+    module:
+        linkedin:
+            enable: true
+            category: "Phishing"
+            name: "LinkedIn Phishing"
+            description: "This module gets the email and password of LinkedIn the target and can be used for credential harvesting"
+            authors: ["Parag P-arag@github.com"]
+            target:
+                user_notify: ['ALL']
