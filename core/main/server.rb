@@ -41,7 +41,7 @@ module BeEF
             'beef_public'   => @configuration.get('beef.http.public'),
             'beef_public_port' => @configuration.get('beef.http.public_port'),
             'beef_hook'     => @configuration.get('beef.http.hook_file'),
-            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? 'https' : 'http',
+            'beef_proto'    => @configuration.get('beef.http.https.enable') == true || @configuration.get('beef.http.public_port') == '443' ? 'https' : 'http',
             'client_debug'  => @configuration.get('beef.client_debug')
         }
       end
