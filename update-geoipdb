@@ -30,22 +30,23 @@ get_permission () {
 }
 
 check_deps() {
-  if ! command_exists /usr/bin/curl
+  if ! command_exists curl
   then
-    fatal "/usr/bin/curl is not installed"
+    fatal "curl is not installed"
   fi
-  if ! command_exists /bin/gunzip
+  if ! command_exists gunzip
   then
-    fatal "/bin/gunzip is not installed"
+    fatal "gunzip is not installed"
   fi
-  if ! command_exists /bin/tar
+  if ! command_exists tar
   then
-    fatal "/bin/tar is not installed"
+    fatal "tar is not installed"
   fi
 }
 
 check_perms() {
-  /bin/mkdir -p "${GEOIP_PATH}"
+  sudo env mkdir -p "${GEOIP_PATH}"
+  sudo chmod go+w "${GEOIP_PATH}"
 
   if ! [ -w "${GEOIP_PATH}" ]
   then
@@ -55,12 +56,12 @@ check_perms() {
 
 install() {
   info 'Downloading MaxMind GeoLite2-City database ...'
-  #/usr/bin/curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
-  /usr/bin/curl -O https://web.archive.org/web/20191227182209/https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+  #env curl -O https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+  env curl -O https://web.archive.org/web/20191227182209/https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 
   info 'Extracting GeoLite2-City.tar.gz ...'
-  /bin/gunzip GeoLite2-City.tar.gz
-  /bin/tar xvf GeoLite2-City.tar
+  env gunzip GeoLite2-City.tar.gz
+  env tar xvf GeoLite2-City.tar
 
   info "Installing to ${GEOIP_PATH} ..."
   /bin/mv GeoLite2-City_*/* "${GEOIP_PATH}"
