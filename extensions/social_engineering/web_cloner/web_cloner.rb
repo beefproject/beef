@@ -144,6 +144,7 @@ module BeEF
             end
 
             print_info "Mounting cloned page on URL [#{mount}]"
+            byebug
             @http_server.mount("#{mount}", interceptor.new)
             @http_server.remap
 
@@ -206,7 +207,7 @@ module BeEF
         end
 
         def persist_page(uri, mount)
-          webcloner_db = BeEF::Core::Models::Webcloner.new(
+          webcloner_db = BeEF::Core::Models::WebCloner.new(
               :uri => uri,
               :mount => mount
           )
