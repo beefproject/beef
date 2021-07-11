@@ -7,7 +7,8 @@ require 'fileutils'
 RSpec.describe 'BeEF Extension Social Engineering' do
 
   after(:all) do
-    FileUtils.rm_rf(Dir['./extensions/social_engineering/web_cloner/cloned_pages/*'])
+    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com'])
+    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com_mod'])
   end
 
   it 'persistence web cloner' do
