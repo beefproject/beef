@@ -206,7 +206,7 @@ module BeEF
         end
 
         def persist_page(uri, mount)
-          webcloner_db = BeEF::Core::Models::Webcloner.new(
+          webcloner_db = BeEF::Core::Models::WebCloner.new(
               :uri => uri,
               :mount => mount
           )
