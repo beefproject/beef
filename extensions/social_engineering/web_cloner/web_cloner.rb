@@ -144,7 +144,6 @@ module BeEF
             end
 
             print_info "Mounting cloned page on URL [#{mount}]"
-            byebug
             @http_server.mount("#{mount}", interceptor.new)
             @http_server.remap
 
