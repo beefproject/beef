@@ -6,11 +6,6 @@ require 'fileutils'
 
 RSpec.describe 'BeEF Extension Social Engineering' do
 
-  after(:all) do
-    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com'])
-    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com_mod'])
-  end
-
   it 'persistence web cloner' do
     expect {
       BeEF::Core::Models::WebCloner.create(uri: "example.com", mount: "/")
@@ -21,5 +16,7 @@ RSpec.describe 'BeEF Extension Social Engineering' do
     expect {
       BeEF::Extension::SocialEngineering::WebCloner.instance.clone_page("https://www.google.com", "/", nil, nil)
     }.to_not raise_error
+    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com'])
+    FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com_mod'])
   end
 end
