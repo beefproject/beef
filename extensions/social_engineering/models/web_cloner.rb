@@ -6,7 +6,7 @@
 module BeEF
   module Core
     module Models
-      class Webcloner < BeEF::Core::Model
+      class WebCloner < BeEF::Core::Model
 
         has_many :interceptors
 
