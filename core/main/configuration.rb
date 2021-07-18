@@ -76,8 +76,11 @@ module BeEF
         true
       end
 
+      #
+      # Returns the configuration value for the http server host
+      # If nothing is set it should default to 0.0.0.0 (all interfaces)
       def local_host
-        get('beef.http.host')
+        get('beef.http.host') || '0.0.0.0'
       end
 
       #
