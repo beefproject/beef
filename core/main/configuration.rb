@@ -76,6 +76,10 @@ module BeEF
         true
       end
 
+      def local_host
+        get('beef.http.host')
+      end
+
       #
       # Returns the value of a selected key in the configuration file.
       # @param [String] key Key of configuration item
