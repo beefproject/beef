@@ -45,7 +45,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 		OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
 		# otr-activerecord require you to manually establish the connection with the following line
 		#Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
-		if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('2.0')
+		if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
 			OTR::ActiveRecord.establish_connection!
   		end
 		context = ActiveRecord::Migration.new.migration_context
