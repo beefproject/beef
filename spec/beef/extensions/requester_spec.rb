@@ -34,7 +34,12 @@ RSpec.describe 'BeEF Extension Requester' do
     ActiveRecord::Base.logger = nil
     OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
     OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:'beef.db')
-    # Migrate (if required)
+    # otr-activerecord require you to manually establish the connection with the following line
+    #Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+    if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('2.0')
+      OTR::ActiveRecord.establish_connection!
+    end
+# Migrate (if required)
     context = ActiveRecord::Migration.new.migration_context
     
     
