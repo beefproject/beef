@@ -32,7 +32,7 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.local_port).to eq('3000')
     end
 
-    it 'should get the default post value' do
+    it 'should get the default port value' do
       @config_instance.set('beef.http.port', nil)
       expect(@config_instance.get('beef.http.port')).to eq(nil)
       expect(@config_instance.local_port).to eq('3000')

@@ -84,7 +84,7 @@ module BeEF
       end
 
       #
-      # Returns the configuration value for the http server host
+      # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
       def local_port
         get('beef.http.port') || '3000'
