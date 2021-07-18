@@ -84,6 +84,13 @@ module BeEF
       end
 
       #
+      # Returns the configuration value for the http server host
+      # If nothing is set it should default to 3000
+      def local_port
+        get('beef.http.port') || '3000'
+      end
+
+      #
       # Returns the value of a selected key in the configuration file.
       # @param [String] key Key of configuration item
       # @return [Hash|String] The resulting value stored against the 'key'
