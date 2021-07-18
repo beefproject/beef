@@ -91,6 +91,13 @@ module BeEF
       end
 
       #
+      # Returns the configuration value for the local https enabled 
+      # If nothing is set it should default to false
+      def local_https_enabled
+        get('beef.https.enabled') || false
+      end
+
+      #
       # Returns the value of a selected key in the configuration file.
       # @param [String] key Key of configuration item
       # @return [Hash|String] The resulting value stored against the 'key'
