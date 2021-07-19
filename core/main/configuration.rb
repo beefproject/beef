@@ -122,11 +122,9 @@ module BeEF
       def public_port
         return get('beef.http.public_port') unless get('beef.http.public_port').nil?
 
-        if public_https_enabled
-          return '443'
-        elsif !public_host.nil?
-          return '80'
-        end
+        return '443' if public_https_enabled
+        return '80' unless public_host.nil?
+
         nil
       end
 

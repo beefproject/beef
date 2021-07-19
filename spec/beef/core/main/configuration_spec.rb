@@ -155,10 +155,11 @@ RSpec.describe 'BeEF Configuration' do
       @config_instance.set('beef.http.port', '3000')
       @config_instance.set('beef.http.public', nil)
       @config_instance.set('beef.http.public_port', nil)
+      @config_instance.set('beef.https.public_enabled', nil)
       expect(@config_instance.get('beef.http.port')).to eq('3000')
       expect(@config_instance.get('beef.http.public_port')).to eq(nil)
       expect(@config_instance.get('beef.http.public')).to eq(nil)
-      byebug
+      expect(@config_instance.get('beef.https.public_enabled')).to eq(nil)
       expect(@config_instance.beef_port).to eq('3000')
     end
 
