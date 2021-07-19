@@ -134,4 +134,22 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.public_port).to eq('443')
     end
   end
+
+  context 'beef hosting information' do
+    it 'should return the local host value because a public has not been set' do
+      @config_instance.set('beef.http.host', 'asdqwe')
+      @config_instance.set('beef.http.public', nil)
+      expect(@config_instance.get('beef.http.host')).to eq('asdqwe')
+      expect(@config_instance.get('beef.http.public')).to eq(nil)
+      expect(@config_instance.beef_host).to eq('asdqwe')
+    end
+
+    it 'should return the public host value because a public has been set' do
+      @config_instance.set('beef.http.host', 'asdqwe')
+      @config_instance.set('beef.http.public', 'poilkj')
+      expect(@config_instance.get('beef.http.host')).to eq('asdqwe')
+      expect(@config_instance.get('beef.http.public')).to eq('poilkj')
+      expect(@config_instance.beef_host).to eq('poilkj')
+    end
+  end
 end
