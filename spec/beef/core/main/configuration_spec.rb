@@ -74,11 +74,10 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.public_host).to eq('example.com')
     end
 
-    it 'should get the default host value' do
+    it 'should get nil host value' do
       @config_instance.set('beef.http.public', nil)
-      @config_instance.set('beef.http.host', '0.0.0.0')
       expect(@config_instance.get('beef.http.public')).to eq(nil)
-      expect(@config_instance.public_host).to eq('0.0.0.0')
+      expect(@config_instance.public_host).to eq(nil)
     end
   end
 
@@ -150,6 +149,27 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.get('beef.http.host')).to eq('asdqwe')
       expect(@config_instance.get('beef.http.public')).to eq('poilkj')
       expect(@config_instance.beef_host).to eq('poilkj')
+    end
+
+    it 'should return the local port value because a public value has not been set' do
+      @config_instance.set('beef.http.port', '3000')
+      @config_instance.set('beef.http.public', nil)
+      @config_instance.set('beef.http.public_port', nil)
+      expect(@config_instance.get('beef.http.port')).to eq('3000')
+      expect(@config_instance.get('beef.http.public_port')).to eq(nil)
+      expect(@config_instance.get('beef.http.public')).to eq(nil)
+      byebug
+      expect(@config_instance.beef_port).to eq('3000')
+    end
+
+    it 'should return the public host value because a public has been set' do
+      @config_instance.set('beef.http.port', '3000')
+      @config_instance.set('beef.http.public_port', '80')
+      @config_instance.set('beef.http.public', nil)
+      expect(@config_instance.get('beef.http.port')).to eq('3000')
+      expect(@config_instance.get('beef.http.public_port')).to eq('80')
+      expect(@config_instance.get('beef.http.public')).to eq(nil)
+      expect(@config_instance.beef_port).to eq('80')
     end
   end
 end
