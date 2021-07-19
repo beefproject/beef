@@ -99,9 +99,8 @@ module BeEF
 
       #
       # Returns the configuration value for the http server host
-      # If nothing is set it should default to 0.0.0.0 (all interfaces)
       def public_host
-        get('beef.http.public') || local_host
+        get('beef.http.public')
       end
 
       #
@@ -112,16 +111,23 @@ module BeEF
       end
 
       #
+      # Returns the beef port which is used by external resource
+      # e.g. hooked browsers
+      def beef_port
+        public_port || local_port
+      end
+
       # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
       def public_port
         return get('beef.http.public_port') unless get('beef.http.public_port').nil?
 
         if public_https_enabled
-          '443'
+          return '443'
         elsif !public_host.nil?
-          '80'
+          return '80'
         end
+        nil
       end
 
       #
