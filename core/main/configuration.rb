@@ -105,12 +105,19 @@ module BeEF
       end
 
       #
+      # Returns the beef host which is used by external resources
+      # e.g. hooked browsers 
+      def beef_host
+        public_host || local_host
+      end
+
+      #
       # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
       def public_port
         return get('beef.http.public_port') unless get('beef.http.public_port').nil?
 
-        if public_https_enabled && !public_host.nil?
+        if public_https_enabled
           '443'
         elsif !public_host.nil?
           '80'
