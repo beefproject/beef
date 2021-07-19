@@ -127,11 +127,9 @@ RSpec.describe 'BeEF Configuration' do
 
     it 'should return public port as 443 if public https is enabled' do
       @config_instance.set('beef.https.public_enabled', true)
-      @config_instance.set('beef.http.public', 'example.com')
       @config_instance.set('beef.http.public_port', nil)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(true)
       expect(@config_instance.get('beef.http.public_port')).to eq(nil)
-      expect(@config_instance.get('beef.http.public')).to eq('example.com')
       expect(@config_instance.public_https_enabled).to eq(true)
       expect(@config_instance.public_port).to eq('443')
     end
