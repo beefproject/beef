@@ -116,6 +116,13 @@ module BeEF
       def beef_port
         public_port || local_port
       end
+      
+      #
+      # Returns the beef protocol that is used by external resources
+      # e.g. hooked browsers
+      def beef_proto
+        public_https_enabled ? 'https' : 'http'
+      end
 
       # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
