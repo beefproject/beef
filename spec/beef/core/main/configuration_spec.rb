@@ -184,5 +184,33 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
       expect(@config_instance.beef_proto).to eq('http')
     end
+
+    it 'should return the full url string for beef local http and port 80' do
+      @config_instance.set('beef.http.host', 'localhost')
+      @config_instance.set('beef.http.port', '80')
+      @config_instance.set('beef.https.enabled', false)
+      @config_instance.set('beef.https.public_enabled', false)
+      @config_instance.set('beef.http.public', nil)
+      @config_instance.set('beef.http.public_port', nil)
+      expect(@config_instance.get('beef.http.host')).to eq('localhost')
+      expect(@config_instance.get('beef.http.port')).to eq('80')
+      expect(@config_instance.get('beef.https.enabled')).to eq(false)
+      expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
+      expect(@config_instance.beef_url_str).to eq('http://localhost:80')
+    end
+
+    it 'should return the full url string for beef https localhost 3000 default' do
+      @config_instance.set('beef.http.host', 'localhost')
+      @config_instance.set('beef.http.port', nil)
+      @config_instance.set('beef.https.enabled', true)
+      @config_instance.set('beef.https.public_enabled', false)
+      @config_instance.set('beef.http.public', nil)
+      @config_instance.set('beef.http.public_port', nil)
+      expect(@config_instance.get('beef.http.host')).to eq('localhost')
+      expect(@config_instance.get('beef.http.port')).to eq(nil)
+      expect(@config_instance.get('beef.https.enabled')).to eq(true)
+      expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
+      expect(@config_instance.beef_url_str).to eq('http://localhost:3000')
+    end
   end
 end
