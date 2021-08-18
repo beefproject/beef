@@ -14,6 +14,7 @@ RSpec.describe 'BeEF Extension Social Engineering' do
 
   it 'clone web page' do
     expect {
+      BeEF::Core::Server.instance.prepare
       BeEF::Extension::SocialEngineering::WebCloner.instance.clone_page("https://www.google.com", "/", nil, nil)
     }.to_not raise_error
     FileUtils.rm(Dir['./extensions/social_engineering/web_cloner/cloned_pages/www.google.com'])
