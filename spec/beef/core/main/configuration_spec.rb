@@ -110,18 +110,18 @@ RSpec.describe 'BeEF Configuration' do
 
     it 'should get https enabled value set to true' do
       @config_instance.set('beef.https.public_enabled', true)
-      expect(@config_instance.public_https_enabled).to eq(true)
+      expect(@config_instance.public_https_enabled?).to eq(true)
     end
 
     it 'should get https enabled value set to false' do
       @config_instance.set('beef.https.public_enabled', false)
-      expect(@config_instance.public_https_enabled).to eq(false)
+      expect(@config_instance.public_https_enabled?).to eq(false)
     end
 
     it 'should get the default https to false' do
       @config_instance.set('beef.https.public_enabled', nil)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(nil)
-      expect(@config_instance.public_https_enabled).to eq(false)
+      expect(@config_instance.public_https_enabled?).to eq(false)
     end
 
     it 'should return public port as 443 if public https is enabled' do
@@ -129,7 +129,7 @@ RSpec.describe 'BeEF Configuration' do
       @config_instance.set('beef.http.public_port', nil)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(true)
       expect(@config_instance.get('beef.http.public_port')).to eq(nil)
-      expect(@config_instance.public_https_enabled).to eq(true)
+      expect(@config_instance.public_https_enabled?).to eq(true)
       expect(@config_instance.public_port).to eq('443')
     end
   end
@@ -173,14 +173,16 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.beef_port).to eq('80')
     end
     
-    it 'should return a protocol https if https public has been enabled' do
+    it 'should return a protocol https if https public has been enabled and public host is set' do
       @config_instance.set('beef.https.public_enabled', true)
+      @config_instance.set('beef.http.public', 'public')
       expect(@config_instance.get('beef.https.public_enabled')).to eq(true)
       expect(@config_instance.beef_proto).to eq('https')
     end
 
-    it 'should return a protocol http if https public has not been enabled'  do
+    it 'should return a protocol http if public is not set and https local is fales'  do
       @config_instance.set('beef.https.public_enabled', false)
+      @config_instance.set('beef.https.enabled', false)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
       expect(@config_instance.beef_proto).to eq('http')
     end
@@ -210,7 +212,7 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.get('beef.http.port')).to eq(nil)
       expect(@config_instance.get('beef.https.enabled')).to eq(true)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
-      expect(@config_instance.beef_url_str).to eq('http://localhost:3000')
+      expect(@config_instance.beef_url_str).to eq('https://localhost:3000')
     end
   end
 end

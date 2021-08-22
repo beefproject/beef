@@ -91,6 +91,13 @@ module BeEF
       end
 
       #
+      # Return the local protocol
+      # if nothing is set default to http
+      def local_proto
+        get('beef.https.enabled') ? 'https' : 'http'
+      end
+
+      #
       # Returns the configuration value for the local https enabled
       # If nothing is set it should default to false
       def local_https_enabled
@@ -116,12 +123,22 @@ module BeEF
       def beef_port
         public_port || local_port
       end
+
+      def public_enabled?
+        !get('beef.http.public').nil?
+      end
       
       #
       # Returns the beef protocol that is used by external resources
       # e.g. hooked browsers
       def beef_proto
-        public_https_enabled ? 'https' : 'http'
+        if public_enabled? && public_https_enabled? then
+          return 'https'
+        elsif public_enabled? && !public_https_enabled?
+          return 'http'
+        elsif !public_enabled?
+          return local_proto
+        end
       end
 
       #
@@ -136,7 +153,7 @@ module BeEF
       def public_port
         return get('beef.http.public_port') unless get('beef.http.public_port').nil?
 
-        return '443' if public_https_enabled
+        return '443' if public_https_enabled?
         return '80' unless public_host.nil?
 
         nil
@@ -145,7 +162,7 @@ module BeEF
       #
       # Returns the configuration value for the local https enabled
       # If nothing is set it should default to false
-      def public_https_enabled
+      def public_https_enabled?
         get('beef.https.public_enabled') || false
       end
 
