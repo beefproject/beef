@@ -21,4 +21,3 @@ RSpec.describe 'BeEF Command class testing' do
     
   end
 end
-
