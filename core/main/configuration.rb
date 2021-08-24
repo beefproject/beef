@@ -148,6 +148,13 @@ module BeEF
         "#{beef_proto}://#{beef_host}:#{beef_port}"
       end
 
+      #
+      # context name for the beef_url_str method when using this
+      # to say that this is the hook url
+      def hook_url
+        beef_url_str
+      end
+
       # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
       def public_port

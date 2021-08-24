@@ -199,6 +199,7 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.get('beef.https.enabled')).to eq(false)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
       expect(@config_instance.beef_url_str).to eq('http://localhost:80')
+      expect(@config_instance.hook_url).to eq('http://localhost:80')
     end
 
     it 'should return the full url string for beef https localhost 3000 default' do
@@ -213,6 +214,7 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.get('beef.https.enabled')).to eq(true)
       expect(@config_instance.get('beef.https.public_enabled')).to eq(false)
       expect(@config_instance.beef_url_str).to eq('https://localhost:3000')
+      expect(@config_instance.hook_url).to eq('https://localhost:3000')
     end
   end
 end
