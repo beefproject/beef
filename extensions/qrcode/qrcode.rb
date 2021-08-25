@@ -19,9 +19,9 @@ module Qrcode
 
       # get server config
       configuration = BeEF::Core::Configuration.instance
-      beef_proto = configuration.get('beef.http.https.enable') == true ? "https" : "http"
-      beef_host  = configuration.get("beef.http.public") || configuration.get("beef.http.host")
-      beef_port  = configuration.get("beef.http.public_port") || configuration.get("beef.http.port")
+      beef_proto = configuration.beef_proto
+      beef_host  = configuration.beef_host
+      beef_port  = configuration.beef_port
 
       # get URLs from QR config
       configuration.get("beef.extension.qrcode.targets").each do |target|
