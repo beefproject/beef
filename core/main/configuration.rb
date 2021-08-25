@@ -170,7 +170,7 @@ module BeEF
       # Returns the configuration value for the local https enabled
       # If nothing is set it should default to false
       def public_https_enabled?
-        get('beef.https.public_enabled') || false
+        get('beef.http.https.public_enabled') || false
       end
 
       #
