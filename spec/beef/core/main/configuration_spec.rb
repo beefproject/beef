@@ -216,11 +216,5 @@ RSpec.describe 'BeEF Configuration' do
       expect(@config_instance.beef_url_str).to eq('https://localhost:3000')
       expect(@config_instance.hook_url).to eq('https://localhost:3000')
     end
-
-    it 'should return ngrok url' do
-      @config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
-      expect(@config.get('beef.http.https.public_enabled')).to eq(true)
-      expect(@config.hook_url).to eq('https://1197-117-20-68-195.ngrok.io:443')
-    end
   end
 end
