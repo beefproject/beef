@@ -94,14 +94,14 @@ module BeEF
       # Return the local protocol
       # if nothing is set default to http
       def local_proto
-        get('beef.https.enabled') ? 'https' : 'http'
+        get('beef.http.https.enabled') ? 'https' : 'http'
       end
 
       #
       # Returns the configuration value for the local https enabled
       # If nothing is set it should default to false
       def local_https_enabled
-        get('beef.https.enabled') || false
+        get('beef.http.https.enabled') || false
       end
 
       #

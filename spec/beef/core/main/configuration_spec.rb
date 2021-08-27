@@ -41,12 +41,12 @@ RSpec.describe 'BeEF Configuration' do
 
   context 'beef https enabled configuration values' do
     it 'should set the https enabled config value' do
-      @config_instance.set('beef.https.enabled', true)
-      expect(@config_instance.get('beef.https.enabled')).to eq(true)
+      @config_instance.set('beef.http.https.enabled', true)
+      expect(@config_instance.get('beef.http.https.enabled')).to eq(true)
     end
 
     it 'should get https enabled value set to true' do
-      @config_instance.set('beef.https.enabled', true)
+      @config_instance.set('beef.http.https.enabled', true)
       expect(@config_instance.local_https_enabled).to eq(true)
     end
 
@@ -56,8 +56,8 @@ RSpec.describe 'BeEF Configuration' do
     end
 
     it 'should get the default https enabled value' do
-      @config_instance.set('beef.https.enabled', nil)
-      expect(@config_instance.get('beef.https.enabled')).to eq(nil)
+      @config_instance.set('beef.http.https.enabled', nil)
+      expect(@config_instance.get('beef.http.https.enabled')).to eq(nil)
       expect(@config_instance.local_https_enabled).to eq(false)
     end
   end
