@@ -148,11 +148,18 @@ module BeEF
         "#{beef_proto}://#{beef_host}:#{beef_port}"
       end
 
+      # Returns the hool path value stored in the config file
       #
-      # context name for the beef_url_str method when using this
-      # to say that this is the hook url
+      # @return [String] hook file path
+      def hook_file_path
+        get('beef.http.hook_file') || '/hook.js'
+      end
+
+      # Returns the url to the hook file
+      #
+      # @return [String] the url string
       def hook_url
-        beef_url_str
+        "#{beef_url_str}#{hook_file_path}"
       end
 
       # Returns the configuration value for the http server port
