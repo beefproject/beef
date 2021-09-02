@@ -14,7 +14,7 @@ class Phonegap_persistence < BeEF::Core::Command
     proto = @configuration.beef_proto
     beef_host = @configuration.beef_host
     beef_port = @configuration.beef_port
-    hook_file = @configuration.get("beef.http.hook_file")
+    hook_file = @configuration.hook_file_path
 
     return [{
       'name' => 'hook_url',

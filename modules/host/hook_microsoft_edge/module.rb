@@ -7,7 +7,7 @@
 class Hook_microsoft_edge < BeEF::Core::Command
   def self.options
     configuration = BeEF::Core::Configuration.instance
-    hook_uri = "#{configuration.hook_url}/demos/plain.html"
+    hook_uri = "#{configuration.beef_url_str}/demos/plain.html"
 
     return [
       {'name' => 'url', 'ui_label'=>'URL', 'type' => 'text', 'width' => '400px', 'value' => hook_uri },
