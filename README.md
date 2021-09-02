@@ -41,6 +41,11 @@ Requirements
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 * Selenium is required on OSX: `brew install selenium-server-standalone` (See https://github.com/shvets/selenium)
 
+Docker Alternative
+-----------
+
+The BeEF Docker installation is availabe now and requires only the installation of Docker and the BeEF source code.
+Details on installation can be found in the Docker section of [Install.txt](https://github.com/beefproject/beef/wiki/Installation#docker-setup)
 
 ActiveRecord
 -----------
