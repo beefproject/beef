@@ -17,7 +17,7 @@ extensions/metasploit/msf-exploits.cache
 .byebug_history
 
 # Bundler
-/.bundler
+/.bundle
 /vendor
 
 #simplecov
