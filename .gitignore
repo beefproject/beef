@@ -16,6 +16,10 @@ extensions/metasploit/msf-exploits.cache
 # ruby debugging
 .byebug_history
 
+# Bundler
+/.bundle
+/vendor
+
 #simplecov
 coverage/
 
