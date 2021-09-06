@@ -67,5 +67,11 @@ it's best to regularly update BeEF to the latest version.
 
 If you're using BeEF from the GitHub repository, updating is as simple as:
 
+  $ ./update-beef
+
+Or pull the latest repo yourself and then update the gems with:
+  
   $ git pull
+  
+  $ bundle
 
