@@ -32,6 +32,13 @@ if RUBY_PLATFORM.downcase.include?('mswin') || RUBY_PLATFORM.downcase.include?('
 end
 
 #
+# @note Ask user if they would like to update beef
+#
+print "Would you like to check and download the latest BeEF update? y/n: " 
+response = gets
+system("git pull && bundle") if response.strip == 'y' 
+
+#
 # @note set load path, application root directory and user preferences directory
 #
 $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
