@@ -77,6 +77,110 @@ module BeEF
       end
 
       #
+      # Returns the configuration value for the http server host
+      # If nothing is set it should default to 0.0.0.0 (all interfaces)
+      def local_host
+        get('beef.http.host') || '0.0.0.0'
+      end
+
+      #
+      # Returns the configuration value for the http server port
+      # If nothing is set it should default to 3000
+      def local_port
+        get('beef.http.port') || '3000'
+      end
+
+      #
+      # Return the local protocol
+      # if nothing is set default to http
+      def local_proto
+        get('beef.http.https.enabled') ? 'https' : 'http'
+      end
+
+      #
+      # Returns the configuration value for the local https enabled
+      # If nothing is set it should default to false
+      def local_https_enabled
+        get('beef.http.https.enabled') || false
+      end
+
+      #
+      # Returns the configuration value for the http server host
+      def public_host
+        get('beef.http.public')
+      end
+
+      #
+      # Returns the beef host which is used by external resources
+      # e.g. hooked browsers
+      def beef_host
+        public_host || local_host
+      end
+
+      #
+      # Returns the beef port which is used by external resource
+      # e.g. hooked browsers
+      def beef_port
+        public_port || local_port
+      end
+
+      def public_enabled?
+        !get('beef.http.public').nil?
+      end
+      
+      #
+      # Returns the beef protocol that is used by external resources
+      # e.g. hooked browsers
+      def beef_proto
+        if public_enabled? && public_https_enabled? then
+          return 'https'
+        elsif public_enabled? && !public_https_enabled?
+          return 'http'
+        elsif !public_enabled?
+          return local_proto
+        end
+      end
+
+      #
+      # Returns the beef scheme://host:port for external resources
+      # e.g. hooked browsers
+      def beef_url_str
+        "#{beef_proto}://#{beef_host}:#{beef_port}"
+      end
+
+      # Returns the hool path value stored in the config file
+      #
+      # @return [String] hook file path
+      def hook_file_path
+        get('beef.http.hook_file') || '/hook.js'
+      end
+
+      # Returns the url to the hook file
+      #
+      # @return [String] the url string
+      def hook_url
+        "#{beef_url_str}#{hook_file_path}"
+      end
+
+      # Returns the configuration value for the http server port
+      # If nothing is set it should default to 3000
+      def public_port
+        return get('beef.http.public_port') unless get('beef.http.public_port').nil?
+
+        return '443' if public_https_enabled?
+        return '80' unless public_host.nil?
+
+        nil
+      end
+
+      #
+      # Returns the configuration value for the local https enabled
+      # If nothing is set it should default to false
+      def public_https_enabled?
+        get('beef.http.https.public_enabled') || false
+      end
+
+      #
       # Returns the value of a selected key in the configuration file.
       # @param [String] key Key of configuration item
       # @return [Hash|String] The resulting value stored against the 'key'

@@ -75,7 +75,7 @@ class Firefox_extension_reverse_shell < BeEF::Core::Command
 
   def self.options
     @configuration = BeEF::Core::Configuration.instance
-    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_host = @configuration.beef_host
     return [
         {'name' => 'extension_name', 'ui_label' => 'Extension name', 'value' => 'HTML5 Rendering Enhancements'},
         {'name' => 'xpi_name', 'ui_label' => 'Extension file (XPI) name', 'value' => 'HTML5_Enhancements'},

