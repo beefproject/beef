@@ -280,7 +280,8 @@ module BeEF
       private
 
       def validate_public_config_variable?(config)
-        return true if config['beef']['http']['public'].is_a?(Hash)
+        return true if (config['beef']['http']['public'].is_a?(Hash) || config['beef']['http']['public'].is_a?(NilClass))
+
 
         print_error 'Config path beef.http.public is deprecated.'
         print_error 'Please use the new format for public variables found'

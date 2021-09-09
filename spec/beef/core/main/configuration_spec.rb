@@ -13,8 +13,15 @@ end
 RSpec.describe 'BeEF Configuration' do
   context 'configuration validation', :type => :old do
     it 'should error when using hold public config' do
+      @config_instance.set('beef.http.public', 'example.com')
       expect(@config_instance.validate).to eq(nil)
     end
+
+    it 'should error when using old public_port config' do
+      @config_instance.set('beef.http.public_port', 443)
+      expect(@config_instance.validate).to eq(nil)
+    end
+
   end
 
   context 'http local host configuration values' do
