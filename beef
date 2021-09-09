@@ -109,13 +109,13 @@ end
 #
 # @note Validate beef.http.public and beef.http.public_port
 #
-unless config.get('beef.http.public').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public'))
-  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
+unless config.get('beef.http.public.host').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public.host'))
+  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public.host')}"
   exit 1
 end
 
-unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public_port'))
-  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
+unless config.get('beef.http.public.port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public.port'))
+  print_error "ERROR: Invalid public port: #{config.get('beef.http.public.port')}"
   exit 1
 end
 
