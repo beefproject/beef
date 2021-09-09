@@ -73,6 +73,15 @@ module BeEF
           return
         end
 
+        return unless validate_public_config_variable?(@config)
+
+        if @config['beef']['http']['public_port']
+          print_error 'Config path beef.http.public_port is deprecated.'
+          print_error 'Please use the new format for public variables found'
+          print_error 'https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration'
+          return
+        end
+
         true
       end
 
@@ -107,7 +116,7 @@ module BeEF
       #
       # Returns the configuration value for the http server host
       def public_host
-        get('beef.http.public')
+        get('beef.http.public.host')
       end
 
       #
@@ -125,7 +134,7 @@ module BeEF
       end
 
       def public_enabled?
-        !get('beef.http.public').nil?
+        !get('beef.http.public.host').nil?
       end
       
       #
@@ -266,6 +275,17 @@ module BeEF
             y['beef']['module'].keys.first
           )
         end
+      end
+
+      private
+
+      def validate_public_config_variable?(config)
+        return true if config['beef']['http']['public'].is_a?(Hash)
+
+        print_error 'Config path beef.http.public is deprecated.'
+        print_error 'Please use the new format for public variables found'
+        print_error 'https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration'
+        false
       end
     end
   end
