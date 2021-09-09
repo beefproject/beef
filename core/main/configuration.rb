@@ -186,7 +186,7 @@ module BeEF
       # Returns the configuration value for the local https enabled
       # If nothing is set it should default to false
       def public_https_enabled?
-        get('beef.http.https.public_enabled') || false
+        get('beef.http.public.https') || false
       end
 
       #
@@ -280,7 +280,8 @@ module BeEF
       private
 
       def validate_public_config_variable?(config)
-        return true if (config['beef']['http']['public'].is_a?(Hash) || config['beef']['http']['public'].is_a?(NilClass))
+        return true if (config['beef']['http']['public'].is_a?(Hash) || 
+                        config['beef']['http']['public'].is_a?(NilClass))
 
 
         print_error 'Config path beef.http.public is deprecated.'
