@@ -80,7 +80,7 @@ module Banners
       configuration = BeEF::Core::Configuration.instance
       # local config settings
       proto = configuration.local_proto
-      hook_file = configuration.hook_file
+      hook_file = configuration.hook_file_path
       admin_ui = configuration.get("beef.extension.admin_ui.enable") ? true : false
       admin_ui_path = configuration.get("beef.extension.admin_ui.base_path")
 
