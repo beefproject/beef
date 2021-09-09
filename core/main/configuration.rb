@@ -174,7 +174,7 @@ module BeEF
       # Returns the configuration value for the http server port
       # If nothing is set it should default to 3000
       def public_port
-        return get('beef.http.public_port') unless get('beef.http.public_port').nil?
+        return get('beef.http.public.port') unless get('beef.http.public.port').nil?
 
         return '443' if public_https_enabled?
         return '80' unless public_host.nil?
