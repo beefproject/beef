@@ -62,23 +62,23 @@ RSpec.describe 'BeEF Configuration' do
 
   context 'beef https enabled configuration values' do
     it 'should set the https enabled config value' do
-      @config_instance.set('beef.http.https.enabled', true)
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(true)
+      @config_instance.set('beef.http.https.enable', true)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(true)
     end
 
     it 'should get https enabled value set to true' do
-      @config_instance.set('beef.http.https.enabled', true)
+      @config_instance.set('beef.http.https.enable', true)
       expect(@config_instance.local_https_enabled).to eq(true)
     end
 
     it 'should get https enabled value set to false' do
-      @config_instance.set('beef.http.https.enabled', false)
+      @config_instance.set('beef.http.https.enable', false)
       expect(@config_instance.local_https_enabled).to eq(false)
     end
 
     it 'should get the default https enabled value' do
-      @config_instance.set('beef.http.https.enabled', nil)
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(nil)
+      @config_instance.set('beef.http.https.enable', nil)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(nil)
       expect(@config_instance.local_https_enabled).to eq(false)
     end
   end
@@ -125,8 +125,8 @@ RSpec.describe 'BeEF Configuration' do
 
   context 'beef https enabled configuration values' do
     it 'should set the https enabled config value' do
-      @config_instance.set('beef.http.https.enabled', true)
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(true)
+      @config_instance.set('beef.http.https.enable', true)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(true)
     end
 
     it 'should get https enabled value set to true' do
@@ -203,7 +203,7 @@ RSpec.describe 'BeEF Configuration' do
 
     it 'should return a protocol http if public is not set and https local is fales'  do
       @config_instance.set('beef.http.public.https', false)
-      @config_instance.set('beef.http.https.enabled', false)
+      @config_instance.set('beef.http.https.enable', false)
       expect(@config_instance.get('beef.http.public.https')).to eq(false)
       expect(@config_instance.beef_proto).to eq('http')
     end
@@ -211,13 +211,13 @@ RSpec.describe 'BeEF Configuration' do
     it 'should return the full url string for beef local http and port 80' do
       @config_instance.set('beef.http.host', 'localhost')
       @config_instance.set('beef.http.port', '80')
-      @config_instance.set('beef.http.https.enabled', false)
+      @config_instance.set('beef.http.https.enable', false)
       @config_instance.set('beef.http.public.https', false)
       @config_instance.set('beef.http.public.host', nil)
       @config_instance.set('beef.http.public.port', nil)
       expect(@config_instance.get('beef.http.host')).to eq('localhost')
       expect(@config_instance.get('beef.http.port')).to eq('80')
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(false)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(false)
       expect(@config_instance.get('beef.http.public.https')).to eq(false)
       expect(@config_instance.beef_url_str).to eq('http://localhost:80')
     end
@@ -225,14 +225,14 @@ RSpec.describe 'BeEF Configuration' do
     it 'should return the full url string for beef https localhost 3000 default' do
       @config_instance.set('beef.http.host', 'localhost')
       @config_instance.set('beef.http.port', nil)
-      @config_instance.set('beef.http.https.enabled', true)
+      @config_instance.set('beef.http.https.enable', true)
       @config_instance.set('beef.http.public.host', nil)
       @config_instance.set('beef.http.public.https', false)
       @config_instance.set('beef.http.public.host', nil)
       @config_instance.set('beef.http.public.port', nil)
       expect(@config_instance.get('beef.http.host')).to eq('localhost')
       expect(@config_instance.get('beef.http.port')).to eq(nil)
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(true)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(true)
       expect(@config_instance.get('beef.http.public.https')).to eq(false)
       expect(@config_instance.beef_url_str).to eq('https://localhost:3000')
     end
@@ -240,14 +240,14 @@ RSpec.describe 'BeEF Configuration' do
     it 'should return the full url string for beef hook url' do
       @config_instance.set('beef.http.host', 'localhost')
       @config_instance.set('beef.http.port', nil)
-      @config_instance.set('beef.http.https.enabled', true)
+      @config_instance.set('beef.http.https.enable', true)
       @config_instance.set('beef.http.public.https', false)
       @config_instance.set('beef.http.public.host', nil)
       @config_instance.set('beef.http.public.port', nil)
       @config_instance.set('beeg.http.hook_file', '/hook.js')
       expect(@config_instance.get('beef.http.host')).to eq('localhost')
       expect(@config_instance.get('beef.http.port')).to eq(nil)
-      expect(@config_instance.get('beef.http.https.enabled')).to eq(true)
+      expect(@config_instance.get('beef.http.https.enable')).to eq(true)
       expect(@config_instance.get('beef.http.public.https')).to eq(false)
       expect(@config_instance.get('beef.http.hook_file')).to eq('/hook.js')
       expect(@config_instance.beef_url_str).to eq('https://localhost:3000')
