@@ -56,7 +56,7 @@ beef:
         # NOTE: Allowing the reverse proxy will enable a vulnerability where the ui/panel can be spoofed
         #   by altering the X-FORWARDED-FOR ip address in the request header.
         allow_reverse_proxy: false
-        public: "example" # public hostname/IP address
+        #public: "example" # public hostname/IP address
         #public_port: "" # public port (experimental)
 
         # Hook
