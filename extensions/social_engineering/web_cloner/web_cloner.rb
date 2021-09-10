@@ -14,7 +14,7 @@ module BeEF
           @http_server = BeEF::Core::Server.instance
           @config = BeEF::Core::Configuration.instance
           @cloned_pages_dir = "#{File.expand_path('../../../../extensions/social_engineering/web_cloner', __FILE__)}/cloned_pages/"
-          @beef_hook = "#{@config.hook_url}#{@config.get('beef.http.hook_file')}"
+          @beef_hook = "#{@config.hook_url}"
         end
 
         def clone_page(url, mount, use_existing, dns_spoof)
