@@ -36,7 +36,7 @@ end
 #
 print "Would you like to check and download the latest BeEF update? y/n: " 
 response = gets
-system("git pull && bundle") if response.strip == 'y' 
+`git pull && bundle` if response.strip == 'y' 
 
 #
 # @note set load path, application root directory and user preferences directory
