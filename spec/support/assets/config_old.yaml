@@ -6,7 +6,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.5.2.0'
+    version: '0.5.1.0'
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
@@ -47,14 +47,8 @@ beef:
 
         # Host Name / Domain Name
         # If you want BeEF to be accessible via hostname or domain name (ie, DynDNS),
-        # These settings will be used to create a public facing URL
-        # This public facing URL will be used for all hook related calls
-        # set the public setting below:
-        # public: ""
-        #     host: "" # public hostname/IP address
-        #     port: "" # public port will default to 80 if no https 443 if https 
-                      # and local if not set but there is a public host
-        #     https: false # true/false
+        #   set the public hostname below:
+        #public: ""      # public hostname/IP address
 
         # Reverse Proxy / NAT
         # If you want BeEF to be accessible behind a reverse proxy or NAT,
@@ -62,6 +56,8 @@ beef:
         # NOTE: Allowing the reverse proxy will enable a vulnerability where the ui/panel can be spoofed
         #   by altering the X-FORWARDED-FOR ip address in the request header.
         allow_reverse_proxy: false
+        #public: "example" # public hostname/IP address
+        #public_port: "" # public port (experimental)
 
         # Hook
         hook_file: "/hook.js"
