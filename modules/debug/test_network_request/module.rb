@@ -13,8 +13,8 @@ class Test_network_request < BeEF::Core::Command
 
   def self.options
     @configuration = BeEF::Core::Configuration.instance
-    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-    beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
+    beef_host = @configuration.beef_host
+    beef_port = @configuration.beef_port
     hook_path = @configuration.get("beef.http.hook_file")
 
     return [

@@ -48,7 +48,8 @@ module Banners
     def print_network_interfaces_count
       # get the configuration information
       configuration = BeEF::Core::Configuration.instance
-      beef_host = configuration.get('beef.http.host')
+      # local host
+      beef_host = configuration.local_host
 
       # create an array of the interfaces the framework is listening on
       if beef_host == '0.0.0.0' # the framework will listen on all interfaces
@@ -77,27 +78,26 @@ module Banners
     #
     def print_network_interfaces_routes
       configuration = BeEF::Core::Configuration.instance
-      proto = configuration.get("beef.http.https.enable") == true ? 'https' : 'http'
-      hook_file = configuration.get("beef.http.hook_file")
+      # local config settings
+      proto = configuration.local_proto
+      hook_file = configuration.hook_file_path
       admin_ui = configuration.get("beef.extension.admin_ui.enable") ? true : false
       admin_ui_path = configuration.get("beef.extension.admin_ui.base_path")
 
       # display the hook URL and Admin UI URL on each interface from the interfaces array
       self.interfaces.map do |host|
         print_info "running on network interface: #{host}"
-        port = configuration.get("beef.http.port")
+        port = configuration.local_port
         data = "Hook URL: #{proto}://#{host}:#{port}#{hook_file}\n"
         data += "UI URL:   #{proto}://#{host}:#{port}#{admin_ui_path}/panel\n" if admin_ui
         print_more data
       end
 
       # display the public hook URL and Admin UI URL
-      if configuration.get("beef.http.public")
-        host = configuration.get('beef.http.public')
-        port = configuration.get("beef.http.public_port") || configuration.get('beef.http.port')
+      if configuration.public_enabled?
         print_info 'Public:'
-        data = "Hook URL: #{proto}://#{host}:#{port}#{hook_file}\n"
-        data += "UI URL:   #{proto}://#{host}:#{port}#{admin_ui_path}/panel\n" if admin_ui
+        data = "Hook URL: #{configuration.hook_url}\n"
+        data += "UI URL:   #{configuration.beef_url_str}#{admin_ui_path}/panel\n" if admin_ui
         print_more data
       end
     end
@@ -130,9 +130,9 @@ module Banners
     def print_websocket_servers
       config = BeEF::Core::Configuration.instance
       ws_poll_timeout = config.get('beef.http.websocket.ws_poll_timeout')
-      print_info "Starting WebSocket server ws://#{config.get('beef.http.host')}:#{config.get("beef.http.websocket.port").to_i} [timer: #{ws_poll_timeout}]"
+      print_info "Starting WebSocket server ws://#{config.beef_host}:#{config.get("beef.http.websocket.port").to_i} [timer: #{ws_poll_timeout}]"
       if config.get("beef.http.websocket.secure")
-        print_info "Starting WebSocketSecure server on wss://[#{config.get('beef.http.host')}:#{config.get("beef.http.websocket.secure_port").to_i} [timer: #{ws_poll_timeout}]"
+        print_info "Starting WebSocketSecure server on wss://[#{config.beef_host}:#{config.get("beef.http.websocket.secure_port").to_i} [timer: #{ws_poll_timeout}]"
       end
     end
   end

@@ -7,7 +7,7 @@ class Dns_tunnel < BeEF::Core::Command
   
   def self.options
 	@configuration = BeEF::Core::Configuration.instance
-	beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+	beef_host = @configuration.beef_host
 
     return [
         {'name' => 'domain', 'ui_label'=>'Domain', 'type' => 'text', 'width' => '400px', 'value' => beef_host },
