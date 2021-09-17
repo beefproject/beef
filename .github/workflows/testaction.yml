@@ -24,13 +24,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Building web application to be tested'
-        run: npm install
+        run: ./beef
 
       - name: 'Running application under test'
-        run: ./node_modules/.bin/http-server -p 8099 &
+        run: export BEEF_TEST=true && bundle install --with test
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
-        run: node index.js  # See sample test script above
+        run: bundle exec rake --all  # See sample test script above
 
       - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
         uses: browserstack/github-actions/setup-local@master
