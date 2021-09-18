@@ -23,9 +23,6 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
-      - name: 'Installing bundler/gem dependencies'
-        run: apk add --no-cache git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS
-
       - name: 'Installing BeEF'
         run: ./install
 
