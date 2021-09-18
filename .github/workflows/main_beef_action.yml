@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Installing BeEF'
-        run: ./install
+        run: ./install -t
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true && bundle install --with test
