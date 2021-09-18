@@ -23,8 +23,25 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
+      - name: 'Instal bundler/gem dependencies'
+        run: >
+        apt-get git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
+        bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && rm -rf /usr/local/bundle/cache 
+
+      - name: 'Change dir'
+        run: cd /beef
+
+      - name: 'chmod bundle dir'
+        run: chmod -R a+r /usr/local/bundle
+
+      - name: 'Beef account permissions'
+        run: chown -R beef:beef /beef
+
+      - name: 'Beef dependencies'
+        run: apt-get curl git build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs
+
       - name: 'Installing BeEF'
-        run: ./install -t
+        run: ./install
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true && bundle install --with test
