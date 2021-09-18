@@ -26,9 +26,6 @@ jobs:
       - name: 'Installing BeEF'
         run: ./install
 
-      - name: 'Building web application to be tested'
-        run: ./beef
-
       - name: 'Running application under test'
         run: export BEEF_TEST=true && bundle install --with test
 
