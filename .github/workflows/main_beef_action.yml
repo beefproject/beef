@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Instal bundler/gem dependencies'
-        run: apt-get git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && rm -rf /usr/local/bundle/cache 
+        run: apt-get curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && rm -rf /usr/local/bundle/cache 
 
       - name: 'Change dir'
         run: cd /beef
@@ -36,7 +36,7 @@ jobs:
         run: chown -R beef:beef /beef
 
       - name: 'Beef dependencies'
-        run: apt-get curl git build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs
+        run: apt-get curl build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs
 
       - name: 'Installing BeEF'
         run: ./install
