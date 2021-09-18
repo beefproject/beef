@@ -23,6 +23,16 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
+      - name: 'Set gemrc config to install gems without Ruby Index (ri) and Ruby Documentation (rdoc) files'
+        run: "gem: --no-ri --no-rdoc" > /etc/gemrc
+
+      - name: 'Installing bundler/gem dependencies'
+        run: apk add --no-cache git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && \
+  bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && \
+
+      - name: 'Installing BeEF'
+        run: ./install
+
       - name: 'Building web application to be tested'
         run: ./beef
 
