@@ -24,9 +24,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Instal bundler/gem dependencies'
-        run: >-
-        apt-get git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
-        bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && rm -rf /usr/local/bundle/cache 
+        run: apt-get git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && rm -rf /usr/local/bundle/cache 
 
       - name: 'Change dir'
         run: cd /beef
