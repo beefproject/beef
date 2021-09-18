@@ -25,7 +25,7 @@ jobs:
 
       - name: 'Instal bundler/gem dependencies'
         run: |
-          apt-get install curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
+          sudo apt-get install curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
           bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && 
           rm -rf /usr/local/bundle/cache 
 
@@ -40,7 +40,7 @@ jobs:
 
       - name: 'Beef dependencies'
         run: |
-          apt-get install curl build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev 
+          sudo apt-get install curl build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev 
           libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs
 
       - name: 'Installing BeEF'
