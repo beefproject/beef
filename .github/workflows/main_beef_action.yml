@@ -1,6 +1,5 @@
 name: 'BrowserStack Test'
 on: [push, pull_request]
-TERM: dumb
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
@@ -9,12 +8,14 @@ jobs:
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
+        shell: script -e -c {0}
         with:
           username:  ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
       - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
         uses: browserstack/github-actions/setup-local@master
+        shell: script -e -c {0}
         with:
           local-testing: start
           local-identifier: random
