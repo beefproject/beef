@@ -1,5 +1,8 @@
 name: 'BrowserStack Test'
 on: [push, pull_request]
+defaults: 
+  run: 
+    working-directory: ./beef
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
@@ -31,13 +34,6 @@ jobs:
 
       - name: 'Install bundler/gem dependencies1'
         run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev zlib1g zlib1g-dev libcurl4-openssl-dev libsqlite3-dev
-        
-        #zlib-dev libcurl curl-dev libcurl sqlite-dev
-        # These are all causing exit 100 errors
-         
-        #sudo apt-get install curl build-essential openssl libreadline6-dev zlib1g zlib1g-dev libsqlite3-0 libsqlite3-dev
-         # libssl-dev libyaml-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake 
-          #libtool bison nodejs libcurl4-openssl-dev gcc-9-base libgcc-9-dev
 
       - name: 'Install bundler/gem dependencies2'
         run: sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS
