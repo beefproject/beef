@@ -27,7 +27,7 @@ jobs:
         run: sudo gem install bundler
 
       - name: 'Install bundler/gem dependencies1'
-        run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev 
+        run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev libcurl
         
         #zlib-dev libcurl curl-dev
         
