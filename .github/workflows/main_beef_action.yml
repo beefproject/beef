@@ -24,9 +24,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Install Bundler'
-        run: gem install bundler
+        run: sudo gem install bundler
 
-      - name: 'Instal bundler/gem dependencies'
+      - name: 'Install bundler/gem dependencies'
         run: |
           sudo apt-get install curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
           bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && 
