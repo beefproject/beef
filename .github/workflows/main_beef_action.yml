@@ -47,7 +47,7 @@ jobs:
       - name: 'Beef dependencies'
         run: |
           sudo apt-get install curl build-essential openssl sqlite libxml2-dev libxslt1-dev libreadline6-dev
-          libyaml-dev libc6-compat ncurses5 automake libtool bison nodejs
+          sudo apt-get install libyaml-dev libc6-compat ncurses5 automake libtool bison nodejs
 
       # yaml-dev 
 
