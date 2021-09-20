@@ -33,8 +33,8 @@ jobs:
          # libssl-dev libyaml-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake 
           #libtool bison nodejs libcurl4-openssl-dev gcc-9-base libgcc-9-dev
 
-      - name: 'Install bundler/gem dependencies2'
-        run: sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS
+      #- name: 'Install bundler/gem dependencies2'
+       # run: sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS
 
       - name: 'Change dir'
         run: cd /beef
