@@ -26,10 +26,13 @@ jobs:
       - name: 'Install Bundler'
         run: sudo gem install bundler
 
-      - name: 'Install bundler/gem dependencies'
+      - name: 'Install bundler/gem dependencies1'
         run: |
-          sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS && 
-          rm -rf /usr/local/bundle/cache 
+          sudo apt-get install curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev
+
+      - name: 'Install bundler/gem dependencies2'
+        run: |
+          sudo bundle config set --local clean 'true' --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS
 
       - name: 'Change dir'
         run: cd /beef
