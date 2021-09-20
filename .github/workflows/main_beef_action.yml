@@ -27,11 +27,10 @@ jobs:
         run: sudo gem install bundler
 
       - name: 'Install bundler/gem dependencies1'
-        run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev libcurl
+        run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev zlib1g zlib1g-dev
         
-        #zlib-dev libcurl curl-dev
-        
-        #sqlite-dev
+        #zlib-dev libcurl curl-dev libcurl sqlite-dev
+        # These are all causing exit 100 errors
          
         #sudo apt-get install curl build-essential openssl libreadline6-dev zlib1g zlib1g-dev libsqlite3-0 libsqlite3-dev
          # libssl-dev libyaml-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake 
