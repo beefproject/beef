@@ -8,17 +8,17 @@ jobs:
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
-        shell: script -e -c {0}
         with:
           username:  ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          shell: bash
 
       - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
         uses: browserstack/github-actions/setup-local@master
-        shell: script -e -c {0}
         with:
           local-testing: start
           local-identifier: random
+          shell: bash
 
 # The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
 
