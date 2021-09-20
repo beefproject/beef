@@ -1,8 +1,5 @@
 name: 'BrowserStack Test'
 on: [push, pull_request]
-defaults: 
-  run: 
-    working-directory: ./beef
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
@@ -38,14 +35,14 @@ jobs:
       - name: 'Install bundler/gem dependencies2'
         run: sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS
 
-      - name: 'Change dir'
-        run: cd /beef
+      # - name: 'Change dir'
+      #   run: cd /beef
 
-      - name: 'chmod bundle dir'
-        run: chmod -R a+r /usr/local/bundle
+      # - name: 'chmod bundle dir'
+      #   run: chmod -R a+r /usr/local/bundle
 
-      - name: 'Beef account permissions'
-        run: chown -R beef:beef /beef
+      # - name: 'Beef account permissions'
+      #   run: chown -R beef:beef /beef
 
       - name: 'Beef dependencies'
         run: |
