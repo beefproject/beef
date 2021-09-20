@@ -46,10 +46,10 @@ jobs:
 
       - name: 'Beef dependencies'
         run: |
-          sudo apt-get install curl build-base openssl readline-dev zlib zlib-dev sqlite libxml2-dev 
+          sudo apt-get install curl build-base openssl readline-dev zlib sqlite libxml2-dev 
           libxslt-dev autoconf libc6-compat ncurses5 automake libtool bison nodejs
 
-      # yaml-dev libressl-dev
+      # yaml-dev libressl-dev zlib-dev
 
       - name: 'Installing BeEF'
         run: ./install
