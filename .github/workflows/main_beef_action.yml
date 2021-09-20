@@ -12,6 +12,7 @@ jobs:
           username:  ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           shell: bash
+          TERM: dumb
 
       - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
         uses: browserstack/github-actions/setup-local@master
@@ -19,6 +20,7 @@ jobs:
           local-testing: start
           local-identifier: random
           shell: bash
+          TERM: dumb
 
 # The next 3 steps are for building the web application to be tested and starting the web server on the runner environment
 
