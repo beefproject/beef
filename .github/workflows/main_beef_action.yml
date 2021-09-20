@@ -1,5 +1,7 @@
 name: 'BrowserStack Test'
 on: [push, pull_request]
+variables:
+  TERM: dumb
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
