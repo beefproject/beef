@@ -26,8 +26,12 @@ jobs:
       - name: 'Instal bundler/gem dependencies'
         run: |
           sudo apt-get install curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && 
+          
+      - name: 'Instal bundler/gem dependencies'
+        run: |
           bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && 
           rm -rf /usr/local/bundle/cache 
+
 
       - name: 'Change dir'
         run: cd /beef
