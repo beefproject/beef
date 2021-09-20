@@ -27,9 +27,7 @@ jobs:
         run: sudo gem install bundler
 
       - name: 'Install bundler/gem dependencies1'
-        run: |
-          sudo apt-get install --no-cache curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev &&
-          bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS &&
+        run: sudo apt-get install --no-cache curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev
          
         #sudo apt-get install curl build-essential openssl libreadline6-dev zlib1g zlib1g-dev libsqlite3-0 libsqlite3-dev
          # libssl-dev libyaml-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake 
