@@ -55,6 +55,9 @@ jobs:
       #   env: 
       #     TERM: xterm
 
+      - name: 'LS'
+        run: ls -la
+
       - name: 'Running application under test'
         run: export BEEF_TEST=true
 
