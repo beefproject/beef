@@ -50,7 +50,9 @@ jobs:
           sudo apt-get install libyaml-dev libc6-dev libncurses5-dev automake libtool bison nodejs
 
       - name: 'Installing BeEF'
-        run: bash ./install -ud
+        run: ./install -ud
+        env: 
+          TERM: dumb
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true && bundle install --with test
