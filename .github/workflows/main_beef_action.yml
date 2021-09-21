@@ -48,7 +48,7 @@ jobs:
         run: |
           sudo apt-get install curl build-essential openssl sqlite libxml2-dev libxslt1-dev libreadline6-dev
           sudo apt-get install libyaml-dev libc6-dev libncurses5-dev automake libtool bison nodejs
-          bundle install
+          sudo bundle install
 
       # - name: 'Installing BeEF'
       #   run: ./beef
