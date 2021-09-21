@@ -50,7 +50,7 @@ jobs:
           sudo apt-get install libyaml-dev libc6-dev libncurses5-dev automake libtool bison nodejs
 
       - name: 'Installing BeEF'
-        run: ./install -ud
+        run: ./install -ud -a
         env: 
           TERM: xterm
 
