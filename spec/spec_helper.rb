@@ -4,7 +4,7 @@ require 'core/loader.rb'
 # We need to load vairables that 'beef' usually does for us
 ## config (this isn't used or is shadowed by the monkey patching, needs a further look to fix properly)
 config = BeEF::Core::Configuration.new('config.yaml')
-## I haven't been able to work out why these are global variables, best practive says it needs to be changed but its used in beef.
+## I haven't been able to work out why these are global variables, best practice says it needs to be changed but its used in beef.
 ## home_dir
 $home_dir = Dir.pwd
 ## root_dir
