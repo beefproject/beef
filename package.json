@@ -1,6 +1,6 @@
 {
     "name": "BeEF",
-    "version": "0.5.2.0",
+    "version": "0.5.3.0",
     "description": "The Browser Exploitation Framework Project",
     "scripts": {
         "docs": "./node_modules/.bin/jsdoc -c conf.json"
