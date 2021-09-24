@@ -98,7 +98,7 @@ module BeEF
       # @param [Integer] id the ID of the API hook
       #
       def unregister(id)
-        @registry.delete_if {|r| r['id'] == id }
+        @registry.delete_if { |r| r['id'] == id }
       end
 
       #
