@@ -198,7 +198,7 @@ module BeEF
 
             result = mod[:owner].method(method).call(*args)
             unless result.nil?
-              data << { :api_id => mod[:id], :data => result }
+              data << { api_id: mod[:id], data: result }
             end
           rescue => e
             print_error "API Fire Error: #{e.message} in #{mod}.#{method}()"
