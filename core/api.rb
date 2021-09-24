@@ -67,7 +67,6 @@ module BeEF
           next unless r['class'] == clss
           next unless r['method'] == method
           next unless is_matched_params? r, params
-
           return true
         end
         false
@@ -87,7 +86,6 @@ module BeEF
           next unless r['class'] == clss
           next unless r['method'] == method
           next unless is_matched_params? r, params
-
           return true
         end
         false
@@ -198,7 +196,7 @@ module BeEF
 
             result = mod[:owner].method(method).call(*args)
             unless result.nil?
-              data << { api_id: mod[:id], data: result }
+              data << { :api_id => mod[:id], :data => result }
             end
           rescue => e
             print_error "API Fire Error: #{e.message} in #{mod}.#{method}()"
@@ -216,7 +214,7 @@ require 'core/api/modules'
 require 'core/api/extension'
 require 'core/api/extensions'
 require 'core/api/main/migration'
-require 'core/api/main/network_stack/assethandler'
+require 'core/api/main/network_stack/assethandler.rb'
 require 'core/api/main/server'
 require 'core/api/main/server/hook'
 require 'core/api/main/configuration'
