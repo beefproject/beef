@@ -273,7 +273,7 @@ main () {
   echo "                   -- [ BeEF Installer ] --                      "
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
-
+  info "Info running"
   get_permission
   check_os
   check_ruby_version
