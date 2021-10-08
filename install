@@ -278,7 +278,7 @@ main () {
 
   if $GITACTIONS 
   then
-    info "Skipping this"
+    info "Skipping: Running on Github Actions"
   else
     get_permission
   fi
