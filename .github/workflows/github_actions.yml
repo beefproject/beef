@@ -4,6 +4,8 @@ jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
     runs-on: ubuntu-latest  # Can be self-hosted runner also
+    env: 
+      TEST: 'test'
     steps:
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
