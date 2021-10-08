@@ -237,7 +237,7 @@ install_beef () {
 
   if command_exists bundler${RUBYSUFFIX}
   then
-    bundle${RUBYSUFFIX} install --without test development
+    bundle${RUBYSUFFIX} install
   else
     bundle install
   fi
