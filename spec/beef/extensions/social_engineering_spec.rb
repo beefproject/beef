@@ -12,7 +12,7 @@ RSpec.describe 'BeEF Extension Social Engineering' do
     }.to_not raise_error
   end
 
-  it 'clone web page' do
+  xit 'clone web page' do
     expect {
       BeEF::Core::Server.instance.prepare
       BeEF::Extension::SocialEngineering::WebCloner.instance.clone_page("https://www.google.com", "/", nil, nil)
