@@ -29,34 +29,8 @@ jobs:
       - name: 'apt-get update'
         run: sudo apt-get update
 
-      - name: 'Install bundler/gem dependencies1'
-        run: sudo apt-get install curl ruby-dev libffi-dev make g++ gcc musl-dev zlib1g zlib1g-dev libcurl4-openssl-dev libsqlite3-dev
-
-      - name: 'Install bundler/gem dependencies2'
-        run: sudo bundle config set --local clean 'true' --gemfile=/beef/Gemfile $BUNDLER_ARGS
-
-      # - name: 'Change dir'
-      #   run: cd /beef
-
-      # - name: 'chmod bundle dir'
-      #   run: chmod -R a+r /usr/local/bundle
-
-      # - name: 'Beef account permissions'
-      #   run: chown -R beef:beef /beef
-
-      - name: 'LS'
-        run: ls -la
-
-      - name: 'Beef dependencies'
-        run: |
-          sudo apt-get install curl build-essential openssl sqlite libxml2-dev libxslt1-dev libreadline6-dev
-          sudo apt-get install libyaml-dev libc6-dev libncurses5-dev automake libtool bison nodejs
-          sudo bundle install
-
-      # - name: 'Installing BeEF'
-      #   run: ./beef
-      #   env: 
-      #     TERM: xterm 
+      - name: 'Installing BeEF and Dependencies'
+        run: ./install
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true
