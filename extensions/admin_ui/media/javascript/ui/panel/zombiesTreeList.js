@@ -111,8 +111,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 
           listeners: {
               itemclick: function(item, object) {
-                  var hb_id = this.contextNode.id.split('zombie-online-')[1];
-		              var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
+                  var hb_id = this.contextNode.id.split('-')[2];
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({

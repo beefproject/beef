@@ -91,11 +91,13 @@ function locationHashChanged() {
 
   if (id === null) return;
 
+  var zombie = Object.values(beefwui.hooked_browsers).find(hb => hb.session === id);
+
   id = id.replace(/[^a-z0-9]/gi, '');
   console.log("Loading hooked browser with ID: " + id);
   mainPanel.remove(mainPanel.getComponent('current-browser'));
   if(!mainPanel.getComponent('current-browser')) {
-    mainPanel.add(new ZombieTab({session: id}));
+    mainPanel.add(new ZombieTab(zombie));
   }
 
   mainPanel.activate(mainPanel.getComponent('current-browser'));
