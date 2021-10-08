@@ -277,6 +277,7 @@ main () {
   echo
 
   if $GITACTIONS 
+  then
     info "Skipping this"
   else
     get_permission
