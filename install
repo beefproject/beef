@@ -25,7 +25,6 @@ get_permission () {
 
   warn 'This script will install BeEF and its required dependencies (including operating system packages).'
 
-  echo $TEST
   read -rp  "Are you sure you wish to continue (Y/n)? " 
   if [ "$(echo "${REPLY}" | tr "[:upper:]" "[:lower:]")" = "n" ] ; then
     fatal 'Installation aborted'
@@ -276,9 +275,12 @@ main () {
   echo "                   -- [ BeEF Installer ] --                      "
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
-  info "GET PERMISSIONS"
-  get_permission
-  info "FINISHED PERMISSIONS"
+
+  if $GITACTIONS 
+    info "Skipping this"
+  else
+    get_permission
+  fi
   check_os
   check_ruby_version
   check_rubygems
