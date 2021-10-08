@@ -239,7 +239,7 @@ install_beef () {
   then
     bundle${RUBYSUFFIX} install --without test development
   else
-    bundle install --without test development
+    bundle install
   fi
 }
 
