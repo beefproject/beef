@@ -31,6 +31,9 @@ jobs:
       - name: 'apt-get update'
         run: sudo apt-get update
 
+      - name: 'Testing setup'
+        run: bundle config unset --local without
+
       - name: 'Installing BeEF'
         run: ./install
         env: 
@@ -38,9 +41,6 @@ jobs:
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true
-
-      - name: 'Test setup'
-        run: bundle config set --local with 'test'
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: bundle exec rake --all  # See sample test script above
