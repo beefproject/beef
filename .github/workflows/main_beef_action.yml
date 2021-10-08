@@ -56,7 +56,7 @@ jobs:
       # - name: 'Installing BeEF'
       #   run: ./beef
       #   env: 
-      #     TERM: xterm
+      #     TERM: xterm 
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true
