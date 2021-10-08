@@ -39,6 +39,9 @@ jobs:
       - name: 'Running application under test'
         run: export BEEF_TEST=true
 
+      - name: 'Test setup'
+        run: bundle config set --local with 'test'
+
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
         run: bundle exec rake --all  # See sample test script above
 
