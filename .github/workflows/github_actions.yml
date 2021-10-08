@@ -34,6 +34,9 @@ jobs:
       - name: 'Testing setup'
         run: bundle config unset --local without
 
+      - name: 'Testing setup2'
+        run: bundle config set --local with 'test' 'development'
+
       - name: 'Installing BeEF'
         run: ./install
         env: 
