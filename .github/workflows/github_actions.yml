@@ -29,8 +29,10 @@ jobs:
       - name: 'apt-get update'
         run: sudo apt-get update
 
-      - name: 'Installing BeEF and Dependencies'
-        run: ./install
+        - name: 'Installing BeEF'
+          run: ./install
+          env: 
+            TERM: xterm 
 
       - name: 'Running application under test'
         run: export BEEF_TEST=true
