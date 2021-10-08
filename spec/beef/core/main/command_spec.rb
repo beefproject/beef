@@ -1,5 +1,5 @@
 RSpec.describe 'BeEF Command class testing' do
-  it 'should return a beef configuration variable' do
+  xit 'should return a beef configuration variable' do
     BeEF::Modules.load
     command_mock = BeEF::Core::Command.new('test_get_variable')
     expect(command_mock.config.beef_host).to eq('0.0.0.0')
