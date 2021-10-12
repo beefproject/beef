@@ -6,7 +6,8 @@
 require 'yaml'
 require 'bundler/setup'
 load 'tasks/otr-activerecord.rake'
-require 'byebug'
+#require 'pry-byebug'
+
 
 task :default => ["spec"]
 
@@ -17,10 +18,9 @@ end
 
 ## RSPEC
 require 'rspec/core/rake_task'
-require 'parallel'
 
 RSpec::Core::RakeTask.new(:spec) do |task|
-  task.rspec_opts = ['--tag ~bs']
+  task.rspec_opts = ['--tag ~run_on_browserstack']
 end
 
 ################################
@@ -124,13 +124,12 @@ task :beef_start => 'beef' do
   # set the environment creds -- in case we're using bad_fred
   ENV['TEST_BEEF_USER'] = test_user
   ENV['TEST_BEEF_PASS'] = test_pass
-  ENV['TEST_CONFIG'] = @beef_config_file
   config = nil
   puts "Using config file: #{@beef_config_file}\n"
 
   printf "Starting BeEF (wait a few seconds)..."
-  @beef_process_id = IO.popen("ruby ./beef -c #{@beef_config_file} -x -ud", "w+")
-  delays = [1, 1, 1, 1, 1]
+  @beef_process_id = IO.popen("ruby ./beef -c #{@beef_config_file} -x 2> /dev/null", "w+")
+  delays = [5, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   delays.each do |i| # delay for a few seconds
     printf '.'
     sleep (i)
@@ -244,40 +243,5 @@ end
 namespace :db do
   task :environment do
     require_relative "beef"
-  end
-end
-
-################################
-# BrowserStack Parallel
-
-RSpec::Core::RakeTask.new(:parallel) do |t, args|
-end
-
-desc 'Run test suite'
-task :test do
-  ENV['CONFIG_NAME'] = 'local'
-  Rake::Task['spec'].invoke
-  Rake::Task['beef_start'].invoke
-  begin
-    # Change this to your needs
-    # %w([test:spec_browserstack]).each { |t| Rake::Task[t].invoke }
-  @num_parallel = 4
-
-  Parallel.map([*1..@num_parallel], :in_processes => @num_parallel) do |task_id|
-    ENV["TASK_ID"] = (task_id - 1).to_s
-    ENV['CONFIG_NAME'] = "parallel"
-
-    Rake::Task['test:spec_browserstack'].invoke
-    Rake::Task["spec_browserstack"].reenable
-  end
-  ensure
-   Rake::Task['beef_stop'].invoke
- end
-end
-
-namespace :test do
-  desc 'Run browserstack test suite'
-  RSpec::Core::RakeTask.new(:spec_browserstack) do |task|
-    task.rspec_opts = ['--tag bs']
   end
 end

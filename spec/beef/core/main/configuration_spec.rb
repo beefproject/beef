@@ -1,14 +1,16 @@
-RSpec.describe 'BeEF Configuration' do
-  before(:context, :type => :old ) do
+RSpec.configure do |config|
+  config.before(:context, :type => :old ) do
     config = File.expand_path('../../../support/assets/config_old.yaml', __dir__)
     @config_instance = BeEF::Core::Configuration.new(config)
   end
   
-  before(:context) do
+  config.before(:context) do
     config = File.expand_path('../../../support/assets/config_new.yaml', __dir__)
     @config_instance = BeEF::Core::Configuration.new(config)
   end
-  
+end
+
+RSpec.describe 'BeEF Configuration' do
   context 'configuration validation', :type => :old do
     it 'should error when using hold public config' do
       @config_instance.set('beef.http.public', 'example.com')
