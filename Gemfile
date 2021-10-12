@@ -83,6 +83,7 @@ group :test do
     gem 'pry-byebug'
     gem "websocket-client-simple", "~> 0.3.0"
     gem "browserstack-local", "~> 1.3"
+    gem 'parallel'
 end
 
 source 'https://rubygems.org'

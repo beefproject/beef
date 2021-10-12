@@ -14,6 +14,9 @@ require 'websocket-client-simple'
 
 RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   before(:all) do
+
+    test_config = ENV['test_config'] || 'config.yaml'
+    BeEF::Core::Configuration.new(test_config)
     @config = BeEF::Core::Configuration.instance
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')

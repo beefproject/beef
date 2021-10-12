@@ -10,8 +10,9 @@ require_relative '../../../../spec_helper'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
-RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
+RSpec.xdescribe 'Browser Details Handler' do
   before(:all) do
+    skip
     @config = BeEF::Core::Configuration.instance
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
@@ -112,7 +113,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     server_teardown(@driver, @pid, @pids)
   end
 
-  it 'can successfully hook a browser' do
+  xit 'can successfully hook a browser' do
     expect(@session).not_to be_nil
   rescue StandardError => e
     print_info "Exception: #{e}"
