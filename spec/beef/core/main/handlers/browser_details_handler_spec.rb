@@ -87,7 +87,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
 
       sleep 3
 
-      sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id()') > 0 }
+      sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
       @session = @driver.execute_script('return window.beef.session.get_hook_session_id()')
     rescue StandardError => e
