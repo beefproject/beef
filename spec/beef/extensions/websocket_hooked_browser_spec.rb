@@ -81,7 +81,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
 
       @driver.navigate.to VICTIM_URL.to_s
 
-      sleep 1
+      sleep 3
 
       sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
