@@ -49,7 +49,7 @@ jobs:
         run: bundle exec rake --trace
 
       - name: 'Running test on BrowserStack'  # Invokes the actual test script that would run on BrowserStack browsers
-        run: bundle exec rake bs --trace
+        run: bundle exec rake browserstack --trace
 
       - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
         uses: browserstack/github-actions/setup-local@master
