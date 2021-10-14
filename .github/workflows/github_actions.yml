@@ -34,6 +34,8 @@ jobs:
 
       - name: 'Build and run tests'
         run: |
+          apt update
+          apt install libcurl
           bundle config unset --local without
           bundle config set --local with 'test' 'development'
           bundle install
