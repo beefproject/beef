@@ -31,12 +31,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6 # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
       - name: 'Build and run tests'
         run: |
           bundle config unset --local without
           bundle config set --local with 'test' 'development'
+          bundle install --no-rdoc
           bundle exec rake browserstack --trace
 
       - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
