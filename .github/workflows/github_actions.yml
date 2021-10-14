@@ -2,7 +2,6 @@ name: 'BrowserStack Test'
 
 on:
   push:
-    branches: [feature/ci]
 
 jobs:
   ubuntu-job:
