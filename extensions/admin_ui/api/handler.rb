@@ -28,7 +28,8 @@ module API
           },
           :compress => {
             :dead_code => true,
-          }
+          },
+          :harmony => true
         }
         minified = Uglifier.compile(evaluated, opts)
         print_debug "[AdminUI] Minified #{name} (#{minified.size} bytes)"
