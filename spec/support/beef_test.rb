@@ -5,6 +5,11 @@
 #
 require 'test/unit'
 
+require 'capybara'
+require 'capybara/rspec'
+Capybara.run_server = false # we need to run our own BeEF server
+
+require 'selenium-webdriver'
 
 class BeefTest
   def self.save_screenshot(session)
