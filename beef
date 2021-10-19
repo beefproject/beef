@@ -37,7 +37,8 @@ end
 $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
-
+$last_commit = $(`git rev-parse master`)
+$last_origin_commit = $('git rev-parse origin/master')
 #
 # @note Require core loader
 #
@@ -51,8 +52,8 @@ require 'timeout'
 if BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
   if BeEF::Core::Console::CommandLine.parse[:update_auto] == true
   print "Pulling latest BeEF repository and updating"
-  `git pull && bundle`  
-  else
+  `git pull && bundle` 
+  elsif ! [[ $last_origin_commit = $last_commit]]
     begin
       answer = Timeout::timeout(5) do
         print "Would you like to check and download the latest BeEF update? y/n: " 
