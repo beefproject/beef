@@ -108,8 +108,8 @@ GEM
     nokogiri (1.12.4)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    otr-activerecord (2.0.1)
-      activerecord (>= 4.0, < 6.3)
+    otr-activerecord (2.0.3)
+      activerecord (>= 4.0, < 7.1)
       hashie-forbidden_attributes (~> 0.1)
     parallel (1.20.1)
     parseconfig (1.1.0)
@@ -244,7 +244,7 @@ GEM
       webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
