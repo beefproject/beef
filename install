@@ -276,7 +276,9 @@ main () {
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
 
-  if $GITACTIONS 
+empty="" # Used for confirming GITACTIONS below is set
+
+  if [ -z ${GITACTIONS+empty} ];
   then
     info "Skipping: Running on Github Actions"
   else
