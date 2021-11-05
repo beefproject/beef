@@ -46,10 +46,10 @@ Quick Start
 
 __The following is for the impatient.__
 
-The `install` script installs the required operating system packages and all the prerequisite Ruby gems:
+Quick install:
 
 ```
-$ ./install
+$ sudo apt install beef-xss
 ```
 
 For full installation details, please refer to [INSTALL.txt](https://github.com/beefproject/beef/blob/master/INSTALL.txt) or the [Installation](https://github.com/beefproject/beef/wiki/Installation) page on the wiki.
