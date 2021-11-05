@@ -37,8 +37,7 @@ end
 $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
-last_commit = `git rev-parse master`
-last_origin_commit = `git rev-parse origin/master`
+
 #
 # @note Require core loader
 #
@@ -48,22 +47,21 @@ require 'timeout'
 #
 # @note Ask user if they would like to update beef
 #
-
-if BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
+if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
   if BeEF::Core::Console::CommandLine.parse[:update_auto] == true
-    print 'Pulling latest BeEF repository and updating'
+    print 'Checking latest BeEF repository and updating'
     `git pull && bundle`
-  elsif last_origin_commit != last_commit
+  elsif `git rev-parse master` != `git rev-parse origin/master`
     begin
-      answer = Timeout::timeout(5) do
+      Timeout.timeout(5) do
         puts '-- BeEF Update Available --'
         print 'Would you like to update to lastest version? y/n: '
         response = gets
         `git pull && bundle` if response.strip == 'y'
       end
-      rescue Timeout::Error
-        puts "\nUpdate Skipped with input timeout"
-      end
+    rescue Timeout::Error
+      puts "\nUpdate Skipped with input timeout"
+    end
   end
 end
 
