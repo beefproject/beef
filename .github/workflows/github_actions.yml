@@ -1,14 +1,22 @@
 name: 'BrowserStack Test'
 
-on: 
-  pull_request:
-    branches:
-      - master
+on:
+  pull_request_target:
+    branches: [ master ]
       
 jobs:
+  approve:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Approve
+      run: echo For security reasons, all pull requests need to be approved first before running any automated CI.
+      
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
     runs-on: ubuntu-latest  # Can be self-hosted runner also
+    environment:
+      name: Integrate Pull Request
     env: 
       GITACTIONS: true
     steps:
