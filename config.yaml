@@ -6,7 +6,7 @@
 # BeEF Configuration file
 
 beef:
-    version: '0.5.3.0'
+    version: '0.5.4.0-pre'
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
@@ -32,7 +32,7 @@ beef:
         # slow API calls to 1 every  api_attempt_delay  seconds
         api_attempt_delay: "0.05"
 
-    # HTTP server
+    # HTTP server 
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"

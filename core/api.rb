@@ -6,7 +6,6 @@
 
 module BeEF
   module API
-
     #
     # Registrar class to handle all registered timed API calls
     #
@@ -24,26 +23,26 @@ module BeEF
       # Register timed API calls to an owner
       #
       # @param [Class] owner the owner of the API hook
-      # @param [Class] c the API class the owner would like to hook into
+      # @param [Class] clss the API class the owner would like to hook into
       # @param [String] method the method of the class the owner would like to execute
       # @param [Array] params an array of parameters that need to be matched before the owner will be called
       #
-      def register(owner, c, method, params = [])
-        unless verify_api_path(c, method)
-          print_error "API Registrar: Attempted to register non-existant API method #{c} :#{method}"
+      def register(owner, clss, method, params = [])
+        unless verify_api_path(clss, method)
+          print_error "API Registrar: Attempted to register non-existant API method #{clss} :#{method}"
           return
         end
 
-        if registered?(owner, c, method, params)
-          print_debug "API Registrar: Attempting to re-register API call #{c} :#{method}"
+        if registered?(owner, clss, method, params)
+          print_debug "API Registrar: Attempting to re-register API call #{clss} :#{method}"
           return
         end
 
         id = @count
         @registry << {
-          'id'     => id,
-          'owner'  => owner,
-          'class'  => c,
+          'id' => id,
+          'owner' => owner,
+          'class' => clss,
           'method' => method,
           'params' => params
         }
@@ -56,18 +55,19 @@ module BeEF
       # Tests whether the owner is registered for an API hook
       #
       # @param [Class] owner the owner of the API hook
-      # @param [Class] c the API class
+      # @param [Class] clss the API class
       # @param [String] method the method of the class
       # @param [Array] params an array of parameters that need to be matched
       #
       # @return [Boolean] whether or not the owner is registered
       #
-      def registered?(owner, c, method, params = [])
+      def registered?(owner, clss, method, params = [])
         @registry.each do |r|
           next unless r['owner'] == owner
-          next unless r['class'] == c
+          next unless r['class'] == clss
           next unless r['method'] == method
           next unless is_matched_params? r, params
+
           return true
         end
         false
@@ -76,17 +76,18 @@ module BeEF
       #
       # Match a timed API call to determine if an API.fire() is required
       #
-      # @param [Class] c the target API class
+      # @param [Class] clss the target API class
       # @param [String] method the method of the target API class
       # @param [Array] params an array of parameters that need to be matched
       #
       # @return [Boolean] whether or not the arguments match an entry in the API registry
       #
-      def matched?(c, method, params = [])
+      def matched?(clss, method, params = [])
         @registry.each do |r|
-          next unless r['class'] == c
+          next unless r['class'] == clss
           next unless r['method'] == method
           next unless is_matched_params? r, params
+
           return true
         end
         false
@@ -103,18 +104,19 @@ module BeEF
 
       #
       # Retrieves all the owners and ID's of an API hook
-      # @param [Class] c the target API class
+      # @param [Class] clss the target API class
       # @param [String] method the method of the target API class
       # @param [Array] params an array of parameters that need to be matched
       #
       # @return [Array] an array of hashes consisting of two keys :owner and :id
       #
-      def get_owners(c, method, params = [])
+      def get_owners(clss, method, params = [])
         owners = []
         @registry.each do |r|
-          next unless r['class'] == c
+          next unless r['class'] == clss
           next unless r['method'] == method
           next unless is_matched_params? r, params
+
           owners << { :owner => r['owner'], :id => r['id'] }
         end
         owners
@@ -126,23 +128,23 @@ module BeEF
       #
       # @note This is a security precaution
       #
-      # @param [Class] c the target API class to verify
-      # @param [String] m the target method to verify
+      # @param [Class] clss the target API class to verify
+      # @param [String] mthd the target method to verify
       #
-      def verify_api_path(c, m)
-        (c.const_defined?('API_PATHS') && c.const_get('API_PATHS').key?(m))
+      def verify_api_path(clss, mthd)
+        (clss.const_defined?('API_PATHS') && clss.const_get('API_PATHS').key?(mthd))
       end
 
       #
       # Retrieves the registered symbol reference for an API hook
       #
-      # @param [Class] c the target API class to verify
-      # @param [String] m the target method to verify
+      # @param [Class] clss the target API class to verify
+      # @param [String] mthd the target method to verify
       #
       # @return [Symbol] the API path
       #
-      def get_api_path(c, m)
-        verify_api_path(c, m) ? c.const_get('API_PATHS')[m] : nil
+      def get_api_path(clss, mthd)
+        verify_api_path(clss, mthd) ? clss.const_get('API_PATHS')[mthd] : nil
       end
 
       #
@@ -171,24 +173,24 @@ module BeEF
       #
       # Fires all owners registered to this API hook
       #
-      # @param [Class] c the target API class
-      # @param [String] m the target API method
+      # @param [Class] clss the target API class
+      # @param [String] mthd the target API method
       # @param [Array] *args parameters passed for the API call
       #
       # @return [Hash, NilClass] returns either a Hash of :api_id and :data
       #         if the owners return data, otherwise NilClass
       #
-      def fire(c, m, *args)
-        mods = get_owners(c, m, args)
+      def fire(clss, mthd, *args)
+        mods = get_owners(clss, mthd, args)
         return nil unless mods.length.positive?
 
-        unless verify_api_path(c, m) && c.ancestors[0].to_s > 'BeEF::API'
-          print_error "API Path not defined for Class: #{c} method:#{method}"
+        unless verify_api_path(clss, mthd) && clss.ancestors[0].to_s > 'BeEF::API'
+          print_error "API Path not defined for Class: #{clss} method:#{method}"
           return []
         end
 
         data = []
-        method = get_api_path(c, m)
+        method = get_api_path(clss, mthd)
         mods.each do |mod|
           begin
             # Only used for API Development (very verbose)
@@ -214,8 +216,7 @@ require 'core/api/modules'
 require 'core/api/extension'
 require 'core/api/extensions'
 require 'core/api/main/migration'
-require 'core/api/main/network_stack/assethandler.rb'
+require 'core/api/main/network_stack/assethandler'
 require 'core/api/main/server'
 require 'core/api/main/server/hook'
 require 'core/api/main/configuration'
-

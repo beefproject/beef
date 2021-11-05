@@ -29,6 +29,8 @@ get_permission () {
   if [ "$(echo "${REPLY}" | tr "[:upper:]" "[:lower:]")" = "n" ] ; then
     fatal 'Installation aborted'
   fi
+  
+
 }
 
 
@@ -99,7 +101,6 @@ install_linux () {
   if [ -z "${Distro}" ] ; then
     fatal "Unable to locate installer for your ${OS} distribution"
   fi
-
   readonly Distro
   info "OS Distribution: ${Distro}"
   info "Installing ${Distro} prerequisite packages..."
@@ -235,9 +236,9 @@ install_beef () {
 
   if command_exists bundler${RUBYSUFFIX}
   then
-    bundle${RUBYSUFFIX} install --without test development
+    bundle${RUBYSUFFIX} install
   else
-    bundle install --without test development
+    bundle install
   fi
 }
 
@@ -274,7 +275,12 @@ main () {
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
 
-  get_permission
+  if [ ! -z ${GITACTIONS:-} ];
+  then
+    info "Skipping: Running on Github Actions"
+  else
+    get_permission
+  fi
   check_os
   check_ruby_version
   check_rubygems

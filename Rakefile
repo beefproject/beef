@@ -23,6 +23,22 @@ RSpec::Core::RakeTask.new(:spec) do |task|
   task.rspec_opts = ['--tag ~run_on_browserstack']
 end
 
+RSpec::Core::RakeTask.new(:browserstack) do |task|
+  task.rspec_opts = ['--tag run_on_browserstack']
+end
+
+RSpec::Core::RakeTask.new(:bs) do |task|
+  configs = Dir["spec/support/browserstack/**/*.yml"]
+  configs.each do |config|
+    config = config.split('spec/support/browserstack')[1]
+    ENV['CONFIG_FILE'] = config
+    puts "\e[45m#{config.upcase}\e[0m"
+    task.rspec_opts = ['--tag run_on_browserstack']
+    Rake::Task['browserstack'].invoke
+    Rake::Task['browserstack'].reenable
+  end
+end
+
 ################################
 # SSL/TLS certificate
 
