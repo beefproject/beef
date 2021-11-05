@@ -35,6 +35,9 @@ jobs:
 
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
 
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
