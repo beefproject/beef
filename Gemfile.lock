@@ -113,7 +113,7 @@ GEM
     otr-activerecord (2.0.3)
       activerecord (>= 4.0, < 7.1)
       hashie-forbidden_attributes (~> 0.1)
-    parallel (1.21.0)
+    parallel (1.20.1)
     parseconfig (1.1.2)
     parser (3.0.2.0)
       ast (~> 2.4.1)
