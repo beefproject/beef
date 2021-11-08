@@ -101,7 +101,6 @@ install_linux () {
   if [ -z "${Distro}" ] ; then
     fatal "Unable to locate installer for your ${OS} distribution"
   fi
-
   readonly Distro
   info "OS Distribution: ${Distro}"
   info "Installing ${Distro} prerequisite packages..."
@@ -276,7 +275,7 @@ main () {
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
 
-  if $GITACTIONS 
+  if [ ! -z ${GITACTIONS:-} ];
   then
     info "Skipping: Running on Github Actions"
   else
