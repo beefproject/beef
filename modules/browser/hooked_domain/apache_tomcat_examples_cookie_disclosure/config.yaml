@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+      apache_tomcat_examples_cookie_disclosure:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Apache Tomcat RequestHeaderExample Cookie Disclosure"
+            description: "This module uses the Apache Tomcat examples web app (if installed) in order to read the victim's cookies, even if issued with the HttpOnly attribute."
+            authors: ["bcoles"]
+            target:
+                working: ["All"]
