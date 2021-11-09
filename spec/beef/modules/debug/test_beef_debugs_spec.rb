@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -14,6 +14,11 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
   before(:all) do
     # Grab config and set creds in variables for ease of access
     @config = BeEF::Core::Configuration.instance
+    # Grab DB file and regenerate if requested
+    print_info 'Loading database'
+    db_file = @config.get('beef.database.file')
+    print_info 'Resetting the database for BeEF.'
+    File.delete(db_file) if File.exist?(db_file)
     @username = @config.get('beef.credentials.user')
     @password = @config.get('beef.credentials.passwd')
 
@@ -22,36 +27,27 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     # whether or not this test passes.
     print_info 'Loading in BeEF::Extensions'
     BeEF::Extensions.load
-    sleep 2
 
     # Check if modules already loaded. No need to reload.
     if @config.get('beef.module').nil?
       print_info 'Loading in BeEF::Modules'
       BeEF::Modules.load
-
-      sleep 2
     else
       print_info 'Modules already loaded'
     end
 
-    # Grab DB file and regenerate if requested
-    print_info 'Loading database'
-    db_file = @config.get('beef.database.file')
-
-    if BeEF::Core::Console::CommandLine.parse[:resetdb]
-      print_info 'Resetting the database for BeEF.'
-      File.delete(db_file) if File.exist?(db_file)
-    end
 
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
     OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
     OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: db_file)
-
+    # otr-activerecord require you to manually establish the connection with the following line
+    #Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+    if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+      OTR::ActiveRecord.establish_connection!
+    end
     context = ActiveRecord::Migration.new.migration_context
     ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
-
-    sleep 2
 
     BeEF::Core::Migration.instance.update_db!
 
@@ -71,9 +67,6 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       http_hook_server.start
     end
 
-    # Give the server time to start-up
-    sleep 1
-
     begin
       @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
       @caps['name'] = self.class.description || ENV['name'] || 'no-name'
@@ -89,8 +82,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
 
       @driver.navigate.to VICTIM_URL.to_s
 
-      # Give time for browser hook to occur
-      sleep 3
+      sleep 1
 
       sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 

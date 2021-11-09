@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -75,7 +75,7 @@ class Firefox_extension_reverse_shell < BeEF::Core::Command
 
   def self.options
     @configuration = BeEF::Core::Configuration.instance
-    beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
+    beef_host = @configuration.beef_host
     return [
         {'name' => 'extension_name', 'ui_label' => 'Extension name', 'value' => 'HTML5 Rendering Enhancements'},
         {'name' => 'xpi_name', 'ui_label' => 'Extension file (XPI) name', 'value' => 'HTML5_Enhancements'},

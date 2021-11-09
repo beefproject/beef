@@ -38,6 +38,7 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
 end
 
 TASK_ID = (ENV['TASK_ID'] || 0).to_i
+print_info ENV['CONFIG_FILE']
 CONFIG_FILE = ENV['CONFIG_FILE'] || 'windows/win10/win10_chrome_81.config.yml'
 CONFIG = YAML.safe_load(File.read("./spec/support/browserstack/#{CONFIG_FILE}"))
 CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || ''
@@ -47,6 +48,11 @@ CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || ''
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:':memory:')
+# otr-activerecord require you to manually establish the connection with the following line
+#Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+  OTR::ActiveRecord.establish_connection!
+end
 ActiveRecord::Schema.verbose = false
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
