@@ -20,11 +20,10 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'json'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
-gem 'nokogiri', '>= 1.11.1'
 gem 'rake', '>= 12.3.3'
 gem 'otr-activerecord', '>= 1.4.2'
 gem 'sqlite3'
-gem 'rubocop', '~> 1.20.0', require: false
+gem 'rubocop', '~> 1.22.3', require: false
 
 # Geolocation support
 group :geoip do

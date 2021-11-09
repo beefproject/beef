@@ -47,21 +47,21 @@ require 'timeout'
 #
 # @note Ask user if they would like to update beef
 #
-
-if BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
+if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
   if BeEF::Core::Console::CommandLine.parse[:update_auto] == true
-  print "Pulling latest BeEF repository and updating"
-  `git pull && bundle`  
-  else
+    print 'Checking latest BeEF repository and updating'
+    `git pull && bundle`
+  elsif `git rev-parse master` != `git rev-parse origin/master`
     begin
-      answer = Timeout::timeout(5) do
-        print "Would you like to check and download the latest BeEF update? y/n: " 
+      Timeout.timeout(5) do
+        puts '-- BeEF Update Available --'
+        print 'Would you like to update to lastest version? y/n: '
         response = gets
-        `git pull && bundle` if response.strip == 'y' 
+        `git pull && bundle` if response.strip == 'y'
       end
-      rescue Timeout::Error
-        puts "\nUpdate Skipped with input timeout"
-      end
+    rescue Timeout::Error
+      puts "\nUpdate Skipped with input timeout"
+    end
   end
 end
 
