@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -12,19 +12,12 @@ module BeEF
   module Core
     class Server
       include Singleton
-
-      # @note Grabs the version of beef the framework is deployed on
-      VERSION = BeEF::Core::Configuration.instance.get('beef.version')
-
       attr_reader :root_dir, :url, :configuration, :command_urls, :mounts, :semaphore
 
       def initialize
         @configuration = BeEF::Core::Configuration.instance
-        beef_proto = configuration.get("beef.http.https.enable") == true ? "https" : "http"
-        beef_host = @configuration.get("beef.http.public") || @configuration.get("beef.http.host")
-        beef_port = @configuration.get("beef.http.public_port") || @configuration.get("beef.http.port")
-        @url = "#{beef_proto}://#{beef_host}:#{beef_port}"
-        @root_dir = File.expand_path('../../../', __FILE__)
+        @url = @configuration.beef_url_str
+        @root_dir = File.expand_path('../../../', __dir__)
         @command_urls = {}
         @mounts = {}
         @rack_app
@@ -33,16 +26,16 @@ module BeEF
 
       def to_h
         {
-            'beef_version'  => VERSION,
-            'beef_url'      => @url,
-            'beef_root_dir' => @root_dir,
-            'beef_host'     => @configuration.get('beef.http.host'),
-            'beef_port'     => @configuration.get('beef.http.port'),
-            'beef_public'   => @configuration.get('beef.http.public'),
-            'beef_public_port' => @configuration.get('beef.http.public_port'),
-            'beef_hook'     => @configuration.get('beef.http.hook_file'),
-            'beef_proto'    => @configuration.get('beef.http.https.enable') == true ? 'https' : 'http',
-            'client_debug'  => @configuration.get('beef.client_debug')
+          'beef_version' => @configuration.get('beef_version'),
+          'beef_url' => @url,
+          'beef_root_dir' => @root_dir,
+          'beef_host' => @configuration.beef_host,
+          'beef_port' => @configuration.beef_port,
+          'beef_public' => @configuration.public_host,
+          'beef_public_port' => @configuration.public_port,
+          'beef_hook' => @configuration.get('beef.http.hook_file'),
+          'beef_proto' => @configuration.beef_proto,
+          'client_debug' => @configuration.get('beef.client_debug')
         }
       end
 

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -97,8 +97,10 @@ module BeEF
           tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
           uri = tolerant_parser.parse(url.to_s)
 
+          uri_path_and_qs = uri.query.nil? ? uri.path : "#{uri.path}?#{uri.query}"
+
           # extensions/requester/api/hook.rb parses raw_request to find port and path
-          raw_request = [method, uri.path, version].join(' ') + "\r\n"
+          raw_request = [method, uri_path_and_qs, version].join(' ') + "\r\n"
           content_length = 0
 
           loop do
@@ -127,7 +129,7 @@ module BeEF
               :proto => proto,
               :domain => uri.host,
               :port => uri.port,
-              :path => uri.path,
+              :path => uri_path_and_qs,
               :request_date => Time.now,
               :hooked_browser_id => self.get_tunneling_proxy,
               :allow_cross_domain => "true"

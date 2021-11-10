@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -9,6 +9,14 @@
  * @namespace beef.browser
  */
 beef.browser = {
+
+    /**
+     * Returns the protocol.
+     * @example: beef.browser.getProtocol()
+     */
+    getProtocol: function() {
+        return document.location.protocol;
+    },
 
     /**
      * Returns the user agent that the browser is claiming to be.
@@ -855,7 +863,7 @@ beef.browser = {
      * @example: beef.browser.isFF89()
      */
     isFF89: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/89./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/89./) != null;
     },
 
     /**
@@ -863,7 +871,7 @@ beef.browser = {
      * @example: beef.browser.isFF90()
      */
     isFF90: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/90./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/90./) != null;
     },
 
     /**
@@ -871,7 +879,7 @@ beef.browser = {
      * @example: beef.browser.isFF91()
      */
     isFF91: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/91./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/91./) != null;
     },
 
     /**
@@ -879,7 +887,7 @@ beef.browser = {
      * @example: beef.browser.isFF92()
      */
     isFF92: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/92./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/92./) != null;
     },
 
     /**
@@ -887,7 +895,7 @@ beef.browser = {
      * @example: beef.browser.isFF93()
      */
     isFF93: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/93./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/93./) != null;
     },
 
     /**
@@ -895,7 +903,7 @@ beef.browser = {
      * @example: beef.browser.isFF94()
      */
     isFF94: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/94./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/94./) != null;
     },
 
     /**
@@ -903,7 +911,7 @@ beef.browser = {
      * @example: beef.browser.isFF95()
      */
     isFF95: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/95./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/95./) != null;
     },
 
     /**
@@ -911,7 +919,7 @@ beef.browser = {
      * @example: beef.browser.isFF96()
      */
     isFF96: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/96./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/96./) != null;
     },
 
     /**
@@ -919,7 +927,7 @@ beef.browser = {
      * @example: beef.browser.isFF97()
      */
     isFF97: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/97./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/97./) != null;
     },
 
     /**
@@ -927,7 +935,7 @@ beef.browser = {
      * @example: beef.browser.isFF98()
      */
     isFF98: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/98./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/98./) != null;
     },
 
     /**
@@ -935,7 +943,7 @@ beef.browser = {
      * @example: beef.browser.isFF99()
      */
     isFF99: function () {
-        return !!window.devicePixelRatio && !!window.history.replaceState && typeof navigator.mozGetUserMedia != "undefined" && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/99./) != null;
+        return !!window.devicePixelRatio && !!window.history.replaceState && (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) && (typeof window.crypto != "undefined" && typeof window.crypto.getRandomValues != "undefined") && typeof Math.hypot == 'function' && typeof String.prototype.codePointAt === 'function' && typeof Number.isSafeInteger === 'function' && window.navigator.userAgent.match(/Firefox\/99./) != null;
     },
 
     /**

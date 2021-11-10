@@ -1,6 +1,6 @@
 ===============================================================================
 
-    Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2021 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 
@@ -40,13 +40,6 @@ Requirements
 * [Node.js](https://nodejs.org): 10 or newer
 * The gems listed in the Gemfile: https://github.com/beefproject/beef/blob/master/Gemfile
 * Selenium is required on OSX: `brew install selenium-server-standalone` (See https://github.com/shvets/selenium)
-
-
-ActiveRecord
------------
-ActiveRecord was used to replace DataMapper, and now Ruby 2.4 is no longer supported.
-If you're using ruby 2.4 please update your BeEF version, otherwise [beef-0.4.7.3](https://github.com/beefproject/beef/releases/tag/beef-0.4.7.3) has the beef branch before the ActiveRecord Merge.
-
 
 Quick Start
 -----------
