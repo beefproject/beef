@@ -136,7 +136,7 @@ GEM
       rack (>= 1.0, < 3)
     rainbow (3.0.0)
     rake (13.0.6)
-    rdoc (6.3.2)
+    rdoc (6.3.3)
     regexp_parser (2.1.1)
     reline (0.2.7)
       io-console (~> 0.5)
