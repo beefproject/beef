@@ -5,7 +5,7 @@ Verify first that your issue/request has not been posted previously:
 * https://github.com/beefproject/beef/issues
 * https://github.com/beefproject/beef/wiki/FAQ
 
-Ensure you're using the [latest version of BeEF](https://github.com/beefproject/beef/releases/tag/v0.5.3.0).
+Ensure you're using the [latest version of BeEF](https://github.com/beefproject/beef/releases/tag/v0.5.4.0).
 
 Please do your best to provide as much information as possible. It will help substantially if you can enable and provide debugging logs with your issue. Instructions for enabling debugging logs are below:
 
