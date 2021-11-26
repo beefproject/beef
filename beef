@@ -57,7 +57,7 @@ if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.parse[:upd
         puts '-- BeEF Update Available --'
         print 'Would you like to update to lastest version? y/n: '
         response = gets
-        `git pull && bundle` if response.strip == 'y'
+        `git pull && bundle` if response&.strip == 'y'
       end
     rescue Timeout::Error
       puts "\nUpdate Skipped with input timeout"
