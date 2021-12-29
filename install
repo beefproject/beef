@@ -90,7 +90,7 @@ install_linux () {
     Distro='Alpine'
   elif [ -f /etc/os-release ] ; then
     #DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
-    DISTRO_ID=$(cat /etc/os-release | grep  ID= | grep -v "BUILD" | cut -d= -f2-)
+    DISTRO_ID=$(cat /etc/os-release | grep  ID= | grep -v "BUILD" | grep -v "IMAGE" | cut -d= -f2-)
     if [ "${DISTRO_ID}" = 'kali' ] ; then
       Distro='Kali'
     elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'manjaro' ] ; then
@@ -106,7 +106,7 @@ install_linux () {
   info "Installing ${Distro} prerequisite packages..."
   if [ "${Distro}" = "Debian" ] || [ "${Distro}" = "Kali" ]; then
     sudo apt-get update
-    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs libcurl4-openssl-dev gcc-9-base libgcc-9-dev
+    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs libcurl4-openssl-dev
     if command_exists rvm || command_exists rbenv version; then
       info "Ruby package Manager exists - Ruby install skipped"
     else
