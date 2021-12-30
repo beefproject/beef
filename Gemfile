@@ -80,7 +80,7 @@ group :test do
     gem 'rest-client', '>= 2.0.1'
     gem 'irb'
     gem 'pry-byebug'
-    gem "websocket-client-simple", "~> 0.3.0"
+    gem "websocket-client-simple", "~> 0.4.0"
     gem "browserstack-local", "~> 1.3"
 end
 
