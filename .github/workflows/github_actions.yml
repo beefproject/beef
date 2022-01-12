@@ -2,7 +2,7 @@ name: 'BrowserStack Test'
 
 on:
   pull_request_target:
-    branches: [ master ]
+    branches: [ test_codeql ]
       
 jobs:
   approve:
