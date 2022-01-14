@@ -19,7 +19,6 @@ module Core
 
       unless File.exists? geoip_file
         print_error "[GeoIP] Could not find MaxMind GeoIP database: '#{geoip_file}'"
-        print_more "Run ./update-geoipdb to install"
         @enabled = false
         return
       end
