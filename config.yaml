@@ -120,10 +120,10 @@ beef:
     dns_hostname_lookup: false
 
     # IP Geolocation
-    # NOTE: requires MaxMind database. Run ./updated-geoipdb to install.
     geoip:
         enable: true
-        database: '/opt/GeoIP/GeoLite2-City.mmdb'
+        # GeoLite2 City database created by MaxMind, available from https://www.maxmind.com
+        database: '/usr/share/GeoIP/GeoLite2-City.mmdb'
 
     # Integration with PhishingFrenzy
     # If enabled BeEF will try to get the UID parameter value from the hooked URI, as this is used by PhishingFrenzy
