@@ -43,7 +43,7 @@ GEM
     concurrent-ruby (1.1.9)
     console (1.13.1)
       fiber-local
-    curb (0.9.11)
+    curb (1.0.0)
     daemons (1.4.1)
     diff-lcs (1.4.4)
     domain_name (0.5.20190701)
