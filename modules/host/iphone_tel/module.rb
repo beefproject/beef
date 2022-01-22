@@ -4,10 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Iphone_tel < BeEF::Core::Command
-
   def self.options
-    return [
-        { 'name' => 'tel_num', 'description' => 'Telephone number', 'ui_label'=>'Number', 'value' =>'5551234','width' => '200px' },
+    [
+      { 'name' => 'tel_num', 'description' => 'Telephone number', 'ui_label' => 'Number', 'value' => '5551234', 'width' => '200px' }
     ]
   end
 
@@ -15,7 +14,5 @@ class Iphone_tel < BeEF::Core::Command
     content = {}
     content['Result'] = @datastore['result']
     save content
-
   end
-
 end

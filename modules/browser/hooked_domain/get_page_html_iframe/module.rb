@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_page_html_iframe < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['head'] = @datastore['head']
@@ -12,5 +11,4 @@ class Get_page_html_iframe < BeEF::Core::Command
     content['iframe_'] = @datastore['iframe_']
     save content
   end
-
 end

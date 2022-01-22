@@ -7,15 +7,11 @@
 # http://www.itsecuritysolutions.org/2010-03-29_fingerprinting_browsers_using_protocol_handlers/
 
 class Browser_fingerprinting < BeEF::Core::Command
-
   def post_execute
     content = {}
-    content['browser_type'] = @datastore['browser_type'] if not @datastore['browser_type'].nil?
-    content['browser_version'] = @datastore['browser_version'] if not @datastore['browser_version'].nil?
-    if content.empty?
-      content['fail'] = 'Failed to fingerprint browser.'
-    end
+    content['browser_type'] = @datastore['browser_type'] unless @datastore['browser_type'].nil?
+    content['browser_version'] = @datastore['browser_version'] unless @datastore['browser_version'].nil?
+    content['fail'] = 'Failed to fingerprint browser.' if content.empty?
     save content
   end
-
 end

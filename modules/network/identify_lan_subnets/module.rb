@@ -8,21 +8,17 @@
 ##
 
 class Identify_lan_subnets < BeEF::Core::Command
-  
   def self.options
-    return [
-        {'name' => 'timeout', 'ui_label' => 'Timeout for each request (ms)', 'value' => '500'}
+    [
+      { 'name' => 'timeout', 'ui_label' => 'Timeout for each request (ms)', 'value' => '500' }
     ]
   end
-  
+
   def post_execute
     content = {}
-    content['host'] = @datastore['host'] if not @datastore['host'].nil?
-    content['hosts'] = @datastore['hosts'] if not @datastore['hosts'].nil?
-    if content.empty?
-      content['fail'] = 'No active hosts have been discovered.'
-    end
+    content['host'] = @datastore['host'] unless @datastore['host'].nil?
+    content['hosts'] = @datastore['hosts'] unless @datastore['hosts'].nil?
+    content['fail'] = 'No active hosts have been discovered.' if content.empty?
     save content
   end
-
 end

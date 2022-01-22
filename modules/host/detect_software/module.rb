@@ -5,12 +5,10 @@
 #
 
 class Detect_software < BeEF::Core::Command
-
   def post_execute
     content = {}
-    content['installed_software'] = @datastore['installed_software'] if not @datastore['installed_software'].nil?
-    content['installed_patches'] = @datastore['installed_patches'] if not @datastore['installed_patches'].nil?
+    content['installed_software'] = @datastore['installed_software'] unless @datastore['installed_software'].nil?
+    content['installed_patches'] = @datastore['installed_patches'] unless @datastore['installed_patches'].nil?
     save content
   end
-
 end

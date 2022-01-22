@@ -8,21 +8,18 @@
 # Shamelessly plagurised from kos.io/xsspwn
 
 class Local_file_theft < BeEF::Core::Command
-
   def self.options
-    return [
-        {'name' => 'target_file', 
-         'description' => 'The full path to the local file to steal e.g. file:///var/mobile/Library/AddressBook/AddressBook.sqlitedb', 
-         'ui_label' => 'Target file',
-         'value' => 'autodetect'
-         } 
+    [
+      { 'name' => 'target_file',
+        'description' => 'The full path to the local file to steal e.g. file:///var/mobile/Library/AddressBook/AddressBook.sqlitedb',
+        'ui_label' => 'Target file',
+        'value' => 'autodetect' }
     ]
   end
- 
-   def post_execute
+
+  def post_execute
     content = {}
     content['result'] = @datastore['result']
     save content
-  end 
-  
+  end
 end

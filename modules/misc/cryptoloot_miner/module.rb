@@ -10,20 +10,19 @@
 
 class Cryptoloot_miner < BeEF::Core::Command
   def self.options
-    [{ 'name'         => 'public_token',
-       'description'  => 'Public Token',
-       'ui_label'     => 'Public Token',
-       'value'        => 'ae5c906cfd37610626e86e25786866d6d2ff1c258d5f',
-       'type'         => 'text'
-    },
-    { 'name'         => 'report_interval',
-       'description'  => 'Report Interval (in seconds)',
-       'ui_label'     => 'Report Interval (s)',
-       'value'        => '30',
-       'type'         => 'text'
-    }]
+    [{ 'name' => 'public_token',
+       'description' => 'Public Token',
+       'ui_label' => 'Public Token',
+       'value' => 'ae5c906cfd37610626e86e25786866d6d2ff1c258d5f',
+       'type' => 'text' },
+     { 'name' => 'report_interval',
+       'description' => 'Report Interval (in seconds)',
+       'ui_label' => 'Report Interval (s)',
+       'value' => '30',
+       'type' => 'text' }]
   end
+
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

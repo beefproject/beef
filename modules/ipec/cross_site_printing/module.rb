@@ -4,12 +4,11 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Cross_site_printing < BeEF::Core::Command
-  
   def self.options
-    return [
-	{'name'=>'ip', 'ui_label' => 'Target Address', 'value' => 'localhost'},
-	{'name'=>'port', 'ui_label' => 'Target Port', 'value' => '9100'},
-	{'name'=>'msg', 'ui_label' => 'Message', 'description' => 'Message to print', 'type'=>'textarea', 'value'=>"**********************************************************************
+    [
+      { 'name' => 'ip', 'ui_label' => 'Target Address', 'value' => 'localhost' },
+      { 'name' => 'port', 'ui_label' => 'Target Port', 'value' => '9100' },
+      { 'name' => 'msg', 'ui_label' => 'Message', 'description' => 'Message to print', 'type' => 'textarea', 'value' => "**********************************************************************
 
                                      .O,
                                      lkOl
@@ -51,17 +50,15 @@ class Cross_site_printing < BeEF::Core::Command
              .';o0WWWWWWWWWWWNk;
                   .cxOKXKKOd;.
 
-**********************************************************************", 'width'=>'200px' },
-	]
+**********************************************************************", 'width' => '200px' }
+    ]
   end
 
   def post_execute
     content = {}
-    content['result'] = @datastore['result'] if not @datastore['result'].nil?
-    content['fail'] = @datastore['fail'] if not @datastore['fail'].nil?
-    if content.empty?
-      content['fail'] = 'No data was returned.'
-    end
+    content['result'] = @datastore['result'] unless @datastore['result'].nil?
+    content['fail'] = @datastore['fail'] unless @datastore['fail'].nil?
+    content['fail'] = 'No data was returned.' if content.empty?
     save content
   end
 end

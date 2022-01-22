@@ -4,14 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_vlc < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['vlc'] = @datastore['vlc']
     save content
-    if @datastore['results'] =~ /^vlc=(Yes|No)/
-      bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'browser.capabilities.vlc', $1)
-    end
+    BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'browser.capabilities.vlc', Regexp.last_match(1)) if @datastore['results'] =~ /^vlc=(Yes|No)/
   end
-
 end

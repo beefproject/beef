@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Disable_developer_tools < BeEF::Core::Command
-  
   def post_execute
     content = {}
     content['result'] = @datastore['result']
     save content
   end
-  
 end

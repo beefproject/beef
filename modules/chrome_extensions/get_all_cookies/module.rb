@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_all_cookies < BeEF::Core::Command
- 
- def self.options
-
-    return [
-        {'name' =>'url', 'ui_label'=>'Domain (e.g. http://facebook.com)', 'value' => 'default_all'}
+  def self.options
+    [
+      { 'name' => 'url', 'ui_label' => 'Domain (e.g. http://facebook.com)', 'value' => 'default_all' }
     ]
   end
 
@@ -17,5 +15,4 @@ class Get_all_cookies < BeEF::Core::Command
     content['Return'] = @datastore['return']
     save content
   end
-  
 end

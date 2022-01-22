@@ -14,16 +14,16 @@
 # limitations under the License.
 #
 class Send_inotes < BeEF::Core::Command
- def self.options
-    return [
-      {'type' => 'label', 'html' => 'Send a note to someone:' },
-      {'type' => 'textfield', 'name' => 'to', 'ui_label' => 'TO:', 'value' => ''},
-      {'type' => 'textfield', 'name' => 'subject', 'ui_label' => 'Subject:', 'value' => ''},
-      {'name'=>'body', 'ui_label' => 'Body', 'type'=>'textarea', 'value'=>''}
+  def self.options
+    [
+      { 'type' => 'label', 'html' => 'Send a note to someone:' },
+      { 'type' => 'textfield', 'name' => 'to', 'ui_label' => 'TO:', 'value' => '' },
+      { 'type' => 'textfield', 'name' => 'subject', 'ui_label' => 'Subject:', 'value' => '' },
+      { 'name' => 'body', 'ui_label' => 'Body', 'type' => 'textarea', 'value' => '' }
     ]
-  end 
-  def post_execute
-    save({'result' => @datastore['result']})
   end
 
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

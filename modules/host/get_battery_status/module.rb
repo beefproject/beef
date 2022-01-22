@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_battery_status < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['chargingStatus'] = @datastore['chargingStatus']
@@ -13,5 +12,4 @@ class Get_battery_status < BeEF::Core::Command
     content['dischargingTime'] = @datastore['dischargingTime']
     save content
   end
-
 end

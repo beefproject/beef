@@ -4,12 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_page_links < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['links'] = @datastore['links']
 
     save content
   end
-
 end

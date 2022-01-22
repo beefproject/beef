@@ -5,13 +5,13 @@
 #
 class Physical_location_thirdparty < BeEF::Core::Command
   def self.options
-    return [{
-      'name'           => 'api_url',
-      'type'           => 'combobox',
-      'ui_label'       => 'API',
-      'store_type'     => 'arraystore',
-      'store_fields'   => ['api_url'],
-      'store_data'     =>
+    [{
+      'name' => 'api_url',
+      'type' => 'combobox',
+      'ui_label' => 'API',
+      'store_type' => 'arraystore',
+      'store_fields' => ['api_url'],
+      'store_data' =>
       [
         %w[http://ip-api.com/json],
         %w[https://ip.nf/me.json],
@@ -22,16 +22,16 @@ class Physical_location_thirdparty < BeEF::Core::Command
         %w[http://www.geoplugin.net/json.gp],
         %w[https://ipinfo.io/json]
       ],
-      'emptyText'      => 'Select an API',
-      'valueField'     => 'api_url',
-      'displayField'   => 'api_url',
-      'mode'           => 'local',
+      'emptyText' => 'Select an API',
+      'valueField' => 'api_url',
+      'displayField' => 'api_url',
+      'mode' => 'local',
       'forceSelection' => 'false',
-      'autoWidth'      => true
+      'autoWidth' => true
     }]
   end
 
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

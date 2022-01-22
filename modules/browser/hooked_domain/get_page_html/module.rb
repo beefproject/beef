@@ -4,12 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_page_html < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['head'] = @datastore['head']
     content['body'] = @datastore['body']
     save content
   end
-
 end

@@ -5,12 +5,12 @@
 #
 class Overflow_cookiejar < BeEF::Core::Command
   def self.options
-     return [
-	{'name' => 'preserveCookies', 'type' => 'checkbox', 'ui_label' => 'Attempt to preserve all non-httpOnly cookies', 'checked' => 'true'}
-      ]
-  end
-  def post_execute
-     save({'result' => @datastore['result']})
+    [
+      { 'name' => 'preserveCookies', 'type' => 'checkbox', 'ui_label' => 'Attempt to preserve all non-httpOnly cookies', 'checked' => 'true' }
+    ]
   end
 
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

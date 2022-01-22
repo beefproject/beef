@@ -5,14 +5,10 @@
 #
 
 class Ajax_fingerprint < BeEF::Core::Command
- 
   def post_execute
-      content = {}
-      content['script_urls'] = @datastore['script_urls'] if not @datastore['script_urls'].nil?
-      if content.empty?
-          content['fail'] = 'Failed to fingerprint ajax.'
-      end
-      save content
+    content = {}
+    content['script_urls'] = @datastore['script_urls'] unless @datastore['script_urls'].nil?
+    content['fail'] = 'Failed to fingerprint ajax.' if content.empty?
+    save content
   end
-
 end

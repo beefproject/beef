@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Inject_beef < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['Return'] = @datastore['return']
     save content
   end
-  
 end

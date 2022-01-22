@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Physical_location < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['Geolocation Enabled'] = @datastore['geoLocEnabled']
@@ -13,5 +12,4 @@ class Physical_location < BeEF::Core::Command
     content['OSM address'] = @datastore['osm']
     save content
   end
-
 end

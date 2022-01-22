@@ -10,7 +10,7 @@ require 'securerandom'
 class WordPressCommand < BeEF::Core::Command
   def pre_send
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/misc/wordpress/wp.js', '/wp', 'js')
-  end 
+  end
 
   # If we could retrive the hooked URL, we could try to determine the wp_path to be set below
   def self.options
@@ -18,13 +18,13 @@ class WordPressCommand < BeEF::Core::Command
       { 'name' => 'wp_path', 'ui_label' => 'WordPress Path', 'value' => '/' }
     ]
   end
-  
+
   # This one is triggered each time a beef.net.send is called
   def post_execute
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.unbind('wp.js')
 
     return unless @datastore['result']
-    
+
     save({ 'result' => @datastore['result'] })
   end
 end

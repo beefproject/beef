@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_connection_type < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['Result'] = @datastore['connection']
     save content
   end
-
 end

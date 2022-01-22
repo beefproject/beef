@@ -4,11 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Execute_tabs < BeEF::Core::Command
-
   def self.options
-    return [
-        {'name' => 'url', 'ui_label' => 'URL', 'value' => 'https://www.google.com/accounts/EditUserInfo',  'width' => '500px'},
-        {'name' => 'theJS', 'ui_label' => 'Javascript', 'value' => 'prompt(\'BeEF\');', 'type' => 'textarea', 'width' => '400px', 'height' => '300px'}
+    [
+      { 'name' => 'url', 'ui_label' => 'URL', 'value' => 'https://www.google.com/accounts/EditUserInfo', 'width' => '500px' },
+      { 'name' => 'theJS', 'ui_label' => 'Javascript', 'value' => 'prompt(\'BeEF\');', 'type' => 'textarea', 'width' => '400px', 'height' => '300px' }
     ]
   end
 
@@ -17,6 +16,4 @@ class Execute_tabs < BeEF::Core::Command
     content['Return'] = @datastore['return']
     save content
   end
-  
 end
-

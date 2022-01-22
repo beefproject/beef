@@ -14,20 +14,13 @@
 # limitations under the License.
 #
 class Avant_steal_history < BeEF::Core::Command
+  def self.options
+    [
+      { 'name' => 'cId', 'ui_label' => 'Command ID', 'value' => '60003', 'type' => 'textarea', 'width' => '400px', 'height' => '25px' }
+    ]
+  end
 
-	def self.options
-
-		configuration = BeEF::Core::Configuration.instance
-		
-
-		return [
-			{'name' => 'cId', 'ui_label' => 'Command ID', 'value' => '60003', 'type' => 'textarea', 'width' => '400px', 'height' => '25px' }
-		]
-
-	end
-
-	def post_execute
-		save({'result' => @datastore['result']})
-	end
-
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

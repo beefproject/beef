@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_realplayer < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['realplayer'] = @datastore['realplayer']
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['realplayer'] = @datastore['realplayer']
+    save content
+  end
 end
