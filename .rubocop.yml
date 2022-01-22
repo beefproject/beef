@@ -23,12 +23,20 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Metrics/PerceivedComplexity:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
   Enabled: false
 
+Naming/ClassAndModuleCamelCase:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
