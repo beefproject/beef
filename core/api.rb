@@ -185,7 +185,7 @@ module BeEF
         return nil unless mods.length.positive?
 
         unless verify_api_path(clss, mthd) && clss.ancestors[0].to_s > 'BeEF::API'
-          print_error "API Path not defined for Class: #{clss} method:#{method}"
+          print_error "API Path not defined for Class: #{clss} method: #{mthd}"
           return []
         end
 
