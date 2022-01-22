@@ -4,11 +4,12 @@
 # See the file 'doc/COPYING' for copying permission
 #
 require 'base64'
-class Webcam < BeEF::Core::Command
+class Webcam_flash < BeEF::Core::Command
   def pre_send
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/webcam/takeit.swf', '/takeit', 'swf')
-      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/webcam/swfobject.js', '/swfobject', 'js')
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/webcam_flash/takeit.swf', '/takeit', 'swf')
+      BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/browser/webcam_flash/swfobject.js', '/swfobject', 'js')
   end
+
   def self.options
        configuration = BeEF::Core::Configuration.instance
        social_engineering_title = "This website is using Adobe Flash"
