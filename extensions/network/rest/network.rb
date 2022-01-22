@@ -27,152 +27,140 @@ module BeEF
 
         # Returns the entire list of network hosts for all zombies
         get '/hosts' do
-          begin
-            hosts = @nh.all.distinct.order(:id)
-            count = hosts.length
+          hosts = @nh.all.distinct.order(:id)
+          count = hosts.length
 
-            result = {}
-            result[:count] = count
-            result[:hosts] = []
-            hosts.each do |host|
-              result[:hosts] << host.to_h
-            end
-
-            result.to_json
-          rescue StandardError => e
-            print_error "Internal error while retrieving host list (#{e.message})"
-            halt 500
+          result = {}
+          result[:count] = count
+          result[:hosts] = []
+          hosts.each do |host|
+            result[:hosts] << host.to_h
           end
+
+          result.to_json
+        rescue StandardError => e
+          print_error "Internal error while retrieving host list (#{e.message})"
+          halt 500
         end
 
         # Returns the entire list of network services for all zombies
         get '/services' do
-          begin
-            services = @ns.all.distinct.order(:id)
-            count = services.length
+          services = @ns.all.distinct.order(:id)
+          count = services.length
 
-            result = {}
-            result[:count] = count
-            result[:services] = []
-            services.each do |service|
-              result[:services] << service.to_h
-            end
-
-            result.to_json
-          rescue StandardError => e
-            print_error "Internal error while retrieving service list (#{e.message})"
-            halt 500
+          result = {}
+          result[:count] = count
+          result[:services] = []
+          services.each do |service|
+            result[:services] << service.to_h
           end
+
+          result.to_json
+        rescue StandardError => e
+          print_error "Internal error while retrieving service list (#{e.message})"
+          halt 500
         end
 
         # Returns all hosts given a specific hooked browser id
         get '/hosts/:id' do
-          begin
-            id = params[:id]
+          id = params[:id]
 
-            hooked_browser = @hb.where(session: id).distinct
-            hosts = @nh.where(hooked_browser: hooked_browser).distinct.order(:hooked_browser)
-            count = hosts.length
+          hooked_browser = @hb.where(session: id).distinct
+          hosts = @nh.where(hooked_browser: hooked_browser).distinct.order(:hooked_browser)
+          count = hosts.length
 
-            result = {}
-            result[:count] = count
-            result[:hosts] = []
-            hosts.each do |host|
-              result[:hosts] << host.to_h
-            end
-
-            result.to_json
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error while retrieving hosts list for hooked browser with id #{id} (#{e.message})"
-            halt 500
+          result = {}
+          result[:count] = count
+          result[:hosts] = []
+          hosts.each do |host|
+            result[:hosts] << host.to_h
           end
+
+          result.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while retrieving hosts list for hooked browser with id #{id} (#{e.message})"
+          halt 500
         end
 
         # Returns all services given a specific hooked browser id
         get '/services/:id' do
-          begin
-            id = params[:id]
+          id = params[:id]
 
-            services = @ns.where(hooked_browser_id: id).distinct.order(:id)
-            count = services.length
+          services = @ns.where(hooked_browser_id: id).distinct.order(:id)
+          count = services.length
 
-            result = {}
-            result[:count] = count
-            result[:services] = []
-            services.each do |service|
-              result[:services] << service.to_h
-            end
-
-            result.to_json
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error while retrieving service list for hooked browser with id #{id} (#{e.message})"
-            halt 500
+          result = {}
+          result[:count] = count
+          result[:services] = []
+          services.each do |service|
+            result[:services] << service.to_h
           end
+
+          result.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while retrieving service list for hooked browser with id #{id} (#{e.message})"
+          halt 500
         end
 
         # Returns a specific host given its id
         get '/host/:id' do
-          begin
-            id = params[:id]
+          id = params[:id]
 
-            host = @nh.find(id)
-            raise InvalidParamError, 'id' if host.nil?
-            halt 404 if host.nil?
+          host = @nh.find(id)
+          raise InvalidParamError, 'id' if host.nil?
 
-            host.to_h.to_json
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error while retrieving host with id #{id} (#{e.message})"
-            halt 500
-          end
+          halt 404 if host.nil?
+
+          host.to_h.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while retrieving host with id #{id} (#{e.message})"
+          halt 500
         end
 
         # Deletes a specific host given its id
         delete '/host/:id' do
-          begin
-            id = params[:id]
-            raise InvalidParamError, 'id' unless BeEF::Filters.nums_only?(id)
+          id = params[:id]
+          raise InvalidParamError, 'id' unless BeEF::Filters.nums_only?(id)
 
-            host = @nh.find(id)
-            halt 404 if host.nil?
+          host = @nh.find(id)
+          halt 404 if host.nil?
 
-            result = {}
-            result['success'] = @nh.delete(id)
-            result.to_json
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error while removing network host with id #{id} (#{e.message})"
-            halt 500
-          end
+          result = {}
+          result['success'] = @nh.delete(id)
+          result.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while removing network host with id #{id} (#{e.message})"
+          halt 500
         end
 
         # Returns a specific service given its id
         get '/service/:id' do
-          begin
-            id = params[:id]
+          id = params[:id]
 
-            service = @ns.find(id)
-            raise InvalidParamError, 'id' if service.nil?
-            halt 404 if service.empty?
+          service = @ns.find(id)
+          raise InvalidParamError, 'id' if service.nil?
 
-            service.to_h.to_json
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error while retrieving service with id #{id} (#{e.message})"
-            halt 500
-          end
+          halt 404 if service.empty?
+
+          service.to_h.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while retrieving service with id #{id} (#{e.message})"
+          halt 500
         end
 
         # Raised when invalid JSON input is passed to an /api/network handler.

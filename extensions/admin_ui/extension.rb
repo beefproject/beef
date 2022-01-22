@@ -4,15 +4,15 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module AdminUI
-  extend BeEF::API::Extension
-  
-  @full_name = 'Administration Web UI'
-  @short_name = 'admin_ui'
-  @description = 'Command and control web interface'
-end
-end
+  module Extension
+    module AdminUI
+      extend BeEF::API::Extension
+
+      @full_name = 'Administration Web UI'
+      @short_name = 'admin_ui'
+      @description = 'Command and control web interface'
+    end
+  end
 end
 
 # Constants

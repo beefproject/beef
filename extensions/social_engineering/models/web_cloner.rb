@@ -7,11 +7,8 @@ module BeEF
   module Core
     module Models
       class WebCloner < BeEF::Core::Model
-
         has_many :interceptors
-
       end
-
     end
   end
 end

@@ -55,7 +55,7 @@ module BeEF
                 m_details = msf.call('module.info', 'exploit', m)
                 next unless m_details
 
-                key = 'msf_' + m.split('/').last
+                key = "msf_#{m.split('/').last}"
                 # system currently doesn't support multilevel categories
                 # categories = ['Metasploit']
                 # m.split('/')[0...-1].each{|c|
@@ -75,6 +75,7 @@ module BeEF
                 elsif m_details['description'] =~ /Opera/i
                   target_browser = { BeEF::Core::Constants::CommandModule::VERIFIED_WORKING => ['O'] }
                 end
+
                 # TODO:
                 #  - Add support for detection of target OS
                 #  - Add support for detection of target services (e.g. java, flash, silverlight, ...etc)
@@ -132,9 +133,7 @@ module BeEF
             }
 
             msf_payload_options = msf.call('module.compatible_payloads', msf_key)
-            unless msf_payload_options
-              print_error "Unable to retrieve metasploit payloads for exploit: #{msf_key}"
-            end
+            print_error "Unable to retrieve metasploit payloads for exploit: #{msf_key}" unless msf_payload_options
 
             options << BeEF::Extension::Metasploit.translate_payload(msf_payload_options)
             options
@@ -170,7 +169,7 @@ module BeEF
             uri = "#{proto}://#{config['callback_host']}:#{msf_opts['SRVPORT']}/#{msf_opts['URIPATH']}"
 
             bopts << { sploit_url: uri }
-            c = BeEF::Core::Models::Command.new(
+            BeEF::Core::Models::Command.new(
               data: bopts.to_json,
               hooked_browser_id: hb.id,
               command_module_id: BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),

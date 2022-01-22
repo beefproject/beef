@@ -6,11 +6,8 @@
 module BeEF
   module Core
     module Models
-
       class Massmailer < BeEF::Core::Model
-
       end
-
     end
   end
 end

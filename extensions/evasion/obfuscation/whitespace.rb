@@ -12,11 +12,10 @@ module BeEF
         def need_bootstrap?
           true
         end
-        
+
         def get_bootstrap
           # the decode function is in plain text - called IE-spacer - because trolling is always a good idea
-          decode_function =
-"//Dirty IE6 whitespace bug hack
+          "//Dirty IE6 whitespace bug hack
 if (typeof IE_spacer === 'function') {} else {
 function IE_spacer(css_space) {
   var spacer = '';
@@ -39,19 +38,18 @@ function IE_spacer(css_space) {
 }}"
         end
 
-        def execute(input, config)
+        def execute(input, _config)
           size = input.length
           encoded = encode(input)
-          var_name = BeEF::Core::Crypto::random_alphanum_string(3)
+          var_name = BeEF::Core::Crypto.random_alphanum_string(3)
           input = "var #{var_name}=\"#{encoded}\";[].constructor.constructor(IE_spacer(#{var_name}))();"
           print_debug "[OBFUSCATION - WHITESPACE] #{size} bytes of Javascript code has been Whitespaced"
           input
         end
 
-        def encode(input)                 
-          output = input.unpack('B*') 
-          output = output.to_s.gsub(/[\["01\]]/, '[' => '', '"' => '', ']' => '',  '0' => "\t", '1' => ' ')
-          output
+        def encode(input)
+          output = input.unpack('B*')
+          output.to_s.gsub(/[\["01\]]/, '[' => '', '"' => '', ']' => '', '0' => "\t", '1' => ' ')
         end
       end
     end

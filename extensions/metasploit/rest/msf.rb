@@ -113,7 +113,7 @@ module BeEF
 
         # Raised when invalid JSON input is passed to an /api/msf handler.
         class InvalidJsonError < StandardError
-          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/msf handler'
+          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/msf handler'.freeze
 
           def initialize(message = nil)
             super(message || DEFAULT_MESSAGE)
@@ -122,7 +122,7 @@ module BeEF
 
         # Raised when an invalid named parameter is passed to an /api/msf handler.
         class InvalidParamError < StandardError
-          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/msf handler'
+          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/msf handler'.freeze
 
           def initialize(message = nil)
             str = 'Invalid "%s" parameter passed to /api/msf handler'

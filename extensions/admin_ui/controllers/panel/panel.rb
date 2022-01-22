@@ -8,7 +8,6 @@ module BeEF
     module AdminUI
       module Controllers
         class Panel < BeEF::Extension::AdminUI::HttpController
-
           def initialize
             super({
               'paths' => {

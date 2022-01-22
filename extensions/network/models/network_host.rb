@@ -10,7 +10,7 @@ module BeEF
       # Table stores each host identified on the zombie browser's network(s)
       #
       class NetworkHost < BeEF::Core::Model
-          belongs_to :hooked_browser
+        belongs_to :hooked_browser
 
         #
         # Stores a network host in the data store

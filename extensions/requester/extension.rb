@@ -4,11 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module Requester
-  
-end
-end
+  module Extension
+    module Requester
+    end
+  end
 end
 
 require 'extensions/requester/models/http'
