@@ -10,8 +10,7 @@ module BeEF
       # Table stores each open port identified on the zombie browser's network(s)
       #
       class NetworkService < BeEF::Core::Model
-          belongs_to :hooked_browser
-
+        belongs_to :hooked_browser
 
         #
         # Stores a network service in the data store
@@ -53,7 +52,7 @@ module BeEF
             port: service[:port],
             ntype: service[:ntype]
           ).length
-          return if total > 0
+          return if total.positive?
 
           # store the returned network service details
           network_service = BeEF::Core::Models::NetworkService.new(

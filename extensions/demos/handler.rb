@@ -38,8 +38,6 @@ module BeEF
           )
         end
 
-        private
-
         # @note String representing the absolute path to the .html file
         @file_path
 

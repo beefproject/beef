@@ -4,11 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module Autoloader
-  
-end
-end
+  module Extension
+    module Autoloader
+    end
+  end
 end
 
 require 'extensions/autoloader/model'

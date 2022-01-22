@@ -6,9 +6,7 @@
 module BeEF
   module Extension
     module Xssrays
-
       class Handler < BeEF::Core::Router::Router
-
         XS = BeEF::Core::Models::Xssraysscan
         XD = BeEF::Core::Models::Xssraysdetail
         HB = BeEF::Core::Models::HookedBrowser
@@ -18,15 +16,15 @@ module BeEF
           # raise an error if it's null or not found in the DB
           beef_hook = params[:hbsess] || nil
 
-          if beef_hook.nil? || HB.where(:session => beef_hook).first.nil?
-            print_error "[XSSRAYS] Invalid beef hook ID: the hooked browser cannot be found in the database"
+          if beef_hook.nil? || HB.where(session: beef_hook).first.nil?
+            print_error '[XSSRAYS] Invalid beef hook ID: the hooked browser cannot be found in the database'
             return
           end
 
           # verify the specified ray ID is valid
           rays_scan_id = params[:raysid] || nil
-          if rays_scan_id.nil? || !BeEF::Filters::nums_only?(rays_scan_id)
-            print_error "[XSSRAYS] Invalid ray ID"
+          if rays_scan_id.nil? || !BeEF::Filters.nums_only?(rays_scan_id)
+            print_error '[XSSRAYS] Invalid ray ID'
             return
           end
 
@@ -39,34 +37,33 @@ module BeEF
             finalize_scan(rays_scan_id)
           else
             # invalid action
-            print_error "[XSSRAYS] Invalid action"
+            print_error '[XSSRAYS] Invalid action'
             return
           end
 
-        headers 'Pragma' => 'no-cache',
-                'Cache-Control' => 'no-cache',
-                'Expires' => '0',
-                'Access-Control-Allow-Origin' => '*',
-                'Access-Control-Allow-Methods' => 'POST,GET'
-
+          headers 'Pragma' => 'no-cache',
+                  'Cache-Control' => 'no-cache',
+                  'Expires' => '0',
+                  'Access-Control-Allow-Origin' => '*',
+                  'Access-Control-Allow-Methods' => 'POST,GET'
         end
 
         # parse incoming rays: rays are verified XSS, as the attack vector is calling back BeEF when executed.
         def parse_rays(rays_scan_id)
           xssrays_scan = XS.find(rays_scan_id)
-          hooked_browser = HB.where(:session => params[:hbsess]).first
+          hooked_browser = HB.where(session: params[:hbsess]).first
 
           if xssrays_scan.nil?
-            print_error "[XSSRAYS] Invalid scan"
+            print_error '[XSSRAYS] Invalid scan'
             return
           end
 
           xssrays_detail = XD.new(
-              :hooked_browser_id => hooked_browser.session,
-              :vector_name => params[:n],
-              :vector_method => params[:m],
-              :vector_poc => params[:p],
-              :xssraysscan_id => xssrays_scan.id
+            hooked_browser_id: hooked_browser.session,
+            vector_name: params[:n],
+            vector_method: params[:m],
+            vector_poc: params[:p],
+            xssraysscan_id: xssrays_scan.id
           )
           xssrays_detail.save
 
@@ -79,11 +76,11 @@ module BeEF
           xssrays_scan = BeEF::Core::Models::Xssraysscan.find(rays_scan_id)
 
           if xssrays_scan.nil?
-            print_error "[XSSRAYS] Invalid scan"
+            print_error '[XSSRAYS] Invalid scan'
             return
           end
 
-          xssrays_scan.update(:is_finished => true, :scan_finish => Time.now)
+          xssrays_scan.update(is_finished: true, scan_finish: Time.now)
           print_info("[XSSRAYS] Scan id [#{xssrays_scan.id}] finished at [#{xssrays_scan.scan_finish}]")
         end
       end

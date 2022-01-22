@@ -7,11 +7,8 @@ module BeEF
   module Core
     module Models
       class Interceptor < BeEF::Core::Model
-
         belongs_to :webcloner
-
       end
-
     end
   end
 end

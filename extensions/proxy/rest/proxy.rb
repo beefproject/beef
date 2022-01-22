@@ -6,10 +6,8 @@
 module BeEF
   module Extension
     module Proxy
-
       # This class handles the routing of RESTful API requests for the proxy
       class ProxyRest < BeEF::Core::Router::Router
-
         # Filters out bad requests before performing any routing
         before do
           config = BeEF::Core::Configuration.instance
@@ -27,68 +25,58 @@ module BeEF
 
         # Use a specified hooked browser as proxy
         post '/setTargetZombie' do
-          begin
-            body = JSON.parse(request.body.read)
-            hb_id = body['hb_id']
+          body = JSON.parse(request.body.read)
+          hb_id = body['hb_id']
 
-            result = {}
-            result['success'] = false
-            return result.to_json if hb_id.nil?
+          result = {}
+          result['success'] = false
+          return result.to_json if hb_id.nil?
 
-            hooked_browser = @hb.where(:session => hb_id).first
-            previous_proxy_hb = @hb.where(:is_proxy => true).first
+          hooked_browser = @hb.where(session: hb_id).first
+          previous_proxy_hb = @hb.where(is_proxy: true).first
 
-            # if another HB is currently set as tunneling proxy, unset it
-            unless previous_proxy_hb.nil?
-              previous_proxy_hb.update(:is_proxy => false)
-              print_debug("Unsetting previously HB [#{previous_proxy_hb.ip}] used as Tunneling Proxy")
-            end
-
-            # set the HB requested in /setTargetProxy as Tunneling Proxy
-            unless hooked_browser.nil?
-              hooked_browser.update(:is_proxy => true)
-              print_info("Using Hooked Browser with ip [#{hooked_browser.ip}] as Tunneling Proxy")
-              result['success'] = true
-            end
-
-            result.to_json
-
-          rescue InvalidParamError => e
-            print_error e.message
-            halt 400
-          rescue StandardError => e
-            print_error "Internal error setting browser as proxy (#{e.message})"
-            halt 500
+          # if another HB is currently set as tunneling proxy, unset it
+          unless previous_proxy_hb.nil?
+            previous_proxy_hb.update(is_proxy: false)
+            print_debug("Unsetting previously HB [#{previous_proxy_hb.ip}] used as Tunneling Proxy")
           end
 
+          # set the HB requested in /setTargetProxy as Tunneling Proxy
+          unless hooked_browser.nil?
+            hooked_browser.update(is_proxy: true)
+            print_info("Using Hooked Browser with ip [#{hooked_browser.ip}] as Tunneling Proxy")
+            result['success'] = true
+          end
+
+          result.to_json
+        rescue InvalidParamError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error setting browser as proxy (#{e.message})"
+          halt 500
         end
 
         # Raised when invalid JSON input is passed to an /api/proxy handler.
         class InvalidJsonError < StandardError
-
-          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/proxy handler'
+          DEFAULT_MESSAGE = 'Invalid JSON input passed to /api/proxy handler'.freeze
 
           def initialize(message = nil)
             super(message || DEFAULT_MESSAGE)
           end
-
         end
 
         # Raised when an invalid named parameter is passed to an /api/proxy handler.
         class InvalidParamError < StandardError
-
-          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/proxy handler'
+          DEFAULT_MESSAGE = 'Invalid parameter passed to /api/proxy handler'.freeze
 
           def initialize(message = nil)
-            str = "Invalid \"%s\" parameter passed to /api/proxy handler"
-            message = sprintf str, message unless message.nil?
+            str = 'Invalid "%s" parameter passed to /api/proxy handler'
+            message = format str, message unless message.nil?
             super(message)
           end
-
         end
-
       end
-
     end
   end
 end

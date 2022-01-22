@@ -5,13 +5,12 @@
 #
 module BeEF
   module Extension
-
     module RegisterSEngHandler
       def self.mount_handler(server)
         server.mount('/api/seng', BeEF::Extension::SocialEngineering::SEngRest.new)
 
         ps_url = BeEF::Core::Configuration.instance.get('beef.extension.social_engineering.powershell.powershell_handler_url')
-        server.mount("#{ps_url}", BeEF::Extension::SocialEngineering::Bind_powershell.new)
+        server.mount(ps_url.to_s, BeEF::Extension::SocialEngineering::Bind_powershell.new)
       end
     end
 
@@ -36,15 +35,7 @@ require 'extensions/social_engineering/powershell/bind_powershell'
 # Models
 require 'extensions/social_engineering/models/web_cloner'
 require 'extensions/social_engineering/models/interceptor'
-#require 'extensions/social_engineering/models/mass_mailer'
+# require 'extensions/social_engineering/models/mass_mailer'
 
 # RESTful api endpoints
 require 'extensions/social_engineering/rest/socialengineering'
-
-
-
-
-
-
-
-

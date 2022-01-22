@@ -8,17 +8,16 @@ module BeEF
     module Proxy
       module API
         module RegisterHttpHandler
-
           BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'pre_http_start')
           BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
           def self.pre_http_start(http_hook_server)
             config = BeEF::Core::Configuration.instance
-            Thread.new{
-              http_hook_server.semaphore.synchronize{
+            Thread.new do
+              http_hook_server.semaphore.synchronize do
                 BeEF::Extension::Proxy::Proxy.new
-              }
-            }
+              end
+            end
             print_info "HTTP Proxy: http://#{config.get('beef.extension.proxy.address')}:#{config.get('beef.extension.proxy.port')}"
           end
 

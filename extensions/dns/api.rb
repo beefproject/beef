@@ -7,9 +7,7 @@ module BeEF
   module Extension
     module Dns
       module API
-
         module NameserverHandler
-
           BeEF::API::Registrar.instance.register(
             BeEF::Extension::Dns::API::NameserverHandler,
             BeEF::API::Server,
@@ -25,11 +23,15 @@ module BeEF
           # Starts the DNS nameserver at BeEF startup.
           #
           # @param http_hook_server [BeEF::Core::Server] HTTP server instance
-          def self.pre_http_start(http_hook_server)
+          def self.pre_http_start(_http_hook_server)
             dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
             dns = BeEF::Extension::Dns::Server.instance
 
-            protocol = dns_config['protocol'].to_sym rescue :udp
+            protocol = begin
+              dns_config['protocol'].to_sym
+            rescue StandardError
+              :udp
+            end
             address = dns_config['address'] || '127.0.0.1'
             port = dns_config['port'] || 5300
             interfaces = [[protocol, address, port]]
@@ -44,12 +46,13 @@ module BeEF
                 up_port = server[2]
 
                 next if [up_protocol, up_address, up_port].include?(nil)
+
                 servers << [up_protocol.to_sym, up_address, up_port] if up_protocol =~ /^(tcp|udp)$/
                 upstream_servers << "Upstream Server: #{up_address}:#{up_port} (#{up_protocol})\n"
               end
             end
 
-            dns.run(:upstream => servers, :listen => interfaces)
+            dns.run(upstream: servers, listen: interfaces)
 
             print_info "DNS Server: #{address}:#{port} (#{protocol})"
             print_more upstream_servers unless upstream_servers.empty?
@@ -61,9 +64,7 @@ module BeEF
           def self.mount_handler(beef_server)
             beef_server.mount('/api/dns', BeEF::Extension::Dns::DnsRest.new)
           end
-
         end
-
       end
     end
   end

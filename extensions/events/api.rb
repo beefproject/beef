@@ -4,33 +4,28 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module Events
+  module Extension
+    module Events
+      module PostLoad
+        BeEF::API::Registrar.instance.register(BeEF::Extension::Events::PostLoad, BeEF::API::Extensions, 'post_load')
 
-  module PostLoad
+        def self.post_load
+          print_error 'Event Logger extension is not compatible with WebSockets command and control channel' if BeEF::Core::Configuration.instance.get('beef.http.websocket.enable')
+        end
+      end
 
-    BeEF::API::Registrar.instance.register(BeEF::Extension::Events::PostLoad, BeEF::API::Extensions, 'post_load')
+      module RegisterHttpHandler
+        # Register API calls
+        BeEF::API::Registrar.instance.register(BeEF::Extension::Events::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
-    def self.post_load
-      if BeEF::Core::Configuration.instance.get("beef.http.websocket.enable")
-        print_error 'Event Logger extension is not compatible with WebSockets command and control channel'
+        #
+        # Mounts the http handlers for the events extension. We use that to retrieve stuff
+        # like keystroke, mouse clicks and form submission.
+        #
+        def self.mount_handler(beef_server)
+          beef_server.mount('/event', BeEF::Extension::Events::Handler)
+        end
       end
     end
   end
-
-  module RegisterHttpHandler
-
-    # Register API calls
-    BeEF::API::Registrar.instance.register(BeEF::Extension::Events::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
-    
-    #
-    # Mounts the http handlers for the events extension. We use that to retrieve stuff
-    # like keystroke, mouse clicks and form submission.
-    #
-    def self.mount_handler(beef_server)
-      beef_server.mount('/event', BeEF::Extension::Events::Handler)
-    end
-  end
-end
-end
 end

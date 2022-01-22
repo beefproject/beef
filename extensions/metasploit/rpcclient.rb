@@ -102,7 +102,7 @@ module BeEF
             sleep 1
             code = http.head(path, headers).code.to_i
             print_debug "[Metasploit] Success - HTTP response: #{code}"
-          rescue StandardError => e
+          rescue StandardError
             retry if (retries -= 1).positive?
           end
 
@@ -185,6 +185,9 @@ module BeEF
           get_lock
           res = call('module.info', 'exploit', name)
           res || {}
+        rescue StandardError => e
+          print_error "Call module.info for module #{name} failed: #{e.message}"
+          {}
         ensure
           release_lock
         end
@@ -193,6 +196,9 @@ module BeEF
           get_lock
           res = call('module.compatible_payloads', name)
           res || {}
+        rescue StandardError => e
+          print_error "Call module.compatible_payloads for module #{name} failed: #{e.message}"
+          {}
         ensure
           release_lock
         end
@@ -201,6 +207,9 @@ module BeEF
           get_lock
           res = call('module.options', 'exploit', name)
           res || {}
+        rescue StandardError => e
+          print_error "Call module.options for module #{name} failed: #{e.message}"
+          {}
         ensure
           release_lock
         end
@@ -211,6 +220,9 @@ module BeEF
           return {} unless res || res['modules']
 
           res['modules']
+        rescue StandardError => e
+          print_error "Call module.payloads failed: #{e.message}"
+          {}
         ensure
           release_lock
         end
@@ -222,6 +234,7 @@ module BeEF
 
           res
         rescue StandardError => e
+          print_error "Call module.options for payload #{name} failed: #{e.message}"
           {}
         ensure
           release_lock
@@ -234,7 +247,7 @@ module BeEF
           res['uri'] = "#{proto}://#{@config['callback_host']}:#{opts['SRVPORT']}/#{opts['URIPATH']}"
           res
         rescue StandardError => e
-          print_error "Exploit failed for #{exploit} \n"
+          print_error "Exploit failed for #{exploit}\n#{e.message}"
           false
         ensure
           release_lock
@@ -248,7 +261,7 @@ module BeEF
           get_lock
           call('module.execute', 'auxiliary', 'server/browser_autopwn', opts)
         rescue StandardError => e
-          print_error 'Failed to launch autopwn'
+          print_error "Failed to launch browser_autopwn: #{e.message}"
           false
         ensure
           release_lock
