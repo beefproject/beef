@@ -7,33 +7,31 @@
 #
 
 class Phonegap_alert_user < BeEF::Core::Command
-  
-    def self.options
-        return [{
-            'name' => 'title', 
-            'description' => 'Alert title', 
-            'ui_label'=>'Title', 
-            'value' => 'Beef',
-            'width' => '300px'
-            },{
-            'name' => 'message', 
-            'description' => 'Message', 
-            'ui_label'=>'Message', 
-            'value' => 'Game over!',
-            'width' => '300px'
-            },{
-            'name' => 'buttonName',
-            'description' => 'Default button name',
-            'ui_label'=>'Button name',
-            'value' => 'Done',
-            'width' => '100px'
-            }]
+  def self.options
+    [{
+      'name' => 'title',
+      'description' => 'Alert title',
+      'ui_label' => 'Title',
+      'value' => 'Beef',
+      'width' => '300px'
+    }, {
+      'name' => 'message',
+      'description' => 'Message',
+      'ui_label' => 'Message',
+      'value' => 'Game over!',
+      'width' => '300px'
+    }, {
+      'name' => 'buttonName',
+      'description' => 'Default button name',
+      'ui_label' => 'Button name',
+      'value' => 'Done',
+      'width' => '100px'
+    }]
   end
 
   def callback
     content = {}
     content['Result'] = @datastore['result']
     save content
-  end 
-
+  end
 end

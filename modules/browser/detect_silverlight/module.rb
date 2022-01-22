@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_silverlight < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['silverlight'] = @datastore['silverlight']
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['silverlight'] = @datastore['silverlight']
+    save content
+  end
 end

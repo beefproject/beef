@@ -5,6 +5,6 @@
 #
 class Popunder_window_ie < BeEF::Core::Command
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

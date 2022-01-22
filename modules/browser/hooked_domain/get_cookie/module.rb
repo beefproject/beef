@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_cookie < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['cookie'] = @datastore['cookie']
     save content
   end
-
 end

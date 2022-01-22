@@ -6,10 +6,9 @@
 # // Phonegap_globalization_status
 
 class Phonegap_globalization_status < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['Result'] = @datastore['result']
     save content
-  end 
+  end
 end

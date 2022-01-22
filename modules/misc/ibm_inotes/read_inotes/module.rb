@@ -14,14 +14,14 @@
 # limitations under the License.
 #
 class Read_inotes < BeEF::Core::Command
- def self.options
-    return [
-      {'type' => 'label', 'html' => 'Provide unid to retrieve details of a Note:' },
-      {'type' => 'textfield', 'name' => 'unid', 'ui_label' => 'notes unid', 'value' => '1'}
+  def self.options
+    [
+      { 'type' => 'label', 'html' => 'Provide unid to retrieve details of a Note:' },
+      { 'type' => 'textfield', 'name' => 'unid', 'ui_label' => 'notes unid', 'value' => '1' }
     ]
-  end 
-  def post_execute
-    save({'result' => @datastore['result']})
   end
 
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

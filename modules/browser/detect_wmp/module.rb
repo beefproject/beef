@@ -4,14 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_wmp < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['wmp'] = @datastore['wmp']
-		save content
-    if @datastore['results'] =~ /^wmp=(Yes|No)/
-      bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'browser.capabilities.wmp', $1)
-    end
-	end
-
+  def post_execute
+    content = {}
+    content['wmp'] = @datastore['wmp']
+    save content
+    BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'browser.capabilities.wmp', Regexp.last_match(1)) if @datastore['results'] =~ /^wmp=(Yes|No)/
+  end
 end

@@ -6,10 +6,9 @@
 # // phonegap_list_contacts
 
 class Phonegap_list_contacts < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['Result'] = @datastore['result']
     save content
-  end 
+  end
 end

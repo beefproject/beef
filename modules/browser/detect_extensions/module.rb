@@ -8,12 +8,9 @@
 #	http://jeremiahgrossman.blogspot.fr/2006/08/i-know-what-youve-got-firefox.html
 #
 class Detect_extensions < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['extension'] = @datastore['extension']
     save content
   end
-
 end
-

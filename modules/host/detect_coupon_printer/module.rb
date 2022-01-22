@@ -6,6 +6,6 @@
 
 class Detect_coupon_printer < BeEF::Core::Command
   def post_execute
-    save({'result' => @datastore['results']})
+    save({ 'result' => @datastore['results'] })
   end
 end

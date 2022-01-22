@@ -7,7 +7,8 @@ class Track_physical_movement < BeEF::Core::Command
   def self.options
     []
   end
+
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

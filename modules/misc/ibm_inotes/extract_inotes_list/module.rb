@@ -14,16 +14,16 @@
 # limitations under the License.
 #
 class Extract_inotes_list < BeEF::Core::Command
- def self.options
-    return [
-      {'type' => 'label', 'html' => 'Provide date boundaries to retrieve a list of Notes:' },
-      {'type' => 'textfield', 'name' => 'startdate', 'ui_label' => 'startdate yyyymmdd', 'value' => '20140101'},
-      {'type' => 'textfield', 'name' => 'enddate', 'ui_label' => 'enddate yyyymmdd', 'value' => '20500101'},
-      {'type' => 'textfield', 'name' => 'count', 'ui_label' => 'number of items returned', 'value' => '-1'},
+  def self.options
+    [
+      { 'type' => 'label', 'html' => 'Provide date boundaries to retrieve a list of Notes:' },
+      { 'type' => 'textfield', 'name' => 'startdate', 'ui_label' => 'startdate yyyymmdd', 'value' => '20140101' },
+      { 'type' => 'textfield', 'name' => 'enddate', 'ui_label' => 'enddate yyyymmdd', 'value' => '20500101' },
+      { 'type' => 'textfield', 'name' => 'count', 'ui_label' => 'number of items returned', 'value' => '-1' }
     ]
-  end 
-  def post_execute
-    save({'result' => @datastore['result']})
   end
 
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

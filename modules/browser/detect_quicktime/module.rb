@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_quicktime < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['quicktime'] = @datastore['quicktime']
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['quicktime'] = @datastore['quicktime']
+    save content
+  end
 end

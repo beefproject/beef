@@ -5,9 +5,7 @@
 #
 
 class Detect_antivirus < BeEF::Core::Command
-
   def post_execute
-    save({'Antivirus' => @datastore['antivirus']})
+    save({ 'Antivirus' => @datastore['antivirus'] })
   end
-
 end

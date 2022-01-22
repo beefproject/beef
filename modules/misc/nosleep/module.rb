@@ -5,14 +5,13 @@
 #
 class No_sleep < BeEF::Core::Command
   def pre_send
-    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/misc/nosleep/NoSleep.min.js','/NoSleep', 'js')
-  end 
- 
-  def self.options
-    return [
-    ]
+    BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind('/modules/misc/nosleep/NoSleep.min.js', '/NoSleep', 'js')
   end
-  
+
+  def self.options
+    []
+  end
+
   def post_execute
     content = {}
     content['result'] = @datastore['result']

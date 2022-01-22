@@ -7,7 +7,7 @@
 class Detect_users < BeEF::Core::Command
   def post_execute
     content = {}
-    content['result'] = @datastore['result'] if not @datastore['result'].nil?
+    content['result'] = @datastore['result'] unless @datastore['result'].nil?
     save content
   end
 end

@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_evernote_clipper < BeEF::Core::Command
-
-	def post_execute 
-		content = {}
-		content['evernote_clipper'] = @datastore['evernote_clipper'] if not @datastore['evernote_clipper'].nil?
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['evernote_clipper'] = @datastore['evernote_clipper'] unless @datastore['evernote_clipper'].nil?
+    save content
+  end
 end

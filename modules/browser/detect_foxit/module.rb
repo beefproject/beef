@@ -4,14 +4,10 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_foxit < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['foxit'] = @datastore['foxit']
-		save content
-          if @datastore['results'] =~ /^foxit=(Yes|No)/
-            bd = BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasFoxit', $1)
-          end
-	end
-
+  def post_execute
+    content = {}
+    content['foxit'] = @datastore['foxit']
+    save content
+    BeEF::Core::Models::BrowserDetails.set(@datastore['beefhook'], 'HasFoxit', Regexp.last_match(1)) if @datastore['results'] =~ /^foxit=(Yes|No)/
+  end
 end

@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_unsafe_activex < BeEF::Core::Command
-
-	def post_execute
-		content = {}
-		content['unsafe_activex'] = @datastore['unsafe_activex']
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['unsafe_activex'] = @datastore['unsafe_activex']
+    save content
+  end
 end

@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_popup_blocker < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['popup_blocker_enabled'] = @datastore['popup_blocker_enabled']
     save content
   end
-  
 end

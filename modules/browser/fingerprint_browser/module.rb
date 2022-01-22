@@ -5,15 +5,11 @@
 #
 
 class Fingerprint_browser < BeEF::Core::Command
-
   def post_execute
     content = {}
     content['fingerprint'] = @datastore['fingerprint'] unless @datastore['fingerprint'].nil?
     content['components'] = @datastore['components'] unless @datastore['components'].nil?
-    if content.empty?
-      content['fail'] = 'Failed to fingerprint browser.'
-    end
+    content['fail'] = 'Failed to fingerprint browser.' if content.empty?
     save content
   end
-
 end

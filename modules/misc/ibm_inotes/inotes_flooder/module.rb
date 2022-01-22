@@ -14,17 +14,17 @@
 # limitations under the License.
 #
 class Inotes_flooder < BeEF::Core::Command
- def self.options
-    return [
-      {'type' => 'label', 'html' => 'Send a note to someone with an attachment:' },
-      {'type' => 'textfield', 'name' => 'to', 'ui_label' => 'TO', 'value' => ''},
-      {'type' => 'textfield', 'name' => 'subject', 'ui_label' => 'Subject', 'value' => ''},
-      {'name'=>'body', 'ui_label' => 'Body', 'type'=>'textarea', 'value'=>''},
-      {'type' => 'textfield', 'name' => 'delay', 'ui_label' => 'Delay (ms)', 'value' => '100'}
+  def self.options
+    [
+      { 'type' => 'label', 'html' => 'Send a note to someone with an attachment:' },
+      { 'type' => 'textfield', 'name' => 'to', 'ui_label' => 'TO', 'value' => '' },
+      { 'type' => 'textfield', 'name' => 'subject', 'ui_label' => 'Subject', 'value' => '' },
+      { 'name' => 'body', 'ui_label' => 'Body', 'type' => 'textarea', 'value' => '' },
+      { 'type' => 'textfield', 'name' => 'delay', 'ui_label' => 'Delay (ms)', 'value' => '100' }
     ]
-  end 
-  def post_execute
-    save({'result' => @datastore['result']})
   end
 
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

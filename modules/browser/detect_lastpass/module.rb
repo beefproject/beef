@@ -4,11 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Detect_lastpass < BeEF::Core::Command
-
-	def post_execute 
-		content = {}
-		content['lastpass'] = @datastore['lastpass'] if not @datastore['lastpass'].nil?
-		save content
-	end
-
+  def post_execute
+    content = {}
+    content['lastpass'] = @datastore['lastpass'] unless @datastore['lastpass'].nil?
+    save content
+  end
 end
