@@ -36,7 +36,7 @@ class BeefRestClient
       result = JSON.parse(response.body)
 
       { success: result['success'], payload: result }
-    rescue CannotFindErrorMessage => e
+    rescue StandardError => e
       print_error "Could not retrieve BeEF version: #{e.message}"
       { success: false, payload: e.message }
     end
