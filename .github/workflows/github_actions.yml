@@ -42,7 +42,7 @@ jobs:
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2 # Not needed with a .ruby-version file
+          ruby-version: 2.7.4 # Not needed with a .ruby-version file
 
       - name: 'Build and run tests'
         run: |
