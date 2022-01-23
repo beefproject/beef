@@ -1,5 +1,4 @@
 RSpec.describe 'BeEF Filesystem' do
-
   def file_test(file)
     expect(File.file?(file)).to be(true)
     expect(File.zero?(file)).to be(false)
@@ -26,5 +25,4 @@ RSpec.describe 'BeEF Filesystem' do
       expect(File.executable?(d)).to be(true)
     end
   end
-
 end

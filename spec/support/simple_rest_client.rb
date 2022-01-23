@@ -17,20 +17,17 @@ class BeefRestClient
   end
 
   def auth
-    begin
-      response = RestClient.post "#{@url}admin/login",
-                                 { 'username': "#{@user}",
-                                   'password': "#{@pass}" }.to_json,
-                                 content_type: :json,
-                                 accept: :json
-      result = JSON.parse(response.body)
-      @token = result['token']
-      { success: result['success'], payload: result, token: @token }
-    rescue => e
-      { success: false, payload: e.message }
-    end
+    response = RestClient.post "#{@url}admin/login",
+                                { 'username': "#{@user}",
+                                  'password': "#{@pass}" }.to_json,
+                                content_type: :json,
+                                accept: :json
+    result = JSON.parse(response.body)
+    @token = result['token']
+    { success: result['success'], payload: result, token: @token }
+  rescue StandardError => e
+    { success: false, payload: e.message }
   end
-
   def version
     return { success: false, payload: 'no token' } if @token.nil?
 
@@ -39,7 +36,7 @@ class BeefRestClient
       result = JSON.parse(response.body)
 
       { success: result['success'], payload: result }
-    rescue => e
+    rescue StandardError => e
       print_error "Could not retrieve BeEF version: #{e.message}"
       { success: false, payload: e.message }
     end
