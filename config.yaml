@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 # BeEF Configuration file
 
 beef:
-    version: '0.5.0.0-alpha-pre'
+    version: '0.5.4.0'
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
@@ -27,10 +27,12 @@ beef:
         # subnet of IP addresses that can connect to the admin UI
         #permitted_ui_subnet: ["127.0.0.1/32", "::1/128"]
         permitted_ui_subnet: ["0.0.0.0/0", "::/0"]
+        # subnet of IP addresses that cannot be hooked by the framework
+        excluded_hooking_subnet: []
         # slow API calls to 1 every  api_attempt_delay  seconds
         api_attempt_delay: "0.05"
 
-    # HTTP server
+    # HTTP server 
     http:
         debug: false #Thin::Logging.debug, very verbose. Prints also full exception stack trace.
         host: "0.0.0.0"
@@ -45,8 +47,14 @@ beef:
 
         # Host Name / Domain Name
         # If you want BeEF to be accessible via hostname or domain name (ie, DynDNS),
-        #   set the public hostname below:
-        #public: ""      # public hostname/IP address
+        # These settings will be used to create a public facing URL
+        # This public facing URL will be used for all hook related calls
+        # set the public setting below:
+        # public:
+        #     host: "" # public hostname/IP address
+        #     port: "" # public port will default to 80 if no https 443 if https 
+                      # and local if not set but there is a public host
+        #     https: false # true/false
 
         # Reverse Proxy / NAT
         # If you want BeEF to be accessible behind a reverse proxy or NAT,
@@ -54,8 +62,6 @@ beef:
         # NOTE: Allowing the reverse proxy will enable a vulnerability where the ui/panel can be spoofed
         #   by altering the X-FORWARDED-FOR ip address in the request header.
         allow_reverse_proxy: false
-        #public: ""      # public hostname/IP address
-        #public_port: "" # public port (experimental)
 
         # Hook
         hook_file: "/hook.js"
@@ -87,6 +93,8 @@ beef:
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
+            # Enabled this config setting if you're external facing uri is using https
+            public_enabled: false
             # In production environments, be sure to use a valid certificate signed for the value
             # used in beef.http.public (the domain name of the server where you run BeEF)
             key: "beef_key.pem"
@@ -112,10 +120,10 @@ beef:
     dns_hostname_lookup: false
 
     # IP Geolocation
-    # NOTE: requires MaxMind database. Run ./updated-geoipdb to install.
     geoip:
         enable: true
-        database: '/opt/GeoIP/GeoLite2-City.mmdb'
+        # GeoLite2 City database created by MaxMind, available from https://www.maxmind.com
+        database: '/usr/share/GeoIP/GeoLite2-City.mmdb'
 
     # Integration with PhishingFrenzy
     # If enabled BeEF will try to get the UID parameter value from the hooked URI, as this is used by PhishingFrenzy

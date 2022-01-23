@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -111,8 +111,7 @@ Ext.extend(zombiesTreeList, Ext.tree.TreePanel, {
 
           listeners: {
               itemclick: function(item, object) {
-                  var hb_id = this.contextNode.id.split('zombie-online-')[1];
-		              var hb_id_off = this.contextNode.id.split('zombie-offline-')[1];
+                  var hb_id = this.contextNode.id.split('-')[2];
                   switch (item.id) {
                       case 'use_as_proxy':
                            Ext.Ajax.request({

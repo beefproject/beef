@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -18,13 +18,14 @@ class Hijack_opener < BeEF::Core::Command
     src << '}</script></body></html>'
     BeEF::Core::NetworkStack::Handlers::AssetHandler.instance.bind_raw(
       '200',
-      {'Content-Type' => 'text/html'},
+      { 'Content-Type' => 'text/html' },
       src,
       '/iframe',
-      -1)
+      -1
+    )
   end
 
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -11,15 +11,16 @@ module BeEF
 
         def self.mount_handler(beef_server)
           # mount everything in html directory to /demos/
-          path = File.dirname(__FILE__) + '/html/'
-          files = Dir[path + '**/*']
+          path = "#{File.dirname(__FILE__)}/html/"
+          files = Dir["#{path}**/*"]
 
           beef_server.mount('/demos', Rack::File.new(path))
 
           files.each do |f|
             # don't follow symlinks
             next if File.symlink?(f)
-            mount_path = '/demos/' + f.sub(path, '')
+
+            mount_path = "/demos/#{f.sub(path, '')}"
             if File.extname(f) == '.html'
               # use handler to mount HTML templates
               beef_server.mount(mount_path, BeEF::Extension::Demos::Handler.new(f))

@@ -1,18 +1,18 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Cross_site_faxing < BeEF::Core::Command
-  
   def self.options
-    return [
-	{'name'=>'ip', 'ui_label' => 'Target Address', 'value' => 'localhost'},
-	{'name'=>'port', 'ui_label' => 'Target Port', 'value' => '3000'},
-	{'name'=>'recname', 'ui_label' => 'Name of the receiver', 'value' => 'BeEF'},
-	{'name'=>'recfax', 'ui_label' => 'Fax number of the recipient', 'value' => '+1 11 112233-2'},
-	{'name'=>'subject', 'ui_label' => 'Subject', 'value' => 'Got some BeEF?'},
-	{'name'=>'msg', 'ui_label' => 'Message', 'description' => 'Message to print', 'type'=>'textarea', 'value'=>"**********************************************************************
+    [
+      { 'name' => 'ip', 'ui_label' => 'Target Address', 'value' => 'localhost' },
+      { 'name' => 'port', 'ui_label' => 'Target Port', 'value' => '3000' },
+      { 'name' => 'recname', 'ui_label' => 'Name of the receiver', 'value' => 'BeEF' },
+      { 'name' => 'recfax', 'ui_label' => 'Fax number of the recipient', 'value' => '+1 11 112233-2' },
+      { 'name' => 'subject', 'ui_label' => 'Subject', 'value' => 'Got some BeEF?' },
+      { 'name' => 'msg', 'ui_label' => 'Message', 'description' => 'Message to print', 'type' => 'textarea', 'value' => "
+**********************************************************************
 
                                      .O,
                                      lkOl
@@ -54,11 +54,12 @@ class Cross_site_faxing < BeEF::Core::Command
              .';o0WWWWWWWWWWWNk;
                   .cxOKXKKOd;.
 
-**********************************************************************", 'width'=>'200px' }
-	]
+**********************************************************************",
+        'width' => '200px' }
+    ]
   end
 
   def post_execute
-    save({'result' => @datastore['result']})
+    save({ 'result' => @datastore['result'] })
   end
 end

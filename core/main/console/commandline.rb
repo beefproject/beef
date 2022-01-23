@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -19,6 +19,8 @@ module BeEF
         @options[:port] = ""
         @options[:ws_port] = ""
         @options[:interactive] = false
+        @options[:update_disabled] = false
+        @options[:update_auto] = false
 
         @already_parsed = false
 
@@ -53,6 +55,14 @@ module BeEF
 
               opts.on('-w', '--wsport WS_PORT', 'Change the default BeEF WebSocket listening port') do |ws_port|
                 @options[:ws_port] = ws_port
+              end
+
+              opts.on('-ud', '--update_disabled', 'Skips update') do 
+                @options[:update_disabled] = true
+              end
+
+              opts.on('-ua', '--update_auto', 'Automatic update with no prompt') do 
+                @options[:update_auto] = true
               end
 
               #opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do

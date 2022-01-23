@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -12,11 +12,12 @@
 $VERBOSE = nil
 
 #
-# @note Version check to ensure BeEF is running Ruby 2.5+
+# @note Version check to ensure BeEF is running Ruby 2.7+
 #
-if RUBY_VERSION < '2.5'
+min_ruby_version = '2.7'
+if RUBY_VERSION < min_ruby_version
   puts
-  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version 2.5 or later."
+  puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version #{min_ruby_version} or later."
   puts
   exit 1
 end
@@ -42,6 +43,28 @@ $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 # @note Require core loader
 #
 require 'core/loader'
+require 'timeout'
+
+#
+# @note Ask user if they would like to update beef
+#
+if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
+  if BeEF::Core::Console::CommandLine.parse[:update_auto] == true
+    print 'Checking latest BeEF repository and updating'
+    `git pull && bundle`
+  elsif `git rev-parse master` != `git rev-parse origin/master`
+    begin
+      Timeout.timeout(5) do
+        puts '-- BeEF Update Available --'
+        print 'Would you like to update to lastest version? y/n: '
+        response = gets
+        `git pull && bundle` if response&.strip == 'y'
+      end
+    rescue Timeout::Error
+      puts "\nUpdate Skipped with input timeout"
+    end
+  end
+end
 
 #
 # @note Create ~/.beef/
@@ -109,13 +132,13 @@ end
 #
 # @note Validate beef.http.public and beef.http.public_port
 #
-unless config.get('beef.http.public').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public'))
-  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public')}"
+unless config.get('beef.http.public.host').to_s.eql?('') || BeEF::Filters.is_valid_hostname?(config.get('beef.http.public.host'))
+  print_error "ERROR: Invalid public hostname: #{config.get('beef.http.public.host')}"
   exit 1
 end
 
-unless config.get('beef.http.public_port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public_port'))
-  print_error "ERROR: Invalid public port: #{config.get('beef.http.public_port')}"
+unless config.get('beef.http.public.port').to_s.eql?('') || BeEF::Filters.is_valid_port?(config.get('beef.http.public.port'))
+  print_error "ERROR: Invalid public port: #{config.get('beef.http.public.port')}"
   exit 1
 end
 
@@ -167,12 +190,16 @@ end
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:db_file)
+# otr-activerecord require you to manually establish the connection with the following line
+#Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+  OTR::ActiveRecord.establish_connection!
+end
 # Migrate (if required)
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
 end
-
 #
 # @note Extensions may take a moment to load, thus we print out a please wait message
 #

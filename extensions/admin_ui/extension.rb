@@ -1,18 +1,18 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module AdminUI
-  extend BeEF::API::Extension
-  
-  @full_name = 'Administration Web UI'
-  @short_name = 'admin_ui'
-  @description = 'Command and control web interface'
-end
-end
+  module Extension
+    module AdminUI
+      extend BeEF::API::Extension
+
+      @full_name = 'Administration Web UI'
+      @short_name = 'admin_ui'
+      @description = 'Command and control web interface'
+    end
+  end
 end
 
 # Constants

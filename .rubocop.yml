@@ -4,21 +4,39 @@ AllCops:
     - 'tmp/**/*'
     - 'tools/**/*'
     - 'doc/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+Layout/LineLength:
+  Enabled: true
+  Max: 180
 
 Metrics/AbcSize:
   Enabled: false
+
 Metrics/BlockLength:
   Enabled: false
+
 Metrics/ClassLength:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
+
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
 Metrics/PerceivedComplexity:
   Enabled: false
+
 Metrics/CyclomaticComplexity:
   Enabled: false
+
+Naming/ClassAndModuleCamelCase:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false

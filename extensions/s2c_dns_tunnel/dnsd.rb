@@ -1,41 +1,39 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
   module Extension
     module ServerClientDnsTunnel
+      module RubyDNS
+        class Transaction
+          def fail!(rcode, domain)
+            append_question!
 
-      class RubyDNS::Transaction
+            @answer.rcode = if rcode.is_a? Symbol
+                              Resolv::DNS::RCode.const_get(rcode)
+                            else
+                              rcode.to_i
+                            end
 
-        def fail!(rcode,domain)
-          append_question!
+            return unless rcode == :NXDomain
 
-          if rcode.kind_of? Symbol
-            @answer.rcode = Resolv::DNS::RCode.const_get(rcode)
-          else
-            @answer.rcode = rcode.to_i
-          end
-
-          if rcode == :NXDomain
             @answer.aa = 1
-            soa = Resolv::DNS::Resource::IN::SOA.new(Resolv::DNS::Name.create("ns." + domain),
-                                                     Resolv::DNS::Name.create("hostmaster." + domain),
-                                                     Time.now.strftime("%Y%m%d%H").to_i,86400,7200,3600000,172800
-                                                    )
-            @answer.add_authority(name,3600,soa)
+            soa = Resolv::DNS::Resource::IN::SOA.new(Resolv::DNS::Name.create("ns.#{domain}"),
+                                                     Resolv::DNS::Name.create("hostmaster.#{domain}"),
+                                                     Time.now.strftime('%Y%m%d%H').to_i, 86_400, 7200, 3_600_000, 172_800)
+            @answer.add_authority(name, 3600, soa)
           end
         end
       end
 
       class Server < RubyDNS::Server
-
         include Singleton
 
         attr_accessor :messages
 
-        def initialize()
+        def initialize
           super()
           @lock = Mutex.new
         end
@@ -50,13 +48,12 @@ module BeEF
             Thread.new do
               EventMachine.next_tick do
                 listen = options[:listen] || nil
-                super(:listen => listen)
+                super(listen: listen)
 
-                @selfip   = options[:listen][0][1]
-                @zone   = options[:zone]
+                @selfip = options[:listen][0][1]
+                @zone = options[:zone]
                 @messages = {}
-
-                end
+              end
             end
           end
         end
@@ -66,11 +63,11 @@ module BeEF
         # @param name [String] name of the resource record being looked up
         # @param resource [Resolv::DNS::Resource::IN] query type (e.g. A, CNAME, NS, etc.)
         # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
-        def process(name,resource,transaction)  
+        def process(name, resource, transaction)
           @lock.synchronize do
             print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
-            if format_resource(resource) != 'A' or not name.match(/#{@zone}$/)
-              transaction.fail!(:Refused,@zone) 
+            if (format_resource(resource) != 'A') || !name.match(/#{@zone}$/)
+              transaction.fail!(:Refused, @zone)
               return
             end
 
@@ -78,31 +75,32 @@ module BeEF
             cid = name.split('.')[2].split('-')[2].to_i
             bit = name.split('.')[2].split('-')[3].to_i(16)
 
-            if @messages[cid] != nil
-              message = @messages[cid]
-            else
-              transaction.fail!(:NXDomain,@zone) 
+            if @messages[cid].nil?
+              transaction.fail!(:NXDomain, @zone)
               return
+            else
+              message = @messages[cid]
             end
 
             if message.length <= bit
-              transaction.fail!(:NXDomain,@zone) 
+              transaction.fail!(:NXDomain, @zone)
               return
-            end 
+            end
 
             # If the bit is equal to 1 we should return one of the BeEF's IP addresses
-            if message[bit] == '1'
+            case message[bit]
+            when '1'
               transaction.respond!(@selfip)
               return
-            # If the bit is equal to 0 we should return NXDomain message  
-            elsif  message[bit] == '0'
-              transaction.fail!(:NXDomain,@zone) 
+            # If the bit is equal to 0 we should return NXDomain message
+            when '0'
+              transaction.fail!(:NXDomain, @zone)
               return
             end
           end
-        end  
+        end
 
-      private
+        private
 
         # Helper method that formats the given resource class in a human-readable format.
         #
@@ -111,7 +109,6 @@ module BeEF
         def format_resource(resource)
           /::(\w+)$/.match(resource.name)[1]
         end
-
       end
     end
   end

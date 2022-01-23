@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -19,7 +19,6 @@ module Core
 
       unless File.exists? geoip_file
         print_error "[GeoIP] Could not find MaxMind GeoIP database: '#{geoip_file}'"
-        print_more "Run ./update-geoipdb to install"
         @enabled = false
         return
       end

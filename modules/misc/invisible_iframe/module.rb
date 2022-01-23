@@ -1,18 +1,16 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Invisible_iframe < BeEF::Core::Command
+  def self.options
+    [
+      { 'name' => 'target', 'ui_label' => 'URL', 'value' => 'http://beefproject.com/' }
+    ]
+  end
 
-	def self.options
-		return [
-            {'name' => 'target', 'ui_label' => 'URL', 'value' => 'http://beefproject.com/'}
-		]
-	end
-  
-	def post_execute
-		save({'result' => @datastore['result']})
-	end
-  
+  def post_execute
+    save({ 'result' => @datastore['result'] })
+  end
 end

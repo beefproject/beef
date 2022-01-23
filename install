@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -29,6 +29,8 @@ get_permission () {
   if [ "$(echo "${REPLY}" | tr "[:upper:]" "[:lower:]")" = "n" ] ; then
     fatal 'Installation aborted'
   fi
+  
+
 }
 
 
@@ -78,7 +80,9 @@ install_linux () {
   info "Detecting Linux OS distribution..."
 
   Distro=''
-  if [ -f /etc/redhat-release ] ; then
+  if [ -f /etc/blackPanther-release ] ; then
+    Distro='blackPanther'
+  elif [ -f /etc/redhat-release ] ; then
     Distro='RedHat'
   elif [ -f /etc/debian_version ] ; then
     Distro='Debian'
@@ -86,7 +90,7 @@ install_linux () {
     Distro='Alpine'
   elif [ -f /etc/os-release ] ; then
     #DISTRO_ID=$(grep ^ID= /etc/os-release | cut -d= -f2-)
-    DISTRO_ID=$(cat /etc/os-release | grep  ID= | grep -v "BUILD" | cut -d= -f2-)
+    DISTRO_ID=$(cat /etc/os-release | grep  ID= | grep -v "BUILD" | grep -v "IMAGE" | cut -d= -f2-)
     if [ "${DISTRO_ID}" = 'kali' ] ; then
       Distro='Kali'
     elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'manjaro' ] ; then
@@ -97,13 +101,12 @@ install_linux () {
   if [ -z "${Distro}" ] ; then
     fatal "Unable to locate installer for your ${OS} distribution"
   fi
-
   readonly Distro
   info "OS Distribution: ${Distro}"
   info "Installing ${Distro} prerequisite packages..."
   if [ "${Distro}" = "Debian" ] || [ "${Distro}" = "Kali" ]; then
     sudo apt-get update
-    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs libcurl4-openssl-dev gcc-9-base libgcc-9-dev
+    sudo apt-get install curl git build-essential openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison nodejs libcurl4-openssl-dev
     if command_exists rvm || command_exists rbenv version; then
       info "Ruby package Manager exists - Ruby install skipped"
     else
@@ -112,6 +115,8 @@ install_linux () {
     fi
   elif [ "${Distro}" = "RedHat" ]; then
     sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
+  elif [ "${Distro}" = "blackPanther" ]; then
+    installing --auto git make gcc openssl-devel gcc-c++ patch readline-devel zlib-devel yaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs sudo
   elif [ "${Distro}" = "Arch" ]; then
     sudo pacman -Syu # Updates repo, dependencies, etc.
     sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs # Installs dependencies
@@ -231,9 +236,9 @@ install_beef () {
 
   if command_exists bundler${RUBYSUFFIX}
   then
-    bundle${RUBYSUFFIX} install --without test development
+    bundle${RUBYSUFFIX} install
   else
-    bundle install --without test development
+    bundle install
   fi
 }
 
@@ -247,7 +252,7 @@ finish () {
   echo "Next steps:"
   echo
   echo "* Change the default password in config.yaml"
-  echo "* Run ./update-geoipdb to install the Maxmind GeoIP database"
+  echo "* Configure geoipupdate to update the Maxmind GeoIP database."
   echo "* Review the wiki for important configuration information:"
   echo "  https://github.com/beefproject/beef/wiki/Configuration"
   echo
@@ -270,7 +275,12 @@ main () {
   echo "#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#"
   echo
 
-  get_permission
+  if [ ! -z ${GITACTIONS:-} ];
+  then
+    info "Skipping: Running on Github Actions"
+  else
+    get_permission
+  fi
   check_os
   check_ruby_version
   check_rubygems

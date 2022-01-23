@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -33,7 +33,7 @@ module Handlers
       permitted_hooking_subnet = config.get('beef.restrictions.permitted_hooking_subnet')
       if permitted_hooking_subnet.nil? || permitted_hooking_subnet.empty?
         BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from outside of permitted hooking subnet (#{request.ip}) rejected.")
-	error 404
+	      error 404
       end
 
       found = false
@@ -44,6 +44,20 @@ module Handlers
       unless found
         BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from outside of permitted hooking subnet (#{request.ip}) rejected.")
         error 404
+      end
+
+      excluded_hooking_subnet = config.get('beef.restrictions.excluded_hooking_subnet')
+      unless excluded_hooking_subnet.nil? || excluded_hooking_subnet.empty?
+        excluded_ip_hooked = false
+
+        excluded_hooking_subnet.each do |subnet|
+          excluded_ip_hooked = true if IPAddr.new(subnet).include?(request.ip)
+        end
+
+        if excluded_ip_hooked
+          BeEF::Core::Logger.instance.register('Target Range', "Attempted hook from excluded hooking subnet (#{request.ip}) rejected.")
+          error 404 
+        end
       end
 
       # @note get zombie if already hooked the framework

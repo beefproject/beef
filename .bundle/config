@@ -1,3 +1,2 @@
 ---
-BUNDLE_WITHOUT: "development"
-BUNDLE_WITH: "test:tests"
+BUNDLE_WITHOUT: "development:test"

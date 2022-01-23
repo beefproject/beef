@@ -1,25 +1,23 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
   module Extension
     module Dns
-
       # Provides the core DNS nameserver functionality. The nameserver handles incoming requests
       # using a rule-based system. A list of user-defined rules is used to match against incoming
       # DNS requests. These rules generate a response that is either a resource record or a
       # failure code.
       class Server < Async::DNS::Server
-
         include Singleton
 
         def initialize
           super()
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule
-          @data_chunks = Hash.new
+          @data_chunks = {}
         end
 
         # Adds a new DNS rule. If the rule already exists, its current ID is returned.
@@ -49,9 +47,9 @@ module BeEF
             $VERBOSE = verbose
 
             @database.find_or_create_by(
-              :resource => rule[:resource].to_s,
-              :pattern => pattern.source,
-              :response => rule[:response]
+              resource: rule[:resource].to_s,
+              pattern: pattern.source,
+              response: rule[:response]
             ).id
           end
         end
@@ -63,12 +61,10 @@ module BeEF
         # @return [Hash] hash representation of rule (empty hash if rule wasn't found)
         def get_rule(id)
           @lock.synchronize do
-            begin
-              rule = @database.find(id)
-              return to_hash(rule)
-            rescue ActiveRecord::RecordNotFound
-              return nil
-            end
+            rule = @database.find(id)
+            return to_hash(rule)
+          rescue ActiveRecord::RecordNotFound
+            return nil
           end
         end
 
@@ -81,9 +77,7 @@ module BeEF
           @lock.synchronize do
             begin
               rule = @database.find(id)
-              if not rule.nil? and rule.destroy
-                return true
-              end
+              return true if !rule.nil? && rule.destroy
             rescue ActiveRecord::RecordNotFound
               return nil
             end
@@ -109,10 +103,8 @@ module BeEF
         #
         # @return [Boolean] true if ruleset was destroyed, otherwise false
         def remove_ruleset!
-          @lock.synchronize do 
-            if @database.destroy_all
-              return true
-            end
+          @lock.synchronize do
+            return true if @database.destroy_all
           end
         end
 
@@ -134,24 +126,22 @@ module BeEF
 
                 if upstream
                   resolver = Async::DNS::Resolver.new(upstream)
-                  @otherwise = Proc.new { |t| t.passthrough!(resolver) }
+                  @otherwise = proc { |t| t.passthrough!(resolver) }
                 end
 
                 begin
                   # super(:listen => listen)
                   Thread.new { super() }
-                  rescue RuntimeError => e
-                    if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
-                      print_error "[DNS] Another process is already listening on port #{options[:listen]}"
-                      print_error "Exiting..."
-                      exit 127
-                    else
-                      raise
-                    end
+                rescue RuntimeError => e
+                  if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
+                    print_error "[DNS] Another process is already listening on port #{options[:listen]}"
+                    print_error 'Exiting...'
+                    exit 127
+                  else
+                    raise
                   end
-
-
                 end
+              end
             end
           end
         end
@@ -164,42 +154,41 @@ module BeEF
         # @param transaction [RubyDNS::Transaction] internal RubyDNS class detailing DNS question/answer
         def process(name, resource, transaction)
           @lock.synchronize do
-
             resource = resource.to_s
 
-	          print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
+            print_debug "Received DNS request (name: #{name} type: #{format_resource(resource)})"
 
             # no need to parse AAAA resources when data is extruded from client. Also we check if the FQDN starts with the 0xb3 string.
             # this 0xb3 is convenient to clearly separate DNS requests used to extrude data from normal DNS requests than should be resolved by the DNS server.
-            if format_resource(resource) == 'A' and name.match(/^0xb3/)
+            if format_resource(resource) == 'A' && name.match(/^0xb3/)
               reconstruct(name.split('0xb3').last)
-              catch (:done) do
+              catch(:done) do
                 transaction.fail!(:NXDomain)
               end
               return
             end
 
-            catch (:done) do
+            catch(:done) do
               # Find rules matching the requested resource class
-              resources = @database.where(:resource => resource)
+              resources = @database.where(resource: resource)
               throw :done if resources.length == 0
 
               # Narrow down search by finding a matching pattern
               resources.each do |rule|
                 pattern = Regexp.new(rule.pattern)
 
-                if name =~ pattern
-                  print_debug "Found matching DNS rule (id: #{rule.id} response: #{rule.response})"
-                  Proc.new { |t| eval(rule.callback) }.call(transaction)
-                  throw :done
-                end
+                next unless name =~ pattern
+
+                print_debug "Found matching DNS rule (id: #{rule.id} response: #{rule.response})"
+                proc { |_t| eval(rule.callback) }.call(transaction)
+                throw :done
               end
 
               if @otherwise
-                print_debug "No match found, querying upstream servers"
+                print_debug 'No match found, querying upstream servers'
                 @otherwise.call(transaction)
               else
-                print_debug "No match found, sending NXDOMAIN response"
+                print_debug 'No match found, sending NXDOMAIN response'
                 transaction.fail!(:NXDomain)
               end
             end
@@ -207,43 +196,44 @@ module BeEF
         end
 
         private
+
         # Collects and reconstructs data extruded by the client and found in subdomain, with structure like:
-        #0.1.5.4c6f72656d20697073756d20646f6c6f722073697420616d65742c20636f6e7.browserhacker.com
-        #[...]
-        #0.5.5.7565207175616d206469676e697373696d2065752e.browserhacker.com
+        # 0.1.5.4c6f72656d20697073756d20646f6c6f722073697420616d65742c20636f6e7.browserhacker.com
+        # [...]
+        # 0.5.5.7565207175616d206469676e697373696d2065752e.browserhacker.com
         def reconstruct(data)
-           split_data = data.split('.')
-           pack_id = split_data[0]
-           seq_num = split_data[1]
-           seq_tot = split_data[2]
-           data_chunk = split_data[3] # this might change if we store more than 63 bytes in a chunk (63 is the limitation from RFC)
+          split_data = data.split('.')
+          pack_id = split_data[0]
+          seq_num = split_data[1]
+          seq_tot = split_data[2]
+          data_chunk = split_data[3] # this might change if we store more than 63 bytes in a chunk (63 is the limitation from RFC)
 
-           if pack_id.match(/^(\d)+$/) and seq_num.match(/^(\d)+$/) and seq_tot.match(/^(\d)+$/)
-             print_debug "[DNS] Received chunk (#{seq_num} / #{seq_tot}) of packet (#{pack_id}): #{data_chunk}"
+          unless pack_id.match(/^(\d)+$/) && seq_num.match(/^(\d)+$/) && seq_tot.match(/^(\d)+$/)
+            print_debug "[DNS] Received invalid chunk:\n  #{data}"
+            return
+          end
 
-             if @data_chunks[pack_id] == nil
-                # no previous chunks received, create new Array to store chunks
-                @data_chunks[pack_id] = Array.new(seq_tot.to_i)
-                @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
-             else
-               # previous chunks received, update Array
-               @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
-               if @data_chunks[pack_id].all? and @data_chunks[pack_id] != 'DONE'
-                 # means that no position in the array is false/nil, so we received all the packet chunks
-                 packet_data = @data_chunks[pack_id].join('')
-                 decoded_packet_data = packet_data.scan(/../).map{ |n| n.to_i(16)}.pack('U*')
-                 print_debug "[DNS] Packet data fully received: #{packet_data}. \n Converted from HEX: #{decoded_packet_data}"
+          print_debug "[DNS] Received chunk (#{seq_num} / #{seq_tot}) of packet (#{pack_id}): #{data_chunk}"
 
-                 # we might get more DNS requests for the same chunks sometimes, once every chunk of a packet is received, mark it
-                 @data_chunks[pack_id] = 'DONE'
-               end
-             end
-           else
-             print_debug "[DNS] Data (#{data}) is not a valid chunk."
-           end
+          if @data_chunks[pack_id].nil?
+            # no previous chunks received, create new Array to store chunks
+            @data_chunks[pack_id] = Array.new(seq_tot.to_i)
+            @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
+          else
+            # previous chunks received, update Array
+            @data_chunks[pack_id][seq_num.to_i - 1] = data_chunk
+            if @data_chunks[pack_id].all? && @data_chunks[pack_id] != 'DONE'
+              # means that no position in the array is false/nil, so we received all the packet chunks
+              packet_data = @data_chunks[pack_id].join('')
+              decoded_packet_data = packet_data.scan(/../).map { |n| n.to_i(16) }.pack('U*')
+              print_debug "[DNS] Packet data fully received: #{packet_data}. \n Converted from HEX: #{decoded_packet_data}"
+
+              # we might get more DNS requests for the same chunks sometimes, once every chunk of a packet is received, mark it
+              @data_chunks[pack_id] = 'DONE'
+            end
+          end
         end
 
-      private
         # Helper method that converts a DNS rule to a hash.
         #
         # @param rule [BeEF::Core::Models::Dns::Rule] rule to be converted
@@ -279,9 +269,7 @@ module BeEF
         def format_resource(resource)
           /::(\w+)$/.match(resource)[1]
         end
-
       end
-
     end
   end
 end

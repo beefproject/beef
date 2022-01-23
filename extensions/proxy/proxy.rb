@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -9,7 +9,6 @@ module BeEF
   module Extension
     module Proxy
       class Proxy
-
         HB = BeEF::Core::Models::HookedBrowser
         H = BeEF::Core::Models::Http
         @response = nil
@@ -22,14 +21,14 @@ module BeEF
 
           # setup proxy for SSL/TLS
           ssl_context = OpenSSL::SSL::SSLContext.new
-          #ssl_context.ssl_version = :TLSv1_2
+          # ssl_context.ssl_version = :TLSv1_2
 
           # load certificate
           begin
             cert_file = @conf.get('beef.extension.proxy.cert')
             cert = File.read(cert_file)
             ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
-          rescue
+          rescue StandardError
             print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
           end
 
@@ -38,7 +37,7 @@ module BeEF
             key_file = @conf.get('beef.extension.proxy.key')
             key = File.read(key_file)
             ssl_context.key = OpenSSL::PKey::RSA.new(key)
-          rescue
+          rescue StandardError
             print_error "[Proxy] Could not load SSL key '#{key_file}'"
           end
 
@@ -51,7 +50,7 @@ module BeEF
           end
         end
 
-        def handle_request socket
+        def handle_request(socket)
           request_line = socket.readline
 
           # HTTP method # defaults to GET
@@ -59,17 +58,15 @@ module BeEF
 
           # Handle SSL requests
           url_prefix = ''
-          if method == "CONNECT" then
+          if method == 'CONNECT'
             # request_line is something like:
             # CONNECT example.com:443 HTTP/1.1
-            host_port = request_line.split(" ")[1]
+            host_port = request_line.split[1]
             proto = 'https'
-            url_prefix = proto + '://' + host_port
+            url_prefix = "#{proto}://#{host_port}"
             loop do
               line = socket.readline
-              if line.strip.empty?
-                break
-              end
+              break if line.strip.empty?
             end
             socket.puts("HTTP/1.0 200 Connection established\r\n\r\n")
             socket.accept
@@ -77,13 +74,13 @@ module BeEF
             request_line = socket.readline
           end
 
-          method, path, version = request_line.split(" ")
+          method, _path, version = request_line.split
 
           # HTTP scheme/protocol # defaults to http
           proto = 'http' unless proto.eql?('https')
 
           # HTTP version # defaults to 1.0
-          version = 'HTTP/1.0' if version !~ /\AHTTP\/\d\.\d\z/
+          version = 'HTTP/1.0' if version !~ %r{\AHTTP/\d\.\d\z}
 
           # HTTP request path
           path = request_line[/^\w+\s+(\S+)/, 1]
@@ -94,25 +91,23 @@ module BeEF
           # We're overwriting the URI::Parser UNRESERVED regex to prevent BAD URI errors
           # when sending attack vectors (see tolerant_parser)
           # anti: somehow the config below was removed, have a look into this
-          tolerant_parser = URI::Parser.new(:UNRESERVED => BeEF::Core::Configuration.instance.get("beef.extension.requester.uri_unreserved_chars"))
+          tolerant_parser = URI::Parser.new(UNRESERVED: BeEF::Core::Configuration.instance.get('beef.extension.requester.uri_unreserved_chars'))
           uri = tolerant_parser.parse(url.to_s)
 
+          uri_path_and_qs = uri.query.nil? ? uri.path : "#{uri.path}?#{uri.query}"
+
           # extensions/requester/api/hook.rb parses raw_request to find port and path
-          raw_request = [method, uri.path, version].join(' ') + "\r\n"
+          raw_request = "#{[method, uri_path_and_qs, version].join(' ')}\r\n"
           content_length = 0
 
           loop do
             line = socket.readline
 
-            if line =~ /^Content-Length:\s+(\d+)\s*$/
-              content_length = $1.to_i
-            end
+            content_length = Regexp.last_match(1).to_i if line =~ /^Content-Length:\s+(\d+)\s*$/
 
             if line.strip.empty?
               # read data still in the socket, exactly <content_length> bytes
-              if content_length >= 0
-                raw_request += "\r\n" + socket.read(content_length)
-              end
+              raw_request += "\r\n#{socket.read(content_length)}" if content_length >= 0
               break
             else
               raw_request += line
@@ -122,24 +117,28 @@ module BeEF
           # Saves the new HTTP request to the db. It will be processed by the PreHookCallback of the requester component.
           # IDs are created and incremented automatically by DataMapper.
           http = H.new(
-              :request => raw_request,
-              :method => method,
-              :proto => proto,
-              :domain => uri.host,
-              :port => uri.port,
-              :path => uri.path,
-              :request_date => Time.now,
-              :hooked_browser_id => self.get_tunneling_proxy,
-              :allow_cross_domain => "true"
+            request: raw_request,
+            method: method,
+            proto: proto,
+            domain: uri.host,
+            port: uri.port,
+            path: uri_path_and_qs,
+            request_date: Time.now,
+            hooked_browser_id: get_tunneling_proxy,
+            allow_cross_domain: 'true'
           )
           http.save
-          print_debug("[PROXY] --> Forwarding request ##{http.id}: domain[#{http.domain}:#{http.port}], method[#{http.method}], path[#{http.path}], cross domain[#{http.allow_cross_domain}]")
+          print_debug(
+            "[PROXY] --> Forwarding request ##{http.id}: " \
+            "domain[#{http.domain}:#{http.port}], " \
+            "method[#{http.method}], " \
+            "path[#{http.path}], " \
+            "cross domain[#{http.allow_cross_domain}]"
+          )
 
           # Wait for the HTTP response to be stored in the db.
           # TODO: re-implement this with EventMachine or with the Observer pattern.
-          while H.find(http.id).has_ran != "complete"
-            sleep 0.5
-          end
+          sleep 0.5 while H.find(http.id).has_ran != 'complete'
           @response = H.find(http.id)
           print_debug "[PROXY] <-- Response for request ##{@response.id} to [#{@response.path}] on domain [#{@response.domain}:#{@response.port}] correctly processed"
 
@@ -153,35 +152,37 @@ module BeEF
           # Some of the original response headers need to be removed, like encoding and cache related: for example
           # about encoding, the original response headers says that the content-length is 1000 as the response is gzipped,
           # but the final content-length forwarded back by the proxy is clearly bigger. Date header follows the same way.
-          response_headers = ""
-          if (response_status != -1 && response_status != 0)
-            ignore_headers = [
-              "Content-Encoding",
-              "Keep-Alive",
-              "Cache-Control", 
-              "Vary",
-              "Pragma",
-              "Connection",
-              "Expires",
-              "Accept-Ranges",
-              "Transfer-Encoding",
-              "Date"]
+          response_headers = ''
+          if response_status != -1 && response_status != 0
+            ignore_headers = %w[
+              Content-Encoding
+              Keep-Alive
+              Cache-Control
+              Vary
+              Pragma
+              Connection
+              Expires
+              Accept-Ranges
+              Transfer-Encoding
+              Date
+            ]
             headers.each_line do |line|
               # stripping the Encoding, Cache and other headers
               header_key = line.split(': ')[0]
               header_value = line.split(': ')[1]
               next if header_key.nil?
-              next if ignore_headers.any?{ |h| h.casecmp(header_key) == 0 }
-              if header_value.nil?
-                #headers_hash[header_key] = ""
-              else
-                # update Content-Length with the valid one
-                if header_key == "Content-Length"
-                  response_headers += "Content-Length: #{response_body.size}\r\n"
-                else
-                  response_headers += line
-                end
+              next if ignore_headers.any? { |h| h.casecmp(header_key).zero? }
+
+              # ignore headers with no value (@todo: why?)
+              next if header_value.nil?
+
+              unless header_key == 'Content-Length'
+                response_headers += line
+                next
               end
+
+              # update Content-Length with the valid one
+              response_headers += "Content-Length: #{response_body.size}\r\n"
             end
           end
 
@@ -191,10 +192,8 @@ module BeEF
         end
 
         def get_tunneling_proxy
-          proxy_browser = HB.where(:is_proxy => true).first
-          unless proxy_browser.nil?
-            return proxy_browser.session.to_s
-          end
+          proxy_browser = HB.where(is_proxy: true).first
+          return proxy_browser.session.to_s unless proxy_browser.nil?
 
           hooked_browser = HB.first
           unless hooked_browser.nil?
@@ -209,4 +208,3 @@ module BeEF
     end
   end
 end
-

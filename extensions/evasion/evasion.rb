@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -14,6 +14,7 @@ module BeEF
 
         def initialize
           return unless @@enabled
+
           @techniques ||= load_techniques
 
           if @techniques.empty?
@@ -40,7 +41,7 @@ module BeEF
           end
 
           chain
-        rescue => e
+        rescue StandardError => e
           print_error "[Evasion] Failed to load obfuscation technique chain: #{e.message}"
           []
         end
@@ -52,7 +53,7 @@ module BeEF
 
         def add_bootstrapper
           bootstrap = ''
-           # add stuff at the end, only once (when serving the initial init javascript)
+          # add stuff at the end, only once (when serving the initial init javascript)
           @techniques.each do |technique|
             # Call the "execute" method of the technique module, passing the input and update
             # the input in preperation for the next technique in the chain
@@ -64,7 +65,7 @@ module BeEF
           end
 
           bootstrap
-        rescue => e
+        rescue StandardError => e
           print_error "[Evasion] Failed to bootstrap obfuscation technique: #{e.message}"
           print_error e.backtrace
         end
@@ -81,7 +82,7 @@ module BeEF
 
           print_debug "[Evasion] Obfuscation completed (#{output.length} bytes)"
           output
-        rescue => e
+        rescue StandardError => e
           print_error "[Evasion] Failed to apply obfuscation technique: #{e.message}"
           print_error e.backtrace
         end
@@ -89,4 +90,3 @@ module BeEF
     end
   end
 end
-

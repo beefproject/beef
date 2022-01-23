@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -42,7 +42,8 @@ module BeEF
     #       Two instances of this object are created during the execution of command module.
     #
     class Command
-      attr_reader :datastore, :path, :default_command_url, :beefjs_components, :friendlyname
+      attr_reader :datastore, :path, :default_command_url, :beefjs_components, :friendlyname,
+      :config
       attr_accessor :zombie, :command_id, :session_id
 
       include BeEF::Core::CommandUtils
@@ -55,15 +56,15 @@ module BeEF
       # @param [String] key command module key
       #
       def initialize(key)
-        config = BeEF::Core::Configuration.instance
+        @config = BeEF::Core::Configuration.instance
 
         @key = key
         @datastore = {}
-        @friendlyname = config.get("beef.module.#{key}.name")
+        @friendlyname = @config.get("beef.module.#{key}.name")
         @output = ''
-        @path = config.get("beef.module.#{key}.path")
+        @path = @config.get("beef.module.#{key}.path")
         @default_command_url = config.get("beef.module.#{key}.mount")
-        @id = config.get("beef.module.#{key}.db.id")
+        @id = @config.get("beef.module.#{key}.db.id")
         @auto_update_zombie = false
         @results = {}
         @beefjs_components = {}

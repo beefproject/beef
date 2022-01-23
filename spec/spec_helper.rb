@@ -1,13 +1,10 @@
 require 'core/loader.rb'
 
-# Notes
-# We need to load vairables that 'beef' usually does for us
-## config (this isn't used or is shadowed by the monkey patching, needs a further look to fix properly)
+# @note We need to load variables that 'beef' usually does for us
+
+# @todo review this config (this isn't used or is shadowed by the monkey patching, needs a further look to fix properly)
 config = BeEF::Core::Configuration.new('config.yaml')
-## I haven't been able to work out why these are global variables, best practice says it needs to be changed but its used in beef.
-## home_dir
 $home_dir = Dir.pwd
-## root_dir
 $root_dir = Dir.pwd
 
 require 'core/bootstrap.rb'
@@ -37,6 +34,7 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
 end
 
 TASK_ID = (ENV['TASK_ID'] || 0).to_i
+print_info ENV['CONFIG_FILE']
 CONFIG_FILE = ENV['CONFIG_FILE'] || 'windows/win10/win10_chrome_81.config.yml'
 CONFIG = YAML.safe_load(File.read("./spec/support/browserstack/#{CONFIG_FILE}"))
 CONFIG['user'] = ENV['BROWSERSTACK_USERNAME'] || ''
@@ -46,6 +44,12 @@ CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || ''
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: ':memory:')
+
+# otr-activerecord requires manually establishing the connection with the following line
+# Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+  OTR::ActiveRecord.establish_connection!
+end
 ActiveRecord::Schema.verbose = false
 context = ActiveRecord::Migration.new.migration_context
 ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?

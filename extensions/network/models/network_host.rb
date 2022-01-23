@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -10,7 +10,7 @@ module BeEF
       # Table stores each host identified on the zombie browser's network(s)
       #
       class NetworkHost < BeEF::Core::Model
-          belongs_to :hooked_browser
+        belongs_to :hooked_browser
 
         #
         # Stores a network host in the data store

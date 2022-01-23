@@ -1,13 +1,13 @@
 #
-# Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Test_beef_debug < BeEF::Core::Command
-
   def self.options
-    return [
-          {'name' => 'msg', 'description' => 'Debug Message', 'ui_label' => 'Debug Message', 'value' => "Test string for beef.debug() function", 'type' => 'textarea', 'width' => '400px', 'height' => '50px' }
+    [
+      { 'name' => 'msg', 'description' => 'Debug Message', 'ui_label' => 'Debug Message', 'value' => 'Test string for beef.debug() function', 'type' => 'textarea',
+        'width' => '400px', 'height' => '50px' }
     ]
   end
 
@@ -16,5 +16,4 @@ class Test_beef_debug < BeEF::Core::Command
     content['Result'] = @datastore['result']
     save content
   end
-
 end

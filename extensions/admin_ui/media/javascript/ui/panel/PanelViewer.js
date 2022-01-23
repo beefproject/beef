@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2020 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - http://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -91,11 +91,13 @@ function locationHashChanged() {
 
   if (id === null) return;
 
+  var zombie = Object.values(beefwui.hooked_browsers).find(hb => hb.session === id);
+
   id = id.replace(/[^a-z0-9]/gi, '');
   console.log("Loading hooked browser with ID: " + id);
   mainPanel.remove(mainPanel.getComponent('current-browser'));
   if(!mainPanel.getComponent('current-browser')) {
-    mainPanel.add(new ZombieTab({session: id}));
+    mainPanel.add(new ZombieTab(zombie));
   }
 
   mainPanel.activate(mainPanel.getComponent('current-browser'));
