@@ -24,12 +24,12 @@ module BeEF
         raise TypeError, "Configuration file '#{config}' cannot be found" unless File.exist? config
 
         begin
-          #open base config
+          # open base config
           @config = load(config)
           # set default value if key? does not exist
           @config.default = nil
           @@config = config
-        rescue => e
+        rescue StandardError => e
           print_error "Fatal Error: cannot load configuration file '#{config}' : #{e.message}"
           print_error e.backtrace
         end
@@ -42,9 +42,10 @@ module BeEF
       # @return [Hash] YAML formatted hash
       def load(file)
         return nil unless File.exist? file
+
         raw = File.read file
         YAML.safe_load raw
-      rescue => e
+      rescue StandardError => e
         print_debug "Unable to load configuration file '#{file}' : #{e.message}"
         print_error e.backtrace
       end
@@ -56,7 +57,7 @@ module BeEF
         if @config.empty?
           print_error 'Configuration file is empty'
           return
-	end
+        end
 
         if @config['beef'].nil?
           print_error "Configuration file is malformed: 'beef' is nil"
@@ -136,17 +137,17 @@ module BeEF
       def public_enabled?
         !get('beef.http.public.host').nil?
       end
-      
+
       #
       # Returns the beef protocol that is used by external resources
       # e.g. hooked browsers
       def beef_proto
-        if public_enabled? && public_https_enabled? then
-          return 'https'
+        if public_enabled? && public_https_enabled?
+          'https'
         elsif public_enabled? && !public_https_enabled?
-          return 'http'
+          'http'
         elsif !public_enabled?
-          return local_proto
+          local_proto
         end
       end
 
@@ -201,6 +202,7 @@ module BeEF
           hash[k]
         end
         return nil if subhash.nil?
+
         subhash.key?(lastkey) ? subhash[lastkey] : nil
       end
 
@@ -215,7 +217,7 @@ module BeEF
         return false if subkeys.empty?
 
         hash = { subkeys.shift.to_s => value }
-        subkeys.each { |v| hash = {v.to_s => hash} }
+        subkeys.each { |v| hash = { v.to_s => hash } }
         @config = @config.deep_merge hash
         true
       end
@@ -231,7 +233,7 @@ module BeEF
 
         lastkey = subkeys.pop
         hash = @config
-        subkeys.each {|v| hash = hash[v] }
+        subkeys.each { |v| hash = hash[v] }
         hash.delete(lastkey).nil? ? false : true
       end
 
@@ -258,7 +260,7 @@ module BeEF
       def load_modules_config
         set('beef.module', {})
         # support nested sub-categories, like browser/hooked_domain/ajax_fingerprint
-        module_configs = File.join("#{$root_dir}/modules/**", "config.yaml")
+        module_configs = File.join("#{$root_dir}/modules/**", 'config.yaml')
         Dir.glob(module_configs) do |cf|
           y = load(cf)
           if y.nil?
@@ -280,9 +282,8 @@ module BeEF
       private
 
       def validate_public_config_variable?(config)
-        return true if (config['beef']['http']['public'].is_a?(Hash) || 
-                        config['beef']['http']['public'].is_a?(NilClass))
-
+        return true if config['beef']['http']['public'].is_a?(Hash) ||
+                       config['beef']['http']['public'].is_a?(NilClass)
 
         print_error 'Config path beef.http.public is deprecated.'
         print_error 'Please use the new format for public variables found'

@@ -12,8 +12,8 @@ module BeEF
     attr_writer :logger
 
     def logger
-        @logger ||= Logger.new("#{$home_dir}/beef.log").tap do |log|
-        log.progname = self.name
+      @logger ||= Logger.new("#{$home_dir}/beef.log").tap do |log|
+        log.progname = name
         log.level = Logger::WARN
       end
     end

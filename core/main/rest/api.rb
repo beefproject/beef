@@ -6,7 +6,6 @@
 module BeEF
   module Core
     module Rest
-
       module RegisterHooksHandler
         def self.mount_handler(server)
           server.mount('/api/hooks', BeEF::Core::Rest::HookedBrowsers.new)
@@ -64,24 +63,23 @@ module BeEF
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterServerHandler, BeEF::API::Server, 'mount_handler')
       BeEF::API::Registrar.instance.register(BeEF::Core::Rest::RegisterAutorunHandler, BeEF::API::Server, 'mount_handler')
 
-
       #
       # Check the source IP is within the permitted subnet
       # This is from extensions/admin_ui/controllers/authentication/authentication.rb
       #
       def self.permitted_source?(ip)
         # test if supplied IP address is valid
-        return false unless BeEF::Filters::is_valid_ip?(ip)
+        return false unless BeEF::Filters.is_valid_ip?(ip)
 
         # get permitted subnets
-        permitted_ui_subnet = BeEF::Core::Configuration.instance.get("beef.restrictions.permitted_ui_subnet")
-	return false if permitted_ui_subnet.nil?
-	return false if permitted_ui_subnet.empty?
+        permitted_ui_subnet = BeEF::Core::Configuration.instance.get('beef.restrictions.permitted_ui_subnet')
+        return false if permitted_ui_subnet.nil?
+        return false if permitted_ui_subnet.empty?
 
         # test if ip within subnets
-	permitted_ui_subnet.each do |subnet|
+        permitted_ui_subnet.each do |subnet|
           return true if IPAddr.new(subnet).include?(ip)
-	end
+        end
 
         false
       end
@@ -100,18 +98,17 @@ module BeEF
       # @return <boolean>
       def self.timeout?(config_delay_id, last_time_attempt, time_record_set_fn)
         success = true
-        time = Time.now()
+        time = Time.now
         config = BeEF::Core::Configuration.instance
         fail_delay = config.get(config_delay_id)
 
-        if (time - last_time_attempt < fail_delay.to_f)
+        if time - last_time_attempt < fail_delay.to_f
           time_record_set_fn.call(time)
           success = false
         end
 
         success
       end
-
     end
   end
 end

@@ -5,7 +5,6 @@
 #
 module BeEF
   module Filters
-
   end
 end
 

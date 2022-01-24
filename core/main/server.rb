@@ -50,11 +50,11 @@ module BeEF
         # argument type checking
         raise TypeError, '"url" needs to be a string' unless url.string?
 
-        if args.nil?
-          @mounts[url] = http_handler_class
-        else
-          @mounts[url] = http_handler_class, *args
-        end
+        @mounts[url] = if args.nil?
+                         http_handler_class
+                       else
+                         [http_handler_class, *args]
+                       end
         print_debug "Server: mounted handler '#{url}'"
       end
 
@@ -65,6 +65,7 @@ module BeEF
       #
       def unmount(url)
         raise TypeError, '"url" needs to be a string' unless url.string?
+
         @mounts.delete url
       end
 
@@ -80,7 +81,7 @@ module BeEF
       #
       def prepare
         # Create http handler for the javascript hook file
-        mount(@configuration.get("beef.http.hook_file").to_s, BeEF::Core::Handlers::HookedBrowsers.new)
+        mount(@configuration.get('beef.http.hook_file').to_s, BeEF::Core::Handlers::HookedBrowsers.new)
 
         # Create handler for the initialization checks (Browser Details)
         mount('/init', BeEF::Core::Handlers::BrowserDetails)
@@ -93,7 +94,7 @@ module BeEF
 
         return if @http_server
 
-        # Set the logging level of Thin to match the config 
+        # Set the logging level of Thin to match the config
         Thin::Logging.silent = true
         if @configuration.get('beef.http.debug') == true
           Thin::Logging.silent = false
@@ -104,7 +105,8 @@ module BeEF
         @http_server = Thin::Server.new(
           @configuration.get('beef.http.host'),
           @configuration.get('beef.http.port'),
-          @rack_app)
+          @rack_app
+        )
 
         # Configure SSL/TLS
         return unless @configuration.get('beef.http.https.enable') == true
@@ -116,18 +118,14 @@ module BeEF
         end
 
         cert_key = @configuration.get 'beef.http.https.key'
-        unless cert_key.start_with? '/'
-          cert_key = File.expand_path cert_key, $root_dir
-        end
+        cert_key = File.expand_path cert_key, $root_dir unless cert_key.start_with? '/'
         unless File.exist? cert_key
           print_error "Error: #{cert_key} does not exist"
           exit 1
         end
 
         cert = @configuration.get 'beef.http.https.cert'
-        unless cert.start_with? '/'
-          cert = File.expand_path cert, $root_dir
-        end
+        cert = File.expand_path cert, $root_dir unless cert.start_with? '/'
         unless File.exist? cert
           print_error "Error: #{cert} does not exist"
           exit 1
@@ -135,9 +133,9 @@ module BeEF
 
         @http_server.ssl = true
         @http_server.ssl_options = {
-          :private_key_file => cert_key,
-          :cert_chain_file  => cert,
-          :verify_peer      => false
+          private_key_file: cert_key,
+          cert_chain_file: cert,
+          verify_peer: false
         }
 
         if Digest::SHA256.hexdigest(File.read(cert)).eql?('978f761fc30cbd174eab0c6ffd2d235849260c0589a99262f136669224c8d82a') ||
@@ -145,10 +143,10 @@ module BeEF
           print_warning 'Warning: Default SSL cert/key in use.'
           print_more 'Use the generate-certificate utility to generate a new certificate.'
         end
-      rescue => e
+      rescue StandardError => e
         print_error "Failed to prepare HTTP server: #{e.message}"
-	print_error e.backtrace
-	exit 1
+        print_error e.backtrace
+        exit 1
       end
 
       #
@@ -161,6 +159,7 @@ module BeEF
       rescue RuntimeError => e
         # port is in use
         raise unless e.message.include? 'no acceptor'
+
         print_error "Another process is already listening on port #{@configuration.get('beef.http.port')}, or you're trying to bind BeEF to an invalid IP."
         print_error 'Is BeEF already running? Exiting...'
         exit 127

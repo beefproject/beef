@@ -4,9 +4,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Core
-  
-end
+  module Core
+  end
 end
 
 # @note Includes database models - the order must be consistent otherwise DataMapper goes crazy
@@ -38,4 +37,3 @@ require 'core/main/geoip'
 # @note Include the command line parser and the banner printer
 require 'core/main/console/commandline'
 require 'core/main/console/banners'
-

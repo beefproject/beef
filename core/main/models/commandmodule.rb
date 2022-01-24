@@ -4,15 +4,11 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Core
-module Models
-
-  class CommandModule < BeEF::Core::Model
-  
-    has_many :commands
-  
+  module Core
+    module Models
+      class CommandModule < BeEF::Core::Model
+        has_many :commands
+      end
+    end
   end
-  
-end
-end
 end

@@ -7,10 +7,8 @@
 module BeEF
   module Core
     module Constants
-
       # @note The OS'es strings for os detection.
       module Os
-
         OS_UNKNOWN_IMG = 'unknown.png'
         OS_WINDOWS_UA_STR = 'Windows'
         OS_WINDOWS_IMG = 'win.png'
@@ -50,37 +48,35 @@ module BeEF
         # @return [String] Constant name of matched operating system, returns 'ALL'  if nothing are matched
         def self.match_os(name)
           case name.downcase
-            when /win/
-              OS_WINDOWS_UA_STR
-            when /lin/
-              OS_LINUX_UA_STR
-            when /os x/, /osx/, /mac/
-              OS_MAC_UA_STR
-            when /qnx/
-              OS_QNX_UA_STR
-            when /sun/
-              OS_SUNOS_UA_STR
-            when /beos/
-              OS_BEOS_UA_STR
-            when /openbsd/
-              OS_OPENBSD_UA_STR
-            when /ios/, /iphone/, /ipad/, /ipod/
-              OS_IOS_UA_STR
-            when /maemo/
-              OS_MAEMO_UA_STR
-            when /blackberry/
-              OS_BLACKBERRY_UA_STR
-            when /android/
-              OS_ANDROID_UA_STR
-            when /aros/
-              OS_AROS_UA_STR
-            else
-              'ALL'
+          when /win/
+            OS_WINDOWS_UA_STR
+          when /lin/
+            OS_LINUX_UA_STR
+          when /os x/, /osx/, /mac/
+            OS_MAC_UA_STR
+          when /qnx/
+            OS_QNX_UA_STR
+          when /sun/
+            OS_SUNOS_UA_STR
+          when /beos/
+            OS_BEOS_UA_STR
+          when /openbsd/
+            OS_OPENBSD_UA_STR
+          when /ios/, /iphone/, /ipad/, /ipod/
+            OS_IOS_UA_STR
+          when /maemo/
+            OS_MAEMO_UA_STR
+          when /blackberry/
+            OS_BLACKBERRY_UA_STR
+          when /android/
+            OS_ANDROID_UA_STR
+          when /aros/
+            OS_AROS_UA_STR
+          else
+            'ALL'
           end
         end
-
       end
-
     end
   end
 end

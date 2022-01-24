@@ -7,18 +7,16 @@ module BeEF
   module Core
     module NetworkStack
       module Handlers
-
         # @note DynamicHandler is used reconstruct segmented traffic from the hooked browser
         class DynamicReconstruction < BeEF::Core::Router::Router
-
           # @note holds packet queue
-          PQ = Array.new()
+          PQ = []
 
           # @note obtain dynamic mount points from HttpHookServer
           MOUNTS = BeEF::Core::Server.instance.mounts
 
           before do
-            error 404 unless !params.empty?
+            error 404 if params.empty?
             headers 'Pragma' => 'no-cache',
                     'Cache-Control' => 'no-cache',
                     'Expires' => '0'
@@ -34,55 +32,50 @@ module BeEF
                     'Access-Control-Allow-Methods' => 'POST, GET'
             begin
               PQ << {
-                :beefhook => params[:bh],
-                :stream_id => Integer(params[:sid]),
-                :packet_id => Integer(params[:pid]),
-                :packet_count => Integer(params[:pc]),
-                :data => params[:d]
+                beefhook: params[:bh],
+                stream_id: Integer(params[:sid]),
+                packet_id: Integer(params[:pid]),
+                packet_count: Integer(params[:pc]),
+                data: params[:d]
               }
             rescue TypeError, ArgumentError => e
               print_error "Hooked browser returned an invalid argument: #{e}"
             end
 
-            Thread.new {
-              check_packets()
-            }
+            Thread.new do
+              check_packets
+            end
           end
 
           # Check packets goes through the PQ array and attempts to reconstruct the stream from multiple packets
-          def check_packets()
-            checked = Array.new()
+          def check_packets
+            checked = []
             PQ.each do |packet|
-              if (checked.include?(packet[:beefhook]+':'+String(packet[:stream_id])))
-                next
-              end
-              checked << packet[:beefhook]+':'+String(packet[:stream_id])
+              next if checked.include?(packet[:beefhook] + ':' + String(packet[:stream_id]))
+
+              checked << (packet[:beefhook] + ':' + String(packet[:stream_id]))
               pc = 0
               PQ.each do |p|
-                if (packet[:beefhook] == p[:beefhook] and packet[:stream_id] == p[:stream_id])
-                  pc += 1
-                end
+                pc += 1 if packet[:beefhook] == p[:beefhook] and packet[:stream_id] == p[:stream_id]
               end
-              if (packet[:packet_count] == pc)
-                packets = expunge(packet[:beefhook], packet[:stream_id])
-                data = ''
-                packets.each_with_index do |sp, i|
-                  if (packet[:beefhook] == sp[:beefhook] and packet[:stream_id] == sp[:stream_id])
-                    data += sp[:data]
-                  end
-                end
-                b64 = Base64.decode64(data)
-                begin
-                  res = JSON.parse(b64).first
-                  res['beefhook'] = packet[:beefhook]
-                  res['request'] = request
-                  res['beefsession'] = request[BeEF::Core::Configuration.instance.get('beef.http.hook_session_name')]
-                  execute(res)
-                rescue JSON::ParserError => e
-                  print_debug 'Network stack could not decode packet stream.'
-                  print_debug 'Dumping Stream Data [base64]: '+data
-                  print_debug 'Dumping Stream Data: '+b64
-                end
+              next unless packet[:packet_count] == pc
+
+              packets = expunge(packet[:beefhook], packet[:stream_id])
+              data = ''
+              packets.each_with_index do |sp, _i|
+                data += sp[:data] if packet[:beefhook] == sp[:beefhook] and packet[:stream_id] == sp[:stream_id]
+              end
+              b64 = Base64.decode64(data)
+              begin
+                res = JSON.parse(b64).first
+                res['beefhook'] = packet[:beefhook]
+                res['request'] = request
+                res['beefsession'] = request[BeEF::Core::Configuration.instance.get('beef.http.hook_session_name')]
+                execute(res)
+              rescue JSON::ParserError => e
+                print_debug 'Network stack could not decode packet stream.'
+                print_debug 'Dumping Stream Data [base64]: ' + data
+                print_debug 'Dumping Stream Data: ' + b64
               end
             end
           end
@@ -100,8 +93,8 @@ module BeEF
           # @param [Hash] data Hash of data that has been rebuilt by the dynamic reconstruction
           def execute(data)
             handler = get_param(data, 'handler')
-            if (MOUNTS.has_key?(handler))
-              if (MOUNTS[handler].class == Array and MOUNTS[handler].length == 2)
+            if MOUNTS.has_key?(handler)
+              if MOUNTS[handler].instance_of?(Array) and MOUNTS[handler].length == 2
                 MOUNTS[handler][0].new(data, MOUNTS[handler][1])
               else
                 MOUNTS[handler].new(data)
@@ -115,6 +108,7 @@ module BeEF
           # @return Value associated with `key`
           def get_param(query, key)
             return nil if query[key].nil?
+
             query[key]
           end
         end

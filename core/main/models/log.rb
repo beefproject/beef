@@ -4,15 +4,11 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Core
-module Models
-
-  class Log < BeEF::Core::Model
-
-    has_one :hooked_browser
-  
-  
+  module Core
+    module Models
+      class Log < BeEF::Core::Model
+        has_one :hooked_browser
+      end
+    end
   end
-end
-end
 end

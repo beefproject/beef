@@ -4,18 +4,15 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module API
-  module Migration
-    
-    # @note Defined API Paths
-    API_PATHS = {
+  module API
+    module Migration
+      # @note Defined API Paths
+      API_PATHS = {
         'migrate_commands' => :migrate_commands
-    }
+      }.freeze
 
-    # Fired just after the migration process
-    def migrate_commands; end
-    
+      # Fired just after the migration process
+      def migrate_commands; end
+    end
   end
-  
-end
 end
