@@ -1,17 +1,16 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (6.1.4.1)
-      activesupport (= 6.1.4.1)
-    activerecord (6.1.4.1)
-      activemodel (= 6.1.4.1)
-      activesupport (= 6.1.4.1)
-    activesupport (6.1.4.1)
+    activemodel (7.0.1)
+      activesupport (= 7.0.1)
+    activerecord (7.0.1)
+      activemodel (= 7.0.1)
+      activesupport (= 7.0.1)
+    activesupport (7.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ansi (1.5.0)
@@ -64,7 +63,7 @@ GEM
     fiber-local (1.0.0)
     geckodriver-helper (0.24.0)
       archive-zip (~> 0.7)
-    hashie (4.1.0)
+    hashie (5.0.0)
     hashie-forbidden_attributes (0.1.1)
       hashie (>= 3.0)
     http (4.4.1)
@@ -79,7 +78,7 @@ GEM
     http-parser (1.2.3)
       ffi-compiler (>= 1.0, < 2.0)
     http_parser.rb (0.6.0)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     io-console (0.5.9)
     io-like (0.3.1)
@@ -96,7 +95,7 @@ GEM
     mime-types-data (3.2021.1115)
     mini_mime (1.1.2)
     mini_portile2 (2.6.1)
-    minitest (5.14.4)
+    minitest (5.15.0)
     mojo_magick (0.6.6)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
@@ -110,7 +109,7 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    otr-activerecord (2.0.3)
+    otr-activerecord (2.0.4)
       activerecord (>= 4.0, < 7.1)
       hashie-forbidden_attributes (~> 0.1)
     parallel (1.21.0)
@@ -250,7 +249,6 @@ GEM
       webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
