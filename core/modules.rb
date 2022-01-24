@@ -5,7 +5,6 @@
 #
 module BeEF
   module Modules
-
     # Return configuration hashes of all modules that are enabled
     # @return [Array] configuration hashes of all enabled modules
     def self.get_enabled

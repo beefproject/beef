@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Hash
-
   # Recursively deep merge two hashes together
   # @param [Hash] hash Hash to be merged
   # @return [Hash] Combined hash

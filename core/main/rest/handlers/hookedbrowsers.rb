@@ -8,12 +8,11 @@ module BeEF
   module Core
     module Rest
       class HookedBrowsers < BeEF::Core::Router::Router
-
         config = BeEF::Core::Configuration.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          halt 401 unless BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -37,50 +36,51 @@ module BeEF
           end
 
           output = {
-              'hooked-browsers' => {
-                  'online' => online_hooks,
-                  'offline' => offline_hooks
-              }
+            'hooked-browsers' => {
+              'online' => online_hooks,
+              'offline' => offline_hooks
+            }
           }
           output.to_json
         end
 
-	get '/:session/delete' do
-      hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
+        get '/:session/delete' do
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
 
-          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
-	  details.destroy_all
+          details = BeEF::Core::Models::BrowserDetails.where(session_id: hb.session)
+          details.destroy_all
 
-	  logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
-	  logs.destroy_all
+          logs = BeEF::Core::Models::Log.where(hooked_browser_id: hb.id)
+          logs.destroy_all
 
-	  commands = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id)
-	  commands.destroy_all
+          commands = BeEF::Core::Models::Command.where(hooked_browser_id: hb.id)
+          commands.destroy_all
 
-	  results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id)
-	  results.destroy_all
+          results = BeEF::Core::Models::Result.where(hooked_browser_id: hb.id)
+          results.destroy_all
 
-	  begin
-	    requester = BeEF::Core::Models::Http.where(:hooked_browser_id => hb.id)
-	    requester.destroy_all
-	  rescue => e
-	    #the requester module may not be enabled
-	  end
+          begin
+            requester = BeEF::Core::Models::Http.where(hooked_browser_id: hb.id)
+            requester.destroy_all
+          rescue StandardError
+            # @todo why is this error swallowed?
+            # the requester module may not be enabled
+          end
 
-	  begin
-	    xssraysscans = BeEF::Core::Models::Xssraysscan.where(:hooked_browser_id => hb.id)
-	    xssraysscans.destroy_all
+          begin
+            xssraysscans = BeEF::Core::Models::Xssraysscan.where(hooked_browser_id: hb.id)
+            xssraysscans.destroy_all
 
-	    xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(:hooked_browser_id => hb.id)
-	    xssraysdetails.destroy_all
-	  rescue => e
-	    #the xssraysscan module may not be enabled
-	  end
+            xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(hooked_browser_id: hb.id)
+            xssraysdetails.destroy_all
+          rescue StandardError => e
+            # @todo why is this error swallowed?
+            # the xssraysscan module may not be enabled
+          end
 
-	  hb.destroy
-	end
-
+          hb.destroy
+        end
 
         #
         # @note returns all zombies
@@ -99,7 +99,6 @@ module BeEF
           output.to_json
         end
 
-
         #
         # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
         # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
@@ -108,7 +107,7 @@ module BeEF
           online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
 
           output = {
-              'aaData' => online_hooks
+            'aaData' => online_hooks
           }
           output.to_json
         end
@@ -121,7 +120,7 @@ module BeEF
           offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
 
           output = {
-              'aaData' => offline_hooks
+            'aaData' => offline_hooks
           }
           output.to_json
         end
@@ -130,10 +129,10 @@ module BeEF
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
 
-          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(session_id: hb.session)
           result = {}
           details.each do |property|
             result[property.detail_key] = property.detail_value
@@ -149,28 +148,28 @@ module BeEF
           os_version = body['os_version']
           arch = body['arch']
 
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
 
-          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.name').destroy
-          BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session, :detail_key => 'host.os.version').destroy
-          #BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
+          BeEF::Core::Models::BrowserDetails.where(session_id: hb.session, detail_key: 'host.os.name').destroy
+          BeEF::Core::Models::BrowserDetails.where(session_id: hb.session, detail_key: 'host.os.version').destroy
+          # BeEF::Core::Models::BrowserDetails.first(:session_id => hb.session, :detail_key => 'Arch').destroy
 
-          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.name', :detail_value => os)
-          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'host.os.version', :detail_value => os_version)
-          BeEF::Core::Models::BrowserDetails.create(:session_id => hb.session, :detail_key => 'Arch', :detail_value => arch)
+          BeEF::Core::Models::BrowserDetails.create(session_id: hb.session, detail_key: 'host.os.name', detail_value: os)
+          BeEF::Core::Models::BrowserDetails.create(session_id: hb.session, detail_key: 'host.os.version', detail_value: os_version)
+          BeEF::Core::Models::BrowserDetails.create(session_id: hb.session, detail_key: 'Arch', detail_value: arch)
 
-          # TODO if there where any ARE rules defined for this hooked browser,
+          # TODO: if there where any ARE rules defined for this hooked browser,
           # after updating OS/arch, force a retrigger of the rule.
-          {'success' => true}.to_json
+          { 'success' => true }.to_json
         end
 
         def hb_to_json(hbs)
           hbs_hash = {}
           i = 0
           hbs.each do |hb|
-            hbs_hash[i] = (get_hb_details(hb))
-            i+=1
+            hbs_hash[i] = get_hb_details(hb)
+            i += 1
           end
           hbs_hash
         end
@@ -179,24 +178,24 @@ module BeEF
           details = BeEF::Core::Models::BrowserDetails
 
           {
-              'id'           => hb.id,
-              'session'      => hb.session,
-              'name'         => details.get(hb.session, 'browser.name'),
-              'version'      => details.get(hb.session, 'browser.version'),
-              'platform'     => details.get(hb.session, 'browser.platform'),
-              'os'           => details.get(hb.session, 'host.os.name'),
-              'os_version'   => details.get(hb.session, 'host.os.version'),
-              'hardware'     => details.get(hb.session, 'hardware.type'),
-              'ip'           => hb.ip,
-              'domain'       => details.get(hb.session, 'browser.window.hostname'),
-              'port'         => hb.port.to_s,
-              'page_uri'     => details.get(hb.session, 'browser.window.uri'),
-              'firstseen'    => hb.firstseen,
-              'lastseen'     => hb.lastseen,
-              'date_stamp'   => details.get(hb.session, 'browser.date.datestamp'),
-              'city'         => details.get(hb.session, 'location.city'),
-              'country'      => details.get(hb.session, 'location.country'),
-              'country_code' => details.get(hb.session, 'location.country.isocode'),
+            'id' => hb.id,
+            'session' => hb.session,
+            'name' => details.get(hb.session, 'browser.name'),
+            'version' => details.get(hb.session, 'browser.version'),
+            'platform' => details.get(hb.session, 'browser.platform'),
+            'os' => details.get(hb.session, 'host.os.name'),
+            'os_version' => details.get(hb.session, 'host.os.version'),
+            'hardware' => details.get(hb.session, 'hardware.type'),
+            'ip' => hb.ip,
+            'domain' => details.get(hb.session, 'browser.window.hostname'),
+            'port' => hb.port.to_s,
+            'page_uri' => details.get(hb.session, 'browser.window.uri'),
+            'firstseen' => hb.firstseen,
+            'lastseen' => hb.lastseen,
+            'date_stamp' => details.get(hb.session, 'browser.date.datestamp'),
+            'city' => details.get(hb.session, 'location.city'),
+            'country' => details.get(hb.session, 'location.country'),
+            'country_code' => details.get(hb.session, 'location.country.isocode')
           }
         end
 
@@ -205,32 +204,32 @@ module BeEF
           hooked_browsers = []
           hbs.each do |hb|
             details = BeEF::Core::Models::BrowserDetails
-            # TODO jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
+            # @todo what does the below TODO comment mean? why do we care about the client side view inside a controller?
+            # TODO: jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
 
-            pfuid = details.get(hb.session, 'PhishingFrenzyUID') != nil ? details.get(hb.session, 'PhishingFrenzyUID') : 'n/a'
-            bname = details.get(hb.session, 'browser.name') != nil ? details.get(hb.session, 'browser.name') : 'n/a'
-            bversion = details.get(hb.session, 'browser.version') != nil ? details.get(hb.session, 'browser.version') : 'n/a'
-            bplugins = details.get(hb.session, 'browser.plugins') != nil ? details.get(hb.session, 'browser.plugins') : 'n/a'
+            pfuid = details.get(hb.session, 'PhishingFrenzyUID').nil? ? 'n/a' : details.get(hb.session, 'PhishingFrenzyUID')
+            bname = details.get(hb.session, 'browser.name').nil? ? 'n/a' : details.get(hb.session, 'browser.name')
+            bversion = details.get(hb.session, 'browser.version').nil? ? 'n/a' : details.get(hb.session, 'browser.version')
+            bplugins = details.get(hb.session, 'browser.plugins').nil? ? 'n/a' : details.get(hb.session, 'browser.plugins')
 
             hooked_browsers << [
-                hb.id,
-                hb.ip,
-                pfuid,
-                bname,
-                bversion,
-                details.get(hb.session, 'host.os.name'),
-                details.get(hb.session, 'browser.platform'),
-                details.get(hb.session, 'browser.language'),
-                bplugins,
-                details.get(hb.session, 'location.city'),
-                details.get(hb.session, 'location.country'),
-                details.get(hb.session, 'location.latitude'),
-                details.get(hb.session, 'location.longitude')
+              hb.id,
+              hb.ip,
+              pfuid,
+              bname,
+              bversion,
+              details.get(hb.session, 'host.os.name'),
+              details.get(hb.session, 'browser.platform'),
+              details.get(hb.session, 'browser.language'),
+              bplugins,
+              details.get(hb.session, 'location.city'),
+              details.get(hb.session, 'location.country'),
+              details.get(hb.session, 'location.latitude'),
+              details.get(hb.session, 'location.longitude')
             ]
           end
           hooked_browsers
         end
-
       end
     end
   end

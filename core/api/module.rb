@@ -5,22 +5,20 @@
 #
 module BeEF
   module API
-
     module Command
     end
 
     module Module
-
       # @note Defined API Paths
       API_PATHS = {
-          'pre_soft_load' => :pre_soft_load,
-          'post_soft_load' => :post_soft_load,
-          'pre_hard_load' => :pre_hard_load,
-          'post_hard_load' => :post_hard_load,
-          'get_options' => :get_options,
-          'get_payload_options' => :get_payload_options,
-          'override_execute' => :override_execute
-      }
+        'pre_soft_load' => :pre_soft_load,
+        'post_soft_load' => :post_soft_load,
+        'pre_hard_load' => :pre_hard_load,
+        'post_hard_load' => :post_hard_load,
+        'get_options' => :get_options,
+        'get_payload_options' => :get_payload_options,
+        'override_execute' => :override_execute
+      }.freeze
 
       # Fired before a module soft load
       # @param [String] mod module key of module about to be soft loaded
@@ -54,8 +52,6 @@ module BeEF
       # @return [Hash] a hash of options
       # @note the option hash is merged with all other API hook's returned hash. Hooking this API method prevents the default options being returned.
       def get_payload_options; end
-
     end
-
   end
 end

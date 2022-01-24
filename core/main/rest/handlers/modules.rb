@@ -8,12 +8,11 @@ module BeEF
   module Core
     module Rest
       class Modules < BeEF::Core::Router::Router
-
         config = BeEF::Core::Configuration.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          halt 401 unless BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -30,24 +29,23 @@ module BeEF
           i = 0
           mods.each do |mod|
             modk = BeEF::Module.get_key_by_database_id(mod.id)
-            next if !BeEF::Module.is_enabled(modk)
+            next unless BeEF::Module.is_enabled(modk)
+
             mods_hash[i] = {
-                'id' => mod.id,
-                'class' => config.get("beef.module.#{modk}.class"),
-                'name' => config.get("beef.module.#{modk}.name"),
-                'category' => config.get("beef.module.#{modk}.category")
+              'id' => mod.id,
+              'class' => config.get("beef.module.#{modk}.class"),
+              'name' => config.get("beef.module.#{modk}.name"),
+              'category' => config.get("beef.module.#{modk}.category")
             }
-            i+=1
+            i += 1
           end
           mods_hash.to_json
         end
 
         get '/search/:mod_name' do
-          mod = BeEF::Core::Models::CommandModule.where(:name => params[:mod_name]).first
+          mod = BeEF::Core::Models::CommandModule.where(name: params[:mod_name]).first
           result = {}
-          if mod != nil
-            result = {'id' => mod.id}
-          end
+          result = { 'id' => mod.id } unless mod.nil?
           result.to_json
         end
 
@@ -56,47 +54,47 @@ module BeEF
         #
         get '/:mod_id' do
           cmd = BeEF::Core::Models::CommandModule.find(params[:mod_id])
-          error 404 unless cmd != nil
+          error 404 if cmd.nil?
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
-          error 404 unless modk != nil
+          error 404 if modk.nil?
 
-          #todo check if it's possible to also retrieve the TARGETS supported
+          # TODO: check if it's possible to also retrieve the TARGETS supported
           {
-              'name'   => cmd.name,
-              'description' => config.get("beef.module.#{cmd.name}.description"),
-              'category'=> config.get("beef.module.#{cmd.name}.category"),
-              'options'   => BeEF::Module.get_options(modk) #todo => get also payload options..get_payload_options(modk,text)
+            'name' => cmd.name,
+            'description' => config.get("beef.module.#{cmd.name}.description"),
+            'category' => config.get("beef.module.#{cmd.name}.category"),
+            'options' => BeEF::Module.get_options(modk) # TODO: => get also payload options..get_payload_options(modk,text)
           }.to_json
         end
 
         # @note Get the module result for the specific executed command
         #
         # Example with the Alert Dialog
-        #GET /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/86/1?token=0a931a461d08b86bfee40df987aad7e9cfdeb050 HTTP/1.1
-        #Host: 127.0.0.1:3000
+        # GET /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/86/1?token=0a931a461d08b86bfee40df987aad7e9cfdeb050 HTTP/1.1
+        # Host: 127.0.0.1:3000
         #===response (snip)===
-        #HTTP/1.1 200 OK
-        #Content-Type: application/json; charset=UTF-8
+        # HTTP/1.1 200 OK
+        # Content-Type: application/json; charset=UTF-8
         #
-        #{"date":"1331637093","data":"{\"data\":\"text=michele\"}"}
+        # {"date":"1331637093","data":"{\"data\":\"text=michele\"}"}
         #
         get '/:session/:mod_id/:cmd_id' do
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
-          cmd = BeEF::Core::Models::Command.where(:hooked_browser_id => hb.id,
-                                                  :command_module_id => params[:mod_id], :id => params[:cmd_id]).first
-          error 404 unless cmd != nil
-          results = BeEF::Core::Models::Result.where(:hooked_browser_id => hb.id, :command_id => cmd.id)
-          error 404 unless results != nil
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
+          cmd = BeEF::Core::Models::Command.where(hooked_browser_id: hb.id,
+                                                  command_module_id: params[:mod_id], id: params[:cmd_id]).first
+          error 404 if cmd.nil?
+          results = BeEF::Core::Models::Result.where(hooked_browser_id: hb.id, command_id: cmd.id)
+          error 404 if results.nil?
 
           results_hash = {}
           i = 0
           results.each do |result|
             results_hash[i] = {
-                'date' => result.date,
-                'data' => result.data
+              'date' => result.date,
+              'data' => result.data
             }
-            i+=1
+            i += 1
           end
           results_hash.to_json
         end
@@ -107,56 +105,56 @@ module BeEF
         # Input must be specified in JSON format
         #
         # +++ Example with the Alert Dialog: +++
-        #POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/86?token=5b17be64715a184d66e563ec9355ee758912a61d HTTP/1.1
-        #Host: 127.0.0.1:3000
-        #Content-Type: application/json; charset=UTF-8
-        #Content-Length: 18
+        # POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/86?token=5b17be64715a184d66e563ec9355ee758912a61d HTTP/1.1
+        # Host: 127.0.0.1:3000
+        # Content-Type: application/json; charset=UTF-8
+        # Content-Length: 18
         #
-        #{"text":"michele"}
+        # {"text":"michele"}
         #===response (snip)===
-        #HTTP/1.1 200 OK
-        #Content-Type: application/json; charset=UTF-8
-        #Content-Length: 35
+        # HTTP/1.1 200 OK
+        # Content-Type: application/json; charset=UTF-8
+        # Content-Length: 35
         #
-        #{"success":"true","command_id":"1"}
+        # {"success":"true","command_id":"1"}
         #
         # +++ Example with a Metasploit module (Adobe FlateDecode Stream Predictor 02 Integer Overflow) +++
         # +++ note that in this case we cannot query BeEF/Metasploit if module execution was successful or not.
         # +++ this is why there is "command_id":"not_available" in the response
-        #POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/236?token=83f13036060fd7d92440432dd9a9b5e5648f8d75 HTTP/1.1
-        #Host: 127.0.0.1:3000
-        #Content-Type: application/json; charset=UTF-8
-        #Content-Length: 81
+        # POST /api/modules/wiJCKAJybcB6aXZZOj31UmQKhbKXY63aNBeODl9kvkIuYLmYTooeGeRD7Xn39x8zOChcUReM3Bt7K0xj/236?token=83f13036060fd7d92440432dd9a9b5e5648f8d75 HTTP/1.1
+        # Host: 127.0.0.1:3000
+        # Content-Type: application/json; charset=UTF-8
+        # Content-Length: 81
         #
-        #{"SRVPORT":"3992", "URIPATH":"77345345345dg", "PAYLOAD":"generic/shell_bind_tcp"}
+        # {"SRVPORT":"3992", "URIPATH":"77345345345dg", "PAYLOAD":"generic/shell_bind_tcp"}
         #===response (snip)===
-        #HTTP/1.1 200 OK
-        #Content-Type: application/json; charset=UTF-8
-        #Content-Length: 35
+        # HTTP/1.1 200 OK
+        # Content-Type: application/json; charset=UTF-8
+        # Content-Length: 35
         #
-        #{"success":"true","command_id":"not_available"}
+        # {"success":"true","command_id":"not_available"}
         #
         post '/:session/:mod_id' do
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
           modk = BeEF::Module.get_key_by_database_id(params[:mod_id])
-          error 404 unless modk != nil
+          error 404 if modk.nil?
 
           request.body.rewind
           begin
             data = JSON.parse request.body.read
             options = []
-            data.each{|k,v| options.push({'name' => k, 'value' => v})}
+            data.each { |k, v| options.push({ 'name' => k, 'value' => v }) }
             exec_results = BeEF::Module.execute(modk, params[:session], options)
-            exec_results != nil ? '{"success":"true","command_id":"'+exec_results.to_s+'"}' : '{"success":"false"}'
-          rescue => e
+            exec_results.nil? ? '{"success":"false"}' : '{"success":"true","command_id":"' + exec_results.to_s + '"}'
+          rescue StandardError
             print_error "Invalid JSON input for module '#{params[:mod_id]}'"
             error 400 # Bad Request
           end
         end
 
         #
-        #@note Fire a new command module to multiple hooked browsers.
+        # @note Fire a new command module to multiple hooked browsers.
         # Returns the command IDs of the launched module, or 0 if firing got issues.
         # Use "hb_ids":["ALL"] to run on all hooked browsers
         # Use "hb_ids":["ALL_ONLINE"] to run on all hooked browsers currently online
@@ -174,7 +172,7 @@ module BeEF
         #
         # curl example (alert module with custom text, 2 hooked browsers)):
         #
-        #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
+        # curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
         #-X POST http://127.0.0.1:3000/api/modules/multi_browser?token=2316d82702b83a293e2d46a0886a003a6be0a633
         #
         post '/multi_browser' do
@@ -182,34 +180,35 @@ module BeEF
           begin
             body = JSON.parse request.body.read
 
-            modk = BeEF::Module.get_key_by_database_id body["mod_id"]
-            error 404 unless modk != nil
+            modk = BeEF::Module.get_key_by_database_id body['mod_id']
+            error 404 if modk.nil?
             mod_params = []
 
-            if body["mod_params"] != nil
-              body["mod_params"].each{|k,v|
-                mod_params.push({'name' => k, 'value' => v})
-              }
+            unless body['mod_params'].nil?
+              body['mod_params'].each do |k, v|
+                mod_params.push({ 'name' => k, 'value' => v })
+              end
             end
 
-            hb_ids = body["hb_ids"]
-            results = Hash.new
+            hb_ids = body['hb_ids']
+            results = {}
 
             # run on all hooked browsers currently online?
             if hb_ids.first =~ /\Aall_online\z/i
               hb_ids = []
               BeEF::Core::Models::HookedBrowser.where(
-                :lastseen.gte => (Time.new.to_i - 15)).each {|hb| hb_ids << hb.id }
+                :lastseen.gte => (Time.new.to_i - 15)
+              ).each { |hb| hb_ids << hb.id }
             # run on all hooked browsers?
             elsif hb_ids.first =~ /\Aall\z/i
               hb_ids = []
-              BeEF::Core::Models::HookedBrowser.all.each {|hb| hb_ids << hb.id }
+              BeEF::Core::Models::HookedBrowser.all.each { |hb| hb_ids << hb.id }
             end
 
             # run modules
             hb_ids.each do |hb_id|
               hb = BeEF::Core::Models::HookedBrowser.find(hb_id)
-              if hb == nil
+              if hb.nil?
                 results[hb_id] = 0
                 next
               else
@@ -218,8 +217,8 @@ module BeEF
               end
             end
             results.to_json
-          rescue => e
-            print_error "Invalid JSON input passed to endpoint /api/modules/multi_browser"
+          rescue StandardError
+            print_error 'Invalid JSON input passed to endpoint /api/modules/multi_browser'
             error 400 # Bad Request
           end
         end
@@ -228,7 +227,7 @@ module BeEF
         # Returns the command IDs of the launched modules, or 0 if firing got issues.
         #
         # POST request body example (for modules that don't need parameters, just pass an empty JSON object like {} )
-        #{ "hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
+        # { "hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
         #    "modules": [
         #        {    # test_return_long_string module with custom input
         #             "mod_id":99,
@@ -248,7 +247,7 @@ module BeEF
         #
         # curl example (test_return_long_string and prompt_dialog module with custom inputs)):
         #
-        #curl -H "Content-Type: application/json; charset=UTF-8" -d '{"hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
+        # curl -H "Content-Type: application/json; charset=UTF-8" -d '{"hb":"vkIwVV3ok5i5vH2f8sxlkoaKqAGKCbZXdWqE9vkHNFBhI8aBBHvtZAGRO2XqFZXxThBlmKlRiVwPeAzj",
         # "modules":[{"mod_id":99,"mod_input":[{"repeat":"10"},{"repeat_string":"ABCDE"}]},{"mod_id":116,"mod_input":[{"question":"hooked?"}]},{"mod_id":128,"mod_input":[]}]}'
         #  -X POST http://127.0.0.1:3000/api/modules/multi_module?token=e640483ae9bca2eb904f003f27dd4bc83936eb92
         #
@@ -256,32 +255,32 @@ module BeEF
           request.body.rewind
           begin
             body = JSON.parse request.body.read
-            hb = BeEF::Core::Models::HookedBrowser.where(:session => body["hb"]).first
-            error 401 unless hb != nil
+            hb = BeEF::Core::Models::HookedBrowser.where(session: body['hb']).first
+            error 401 if hb.nil?
 
-            results = Hash.new
-            if body["modules"] != nil
-              body["modules"].each{|mod|
-                mod_id = mod["mod_id"]
-                mod_k = BeEF::Module.get_key_by_database_id mod["mod_id"]
-                if mod_k == nil
+            results = {}
+            unless body['modules'].nil?
+              body['modules'].each do |mod|
+                mod_id = mod['mod_id']
+                mod_k = BeEF::Module.get_key_by_database_id mod['mod_id']
+                if mod_k.nil?
                   results[mod_id] = 0
                   next
                 else
                   mod_params = []
-                  mod["mod_input"].each{|input|
-                    input.each{|k,v|
-                      mod_params.push({'name' => k, 'value' => v})
-                    }
-                  }
+                  mod['mod_input'].each do |input|
+                    input.each do |k, v|
+                      mod_params.push({ 'name' => k, 'value' => v })
+                    end
+                  end
                   cmd_id = BeEF::Module.execute(mod_k, hb.session, mod_params)
                   results[mod_id] = cmd_id
                 end
-              }
+              end
             end
             results.to_json
-          rescue => e
-            print_error "Invalid JSON input passed to endpoint /api/modules/multi"
+          rescue StandardError
+            print_error 'Invalid JSON input passed to endpoint /api/modules/multi'
             error 400 # Bad Request
           end
         end

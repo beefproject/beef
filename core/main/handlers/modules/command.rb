@@ -7,29 +7,48 @@ module BeEF
   module Core
     module Handlers
       module Modules
-
         module Command
-
           # Adds the command module instructions to a hooked browser's http response.
           # @param [Object] command Command object
           # @param [Object] hooked_browser Hooked Browser object
           def add_command_instructions(command, hooked_browser)
-            (print_error "hooked_browser is nil"; return) if hooked_browser.nil?
-            (print_error "hooked_browser.session is nil"; return) if hooked_browser.session.nil?
-            (print_error "hooked_browser is nil"; return) if command.nil?
-            (print_error "hooked_browser.command_module_id is nil"; return) if command.command_module_id.nil?
+            if hooked_browser.nil?
+              (print_error 'hooked_browser is nil'
+               return)
+            end
+            if hooked_browser.session.nil?
+              (print_error 'hooked_browser.session is nil'
+               return)
+            end
+            if command.nil?
+              (print_error 'hooked_browser is nil'
+               return)
+            end
+            if command.command_module_id.nil?
+              (print_error 'hooked_browser.command_module_id is nil'
+               return)
+            end
 
             config = BeEF::Core::Configuration.instance
             # @note get the command module
-            command_module = BeEF::Core::Models::CommandModule.where(:id => command.command_module_id).first
-            (print_error "command_module is nil"; return) if command_module.nil?
-            (print_error "command_module.path is nil"; return) if command_module.path.nil?
+            command_module = BeEF::Core::Models::CommandModule.where(id: command.command_module_id).first
+            if command_module.nil?
+              (print_error 'command_module is nil'
+               return)
+            end
+            if command_module.path.nil?
+              (print_error 'command_module.path is nil'
+               return)
+            end
 
-            if (command_module.path.match(/^Dynamic/))
+            if command_module.path.match(/^Dynamic/)
               command_module = BeEF::Modules::Commands.const_get(command_module.path.split('/').last.capitalize).new
             else
               key = BeEF::Module.get_key_by_database_id(command.command_module_id)
-              (print_error "Could not find command module with ID #{command.command_module_id}"; return) if key.nil?
+              if key.nil?
+                (print_error "Could not find command module with ID #{command.command_module_id}"
+                 return)
+              end
               command_module = BeEF::Core::Command.const_get(config.get("beef.module.#{key}.class")).new(key)
             end
 
@@ -42,25 +61,25 @@ module BeEF
 
             ws = BeEF::Core::Websocket::Websocket.instance
 
-            if config.get("beef.extension.evasion.enable")
+            if config.get('beef.extension.evasion.enable')
               evasion = BeEF::Extension::Evasion::Evasion.instance
               @output = evasion.obfuscate(command_module.output)
             else
               @output = command_module.output
             end
 
-            #todo antisnatchor: remove this gsub crap adding some hook packing.
-            if config.get("beef.http.websocket.enable") && ws.getsocket(hooked_browser.session)
-              #content = command_module.output.gsub('//
-              #//
-              #//   Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
-              #//   Browser Exploitation Framework (BeEF) - http://beefproject.com
-              #//   See the file 'doc/COPYING' for copying permission
-              #//
-              #//', "")
+            # TODO: antisnatchor: remove this gsub crap adding some hook packing.
+            if config.get('beef.http.websocket.enable') && ws.getsocket(hooked_browser.session)
+              # content = command_module.output.gsub('//
+              # //
+              # //   Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
+              # //   Browser Exploitation Framework (BeEF) - http://beefproject.com
+              # //   See the file 'doc/COPYING' for copying permission
+              # //
+              # //', "")
               ws.send(@output, hooked_browser.session)
             else
-              @body << @output + "\n\n"
+              @body << (@output + "\n\n")
             end
             # @note prints the event to the console
             if BeEF::Settings.console?
@@ -72,9 +91,7 @@ module BeEF
             command.instructions_sent = true
             command.save!
           end
-
         end
-
       end
     end
   end

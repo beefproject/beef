@@ -5,7 +5,6 @@
 #
 module BeEF
   module Core
-
   end
 end
 
@@ -13,7 +12,6 @@ end
 require 'core/main/router/router'
 require 'core/main/router/api'
 require 'core/main/router/error_responses'
-
 
 ## @note Include http server functions for beef
 require 'core/main/server'

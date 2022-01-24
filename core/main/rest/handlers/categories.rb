@@ -8,12 +8,11 @@ module BeEF
   module Core
     module Rest
       class Categories < BeEF::Core::Router::Router
-
         config = BeEF::Core::Configuration.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          halt 401 unless BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -21,18 +20,17 @@ module BeEF
         end
 
         get '/' do
-           categories = BeEF::Modules::get_categories
-           cats = Array.new
-           i = 0
-           # todo add sub-categories support!
-           categories.each do |category|
-             cat = {"id" => i, "name" => category}
-             cats << cat
-             i += 1
-           end
-           cats.to_json
+          categories = BeEF::Modules.get_categories
+          cats = []
+          i = 0
+          # TODO: add sub-categories support!
+          categories.each do |category|
+            cat = { 'id' => i, 'name' => category }
+            cats << cat
+            i += 1
+          end
+          cats.to_json
         end
-
       end
     end
   end

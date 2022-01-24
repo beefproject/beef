@@ -8,12 +8,11 @@ module BeEF
   module Core
     module Rest
       class Logs < BeEF::Core::Router::Router
-
         config = BeEF::Core::Configuration.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          halt 401 unless BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -33,10 +32,10 @@ module BeEF
         #
         get '/rss' do
           logs = BeEF::Core::Models::Log.all
-          headers 'Content-Type'  => 'text/xml; charset=UTF-8',
-                  'Pragma'        => 'no-cache',
+          headers 'Content-Type' => 'text/xml; charset=UTF-8',
+                  'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
-                  'Expires'       => '0'
+                  'Expires' => '0'
           logs_to_rss logs
         end
 
@@ -44,10 +43,10 @@ module BeEF
         # @note Get hooked browser logs
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
-          error 401 unless hb != nil
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
+          error 401 if hb.nil?
 
-          logs = BeEF::Core::Models::Log.where(:hooked_browser_id => hb.id)
+          logs = BeEF::Core::Models::Log.where(hooked_browser_id: hb.id)
           logs_to_json(logs)
         end
 
@@ -59,19 +58,20 @@ module BeEF
 
           logs.each do |log|
             logs_json << {
-                'id' => log.id.to_i,
-                'date' => log.date.to_s,
-                'event' => log.event.to_s,
-                'logtype' => log.logtype.to_s,
-                'hooked_browser_id' => log.hooked_browser_id.to_s
+              'id' => log.id.to_i,
+              'date' => log.date.to_s,
+              'event' => log.event.to_s,
+              'logtype' => log.logtype.to_s,
+              'hooked_browser_id' => log.hooked_browser_id.to_s
             }
           end
 
-          {
+          unless logs_json.empty?
+            {
               'logs_count' => count,
               'logs' => logs_json
-          }.to_json if not logs_json.empty?
-
+            }.to_json
+          end
         end
 
         def logs_to_rss(logs)
@@ -91,7 +91,6 @@ module BeEF
           end
           rss.to_s
         end
-
       end
     end
   end

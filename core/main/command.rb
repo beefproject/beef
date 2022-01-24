@@ -43,7 +43,7 @@ module BeEF
     #
     class Command
       attr_reader :datastore, :path, :default_command_url, :beefjs_components, :friendlyname,
-      :config
+                  :config
       attr_accessor :zombie, :command_id, :session_id
 
       include BeEF::Core::CommandUtils
@@ -100,12 +100,12 @@ module BeEF
       # Returns information about the command in a JSON format.
       # @return [String] JSON formatted string
       #
-      def to_json
+      def to_json(*_args)
         {
-          'Name'        => @friendlyname,
+          'Name' => @friendlyname,
           'Description' => BeEF::Core::Configuration.instance.get("beef.module.#{@key}.description"),
-          'Category'    => BeEF::Core::Configuration.instance.get("beef.module.#{@key}.category"),
-          'Data'        => BeEF::Module.get_options(@key)
+          'Category' => BeEF::Core::Configuration.instance.get("beef.module.#{@key}.category"),
+          'Data' => BeEF::Module.get_options(@key)
         }.to_json
       end
 
@@ -116,7 +116,7 @@ module BeEF
       #
       def build_datastore(data)
         @datastore = JSON.parse data
-      rescue => e
+      rescue StandardError => e
         print_error "Could not build datastore: #{e.message}"
       end
 
@@ -126,7 +126,7 @@ module BeEF
       # @param [Hash] http_headers HTTP headers
       #
       def build_callback_datastore(result, command_id, beefhook, http_params, http_headers)
-        @datastore = {'http_headers' => {}} # init the datastore
+        @datastore = { 'http_headers' => {} } # init the datastore
 
         if !http_params.nil? && !http_headers.nil?
           # get, check and add the http_params to the datastore
@@ -166,7 +166,7 @@ module BeEF
 
         @datastore['results'] = result
         @datastore['cid'] = command_id
-        @datastore['beefhook'] = beefhook		
+        @datastore['beefhook'] = beefhook
       end
 
       #
@@ -184,7 +184,7 @@ module BeEF
 
         @eruby = Erubis::FastEruby.new(File.read(f))
 
-        #data = BeEF::Core::Configuration.instance.get "beef.module.#{@key}"
+        # data = BeEF::Core::Configuration.instance.get "beef.module.#{@key}"
         cc = BeEF::Core::CommandContext.new
         cc['command_url'] = @default_command_url
         cc['command_id'] = @command_id
@@ -226,7 +226,7 @@ module BeEF
       def use(component)
         return if @beefjs_components.include? component
 
-        component_path = '/'+component
+        component_path = '/' + component
         component_path.gsub!(/beef./, '')
         component_path.gsub!(/\./, '/')
         component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"
@@ -238,8 +238,9 @@ module BeEF
 
       # @todo TODO Document
       def oc_value(name)
-        option = BeEF::Core::Models::OptionCache.where(:name => name).first
+        option = BeEF::Core::Models::OptionCache.where(name: name).first
         return nil unless option
+
         option.value
       end
 
@@ -249,8 +250,6 @@ module BeEF
           opt['value'] = oc_value(opt['name']) || opt['value']
         end
       end
-
-      private
 
       @use_template
       @eruby

@@ -5,7 +5,6 @@
 #
 module BeEF
   module Extension
-
     # Checks to see if extension is set inside the configuration
     # @param [String] ext the extension key
     # @return [Boolean] whether or not the extension exists in BeEF's configuration
@@ -15,9 +14,10 @@ module BeEF
 
     # Checks to see if extension is enabled in configuration
     # @param [String] ext the extension key
-    # @return [Boolean] whether or not the extension is enabled 
+    # @return [Boolean] whether or not the extension is enabled
     def self.is_enabled(ext)
       return false unless is_present(ext)
+
       BeEF::Core::Configuration.instance.get("beef.extension.#{ext}.enable") == true
     end
 
@@ -26,10 +26,11 @@ module BeEF
     # @return [Boolean] whether or not the extension is loaded
     def self.is_loaded(ext)
       return false unless is_enabled(ext)
+
       BeEF::Core::Configuration.instance.get("beef.extension.#{ext}.loaded") == true
     end
 
-    # Loads an extension 
+    # Loads an extension
     # @param [String] ext the extension key
     # @return [Boolean] whether or not the extension loaded successfully
     def self.load(ext)
@@ -41,7 +42,7 @@ module BeEF
       end
       print_error "Unable to load extension '#{ext}'"
       false
-    rescue => e
+    rescue StandardError => e
       print_error "Unable to load extension '#{ext}':"
       print_more e.message
     end

@@ -5,10 +5,10 @@
 #
 
 module BeEF
-module Core
-  class Model < ActiveRecord::Base
-    # Tell ActiveRecord that this is not a model
-    self.abstract_class = true
+  module Core
+    class Model < ActiveRecord::Base
+      # Tell ActiveRecord that this is not a model
+      self.abstract_class = true
+    end
   end
-end
 end

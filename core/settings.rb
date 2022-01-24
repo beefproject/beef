@@ -5,7 +5,6 @@
 #
 module BeEF
   module Settings
-
     # Checks if an extension exists in the framework.
     # @param [String] beef_extension extension class
     # @return [Boolean] if the extension exists
@@ -20,8 +19,7 @@ module BeEF
     # @deprecated Use #{BeEF::Extension.is_loaded()} instead of this method.
     #   This method bypasses the configuration system.
     def self.console?
-      self.extension_exists?('Console')
+      extension_exists?('Console')
     end
-
   end
 end

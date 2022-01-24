@@ -8,12 +8,11 @@ module BeEF
   module Core
     module Rest
       class BrowserDetails < BeEF::Core::Router::Router
-
         config = BeEF::Core::Configuration.instance
 
         before do
           error 401 unless params[:token] == config.get('beef.api_token')
-          halt 401 if not BeEF::Core::Rest.permitted_source?(request.ip)
+          halt 401 unless BeEF::Core::Rest.permitted_source?(request.ip)
           headers 'Content-Type' => 'application/json; charset=UTF-8',
                   'Pragma' => 'no-cache',
                   'Cache-Control' => 'no-cache',
@@ -24,15 +23,15 @@ module BeEF
         # @note Get all browser details for the specified session
         #
         get '/:session' do
-          hb = BeEF::Core::Models::HookedBrowser.where(:session => params[:session]).first
+          hb = BeEF::Core::Models::HookedBrowser.where(session: params[:session]).first
           error 404 if hb.nil?
 
-          details = BeEF::Core::Models::BrowserDetails.where(:session_id => hb.session)
+          details = BeEF::Core::Models::BrowserDetails.where(session_id: hb.session)
           error 404 if details.nil?
 
           result = []
           details.each do |d|
-            result << {key: d[:detail_key], value: d[:detail_value] }
+            result << { key: d[:detail_key], value: d[:detail_value] }
           end
 
           output = {

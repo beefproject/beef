@@ -117,7 +117,7 @@ module BeEF
           next unless r['method'] == method
           next unless is_matched_params? r, params
 
-          owners << { :owner => r['owner'], :id => r['id'] }
+          owners << { owner: r['owner'], id: r['id'] }
         end
         owners
       end
@@ -192,17 +192,13 @@ module BeEF
         data = []
         method = get_api_path(clss, mthd)
         mods.each do |mod|
-          begin
-            # Only used for API Development (very verbose)
-            # print_info "API: #{mod} fired #{method}"
+          # Only used for API Development (very verbose)
+          # print_info "API: #{mod} fired #{method}"
 
-            result = mod[:owner].method(method).call(*args)
-            unless result.nil?
-              data << { :api_id => mod[:id], :data => result }
-            end
-          rescue => e
-            print_error "API Fire Error: #{e.message} in #{mod}.#{method}()"
-          end
+          result = mod[:owner].method(method).call(*args)
+          data << { api_id: mod[:id], data: result } unless result.nil?
+        rescue StandardError => e
+          print_error "API Fire Error: #{e.message} in #{mod}.#{method}()"
         end
 
         data

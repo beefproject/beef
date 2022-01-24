@@ -5,7 +5,6 @@
 #
 module BeEF
   module Module
-
     # Checks to see if module key is in configuration
     # @param [String] mod module key
     # @return [Boolean] if the module key exists in BeEF's configuration
@@ -37,14 +36,14 @@ module BeEF
     # Gets all module options
     # @param [String] mod module key
     # @return [Hash] a hash of all the module options
-    # @note API Fire: get_options 
+    # @note API Fire: get_options
     def self.get_options(mod)
       if BeEF::API::Registrar.instance.matched? BeEF::API::Module, 'get_options', [mod]
         options = BeEF::API::Registrar.instance.fire BeEF::API::Module, 'get_options', mod
         mo = []
         options.each do |o|
           unless o[:data].is_a?(Array)
-            print_debug "API Warning: return result for BeEF::Module.get_options() was not an array."
+            print_debug 'API Warning: return result for BeEF::Module.get_options() was not an array.'
             next
           end
           mo += o[:data]
@@ -68,9 +67,10 @@ module BeEF
     # Gets all module payload options
     # @param [String] mod module key
     # @return [Hash] a hash of all the module options
-    # @note API Fire: get_options 
-    def self.get_payload_options(mod,payload)
+    # @note API Fire: get_options
+    def self.get_payload_options(mod, payload)
       return [] unless BeEF::API::Registrar.instance.matched?(BeEF::API::Module, 'get_payload_options', [mod, nil])
+
       BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'get_payload_options', mod, payload)
     end
 
@@ -104,8 +104,8 @@ module BeEF
       # API call for post-soft-load module
       BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_soft_load', mod)
       true
-    rescue => e
-      print_error "There was a problem soft loading the module '#{mod}'"
+    rescue StandardError => e
+      print_error "There was a problem soft loading the module '#{mod}': #{e.message}"
       false
     end
 
@@ -143,7 +143,7 @@ module BeEF
       # API call for post-hard-load module
       BeEF::API::Registrar.instance.fire(BeEF::API::Module, 'post_hard_load', mod)
       true
-    rescue => e
+    rescue StandardError => e
       BeEF::Core::Configuration.instance.set("#{mod_str}.loaded", false)
       print_error "There was a problem loading the module '#{mod}'"
       print_debug "Hard load module syntax error: #{e}"
@@ -155,6 +155,7 @@ module BeEF
     # @return [Boolean] if already hard loaded then true otherwise (see #hard_load)
     def self.check_hard_load(mod)
       return true if is_loaded mod
+
       hard_load mod
     end
 
@@ -162,7 +163,7 @@ module BeEF
     # @param [Integer] id module database ID
     # @return [String] module key
     def self.get_key_by_database_id(id)
-      ret = BeEF::Core::Configuration.instance.get('beef.module').select do |k, v|
+      ret = BeEF::Core::Configuration.instance.get('beef.module').select do |_k, v|
         v.key?('db') && v['db']['id'].to_i == id.to_i
       end
       ret.is_a?(Array) ? ret.first.first : ret.keys.first
@@ -172,7 +173,7 @@ module BeEF
     # @param [Class] c module class
     # @return [String] module key
     def self.get_key_by_class(c)
-      ret = BeEF::Core::Configuration.instance.get('beef.module').select do |k, v|
+      ret = BeEF::Core::Configuration.instance.get('beef.module').select do |_k, v|
         v.key?('class') && v['class'].to_s.eql?(c.to_s)
       end
       ret.is_a?(Array) ? ret.first.first : ret.keys.first
@@ -180,7 +181,7 @@ module BeEF
 
     # Checks to see if module class exists
     # @param [String] mod module key
-    # @return [Boolean] returns whether or not the class exists 
+    # @return [Boolean] returns whether or not the class exists
     def self.exists?(mod)
       kclass = BeEF::Core::Command.const_get mod.capitalize
       kclass.is_a? Class
@@ -204,7 +205,7 @@ module BeEF
       return nil unless opts.is_a? Hash
 
       unless opts.key? 'browser'
-        print_error "BeEF::Module.support() was passed a hash without a valid browser constant"
+        print_error 'BeEF::Module.support() was passed a hash without a valid browser constant'
         return nil
       end
 
@@ -217,30 +218,26 @@ module BeEF
               # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
               #   rating += 1
               # end
-              results << {'rating' => 2, 'const' => k}
+              results << { 'rating' => 2, 'const' => k }
             end
           when Hash
             break if opts['browser'] != v.keys.first && v.keys.first != BeEF::Core::Constants::Browsers::ALL
 
             subv = v[v.keys.first]
             rating = 1
+
             # version check
             if opts.key?('ver')
               if subv.key?('min_ver')
-                if subv['min_ver'].is_a?(Integer) && opts['ver'].to_i >= subv['min_ver']
-                  rating += 1
-                else
-                  break
-                end
+                break unless subv['min_ver'].is_a?(Integer) && opts['ver'].to_i >= subv['min_ver']
+                rating += 1
               end
               if subv.key?('max_ver')
-                if (subv['max_ver'].is_a?(Integer) && opts['ver'].to_i <= subv['max_ver']) || subv['max_ver'] == 'latest'
-                  rating += 1
-                else
-                  break
-                end
+                break unless (subv['max_ver'].is_a?(Integer) && opts['ver'].to_i <= subv['max_ver']) || subv['max_ver'] == 'latest'
+                rating += 1
               end
             end
+
             # os check
             if opts.key?('os') && subv.key?('os')
               match = false
@@ -271,18 +268,16 @@ module BeEF
               # if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
               #   rating += 1
               # end
-              results << {'rating' => rating, 'const' => k}
+              results << { 'rating' => rating, 'const' => k }
             end
           end
 
           next unless v.eql? BeEF::Core::Constants::Browsers::ALL
 
           rating = 1
-          if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
-            rating = 1
-          end
+          rating = 1 if k == BeEF::Core::Constants::CommandModule::VERIFIED_NOT_WORKING
 
-          results << {'rating' => rating, 'const' => k}
+          results << { 'rating' => rating, 'const' => k }
         end
       end
 
@@ -290,9 +285,7 @@ module BeEF
 
       result = {}
       results.each do |r|
-        if result == {} || r['rating'] > result['rating']
-          result = {'rating' => r['rating'], 'const' => r['const']}
-        end
+        result = { 'rating' => r['rating'], 'const' => r['const'] } if result == {} || r['rating'] > result['rating']
       end
 
       result['const']
@@ -308,38 +301,37 @@ module BeEF
 
       targets = {}
       target_config.each do |k, v|
-        begin
-          next unless BeEF::Core::Constants::CommandModule.const_defined? "VERIFIED_#{k.upcase}"
-          key = BeEF::Core::Constants::CommandModule.const_get "VERIFIED_#{k.upcase}"
-          targets[key] = [] unless targets.key? key
-          browser = nil
+        next unless BeEF::Core::Constants::CommandModule.const_defined? "VERIFIED_#{k.upcase}"
 
-          case v
-          when String
-            browser = match_target_browser v
+        key = BeEF::Core::Constants::CommandModule.const_get "VERIFIED_#{k.upcase}"
+        targets[key] = [] unless targets.key? key
+        browser = nil
+
+        case v
+        when String
+          browser = match_target_browser v
+          targets[key] << browser if browser
+        when Array
+          v.each do |c|
+            browser = match_target_browser c
             targets[key] << browser if browser
-          when Array
-            v.each do |c|
-              browser = match_target_browser c
-              targets[key] << browser if browser
-            end
-          when Hash
-            v.each do |k, c|
-              browser = match_target_browser k
-              next unless browser
+          end
+        when Hash
+          v.each do |k, c|
+            browser = match_target_browser k
+            next unless browser
 
-              case c
-              when TrueClass
-                targets[key] << browser
-              when Hash
-                details = match_target_browser_spec c
-                targets[key] << {browser => details} if details
-              end
+            case c
+            when TrueClass
+              targets[key] << browser
+            when Hash
+              details = match_target_browser_spec c
+              targets[key] << { browser => details } if details
             end
           end
-        rescue NameError
-          print_error "Module '#{mod}' configuration has invalid target status defined '#{k}'"
         end
+      rescue NameError
+        print_error "Module '#{mod}' configuration has invalid target status defined '#{k}'"
       end
 
       BeEF::Core::Configuration.instance.clear "#{mod_str}.target"
@@ -351,7 +343,7 @@ module BeEF
     # @param [String] v user defined browser
     # @return [Constant] a BeEF browser constant
     def self.match_target_browser(v)
-      unless v.class == String
+      unless v.instance_of?(String)
         print_error 'Invalid datatype passed to BeEF::Module.match_target_browser()'
         return false
       end
@@ -366,24 +358,20 @@ module BeEF
 
     # Translates complex browser target configuration
     # @note Takes a complex user defined browser hash and converts it to applicable BeEF constants
-    # @param [Hash] v user defined browser hash    
+    # @param [Hash] v user defined browser hash
     # @return [Hash] BeEF constants hash
     def self.match_target_browser_spec(v)
-      unless v.class == Hash
+      unless v.instance_of?(Hash)
         print_error 'Invalid datatype passed to BeEF::Module.match_target_browser_spec()'
         return {}
       end
 
       browser = {}
-      if v.key?('max_ver') && (v['max_ver'].is_a?(Integer) || v['max_ver'].is_a?(Float) || v['max_ver'] == 'latest')
-        browser['max_ver'] = v['max_ver']
-      end
+      browser['max_ver'] = v['max_ver'] if v.key?('max_ver') && (v['max_ver'].is_a?(Integer) || v['max_ver'].is_a?(Float) || v['max_ver'] == 'latest')
 
-      if v.key?('min_ver') && (v['min_ver'].is_a?(Integer) || v['min_ver'].is_a?(Float))
-        browser['min_ver'] = v['min_ver']
-      end
+      browser['min_ver'] = v['min_ver'] if v.key?('min_ver') && (v['min_ver'].is_a?(Integer) || v['min_ver'].is_a?(Float))
 
-      return browser unless v.key? 'os'
+      return browser unless v.key?('os')
 
       case v['os']
       when String
@@ -405,7 +393,7 @@ module BeEF
     # @param [String] v user defined OS string
     # @return [Constant] BeEF OS Constant
     def self.match_target_os(v)
-      unless v.class == String
+      unless v.instance_of?(String)
         print_error 'Invalid datatype passed to BeEF::Module.match_target_os()'
         return false
       end
@@ -418,13 +406,13 @@ module BeEF
       false
     end
 
-    # Executes a module 
+    # Executes a module
     # @param [String] mod module key
     # @param [String] hbsession hooked browser session
     # @param [Array] opts array of module execute options (see #get_options)
     # @return [Integer] the command_id associated to the module execution when info is persisted. nil if there are errors.
     # @note The return value of this function does not specify if the module was successful, only that it was executed within the framework
-    def self.execute(mod, hbsession, opts=[])
+    def self.execute(mod, hbsession, opts = [])
       unless is_present(mod) && is_enabled(mod)
         print_error "Module not found '#{mod}'. Failed to execute module."
         return nil
@@ -445,15 +433,13 @@ module BeEF
 
       check_hard_load mod
       command_module = get_definition(mod).new(mod)
-      if command_module.respond_to?(:pre_execute)
-        command_module.pre_execute
-      end
+      command_module.pre_execute if command_module.respond_to?(:pre_execute)
       merge_options(mod, [])
       c = BeEF::Core::Models::Command.create(
-        :data => merge_options(mod, opts).to_json,
-        :hooked_browser_id => hb.id,
-        :command_module_id => BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
-        :creationdate => Time.new.to_i
+        data: merge_options(mod, opts).to_json,
+        hooked_browser_id: hb.id,
+        command_module_id: BeEF::Core::Configuration.instance.get("beef.module.#{mod}.db.id"),
+        creationdate: Time.new.to_i
       )
       c.id
     end
@@ -471,9 +457,7 @@ module BeEF
       defaults.each do |v|
         mer = nil
         opts.each do |o|
-          if v.key?('name') && o.key?('name') && v['name'] == o['name']
-            mer = v.deep_merge o
-          end
+          mer = v.deep_merge o if v.key?('name') && o.key?('name') && v['name'] == o['name']
         end
 
         mer.nil? ? merged.push(v) : merged.push(mer)
