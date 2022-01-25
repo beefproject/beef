@@ -38,18 +38,16 @@ module BeEF
           def login
             username = @params['username-cfrm'] || ''
             password = @params['password-cfrm'] || ''
-            config = BeEF::Core::Configuration.instance
             @headers['Content-Type'] = 'application/json; charset=UTF-8'
             @headers['X-Frame-Options'] = 'sameorigin'
-            ua_ip = if config.get('beef.http.allow_reverse_proxy')
-                      @request.ip # get client ip address
-                    else
-                      @request.get_header('REMOTE_ADDR')
-                    end
-            @body = '{ success : false }' # attempt to fail closed
+            @body = { success: false }.to_json
+
+            config = BeEF::Core::Configuration.instance
+            ua_ip = config.get('beef.http.allow_reverse_proxy') ? @request.ip : @request.get_header('REMOTE_ADDR')
+
             # check if source IP address is permitted to authenticate
             unless permitted_source?(ua_ip)
-              BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{@request.ip}) attempted to authenticate but is not within permitted subnet.")
+              BeEF::Core::Logger.instance.register('Authentication', "IP source address (#{ua_ip}) attempted to authenticate but is not within permitted subnet.")
               return
             end
 
@@ -59,36 +57,34 @@ module BeEF
                                                     ->(time) { @session.set_auth_timestamp(time) })
 
             # check username and password
-            unless username.eql? config.get('beef.credentials.user') and password.eql? config.get('beef.credentials.passwd')
-              BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has failed to authenticate in the application.")
+            unless username.eql?(config.get('beef.credentials.user')) && password.eql?(config.get('beef.credentials.passwd'))
+              BeEF::Core::Logger.instance.register('Authentication', "User with ip #{ua_ip} has failed to authenticate in the application.")
               return
             end
 
             # establish an authenticated session
-
-            # set up session and set it logged in
             @session.set_logged_in(ua_ip)
-
-            # create session cookie
             session_cookie_name = config.get('beef.extension.admin_ui.session_cookie_name') # get session cookie name
             Rack::Utils.set_cookie_header!(@headers, session_cookie_name, { value: @session.get_id, path: '/', httponly: true })
 
-            BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully authenticated in the application.")
-            @body = '{ success : true }'
+            BeEF::Core::Logger.instance.register('Authentication', "User with ip #{ua_ip} has successfully authenticated in the application.")
+            @body = { success: true }.to_json
           end
 
           #
           # Function managing the logout
           #
           def logout
-            # test if session is unauth'd
+            @body = { success: true }.to_json
+
             unless @session.valid_nonce?(@request)
-              (print_error 'invalid nonce'
-               return @body = '{ success : true }')
+              print_error 'invalid nonce'
+              return
             end
+
             unless @session.valid_session?(@request)
-              (print_error 'invalid session'
-               return @body = '{ success : true }')
+              print_error 'invalid session'
+              return
             end
 
             @headers['Content-Type'] = 'application/json; charset=UTF-8'
@@ -102,23 +98,20 @@ module BeEF
             session_cookie_name = config.get('beef.extension.admin_ui.session_cookie_name') # get session cookie name
             Rack::Utils.set_cookie_header!(@headers, session_cookie_name, { value: '', path: '/', httponly: true, expires: Time.now })
 
-            BeEF::Core::Logger.instance.register('Authentication', "User with ip #{@request.ip} has successfully logged out.")
-            @body = '{ success : true }'
+            ua_ip = config.get('beef.http.allow_reverse_proxy') ? @request.ip : @request.get_header('REMOTE_ADDR')
+            BeEF::Core::Logger.instance.register('Authentication', "User with ip #{ua_ip} has successfully logged out.")
           end
 
           #
           # Check the UI browser source IP is within the permitted subnet
           #
           def permitted_source?(ip)
-            # test if supplied IP address is valid
             return false unless BeEF::Filters.is_valid_ip?(ip)
 
-            # get permitted subnets
             permitted_ui_subnet = BeEF::Core::Configuration.instance.get('beef.restrictions.permitted_ui_subnet')
             return false if permitted_ui_subnet.nil?
             return false if permitted_ui_subnet.empty?
 
-            # test if ip within subnets
             permitted_ui_subnet.each do |subnet|
               return true if IPAddr.new(subnet).include?(ip)
             end

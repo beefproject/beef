@@ -29,8 +29,7 @@ module BeEF
 
           @headers = { 'Content-Type' => 'text/html; charset=UTF-8' } if data['headers'].nil?
 
-          # @todo what if paths is nil and methods does not include 'index' ?
-          @paths = if data['paths'].nil? and methods.include? 'index'
+          @paths = if data['paths'].nil? && methods.include?('index')
                      { 'index' => '/' }
                    else
                      data['paths']
@@ -42,37 +41,8 @@ module BeEF
         #
         def authenticate_request(ip)
           auth = BeEF::Extension::AdminUI::Controllers::Authentication.new
-          return true if auth.permitted_source?(ip)
-
-          unless @config.get('beef.http.web_server_imitation.enable')
-            @body = 'Not Found.'
-            @status = 404
-            @headers = { 'Content-Type' => 'text/html' }
-            return false
-          end
-
-          type = @config.get('beef.http.web_server_imitation.type')
-          case type
-          when 'apache'
-            @body = BeEF::Core::Router::APACHE_BODY
-            @status = 404
-            @headers = BeEF::Core::Router::APACHE_HEADER
-          when 'iis'
-            @body = BeEF::Core::Router::IIS_BODY
-            @status = 404
-            @headers = BeEF::Core::Router::IIS_HEADER
-          when 'nginx'
-            @body = BeEF::Core::Router::APACHE_BODY
-            @status = 404
-            @headers = BeEF::Core::Router::APACHE_HEADER
-          else
-            @body = 'Not Found.'
-            @status = 404
-            @headers = { 'Content-Type' => 'text/html' }
-          end
-
-          false
-        rescue StandardError
+          auth.permitted_source?(ip)
+        rescue StandardError => e
           print_error "authenticate_request failed: #{e.message}"
           false
         end
@@ -95,17 +65,18 @@ module BeEF
           @request = request
           @params = request.params
 
-          # Web UI base path, like http://beef_domain/<bp>/panel
-          auth_url = "#{@bp}/authentication"
+          @body = ''
 
           # If access to the UI is not permitted for the request IP address return a 404
-          return unless authenticate_request(get_ip(@request))
+          unless authenticate_request(get_ip(@request))
+            @status = 404
+            return
+          end
 
           # test if session is unauth'd and whether the auth functionality is requested
-          if !@session.valid_session?(@request) and !instance_of?(BeEF::Extension::AdminUI::Controllers::Authentication)
-            @body = ''
+          if !@session.valid_session?(@request) && !instance_of?(BeEF::Extension::AdminUI::Controllers::Authentication)
             @status = 302
-            @headers = { 'Location' => auth_url }
+            @headers = { 'Location' => "#{@bp}/authentication" }
             return
           end
 
@@ -129,11 +100,13 @@ module BeEF
           function_name = function.name # used for filename
           class_s = self.class.to_s.sub('BeEF::Extension::AdminUI::Controllers::', '').downcase # used for directory name
           template_ui = "#{$root_dir}/extensions/admin_ui/controllers/#{class_s}/#{function_name}.html"
-          @eruby = Erubis::FastEruby.new(File.read(template_ui)) if File.exist? template_ui # load the template file
-          @body = @eruby.result(binding) unless @eruby.nil? # apply template and set the response
+          if File.exist?(template_ui)
+            @eruby = Erubis::FastEruby.new(File.read(template_ui))
+            @body = @eruby.result(binding) unless @eruby.nil? # apply template and set the response
+          end
 
           # set appropriate content-type 'application/json' for .json files
-          @headers['Content-Type'] = 'application/json; charset=UTF-8' if request.path =~ /\.json$/
+          @headers['Content-Type'] = 'application/json; charset=UTF-8' if request.path.to_s.end_with?('.json')
 
           # set content type
           if @headers['Content-Type'].nil?
