@@ -20,7 +20,7 @@ beef.execute(function() {
 	if (bginput.length > 0) {
 		beef.debug("input field with 'style' attribute found: " + bginput);
 		for(var i = 0; i < bginput.length; i++) {
-			beef.debug('Module - Detect LastPass: Number of potential input fields with \'style\' attribute found: ' + bginput.length);
+			beef.debug("Module - Detect LastPass: Number of potential input fields with 'style' attribute found: " + bginput.length);
 			var styleContent = bginput[i].getAttribute('style');
 			if (styleContent.includes(base64PNG)) {
 				beef.debug('Module - Detect LastPass: Matching inline PNG detected');
