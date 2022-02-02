@@ -33,7 +33,6 @@ beef.execute(function() {
 		result = "Module - Detect LastPass: Detected LastPass through presence of LastPass 'save password' iframe";
 	// Below is the older method of LastPass detection method
 	} else if (typeof(lpdiv) != 'undefined' && lpdiv != null) { 
-		// We've got the first detection of LP
 		result = "Module - Detect LastPass: Detected LastPass through presence of the <script> tag with id=hiddenlpsubmitdiv";
 	} else if ($j("script:contains(lastpass_iter)").length > 0) {
 		// We've got the second detection of LP
