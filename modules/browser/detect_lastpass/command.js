@@ -4,11 +4,6 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-/*!
- * BeEF JS Library <%= @beef_version %>
- * Register the BeEF JS on the window object.
- */
-
 $j = jQuery.noConflict();
 
 beef.execute(function() {
@@ -32,7 +27,7 @@ beef.execute(function() {
 				result = "Module - Detect LastPass: Detected LastPass through presence of inline base64-encoded PNG within input form field";
 			}
 		}
-	//Detect presence of LastPass iframe
+	// Detect presence of LastPass iframe
 	} else if ($j("iframe[name='LPFrame']").length > 0) {
 		beef.debug('Module - Detect LastPass: Matching iframe found');
 		result = "Module - Detect LastPass: Detected LastPass through presence of LastPass 'save password' iframe";
