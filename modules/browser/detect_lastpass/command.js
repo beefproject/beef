@@ -24,7 +24,7 @@ beef.execute(function() {
 			var styleContent = bginput[i].getAttribute('style');
 			if (styleContent.includes(base64PNG)) {
 				beef.debug('Module - Detect LastPass: Matching inline PNG detected');
-				result = "Module - Detect LastPass: Detected LastPass through presence of inline base64-encoded PNG within input form field";
+				result = "Detected LastPass through presence of inline base64-encoded PNG within input form field";
 			}
 		}
 	// Detect presence of LastPass iframe
