@@ -139,7 +139,7 @@ GEM
     rake (13.0.6)
     rdoc (6.4.0)
       psych (>= 4.0.0)
-    regexp_parser (2.2.0)
+    regexp_parser (2.2.1)
     reline (0.3.0)
       io-console (~> 0.5)
     rest-client (2.1.0)
@@ -163,7 +163,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.25.0)
+    rubocop (1.25.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -172,7 +172,7 @@ GEM
       rubocop-ast (>= 1.15.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.15.1)
+    rubocop-ast (1.15.2)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
@@ -280,7 +280,7 @@ DEPENDENCIES
   rdoc
   rest-client (>= 2.0.1)
   rspec
-  rubocop (~> 1.25.0)
+  rubocop (~> 1.25.1)
   rubyzip (>= 1.2.2)
   rushover
   selenium-webdriver
