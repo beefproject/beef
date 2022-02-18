@@ -10,22 +10,28 @@
 ###########################################################################################################
 
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
-FROM ruby:2.6.3-alpine AS builder
+FROM ruby:3.0-alpine AS builder
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
 # Install gems in parallel with 4 workers to expedite build process.=
-ARG BUNDLER_ARGS="--jobs=4" 
+ARG BUNDLER_ARGS="--jobs=4"
 
 # Set gemrc config to install gems without Ruby Index (ri) and Ruby Documentation (rdoc) files
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
 
 COPY . /beef
 
-# Add bundler/gem dependencies and then install 
-RUN apk add --no-cache git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && \
-  bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && \
-  # Temp fix for https://github.com/bundler/bundler/issues/6680
-  rm -rf /usr/local/bundle/cache
+# RUN gem install bundler -v 2.1.4
+# RUN apk update
+# RUN apk add ruby=2.6.3
+# RUN gem install bundler -v 2
+
+# Add bundler/gem dependencies and then install
+RUN apk add --no-cache git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev
+RUN bundle install --system --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS
+# RUN bundle clean --force
+# Temp fix for https://github.com/bundler/bundler/issues/6680
+RUN rm -rf /usr/local/bundle/cache
 
 WORKDIR /beef
 
