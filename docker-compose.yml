@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  beef:
+    image: marcpartensky/beef
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+      - "6789:6789"
+      - "61985:61985"
+      - "61986:61986"
