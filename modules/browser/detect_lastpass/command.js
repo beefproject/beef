@@ -42,7 +42,6 @@ beef.execute(function () {
 		return new Promise((resolve, reject) => {
 			// Detect input form fields with the injected LastPass PNG as background image
 			var bginput = $j('input[style]');
-			beef.debug(bginput[0])
 			var lpdiv = document.getElementById('hiddenlpsubmitdiv');
 			if (bginput.length > 0) {
 				beef.debug("Module - Detect LastPass: Input field with 'style' attribute found: " + bginput);
