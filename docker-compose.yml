@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    volumes:
+      - ./config.yaml:beef/config.yaml
     ports:
       - "3000:3000"
       - "6789:6789"
