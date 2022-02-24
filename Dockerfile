@@ -60,5 +60,7 @@ USER beef
 # Expose UI, Proxy, WebSocket server, and WebSocketSecure server
 EXPOSE 3000 6789 61985 61986
 
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "-fS", "localhost:3000" ]
+
 ENTRYPOINT ["/beef/beef"]
 # ------------------------------------- End of Builder 1 -------------------------------------------------
