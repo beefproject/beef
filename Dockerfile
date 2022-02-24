@@ -11,6 +11,7 @@
 
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
 FROM ruby:3.0-alpine AS builder
+
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
 # Install gems in parallel with 4 workers to expedite build process.=
@@ -36,6 +37,7 @@ RUN chmod -R a+r /usr/local/bundle
 
 # ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
 FROM ruby:3.0-alpine
+
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
 # Create service account to run BeEF
