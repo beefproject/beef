@@ -7,7 +7,8 @@
 RSpec.describe 'BeEF API Rate Limit' do
 
 	before(:all) do
-		@config = BeEF::Core::Configuration.instance
+    config = File.expand_path('../../../config.yaml', __dir__)
+    @config = BeEF::Core::Configuration.new(config)
 		@config.set('beef.credentials.user', "beef")
 		@config.set('beef.credentials.passwd', "beef")
 		@username = @config.get('beef.credentials.user')
@@ -34,10 +35,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 		print_info "Loading database"
 		db_file = @config.get('beef.database.file')
 
-		if BeEF::Core::Console::CommandLine.parse[:resetdb]
-			print_info 'Resetting the database for BeEF.'
-			File.delete(db_file) if File.exists?(db_file)
-		end
+		File.delete(db_file) if File.exists?(db_file)
 
 		# Load up DB and migrate if necessary
 		ActiveRecord::Base.logger = nil
@@ -64,7 +62,6 @@ RSpec.describe 'BeEF API Rate Limit' do
 
 		# Generate a token for the server to respond with
 		BeEF::Core::Crypto::api_token
-
 		# Initiate server start-up
 		@pids = fork do
 			BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
@@ -75,7 +72,6 @@ RSpec.describe 'BeEF API Rate Limit' do
 
 		# Give the server time to start-up
 		sleep 1
-
 		# Authenticate to REST API & pull the token from the response
 		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
 		@token = JSON.parse(@response)['token']

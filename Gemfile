@@ -82,6 +82,7 @@ group :test do
     gem 'pry-byebug'
     gem "websocket-client-simple", "~> 0.5.1"
     gem "browserstack-local", "~> 1.3"
+    gem 'guard-rspec', require: false
 end
 
 source 'https://rubygems.org'

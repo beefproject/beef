@@ -8,7 +8,8 @@ RSpec.describe 'BeEF Configuration' do
   end
 
   before(:context) do
-    @config_instance = BeEF::Core::Configuration.instance
+    config = File.expand_path('../../../../config.yaml', __dir__)
+    @config_instance = BeEF::Core::Configuration.new(config)
   end
   context 'configuration validation', :type => :old do
     it 'should error when using hold public config' do
