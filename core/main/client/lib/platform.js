@@ -1,9 +1,8 @@
-/**
+/*!
  * Platform.js
- * Copyright 2014-2018 Benjamin Tan
+ * Copyright 2014-2020 Benjamin Tan
  * Copyright 2011-2013 John-David Dalton
  * Available under MIT license
- * @namespace platform
  */
 ;(function() {
   'use strict';
@@ -340,7 +339,7 @@
 
     /* Detectable layout engines (order is important). */
     var layout = getLayout([
-      { 'label': 'EdgeHTML', 'pattern': '(?:Edge|EdgA|EdgiOS)' },
+      { 'label': 'EdgeHTML', 'pattern': 'Edge' },
       'Trident',
       { 'label': 'WebKit', 'pattern': 'AppleWebKit' },
       'iCab',
@@ -370,7 +369,7 @@
       'Konqueror',
       'Lunascape',
       'Maxthon',
-      { 'label': 'Microsoft Edge', 'pattern': '(?:Edge|EdgA|EdgiOS)' },
+      { 'label': 'Microsoft Edge', 'pattern': '(?:Edge|Edg|EdgA|EdgiOS)' },
       'Midori',
       'Nook Browser',
       'PaleMoon',
@@ -386,13 +385,18 @@
       { 'label': 'SRWare Iron', 'pattern': 'Iron' },
       'Sunrise',
       'Swiftfox',
+      'Vivaldi',
       'Waterfox',
       'WebPositive',
+      { 'label': 'Yandex Browser', 'pattern': 'YaBrowser' },
+      { 'label': 'UC Browser', 'pattern': 'UCBrowser' },
       'Opera Mini',
       { 'label': 'Opera Mini', 'pattern': 'OPiOS' },
       'Opera',
       { 'label': 'Opera', 'pattern': 'OPR' },
+      'Chromium',
       'Chrome',
+      { 'label': 'Chrome', 'pattern': '(?:HeadlessChrome)' },
       { 'label': 'Chrome Mobile', 'pattern': '(?:CriOS|CrMo)' },
       { 'label': 'Firefox', 'pattern': '(?:Firefox|Minefield)' },
       { 'label': 'Firefox for iOS', 'pattern': 'FxiOS' },
@@ -438,6 +442,7 @@
     /* Detectable manufacturers. */
     var manufacturer = getManufacturer({
       'Apple': { 'iPad': 1, 'iPhone': 1, 'iPod': 1 },
+      'Alcatel': {},
       'Archos': {},
       'Amazon': { 'Kindle': 1, 'Kindle Fire': 1 },
       'Asus': { 'Transformer': 1 },
@@ -446,22 +451,28 @@
       'Google': { 'Google TV': 1, 'Nexus': 1 },
       'HP': { 'TouchPad': 1 },
       'HTC': {},
+      'Huawei': {},
+      'Lenovo': {},
       'LG': {},
       'Microsoft': { 'Xbox': 1, 'Xbox One': 1 },
       'Motorola': { 'Xoom': 1 },
       'Nintendo': { 'Wii U': 1,  'Wii': 1 },
       'Nokia': { 'Lumia': 1 },
+      'Oppo': {},
       'Samsung': { 'Galaxy S': 1, 'Galaxy S2': 1, 'Galaxy S3': 1, 'Galaxy S4': 1 },
-      'Sony': { 'PlayStation': 1, 'PlayStation Vita': 1 }
+      'Sony': { 'PlayStation': 1, 'PlayStation Vita': 1 },
+      'Xiaomi': { 'Mi': 1, 'Redmi': 1 }
     });
 
     /* Detectable operating systems (order is important). */
     var os = getOS([
       'Windows Phone',
+      'KaiOS',
       'Android',
       'CentOS',
       { 'label': 'Chrome OS', 'pattern': 'CrOS' },
       'Debian',
+      { 'label': 'DragonFly BSD', 'pattern': 'DragonFly' },
       'Fedora',
       'FreeBSD',
       'Gentoo',
@@ -617,9 +628,26 @@
     // Convert layout to an array so we can add extra details.
     layout && (layout = [layout]);
 
+    // Detect Android products.
+    // Browsers on Android devices typically provide their product IDS after "Android;"
+    // up to "Build" or ") AppleWebKit".
+    // Example:
+    // "Mozilla/5.0 (Linux; Android 8.1.0; Moto G (5) Plus) AppleWebKit/537.36
+    // (KHTML, like Gecko) Chrome/70.0.3538.80 Mobile Safari/537.36"
+    if (/\bAndroid\b/.test(os) && !product &&
+        (data = /\bAndroid[^;]*;(.*?)(?:Build|\) AppleWebKit)\b/i.exec(ua))) {
+      product = trim(data[1])
+        // Replace any language codes (eg. "en-US").
+        .replace(/^[a-z]{2}-[a-z]{2};\s*/i, '')
+        || null;
+    }
     // Detect product names that contain their manufacturer's name.
     if (manufacturer && !product) {
       product = getProduct([manufacturer]);
+    } else if (manufacturer && product) {
+      product = product
+        .replace(RegExp('^(' + qualify(manufacturer) + ')[-_.\\s]', 'i'), manufacturer + ' ')
+        .replace(RegExp('^(' + qualify(manufacturer) + ')[-_.]?(\\w)', 'i'), manufacturer + ' $2');
     }
     // Clean up Google TV.
     if ((data = /\bGoogle TV\b/.exec(product))) {
@@ -647,7 +675,7 @@
         : '');
     }
     // Detect Kubuntu.
-    else if (name == 'Konqueror' && !/buntu/i.test(os)) {
+    else if (name == 'Konqueror' && /^Linux\b/i.test(os)) {
       os = 'Kubuntu';
     }
     // Detect Android browsers.
@@ -666,6 +694,10 @@
       if (/Accelerated *= *true/i.test(ua)) {
         description.unshift('accelerated');
       }
+    }
+    // Detect UC Browser speed mode.
+    else if (name == 'UC Browser' && /\bUCWEB\b/.test(ua)) {
+      description.push('speed mode');
     }
     // Detect PaleMoon identifying as Firefox.
     else if (name == 'PaleMoon' && (data = /\bFirefox\/([\d.]+)\b/.exec(ua))) {
@@ -696,7 +728,7 @@
     // Detect non-Opera (Presto-based) versions (order is important).
     if (!version) {
       version = getVersion([
-        '(?:Cloud9|CriOS|CrMo|Edge|EdgA|EdgiOS|FxiOS|IEMobile|Iron|Opera ?Mini|OPiOS|OPR|Raven|SamsungBrowser|Silk(?!/[\\d.]+$))',
+        '(?:Cloud9|CriOS|CrMo|Edge|Edg|EdgA|EdgiOS|FxiOS|HeadlessChrome|IEMobile|Iron|Opera ?Mini|OPiOS|OPR|Raven|SamsungBrowser|Silk(?!/[\\d.]+$)|UCBrowser|YaBrowser)',
         'Version',
         qualify(name),
         '(?:Firefox|Minefield|NetFront)'
@@ -824,7 +856,7 @@
         (prerelease == 'beta' ? beta : alpha) + (/\d+\+?/.exec(data) || '');
     }
     // Detect Firefox Mobile.
-    if (name == 'Fennec' || name == 'Firefox' && /\b(?:Android|Firefox OS)\b/.test(os)) {
+    if (name == 'Fennec' || name == 'Firefox' && /\b(?:Android|Firefox OS|KaiOS)\b/.test(os)) {
       name = 'Firefox Mobile';
     }
     // Obscure Maxthon's unreliable version.
@@ -920,7 +952,7 @@
         version = null;
       }
       // Use the full Chrome version when available.
-      data[1] = (/\bChrome\/([\d.]+)/i.exec(ua) || 0)[1];
+      data[1] = (/\b(?:Headless)?Chrome\/([\d.]+)/i.exec(ua) || 0)[1];
       // Detect Blink layout engine.
       if (data[0] == 537.36 && data[2] == 537.36 && parseFloat(data[1]) >= 28 && layout == 'WebKit') {
         layout = ['Blink'];
@@ -929,7 +961,7 @@
       // http://stackoverflow.com/questions/6768474/how-can-i-detect-which-javascript-engine-v8-or-jsc-is-used-at-runtime-in-androi
       if (!useFeatures || (!likeChrome && !data[1])) {
         layout && (layout[1] = 'like Safari');
-        data = (data = data[0], data < 400 ? 1 : data < 500 ? 2 : data < 526 ? 3 : data < 533 ? 4 : data < 534 ? '4+' : data < 535 ? 5 : data < 537 ? 6 : data < 538 ? 7 : data < 601 ? 8 : '8');
+        data = (data = data[0], data < 400 ? 1 : data < 500 ? 2 : data < 526 ? 3 : data < 533 ? 4 : data < 534 ? '4+' : data < 535 ? 5 : data < 537 ? 6 : data < 538 ? 7 : data < 601 ? 8 : data < 602 ? 9 : data < 604 ? 10 : data < 606 ? 11 : data < 608 ? 12 : '12');
       } else {
         layout && (layout[1] = 'like Chrome');
         data = data[1] || (data = data[0], data < 530 ? 1 : data < 532 ? 2 : data < 532.05 ? 3 : data < 533 ? 4 : data < 534.03 ? 5 : data < 534.07 ? 6 : data < 534.10 ? 7 : data < 534.13 ? 8 : data < 534.16 ? 9 : data < 534.24 ? 10 : data < 534.30 ? 11 : data < 535.01 ? 12 : data < 535.02 ? '13+' : data < 535.07 ? 15 : data < 535.11 ? 16 : data < 535.19 ? 17 : data < 536.05 ? 18 : data < 536.10 ? 19 : data < 537.01 ? 20 : data < 537.11 ? '21+' : data < 537.13 ? 23 : data < 537.18 ? 24 : data < 537.24 ? 25 : data < 537.36 ? 26 : layout != 'Blink' ? '27' : '28');
@@ -939,6 +971,8 @@
       // Obscure version for some Safari 1-2 releases.
       if (name == 'Safari' && (!version || parseInt(version) > 45)) {
         version = data;
+      } else if (name == 'Chrome' && /\bHeadlessChrome/i.test(ua)) {
+        description.unshift('headless');
       }
     }
     // Detect Opera desktop modes.
@@ -966,16 +1000,24 @@
         os = null;
       }
     }
+    // Newer versions of SRWare Iron uses the Chrome tag to indicate its version number.
+    else if (/\bSRWare Iron\b/.test(name) && !version) {
+      version = getVersion('Chrome');
+    }
     // Strip incorrect OS versions.
     if (version && version.indexOf((data = /[\d.]+$/.exec(os))) == 0 &&
         ua.indexOf('/' + data + '-') > -1) {
       os = trim(os.replace(data, ''));
     }
+    // Ensure OS does not include the browser name.
+    if (os && os.indexOf(name) != -1 && !RegExp(name + ' OS').test(os)) {
+      os = os.replace(RegExp(' *' + qualify(name) + ' *'), '');
+    }
     // Add layout engine.
     if (layout && !/\b(?:Avant|Nook)\b/.test(name) && (
         /Browser|Lunascape|Maxthon/.test(name) ||
         name != 'Safari' && /^iOS/.test(os) && /\bSafari\b/.test(layout[1]) ||
-        /^(?:Adobe|Arora|Breach|Midori|Opera|Phantom|Rekonq|Rock|Samsung Internet|Sleipnir|Web)/.test(name) && layout[1])) {
+        /^(?:Adobe|Arora|Breach|Midori|Opera|Phantom|Rekonq|Rock|Samsung Internet|Sleipnir|SRWare Iron|Vivaldi|Web)/.test(name) && layout[1])) {
       // Don't add layout details to description if they are falsey.
       (data = layout[layout.length - 1]) && description.push(data);
     }
@@ -1033,7 +1075,7 @@
     /**
      * The platform object.
      *
-     * @memberof platform
+     * @name platform
      * @type Object
      */
     var platform = {};
@@ -1144,8 +1186,8 @@
        *
        * Common values include:
        * "Windows", "Windows Server 2008 R2 / 7", "Windows Server 2008 / Vista",
-       * "Windows XP", "OS X", "Ubuntu", "Debian", "Fedora", "Red Hat", "SuSE",
-       * "Android", "iOS" and "Windows Phone"
+       * "Windows XP", "OS X", "Linux", "Ubuntu", "Debian", "Fedora", "Red Hat",
+       * "SuSE", "Android", "iOS" and "Windows Phone"
        *
        * @memberOf platform.os
        * @type string|null
