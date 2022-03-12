@@ -31,7 +31,8 @@ module BeEF
           @@config = config
         rescue StandardError => e
           print_error "Fatal Error: cannot load configuration file '#{config}' : #{e.message}"
-          print_error e.backtrace
+          print_more e.backtrace
+          exit(1)
         end
 
         @@instance = self
@@ -41,13 +42,8 @@ module BeEF
       # @param [String] file YAML file to be loaded
       # @return [Hash] YAML formatted hash
       def load(file)
-        return nil unless File.exist? file
-
-        raw = File.read file
-        YAML.safe_load raw
-      rescue StandardError => e
-        print_debug "Unable to load configuration file '#{file}' : #{e.message}"
-        print_error e.backtrace
+        return nil unless File.exist?(file)
+        YAML.safe_load(File.binread(file))
       end
 
       #
