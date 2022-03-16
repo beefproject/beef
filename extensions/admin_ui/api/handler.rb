@@ -50,7 +50,7 @@ module BeEF
           end
 
           def self.write_minified_js(name, content)
-            temp_file = File.new("#{File.dirname(__FILE__)}/../media/javascript-min/#{File.basename(name)}.js", 'w+')
+            temp_file = File.new("#{File.dirname(__FILE__)}/../media/javascript-min/#{File.basename(name)}", 'w+')
             File.write(temp_file, content)
           end
 
