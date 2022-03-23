@@ -16,7 +16,7 @@
 class Read_inotes < BeEF::Core::Command
   def self.options
     [
-      { 'type' => 'label', 'html' => 'Provide unid to retrieve details of a Note:' },
+      { 'type' => 'label', 'name' => 'name', 'html' => 'Provide unid to retrieve details of a Note:' },
       { 'type' => 'textfield', 'name' => 'unid', 'ui_label' => 'notes unid', 'value' => '1' }
     ]
   end

