@@ -51,27 +51,29 @@ var ZombiesMgr = function(zombies_tree_lists) {
 	 * Update the hooked browser trees
 	 * @param: {Literal Object} an object containing the list of offline and online hooked browsers.
 	 */
-	this.updateZombies = function(zombies){
-		var offline_hooked_browsers = zombies["offline"];
-		var online_hooked_browsers = zombies["online"];
-    beefwui.hooked_browsers = zombies["online"];
+	this.updateZombies = function(hooked_browsers){
+		var offline_hooked_browsers = hooked_browsers["offline"];
+		var online_hooked_browsers = hooked_browsers["online"];
+		var new_zombie_list = new Array();
 
 		for(tree_type in this.zombies_tree_lists) {
 			hooked_browsers_tree = this.zombies_tree_lists[tree_type];
 
 			//we compare and remove the hooked browsers from online and offline branches for each tree.
-			hooked_browsers_tree.compareAndRemove(zombies);
+			hooked_browsers_tree.compareAndRemove(hooked_browsers);
 
 			//add an offline browser to the tree
 			for(var i in offline_hooked_browsers) {
 				var offline_hooked_browser = this.zombieFactory(i, offline_hooked_browsers);
 				hooked_browsers_tree.addZombie(offline_hooked_browser, false, ((tree_type != 'basic') ? true : false));
+				new_zombie_list.push(offline_hooked_browser);
 			}
 
 			//add an online browser to the tree
 			for(var i in online_hooked_browsers) {
 				var online_hooked_browser = this.zombieFactory(i, online_hooked_browsers);
 				hooked_browsers_tree.addZombie(online_hooked_browser, true, ((tree_type != 'basic') ? true : false));
+				new_zombie_list.push(online_hooked_browser);
 			}
 
 			//expand the online hooked browser tree lists
@@ -85,5 +87,6 @@ var ZombiesMgr = function(zombies_tree_lists) {
 			}
 
 		}
+		beefwui.hooked_browsers = new_zombie_list;
 	}
 };
