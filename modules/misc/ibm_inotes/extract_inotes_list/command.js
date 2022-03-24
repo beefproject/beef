@@ -37,7 +37,7 @@ beef.execute(function() {
         xhr.send(null);
 	} catch(e) {
 		beef.debug("Error: " + e);
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Error, No NSF Database Found");
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Error: "+e);
 	}
 	
 });
