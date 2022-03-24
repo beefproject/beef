@@ -87,7 +87,7 @@ install_linux() {
 		DISTRO_ID=$(cat /etc/os-release | grep ID= | grep -v "BUILD" | grep -v "IMAGE" | cut -d= -f2-)
 		if [ "${DISTRO_ID}" = 'kali' ]; then
 			Distro='Kali'
-		elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'manjaro' ]; then
+		elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'artix' ] || [ "${DISTRO_ID}" = 'manjaro' ]; then
 			Distro='Arch'
 		fi
 	fi
