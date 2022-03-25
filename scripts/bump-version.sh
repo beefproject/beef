@@ -7,7 +7,7 @@ sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package-lock.json
 sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" config.yaml
 
 if [[ "$1" != *"-pre"* ]]; then
-  sed -i '' -e "s/v$1/v$2/g" .github/ISSUE_TEMPLATE.md
+	sed -i '' -e "s/v$1/v$2/g" .github/ISSUE_TEMPLATE.md
 fi
 
 git add VERSION package.json package-lock.json config.yaml

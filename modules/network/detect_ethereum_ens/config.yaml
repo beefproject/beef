@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_ethereum_ens:
+            enable: true
+            category: "Network"
+            name: "Detect Ethereum ENS"
+            description: "This module will detect if the zombie is currently using Ethereum ENS resolvers. Note that the detection may fail when attempting to load a HTTP resource from a hooked HTTPS page."
+            authors: ["wade", "pdp", "bm", "xntrik", "bcoles"]
+            target:
+                working: ["ALL"]

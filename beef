@@ -184,8 +184,14 @@ db_file = config.get('beef.database.file')
 # @note Resets the database if the -x flag was passed
 if BeEF::Core::Console::CommandLine.parse[:resetdb]
   print_info 'Resetting the database for BeEF.'
-  File.delete(db_file) if File.exists?(db_file)
+  begin
+    File.delete(db_file) if File.exists?(db_file)
+  rescue => e
+    print_error("Could not remove '#{db_file}' database file: #{e.message}")
+    exit(1)
+  end
 end
+
 # Connect to DB
 ActiveRecord::Base.logger = nil
 OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
@@ -195,6 +201,7 @@ OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:db_file)
 if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
   OTR::ActiveRecord.establish_connection!
 end
+
 # Migrate (if required)
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
@@ -208,13 +215,25 @@ print_info 'BeEF is loading. Wait a few seconds...'
 #
 # @note Execute migration procedure, checks for new modules
 #
-BeEF::Core::Migration.instance.update_db!
+begin
+  BeEF::Core::Migration.instance.update_db!
+rescue => e
+  print_error("Could not update '#{db_file}' database file: #{e.message}")
+  exit(1)
+end
 
 #
 # @note Create HTTP Server and prepare it to run
 #
 http_hook_server = BeEF::Core::Server.instance
 http_hook_server.prepare
+
+begin
+  BeEF::Core::Logger.instance.register('System', 'BeEF server started')
+rescue => e
+  print_error("Database connection failed: #{e.message}")
+  exit(1)
+end
 
 #
 # @note Prints information back to the user before running the server
