@@ -112,7 +112,7 @@ GEM
     otr-activerecord (2.1.1)
       activerecord (>= 4.0, < 7.1)
       hashie-forbidden_attributes (~> 0.1)
-    parallel (1.21.0)
+    parallel (1.22.1)
     parseconfig (1.1.2)
     parser (3.1.1.0)
       ast (~> 2.4.1)
@@ -163,7 +163,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.26.0)
+    rubocop (1.27.0)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -281,7 +281,7 @@ DEPENDENCIES
   rdoc
   rest-client (>= 2.0.1)
   rspec
-  rubocop (~> 1.26.0)
+  rubocop (~> 1.27.0)
   rubyzip (>= 1.2.2)
   rushover
   selenium-webdriver
