@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Browser"
             name: "Webcam HTML5"
-            description: "This module will leverage HTML5s WebRTC to capture webcam images. Only tested in Chrome, and it will display a dialog to ask if the user wants to enable their webcam."
+            description: "This module will leverage HTML5s WebRTC to capture webcam images. Only tested in Chrome, and it will display a dialog to ask if the user wants to enable their webcam.<br /> If no image shown choose smaller image size"
             authors: ["xntrik"]
             target:
                  user_notify: ["C"]
