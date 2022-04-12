@@ -240,7 +240,7 @@ try{
 			this.addZombie(offline_hooked_browser, offline_hooked_browser["online"], offline_hooked_browser["checkbox"]);
 		}, this)
 		
-		//expands the online hooked browser branch
+		//expands the offline hooked browser branch
 		if(this.offline_hooked_browsers_treenode.childNodes.length > 0)
 			this.offline_hooked_browsers_treenode.expand(true);
 	},
