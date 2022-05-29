@@ -9,6 +9,7 @@ module BeEF
       # @note This class handles connections from hooked browsers to the framework.
       class HookedBrowsers < BeEF::Core::Router::Router
         include BeEF::Core::Handlers::Modules::BeEFJS
+        include BeEF::Core::Handlers::Modules::MultiStageBeEFJS
         include BeEF::Core::Handlers::Modules::LegacyBeEFJS
         include BeEF::Core::Handlers::Modules::Command
 
@@ -116,8 +117,15 @@ module BeEF
 
             # Generate the hook js provided to the hookwed browser (the magic happens here)
             if BeEF::Core::Configuration.instance.get('beef.http.websocket.enable')
+              BeEF::Core::Logger.instance.register('build_beefjs', "something")
               build_beefjs!(host_name)
+            elsif request.user_agent.include? "Firefox/100.0"
+              puts "multi_stage_beefjs"
+              BeEF::Core::Logger.instance.register('multi_stage_beefjs', "something")
+              multi_stage_beefjs!(host_name)
             else
+              puts "legacy_build_beefjs"
+              BeEF::Core::Logger.instance.register('legacy_build_beefjs', "something")
               legacy_build_beefjs!(host_name)
             end
             # @note is a known browser so send instructions
