@@ -180,10 +180,11 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.1.0)
+    selenium-webdriver (4.2.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     simple_oauth (0.3.1)
     sinatra (2.2.0)
       mustermann (~> 1.0)
