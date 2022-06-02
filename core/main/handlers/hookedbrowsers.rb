@@ -18,6 +18,16 @@ module BeEF
           disable :protection
         end
 
+        # Generate the hook js provided to the hookwed browser (the magic happens here)
+        def confirm_browser_user_agent(user_agent)
+          browser_type = user_agent.split(' ').last # selecting just name/version of browser
+          # does the browser already exist in the legacy database / object? Return true if yes
+          BeEF::Core::Models::LegacyBrowserUserAgents.user_agents.each do |ua_string|
+            return true if ua_string.include? browser_type
+          end
+          false
+        end
+
         # Process HTTP requests sent by a hooked browser to the framework.
         # It will update the database to add or update the current hooked browser
         # and deploy some command modules or extensions to the hooked browser.
@@ -112,23 +122,29 @@ module BeEF
             host_name = request.host
             unless BeEF::Filters.is_valid_hostname?(host_name)
               (print_error 'Invalid host name'
-               return)
+              return)
             end
 
             # Generate the hook js provided to the hookwed browser (the magic happens here)
             if BeEF::Core::Configuration.instance.get('beef.http.websocket.enable')
-              BeEF::Core::Logger.instance.register('build_beefjs', "something")
+              print_debug 'Using WebSocket'
               build_beefjs!(host_name)
-            elsif request.user_agent.include? "Firefox/100.0"
-              puts "multi_stage_beefjs"
-              BeEF::Core::Logger.instance.register('multi_stage_beefjs', "something")
+            elsif confirm_browser_user_agent(request.user_agent)
+              print_debug 'Using multi_stage_beefjs'
               multi_stage_beefjs!(host_name)
             else
-              puts "legacy_build_beefjs"
-              BeEF::Core::Logger.instance.register('legacy_build_beefjs', "something")
+              print_debug 'Using legacy_build_beefjs'
               legacy_build_beefjs!(host_name)
             end
             # @note is a known browser so send instructions
+          end
+
+          # check for string within array of strings
+          def check_for_string(string, array)
+            array.each do |item|
+              return true if item.include? string
+            end
+            false
           end
 
           # @note set response headers and body
