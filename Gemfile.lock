@@ -106,7 +106,7 @@ GEM
     naught (1.1.0)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.3)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     otr-activerecord (2.1.1)
