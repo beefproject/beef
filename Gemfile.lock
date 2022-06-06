@@ -84,7 +84,7 @@ GEM
     io-like (0.3.1)
     irb (1.4.1)
       reline (>= 0.3.0)
-    json (2.6.1)
+    json (2.6.2)
     matrix (0.4.2)
     maxmind-db (1.1.1)
     memoizable (0.4.2)
