@@ -51,8 +51,6 @@ RUN apk add --no-cache curl git build-base openssl readline-dev zlib zlib-dev li
 
 WORKDIR /beef
 
-
-
 # Ensure we are using our service account by default
 USER beef
 
