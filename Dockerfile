@@ -41,13 +41,10 @@ LABEL maintainer="Beef Project: github.com/beefproject/beef"
 # Create service account to run BeEF
 RUN adduser -h /beef -g beef -D beef
 
-COPY . /beef
+COPY --chown=1000:1000 . /beef
 
 # Use gemset created by the builder above
 COPY --from=builder /usr/local/bundle /usr/local/bundle
-
-# Grant beef service account owner and groups rights over our BeEF working directory.
-RUN chown -R beef:beef /beef
 
 # Install BeEF's runtime dependencies
 RUN apk add --no-cache curl git build-base openssl readline-dev zlib zlib-dev libressl-dev yaml-dev sqlite-dev sqlite libxml2-dev libxslt-dev autoconf libc6-compat ncurses automake libtool bison nodejs

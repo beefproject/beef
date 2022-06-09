@@ -1,0 +1,9 @@
+# Don't copy over git files
+.git
+.github
+.gitignore
+doc
+docs
+scripts
+test
+update-beef
