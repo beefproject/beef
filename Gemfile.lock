@@ -192,7 +192,7 @@ GEM
       rack-protection (= 2.2.0)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (1.4.2)
+    sqlite3 (1.4.3)
     stringio (3.0.1)
     sync (0.5.0)
     term-ansicolor (1.7.1)
