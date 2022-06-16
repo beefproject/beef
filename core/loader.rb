@@ -15,7 +15,6 @@ require 'msgpack'
 
 Bundler.require(:default)
 
-require 'byebug'
 require 'cgi'
 require 'yaml'
 require 'singleton'
