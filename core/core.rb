@@ -19,6 +19,7 @@ require 'core/main/models/optioncache'
 require 'core/main/models/browserdetails'
 require 'core/main/models/rule'
 require 'core/main/models/execution'
+require 'core/main/models/legacybrowseruseragents'
 
 # @note Include the constants
 require 'core/main/constants/browsers'

@@ -9,12 +9,23 @@ module BeEF
       # @note This class handles connections from hooked browsers to the framework.
       class HookedBrowsers < BeEF::Core::Router::Router
         include BeEF::Core::Handlers::Modules::BeEFJS
+        include BeEF::Core::Handlers::Modules::MultiStageBeEFJS
         include BeEF::Core::Handlers::Modules::LegacyBeEFJS
         include BeEF::Core::Handlers::Modules::Command
 
         # antisnatchor: we don't want to have anti-xss/anti-framing headers in the HTTP response for the hook file.
         configure do
           disable :protection
+        end
+
+        # Generate the hook js provided to the hookwed browser (the magic happens here)
+        def confirm_browser_user_agent(user_agent)
+          browser_type = user_agent.split(' ').last # selecting just name/version of browser
+          # does the browser already exist in the legacy database / object? Return true if yes
+          BeEF::Core::Models::LegacyBrowserUserAgents.user_agents.each do |ua_string|
+            return true if ua_string.include? browser_type
+          end
+          false
         end
 
         # Process HTTP requests sent by a hooked browser to the framework.
@@ -111,16 +122,29 @@ module BeEF
             host_name = request.host
             unless BeEF::Filters.is_valid_hostname?(host_name)
               (print_error 'Invalid host name'
-               return)
+              return)
             end
 
             # Generate the hook js provided to the hookwed browser (the magic happens here)
             if BeEF::Core::Configuration.instance.get('beef.http.websocket.enable')
+              print_debug 'Using WebSocket'
               build_beefjs!(host_name)
+            elsif confirm_browser_user_agent(request.user_agent)
+              print_debug 'Using multi_stage_beefjs'
+              multi_stage_beefjs!(host_name)
             else
+              print_debug 'Using legacy_build_beefjs'
               legacy_build_beefjs!(host_name)
             end
             # @note is a known browser so send instructions
+          end
+
+          # check for string within array of strings
+          def check_for_string(string, array)
+            array.each do |item|
+              return true if item.include? string
+            end
+            false
           end
 
           # @note set response headers and body
