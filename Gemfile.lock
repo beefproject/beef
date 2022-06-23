@@ -128,8 +128,8 @@ GEM
       mojo_magick (~> 0.6.5)
       rqrcode_core (~> 0.1)
     racc (1.6.0)
-    rack (2.2.3.1)
-    rack-protection (2.2.0)
+    rack (2.0.9.1)
+    rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -184,10 +184,10 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     simple_oauth (0.3.1)
-    sinatra (2.2.0)
+    sinatra (2.0.8.1)
       mustermann (~> 1.0)
-      rack (~> 2.2)
-      rack-protection (= 2.2.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.8.1)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
     sqlite3 (1.4.4)
@@ -274,7 +274,7 @@ DEPENDENCIES
   parseconfig
   pry-byebug
   qr4r
-  rack (>= 2.0.9.1)
+  rack (= 2.0.9.1)
   rack-protection (>= 2.0.0)
   rake (>= 12.3.3)
   rdoc
