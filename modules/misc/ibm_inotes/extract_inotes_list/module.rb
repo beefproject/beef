@@ -16,7 +16,7 @@
 class Extract_inotes_list < BeEF::Core::Command
   def self.options
     [
-      { 'type' => 'label', 'html' => 'Provide date boundaries to retrieve a list of Notes:' },
+      { 'type' => 'label', 'name' => 'name', 'html' => 'Provide date boundaries to retrieve a list of Notes:' },
       { 'type' => 'textfield', 'name' => 'startdate', 'ui_label' => 'startdate yyyymmdd', 'value' => '20140101' },
       { 'type' => 'textfield', 'name' => 'enddate', 'ui_label' => 'enddate yyyymmdd', 'value' => '20500101' },
       { 'type' => 'textfield', 'name' => 'count', 'ui_label' => 'number of items returned', 'value' => '-1' }

