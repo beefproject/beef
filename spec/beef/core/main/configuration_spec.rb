@@ -243,7 +243,7 @@ RSpec.describe 'BeEF Configuration' do
       @config_instance.set('beef.http.public.https', false)
       @config_instance.set('beef.http.public.host', nil)
       @config_instance.set('beef.http.public.port', nil)
-      @config_instance.set('beeg.http.hook_file', '/hook.js')
+      @config_instance.set('beef.http.hook_file', '/hook.js')
       expect(@config_instance.get('beef.http.host')).to eq('localhost')
       expect(@config_instance.get('beef.http.port')).to eq(nil)
       expect(@config_instance.get('beef.http.https.enable')).to eq(true)
