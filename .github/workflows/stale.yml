@@ -21,7 +21,14 @@ jobs:
     - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        stale-issue-message: 'This issue as been marked as stale, if you require further assistance please'
+        days-before-stale: 7
+        days-before-pr-stale: 14
+        days-before-close: 14
+        days-before-pr-close: 21
+        stale-issue-message: 'This issue as been marked as stale due to inactivity.'
         stale-pr-message: 'Stale pull request message'
         stale-issue-label: 'Stale'
         stale-pr-label: 'no-pr-activity'
+        exempt-issue-labels: 'Critical, High, Low, Medium, Review, Backlog'
+        exempt-milestones: true
+        exempt-draft-pr: true
