@@ -32,3 +32,4 @@ jobs:
         exempt-issue-labels: 'Critical, High, Low, Medium, Review, Backlog'
         exempt-milestones: true
         exempt-draft-pr: true
+        debug-only: true
