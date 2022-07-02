@@ -38,7 +38,7 @@ beef.execute(function() {
         } else {
             beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong', beef.are.status_error());
         }
-    }
+    };
 
     window.URL = window.URL || window.webkitURL;
 
