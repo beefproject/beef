@@ -161,13 +161,14 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.26.1)
+    rubocop (1.31.2)
+      json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml
-      rubocop-ast (>= 1.16.0, < 2.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.18.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.18.0)
@@ -239,7 +240,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
-    unicode-display_width (2.1.0)
+    unicode-display_width (2.2.0)
     webrick (1.7.0)
     websocket (1.2.9)
     websocket-client-simple (0.5.1)
@@ -280,7 +281,7 @@ DEPENDENCIES
   rdoc
   rest-client (>= 2.0.1)
   rspec
-  rubocop (~> 1.26.0)
+  rubocop (~> 1.31.2)
   rubyzip (>= 1.2.2)
   rushover
   selenium-webdriver
