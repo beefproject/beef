@@ -229,9 +229,13 @@ module BeEF
         def response2hash(http)
           response_data = ''
 
-          if !http.response_data.nil? && (http.response_data.length > (1024 * 100)) # more thank 100K
-            response_data = http.response_data[0..(1024 * 100)]
-            response_data += "\n<---------- Response Data Truncated---------->"
+          unless http.response_data.nil?
+            if (http.response_data.length > (1024 * 100)) # more than 100K
+              response_data = http.response_data[0..(1024 * 100)]
+              response_data += "\n<---------- Response Data Truncated---------->"
+            else
+              response_data = http.response_data
+            end
           end
 
           response_headers = ''
