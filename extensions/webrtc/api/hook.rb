@@ -17,7 +17,7 @@ module BeEF
 
           include BeEF::Core::Handlers::Modules::BeEFJS
 
-          # If the Rtcsignal table contains requests that need to be sent (has_sent = waiting), retrieve
+          # If the RtcSignal table contains requests that need to be sent (has_sent = waiting), retrieve
           # and send them to the hooked browser.
           # Don't forget, these are signalling messages for a peer, so we don't check that the request
           # is for the hooked_browser_id, but the target
@@ -29,7 +29,7 @@ module BeEF
             rtcmanagementoutput = []
 
             # Get all RTCSignals for this browser
-            BeEF::Core::Models::Rtcsignal.where(:target_hooked_browser_id => hb.id, :has_sent => "waiting").each { |h|
+            BeEF::Core::Models::RtcSignal.where(:target_hooked_browser_id => hb.id, :has_sent => "waiting").each { |h|
               # output << self.requester_parse_db_request(h)
               rtcsignaloutput << h.signal
               h.has_sent = "sent"
@@ -37,7 +37,7 @@ module BeEF
             }
 
             # Get all RTCManagement messages for this browser
-            BeEF::Core::Models::Rtcmanage.where(:hooked_browser_id => hb.id, :has_sent => "waiting").each {|h|
+            BeEF::Core::Models::RtcManage.where(:hooked_browser_id => hb.id, :has_sent => "waiting").each {|h|
               rtcmanagementoutput << h.message
               h.has_sent = "sent"
               h.save

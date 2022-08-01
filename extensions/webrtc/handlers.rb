@@ -12,7 +12,7 @@ module BeEF
       #
       class SignalHandler
 
-        R = BeEF::Core::Models::Rtcsignal
+        R = BeEF::Core::Models::RtcSignal
         Z = BeEF::Core::Models::HookedBrowser
 
         def initialize(data)
