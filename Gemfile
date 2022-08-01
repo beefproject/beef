@@ -1,5 +1,3 @@
-# BeEF's Gemfile
-
 #
 # Copyright (c) 2006-2022 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
@@ -8,11 +6,11 @@
 #gem 'simplecov', require: false, group: :test
 gem 'eventmachine'
 gem 'thin'
-gem 'sinatra', '>= 2.0.2'
-gem 'rack', '>= 2.2.3.1'
-gem 'rack-protection', '>= 2.0.0'
+gem 'sinatra', '>= 2.2.0'
+gem 'rack', '>= 2.2.4'
+gem 'rack-protection', '>= 2.2.0'
 gem 'em-websocket' # WebSocket support
-gem 'uglifier', '>= 2.7.2'
+gem 'uglifier', '>= 4.2.0'
 gem 'mime-types'
 gem 'execjs'
 gem 'ansi'
@@ -20,7 +18,7 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'json'
 gem 'rubyzip', '>= 1.2.2'
 gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
-gem 'rake', '>= 12.3.3'
+gem 'rake', '>= 13.0'
 gem 'otr-activerecord', '>= 1.4.2'
 gem 'sqlite3'
 gem 'rubocop', '~> 1.32.0', require: false
@@ -41,12 +39,14 @@ end
 
 # Notifications extension
 group :ext_notifications do
+  gem 'unf'
+  gem 'domain_name', '>= 0.5.20190701'
   # Pushover
   gem 'rushover'
   # Slack
   gem 'slack-notifier'
   # Twitter
-  gem 'twitter', '>= 5.0.0'
+  gem 'twitter', '>= 7.0.0'
 end
 
 # DNS extension
@@ -77,7 +77,7 @@ group :test do
     # sudo port install libxml2 libxslt
     gem 'capybara'
     # RESTful API tests/generic command module tests
-    gem 'rest-client', '>= 2.0.1'
+    gem 'rest-client', '>= 2.1.0'
     gem 'irb'
     gem 'pry-byebug'
     gem "websocket-client-simple", "~> 0.5.1"
@@ -85,8 +85,3 @@ group :test do
 end
 
 source 'https://rubygems.org'
-
-
-
-
-
