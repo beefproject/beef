@@ -78,7 +78,7 @@ GEM
     http-parser (1.2.3)
       ffi-compiler (>= 1.0, < 2.0)
     http_parser.rb (0.6.0)
-    i18n (1.11.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.5.11)
     io-like (0.3.1)
@@ -98,14 +98,14 @@ GEM
     mojo_magick (0.6.7)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
-    msgpack (1.5.2)
+    msgpack (1.5.4)
     multipart-post (2.2.3)
-    mustermann (1.1.2)
+    mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     naught (1.1.0)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.6-x86_64-linux)
+    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     otr-activerecord (2.1.1)
       activerecord (>= 4.0, < 7.1)
@@ -128,11 +128,11 @@ GEM
       mojo_magick (~> 0.6.5)
       rqrcode_core (~> 0.1)
     racc (1.6.0)
-    rack (2.2.3.1)
-    rack-protection (2.2.1)
+    rack (2.2.4)
+    rack-protection (2.2.2)
       rack
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack-test (2.0.2)
+      rack (>= 1.3)
     rainbow (3.1.1)
     rake (13.0.6)
     rdoc (6.4.0)
@@ -147,7 +147,7 @@ GEM
       netrc (~> 0.8)
     rexml (3.2.5)
     rqrcode_core (0.2.0)
-    rr (3.0.9)
+    rr (3.1.0)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -179,16 +179,16 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.2.1)
+    selenium-webdriver (4.3.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     simple_oauth (0.3.1)
-    sinatra (2.2.1)
-      mustermann (~> 1.0)
+    sinatra (2.2.2)
+      mustermann (~> 2.0)
       rack (~> 2.2)
-      rack-protection (= 2.2.1)
+      rack-protection (= 2.2.2)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
     sqlite3 (1.4.4)
@@ -218,7 +218,7 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
     thread_safe (0.3.6)
-    tilt (2.0.10)
+    tilt (2.0.11)
     timers (4.3.3)
     tins (1.31.1)
       sync
@@ -233,7 +233,7 @@ GEM
       multipart-post (~> 2.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -260,6 +260,7 @@ DEPENDENCIES
   browserstack-local (~> 1.4)
   capybara
   curb
+  domain_name (>= 0.5.20190701)
   em-websocket
   erubis
   espeak-ruby (>= 1.0.4)
@@ -279,7 +280,7 @@ DEPENDENCIES
   rack-protection (>= 2.0.0)
   rake (>= 12.3.3)
   rdoc
-  rest-client (>= 2.0.1)
+  rest-client (>= 2.1.0)
   rspec
   rubocop (~> 1.32.0)
   rubyzip (>= 1.2.2)
@@ -292,8 +293,9 @@ DEPENDENCIES
   test-unit
   test-unit-full
   thin
-  twitter (>= 5.0.0)
+  twitter (>= 7.0.0)
   uglifier (>= 2.7.2)
+  unf
   websocket-client-simple (~> 0.5.1)
   xmlrpc
 
