@@ -85,9 +85,9 @@ module BeEF
           end
 
           if verbose.to_s =~ (/^(true|t|yes|y|1)$/i)
-            BeEF::Core::Models::Rtcmanage.initiate(fromhb.to_i, tohb.to_i, true)
+            BeEF::Core::Models::RtcManage.initiate(fromhb.to_i, tohb.to_i, true)
           else
-            BeEF::Core::Models::Rtcmanage.initiate(fromhb.to_i, tohb.to_i)
+            BeEF::Core::Models::RtcManage.initiate(fromhb.to_i, tohb.to_i)
           end
 
           r = BeEF::Core::Models::Rtcstatus.new(
@@ -139,7 +139,7 @@ module BeEF
         get '/status/:id' do
           id = params[:id]
 
-          BeEF::Core::Models::Rtcmanage.status(id.to_i)
+          BeEF::Core::Models::RtcManage.status(id.to_i)
           result = {}
           result['success'] = true
           result.to_json
@@ -313,7 +313,7 @@ module BeEF
           if [fromhb, tohb, message].include?(nil)
             result['success'] = false
           else
-            BeEF::Core::Models::Rtcmanage.sendmsg(fromhb.to_i, tohb.to_i, message)
+            BeEF::Core::Models::RtcManage.sendmsg(fromhb.to_i, tohb.to_i, message)
             result['success'] = true
           end
 
@@ -436,7 +436,7 @@ module BeEF
 
           # Finally queue the message in the RTC queue for submission
           # from the from browser to the to browser
-          BeEF::Core::Models::Rtcmanage.sendmsg(fromhb.to_i, tohb.to_i, msg)
+          BeEF::Core::Models::RtcManage.sendmsg(fromhb.to_i, tohb.to_i, msg)
 
           result = {}
           result['success'] = true
