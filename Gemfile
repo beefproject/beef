@@ -4,6 +4,9 @@
 # See the file 'doc/COPYING' for copying permission
 #
 #gem 'simplecov', require: false, group: :test
+
+gem 'net-smtp', require: false
+
 gem 'eventmachine'
 gem 'thin'
 gem 'sinatra', '>= 2.2.0'
