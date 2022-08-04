@@ -168,7 +168,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    rubocop (1.32.0)
+    rubocop (1.33.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -291,7 +291,7 @@ DEPENDENCIES
   rdoc
   rest-client (>= 2.1.0)
   rspec
-  rubocop (~> 1.32.0)
+  rubocop (~> 1.33.0)
   rubyzip (>= 1.2.2)
   rushover
   selenium-webdriver
