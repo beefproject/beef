@@ -30,6 +30,7 @@ __Security Bugs:__ security@beefproject.com
 
 __Twitter:__ [@beefproject](https://twitter.com/beefproject)
 
+__Discord:__ https://discord.gg/ugmKmHarKc
 
 Requirements
 ------------
