@@ -2,10 +2,11 @@
 
 1. Confirm that your issue has not been posted previously by searching here: https://github.com/beefproject/beef/issues
 2. Confirm that the wiki does not contain the answers you seek: https://github.com/beefproject/beef/wiki
-3. BeEF Version:
-4. Ruby Version:
-5. Browser Details (e.g. Chrome v81.0):
-6. Operating System (e.g. OSX Catalina):
+3. Check the FAQ: https://github.com/beefproject/beef/wiki/FAQ
+4. BeEF Version:
+5. Ruby Version:
+6. Browser Details (e.g. Chrome v81.0):
+7. Operating System (e.g. OSX Catalina):
 
 ## Configuration
 
