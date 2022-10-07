@@ -53,7 +53,7 @@ GEM
       http_parser.rb (~> 0)
     equalizer (0.0.11)
     erubis (2.7.0)
-    espeak-ruby (1.0.5)
+    espeak-ruby (1.1.0)
     event_emitter (0.2.6)
     eventmachine (1.2.7)
     execjs (2.8.1)
