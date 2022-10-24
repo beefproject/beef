@@ -207,7 +207,9 @@ check_ruby_version() {
 check_rubygems() {
 	if command_exists gem${RUBYSUFFIX}; then
 		info 'Updating rubygems...'
-		sudo gem${RUBYSUFFIX} update --system
+		if ! sudo gem${RUBYSUFFIX} update --system; then
+			warn "Updating rubygems failed"
+		fi
 	fi
 }
 
