@@ -165,14 +165,14 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.1)
-    rubocop (1.36.0)
+    rubocop (1.37.1)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.20.1, < 2.0)
+      rubocop-ast (>= 1.23.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.23.0)
@@ -288,7 +288,7 @@ DEPENDENCIES
   rdoc
   rest-client (>= 2.1.0)
   rspec
-  rubocop (~> 1.36.0)
+  rubocop (~> 1.37.1)
   rubyzip (>= 1.2.2)
   rushover
   selenium-webdriver
