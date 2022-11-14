@@ -8,7 +8,7 @@
     "author": "Wade Alcorn",
     "license": "GNU General Public License v2.0",
     "devDependencies": {
-        "jsdoc": "^3.6.4",
+        "jsdoc": "^4.0.0",
         "jsdoc-to-markdown": "^7.0.1"
     },
     "dependencies": {}
