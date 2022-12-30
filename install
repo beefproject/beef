@@ -233,7 +233,7 @@ install_beef() {
 		/bin/rm Gemfile.lock
 	fi
 
-	if command_exists bundler${RUBYSUFFIX}; then
+	if command_exists bundle${RUBYSUFFIX}; then
 		bundle${RUBYSUFFIX} install
 	else
 		bundle install
