@@ -1,12 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.0.4)
-      activesupport (= 7.0.4)
-    activerecord (7.0.4)
-      activemodel (= 7.0.4)
-      activesupport (= 7.0.4)
-    activesupport (7.0.4)
+    activemodel (7.0.4.1)
+      activesupport (= 7.0.4.1)
+    activerecord (7.0.4.1)
+      activemodel (= 7.0.4.1)
+      activesupport (= 7.0.4.1)
+    activesupport (7.0.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -93,7 +93,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     mojo_magick (0.6.7)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
