@@ -89,7 +89,7 @@ install_linux() {
 		DISTRO_ID=$(cat /etc/os-release | grep ID= | grep -v "BUILD" | grep -v "IMAGE" | cut -d= -f2-)
 		if [ "${DISTRO_ID}" = 'kali' ]; then
 			Distro='Kali'
-		elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'artix' ] || [ "${DISTRO_ID}" = 'manjaro' ] || [ "${DISTRO_ID}" = 'blackarch' ] || [ "${DISTRO_ID}" = 'arcolinux' ]; then
+		elif [ "${DISTRO_ID}" = 'arch' ] || [ "${DISTRO_ID}" = 'garuda' ] || [ "${DISTRO_ID}" = 'artix' ] || [ "${DISTRO_ID}" = 'manjaro' ] || [ "${DISTRO_ID}" = 'blackarch' ] || [ "${DISTRO_ID}" = 'arcolinux' ]; then
 			Distro='Arch'
 		elif cat /etc/os-release | grep -Eqi '^ID.*suse'; then
 			Distro='SuSE'
