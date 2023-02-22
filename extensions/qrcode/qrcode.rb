@@ -72,12 +72,12 @@ module BeEF
             data += "#{beef_proto}://#{beef_host}:#{beef_port}/qrcode/#{fname}.png\n"
             data += "- URL: #{target}\n"
             # Google API
-            # url = URI.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+            # url = URI::Parser.new.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
             # w = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
             # h = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
             # data += "- Google API: https://chart.googleapis.com/chart?cht=qr&chs=#{w}x#{h}&chl=#{url}\n"
             # QRServer.com
-            # url = URI.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+            # url = URI::Parser.new.escape(target,Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
             # w = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
             # h = configuration.get("beef.extension.qrcode.qrsize").to_i * 100
             # data += "- QRServer API: https://api.qrserver.com/v1/create-qr-code/?size=#{w}x#{h}&data=#{url}\n"

@@ -18,14 +18,14 @@ beef.execute(function() {
 	var visibility = "<%= @iFrameVisibility %>";
 
 	var clicks = [
-		{js:"<%= URI.escape(@clickaction_1) %>", posTop:cleanPos("<%= @iFrameTop_1 %>"), posLeft:cleanPos("<%= @iFrameLeft_1 %>")},
-		{js:"<%= URI.escape(@clickaction_2) %>", posTop:cleanPos("<%= @iFrameTop_2 %>"), posLeft:cleanPos("<%= @iFrameLeft_2 %>")},
-		{js:"<%= URI.escape(@clickaction_3) %>", posTop:cleanPos("<%= @iFrameTop_3 %>"), posLeft:cleanPos("<%= @iFrameLeft_3 %>")},
-		{js:"<%= URI.escape(@clickaction_4) %>", posTop:cleanPos("<%= @iFrameTop_4 %>"), posLeft:cleanPos("<%= @iFrameLeft_4 %>")},
-		{js:"<%= URI.escape(@clickaction_5) %>", posTop:cleanPos("<%= @iFrameTop_5 %>"), posLeft:cleanPos("<%= @iFrameLeft_5 %>")},
-		{js:"<%= URI.escape(@clickaction_6) %>", posTop:cleanPos("<%= @iFrameTop_6 %>"), posLeft:cleanPos("<%= @iFrameLeft_6 %>")},
-		{js:"<%= URI.escape(@clickaction_7) %>", posTop:cleanPos("<%= @iFrameTop_7 %>"), posLeft:cleanPos("<%= @iFrameLeft_7 %>")},
-		{js:"<%= URI.escape(@clickaction_8) %>", posTop:cleanPos("<%= @iFrameTop_8 %>"), posLeft:cleanPos("<%= @iFrameLeft_8 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_1) %>", posTop:cleanPos("<%= @iFrameTop_1 %>"), posLeft:cleanPos("<%= @iFrameLeft_1 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_2) %>", posTop:cleanPos("<%= @iFrameTop_2 %>"), posLeft:cleanPos("<%= @iFrameLeft_2 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_3) %>", posTop:cleanPos("<%= @iFrameTop_3 %>"), posLeft:cleanPos("<%= @iFrameLeft_3 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_4) %>", posTop:cleanPos("<%= @iFrameTop_4 %>"), posLeft:cleanPos("<%= @iFrameLeft_4 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_5) %>", posTop:cleanPos("<%= @iFrameTop_5 %>"), posLeft:cleanPos("<%= @iFrameLeft_5 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_6) %>", posTop:cleanPos("<%= @iFrameTop_6 %>"), posLeft:cleanPos("<%= @iFrameLeft_6 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_7) %>", posTop:cleanPos("<%= @iFrameTop_7 %>"), posLeft:cleanPos("<%= @iFrameLeft_7 %>")},
+		{js:"<%= URI::Parser.new.escape(@clickaction_8) %>", posTop:cleanPos("<%= @iFrameTop_8 %>"), posLeft:cleanPos("<%= @iFrameLeft_8 %>")},
 		{js:"void(0);", posTop:'-', posLeft:'-'}
 	]
 
