@@ -182,7 +182,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.8.0)
+    selenium-webdriver (4.8.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
