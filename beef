@@ -185,7 +185,7 @@ db_file = config.get('beef.database.file')
 if BeEF::Core::Console::CommandLine.parse[:resetdb]
   print_info 'Resetting the database for BeEF.'
   begin
-    File.delete(db_file) if File.exists?(db_file)
+    File.delete(db_file) if File.exist?(db_file)
   rescue => e
     print_error("Could not remove '#{db_file}' database file: #{e.message}")
     exit(1)

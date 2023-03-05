@@ -6486,7 +6486,7 @@ module RbReadline
    #     `%' for character special devices
    #     `#' for block special devices
    def stat_char(filename)
-      return nil if !File.exists?(filename)
+      return nil if !File.exist?(filename)
 
       return '/' if File.directory?(filename)
       return '%' if File.chardev?(filename)
