@@ -134,7 +134,7 @@ task :beef_start => 'beef' do
   config = YAML.safe_load(File.read('./config.yaml'))
   config['beef']['credentials']['user'] = test_user
   config['beef']['credentials']['passwd'] = test_pass
-  Dir.mkdir('tmp') unless Dir.exists?('tmp')
+  Dir.mkdir('tmp') unless Dir.exist?('tmp')
   File.open(@beef_config_file, 'w') { |f| YAML.dump(config, f) }
 
   # set the environment creds -- in case we're using bad_fred

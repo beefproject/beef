@@ -36,7 +36,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 
 		if BeEF::Core::Console::CommandLine.parse[:resetdb]
 			print_info 'Resetting the database for BeEF.'
-			File.delete(db_file) if File.exists?(db_file)
+			File.delete(db_file) if File.exist?(db_file)
 		end
 
 		# Load up DB and migrate if necessary
