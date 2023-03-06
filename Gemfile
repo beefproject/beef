@@ -24,7 +24,7 @@ gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
 gem 'rake', '>= 13.0'
 gem 'otr-activerecord', '>= 1.4.2'
 gem 'sqlite3'
-gem 'rubocop', '~> 1.47.0', require: false
+gem 'rubocop', '~> 1.48.0', require: false
 
 # Geolocation support
 group :geoip do
