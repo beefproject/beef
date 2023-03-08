@@ -85,10 +85,11 @@ module BeEF
         end
 
         #
-        # Return the parsed options
+        # Return the parsed options.
+        # Ensures that cmd line arguments are parsed.
         #
         def self.get_options
-          raise 'Must parse options before retrieving them. Call CommandLine.parse' unless @already_parsed
+          self.class.parse unless @already_parsed
           return @options 
         end
 
