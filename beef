@@ -39,6 +39,16 @@ $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
+
+#
+# @note Parse beef command line arguments before requiring loader.
+# The loader will require bundler default arguments, bringing in Sinatra which will
+# then hog the Option Parsing. Thus, we need to parse before that.
+#
+require 'core/main/console/commandline'
+BeEF::Core::Console::CommandLine.parse
+
+
 #
 # @note Require core loader
 #
@@ -48,8 +58,8 @@ require 'timeout'
 #
 # @note Ask user if they would like to update beef
 #
-if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.parse[:update_disabled] == false
-  if BeEF::Core::Console::CommandLine.parse[:update_auto] == true
+if File.exist?("#{$root_dir}git") && BeEF::Core::Console::CommandLine.get_options[:update_disabled] == false
+  if BeEF::Core::Console::CommandLine.get_options[:update_auto] == true
     print 'Checking latest BeEF repository and updating'
     `git pull && bundle`
   elsif `git rev-parse master` != `git rev-parse origin/master`
@@ -79,10 +89,10 @@ end
 #
 # @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
 #
-if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
+if BeEF::Core::Console::CommandLine.get_options[:ext_config].empty?
   config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
 else
-  config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+  config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.get_options[:ext_config]}")
 end
 
 #
@@ -105,12 +115,12 @@ end
 #
 # @note Check if port and WebSocket port need to be updated from command line parameters
 #
-unless BeEF::Core::Console::CommandLine.parse[:port].empty?
-  config.set('beef.http.port', BeEF::Core::Console::CommandLine.parse[:port])
+unless BeEF::Core::Console::CommandLine.get_options[:port].empty?
+  config.set('beef.http.port', BeEF::Core::Console::CommandLine.get_options[:port])
 end
 
-unless BeEF::Core::Console::CommandLine.parse[:ws_port].empty?
-  config.set('beef.http.websocket.port', BeEF::Core::Console::CommandLine.parse[:ws_port])
+unless BeEF::Core::Console::CommandLine.get_options[:ws_port].empty?
+  config.set('beef.http.websocket.port', BeEF::Core::Console::CommandLine.get_options[:ws_port])
 end
 
 #
@@ -150,7 +160,7 @@ require 'core/bootstrap'
 #
 # @note Prints the BeEF ascii art if the -a flag was passed
 #
-if BeEF::Core::Console::CommandLine.parse[:ascii_art] == true
+if BeEF::Core::Console::CommandLine.get_options[:ascii_art] == true
   BeEF::Core::Console::Banners.print_ascii_art
 end
 
@@ -182,7 +192,7 @@ Socket.do_not_reverse_lookup = true
 #
 db_file = config.get('beef.database.file')
 # @note Resets the database if the -x flag was passed
-if BeEF::Core::Console::CommandLine.parse[:resetdb]
+if BeEF::Core::Console::CommandLine.get_options[:resetdb]
   print_info 'Resetting the database for BeEF.'
   begin
     File.delete(db_file) if File.exist?(db_file)
