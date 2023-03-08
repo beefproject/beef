@@ -36,7 +36,7 @@ end
 # @note This function will only print messages if the debug flag is set to true
 def print_debug(s)
   config = BeEF::Core::Configuration.instance
-  return unless config.get('beef.debug') || BeEF::Core::Console::CommandLine.parse[:verbose]
+  return unless config.get('beef.debug') || BeEF::Core::Console::CommandLine.get_options[:verbose]
 
   puts Time.now.localtime.strftime('[%k:%M:%S]') + '[>]' + ' ' + s.to_s
   BeEF.logger.debug s.to_s

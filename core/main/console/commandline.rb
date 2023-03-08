@@ -3,6 +3,8 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'optparse'
+
 module BeEF
   module Core
     module Console
@@ -10,16 +12,17 @@ module BeEF
       # This module parses the command line argument when running beef.
       #
       module CommandLine
-        @options = {}
-        @options[:verbose] = false
-        @options[:resetdb] = false
-        @options[:ascii_art] = false
-        @options[:ext_config] = ''
-        @options[:port] = ''
-        @options[:ws_port] = ''
-        @options[:interactive] = false
-        @options[:update_disabled] = false
-        @options[:update_auto] = false
+        @options = {
+          verbose: false,
+          resetdb: false,
+          ascii_art: false,
+          ext_config: '',
+          port: '',
+          ws_port: '',
+          interactive: false,
+          update_disabled: false,
+          update_auto: false,
+        }
 
         @already_parsed = false
 
@@ -28,8 +31,6 @@ module BeEF
         # It also populates the 'options' hash.
         #
         def self.parse
-          return @options if @already_parsed
-
           optparse = OptionParser.new do |opts|
             opts.on('-x', '--reset', 'Reset the database') do
               @options[:resetdb] = true
@@ -39,11 +40,11 @@ module BeEF
               @options[:verbose] = true
             end
 
-            opts.on('-a', '--ascii_art', 'Prints BeEF ascii art') do
+            opts.on('-a', '--ascii-art', 'Prints BeEF ascii art') do
               @options[:ascii_art] = true
             end
 
-            opts.on('-c', '--config FILE', "Load a different configuration file: if it's called custom-config.yaml, git automatically ignores it.") do |f|
+            opts.on('-c', '--config FILE', "Specify configuration file to load (instead of ./config.yaml)") do |f|
               @options[:ext_config] = f
             end
 
@@ -55,26 +56,42 @@ module BeEF
               @options[:ws_port] = ws_port
             end
 
-            opts.on('-ud', '--update_disabled', 'Skips update') do
+            opts.on('--update-disable', 'Skips update') do
               @options[:update_disabled] = true
             end
 
-            opts.on('-ua', '--update_auto', 'Automatic update with no prompt') do
+            opts.on('--update-auto', 'Automatic update with no prompt') do
               @options[:update_auto] = true
             end
 
-            # opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
-            #  @options[:interactive] = true
-            # end
+            opts.on("-h", "--help", "Prints this help") do
+              puts opts
+              # NOTE:
+              # Dont exit here. Beef is also a Sinatra app and that comes with its own options.
+              # Therefore, we just fall through and hand over parsing to Sinatra afterwards.
+              puts("\nSinatra webapp options:")
+            end
           end
 
-          optparse.parse!
+          # NOTE:
+          # Since OptionParser consumes ARGV, all options would be removed from it after parsing
+          # Sinatra would not receive anything anymore. To avoid that, we parse on a copy.
+          args_copy = ARGV.dup
+          optparse.parse!(args_copy)
           @already_parsed = true
-          @options
         rescue OptionParser::InvalidOption
-          puts 'Invalid command line option provided. Please run beef --help'
-          exit 1
+          puts 'Provided option not recognized by beef. If you provided a Sinatra option, you may ignore this warning. Run beef --help for more information.'
+          @already_parsed = true
         end
+
+        #
+        # Return the parsed options
+        #
+        def self.get_options
+          raise 'Must parse options before retrieving them. Call CommandLine.parse' unless @already_parsed
+          return @options 
+        end
+
       end
     end
   end
