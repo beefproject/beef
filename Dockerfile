@@ -12,12 +12,6 @@
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
 FROM ruby:3.2.1-slim-bullseye AS builder
 
-# BeEF UI/Hook port
-ARG UI_PORT=3000
-ARG PROXY_PORT=6789
-ARG WEBSOCKET_PORT=61985
-ARG WEBSOCKET_SECURE_PORT=61986
-
 COPY . /beef
 
 # Set gemrc config to install gems without Ruby Index (ri) and Ruby Documentation (rdoc) files.
@@ -49,6 +43,12 @@ FROM ruby:3.2.1-slim-bullseye
 LABEL maintainer="Beef Project" \
       source_url="github.com/beefproject/beef" \
       homepage="https://beefproject.com/"
+
+# BeEF UI/Hook port
+ARG UI_PORT=3000
+ARG PROXY_PORT=6789
+ARG WEBSOCKET_PORT=61985
+ARG WEBSOCKET_SECURE_PORT=61986
 
 
 # Create service account to run BeEF and install BeEF's runtime dependencies
