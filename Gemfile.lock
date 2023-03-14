@@ -131,7 +131,7 @@ GEM
       mojo_magick (~> 0.6.5)
       rqrcode_core (~> 0.1)
     racc (1.6.1)
-    rack (2.2.6.2)
+    rack (2.2.6.4)
     rack-protection (3.0.5)
       rack
     rack-test (2.0.2)
