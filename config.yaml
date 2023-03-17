@@ -18,7 +18,7 @@ beef:
     # Used by both the RESTful API and the Admin interface
     credentials:
         user:   "beef"
-        passwd: "beef"
+        passwd: "try808##"
 
     # Interface / IP restrictions
     restrictions:
