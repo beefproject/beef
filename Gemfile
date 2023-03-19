@@ -6,83 +6,85 @@
 #gem 'simplecov', require: false, group: :test
 
 gem 'net-smtp', require: false
-
-gem 'eventmachine'
-gem 'thin'
-gem 'sinatra', '>= 2.2.0'
-gem 'rack', '>= 2.2.4'
-gem 'rack-protection', '>= 2.2.0'
-gem 'em-websocket' # WebSocket support
-gem 'uglifier', '>= 4.2.0'
-gem 'mime-types'
-gem 'execjs'
-gem 'ansi'
-gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'json'
-gem 'rubyzip', '>= 1.2.2'
-gem 'espeak-ruby', '>= 1.0.4' # Text-to-Voice
-gem 'rake', '>= 13.0'
-gem 'otr-activerecord', '>= 1.4.2'
-gem 'sqlite3'
+
+gem 'eventmachine', '~> 1.2', '>= 1.2.7'
+gem 'thin', '~> 1.8', '>= 1.8.1'
+gem 'sinatra', '~> 3.0', '>= 3.0.5'
+gem 'rack', '~> 2.2', '>= 2.2.4'
+gem 'rack-protection', '~> 3.0.5'
+gem 'em-websocket', '~> 0.5.3' # WebSocket support
+gem 'uglifier', '~> 4.2'
+gem 'mime-types', '~> 3.4', '>= 3.4.1'
+gem 'execjs', '~> 2.8', '>= 2.8.1'
+gem 'ansi', '~> 1.5'
+gem 'term-ansicolor', :require => 'term/ansicolor'
+gem 'rubyzip', '~> 2.3'
+gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
+gem 'rake', '~> 13.0'
+gem 'otr-activerecord', '~> 2.1', '>= 2.1.2'
+gem 'sqlite3', '~> 1.6', '>= 1.6.1'
 gem 'rubocop', '~> 1.48.1', require: false
 
 # Geolocation support
 group :geoip do
-  gem 'maxmind-db'
+  gem 'maxmind-db', '~> 1.1', '>= 1.1.1'
 end
 
-gem 'parseconfig'
-gem 'erubis'
+gem 'parseconfig', '~> 1.1', '>= 1.1.2'
+gem 'erubis', '~> 2.7'
 
 # Metasploit Integration extension
 group :ext_msf do
-  gem 'msfrpc-client'
-  gem 'xmlrpc'
+  gem 'msfrpc-client', '~> 1.1', '>= 1.1.2'
+  gem 'xmlrpc', '~> 0.3.2'
 end
 
 # Notifications extension
 group :ext_notifications do
-  gem 'unf'
-  gem 'domain_name', '>= 0.5.20190701'
   # Pushover
-  gem 'rushover'
+  gem 'rushover', '~> 0.3.0'
   # Slack
-  gem 'slack-notifier'
+  gem 'slack-notifier', '~> 2.4'
 end
 
 # DNS extension
 group :ext_dns do
-  gem 'async-dns'
+  gem 'async-dns', '~> 1.3'
+  gem 'async', '~> 1.31'
 end
 
 # QRcode extension
 group :ext_qrcode do
-  gem 'qr4r'
+  gem 'qr4r', '~> 0.6.1'
 end
 
 # For running unit tests
 group :test do
-    gem 'test-unit'
-    gem 'test-unit-full'
-    gem 'rspec'
-    gem 'rdoc'
+    gem 'test-unit-full', '~> 0.0.5'
+    gem 'rspec', '~> 3.12'
+    gem 'rdoc', '~> 6.5'
+    gem 'browserstack-local', '~> 1.4'
+
+    gem 'irb', '~> 1.6', '>= 1.6.3'
+    gem 'pry-byebug', '~> 3.10', '>= 3.10.1'
+
+    gem 'rest-client', '~> 2.1.0'
+    gem 'websocket-client-simple', '~> 0.6.1'
+
     # curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
-    gem 'curb'
+    gem 'curb', '~> 1.0', '>= 1.0.5'
+
     # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
     # gem 'selenium' # Requires old version of selenium which is no longer available
-    gem 'geckodriver-helper'
-    gem 'selenium-webdriver'
-    # nokogirl is needed by capybara which may require one of the below commands
+    gem 'geckodriver-helper', '~> 0.24.0'
+    gem 'selenium-webdriver', '~> 4.8', '>= 4.8.1'
+
+    # nokogiri is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
     # sudo port install libxml2 libxslt
-    gem 'capybara'
-    # RESTful API tests/generic command module tests
-    gem 'rest-client', '>= 2.1.0'
-    gem 'irb'
-    gem 'pry-byebug'
-    gem "websocket-client-simple", "~> 0.6.1"
-    gem "browserstack-local", "~> 1.4"
+    gem 'capybara', '~> 3.38'
 end
 
 source 'https://rubygems.org'
