@@ -8,13 +8,6 @@ beef:
         notifications:
             enable: false
             name: Notifications
-            twitter:
-              enable: false
-              consumer_key: app_consumer_key
-              consumer_secret: app_consumer_secret
-              oauth_token: your_oauth_token_for_this_app
-              oauth_token_secret: your_oauth_token_secret_for_this_app
-              target_username: 
             email:
               enable: false
               from_address: sender_email_address

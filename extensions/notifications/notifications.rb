@@ -4,7 +4,6 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-require 'extensions/notifications/channels/tweet'
 require 'extensions/notifications/channels/email'
 require 'extensions/notifications/channels/pushover'
 require 'extensions/notifications/channels/slack_workspace'
@@ -26,11 +25,6 @@ module BeEF
           @hb = hb
 
           message = "#{from} #{event} #{time_now} #{hb}"
-
-          if @config.get('beef.extension.notifications.twitter.enable') == true
-            username = @config.get('beef.extension.notifications.twitter.target_username')
-            BeEF::Extension::Notifications::Channels::Tweet.new(username, message)
-          end
 
           if @config.get('beef.extension.notifications.email.enable') == true
             to_address = @config.get('beef.extension.notifications.email.to_address')
