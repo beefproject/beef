@@ -20,7 +20,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     print_info 'Resetting the database for BeEF.'
     File.delete(db_file) if File.exist?(db_file)
     @username = @config.get('beef.credentials.user')
-    @password = @config.get('beef.credentials.passwd')
+    @pw_hash = @config.get('beef.credentials.bcrypt_pw_hash')
 
     # Load BeEF extensions and modules
     # Always load Extensions, as previous changes to the config from other tests may affect

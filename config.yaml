@@ -16,9 +16,14 @@ beef:
 
     # Credentials to authenticate in BeEF.
     # Used by both the RESTful API and the Admin interface
+    # NOTE: This section can be removed and be replaced by the usage of environment
+    #   variables BEEF_USER, BEEF_PASSWD and BEEF_BEEF_PWHASH.
+    #   This way, you can share your config without sharing sensitive information.
     credentials:
         user:   "beef"
         passwd: "beef"
+        # Instead of a password, you may also use a bcrypt hash of it
+        #bcrypt_pw_hash: ""
 
     # Interface / IP restrictions
     restrictions:
