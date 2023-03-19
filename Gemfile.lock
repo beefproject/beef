@@ -246,7 +246,7 @@ GEM
     unicode-display_width (2.4.2)
     webrick (1.7.0)
     websocket (1.2.9)
-    websocket-client-simple (0.6.0)
+    websocket-client-simple (0.6.1)
       event_emitter
       websocket
     xmlrpc (0.3.2)
@@ -300,7 +300,7 @@ DEPENDENCIES
   twitter (>= 7.0.0)
   uglifier (>= 4.2.0)
   unf
-  websocket-client-simple (~> 0.6.0)
+  websocket-client-simple (~> 0.6.1)
   xmlrpc
 
 BUNDLED WITH
