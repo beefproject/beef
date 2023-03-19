@@ -57,7 +57,9 @@ module BeEF
                                                     ->(time) { @session.set_auth_timestamp(time) })
 
             # check username and password
-            unless username.eql?(config.get('beef.credentials.user')) && password.eql?(config.get('beef.credentials.passwd'))
+            unless username.eql?(config.get('beef.credentials.user')) && (BCrypt::Password.new(config.get('beef.credentials.bcrypt_pw_hash')) == password)
+              BeEF::Core::Logger.instance.register('Authentication', "#{ua_ip} has failed to authenticate in the application.")
+
               BeEF::Core::Logger.instance.register('Authentication', "User with ip #{ua_ip} has failed to authenticate in the application.")
               return
             end

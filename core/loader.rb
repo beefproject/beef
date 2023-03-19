@@ -15,6 +15,7 @@ require 'msgpack'
 
 Bundler.require(:default)
 
+require 'bcrypt'
 require 'cgi'
 require 'yaml'
 require 'singleton'

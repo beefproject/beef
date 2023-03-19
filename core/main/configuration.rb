@@ -60,11 +60,6 @@ module BeEF
           return
         end
 
-        if @config['beef']['credentials'].nil?
-          print_error "Configuration file is malformed: 'beef.credentials' is nil"
-          return
-        end
-
         if @config['beef']['http'].nil?
           print_error "Configuration file is malformed: 'beef.http' is nil"
           return

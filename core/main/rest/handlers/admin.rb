@@ -52,7 +52,7 @@ module BeEF
           request.body.rewind
           begin
             data = JSON.parse request.body.read
-            if data['username'].eql?(config.get('beef.credentials.user')) && data['password'].eql?(config.get('beef.credentials.passwd'))
+            if data['username'].eql?(config.get('beef.credentials.user')) && (BCrypt::Password.new(config.get('beef.credentials.bcrypt_pw_hash') == data['password']))
               return {
                 'success' => true,
                 'token' => config.get('beef.api_token').to_s
