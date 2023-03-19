@@ -48,8 +48,6 @@ group :ext_notifications do
   gem 'rushover'
   # Slack
   gem 'slack-notifier'
-  # Twitter
-  gem 'twitter', '>= 7.0.0'
 end
 
 # DNS extension
