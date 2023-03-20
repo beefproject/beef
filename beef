@@ -178,7 +178,7 @@ if passwd = config.get("beef.credentials.passwd")
   raise "Password and its bcrypt hash were specified but did not match. " \
         "Check password and hash or specify only one of the two." \
         if (specified_hash = config.get("beef.credentials.bcrypt_pw_hash")) \
-          && (specified_hash == passwd_hash)
+          && (BCrypt::Password.new(specified_hash) != passwd)
 
   # Make sure hash is stored but password is not.
   config.set("beef.credentials.bcrypt_pw_hash", passwd_hash)

@@ -19,6 +19,7 @@ beef:
     # NOTE: This section can be removed and be replaced by the usage of environment
     #   variables BEEF_USER, BEEF_PASSWD and BEEF_BEEF_PWHASH.
     #   This way, you can share your config without sharing sensitive information.
+    #   Config.yaml takes precedence over environment variables.
     credentials:
         user:   "beef"
         passwd: "beef"
