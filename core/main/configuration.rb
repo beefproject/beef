@@ -74,6 +74,18 @@ module BeEF
           return
         end
 
+        # Make sure that, if credentials are given, a user as well as a password or hash are present.
+        unless (not self.get("beef.credentials")) \
+          || (self.get("beef.credentials.user") && (self.get("beef.credentials.passwd") || self.get("beef.credentials.bcrypt_pw_hash")))
+
+          # Specify allowed config format
+          print_error "ERROR: Invalid Config. Config must either:"
+          print_more " - Not contain a 'credentials' member at all."
+          print_more " - Contain 'credentials.user' and 'credentials.passwd'."
+          print_more " - Contain 'credentials.user' and 'credentials.bcrypt_pw_hash'."
+          return
+        end
+
         true
       end
 
