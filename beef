@@ -133,9 +133,8 @@ unless config.get("beef.credentials")
 
   # Either password or its hash must be specified
   raise "Must specify a password or its bcrypt hash "\
-        "(either via config.yaml or BEEF_PASSWD/BEEF_PWHASH env variables" \
-        unless passwd = ENV["BEEF_PASSWD"] || passwd_hash = ENV["BEEF_PWHASH"]
-
+        "(either via config.yaml or BEEF_PASSWD/BEEF_PWHASH env variables." \
+        unless (passwd = ENV["BEEF_PASSWD"]) || (passwd_hash = ENV["BEEF_PWHASH"])
 
   # Store env values in config -- allows upcoming code to act as if config
   # was populated correctly.
@@ -145,10 +144,23 @@ unless config.get("beef.credentials")
 end
 
 #
+# @note Passed hash must confirm to bcrypt format. When passing the hash on the command line,
+# forgetting to escape e.g. dollar signs $ can lead to this messing up. We warn the user to
+# avoid confusion.
+#
+if (passwd_hash = config.get("beef.credentials.bcrypt_pw_hash")) \
+  && (not BCrypt::Password.valid_hash?(passwd_hash))
+  print_error "ERROR -- Invalid Hash found. \n"\
+              " HINT    : Make sure special characters in hash are escaped or wrapped in single quote.\n"\
+              " EXAMPLE : BEEF_USER=beef BEEF_PWHASH='$2a$12$......' ./beef "
+  exit 1
+end
+
+#
 # @note Exit on default password.
 #
 if config.get("beef.credentials.passwd").eql?("beef") \
-  || (passwd_hash = config.get("beef.credentials.bcrypt_pw_hash") && BCrypt::Password.new(passwd_hash) == "beef") \
+  || (passwd_hash = config.get("beef.credentials.bcrypt_pw_hash") && (BCrypt::Password.new(passwd_hash) == "beef")) \
 
   print_error "ERROR: Default password in use!"
   print_more "Change password and potential hashes (beef.credentials in config.yaml or corresponding environment variables)"
@@ -165,8 +177,8 @@ if passwd = config.get("beef.credentials.passwd")
   # actually match
   raise "Password and its bcrypt hash were specified but did not match. " \
         "Check password and hash or specify only one of the two." \
-        if specified_hash = config.get("beef.credentials.bcrypt_pw_hash") \
-          && specified_hash == passwd_hash
+        if (specified_hash = config.get("beef.credentials.bcrypt_pw_hash")) \
+          && (specified_hash == passwd_hash)
 
   # Make sure hash is stored but password is not.
   config.set("beef.credentials.bcrypt_pw_hash", passwd_hash)
