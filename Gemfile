@@ -51,7 +51,7 @@ end
 # DNS extension
 group :ext_dns do
   gem 'async-dns', '~> 1.3'
-  gem 'async', '~> 1.31'
+  gem 'async', '~> 2.5'
 end
 
 # QRcode extension
