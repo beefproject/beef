@@ -22,7 +22,7 @@ beef:
     credentials:
         user:   "beef"
         passwd: "beef"
-        # Instead of a password, you may also use a bcrypt hash of it
+        # Instead of a password, you may also use a bcrypt hash of it.
         #bcrypt_pw_hash: ""
 
     # Interface / IP restrictions
