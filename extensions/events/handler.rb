@@ -39,13 +39,33 @@ module BeEF
 
           # push events to logger
           logger = BeEF::Core::Logger.instance
-          events.each do |value|
-            logger.register('Event', parse(value), zombie.id)
+          events.each do |event|
+            unless event.is_a?(Hash)
+              print_error("[Event Logger] Received event data of type #{event.class}; expected Hash")
+              next
+            end
+
+            if event['type'].nil?
+              print_error("[Event Logger] Received event with no type: #{event.inspect}")
+              next
+            end
+
+            data = event_log_string(event)
+
+            next if data.nil?
+
+            logger.register('Event', data, zombie.id)
           end
         end
 
-        def parse(event)
-          case event['type']
+        def event_log_string(event)
+          return unless event.is_a?(Hash)
+
+          event_type = event['type']
+
+          return if event_type.nil?
+
+          case event_type
           when 'click'
             result = "#{event['time']}s - [Mouse Click] x: #{event['x']} y:#{event['y']} > #{event['target']}"
           when 'focus'
@@ -63,18 +83,18 @@ module BeEF
           when 'keys'
             print_debug "+++++++++++++++++ Key mods: #{event['mods']}"
             print_debug "EventData: #{event['data']}"
+
+            result = "#{event['time']}s - [User Typed] #{event['data']}"
             if event['mods'].size.positive?
-              print_debug 'Event has mods'
-              result = "#{event['time']}s - [User Typed] #{event['data']} - (Mods debug) #{event['mods']}"
-            else
-              result = "#{event['time']}s - [User Typed] #{event['data']}"
+              result += " (modifiers: #{event['mods']})"
             end
           when 'submit'
             result = "#{event['time']}s - [Form Submitted] \"#{event['data']}\" > #{event['target']}"
           else
-            print_debug '[EVENTS] Event handler has received an unknown event'
-            result = "#{event['time']}s - Unknown event"
+            print_debug("[Event Logger] Event handler has received event of unknown type '#{event_type}'")
+            result = "#{event['time']}s - Unknown event '#{event_type}'"
           end
+
           result
         end
       end
