@@ -35,9 +35,9 @@ module BeEF
         time_now = Time.now
 
         # arguments type checking
-        raise TypeError, '"from" needs to be a string' unless from.string?
-        raise TypeError, '"event" needs to be a string' unless event.string?
-        raise TypeError, '"Hooked Browser ID" needs to be an integer' unless hb.integer?
+        raise TypeError, "'from' is #{from.class}; expected String" unless from.is_a?(String)
+        raise TypeError, "'event' is #{event.class}; expected String" unless event.is_a?(String)
+        raise TypeError, "'hb' hooked browser ID is #{hb.class}; expected Integer" unless hb.is_a?(Integer)
 
         # logging the new event into the database
         @logs.create(logtype: from.to_s, event: event.to_s, date: time_now, hooked_browser_id: hb).save!

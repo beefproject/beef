@@ -38,15 +38,15 @@ module BeEF
 
           # @note get and check command id from the request
           command_id = get_param(@data, 'cid')
-          unless command_id.integer?
-            print_error 'command_id is invalid'
+          unless command_id.is_a?(Integer)
+            print_error("Command ID is invalid")
             return
           end
 
           # @note get and check session id from the request
           beefhook = get_param(@data, 'beefhook')
           unless BeEF::Filters.is_valid_hook_session_id?(beefhook)
-            print_error 'BeEF hook is invalid'
+            print_error 'BeEF hook session ID is invalid'
             return
           end
 
@@ -68,7 +68,7 @@ module BeEF
           end
 
           command_status = @data['status']
-          unless command_status.integer?
+          unless command_status.is_a?(Integer)
             print_error 'command status is invalid'
             return
           end

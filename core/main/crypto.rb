@@ -54,8 +54,8 @@ module BeEF
       # @param length integer length of returned string
       #
       def self.random_alphanum_string(length = 10)
-        raise TypeError, 'Invalid length' unless length.integer?
-        raise TypeError, 'Invalid length' unless length.positive?
+        raise TypeError, "'length' is #{length.class}; expected Integer" unless length.is_a?(Integer)
+        raise TypeError, "Invalid length: #{length}" unless length.positive?
 
         [*('a'..'z'), *('A'..'Z'), *('0'..'9')].shuffle[0, length].join
       end
@@ -66,8 +66,8 @@ module BeEF
       # @param length integer length of returned string
       #
       def self.random_hex_string(length = 10)
-        raise TypeError, 'Invalid length' unless length.integer?
-        raise TypeError, 'Invalid length' unless length.positive?
+        raise TypeError, "'length' is #{length.class}; expected Integer" unless length.is_a?(Integer)
+        raise TypeError, "Invalid length: #{length}" unless length.positive?
 
         SecureRandom.random_bytes(length).unpack1('H*')[0...length]
       end

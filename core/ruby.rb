@@ -9,7 +9,6 @@ require 'core/ruby/security'
 
 # @note Patching Ruby
 require 'core/ruby/module'
-require 'core/ruby/object'
 require 'core/ruby/string'
 require 'core/ruby/print'
 require 'core/ruby/hash'

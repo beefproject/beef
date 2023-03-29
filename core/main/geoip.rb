@@ -48,7 +48,7 @@ module BeEF
       # @return [Hash] IP address lookup results
       #
       def lookup(ip)
-        raise TypeError, '"ip" needs to be a string' unless ip.string?
+        raise TypeError, '"ip" needs to be a string' unless ip.is_a?(String)
 
         return unless @enabled
 
