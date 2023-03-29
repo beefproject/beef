@@ -23,11 +23,11 @@ module BeEF
         #
         def self.save_result(hook_session_id, command_id, command_friendly_name, result, status)
           # @note argument type checking
-          raise TypeError, '"hook_session_id" needs to be a string' unless hook_session_id.string?
-          raise TypeError, '"command_id" needs to be an integer' unless command_id.integer?
-          raise TypeError, '"command_friendly_name" needs to be a string' unless command_friendly_name.string?
-          raise TypeError, '"result" needs to be a hash' unless result.hash?
-          raise TypeError, '"status" needs to be an integer' unless status.integer?
+          raise TypeError, '"hook_session_id" needs to be a string' unless hook_session_id.is_a?(String)
+          raise TypeError, '"command_id" needs to be an integer' unless command_id.is_a?(Integer)
+          raise TypeError, '"command_friendly_name" needs to be a string' unless command_friendly_name.is_a?(String)
+          raise TypeError, '"result" needs to be a hash' unless result.is_a?(Hash)
+          raise TypeError, '"status" needs to be an integer' unless status.is_a?(Integer)
 
           # @note get the hooked browser structure and id from the database
           hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: hook_session_id).first || nil

@@ -69,8 +69,8 @@ module BeEF
             end
           end
 
-          exec_order.each { |order| return [false, 'execution_order values must be Integers'] unless order.integer? }
-          exec_delay.each { |delay| return [false, 'execution_delay values must be Integers'] unless delay.integer? }
+          exec_order.each { |order| return [false, 'execution_order values must be Integers'] unless order.is_a?(Integer) }
+          exec_delay.each { |delay| return [false, 'execution_delay values must be Integers'] unless delay.is_a?(Integer) }
 
           return [false, 'execution_order and execution_delay values must be consistent with modules numbers'] unless
               modules.size == exec_order.size && modules.size == exec_delay.size
