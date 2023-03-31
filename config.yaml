@@ -45,22 +45,23 @@ beef:
         # Enabling WebSockets is generally better (beef.websocket.enable)
         xhr_poll_timeout: 1000
 
-        # Host Name / Domain Name
-        # If you want BeEF to be accessible via hostname or domain name (ie, DynDNS),
-        # These settings will be used to create a public facing URL
-        # This public facing URL will be used for all hook related calls
-        # set the public setting below:
-        # public:
-        #     host: "" # public hostname/IP address
-        #     port: "" # public port will default to 80 if no https 443 if https 
-                      # and local if not set but there is a public host
-        #     https: false # true/false
+        # Public Domain Name / Reverse Proxy / Port Forwarding
+        #
+        # In order for the client-side BeEF JavaScript hook to be able to connect to BeEF,
+        # the hook JavaScript needs to be generated with the correct connect-back details.
+        #
+        # If you're using a public domain name, reverse proxy, or port forwarding you must
+        # configure the public-facing connection details here.
 
-        # Reverse Proxy / NAT
-        # If you want BeEF to be accessible behind a reverse proxy or NAT,
-        #   set both the publicly accessible hostname/IP address and port below:
-        # NOTE: Allowing the reverse proxy will enable a vulnerability where the ui/panel can be spoofed
-        #   by altering the X-FORWARDED-FOR ip address in the request header.
+        #public:
+        #    host: "beef.local" # public hostname/IP address
+        #    port: "443" # public port (443 if the public server is using HTTPS)
+        #    https: false # true/false
+
+        # If using any reverse proxy you should also set allow_reverse_proxy to true below.
+        # Note that this causes the BeEF server to trust the X-Forwarded-For HTTP header.
+        # If the BeEF server is directly accessible, clients can spoof their connecting
+        # IP address using this header to bypass the IP address permissions/exclusions.
         allow_reverse_proxy: false
 
         # Hook
@@ -93,8 +94,6 @@ beef:
         # Experimental HTTPS support for the hook / admin / all other Thin managed web services
         https:
             enable: false
-            # Enabled this config setting if you're external facing uri is using https
-            public_enabled: false
             # In production environments, be sure to use a valid certificate signed for the value
             # used in beef.http.public (the domain name of the server where you run BeEF)
             key: "beef_key.pem"

@@ -22,6 +22,7 @@ module BeEF
         def confirm_browser_user_agent(user_agent)
           browser_type = user_agent.split(' ').last # selecting just name/version of browser
           # does the browser already exist in the legacy database / object? Return true if yes
+          # browser and therefore which version of the hook file to generate and use
           BeEF::Core::Models::LegacyBrowserUserAgents.user_agents.each do |ua_string|
             return true if ua_string.include? browser_type
           end
@@ -90,7 +91,7 @@ module BeEF
             hooked_browser.lastseen = Time.new.to_i
 
             # @note Check for a change in zombie IP and log an event
-            if config.get('beef.http.use_x_forward_for') == true
+            if config.get('beef.http.allow_reverse_proxy') == true
               if hooked_browser.ip != request.env['HTTP_X_FORWARDED_FOR']
                 BeEF::Core::Logger.instance.register('Zombie', "IP address has changed from #{hooked_browser.ip} to #{request.env['HTTP_X_FORWARDED_FOR']}", hooked_browser.id.to_s)
                 hooked_browser.ip = request.env['HTTP_X_FORWARDED_FOR']
@@ -137,14 +138,6 @@ module BeEF
               legacy_build_beefjs!(host_name)
             end
             # @note is a known browser so send instructions
-          end
-
-          # check for string within array of strings
-          def check_for_string(string, array)
-            array.each do |item|
-              return true if item.include? string
-            end
-            false
           end
 
           # @note set response headers and body
