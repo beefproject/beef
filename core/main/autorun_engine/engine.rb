@@ -43,7 +43,12 @@ module BeEF
 
             execution_order = JSON.parse(rule.execution_order)
             execution_delay = JSON.parse(rule.execution_delay)
-            chain_mode  = rule.chain_mode
+            chain_mode = rule.chain_mode
+
+            unless %w[sequential nested-forward].include?(chain_mode)
+              print_error("[ARE] Invalid chain mode '#{chain_mode}' for rule")
+              return
+            end
 
             mods_bodies = []
             mods_codes = []
@@ -76,9 +81,9 @@ module BeEF
             when 'sequential'
               wrapper = prepare_sequential_wrapper(mods_bodies, execution_order, execution_delay, rule_token)
             else
-              wrapper = nil
-              print_error 'Chain mode looks wrong!'
-              # TODO: catch error, which should never happen as values are checked way before ;-)
+              # we should never get here. chain mode is validated earlier.
+              print_error("[ARE] Invalid chain mode '#{chain_mode}'")
+              next
             end
 
             are_exec = BeEF::Core::Models::Execution.new(
@@ -88,9 +93,10 @@ module BeEF
               rule_token: rule_token,
               mod_body: wrapper,
               is_sent: false,
-              id: rule_id
+              rule_id: rule_id
             )
             are_exec.save!
+
             # Once Engine.check() verified that the hooked browser match a Rule, trigger the Rule ;-)
             print_more "Triggering ruleset #{rule_ids} on HB #{hb_id}"
           end
