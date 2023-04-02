@@ -14,26 +14,6 @@ beef:
                 add_beef_hook: true
                 user_agent: "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"
                 verify_ssl: true
-            mass_mailer:
-                # NOTE: you must have 'file' in your PATH
-                user_agent: "Microsoft-MacOutlook/12.12.0.111556"
-                host: "smtp.gmail.com"
-                port: 587
-                use_auth: true
-                use_tls: true
-                verify_ssl: true
-                helo: "gmail.com" # this is usually the domain name
-                auth: "youruser@gmail.com"
-                password: "yourpass"
-
-                # available templates
-                templates:
-                    default:
-                       # images are by default inline, so if you want to attach something, see 'attachments' below
-                       images: ["beef_logo.png"]
-                       images_cids:
-                          cid1: "beef_logo.png"
-                       attachments: ["beef_attachment.pdf"]
             powershell:
                 # the default payload being used is windows/meterpreter/reverse_https
                 msf_reverse_handler_host: "172.16.45.1"
