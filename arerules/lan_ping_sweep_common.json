@@ -1,9 +1,6 @@
 {"name": "LAN Ping Sweep (Common IPs)",
   "author": "bcoles",
   "browser": "FF",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "ping_sweep",
       "condition": null,

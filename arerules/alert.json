@@ -1,9 +1,5 @@
 {"name": "Display an alert",
   "author": "mgeeky",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "alert_dialog",
       "condition": null,

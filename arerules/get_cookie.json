@@ -1,10 +1,6 @@
 {
   "name": "Get Cookie",
   "author": "@benichmt1",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "get_cookie",
       "condition": null,

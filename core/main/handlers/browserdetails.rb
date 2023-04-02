@@ -28,11 +28,13 @@ module BeEF
 
           # validate hook session value
           session_id = get_param(@data, 'beefhook')
+
           print_debug "[INIT] Processing Browser Details for session #{session_id}"
           unless BeEF::Filters.is_valid_hook_session_id?(session_id)
-            (err_msg 'session id is invalid'
-             return)
+            err_msg 'session id is invalid'
+            return
           end
+
           hooked_browser = HB.where(session: session_id).first
           return unless hooked_browser.nil? # browser is already registered with framework
 
@@ -567,7 +569,7 @@ module BeEF
 
           # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel
           # is WebSockets, then ARe rules are triggered after channel is established.
-          BeEF::Core::AutorunEngine::Engine.instance.run(zombie.id, browser_name, browser_version, os_name, os_version) unless config.get('beef.http.websocket.enable')
+          BeEF::Core::AutorunEngine::Engine.instance.find_and_run_all_matching_rules_for_zombie(zombie.id) unless config.get('beef.http.websocket.enable')
         end
 
         def get_param(query, key)

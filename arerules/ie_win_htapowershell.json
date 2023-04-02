@@ -2,7 +2,6 @@
   "name": "HTA PowerShell",
   "author": "antisnatchor",
   "browser": "IE",
-  "browser_version": "ALL",
   "os": "Windows",
   "os_version": ">= 7",
   "modules": [

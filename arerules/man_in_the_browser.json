@@ -1,9 +1,5 @@
 {"name": "Perform Man-In-The-Browser",
   "author": "mgeeky",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "man_in_the_browser",
       "condition": null,

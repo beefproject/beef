@@ -1,10 +1,6 @@
 {
   "name": "Raw JavaScript",
   "author": "wade@bindshell.net",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "raw_javascript",
       "condition": null,

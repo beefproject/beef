@@ -1,9 +1,5 @@
 {"name": "Start CoinHive JavaScript miner",
   "author": "bcoles",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "coinhive_miner",
       "condition": null,

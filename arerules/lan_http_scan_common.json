@@ -1,9 +1,5 @@
 {"name": "LAN HTTP Scan (Common IPs)",
   "author": "bcoles",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "get_http_servers",
       "condition": null,
