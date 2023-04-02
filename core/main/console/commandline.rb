@@ -68,18 +68,15 @@ module BeEF
 
             opts.on("-h", "--help", "Prints this help") do
               puts opts
-              # NOTE:
-              # Dont exit here. Beef is also a Sinatra app and that comes with its own options.
-              # Therefore, we just fall through and hand over parsing to Sinatra afterwards.
-              puts("\nSinatra webapp options:")
+              exit 0
             end
           end
 
           # NOTE:
-          # Since OptionParser consumes ARGV, all options would be removed from it after parsing
-          # Sinatra would not receive anything anymore. To avoid that, we parse on a copy.
-          args_copy = ARGV.dup
-          optparse.parse!(args_copy)
+          # OptionParser consumes ARGV, all options are removed from it after parsing.
+          # If we wanted to pass Options to Sinatra, we would need to parse on a copy here.
+          # We don't do that since we explicitly don't want to allow users messing with these options, though.
+          optparse.parse!
           @already_parsed = true
         rescue OptionParser::InvalidOption
           puts 'Provided option not recognized by beef. If you provided a Sinatra option, note that beef explicitly disallows them.'
