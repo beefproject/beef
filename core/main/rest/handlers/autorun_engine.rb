@@ -19,106 +19,117 @@ module BeEF
                   'Expires' => '0'
         end
 
-        # Add a new ruleset. Returne the rule_id if request was successful
+        #
+        # Get all rules
+        #
+        get '/rules' do
+          rules = BeEF::Core::Models::Rule.all
+          {
+            'success' => true,
+            'count' => rules.length,
+            'rules' => rules.to_json
+          }.to_json
+        rescue StandardError => e
+          print_error("Internal error while retrieving Autorun rules: #{e.message}")
+          halt 500
+        end
+
+        # Returns a specific rule by ID
+        get '/rule/:rule_id' do
+          rule_id = params[:rule_id]
+
+          rule = BeEF::Core::Models::Rule.find(rule_id)
+          raise InvalidParameterError, 'id' if rule.nil?
+
+          halt 404 if rule.empty?
+
+          rule.to_json
+        rescue InvalidParameterError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while retrieving Autorun rule with id #{rule_id} (#{e.message})"
+          halt 500
+        end
+
+        #
+        # Add a new ruleset. Return the rule_id if request was successful.
+        # @return [Integer] rule ID
+        #
         post '/rule/add' do
           request.body.rewind
-          begin
-            data = JSON.parse request.body.read
-            rloader = BeEF::Core::AutorunEngine::RuleLoader.instance
-            rloader.load(data).to_json
-          rescue StandardError => e
-            err = 'Malformed JSON ruleset.'
-            print_error "[ARE] ERROR: #{e.message}"
-            { 'success' => false, 'error' => err }.to_json
-          end
-        end
-
-        # Delete a ruleset
-        get '/rule/delete/:rule_id' do
-          rule_id = params[:rule_id]
-          rule = BeEF::Core::AutorunEngine::Models::Rule.find(rule_id)
-          rule.destroy
-          { 'success' => true }.to_json
+          data = JSON.parse request.body.read
+          rloader = BeEF::Core::AutorunEngine::RuleLoader.instance
+          rloader.load_rule_json(data).to_json
         rescue StandardError => e
-          err = 'Error getting rule.'
-          print_error "[ARE] ERROR: #{e.message}"
-          { 'success' => false, 'error' => err }.to_json
+          print_error "Internal error while adding Autorun rule: #{e.message}"
+          { 'success' => false, 'error' => e.message }.to_json
         end
 
-        # Trigger a specified rule_id on online hooked browsers. Offline hooked browsers are ignored
-        get '/rule/trigger/:rule_id' do
+        #
+        # Delete a ruleset
+        #
+        delete '/rule/:rule_id' do
+          rule_id = params[:rule_id]
+          rule = BeEF::Core::Models::Rule.find(rule_id)
+          raise InvalidParameterError, 'id' if rule.nil?
+          rule.destroy
+
+          { 'success' => true }.to_json
+        rescue InvalidParameterError => e
+          print_error e.message
+          halt 400
+        rescue StandardError => e
+          print_error "Internal error while deleting Autorun rule: #{e.message}"
+          { 'success' => false, 'error' => e.message }.to_json
+        end
+
+        #
+        # Run a specified rule on all online hooked browsers (if the zombie matches the rule).
+        # Offline hooked browsers are ignored
+        #
+        get '/run/:rule_id' do
           rule_id = params[:rule_id]
 
           online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15))
-          are = BeEF::Core::AutorunEngine::Engine.instance
 
           if online_hooks.nil?
-            { 'success' => false, 'error' => 'There are currently no hooked browsers online.' }.to_json
-          else
-            online_hooks.each do |hb|
-              hb_details = BeEF::Core::Models::BrowserDetails
-              browser_name = hb_details.get(hb.session, 'browser.name')
-              browser_version = hb_details.get(hb.session, 'browser.version')
-              os_name = hb_details.get(hb.session, 'host.os.name')
-              os_version = hb_details.get(hb.session, 'host.os.version')
-
-              match_rules = are.match(browser_name, browser_version, os_name, os_version, rule_id)
-              are.trigger(match_rules, hb.id) if match_rules.length > 0
-            end
-            { 'success' => true }.to_json
+            return { 'success' => false, 'error' => 'There are currently no hooked browsers online.' }.to_json
           end
+
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          online_hooks.each do |hb|
+            are.run_matching_rules_on_zombie(rule_id, hb.id)
+          end
+
+          { 'success' => true }.to_json
         rescue StandardError => e
-          err = 'Malformed JSON ruleset.'
-          print_error "[ARE] ERROR: #{e.message}"
-          { 'success' => false, 'error' => err }.to_json
+          msg = "Could not trigger rules: #{e.message}"
+          print_error "[ARE] #{msg}"
+          { 'success' => false, 'error' => msg }.to_json
         end
 
-        # Delete a ruleset
-        get '/rule/list/:rule_id' do
+        #
+        # Run a specified rule on the specified hooked browser.
+        #
+        get '/run/:rule_id/:hb_id' do
           rule_id = params[:rule_id]
-          if rule_id == 'all'
-            result = []
-            rules = BeEF::Core::AutorunEngine::Models::Rule.all
-            rules.each do |rule|
-              {
-                'id' => rule.id,
-                'name' => rule.name,
-                'author' => rule.author,
-                'browser' => rule.browser,
-                'browser_version' => rule.browser_version,
-                'os' => rule.os,
-                'os_version' => rule.os_version,
-                'modules' => rule.modules,
-                'execution_order' => rule.execution_order,
-                'execution_delay' => rule.execution_delay,
-                'chain_mode' => rule.chain_mode
-              }
-              result.push rule
-            end
-          else
-            result = nil
-            rule = BeEF::Core::AutorunEngine::Models::Rule.get(rule_id)
-            unless rule.nil?
-              result = {
-                'id' => rule.id,
-                'name' => rule.name,
-                'author' => rule.author,
-                'browser' => rule.browser,
-                'browser_version' => rule.browser_version,
-                'os' => rule.os,
-                'os_version' => rule.os_version,
-                'modules' => rule.modules,
-                'execution_order' => rule.execution_order,
-                'execution_delay' => rule.execution_delay,
-                'chain_mode' => rule.chain_mode
-              }
-            end
-          end
-          { 'success' => true, 'rules' => result }.to_json
+          hb_id = params[:hb_id]
+
+          raise InvalidParameterError, 'rule_id' if rule_id.nil?
+          raise InvalidParameterError, 'hb_id' if hb_id.nil?
+
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          are.run_matching_rules_on_zombie(rule_id, hb_id)
+
+          { 'success' => true }.to_json
+        rescue InvalidParameterError => e
+          print_error e.message
+          halt 400
         rescue StandardError => e
-          err = 'Error getting rule(s)'
-          print_error "[ARE] ERROR: #{e.message}"
-          { 'success' => false, 'error' => err }.to_json
+          msg = "Could not trigger rule: #{e.message}"
+          print_error "[ARE] #{msg}"
+          { 'success' => false, 'error' => msg }.to_json
         end
       end
     end

@@ -19,23 +19,230 @@ module BeEF
           @debug_on = @config.get('beef.debug')
 
           @VERSION = ['<', '<=', '==', '>=', '>', 'ALL']
-          @VERSION_STR = %w[XP Vista]
+          @VERSION_STR = %w[XP Vista 7]
+        end
+
+        # Checks if there are any ARE rules to be triggered for the specified hooked browser.
+        #
+        # Returns an array with rule IDs that matched and should be triggered.
+        # if rule_id is specified, checks will be executed only against the specified rule (useful
+        #  for dynamic triggering of new rulesets ar runtime)
+        def find_matching_rules_for_zombie(browser, browser_version, os, os_version)
+          rules = BeEF::Core::Models::Rule.all
+
+          return if rules.nil?
+          return if rules.empty?
+
+          # TODO: handle cases where there are multiple ARE rules for the same hooked browser.
+          # maybe rules need to have priority or something?
+
+          print_info '[ARE] Checking if any defined rules should be triggered on target.'
+
+          match_rules = []
+          rules.each do |rule|
+            next unless zombie_matches_rule?(browser, browser_version, os, os_version, rule)
+
+            match_rules.push(rule.id)
+            print_more("Hooked browser and OS match rule: #{rule.name}.")
+          end
+
+          print_more("Found [#{match_rules.length}/#{rules.length}] ARE rules matching the hooked browser.")
+
+          match_rules
+        end
+
+        # @return [Boolean]
+        # Note: browser version checks are supporting only major versions, ex: C 43, IE 11
+        # Note: OS version checks are supporting major/minor versions, ex: OSX 10.10, Windows 8.1
+        def zombie_matches_rule?(browser, browser_version, os, os_version, rule)
+          return false if rule.nil?
+
+          unless zombie_browser_matches_rule?(browser, browser_version, rule)
+            print_debug("Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : does not match")
+            return false
+          end
+
+          print_debug("Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : matched")
+
+          unless zombie_os_matches_rule?(os, os_version, rule)
+            print_debug("OS version check -> (hook) #{os_version} #{rule.os_version} (rule): does not match")
+            return false
+          end
+
+          print_debug("OS version check -> (hook) #{os_version} #{rule.os_version} (rule): matched")
+
+          true
+        rescue StandardError => e
+          print_error e.message
+          print_debug e.backtrace.join("\n")
+        end
+
+        # @return [Boolean]
+        # TODO: This should be updated to support matching multiple OS (like the browser check below)
+        def zombie_os_matches_rule?(os, os_version, rule)
+          return false if rule.nil?
+
+          return false unless rule.os == 'ALL' || os == rule.os
+
+          # check if the OS versions match
+          os_ver_rule_cond = rule.os_version.split(' ').first
+
+          return true if os_ver_rule_cond == 'ALL'
+
+          return false unless @VERSION.include?(os_ver_rule_cond) || @VERSION_STR.include?(os_ver_rule_cond)
+
+          os_ver_rule_maj = rule.os_version.split(' ').last.split('.').first
+          os_ver_rule_min = rule.os_version.split(' ').last.split('.').last
+
+          if os_ver_rule_maj == 'XP'
+            os_ver_rule_maj = 5
+            os_ver_rule_min = 0
+          elsif os_ver_rule_maj == 'Vista'
+            os_ver_rule_maj = 6
+            os_ver_rule_min = 0
+          elsif os_ver_rule_maj == '7'
+            os_ver_rule_maj = 6
+            os_ver_rule_min = 0
+          end
+
+          # Most of the times Linux/*BSD OS doesn't return any version
+          # (TODO: improve OS detection on these operating systems)
+          if !os_version.nil? && !@VERSION_STR.include?(os_version)
+            os_ver_hook_maj = os_version.split('.').first
+            os_ver_hook_min = os_version.split('.').last
+
+            # the following assignments to 0 are need for later checks like:
+            # 8.1 >= 7, because if the version doesn't have minor versions, maj/min are the same
+            os_ver_hook_min = 0 if os_version.split('.').length == 1
+            os_ver_rule_min = 0 if rule.os_version.split('.').length == 1
+          else
+            # XP is Windows 5.0 and Vista is Windows 6.0. Easier for comparison later on.
+            # TODO: BUG: This will fail horribly if the target OS is Windows 7 or newer,
+            # as no version normalization is performed.
+            # TODO: Update this for every OS since Vista/7 ...
+            if os_version == 'XP'
+              os_ver_hook_maj = 5
+              os_ver_hook_min = 0
+            elsif os_version == 'Vista'
+              os_ver_hook_maj = 6
+              os_ver_hook_min = 0
+            elsif os_version == '7'
+              os_ver_hook_maj = 6
+              os_ver_hook_min = 0
+            end
+          end
+
+          if !os_version.nil? || rule.os_version != 'ALL'
+            os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
+            os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
+            return false unless (os_major_version_match && os_minor_version_match)
+          end
+
+          true
+        rescue StandardError => e
+          print_error e.message
+          print_debug e.backtrace.join("\n")
+        end
+
+        # @return [Boolean]
+        def zombie_browser_matches_rule?(browser, browser_version, rule)
+          return false if rule.nil?
+
+          b_ver_cond = rule.browser_version.split(' ').first
+
+          return false unless @VERSION.include?(b_ver_cond)
+
+          b_ver = rule.browser_version.split(' ').last
+
+          return false unless BeEF::Filters.is_valid_browserversion?(b_ver)
+
+          # check if rule specifies multiple browsers
+          if rule.browser =~ /\A[A-Z]+\Z/
+              return false unless rule.browser == 'ALL' || browser == rule.browser
+
+              # check if the browser version matches
+              browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
+              return false unless browser_version_match
+            else
+              browser_match = false
+              rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
+                if b == browser || b == 'ALL'
+                  browser_match = true
+                  break
+                end
+              end
+              return false unless browser_match
+          end
+
+          true
+        rescue StandardError => e
+          print_error e.message
+          print_debug e.backtrace.join("\n")
         end
 
         # Check if the hooked browser type/version and OS type/version match any Rule-sets
-        # stored in the BeEF::Core::AutorunEngine::Models::Rule database table
+        # stored in the BeEF::Core::Models::Rule database table
         # If one or more Rule-sets do match, trigger the module chain specified
-        def run(hb_id, browser_name, browser_version, os_name, os_version)
+        def find_and_run_all_matching_rules_for_zombie(hb_id)
+          return if hb_id.nil?
+
+          hb_details = BeEF::Core::Models::BrowserDetails
+          browser_name = hb_details.get(hb_id, 'browser.name')
+          browser_version = hb_details.get(hb_id, 'browser.version')
+          os_name = hb_details.get(hb_id, 'host.os.name')
+          os_version = hb_details.get(hb_id, 'host.os.version')
+
           are = BeEF::Core::AutorunEngine::Engine.instance
-          match_rules = are.match(browser_name, browser_version, os_name, os_version)
-          are.trigger(match_rules, hb_id) if !match_rules.nil? && match_rules.length > 0
+          rules = are.find_matching_rules_for_zombie(browser_name, browser_version, os_name, os_version)
+
+          return if rules.nil?
+          return if rules.empty?
+
+          are.run_rules_on_zombie(rules, hb_id)
         end
 
+        # Run the specified rule IDs on the specified zombie ID
+        # only if the rules match.
+        def run_matching_rules_on_zombie(rule_ids, hb_id)
+          return if rule_ids.nil?
+          return if hb_id.nil?
+
+          rule_ids = [rule_ids.to_i] if rule_ids.is_a?(String)
+
+          hb_details = BeEF::Core::Models::BrowserDetails
+          browser_name = hb_details.get(hb_id, 'browser.name')
+          browser_version = hb_details.get(hb_id, 'browser.version')
+          os_name = hb_details.get(hb_id, 'host.os.name')
+          os_version = hb_details.get(hb_id, 'host.os.version')
+
+          are = BeEF::Core::AutorunEngine::Engine.instance
+          rules = are.find_matching_rules_for_zombie(browser_name, browser_version, os_name, os_version)
+
+          return if rules.nil?
+          return if rules.empty?
+
+          new_rules = []
+          rules.each do |rule|
+            new_rules << rule if rule_ids.include?(rule)
+          end
+
+          return if new_rules.empty?
+
+          are.run_rules_on_zombie(new_rules, hb_id)
+        end
+
+        # Run the specified rule IDs on the specified zombie ID
+        # regardless of whether the rules match.
         # Prepare and return the JavaScript of the modules to be sent.
         # It also updates the rules ARE execution table with timings
-        def trigger(rule_ids, hb_id)
+        def run_rules_on_zombie(rule_ids, hb_id)
+          return if rule_ids.nil?
+          return if hb_id.nil?
+
           hb = BeEF::HBManager.get_by_id(hb_id)
           hb_session = hb.session
+
+          rule_ids = [rule_ids] if rule_ids.is_a?(Integer)
 
           rule_ids.each do |rule_id|
             rule = BeEF::Core::Models::Rule.find(rule_id)
@@ -86,6 +293,8 @@ module BeEF
               next
             end
 
+            print_more "Triggering rules #{rule_ids} on HB #{hb_id}"
+
             are_exec = BeEF::Core::Models::Execution.new(
               session_id: hb_session,
               mod_count: modules.length,
@@ -96,11 +305,10 @@ module BeEF
               rule_id: rule_id
             )
             are_exec.save!
-
-            # Once Engine.check() verified that the hooked browser match a Rule, trigger the Rule ;-)
-            print_more "Triggering ruleset #{rule_ids} on HB #{hb_id}"
           end
         end
+
+        private
 
         # Wraps module bodies in their own function, using setTimeout to trigger them with an eventual delay.
         # Launch order is also taken care of.
@@ -345,148 +553,23 @@ module BeEF
           print_error '[ARE] Could not find module end index' if wrapper_end_index.nil?
 
           cleaned_cmd_body = cmd_body.slice(wrapper_start_index..-(wrapper_end_index + 1)).join("\n")
+
           print_error '[ARE] No command to send' if cleaned_cmd_body.eql?('')
 
           # check if <<mod_input>> should be replaced with a variable name (depending if the variable is a string or number)
-          if replace_input
-            if cleaned_cmd_body.include?('"<<mod_input>>"')
-              final_cmd_body = cleaned_cmd_body.gsub('"<<mod_input>>"', 'mod_input')
-            elsif cleaned_cmd_body.include?('\'<<mod_input>>\'')
-              final_cmd_body = cleaned_cmd_body.gsub('\'<<mod_input>>\'', 'mod_input')
-            elsif cleaned_cmd_body.include?('<<mod_input>>')
-              final_cmd_body = cleaned_cmd_body.gsub('\'<<mod_input>>\'', 'mod_input')
-            else
-              return cleaned_cmd_body
-            end
-            final_cmd_body
+          return cleaned_cmd_body unless replace_input
+
+          if cleaned_cmd_body.include?('"<<mod_input>>"')
+            cleaned_cmd_body.gsub('"<<mod_input>>"', 'mod_input')
+          elsif cleaned_cmd_body.include?('\'<<mod_input>>\'')
+            cleaned_cmd_body.gsub('\'<<mod_input>>\'', 'mod_input')
+          elsif cleaned_cmd_body.include?('<<mod_input>>')
+            cleaned_cmd_body.gsub('\'<<mod_input>>\'', 'mod_input')
           else
             cleaned_cmd_body
           end
         rescue StandardError => e
           print_error "[ARE] There is likely a problem with the module's command.js parsing. Check Engine.clean_command_body. #{e.message}"
-        end
-
-        # Checks if there are any ARE rules to be triggered for the specified hooked browser
-        #
-        # Note: browser version checks are supporting only major versions, ex: C 43, IE 11
-        # Note: OS version checks are supporting major/minor versions, ex: OSX 10.10, Windows 8.1
-        #
-        # Returns an array with rule IDs that matched and should be triggered.
-        # if rule_id is specified, checks will be executed only against the specified rule (useful
-        #  for dynamic triggering of new rulesets ar runtime)
-        def match(browser, browser_version, os, os_version, rule_id = nil)
-          match_rules = []
-          rules = if rule_id.nil?
-                    BeEF::Core::Models::Rule.all
-                  else
-                    [BeEF::Core::Models::Rule.find(rule_id)]
-                  end
-          return nil if rules.nil?
-          return nil unless rules.length > 0
-
-          print_info '[ARE] Checking if any defined rules should be triggered on target.'
-          # TODO: handle cases where there are multiple ARE rules for the same hooked browser.
-          # TODO the above works well, but maybe rules need to have priority or something?
-          rules.each do |rule|
-            browser_match = false
-            os_match = false
-
-            b_ver_cond = rule.browser_version.split(' ').first
-            b_ver = rule.browser_version.split(' ').last
-
-            os_ver_rule_cond = rule.os_version.split(' ').first
-            os_ver_rule_maj = rule.os_version.split(' ').last.split('.').first
-            os_ver_rule_min = rule.os_version.split(' ').last.split('.').last
-
-            # Most of the times Linux/*BSD OS doesn't return any version
-            # (TODO: improve OS detection on these operating systems)
-            if !os_version.nil? && !@VERSION_STR.include?(os_version)
-              os_ver_hook_maj = os_version.split('.').first
-              os_ver_hook_min = os_version.split('.').last
-
-              # the following assignments to 0 are need for later checks like:
-              # 8.1 >= 7, because if the version doesn't have minor versions, maj/min are the same
-              os_ver_hook_min = 0 if os_version.split('.').length == 1
-              os_ver_rule_min = 0 if rule.os_version.split('.').length == 1
-            else
-              # most probably Windows XP or Vista. the following is a hack as Microsoft had the brilliant idea
-              # to switch from strings to numbers in OS versioning. To prevent rewriting code later on,
-              # we say that XP is Windows 5.0 and Vista is Windows 6.0. Easier for comparison later on.
-              if os_version == 'XP'
-                os_ver_hook_maj = 5
-                os_ver_hook_min = 0
-              end
-              if os_version == 'Vista'
-                os_ver_hook_maj = 6
-                os_ver_hook_min = 0
-              end
-            end
-
-            if os_ver_rule_maj == 'XP'
-              os_ver_rule_maj = 5
-              os_ver_rule_min = 0
-            end
-            if os_ver_rule_maj == 'Vista'
-              os_ver_rule_maj = 6
-              os_ver_rule_min = 0
-            end
-
-            next unless @VERSION.include?(b_ver_cond)
-            next unless BeEF::Filters.is_valid_browserversion?(b_ver)
-
-            next unless @VERSION.include?(os_ver_rule_cond) || @VERSION_STR.include?(os_ver_rule_cond)
-
-            # os_ver without checks as it can be very different or even empty, for instance on linux/bsd)
-
-            # skip rule unless the browser matches
-            browser_match = false
-            # check if rule specifies multiple browsers
-            if rule.browser =~ /\A[A-Z]+\Z/
-              next unless rule.browser == 'ALL' || browser == rule.browser
-
-              # check if the browser version matches
-              browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
-              browser_match = if browser_version_match
-                                true
-                              else
-                                false
-                              end
-              print_more "Browser version check -> (hook) #{browser_version} #{rule.browser_version} (rule) : #{browser_version_match}"
-            else
-              rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
-                browser_match = true if b == browser || b == 'ALL'
-              end
-              # else, only one browser
-            end
-            next unless browser_match
-
-            # skip rule unless the OS matches
-            next unless rule.os == 'ALL' || os == rule.os
-
-            # check if the OS versions match
-            if !os_version.nil? || rule.os_version != 'ALL'
-              os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
-              os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
-            else
-              # os_version_match = true if (browser doesn't return an OS version || rule OS version is ALL )
-              os_major_version_match = true
-              os_minor_version_match = true
-            end
-
-            os_match = true if os_ver_rule_cond == 'ALL' || (os_major_version_match && os_minor_version_match)
-            print_more "OS version check -> (hook) #{os_version} #{rule.os_version} (rule): #{os_major_version_match && os_minor_version_match}"
-
-            if browser_match && os_match
-              print_more "Hooked browser and OS type/version MATCH rule: #{rule.name}."
-              match_rules.push(rule.id)
-            end
-          rescue StandardError => e
-            print_error e.message
-            print_debug e.backtrace.join("\n")
-          end
-          print_more "Found [#{match_rules.length}/#{rules.length}] ARE rules matching the hooked browser type/version."
-
-          match_rules
         end
 
         # compare versions

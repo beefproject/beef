@@ -24,6 +24,8 @@ module BeEF
         MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
+          return unless @@config.get('beef.websocket.enable')
+
           secure = @@config.get('beef.http.websocket.secure')
 
           # @note Start a WSS server socket
@@ -110,11 +112,7 @@ module BeEF
                       next
                     end
 
-                    browser_name    = BeEF::Core::Models::BrowserDetails.get(hb_session, 'browser.name')
-                    browser_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'browser.version')
-                    os_name = BeEF::Core::Models::BrowserDetails.get(hb_session, 'host.os.name')
-                    os_version = BeEF::Core::Models::BrowserDetails.get(hb_session, 'host.os.version')
-                    BeEF::Core::AutorunEngine::Engine.instance.run(hooked_browser.id, browser_name, browser_version, os_name, os_version)
+                    BeEF::Core::AutorunEngine::Engine.instance.find_and_run_all_matching_rules_for_zombie(hooked_browser.id)
 
                     next
                   end
