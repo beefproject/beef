@@ -11,7 +11,7 @@ beef:
             authors: ["antisnatchor"]
 
             # Exclude code JavaScript libraries
-            exclude_core_js: ["lib/jquery-1.12.4.min.js", "lib/json2.js", "lib/jools.min.js", "lib/mdetect.js"]
+            exclude_core_js: ["lib/jquery-1.12.4.min.js", "lib/json2.js", "lib/mdetect.js"]
 
             # Obfuscation methods are executed in the order in which they're provided here
             # Available techniques: ["minify", "base_64", "whitespace"]
