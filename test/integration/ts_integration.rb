@@ -21,7 +21,6 @@ require './tc_network_rest' # Basic tests for Network extension RESTful API inte
 require '../api/1333_auth_rate' # API rate testing issue #1333'
 
 # Experimental extensions
-#require './tc_jools' # Basic tests for jools
 #require './tc_dns_rest' # Basic tests for DNS RESTful API interface
 #require './tc_webrtc_rest' # Basic tests for WebRTC extension
 #require './tc_social_engineering_rest' # Basic tests for social engineering RESTful API interface
