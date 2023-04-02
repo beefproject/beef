@@ -1,9 +1,5 @@
 {"name": "Confirm Close Tab",
   "author": "mgeeky",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "confirm_close_tab",
       "condition": null,

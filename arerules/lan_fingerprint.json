@@ -1,9 +1,6 @@
 {"name": "LAN Fingerprint",
   "author": "bcoles",
   "browser": ["FF", "C"],
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "get_internal_ip_webrtc",
       "condition": null,

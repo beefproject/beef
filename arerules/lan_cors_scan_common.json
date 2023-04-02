@@ -1,9 +1,5 @@
 {"name": "LAN CORS Scan (Common IPs)",
   "author": "bcoles",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "cross_origin_scanner_cors",
       "condition": null,

@@ -1,9 +1,5 @@
 {"name": "LAN SW Port Scan",
   "author": "aburro & aussieklutz",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "get_internal_ip_webrtc",
       "condition": null,

@@ -1,9 +1,6 @@
 {"name": "LAN Flash Scan (Common IPs)",
   "author": "bcoles",
   "browser": ["FF", "C"],
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "cross_origin_scanner_flash",
       "condition": null,

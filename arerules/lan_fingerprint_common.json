@@ -1,9 +1,5 @@
 {"name": "LAN Fingerprint (Common IPs)",
   "author": "antisnatchor",
-  "browser": "ALL",
-  "browser_version": "ALL",
-  "os": "ALL",
-  "os_version": "ALL",
   "modules": [
     {"name": "internal_network_fingerprinting",
       "condition": null,
