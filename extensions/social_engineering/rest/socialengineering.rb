@@ -68,65 +68,6 @@ module BeEF
             error 400 # Bad Request
           end
         end
-
-        # Example: curl -H "Content-Type: application/json; charset=UTF-8" -d 'json_body'
-        #-X POST http://127.0.0.1:3000/api/seng/send_mails?token=68f76c383709414f647eb4ba8448370453dd68b7
-        # Example json_body:
-        # {
-        #    "template": "default",
-        #    "subject": "Hi from BeEF",
-        #    "fromname": "BeEF",
-        #    "fromaddr": "beef@beef.com",
-        #    "link": "http://www.microsoft.com/security/online-privacy/phishing-symptoms.aspx",
-        #    "linktext": "http://beefproject.com",
-        #    "recipients": [{
-        #            "user1@gmail.com": "Michele",
-        #            "user2@antisnatchor.com": "Antisnatchor"
-        # }]
-        # }
-        post '/send_mails' do
-          request.body.rewind
-          begin
-            body = JSON.parse request.body.read
-
-            template = body['template']
-            subject = body['subject']
-            fromname = body['fromname']
-            fromaddr = body['fromaddr']
-            link = body['link']
-            linktext = body['linktext']
-
-            if template.nil? || subject.nil? || fromaddr.nil? || fromname.nil? || link.nil? || linktext.nil?
-              print_error 'All parameters are mandatory.'
-              halt 401
-            end
-
-            if (link =~ URI::DEFAULT_PARSER.make_regexp).nil? # invalid URI
-              print_error 'Invalid link or linktext'
-              halt 401
-            end
-
-            recipients = body['recipients'][0]
-
-            recipients.each do |email, name|
-              if !/\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/.match(email) || name.nil?
-                print_error "Email [#{email}] or name [#{name}] are not valid/null."
-                halt 401
-              end
-            end
-          rescue StandardError
-            print_error 'Invalid JSON input passed to endpoint /api/seng/send_emails'
-            error 400
-          end
-
-          begin
-            mass_mailer = BeEF::Extension::SocialEngineering::MassMailer.instance
-            mass_mailer.send_email(template, fromname, fromaddr, subject, link, linktext, recipients)
-          rescue StandardError => e
-            print_error "Mailer send_email failed: #{e.message}"
-            error 400
-          end
-        end
       end
     end
   end

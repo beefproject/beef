@@ -7,16 +7,11 @@ module BeEF
   module Extension
     module SocialEngineering
       #
-      # NOTE: the powershell_payload is work/copyright from @mattifestation (kudos for that)
-      # NOTE: the visual-basic macro code inside the Microsoft Office Word/Excel documents is work/copyright from @enigma0x3 (kudos for that)
-      #
-      # If you use the powershell payload for Office documents (extensions/social_engineering/powershell/msoffice_docs),
-      # make sure you edit the macro inside the sample documents.
-      # Change the default payload URL (DownloadString('http://172.16.37.1/ps/ps.png'))) with your BeEF server and powershell URL settings.
       # By default powershell will be served from http://beef_server:beef_port/ps/ps.png
       #
-      # NOTE: make sure you change the 'beef.http.public' variable in the main BeEF config.yaml to the specific IP where BeEF is binded to,
-      # and also the powershell-related variable in extensions/social_engineering/config.yaml
+      # NOTE: make sure you change the 'beef.http.public' settings in the main BeEF config.yaml to the public IP address / hostname for BeEF,
+      # and also the powershell-related variable in extensions/social_engineering/config.yaml,
+      # and also write your PowerShell payload to extensions/social_engineering/powershell/powershell_payload.
       class Bind_powershell < BeEF::Core::Router::Router
         before do
           headers 'Pragma' => 'no-cache',
@@ -49,9 +44,11 @@ module BeEF
 
           ps_payload_path = "#{$root_dir}/extensions/social_engineering/powershell/powershell_payload"
 
-          ps_payload = ''
-          ps_payload = File.read(ps_payload_path).gsub('___LHOST___', @ps_lhost).gsub('___LPORT___', @ps_port) if File.exist?(ps_payload_path)
-          ps_payload
+          if File.exist?(ps_payload_path)
+            return File.read(ps_payload_path).to_s.gsub('___LHOST___', @ps_lhost).gsub('___LPORT___', @ps_port)
+          end
+
+          nil
         end
       end
     end
