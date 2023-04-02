@@ -420,20 +420,25 @@ end
 # add a rule
 def dns_add_rule(dns_pattern, dns_resource, dns_response)
   dns_response = [dns_response] if dns_response.is_a?(String)
-  begin
-    print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
-    response = RestClient.post "#{@url}dns/rule?token=#{@token}", {
-      'pattern' => dns_pattern,
-      'resource' => dns_resource,
-      'response' => dns_response }.to_json,
-    :content_type => :json,
-    :accept => :json
-    details = JSON.parse(response.body)
-    print_good "Added rule [id: #{details['id']}]"
-    details
-  rescue => e
-    print_error "Could not add DNS rule: #{e.message}"
+  print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
+  response = RestClient.post "#{@url}dns/rule?token=#{@token}", {
+    'pattern' => dns_pattern,
+    'resource' => dns_resource,
+    'response' => dns_response }.to_json,
+  :content_type => :json,
+  :accept => :json
+  details = JSON.parse(response.body)
+  rule_id = details['id']
+
+  if rule_id.nil?
+    print_error("Could not add DNS rule: #{details['error']}")
+    return details
   end
+
+  print_good "Added rule [id: #{details['id']}]"
+  details
+rescue => e
+  print_error "Could not add DNS rule: #{e.message}"
 end
 
 # get rule details
@@ -451,14 +456,78 @@ end
 
 # delete a rule
 def dns_delete_rule(id)
-  begin
-    response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
-    details = JSON.parse(response.body)
-    print_good "Deleted rule [id: #{id}]"
-    details
-  rescue => e
-    print_error "Could not delete DNS rule: #{e.message}"
+  response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
+  details = JSON.parse(response.body)
+  print_good "Deleted rule [id: #{id}]"
+  details
+rescue => e
+  print_error "Could not delete DNS rule: #{e.message}"
+end
+
+
+################################################################################
+### Autorun
+################################################################################
+
+def autorun_rules
+  print_verbose "Retrieving Autorun rules"
+  response = RestClient.get "#{@url}autorun/rules", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good("Retrieved #{details['count']} rules")
+  details
+rescue => e
+  print_error("Could not retrieve Autorun rules: #{e.message}")
+end
+
+def autorun_delete_rule(id)
+  print_verbose "Deleting Autorun rule with ID: #{id}"
+  response = RestClient.delete "#{@url}autorun/rule/#{id}?token=#{@token}"
+  details = JSON.parse(response.body)
+  print_good("Deleted rule [id: #{id}]")
+  details
+rescue => e
+  print_error("Could not delete Autorun rule: #{e.message}")
+end
+
+def autorun_add_rule(data)
+  print_verbose "Adding Autorun rule: #{data}"
+  response = RestClient.post "#{@url}autorun/rule/add?token=#{@token}",
+    data.to_json,
+    :content_type => :json,
+    :accept => :json
+  details = JSON.parse(response.body)
+  rule_id = details['rule_id']
+
+  if rule_id.nil?
+    print_error("Could not add Autorun rule: #{details['error']}")
+    return details
   end
+
+  print_good("Added rule [id: #{details['id']}]")
+  details
+rescue => e
+  print_error("Could not add Autorun rule: #{e.message}")
+end
+
+def autorun_run_rule_on_all_browsers(rule_id)
+  print_verbose "Running Autorun rule #{rule_id} on all browsers"
+  response = RestClient.get "#{@url}autorun/run/#{rule_id}", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_debug details
+  print_good('Done')
+  details
+rescue => e
+  print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
+end
+
+def autorun_run_rule_on_browser(rule_id, hb_id)
+  print_verbose "Running Autorun rule #{rule_id} on browser #{hb_id}"
+  response = RestClient.get "#{@url}autorun/run/#{rule_id}/#{hb_id}", {:params => {:token => @token}}
+  details = JSON.parse(response.body)
+  print_good('Done')
+  details
+rescue => e
+  print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
 end
 
 
