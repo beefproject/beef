@@ -88,7 +88,7 @@ module BeEF
         # Ensures that cmd line arguments are parsed.
         #
         def self.get_options
-          self.class.parse unless @already_parsed
+          parse unless @already_parsed
           return @options 
         end
 
