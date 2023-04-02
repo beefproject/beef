@@ -31,6 +31,8 @@ module BeEF
         # It also populates the 'options' hash.
         #
         def self.parse
+          return if @already_parsed
+
           optparse = OptionParser.new do |opts|
             opts.on('-x', '--reset', 'Reset the database') do
               @options[:resetdb] = true
@@ -80,8 +82,8 @@ module BeEF
           optparse.parse!(args_copy)
           @already_parsed = true
         rescue OptionParser::InvalidOption
-          puts 'Provided option not recognized by beef. If you provided a Sinatra option, you may ignore this warning. Run beef --help for more information.'
-          @already_parsed = true
+          puts 'Provided option not recognized by beef. If you provided a Sinatra option, note that beef explicitly disallows them.'
+          exit 1
         end
 
         #
