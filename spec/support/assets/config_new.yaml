@@ -128,13 +128,6 @@ beef:
         enable: true
         database: '/opt/GeoIP/GeoLite2-City.mmdb'
 
-    # Integration with PhishingFrenzy
-    # If enabled BeEF will try to get the UID parameter value from the hooked URI, as this is used by PhishingFrenzy
-    # to uniquely identify the victims. In this way you can easily associate phishing emails with hooked browser.
-    integration:
-        phishing_frenzy:
-            enable: false
-
     # You may override default extension configuration parameters here
     # Note: additional experimental extensions are available in the 'extensions' directory
     #       and can be enabled via their respective 'config.yaml' file

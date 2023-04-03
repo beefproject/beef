@@ -546,17 +546,6 @@ module BeEF
             err_msg "Invalid value for hardware.screen.touchenabled returned from the hook browser's initial connection."
           end
 
-          if config.get('beef.integration.phishing_frenzy.enable')
-            # get and store the browser plugins
-            victim_uid = get_param(@data['results'], 'PhishingFrenzyUID')
-            print_debug "PhishingFrenzy victim UID is #{victim_uid}"
-            if BeEF::Filters.alphanums_only?(victim_uid)
-              BD.set(session_id, 'PhishingFrenzyUID', victim_uid)
-            else
-              err_msg "Invalid PhishingFrenzy Victim UID returned from the hook browser's initial connection."
-            end
-          end
-
           # log a few info of newly hooked zombie in the console
           print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked domain [#{log_zombie_domain}:#{log_zombie_port}]"
 

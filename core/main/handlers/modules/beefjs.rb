@@ -100,9 +100,6 @@ module BeEF
               hook_session_config['websocket_sec_port'] = config.get('beef.http.websocket.secure_port')
             end
 
-            # @note Set if PhishingFrenzy integration is enabled
-            hook_session_config['phishing_frenzy_enable'] = config.get('beef.integration.phishing_frenzy.enable') if config.get('beef.integration.phishing_frenzy.enable')
-
             # @note populate place holders in the beef_js string and set the response body
             eruby = Erubis::FastEruby.new(beef_js)
             @hook = eruby.evaluate(hook_session_config)
