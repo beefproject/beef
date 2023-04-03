@@ -4350,24 +4350,6 @@ beef.browser = {
         if (has_wmp) details['browser.capabilities.wmp'] = has_wmp;
         if (has_vlc) details['browser.capabilities.vlc'] = has_vlc;
 
-        var pf_integration = "&lt;%= @phishing_frenzy_enable %>";
-        if (pf_integration) {
-            var pf_param = "uid";
-            var pf_victim_uid = "";
-            var location_search = window.location.search.substring(1);
-            var params = location_search.split('&amp;');
-            for (var i = 0; i &lt; params.length; i++) {
-                var param_entry = params[i].split('=');
-                if (param_entry[0] == pf_param) {
-                    pf_victim_uid = param_entry[1];
-                    details['PhishingFrenzyUID'] = pf_victim_uid;
-                    break;
-                }
-            }
-        } else {
-            details['PhishingFrenzyUID'] = "N/A";
-        }
-
         return details;
     },
 

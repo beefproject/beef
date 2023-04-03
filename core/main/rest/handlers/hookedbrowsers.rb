@@ -100,32 +100,6 @@ module BeEF
         end
 
         #
-        # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
-        # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
-        #
-        get '/pf/online' do
-          online_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
-
-          output = {
-            'aaData' => online_hooks
-          }
-          output.to_json
-        end
-
-        #
-        # @note this is basically the same call as /api/hooks, but returns different data structured in arrays rather than objects.
-        # Useful if you need to query the API via jQuery.dataTable < 1.10 which is currently used in PhishingFrenzy
-        #
-        get '/pf/offline' do
-          offline_hooks = hbs_to_array(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
-
-          output = {
-            'aaData' => offline_hooks
-          }
-          output.to_json
-        end
-
-        #
         # @note Get all the hooked browser details (plugins enabled, technologies enabled, cookies)
         #
         get '/:session' do
@@ -197,38 +171,6 @@ module BeEF
             'country' => details.get(hb.session, 'location.country'),
             'country_code' => details.get(hb.session, 'location.country.isocode')
           }
-        end
-
-        # this is used in the 'get '/pf'' restful api call
-        def hbs_to_array(hbs)
-          hooked_browsers = []
-          hbs.each do |hb|
-            details = BeEF::Core::Models::BrowserDetails
-            # @todo what does the below TODO comment mean? why do we care about the client side view inside a controller?
-            # TODO: jQuery.dataTables needs fixed array indexes, add emptry string if a value is blank
-
-            pfuid = details.get(hb.session, 'PhishingFrenzyUID').nil? ? 'n/a' : details.get(hb.session, 'PhishingFrenzyUID')
-            bname = details.get(hb.session, 'browser.name').nil? ? 'n/a' : details.get(hb.session, 'browser.name')
-            bversion = details.get(hb.session, 'browser.version').nil? ? 'n/a' : details.get(hb.session, 'browser.version')
-            bplugins = details.get(hb.session, 'browser.plugins').nil? ? 'n/a' : details.get(hb.session, 'browser.plugins')
-
-            hooked_browsers << [
-              hb.id,
-              hb.ip,
-              pfuid,
-              bname,
-              bversion,
-              details.get(hb.session, 'host.os.name'),
-              details.get(hb.session, 'browser.platform'),
-              details.get(hb.session, 'browser.language'),
-              bplugins,
-              details.get(hb.session, 'location.city'),
-              details.get(hb.session, 'location.country'),
-              details.get(hb.session, 'location.latitude'),
-              details.get(hb.session, 'location.longitude')
-            ]
-          end
-          hooked_browsers
         end
       end
     end
