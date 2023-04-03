@@ -196,7 +196,7 @@ GEM
       test-unit (>= 2.5.2)
     test-unit-runner-tap (1.1.2)
       test-unit
-    thin (1.8.1)
+    thin (1.8.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
@@ -264,7 +264,7 @@ DEPENDENCIES
   sqlite3 (~> 1.6, >= 1.6.1)
   term-ansicolor
   test-unit-full (~> 0.0.5)
-  thin (~> 1.8, >= 1.8.1)
+  thin (~> 1.8)
   uglifier (~> 4.2)
   websocket-client-simple (~> 0.6.1)
   xmlrpc (~> 0.3.2)
