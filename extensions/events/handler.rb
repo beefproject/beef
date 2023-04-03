@@ -10,32 +10,34 @@ module BeEF
       # The http handler that manages the Events.
       #
       class Handler
-        Z = BeEF::Core::Models::HookedBrowser
+        HB = BeEF::Core::Models::HookedBrowser
 
         def initialize(data)
           @data = data
           setup
         end
 
-        #
-        # Sets up event logging
-        #
         def setup
-          # validates the hook token
           beef_hook = @data['beefhook'] || nil
-          if beef_hook.nil?
-            print_error '[EVENTS] beef_hook is null'
+
+          unless BeEF::Filters.is_valid_hook_session_id?(beef_hook)
+            print_error('[Event Logger] Invalid hooked browser session')
             return
           end
 
           # validates that a hooked browser with the beef_hook token exists in the db
-          zombie = Z.where(session: beef_hook).first || nil
+          zombie = HB.where(session: beef_hook).first || nil
           if zombie.nil?
-            print_error '[EVENTS] Invalid beef hook id: the hooked browser cannot be found in the database'
+            print_error('[Event Logger] Invalid beef hook id: the hooked browser cannot be found in the database')
             return
           end
 
-          events = @data['results']
+          events = @data['results'] || nil
+
+          unless events.is_a?(Array)
+            print_error("[Event Logger] Received event data of type #{events.class}; expected Array")
+            return
+          end
 
           # push events to logger
           logger = BeEF::Core::Logger.instance
@@ -57,6 +59,8 @@ module BeEF
             logger.register('Event', data, zombie.id)
           end
         end
+
+        private
 
         def event_log_string(event)
           return unless event.is_a?(Hash)

@@ -24,7 +24,7 @@ module BeEF
         MOUNTS = BeEF::Core::Server.instance.mounts
 
         def initialize
-          return unless @@config.get('beef.websocket.enable')
+          return unless @@config.get('beef.http.websocket.enable')
 
           secure = @@config.get('beef.http.websocket.secure')
 
