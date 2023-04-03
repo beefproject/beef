@@ -10,7 +10,6 @@ ZombieTab = function(zombie) {
 	commands_tab = new ZombieTab_Commands(zombie);
 	proxy_tab = new ZombieTab_Requester(zombie);
 	xssrays_tab =  new ZombieTab_XssRaysTab(zombie);
-	ipec_tab = new ZombieTab_IpecTab(zombie);
 	autorun_tab = new ZombieTab_Autorun(zombie);
 	network_tab = new ZombieTab_Network(zombie);
   webrtc_tab = new ZombieTab_Rtc(zombie);
@@ -32,7 +31,6 @@ ZombieTab = function(zombie) {
       commands_tab,
       proxy_tab,
       xssrays_tab,
-      ipec_tab,
       autorun_tab,
       network_tab,
       webrtc_tab
@@ -41,8 +39,6 @@ ZombieTab = function(zombie) {
 			afterrender:function(component){
 				// Hide auto-run tab
 				component.hideTabStripItem(autorun_tab);
-				// Hide IPEC tab - it's current broken
-				component.hideTabStripItem(ipec_tab);
         // Hide tabs for disabled functionality
         <%= BeEF::Core::Configuration.instance.get("beef.extension.webrtc.enable") ? '' : 'component.hideTabStripItem(webrtc_tab);' %>
         <%= BeEF::Core::Configuration.instance.get("beef.extension.xssrays.enable") ? '' : 'component.hideTabStripItem(xssrays_tab);' %>

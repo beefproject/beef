@@ -39,7 +39,6 @@ WelcomeTab = function() {
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Proxy:</span> The Proxy tab allows you to submit arbitrary HTTP requests on behalf of the hooked browser. \
               Each request sent by the Proxy is recorded in the History panel. Click a history item to view the HTTP headers and HTML source of the HTTP response.</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>Network:</span> The Network tab allows you to interact with hosts on the local network(s) of the hooked browser.</li> \
-              <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>IPEC:</span> Send commands to the victims systems using Inter-Protocol Exploitation/Communication (IPEC)</li> \
               <li><span style='font:bold 11px tahoma,arial,helvetica,sans-serif'>WebRTC:</span> Send commands to the victims systems via a zombie specified as the primary WebRTC caller.</li> \
               </ul><br /> \
               <p>You can also right-click a hooked browser to open a context-menu with additional functionality:</p><br /> \

@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Replace Videos (Fake Plugin)"
-            description: "Replaces an object selected with jQuery (all embed tags by default) with an image advising the user to install a missing plugin. If the user clicks the image they will be prompted to download a malicious Firefox extension (by default)."
+            description: "Replaces an object selected with jQuery (all embed tags by default) with an image advising the user to install a missing plugin. If the user clicks the image they will be prompted to download a file from the specified URL."
             authors: ["Yori Kvitchko", "antisnatchor", "bcoles"]
             target:
                 user_notify: ['ALL']

