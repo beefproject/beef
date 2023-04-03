@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ -z "${1}" || -z "${2}" ]]; then
   echo "Error: missing arguments"
+  exit 1
+fi
+
+if [[ ! -f beef || ! -f VERSION ]]; then
+  echo "Error: must be run from within the BeEF root directory"
   exit 1
 fi
 
