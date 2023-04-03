@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Social Engineering"
             name: "Fake Notification Bar (Firefox)"
-            description: "Displays a fake notification bar at the top of the screen, similar to those presented in Firefox. If the user clicks the notification they will be prompted to download a malicious Firefox extension (by default)."
+            description: "Displays a fake notification bar at the top of the screen, similar to those presented in Firefox. If the user clicks the notification they will be prompted to download a file from the the specified URL."
             authors: ["xntrik", "bcoles"]
             target:
                 user_notify: ['ALL']
