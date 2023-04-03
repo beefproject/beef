@@ -11,7 +11,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.1)
+    addressable (2.8.2)
       public_suffix (>= 2.0.2, < 6.0)
     ansi (1.5.0)
     archive-zip (0.12.0)
@@ -27,7 +27,7 @@ GEM
       async
     browserstack-local (1.4.1)
     byebug (11.1.3)
-    capybara (3.38.0)
+    capybara (3.39.0)
       addressable
       matrix
       mini_mime (>= 0.1.3)
@@ -231,7 +231,7 @@ DEPENDENCIES
   async (~> 1.31)
   async-dns (~> 1.3)
   browserstack-local (~> 1.4)
-  capybara (~> 3.38)
+  capybara (~> 3.39)
   curb (~> 1.0, >= 1.0.5)
   em-websocket (~> 0.5.3)
   erubis (~> 2.7)
