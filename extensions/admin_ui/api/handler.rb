@@ -77,7 +77,6 @@ module BeEF
               ui/panel/tabs/ZombieTabCommands.js
               ui/panel/tabs/ZombieTabRider.js
               ui/panel/tabs/ZombieTabXssRays.js
-              wterm/wterm.jquery.js
               ui/panel/PanelViewer.js
               ui/panel/LogsDataGrid.js
               ui/panel/BrowserDetailsDataGrid.js
