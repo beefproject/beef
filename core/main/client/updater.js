@@ -7,7 +7,7 @@
 /**
  * Object in charge of getting new commands from the BeEF framework and execute them.
  * The XHR-polling channel is managed here. If WebSockets are enabled,
- * websocket.ls is used instead.
+ * websocket.js is used instead.
  * @namespace beef.updater
  */
 beef.updater = {

