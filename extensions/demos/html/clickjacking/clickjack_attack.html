@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2006-2023Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 -->
@@ -109,12 +109,8 @@ font-size:20px;
 </style>
 </head>
 <body>
-<!-- BeEF hook call -->
-<script type="text/javascript">
-	var commandModuleStr = '<script src="' + window.location.protocol + '//' + window.location.host + '<%= @hook_uri %>" type="text/javascript"><\/script>';
-	document.write(commandModuleStr);
-</script>
 
+<script src="/hook.js"></script>
 
 <div class="wrapper">
 	<div class="quotes">

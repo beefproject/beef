@@ -1,17 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <!--
-    Copyright (c) 2006-2023Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - http://beefproject.com
     See the file 'doc/COPYING' for copying permission
 -->
 <head>
 	<title>BeEF Basic Demo</title>
 	<meta charset="utf-8"/>
-	<script>
-		var commandModuleStr = '<script src="<%= @hook_uri %>" type="text/javascript"><\/script>';
-		document.write(commandModuleStr);
-	</script>
+	<script src="/hook.js"></script>
 </head>
 
 <body>
