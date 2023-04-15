@@ -18,8 +18,8 @@ module BeEF
             channel = @config.get('beef.extension.notifications.slack.channel')
             username = @config.get('beef.extension.notifications.slack.username')
 
-            if webhook_url.include?('your_webhook_url') || !webhook_url.start_with?('https://hook\.slack.com/services/')
-              print_error '[Notifications] Invalid Slack WebHook URL'
+            if webhook_url.include?('your_webhook_url') || !webhook_url.start_with?('https://hooks.slack.com/services/')
+              print_error('[Notifications] Invalid Slack WebHook URL')
               return
             end
 
@@ -31,6 +31,8 @@ module BeEF
             )
 
             notifier.ping message
+
+            print_debug("[Notifications] Established Slack notification channel: #{webhook_url}")
           rescue StandardError => e
             print_error "[Notifications] Slack notification initialization failed: #{e.message}"
           end
