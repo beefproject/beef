@@ -56,7 +56,7 @@ end
 
 # QRcode extension
 group :ext_qrcode do
-  gem 'qr4r', '~> 0.6.1'
+  gem 'qr4r', '~> 0.6.2'
 end
 
 # For running unit tests
