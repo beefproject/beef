@@ -12,7 +12,7 @@ gem 'eventmachine', '~> 1.2', '>= 1.2.7'
 gem 'thin', '~> 1.8'
 gem 'sinatra', '~> 3.0', '>= 3.0.5'
 gem 'rack', '~> 2.2'
-gem 'rack-protection', '~> 3.0.5'
+gem 'rack-protection', '~> 3.0.6'
 gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
 gem 'mime-types', '~> 3.4', '>= 3.4.1'
