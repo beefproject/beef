@@ -164,7 +164,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.8.1)
+    selenium-webdriver (4.9.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -258,7 +258,7 @@ DEPENDENCIES
   rubocop (~> 1.48.1)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.8, >= 4.8.1)
+  selenium-webdriver (~> 4.9)
   sinatra (~> 3.0, >= 3.0.5)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.6, >= 1.6.1)
