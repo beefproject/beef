@@ -7,12 +7,15 @@
 RSpec.describe 'BeEF API Rate Limit' do
 
 	before(:all) do
-		@config = BeEF::Core::Configuration.instance
-		@config.set('beef.credentials.user', "beef")
-		@config.set('beef.credentials.passwd', "beef")
-		@username = @config.get('beef.credentials.user')
-		@password = @config.get('beef.credentials.passwd')
+		# Store password to authenticate at REST API
+		@password = BEEF_PASSWD
+		@pw_hash = BCrypt::Password.create(@password)
 		
+		@config = BeEF::Core::Configuration.instance
+		@config.set('beef.credentials.user', BEEF_USER)
+		@config.set('beef.credentials.bcrypt_pw_hash', @pw_hash)
+		@username = @config.get('beef.credentials.user')
+
 		# Load BeEF extensions and modules
 		# Always load Extensions, as previous changes to the config from other tests may affect
 		# whether or not this test passes.

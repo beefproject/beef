@@ -23,8 +23,11 @@ RSpec.describe 'BeEF Extension Requester' do
     # start beef server
     
     @config = BeEF::Core::Configuration.instance
-    @config.set('beef.credentials.user', "beef")
-    @config.set('beef.credentials.passwd', "beef")
+
+    password = BEEF_PASSWD
+    pw_hash = BCrypt::Password.create(password)
+    @config.set('beef.credentials.user', BEEF_USER)
+    @config.set('beef.credentials.bcrypt_pw_hash', pw_hash)
     
     #generate api token
     BeEF::Core::Crypto::api_token

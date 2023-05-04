@@ -17,10 +17,11 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
     File.delete(db_file) if File.exist?(db_file)
-    @config.set('beef.credentials.user', 'beef')
-    @config.set('beef.credentials.passwd', 'beef')
-    @username = @config.get('beef.credentials.user')
-    @password = @config.get('beef.credentials.passwd')
+
+    password = BEEF_PASSWD
+    pw_hash = BCrypt::Password.create(password)
+    @config.set('beef.credentials.user', BEEF_USER)
+    @config.set('beef.credentials.bcrypt_pw_hash', pw_hash)
 
     # Load BeEF extensions and modules
     # Always load Extensions, as previous changes to the config from other tests may affect
