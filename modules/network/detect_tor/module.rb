@@ -6,7 +6,7 @@
 class Detect_tor < BeEF::Core::Command
   def self.options
     [
-      { 'name' => 'tor_resource', 'ui_label' => 'What Tor resource to request', 'value' => 'http://xycpusearchon2mc.onion/deeplogo.jpg' },
+      { 'name' => 'tor_resource', 'ui_label' => 'What Tor resource to request', 'value' => 'http://pzhdfe7jraknpj2qgu5cz2u3i4deuyfwmonvzu5i3nyw4t4bmg7o5pad.onion/static/images/logo.png' },
       { 'name' => 'timeout', 'ui_label' => 'Detection timeout', 'value' => '10000' }
     ]
   end
