@@ -67,7 +67,7 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     io-like (0.3.1)
-    irb (1.7.0)
+    irb (1.7.1)
       reline (>= 0.3.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
