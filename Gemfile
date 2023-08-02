@@ -37,7 +37,7 @@ gem 'erubis', '~> 2.7'
 # Metasploit Integration extension
 group :ext_msf do
   gem 'msfrpc-client', '~> 1.1', '>= 1.1.2'
-  gem 'xmlrpc', '~> 0.3.2'
+  gem 'xmlrpc', '~> 0.3.3'
 end
 
 # Notifications extension
