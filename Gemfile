@@ -70,7 +70,7 @@ group :test do
     gem 'pry-byebug', '~> 3.10', '>= 3.10.1'
 
     gem 'rest-client', '~> 2.1.0'
-    gem 'websocket-client-simple', '~> 0.6.1'
+    gem 'websocket-client-simple', '~> 0.8.0'
 
     # curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev

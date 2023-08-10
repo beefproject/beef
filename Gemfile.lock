@@ -218,7 +218,7 @@ GEM
     unicode-display_width (2.4.2)
     webrick (1.8.1)
     websocket (1.2.9)
-    websocket-client-simple (0.6.1)
+    websocket-client-simple (0.8.0)
       event_emitter
       websocket
     xmlrpc (0.3.2)
@@ -269,7 +269,7 @@ DEPENDENCIES
   test-unit-full (~> 0.0.5)
   thin (~> 1.8)
   uglifier (~> 4.2)
-  websocket-client-simple (~> 0.6.1)
+  websocket-client-simple (~> 0.8.0)
   xmlrpc (~> 0.3.2)
 
 BUNDLED WITH
