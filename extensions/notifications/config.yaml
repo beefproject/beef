@@ -26,3 +26,9 @@ beef:
               webhook_url: "your_webhook_url"
               channel: "#beef"     # Slack channel
               username: "notifier" # Username can be anything
+            ntfy:
+              enable: false
+              endpoint_url: "https://ntfy.sh/beef"
+              username: "" # Leave blank if not needed
+              password: "" # Leave blank if not needed
+
