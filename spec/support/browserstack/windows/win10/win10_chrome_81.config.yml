@@ -1,7 +1,7 @@
 server: "hub-cloud.browserstack.com"
 
 common_caps:
-  "build": "Windows 10 Chrome 81"
+  "build": "Windows 11 Chrome 103"
   "project": "BeEF"
   "browserstack.local": true
   "browserstack.video": false
@@ -9,6 +9,6 @@ common_caps:
 browser_caps:
   -
     "browser": "chrome"
-    "browser_version": "81.0"
+    "browser_version": "103.0"
     "os": "windows"
-    "os_version": "10"
+    "os_version": "11”
