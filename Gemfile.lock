@@ -53,7 +53,7 @@ GEM
     espeak-ruby (1.1.0)
     event_emitter (0.2.6)
     eventmachine (1.2.7)
-    execjs (2.8.1)
+    execjs (2.9.1)
     fiber-local (1.0.0)
     geckodriver-helper (0.24.0)
       archive-zip (~> 0.7)
@@ -243,7 +243,7 @@ DEPENDENCIES
   erubis (~> 2.7)
   espeak-ruby (~> 1.1.0)
   eventmachine (~> 1.2, >= 1.2.7)
-  execjs (~> 2.8, >= 2.8.1)
+  execjs (~> 2.9)
   geckodriver-helper (~> 0.24.0)
   irb (~> 1.8)
   json
