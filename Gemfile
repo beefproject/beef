@@ -16,7 +16,7 @@ gem 'rack-protection', '~> 3.0.5'
 gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
 gem 'mime-types', '~> 3.4', '>= 3.4.1'
-gem 'execjs', '~> 2.8', '>= 2.8.1'
+gem 'execjs', '~> 2.9'
 gem 'ansi', '~> 1.5'
 gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'rubyzip', '~> 2.3'
@@ -37,7 +37,7 @@ gem 'erubis', '~> 2.7'
 # Metasploit Integration extension
 group :ext_msf do
   gem 'msfrpc-client', '~> 1.1', '>= 1.1.2'
-  gem 'xmlrpc', '~> 0.3.2'
+  gem 'xmlrpc', '~> 0.3.3'
 end
 
 # Notifications extension
