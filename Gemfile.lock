@@ -224,7 +224,7 @@ GEM
     websocket-client-simple (0.6.1)
       event_emitter
       websocket
-    xmlrpc (0.3.2)
+    xmlrpc (0.3.3)
       webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -273,7 +273,7 @@ DEPENDENCIES
   thin (~> 1.8)
   uglifier (~> 4.2)
   websocket-client-simple (~> 0.6.1)
-  xmlrpc (~> 0.3.2)
+  xmlrpc (~> 0.3.3)
 
 BUNDLED WITH
    2.4.8
