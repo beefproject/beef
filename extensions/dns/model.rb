@@ -45,7 +45,7 @@ module BeEF
             if resource == Resolv::DNS::Resource::IN::A
               if response.is_a?(String) && BeEF::Filters.is_valid_ip?(response, :ipv4)
                 format "t.respond!('%s')", response
-              elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
+              elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response.to_s =~ sym_regex
                 format 't.fail!(:%s)', response.to_sym
               elsif response.is_a?(Array)
                 str1 = "t.respond!('%s');"
