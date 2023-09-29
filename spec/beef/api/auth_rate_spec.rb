@@ -74,20 +74,36 @@ RSpec.describe 'BeEF API Rate Limit' do
 		end
 
 		# Give the server time to start-up
-		sleep 1
+		sleep 3
 
-		# Authenticate to REST API & pull the token from the response
-		@response = RestClient.post "#{RESTAPI_ADMIN}/login", { 'username': "#{@username}", 'password': "#{@password}" }.to_json, :content_type => :json
+		# Try to connect 3 times 
+		(0..2).each do |again|   
+			# Authenticate to REST API & pull the token from the response
+			if @response.nil?
+				print_info "Try to connect: " + again.to_s
+				begin
+					creds = { 'username': "#{@username}", 'password': "#{@password}" }.to_json
+					@response = RestClient.post "#{RESTAPI_ADMIN}/login", creds, :content_type => :json
+				rescue RestClient::ServerBrokeConnection, Errno::ECONNREFUSED # likely to be starting up still
+				rescue => error
+					print_error error.message
+				end
+				print_info "Rescue: sleep for 10 and try to connect again"
+				sleep 10
+			end
+		end
+		expect(@response) .to be_truthy # confirm the test has connected to the server
+		print_info "Connection with server was successful"
 		@token = JSON.parse(@response)['token']
 	end
   
 	after(:all) do
 		print_info "Shutting down server"
-		Process.kill("KILL",@pid)
-		Process.kill("KILL",@pids)
+		Process.kill("KILL",@pid) unless @pid.nil?
+		Process.kill("KILL",@pids) unless @pid.nil?
 	end
 	 
-	xit 'adheres to auth rate limits' do
+	it 'adheres to auth rate limits' do
 		passwds = (1..9).map { |i| "broken_pass"}
 		passwds.push BEEF_PASSWD
 		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
