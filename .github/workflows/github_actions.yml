@@ -44,13 +44,17 @@ jobs:
         with:
           ruby-version: 3.0.3 # Not needed with a .ruby-version file
 
-      - name: 'Build and run tests'
+      - name: 'Update and Install Dwpendencies'
         run: |
           sudo apt update
           sudo apt install libcurl4 libcurl4-openssl-dev
+      - name: 'Configure Bundle testing and install gems'
+        run: |
           bundle config unset --local without
           bundle config set --local with 'test' 'development'
           bundle install
+      - name: 'Run BrowserStack simple verification'
+        run: |
           bundle exec rake browserstack --trace
 
       - name: 'BrowserStackLocal Stop'  # Terminating the BrowserStackLocal tunnel connection
