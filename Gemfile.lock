@@ -170,7 +170,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.12.0)
+    selenium-webdriver (4.13.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -220,11 +220,11 @@ GEM
     unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
     webrick (1.8.1)
-    websocket (1.2.9)
+    websocket (1.2.10)
     websocket-client-simple (0.6.1)
       event_emitter
       websocket
-    xmlrpc (0.3.2)
+    xmlrpc (0.3.3)
       webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -264,7 +264,7 @@ DEPENDENCIES
   rubocop (~> 1.56.3)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.12)
+  selenium-webdriver (~> 4.13)
   sinatra (~> 3.0)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.6)
@@ -273,7 +273,7 @@ DEPENDENCIES
   thin (~> 1.8)
   uglifier (~> 4.2)
   websocket-client-simple (~> 0.6.1)
-  xmlrpc (~> 0.3.2)
+  xmlrpc (~> 0.3.3)
 
 BUNDLED WITH
    2.4.8
