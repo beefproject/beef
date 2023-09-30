@@ -74,7 +74,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
 
       @driver = Selenium::WebDriver.for(:remote,
                                         url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
-                                        desired_capabilities: @caps)
+                                        options: @caps)
       # Hook new victim
       print_info 'Hooking a new victim, waiting a few seconds...'
       wait = Selenium::WebDriver::Wait.new(timeout: 30) # seconds
@@ -86,16 +86,6 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
       sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
       @session = @driver.execute_script('return window.beef.session.get_hook_session_id().length')
-    rescue StandardError => e
-      print_info "Exception: #{e}"
-      print_info "Exception Class: #{e.class}"
-      print_info "Exception Message: #{e.message}"
-      print_info "Exception Stack Trace: #{e.backtrace}"
-      if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil?
-        exit 1
-      else
-        exit 0
-      end
     end
   end
 
@@ -115,15 +105,5 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
 
   it 'can successfully hook a browser' do
     expect(@session).not_to be_nil
-  rescue StandardError => e
-    print_info "Exception: #{e}"
-    print_info "Exception Class: #{e.class}"
-    print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.stacktrace}"
-    if @driver.execute_script('return window.beef.session.get_hook_session_id().length').nil?
-      exit 1
-    else
-      expect(BeEF::Filters.is_valid_hook_session_id?(@driver.execute_script('return window.beef.session.get_hook_session_id()'))).to eq true
-    end
   end
 end
