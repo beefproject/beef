@@ -39,7 +39,7 @@ module BeEF
                 data: params[:d]
               }
             rescue TypeError, ArgumentError => e
-              print_error "Hooked browser returned an invalid argument: #{e}"
+              print_debug "Hooked browser returned an invalid argument: #{e}"
             end
 
             Thread.new do
