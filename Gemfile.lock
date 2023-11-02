@@ -172,7 +172,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.14.0)
+    selenium-webdriver (4.15.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -255,7 +255,7 @@ DEPENDENCIES
   mime-types (~> 3.4, >= 3.4.1)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
-  otr-activerecord (~> 2.1, >= 2.1.2)
+  otr-activerecord (= 2.1.2)
   parseconfig (~> 1.1, >= 1.1.2)
   pry-byebug (~> 3.10, >= 3.10.1)
   qr4r (~> 0.6.1)
@@ -268,7 +268,7 @@ DEPENDENCIES
   rubocop (~> 1.57.0)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.14)
+  selenium-webdriver (~> 4.15)
   sinatra (~> 3.0)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.6)
