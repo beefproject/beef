@@ -123,6 +123,7 @@ install_linux() {
 			if [ "$answer_alma_ruby" == "y" ] || [ "$answer_alma_ruby" == "Y" ]; then
 				dnf module reset ruby -y
 				dnf module enable ruby:3.1 -y
+				dnf install -y ruby
 			fi
 		else dnf config-manager --set-enabled powertools
 			dnf groupinstall "Development Tools" -y
@@ -131,9 +132,10 @@ install_linux() {
 			if [ "$answer_alma_ruby" == "y" ] || [ "$answer_alma_ruby" == "Y" ]; then
     				dnf module reset ruby -y
 				dnf module enable ruby:3.0 -y
+				dnf install -y ruby
 			fi
 		fi
-		sudo yum install -y ruby ruby-devel git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
+		sudo yum install -y ruby-devel git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
 		gem install bundler
 
 
