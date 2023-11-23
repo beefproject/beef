@@ -78,6 +78,8 @@ install_linux() {
 	Distro=''
 	if [ -f /etc/blackPanther-release ]; then
 		Distro='blackPanther'
+	elif [ -f /etc/almalinux-release ]; then
+		Distro='Alma'
 	elif [ -f /etc/redhat-release ]; then
 		Distro='RedHat'
 	elif [ -f /etc/debian_version ]; then
@@ -111,6 +113,30 @@ install_linux() {
 			info "No Ruby package manager detected - will install Ruby"
 			sudo apt-get install ruby-dev
 		fi
+
+	elif [ "${Distro}" = "Alma" ]; then
+		sudo dnf install -y dnf-plugins-core
+		if grep -q "AlmaLinux release 9" /etc/almalinux-release ; then 
+			dnf config-manager --set-enabled crb
+			echo "Do you need to install a fresh version of ruby? (y/n)"
+			read answer_alma_ruby
+			if [ "$answer_alma_ruby" == "y" ] || [ "$answer_alma_ruby" == "Y" ]; then
+				dnf module reset ruby -y
+				dnf module enable ruby:3.1 -y
+			fi
+		else dnf config-manager --set-enabled powertools
+			dnf groupinstall "Development Tools" -y
+			echo "Do you need to install a fresh version of ruby? (y/n)"
+			read answer_alma_ruby
+			if [ "$answer_alma_ruby" == "y" ] || [ "$answer_alma_ruby" == "Y" ]; then
+    				dnf module reset ruby -y
+				dnf module enable ruby:3.0 -y
+			fi
+		fi
+		sudo yum install -y ruby ruby-devel git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
+		gem install bundler
+
+
 	elif [ "${Distro}" = "RedHat" ]; then
 		sudo yum install -y git make gcc openssl-devel gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs
 	elif [ "${Distro}" = "SuSE" ]; then
