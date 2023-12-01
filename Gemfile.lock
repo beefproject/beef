@@ -71,7 +71,7 @@ GEM
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
-    json (2.6.3)
+    json (2.7.0)
     language_server-protocol (3.17.0.3)
     matrix (0.4.2)
     maxmind-db (1.1.1)
@@ -255,7 +255,7 @@ DEPENDENCIES
   mime-types (~> 3.4, >= 3.4.1)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
-  otr-activerecord (~> 2.1, >= 2.1.2)
+  otr-activerecord (= 2.1.2)
   parseconfig (~> 1.1, >= 1.1.2)
   pry-byebug (~> 3.10, >= 3.10.1)
   qr4r (~> 0.6.1)
