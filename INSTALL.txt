@@ -23,7 +23,7 @@ Prerequisites
 
 BeEF requires Ruby 3.0+.
 
-If your operating system package manager does not support Ruby version 2.7,
+If your operating system package manager does not support Ruby version 3.0,
 you can add the brightbox ppa repository for the latest version of Ruby:
 
   $ sudo apt-add-repository -y ppa:brightbox/ruby-ng
