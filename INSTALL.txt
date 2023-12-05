@@ -21,7 +21,7 @@ Or cloning the Git repository from Github:
 Prerequisites
 --------------
 
-BeEF requires Ruby 2.7+.
+BeEF requires Ruby 3.0+.
 
 If your operating system package manager does not support Ruby version 2.7,
 you can add the brightbox ppa repository for the latest version of Ruby:
