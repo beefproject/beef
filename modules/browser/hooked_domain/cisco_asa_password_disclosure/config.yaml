@@ -1,0 +1,15 @@
+#
+# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        Cisco_asa_passwords:
+            enable: true
+            category: ["Browser", "Hooked Domain"]
+            name: "Cisco ASA Plaintext Passwords"
+            description: "Recover Username, password, and second password (MFA) used for a Cisco ASA WebVPN session. The hooked domain needs to be the domain authenticated against."
+            authors: ["catatonicprime"]
+            target:
+                working: ["All"]
