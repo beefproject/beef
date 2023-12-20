@@ -66,9 +66,9 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    io-console (0.6.0)
+    io-console (0.7.1)
     io-like (0.3.1)
-    irb (1.8.1)
+    irb (1.11.0)
       rdoc
       reline (>= 0.3.8)
     json (2.6.3)
@@ -112,7 +112,7 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
-    psych (5.1.1.1)
+    psych (5.1.2)
       stringio
     public_suffix (5.0.1)
     qr4r (0.6.1)
@@ -129,7 +129,7 @@ GEM
     rdoc (6.6.1)
       psych (>= 4.0.0)
     regexp_parser (2.8.2)
-    reline (0.3.8)
+    reline (0.4.1)
       io-console (~> 0.5)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -249,7 +249,7 @@ DEPENDENCIES
   eventmachine (~> 1.2, >= 1.2.7)
   execjs (~> 2.9)
   geckodriver-helper (~> 0.24.0)
-  irb (~> 1.8)
+  irb (~> 1.11)
   json
   maxmind-db (~> 1.1, >= 1.1.1)
   mime-types (~> 3.4, >= 3.4.1)
