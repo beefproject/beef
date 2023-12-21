@@ -74,7 +74,7 @@ GEM
     json (2.6.3)
     language_server-protocol (3.17.0.3)
     matrix (0.4.2)
-    maxmind-db (1.1.1)
+    maxmind-db (1.2.0)
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
@@ -251,7 +251,7 @@ DEPENDENCIES
   geckodriver-helper (~> 0.24.0)
   irb (~> 1.11)
   json
-  maxmind-db (~> 1.1, >= 1.1.1)
+  maxmind-db (~> 1.2)
   mime-types (~> 3.4, >= 3.4.1)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
