@@ -266,7 +266,7 @@ DEPENDENCIES
   mime-types (~> 3.4, >= 3.4.1)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
-  otr-activerecord (~> 2.2)
+  otr-activerecord (= 2.2.0)
   parseconfig (~> 1.1, >= 1.1.2)
   pry-byebug (~> 3.10, >= 3.10.1)
   qr4r (~> 0.6.1)
