@@ -7,6 +7,7 @@
 
 gem 'net-smtp', require: false
 gem 'json'
+gem 'mini_portile2'
 
 gem 'eventmachine', '~> 1.2', '>= 1.2.7'
 gem 'thin', '~> 1.8'
