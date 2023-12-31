@@ -205,7 +205,7 @@ end
 # Migrate (if required)
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
-  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 end
 #
 # @note Extensions may take a moment to load, thus we print out a please wait message

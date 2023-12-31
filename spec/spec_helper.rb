@@ -51,8 +51,12 @@ if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
   OTR::ActiveRecord.establish_connection!
 end
 ActiveRecord::Schema.verbose = false
+
+# Migrate (if required)
 context = ActiveRecord::Migration.new.migration_context
-ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+if context.needs_migration?
+  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+end
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
@@ -65,6 +69,7 @@ RSpec.configure do |config|
   end
   config.around do |example|
     ActiveRecord::Base.transaction do
+      # byebug
       example.run
       raise ActiveRecord::Rollback
     end
