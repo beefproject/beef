@@ -25,6 +25,9 @@ coverage/
 # BrowserStack
 local.log
 
+# Visual Studio Code
+.vscode/
+
 # The following lines were created by https://www.gitignore.io
 
 ### Linux ###
