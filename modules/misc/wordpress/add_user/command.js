@@ -1,5 +1,5 @@
 /*
-  Copyright (c) Browser Exploitation Framework (BeEF) - http://beefproject.com
+  Copyright (c) Browser Exploitation Framework (BeEF) - https://beefproject.com
   See the file 'doc/COPYING' for copying permission
 
   This is a complete rewrite of the original module exploits/wordpress_add_admin which was not working anymore

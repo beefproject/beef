@@ -1,5 +1,5 @@
 /*
-  Copyright (c) Browser Exploitation Framework (BeEF) - http://beefproject.com
+  Copyright (c) Browser Exploitation Framework (BeEF) - https://beefproject.com
   See the file 'doc/COPYING' for copying permission
   
   This is a rewrite of the original module misc/wordpress_post_auth_rce.

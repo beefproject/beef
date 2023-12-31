@@ -6,7 +6,7 @@ class ConfigFile
     return <<-EOF
 #
 # Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 beef:
@@ -35,7 +35,7 @@ class ModuleFile
     return <<-EOF
 #
 # Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class #{class_name.capitalize} < BeEF::Core::Command
@@ -68,7 +68,7 @@ class CommandFile
     return <<-EOF
 //
 // Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 

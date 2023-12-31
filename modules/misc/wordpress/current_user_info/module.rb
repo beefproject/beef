@@ -1,5 +1,5 @@
 #
-# Copyright (c) Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 # Author @erwan_lr (WPscanTeam) - https://wpscan.org/

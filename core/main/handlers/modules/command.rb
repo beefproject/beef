@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
@@ -73,7 +73,7 @@ module BeEF
               # content = command_module.output.gsub('//
               # //
               # //   Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-              # //   Browser Exploitation Framework (BeEF) - http://beefproject.com
+              # //   Browser Exploitation Framework (BeEF) - https://beefproject.com
               # //   See the file 'doc/COPYING' for copying permission
               # //
               # //', "")
