@@ -44,7 +44,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
   # Tests DNS spoofing of cloned webpages
   def test_1_dns_spoof
-    url = 'http://beefproject.com'
+    url = 'https://beefproject.com'
     mount = '/beefproject'
     dns_spoof = true
 

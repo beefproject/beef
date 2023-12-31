@@ -10,7 +10,7 @@ class Get_visited_urls < BeEF::Core::Command
         'name' => 'urls',
         'description' => 'Enter target URL(s)',
         'type' => 'textarea',
-        'value' => 'http://beefproject.com/',
+        'value' => 'https://beefproject.com/',
         'width' => '200px' }
     ]
   end

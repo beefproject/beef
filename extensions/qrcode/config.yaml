@@ -9,6 +9,6 @@ beef:
             name: 'QR Code Generator'
             enable: false
             authors: ["xntrik", "bcoles"]
-            targets: ["/demos/basic.html", "http://beefproject.com/"]
+            targets: ["/demos/basic.html", "https://beefproject.com/"]
             qrsize: 3
             qrborder: 1

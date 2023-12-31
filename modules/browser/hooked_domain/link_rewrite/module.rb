@@ -6,7 +6,7 @@
 class Link_rewrite < BeEF::Core::Command
   def self.options
     [
-      { 'ui_label' => 'URL', 'name' => 'url', 'description' => 'Target URL', 'value' => 'http://beefproject.com/', 'width' => '200px' }
+      { 'ui_label' => 'URL', 'name' => 'url', 'description' => 'Target URL', 'value' => 'https://beefproject.com/', 'width' => '200px' }
     ]
   end
 

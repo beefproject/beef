@@ -6,7 +6,7 @@
 class Invisible_iframe < BeEF::Core::Command
   def self.options
     [
-      { 'name' => 'target', 'ui_label' => 'URL', 'value' => 'http://beefproject.com/' }
+      { 'name' => 'target', 'ui_label' => 'URL', 'value' => 'https://beefproject.com/' }
     ]
   end
 

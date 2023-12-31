@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: beefbind
- * Plugin URI: http://beefproject.com
+ * Plugin URI: https://beefproject.com
  * Description: BeEF bind shell with CORS.
  * Version: 1.1
  * Authors: Bart Leppens, Erwan LR (@erwan_lr | WPScanTeam)

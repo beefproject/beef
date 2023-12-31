@@ -17,7 +17,7 @@ class Site_redirect_iframe < BeEF::Core::Command
         'width' => '200px' },
       { 'name' => 'iframe_favicon', 'description' => 'Shortcut Icon', 'ui_label' => 'New Favicon', 'value' => favicon_uri, 'width' => '200px' },
 
-      { 'name' => 'iframe_src', 'description' => 'Source of the iFrame', 'ui_label' => 'Redirect URL', 'value' => 'http://beefproject.com/', 'width' => '200px' },
+      { 'name' => 'iframe_src', 'description' => 'Source of the iFrame', 'ui_label' => 'Redirect URL', 'value' => 'https://beefproject.com/', 'width' => '200px' },
       { 'name' => 'iframe_timeout', 'description' => 'iFrame timeout', 'ui_label' => 'Timeout', 'value' => '3500', 'width' => '150px' }
     ]
   end
