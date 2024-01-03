@@ -53,6 +53,7 @@ end
 ActiveRecord::Schema.verbose = false
 
 # Migrate (if required)
+ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
