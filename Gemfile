@@ -3,7 +3,6 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-#gem 'simplecov', require: false, group: :test
 
 gem 'net-smtp', require: false
 gem 'json'
@@ -22,7 +21,6 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'rubyzip', '~> 2.3'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.1'
-# gem 'otr-activerecord', '~> 2.1', '>= 2.1.2'
 gem 'otr-activerecord', '~> 2.2.0'
 gem 'sqlite3', '~> 1.6'
 gem 'rubocop', '~> 1.59.0', require: false
@@ -73,16 +71,16 @@ group :test do
     gem 'rest-client', '~> 2.1.0'
     gem 'websocket-client-simple', '~> 0.6.1'
 
-    # curb gem requires curl libraries
+    # Note: curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
     gem 'curb', '~> 1.0', '>= 1.0.5'
 
-    # selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
+    # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
     # gem 'selenium' # Requires old version of selenium which is no longer available
     gem 'geckodriver-helper', '~> 0.24.0'
     gem 'selenium-webdriver', '~> 4.16'
 
-    # nokogiri is needed by capybara which may require one of the below commands
+    # Note: nokogiri is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
     # sudo port install libxml2 libxslt
     gem 'capybara', '~> 3.39'
