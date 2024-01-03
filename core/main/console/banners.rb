@@ -32,7 +32,7 @@ module BeEF
             print_info "Browser Exploitation Framework (BeEF) #{version}"
             data = "Twit: @beefproject\n"
             data += "Site: https://beefproject.com\n"
-            data += "Blog: http://blog.beefproject.com\n"
+            # data += "Blog: http://blog.beefproject.com\n"
             data += "Wiki: https://github.com/beefproject/beef/wiki\n"
             print_more data
             print_info 'Project Creator: ' + 'Wade Alcorn'.red + ' (@WadeAlcorn)'
