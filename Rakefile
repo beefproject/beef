@@ -6,8 +6,6 @@
 require 'yaml'
 require 'bundler/setup'
 load 'tasks/otr-activerecord.rake'
-#require 'pry-byebug'
-
 
 task :default => ["spec"]
 
