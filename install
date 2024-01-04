@@ -244,7 +244,8 @@ finish() {
 	echo "Next steps:"
 	echo
 	echo "* Change the default password in config.yaml"
-	echo "* Configure geoipupdate to update the Maxmind GeoIP database."
+	echo "* Configure geoipupdate to update the Maxmind GeoIP database:"
+	echo "*   https://dev.maxmind.com/geoip/updating-databases"
 	echo "* Review the wiki for important configuration information:"
 	echo "  https://github.com/beefproject/beef/wiki/Configuration"
 	echo

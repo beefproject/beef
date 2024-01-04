@@ -18,7 +18,7 @@ module BeEF
         geoip_file = @config.get('beef.geoip.database')
 
         unless File.exist? geoip_file
-          print_error "[GeoIP] Could not find MaxMind GeoIP database: '#{geoip_file}'"
+          BeEF::Core::Logger.instance.register('System', "[GeoIP] Could not find MaxMind GeoIP database: '#{geoip_file}'")
           @enabled = false
           return
         end
