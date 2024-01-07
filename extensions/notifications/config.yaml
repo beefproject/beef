@@ -28,7 +28,7 @@ beef:
               username: "notifier" # Username can be anything
             ntfy:
               enable: false
-              endpoint_url: "https://ntfy.sh/beef"
+              endpoint_url: "https://ntfy.sh/beef-[GUID]" # Update GUID
               username: "" # Leave blank if not needed
               password: "" # Leave blank if not needed
 
