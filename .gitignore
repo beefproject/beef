@@ -1,5 +1,7 @@
 ### BeEF ###
 beef.db
+beef.db-shm
+beef.db-wal
 beef.log
 test/msf-test
 extensions/admin_ui/media/javascript-min/
