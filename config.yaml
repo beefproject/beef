@@ -146,6 +146,6 @@ beef:
         metasploit:
             enable: false
         social_engineering:
-            enable: true
+            enable: false
         xssrays:
             enable: true
