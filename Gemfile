@@ -22,7 +22,7 @@ gem 'rubyzip', '~> 2.3'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.1'
 gem 'otr-activerecord', '~> 2.2.0'
-gem 'sqlite3', '~> 1.6'
+gem 'sqlite3', '~> 1.7'
 gem 'rubocop', '~> 1.60.2', require: false
 
 # Geolocation support
