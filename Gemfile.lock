@@ -77,9 +77,9 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    io-console (0.7.1)
+    io-console (0.7.2)
     io-like (0.3.1)
-    irb (1.11.1)
+    irb (1.11.2)
       rdoc
       reline (>= 0.4.2)
     json (2.7.1)
@@ -105,8 +105,6 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.0)
-    nokogiri (1.16.0-aarch64-linux)
-      racc (~> 1.4)
     nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.0-x86_64-linux)
@@ -245,7 +243,6 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
