@@ -195,8 +195,8 @@ GEM
       rack-protection (= 3.2.0)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (1.7.1-arm64-darwin)
-    sqlite3 (1.7.1-x86_64-linux)
+    sqlite3 (1.7.2-arm64-darwin)
+    sqlite3 (1.7.2-x86_64-linux)
     stringio (3.1.0)
     sync (0.5.0)
     term-ansicolor (1.7.1)
@@ -243,7 +243,6 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
 
