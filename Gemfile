@@ -83,7 +83,7 @@ group :test do
     # Note: nokogiri is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
     # sudo port install libxml2 libxslt
-    gem 'capybara', '~> 3.39'
+    gem 'capybara', '~> 3.40'
 end
 
 source 'https://rubygems.org'
