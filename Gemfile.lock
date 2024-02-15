@@ -52,7 +52,7 @@ GEM
       fiber-local
     curb (1.0.5)
     daemons (1.4.1)
-    diff-lcs (1.5.0)
+    diff-lcs (1.5.1)
     domain_name (0.6.20231109)
     drb (2.2.0)
       ruby2_keywords
@@ -152,19 +152,19 @@ GEM
     rexml (3.2.6)
     rqrcode_core (1.2.0)
     rr (3.1.0)
-    rspec (3.12.0)
-      rspec-core (~> 3.12.0)
-      rspec-expectations (~> 3.12.0)
-      rspec-mocks (~> 3.12.0)
-    rspec-core (3.12.2)
-      rspec-support (~> 3.12.0)
-    rspec-expectations (3.12.3)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.0)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-mocks (3.12.6)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-support (3.12.1)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.0)
     rubocop (1.60.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -195,8 +195,8 @@ GEM
       rack-protection (= 3.2.0)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (1.7.1-arm64-darwin)
-    sqlite3 (1.7.1-x86_64-linux)
+    sqlite3 (1.7.2-arm64-darwin)
+    sqlite3 (1.7.2-x86_64-linux)
     stringio (3.1.0)
     sync (0.5.0)
     term-ansicolor (1.7.1)
@@ -243,6 +243,7 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
@@ -275,7 +276,7 @@ DEPENDENCIES
   rake (~> 13.1)
   rdoc (~> 6.6)
   rest-client (~> 2.1.0)
-  rspec (~> 3.12)
+  rspec (~> 3.13)
   rubocop (~> 1.60.2)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
