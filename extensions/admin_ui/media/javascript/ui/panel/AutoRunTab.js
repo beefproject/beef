@@ -8,19 +8,26 @@ getCurrentRules = async function(token) {
     console.log(`token = ${token}`);
 
     try {
-        var res = await fetch(`/api/autorun/rule/list/all?token=${token}`)
-        console.log(res.body);
-        console.log("Successfully retrieved active rules.");
-        if (res.body.success === true && Array.isArray(res.body.rules)) {
-            console.log(res.body.rules);
-            return res.body.rules;
-        } else {
-            console.log("No active rules.");
-            return [];
+        var res = await fetch(`/api/autorun/rules?token=${token}`);
+        if (!res.ok) {
+            throw new Error(`Getting auto run rules failed with status ${res.status}`);
         }
+        const data = await res.json();
+        console.log("Successfully retrieved active rules.");
+        console.log(data);
+        const rules = JSON.parse(data.rules);
+
+        if (data.success === true && Array.isArray(rules)) {
+            console.log(rules);
+            return rules;
+        }
+
+        console.log("No active auto run rules.");
+        return [];
+
     } catch(error) {
         console.error(error);
-        console.error("Failed to get rules.");
+        console.error("Failed to get auto run rules.");
         return null;
     }
 } 
@@ -47,9 +54,11 @@ AutoRunTab = function() {
             console.log(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
             container.update(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
             
-            //ruleTitle = document.createElement('h4');
-            //ruleTitle.innerHTML = "Rule title 1";
-            //container.appendChild(ruleTitle);
+            for (let i = 0; i < rules.length; i++) {
+                ruleTitle = document.createElement('h4');
+                ruleTitle.innerHTML = rules[i].name ? rules[i].name : `Rule ${i + 1}`;
+                container.getEl().appendChild(ruleTitle);
+            }
         } else {
             container.update("<p>Failed to load Auto Run rules.</p>");
         }
