@@ -55,10 +55,10 @@ AutoRunTab = function() {
             container.update(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
             
             for (let i = 0; i < rules.length; i++) {
-                ruleTitle = document.createElement('h4');
-                ruleTitle.innerHTML = rules[i].name ? rules[i].name : `Rule ${i + 1}`;
-                container.getEl().appendChild(ruleTitle);
+                ruleForm = new AutoRunRuleForm(rules[i], function() {console.log('delete')}, function() {console.log('update')});
+                container.add(ruleForm);
             }
+            container.doLayout();
         } else {
             container.update("<p>Failed to load Auto Run rules.</p>");
         }
