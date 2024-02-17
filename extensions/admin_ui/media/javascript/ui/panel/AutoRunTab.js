@@ -1,3 +1,21 @@
+const areNotification = {
+    "name": "Display an alert",
+    "author": "mgeeky",
+    "modules": [
+        {
+            "name": "alert_dialog",
+            "condition": null,
+            "options": {
+                "text":"You've been BeEFed ;>"
+            }
+        }
+    ],
+    "execution_order": [0],
+    "execution_delay": [0],
+    "chain_mode": "nested-forward"
+};
+        
+
 
 /**
  * Asynchronously returns the currently active rules in an array.
@@ -48,6 +66,17 @@ AutoRunTab = function() {
         }
     });
 
+    async function addRule() {
+        const res = fetch(`/api/autorun/rule/add?token=${token}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(areNotification)
+        });
+        if (!res.ok) {
+            console.error(`Failed when adding a new rule with status ${res.status}.`);
+        }
+    }
+
     async function updateRules() {
         const rules = await getCurrentRules(token);
         if (rules !== null) {
@@ -55,7 +84,12 @@ AutoRunTab = function() {
             container.update(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
             
             for (let i = 0; i < rules.length; i++) {
-                ruleForm = new AutoRunRuleForm(rules[i], function() {console.log('delete')}, function() {console.log('update')});
+                ruleForm = new AutoRunRuleForm(
+                    rules[i],
+                    function() {console.log('delete')},
+                    function() {console.log('update')},
+                    addRule
+                );
                 container.add(ruleForm);
             }
             container.doLayout();

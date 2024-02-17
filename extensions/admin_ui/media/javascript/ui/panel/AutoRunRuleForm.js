@@ -6,7 +6,7 @@
  * deleteFn: callback function to delete this rule.
  * updateFn: callback function to update this rule.
  */
-AutoRunRuleForm = function(rule, deleteFn, updateFn) {
+AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
 
     AutoRunRuleForm.superclass.constructor.call(this, {
             padding:'10 10 10 10',
@@ -14,13 +14,32 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
                 xtype: 'textfield',
                 value: rule.name ? rule.name : '',
                 fieldLabel: 'Name',
-            }],
+            },
+            {
+                xtype: 'displayfield',
+                fieldLabel: 'Author',
+                value: rule.author ? rule.author : 'anonymous',
+            },{
+                xtype: 'combo',
+                fieldLabel: 'Chain Mode',
+                store: ['sequential', 'nested-forward'],
+                queryMode: 'local', // Use local data.
+                triggerAction: 'all', // Show both options instead of just the default.
+                editable: false, // Disable manual text input.
+                forceSelection: true,
+                value: rule.chain_mode ? rule.chain_mode : 'sequential'
+            }
+        ],
             buttons: [{
                 text: 'Delete',
                 handler: deleteFn
             }, {
                 text: 'Save',
                 handler: updateFn
+            },
+            {
+                text: 'Add New',
+                handler: addFn
             }],
             border: false,
             closable: false
