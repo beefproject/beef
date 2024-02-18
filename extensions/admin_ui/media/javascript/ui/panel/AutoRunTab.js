@@ -62,12 +62,19 @@ AutoRunTab = function() {
         },
         html: "<p>Loading Auto Run rules...</p>",
         listeners: {
-            afterrender: updateRules
+            afterrender: loadRules
         }
     });
 
+    async function deleteRule(id) {
+        const res = await fetch(`/api/autorun/rule/${id}?token=${token}`, {method: 'DELETE'});
+        if (!res.ok) {
+            console.error(`Failed when deleting rule with id ${id}. Failed with status ${res.status}.`);
+        }
+    }
+
     async function addRule() {
-        const res = fetch(`/api/autorun/rule/add?token=${token}`, {
+        const res = await fetch(`/api/autorun/rule/add?token=${token}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(areNotification)
@@ -77,7 +84,19 @@ AutoRunTab = function() {
         }
     }
 
-    async function updateRules() {
+    async function updateRule(id, newRuleData) {
+        // TODO: Check if this API endpoint even exists.
+        const res = await fetch(`/api/autorun/rule/${id}?token=${token}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(areNotification)
+        });
+        if (!res.ok) {
+            console.error(`Failed when adding a new rule with status ${res.status}.`);
+        }
+    }
+
+    async function loadRules() {
         const rules = await getCurrentRules(token);
         if (rules !== null) {
             console.log(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
@@ -86,8 +105,8 @@ AutoRunTab = function() {
             for (let i = 0; i < rules.length; i++) {
                 ruleForm = new AutoRunRuleForm(
                     rules[i],
-                    function() {console.log('delete')},
-                    function() {console.log('update')},
+                    function() {deleteRule(rules[i].id)},
+                    function(newRuleData) {updateRule(rules[i].id, newRuleData)}, // TODO: Implement rule update.
                     addRule
                 );
                 container.add(ruleForm);
