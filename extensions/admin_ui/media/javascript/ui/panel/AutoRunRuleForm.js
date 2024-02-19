@@ -25,6 +25,7 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
     const self = this;
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
+    const moduleFieldId = `rule-module-field-${rule.id}`;
 
     function handleUpdateRule() {
         // TODO: Check if inputs are valid.
@@ -32,11 +33,12 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
         const formValues = form.getValues();
         const updatedRule = {
             ...rule,
-            modules: JSON.parse(rule['modules']),
+            modules: JSON.parse(rule['modules']), // need this to prevent type error.
             execution_delay: JSON.parse(rule['execution_delay']),
             execution_order: JSON.parse(rule['execution_order']),
             name: formValues[ruleTextFieldId],
-            chain_mode: formValues[chainModeComboId]
+            chain_mode: formValues[chainModeComboId],
+            modules: JSON.parse(formValues[moduleFieldId]),
         };
         console.log(updatedRule);
         updateFn(updatedRule);
@@ -55,6 +57,22 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
                 fieldLabel: 'Author',
                 value: rule.author ? rule.author : 'anonymous',
             },{
+                xtype: 'displayfield',
+                fieldLabel: 'Browser(s)',
+                value: rule.browser ? rule.browser : 'All',
+            },{
+                xtype: 'displayfield',
+                fieldLabel: 'Browser version(s)',
+                value: rule.browser_version ? rule.browser_version : 'All',
+            },{
+                xtype: 'displayfield',
+                fieldLabel: 'OS(s)',
+                value: rule.os ? rule.os : 'All',
+            },{
+                xtype: 'displayfield',
+                fieldLabel: 'OS version(s)',
+                value: rule.os_version ? rule.os_version : 'All',
+            },{
                 xtype: 'combo',
                 id: chainModeComboId,
                 fieldLabel: 'Chain Mode',
@@ -64,6 +82,20 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
                 editable: false, // Disable manual text input.
                 forceSelection: true,
                 value: rule.chain_mode ? rule.chain_mode : 'sequential'
+            },{
+                xtype: 'textarea',
+                id: moduleFieldId,
+                fieldLabel: 'modules',
+                value: rule.modules ? rule.modules : '[]',
+                grow: true
+            },{
+                xtype: 'displayfield',
+                fieldLabel: 'Execution Order',
+                value: rule.execution_order ? rule.execution_order : 'undefined',
+            },{
+                xtype: 'displayfield',
+                fieldLabel: 'Execution Delay',
+                value: rule.execution_delay ? rule.execution_delay : 'undefined',
             }
         ],
             buttons: [{
