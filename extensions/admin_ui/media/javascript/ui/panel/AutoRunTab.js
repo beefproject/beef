@@ -87,9 +87,9 @@ AutoRunTab = function() {
     async function updateRule(id, newRuleData) {
         // TODO: Check if this API endpoint even exists.
         const res = await fetch(`/api/autorun/rule/${id}?token=${token}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(areNotification)
+            body: JSON.stringify(newRuleData)
         });
         if (!res.ok) {
             console.error(`Failed when adding a new rule with status ${res.status}.`);
@@ -106,7 +106,7 @@ AutoRunTab = function() {
                 ruleForm = new AutoRunRuleForm(
                     rules[i],
                     function() {deleteRule(rules[i].id)},
-                    function(newRuleData) {updateRule(rules[i].id, newRuleData)}, // TODO: Implement rule update.
+                    function(newRuleData) {updateRule(rules[i].id, newRuleData)},
                     addRule
                 );
                 container.add(ruleForm);
