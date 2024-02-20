@@ -184,7 +184,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.17.0)
+    selenium-webdriver (4.18.1)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -243,7 +243,6 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
@@ -280,7 +279,7 @@ DEPENDENCIES
   rubocop (~> 1.60.2)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.17)
+  selenium-webdriver (~> 4.18)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.7)
