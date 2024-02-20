@@ -25,10 +25,23 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
     const self = this;
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
-    const moduleFieldId = `rule-module-field-${rule.id}`;
+    const modules = JSON.parse(rule['modules']);
+    const moduleForms = [];
+    for (let i = 0; i < modules.length; ++i) {
+        const isFirstModule = i === 0;
+        const isLastModule = i >= modules.length - 1;
+        moduleForms.push(new AutoRunModuleForm(
+            modules[i],
+            function() {console.log("delete this module")},
+            isFirstModule ? undefined : function() {console.log("move up")},
+            isLastModule ? undefined : function() {console.log("move down")},
+        ));
+    }
+    console.log(`Number of modules: ${moduleForms.length}`);
 
     function handleUpdateRule() {
         // TODO: Check if inputs are valid.
+        // TODO: Get data from modules.
         const form = self.getForm();
         const formValues = form.getValues();
         const updatedRule = {
@@ -38,7 +51,6 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
             execution_order: JSON.parse(rule['execution_order']),
             name: formValues[ruleTextFieldId],
             chain_mode: formValues[chainModeComboId],
-            modules: JSON.parse(formValues[moduleFieldId]),
         };
         console.log(updatedRule);
         updateFn(updatedRule);
@@ -72,7 +84,9 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
                 xtype: 'displayfield',
                 fieldLabel: 'OS version(s)',
                 value: rule.os_version ? rule.os_version : 'All',
-            },{
+            },
+            ...moduleForms,
+            {
                 xtype: 'combo',
                 id: chainModeComboId,
                 fieldLabel: 'Chain Mode',
@@ -82,12 +96,6 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
                 editable: false, // Disable manual text input.
                 forceSelection: true,
                 value: rule.chain_mode ? rule.chain_mode : 'sequential'
-            },{
-                xtype: 'textarea',
-                id: moduleFieldId,
-                fieldLabel: 'modules',
-                value: rule.modules ? rule.modules : '[]',
-                grow: true
             },{
                 xtype: 'displayfield',
                 fieldLabel: 'Execution Order',

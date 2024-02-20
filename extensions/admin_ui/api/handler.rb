@@ -92,6 +92,7 @@ module BeEF
               ui/panel/WelcomeTab.js
               ui/panel/AutoRunTab.js
               ui/panel/AutoRunRuleForm.js
+              ui/panel/AutoRunModuleForm.js
               ui/panel/ModuleSearching.js
             ]
 
