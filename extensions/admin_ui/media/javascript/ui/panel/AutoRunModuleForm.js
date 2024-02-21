@@ -6,19 +6,13 @@
  * moveUp: moves the module up one spot in the Auto Run execution order.
  * moveDown: moves the module down one spot in the Auto Run exection order.
  */
-AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown) {
-    const moduleNameId = `module-name-${moduleData.id}`;
-    const moduleTextAreaId = `module-name-${moduleData.id}`;
-    const chainModeComboId = `module-combo-${moduleData.id}`;
+AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, index) {
+    const moduleTextAreaId = `rule-${ruleId}-module-textarea-${index}`;
+    const chainModeComboId = `rule-${ruleId}-module-combo-${index}`;
 
     AutoRunModuleForm.superclass.constructor.call(this, {
             padding:'10 10 10 10',
-            items: [{
-                xtype: 'textfield',
-                id: moduleNameId,
-                value: moduleData.name ? moduleData.name : '',
-                fieldLabel: 'Name',
-            },/*{
+            items: [/*{
                 xtype: 'combo',
                 id: chainModeComboId,
                 fieldLabel: 'Chain Mode',
@@ -30,10 +24,6 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown) {
                 value: moduleData.chain_mode ? moduleData.chain_mode : 'sequential'
             },*/
             {
-                xtype: 'displayfield',
-                fieldLabel: 'Author',
-                value: moduleData.author ? moduleData.author : 'anonymous',
-            },{
                 xtype: 'textarea',
                 id: moduleTextAreaId,
                 fieldLabel: 'Module Data',

@@ -26,27 +26,48 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
     const modules = JSON.parse(rule['modules']);
-    const moduleForms = [];
-    for (let i = 0; i < modules.length; ++i) {
-        const isFirstModule = i === 0;
-        const isLastModule = i >= modules.length - 1;
-        moduleForms.push(new AutoRunModuleForm(
-            modules[i],
-            function() {console.log("delete this module")},
-            isFirstModule ? undefined : function() {console.log("move up")},
-            isLastModule ? undefined : function() {console.log("move down")},
-        ));
+    const moduleContainer = new Ext.Container();
+
+    function reorderModule(index, direction) {
+        // Rearrange modules into new order.
+        const currentModule = modules[index];
+        const newIndex = direction === 'back' ? index + 1 : index - 1;
+        modules.splice(index, 1);
+        modules.splice(newIndex, 0, currentModule);
+
+        // Update DOM.
+        setupModuleForms();
+        moduleContainer.doLayout();
     }
-    console.log(`Number of modules: ${moduleForms.length}`);
+
+    function setupModuleForms() {
+
+        moduleContainer.removeAll(true);
+
+        for (let i = 0; i < modules.length; ++i) {
+            const isFirstModule = i === 0;
+            const isLastModule = i >= modules.length - 1;
+            // TODO: Push them in execution order.
+            moduleContainer.add(new AutoRunModuleForm(
+                modules[i],
+                function() {console.log("delete this module")},
+                isFirstModule ? undefined : function() {reorderModule(i, 'forward')},
+                isLastModule ? undefined : function() {reorderModule(i, 'back')},
+                rule.id,
+                i
+            ));
+        }
+    }
+    setupModuleForms();
 
     function handleUpdateRule() {
         // TODO: Check if inputs are valid.
-        // TODO: Get data from modules.
+        // TODO: Need to overwrite module order.
         const form = self.getForm();
         const formValues = form.getValues();
         const updatedRule = {
             ...rule,
-            modules: JSON.parse(rule['modules']), // need this to prevent type error.
+            modules: modules,
             execution_delay: JSON.parse(rule['execution_delay']),
             execution_order: JSON.parse(rule['execution_order']),
             name: formValues[ruleTextFieldId],
@@ -85,7 +106,7 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
                 fieldLabel: 'OS version(s)',
                 value: rule.os_version ? rule.os_version : 'All',
             },
-            ...moduleForms,
+                moduleContainer,
             {
                 xtype: 'combo',
                 id: chainModeComboId,
