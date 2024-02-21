@@ -21,12 +21,17 @@ const areNotificationUpdateTest = {
  * deleteFn: callback function to delete this rule.
  * updateFn: callback function to update this rule.
  */
-AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
+AutoRunRuleForm = function(rule, deleteFn, updateFn) {
     const self = this;
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
     const modules = JSON.parse(rule['modules']);
-    const moduleContainer = new Ext.Container();
+    const execution_order = rule['modules'];
+    const moduleContainer = new Ext.Container({
+        style: {
+            padding: '10 10 10 10',
+        }
+    });
 
     function reorderModule(index, direction) {
         // Rearrange modules into new order.
@@ -41,13 +46,15 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
     }
 
     function setupModuleForms() {
+        console.log(execution_order);
 
         moduleContainer.removeAll(true);
 
+        // I think execution order should always be sequential.
+        // The actual order comed from the modules array.
         for (let i = 0; i < modules.length; ++i) {
             const isFirstModule = i === 0;
             const isLastModule = i >= modules.length - 1;
-            // TODO: Push them in execution order.
             moduleContainer.add(new AutoRunModuleForm(
                 modules[i],
                 function() {console.log("delete this module")},
@@ -79,6 +86,7 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
 
     AutoRunRuleForm.superclass.constructor.call(this, {
             padding:'10 10 10 10',
+            title: `Rule ${rule.id}`,
             items: [{
                 xtype: 'textfield',
                 id: ruleTextFieldId,
@@ -133,10 +141,6 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn, addFn) {
             }, {
                 text: 'Save',
                 handler: handleUpdateRule
-            },
-            {
-                text: 'Add New',
-                handler: addFn
             }],
             border: false,
             closable: false

@@ -23,7 +23,6 @@ const areNotification = {
  * null if there was an error.
  */
 getCurrentRules = async function(token) {
-    console.log(`token = ${token}`);
 
     try {
         var res = await fetch(`/api/autorun/rules?token=${token}`);
@@ -54,13 +53,37 @@ AutoRunTab = function() {
     // RESTful API token.
     var token = BeefWUI.get_rest_token();
 
-    // Setup container element.
-    var container = new Ext.Panel({
-        style: {
-            font: '11px tahoma,arial,helvetica,sans-serif',
-            width: '500px'
-        },
+    // Heading container to describe general Auto Run state.
+    var ruleLoadingState = new Ext.Container({
         html: "<p>Loading Auto Run rules...</p>",
+    })
+    var headingContainer = new Ext.Panel({
+        style: {
+            font: '11px tahoma,arial,helvetica,sans-serif'
+        },
+        padding:'10 10 10 10',
+        border: false,
+        items: [{
+            xtype: 'container',
+            html: '\
+                <div>\
+                    <h4>Auto Run Rules</h4>\
+                    <p>These determine what commands run automatically when a browser is hooked.</p>\
+                </div>'
+        },
+            ruleLoadingState,
+        {
+            xtype: 'button',
+            text: 'Add New Rule',
+            handler: addRule
+        }],
+        listeners: {
+            afterrender: loadRules
+        }
+    });
+    // Contains all of the rules and inputs to change each rule.
+    var ruleContainer = new Ext.Panel({
+        border: false,
         listeners: {
             afterrender: loadRules
         }
@@ -85,7 +108,6 @@ AutoRunTab = function() {
     }
 
     async function updateRule(id, newRuleData) {
-        // TODO: Check if this API endpoint even exists.
         const res = await fetch(`/api/autorun/rule/${id}?token=${token}`, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
@@ -99,28 +121,26 @@ AutoRunTab = function() {
     async function loadRules() {
         const rules = await getCurrentRules(token);
         if (rules !== null) {
-            console.log(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
-            container.update(`<p>Number of Auto Run rules enabled: ${rules.length}.</p>`);
+            ruleLoadingState.update(`<p>Loaded ${rules.length} Auto Run rules.</p>`);
+            ruleContainer.removeAll();
             
             for (let i = 0; i < rules.length; i++) {
                 ruleForm = new AutoRunRuleForm(
                     rules[i],
                     function() {deleteRule(rules[i].id)},
-                    function(newRuleData) {updateRule(rules[i].id, newRuleData)},
-                    addRule
+                    function(newRuleData) {updateRule(rules[i].id, newRuleData)}
                 );
-                container.add(ruleForm);
+                ruleContainer.add(ruleForm);
             }
-            container.doLayout();
+            ruleContainer.doLayout();
         } else {
-            container.update("<p>Failed to load Auto Run rules.</p>");
+            ruleLoadingState.update("<p>Failed to load Auto Run rules.</p>");
         }
     } 
 
     AutoRunTab.superclass.constructor.call(this, {
             region: 'center',
-            padding:'10 10 10 10',
-            items: [container],
+            items: [headingContainer, ruleContainer],
             autoScroll: true,
             border: false,
             closable: false

@@ -10,9 +10,35 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
     const moduleTextAreaId = `rule-${ruleId}-module-textarea-${index}`;
     const chainModeComboId = `rule-${ruleId}-module-combo-${index}`;
 
+    const buttonContainer = new Ext.Container({
+        layout: {
+            type: 'hbox',
+            pack: 'end',
+        },
+        items: [
+            {
+                xtype: 'button',
+                text: 'Delete',
+                handler: deleteFn,
+            },{
+                xtype: 'button',
+                text: 'Move Forward',
+                handler: moveUp,
+                disabled: moveUp == undefined,
+            },{
+                xtype: 'button',
+                text: 'Move Back',
+                handler: moveDown,
+                disabled: moveDown == undefined,
+            }
+        ]
+    });
+
     AutoRunModuleForm.superclass.constructor.call(this, {
-            padding:'10 10 10 10',
-            items: [/*{
+            padding: '10 10 10 10',
+            closable: false,
+            items: [
+            /*{
                 xtype: 'combo',
                 id: chainModeComboId,
                 fieldLabel: 'Chain Mode',
@@ -31,25 +57,8 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
                 grow: true,
                 width: '80%'
             },
-            {
-                xtype: 'button',
-                text: 'Delete',
-                handler: deleteFn,
-            },{
-                xtype: 'button',
-                text: 'Move Forward',
-                handler: moveUp,
-                disabled: moveUp == undefined
-            },{
-                xtype: 'button',
-                text: 'Move Back',
-                handler: moveDown,
-                disabled: moveDown == undefined
-            }
-        ],
-            border: false,
-            closable: false
-        });
+            buttonContainer
+        ]});
 };
 
-Ext.extend(AutoRunModuleForm, Ext.Container, {}); 
+Ext.extend(AutoRunModuleForm, Ext.Panel, {}); 
