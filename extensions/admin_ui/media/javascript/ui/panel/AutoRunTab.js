@@ -93,7 +93,10 @@ AutoRunTab = function() {
         const res = await fetch(`/api/autorun/rule/${id}?token=${token}`, {method: 'DELETE'});
         if (!res.ok) {
             console.error(`Failed when deleting rule with id ${id}. Failed with status ${res.status}.`);
+            return;
         }
+        // Update the entire rules panel. Not very efficient.
+        loadRules();
     }
 
     async function addRule() {
@@ -104,7 +107,10 @@ AutoRunTab = function() {
         });
         if (!res.ok) {
             console.error(`Failed when adding a new rule with status ${res.status}.`);
+            return;
         }
+        // Update the entire rules panel. Not very efficient.
+        loadRules();
     }
 
     async function updateRule(id, newRuleData) {
@@ -115,7 +121,10 @@ AutoRunTab = function() {
         });
         if (!res.ok) {
             console.error(`Failed when adding a new rule with status ${res.status}.`);
+            return;
         }
+        // Update the entire rules panel. Not very efficient.
+        loadRules();
     }
 
     async function loadRules() {
