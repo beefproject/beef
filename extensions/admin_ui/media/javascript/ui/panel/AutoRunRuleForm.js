@@ -51,6 +51,18 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
         // Remove element from execution_order and execution_delay arrays.
         newRule.modules.splice(index, 1);
         newRule.execution_delay.splice(index, 1);
+
+        // Update DOM.
+        setupModuleForms();
+        moduleContainer.doLayout();
+    }
+
+    function addModule() {
+        // New module is a copy of the last module.
+        newRule.modules.push(newRule.modules[newRule.modules.length - 1]);
+        newRule.execution_delay.push(newRule.execution_delay[newRule.execution_delay.length - 1]);
+
+        // Update DOM.
         setupModuleForms();
         moduleContainer.doLayout();
     }
@@ -92,6 +104,7 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
         updateFn(updatedRule);
     }
 
+
     AutoRunRuleForm.superclass.constructor.call(this, {
             padding:'10 10 10 10',
             title: `Rule ${rule.id}`,
@@ -123,6 +136,11 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
                 value: rule.os_version ? rule.os_version : 'All',
             },
                 moduleContainer,
+            {
+                xtype: 'button',
+                text: 'Add Module',
+                handler: addModule
+            },
             {
                 xtype: 'combo',
                 id: chainModeComboId,
