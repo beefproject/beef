@@ -25,8 +25,9 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
     const self = this;
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
-    const modules = JSON.parse(rule['modules']);
-    const execution_order = rule['modules'];
+    const newRule = JSON.parse(JSON.stringify(rule));
+    newRule.modules = JSON.parse(newRule['modules']);
+    newRule.execution_delay = JSON.parse(newRule['execution_delay']);
     const moduleContainer = new Ext.Container({
         style: {
             padding: '10 10 10 10',
@@ -35,29 +36,37 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
 
     function reorderModule(index, direction) {
         // Rearrange modules into new order.
-        const currentModule = modules[index];
+        const currentModule = newRule.modules[index];
         const newIndex = direction === 'back' ? index + 1 : index - 1;
-        modules.splice(index, 1);
-        modules.splice(newIndex, 0, currentModule);
+        newRule.modules.splice(index, 1);
+        newRule.modules.splice(newIndex, 0, currentModule);
 
         // Update DOM.
         setupModuleForms();
         moduleContainer.doLayout();
     }
 
+    function removeModule(index) {
+        console.log("Removing module.");
+        // Remove element from execution_order and execution_delay arrays.
+        newRule.modules.splice(index, 1);
+        newRule.execution_delay.splice(index, 1);
+        setupModuleForms();
+        moduleContainer.doLayout();
+    }
+
     function setupModuleForms() {
-        console.log(execution_order);
 
         moduleContainer.removeAll(true);
 
         // I think execution order should always be sequential.
         // The actual order comed from the modules array.
-        for (let i = 0; i < modules.length; ++i) {
+        for (let i = 0; i < newRule.modules.length; ++i) {
             const isFirstModule = i === 0;
-            const isLastModule = i >= modules.length - 1;
+            const isLastModule = i >= newRule.modules.length - 1;
             moduleContainer.add(new AutoRunModuleForm(
-                modules[i],
-                function() {console.log("delete this module")},
+                newRule.modules[i],
+                function() {removeModule(i)},
                 isFirstModule ? undefined : function() {reorderModule(i, 'forward')},
                 isLastModule ? undefined : function() {reorderModule(i, 'back')},
                 rule.id,
@@ -73,14 +82,13 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
         const form = self.getForm();
         const formValues = form.getValues();
         const updatedRule = {
-            ...rule,
-            modules: modules,
-            execution_delay: JSON.parse(rule['execution_delay']),
-            execution_order: JSON.parse(rule['execution_order']),
+            ...newRule,
             name: formValues[ruleTextFieldId],
             chain_mode: formValues[chainModeComboId],
+            execution_order: [...Array(newRule.modules.length).keys()],
         };
-        console.log(updatedRule);
+        console.log("UPDATED RULE.");
+        console.log(JSON.stringify(updatedRule, null, 2));
         updateFn(updatedRule);
     }
 
@@ -128,11 +136,15 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
             },{
                 xtype: 'displayfield',
                 fieldLabel: 'Execution Order',
-                value: rule.execution_order ? rule.execution_order : 'undefined',
+                value: newRule.execution_order ?
+                    JSON.stringify(newRule.execution_order)
+                    : 'undefined',
             },{
                 xtype: 'displayfield',
                 fieldLabel: 'Execution Delay',
-                value: rule.execution_delay ? rule.execution_delay : 'undefined',
+                value: newRule.execution_delay ?
+                    JSON.stringify(newRule.execution_delay)
+                    : 'undefined',
             }
         ],
             buttons: [{
