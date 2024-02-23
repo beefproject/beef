@@ -10,6 +10,49 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
     const moduleTextAreaId = `rule-${ruleId}-module-textarea-${index}`;
     const chainModeComboId = `rule-${ruleId}-module-combo-${index}`;
 
+    const moduleOptionsContainer = new Ext.Panel({
+        padding: '5 5 5 5',
+        border: false,
+        layout: 'form',
+        items: [/*{
+                xtype: 'combo',
+                id: chainModeComboId,
+                fieldLabel: 'Chain Mode',
+                store: ['moduleA', 'moduleB'], // TODO: Update this to the array of commands.
+                queryMode: 'local', // Use local data.
+                triggerAction: 'all', // Show both options instead of just the default.
+                editable: false, // Disable manual text input.
+                forceSelection: true,
+                value: moduleData.name,
+            },*/
+            {
+                xtype: 'displayfield',
+                fieldLabel: 'Module Name',
+                value: moduleData.name,
+            },
+            {
+                xtype: 'displayfield',
+                fieldLabel: 'Module Author',
+                value: moduleData.author ? moduleData.author : 'anonymous',
+            }
+        ]
+    });
+
+    function loadModule() {
+        // TODO: Need to query module option types so that not everything is given a textfield.
+        console.log("Module data:");
+        console.log(moduleData);
+        for (key in moduleData.options) {
+            const value = moduleData.options[key];
+            const inputField = new Ext.form.TextField({
+                fieldLabel: key,
+                value: value ? value : '',
+            });
+            moduleOptionsContainer.add(inputField);
+        };
+    }
+    loadModule();
+
     const buttonContainer = new Ext.Container({
         layout: {
             type: 'hbox',
@@ -34,30 +77,13 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
         ]
     });
 
+
     AutoRunModuleForm.superclass.constructor.call(this, {
             padding: '10 10 10 10',
             closable: false,
             items: [
-            /*{
-                xtype: 'combo',
-                id: chainModeComboId,
-                fieldLabel: 'Chain Mode',
-                store: ['sequential', 'nested-forward'],
-                queryMode: 'local', // Use local data.
-                triggerAction: 'all', // Show both options instead of just the default.
-                editable: false, // Disable manual text input.
-                forceSelection: true,
-                value: moduleData.chain_mode ? moduleData.chain_mode : 'sequential'
-            },*/
-            {
-                xtype: 'textarea',
-                id: moduleTextAreaId,
-                fieldLabel: 'Module Data',
-                value: moduleData ? JSON.stringify(moduleData) : '{}',
-                grow: true,
-                width: '80%'
-            },
-            buttonContainer
+                moduleOptionsContainer,
+                buttonContainer
         ]});
 };
 
