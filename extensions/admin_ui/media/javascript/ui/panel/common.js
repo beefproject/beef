@@ -20,6 +20,8 @@ var re_execute_command_title = 'Re-execute command'
 function generate_form_input_field(form, input, value, disabled, zombie) {
 	var input_field = null;
 	var input_def = null;
+	console.log("Input type: ");
+	console.log(JSON.stringify(input, null, 2));
 			
 	if (!input['ui_label']) input['ui_label'] = input['name'];
 	if (!input['type']) input['type'] = 'textfield';
@@ -33,6 +35,8 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 		allowBlank: false, 
 		value: input['value']
 	};
+	console.log("Input Def:");
+	console.log(JSON.stringify(input_def, null, 2));
 		
 	// create the input field object based upon the type supplied
 	switch(input['type'].toLowerCase()) {
@@ -100,9 +104,11 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 		}
 	}
 
+	console.log("Before setting values input field.");
 	if(value) input_field.setValue(value);
 	if(disabled) input_field.setDisabled(true);
-		
+
+	console.log("Before adding input field to form values input field.");
 	form.add(input_field);
 		
 };
@@ -423,65 +429,5 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
                 panel.configLoadMask.hide();
 			}
 		});
-	}
-};
-
-
-function genNewAutoRunModulePanel(panel, module, ruleId) {
-	if(typeof panel != 'object') {
-		Ext.beef.msg('Bad!', 'Incorrect panel chosen.');
-		return;
-	}
-	
-    panel.removeAll();
-	if(module.name == 'some special command module') {
-		//HERE we will develop specific panels for the command modules that require it.
-	} else {
-		var form = new Ext.form.FormPanel({
-			id: `form-are-module-${ruleId}`,
-			border: false,
-			labelWidth: 75,
-			defaultType: 'textfield',
-			title: module.name,
-			bodyStyle: 'padding: 5px;',
-			
-			items: [
-				new Ext.form.DisplayField({
-					name: 'command_module_description',
-					fieldLabel: 'Description',
-					fieldClass: 'command-module-panel-description',
-					value: module.description
-				}),
-			],
-			
-			buttons:[{
-				text: "Save Module",	
-				handler: function() {console.log("Saved module...")}
-			}]
-		});
-		
-		// create the panel and hide it 
-		/*
-		var payload_panel = new Ext.Panel({  
-			id: 'payload-panel',  // used with Ext.GetCmp('payload-panel')
-			bodyStyle: 'padding:10px;', // we can assign styles to the main div  
-			layout : 'form',
-			bodyBorder: false,
-			height: 200,  
-			hidden: true,
-			border: false //we can remove the border of the panel
-		});
-		*/
-		
-		Ext.each(module.Data, function(input){
-			// Fake a zombie "session" property for the sake of getting it working.
-			generate_form_input_field(form, input, null, false, {session: module.name})}
-		);
-		
-		//form.add(payload_panel);
-		panel.add(form);
-		panel.doLayout();
-		// hide the load mask after rendering of the config panel is done
-		//panel.configLoadMask.hide();
 	}
 };

@@ -30,8 +30,6 @@ getCurrentRules = async function(token) {
             throw new Error(`Getting auto run rules failed with status ${res.status}`);
         }
         const data = await res.json();
-        console.log("Successfully retrieved active rules.");
-        console.log(data);
         const rules = JSON.parse(data.rules);
 
         if (data.success === true && Array.isArray(rules)) {
@@ -48,6 +46,27 @@ getCurrentRules = async function(token) {
         return null;
     }
 } 
+
+getModules = async function(token) {
+    try {
+        var res = await fetch(`/api/modules?token=${token}`);
+        if (!res.ok) {
+            throw new Error(`Getting auto run rules failed with status ${res.status}`);
+        }
+        const modules = await res.json();
+
+        // DEBUG log
+        console.log("Successfully retrieved active modules:");
+        console.log(modules);
+
+        return modules;
+
+    } catch(error) {
+        console.error(error);
+        console.error("Failed to get auto run rules.");
+        return null;
+    }
+}
 
 AutoRunTab = function() {
     // RESTful API token.
@@ -128,7 +147,18 @@ AutoRunTab = function() {
     }
 
     async function loadRules() {
-        const rules = await getCurrentRules(token);
+        let modules = [];
+        let rules = [];
+        try {
+            modules = await getModules(token);
+            rules = await getCurrentRules(token);
+        } catch (error) {
+            console.error(error);
+            console.error("Failed to load command modules and/or rules for Auto Run.");
+            ruleLoadingState.update("<p>Failed to load Auto Run rules.</p>");
+            return;
+        }
+
         if (rules !== null) {
             ruleLoadingState.update(`<p>Loaded ${rules.length} Auto Run rules.</p>`);
             ruleContainer.removeAll();
@@ -136,6 +166,7 @@ AutoRunTab = function() {
             for (let i = 0; i < rules.length; i++) {
                 ruleForm = new AutoRunRuleForm(
                     rules[i],
+                    modules,
                     function() {deleteRule(rules[i].id)},
                     function(newRuleData) {updateRule(rules[i].id, newRuleData)}
                 );

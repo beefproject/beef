@@ -18,10 +18,11 @@ const areNotificationUpdateTest = {
  * Form for the user to read, update and delete a specific Auto Run rule.
  * 
  * rule: The object definition of this rule from the Auto Run Engine.
+ * modules: The list of all commands/modules that the user can choose from.
  * deleteFn: callback function to delete this rule.
  * updateFn: callback function to update this rule.
  */
-AutoRunRuleForm = function(rule, deleteFn, updateFn) {
+AutoRunRuleForm = function(rule, modules, deleteFn, updateFn) {
     const self = this;
     const ruleTextFieldId = `rule-name-${rule.id}`;
     const chainModeComboId = `rule-chain-mode-${rule.id}`;
@@ -31,6 +32,9 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
     const moduleContainer = new Ext.Container({
         style: {
             padding: '10 10 10 10',
+        },
+        listeners: {
+            afterrender: setupModuleForms 
         }
     });
 
@@ -72,7 +76,7 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
         moduleContainer.removeAll(true);
 
         // I think execution order should always be sequential.
-        // The actual order comed from the modules array.
+        // The actual order comes from the modules array.
         for (let i = 0; i < newRule.modules.length; ++i) {
             const isFirstModule = i === 0;
             const isLastModule = i >= newRule.modules.length - 1;
@@ -86,7 +90,6 @@ AutoRunRuleForm = function(rule, deleteFn, updateFn) {
             ));
         }
     }
-    setupModuleForms();
 
     function handleUpdateRule() {
         // TODO: Check if inputs are valid.
