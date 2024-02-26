@@ -46,7 +46,7 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
     const chainModeComboId = `rule-${ruleId}-module-combo-${index}`;
     const token = BeefWUI.get_rest_token();
 
-    // TODO: Load in modules from ruby.
+    // TODO: Change the module.
     /*
     const moduleSelect = new Ext.form.ComboBox({
         fieldLabel: 'Command Module',
@@ -84,40 +84,35 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
                 xtype: 'displayfield',
                 fieldLabel: 'Module Author',
                 value: moduleData.author ? moduleData.author : 'anonymous',
-            }
+            },
         ],
         listeners: {
             afterrender: loadModule
         }
     });
 
-
     async function loadModule() {
-        // TODO: Need to query module option types so that not everything is given a textfield.
         const moduleInfo = await loadModuleInfo(token, moduleData.name);
         if (!moduleInfo) {
            moduleOptionsContainer.update("<p>Failed to load module information.</p>"); 
            return;
         }
-        console.log("Module data:");
-        console.log(moduleData);
-        console.log("Module info:");
-        console.log(JSON.stringify(moduleInfo, null, 2));
-        console.log("Module options, should be an array:");
-        console.log(moduleInfo.options);
-
-        //genNewAutoRunModulePanel(moduleOptionsContainer, moduleInfo, ruleId);
 
         for (let i = 0; i < moduleInfo.options.length; i++) {
-            console.log(JSON.stringify(moduleInfo.options[i], null, 2));
-            // TODO add real autorun module value by default.
-			generate_form_input_field(
+			const inputField = generate_form_input_field(
                 moduleOptionsContainer,
                 moduleInfo.options[i],
-                null,
+                moduleData.options[moduleInfo.options[i].name],
                 false,
                 {session: `${moduleInfo.name}-module-${index}-field-${i}`}
             );
+            // Ensure any changes to the element are reflected in the newRule object.
+            // When the user saves the rule the whole newRule object will be saved,
+            //      including any changes made to these input fields.
+            inputField.on('change', function(_inputF, newValue, oldValue) {
+                moduleData.options[moduleInfo.options[i].name] = newValue;
+            });
+
         };
         moduleOptionsContainer.doLayout();
     }

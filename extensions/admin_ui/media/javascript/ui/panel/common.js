@@ -110,7 +110,7 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 
 	console.log("Before adding input field to form values input field.");
 	form.add(input_field);
-		
+	return input_field;	
 };
 
 function get_dynamic_payload_details(payload, zombie) {

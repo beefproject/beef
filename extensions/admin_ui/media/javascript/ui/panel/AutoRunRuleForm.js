@@ -29,6 +29,7 @@ AutoRunRuleForm = function(rule, modules, deleteFn, updateFn) {
     const newRule = JSON.parse(JSON.stringify(rule));
     newRule.modules = JSON.parse(newRule['modules']);
     newRule.execution_delay = JSON.parse(newRule['execution_delay']);
+    newRule.execution_order = JSON.parse(newRule['execution_order']);
     const moduleContainer = new Ext.Container({
         style: {
             padding: '10 10 10 10',
