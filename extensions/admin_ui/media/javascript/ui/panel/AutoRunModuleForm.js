@@ -7,22 +7,19 @@ loadModuleInfo = async function(token, moduleName) {
             throw new Error(`Getting auto run rules failed with status ${searchResponse.status}`);
         }
         const searchData = await searchResponse.json();
-        console.log("Search data:");
-        console.log(searchData);
         if (typeof searchData.id === 'number') {
             moduleId = searchData.id;
         } else {
             throw new Error("Searching module name failed.");
         }
 
-        // DEBUG log
-        console.log(`Successfully retrieved module id for ${moduleName} = ${moduleId}`);
-
         const infoResponse = await fetch(`/api/modules/${moduleId}?token=${token}`);
         const infoData = await infoResponse.json();
         if (!infoData) {
             throw new Error(`Module with name ${moduleName} and ID ${moduleId} couldn't be retrived.`);
         }
+        // Set the module Id incase we need it later.
+        infoData.id = moduleId;
         return infoData;
 
     } catch(error) {
@@ -41,36 +38,40 @@ loadModuleInfo = async function(token, moduleName) {
  * moveUp: moves the module up one spot in the Auto Run execution order.
  * moveDown: moves the module down one spot in the Auto Run exection order.
  */
-AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, index) {
+AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, index, moduleList) {
     const moduleTextAreaId = `rule-${ruleId}-module-textarea-${index}`;
     const chainModeComboId = `rule-${ruleId}-module-combo-${index}`;
     const token = BeefWUI.get_rest_token();
 
-    // TODO: Change the module.
-    /*
+    const comboStore = new Ext.data.Store({
+        data: moduleList,
+        reader: new Ext.data.JsonReader({
+            fields: ['id', 'name'],
+        }),
+        proxy: new Ext.data.MemoryProxy(moduleList)
+    });
+
     const moduleSelect = new Ext.form.ComboBox({
-        fieldLabel: 'Command Module',
-        store: [{name: 'hi', id: 1}], 
-        queryMode: 'local',  // Set the queryMode to 'remote'
+        fieldLabel: 'Change Module',
+        store: comboStore,
+        queryMode: 'local',
         displayField: 'name',
         valueField: 'id',
         editable: false,  // Disable manual editing of the field
         forceSelection: true,  // Force selection from the list
-        //listeners: {
-        //    render: function (combo) {
-        //        combo.setValue(moduleData.name);
-        //    },
-        //    select: function(combo, newValue, oldValue) {
-        //        if (newValue) {
-        //            console.log("Combo value selected.");
-        //        }
-        //    }
-        //}
+        triggerAction: 'all',
+        typeAhead: true,
+        listeners: {
+            select: function(combo, newValue, oldValue) {
+                if (newValue) {
+                    console.log(`Combo value selected ${newValue.name}.`);
+                }
+            }
+        }
     });
-    */
 
     const moduleOptionsContainer = new Ext.Panel({
-        title: `${moduleData.name}`,
+        title: moduleData.name,
         padding: '10 10 10 10',
         layout: 'form',
         border: false,
@@ -97,6 +98,10 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
            moduleOptionsContainer.update("<p>Failed to load module information.</p>"); 
            return;
         }
+
+        // Update the combobox default value to be this module.
+        // Can't use the moduleData name since it doesn't match the ID.
+        moduleSelect.setValue(moduleInfo.id);
 
         for (let i = 0; i < moduleInfo.options.length; i++) {
 			const inputField = generate_form_input_field(
@@ -144,7 +149,7 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
 
     AutoRunModuleForm.superclass.constructor.call(this, {
             items: [
-                //moduleSelect,
+                moduleSelect,
                 moduleOptionsContainer,
                 buttonContainer
         ]

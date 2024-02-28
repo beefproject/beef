@@ -87,13 +87,13 @@ AutoRunRuleForm = function(rule, modules, deleteFn, updateFn) {
                 isFirstModule ? undefined : function() {reorderModule(i, 'forward')},
                 isLastModule ? undefined : function() {reorderModule(i, 'back')},
                 rule.id,
-                i
+                i,
+                modules
             ));
         }
     }
 
     function handleUpdateRule() {
-        // TODO: Check if inputs are valid.
         // TODO: Need to overwrite module order.
         const form = self.getForm();
         const formValues = form.getValues();
