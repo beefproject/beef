@@ -20,8 +20,6 @@ var re_execute_command_title = 'Re-execute command'
 function generate_form_input_field(form, input, value, disabled, zombie) {
 	var input_field = null;
 	var input_def = null;
-	console.log("Input type: ");
-	console.log(JSON.stringify(input, null, 2));
 			
 	if (!input['ui_label']) input['ui_label'] = input['name'];
 	if (!input['type']) input['type'] = 'textfield';
@@ -35,8 +33,6 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 		allowBlank: false, 
 		value: input['value']
 	};
-	console.log("Input Def:");
-	console.log(JSON.stringify(input_def, null, 2));
 		
 	// create the input field object based upon the type supplied
 	switch(input['type'].toLowerCase()) {
@@ -104,11 +100,9 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 		}
 	}
 
-	console.log("Before setting values input field.");
 	if(value) input_field.setValue(value);
 	if(disabled) input_field.setDisabled(true);
 
-	console.log("Before adding input field to form values input field.");
 	form.add(input_field);
 	return input_field;	
 };

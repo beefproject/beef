@@ -52,7 +52,6 @@ AutoRunRuleForm = function(rule, modules, deleteFn, updateFn) {
     }
 
     function removeModule(index) {
-        console.log("Removing module.");
         // Remove element from execution_order and execution_delay arrays.
         newRule.modules.splice(index, 1);
         newRule.execution_delay.splice(index, 1);
@@ -103,8 +102,6 @@ AutoRunRuleForm = function(rule, modules, deleteFn, updateFn) {
             chain_mode: formValues[chainModeComboId],
             execution_order: [...Array(newRule.modules.length).keys()],
         };
-        console.log("UPDATED RULE.");
-        console.log(JSON.stringify(updatedRule, null, 2));
         updateFn(updatedRule);
     }
 

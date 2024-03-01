@@ -1,4 +1,4 @@
-const areNotification = {
+const defaultRule = {
     "name": "Display an alert",
     "author": "mgeeky",
     "modules": [
@@ -33,7 +33,6 @@ getCurrentRules = async function(token) {
         const rules = JSON.parse(data.rules);
 
         if (data.success === true && Array.isArray(rules)) {
-            console.log(rules);
             return rules;
         }
 
@@ -54,10 +53,6 @@ getModules = async function(token) {
             throw new Error(`Getting auto run rules failed with status ${res.status}`);
         }
         const modules = await res.json();
-
-        // DEBUG log
-        console.log("Successfully retrieved active modules:");
-        console.log(modules);
 
         return modules;
 
@@ -122,7 +117,7 @@ AutoRunTab = function() {
         const res = await fetch(`/api/autorun/rule/add?token=${token}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(areNotification)
+            body: JSON.stringify(defaultRule)
         });
         if (!res.ok) {
             console.error(`Failed when adding a new rule with status ${res.status}.`);
