@@ -1,16 +1,18 @@
 
-loadModuleInfo = async function(token, moduleName) {
-    let moduleId = null;
+loadModuleInfo = async function(token, moduleId, moduleName) {
     try {
-        const searchResponse = await fetch(`/api/modules/search/${moduleName}?token=${token}`);
-        if (!searchResponse.ok) {
-            throw new Error(`Getting auto run rules failed with status ${searchResponse.status}`);
-        }
-        const searchData = await searchResponse.json();
-        if (typeof searchData.id === 'number') {
-            moduleId = searchData.id;
-        } else {
-            throw new Error("Searching module name failed.");
+        // If all we have is the name then we need to get the ID first.
+        if (moduleId === undefined) {
+            const searchResponse = await fetch(`/api/modules/search/${moduleName}?token=${token}`);
+            if (!searchResponse.ok) {
+                throw new Error(`Getting auto run rules failed with status ${searchResponse.status}`);
+            }
+            const searchData = await searchResponse.json();
+            if (typeof searchData.id === 'number') {
+                moduleId = searchData.id;
+            } else {
+                throw new Error("Searching module name failed.");
+            }
         }
 
         const infoResponse = await fetch(`/api/modules/${moduleId}?token=${token}`);
@@ -62,38 +64,39 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
         triggerAction: 'all',
         typeAhead: true,
         listeners: {
-            select: function(combo, newValue, oldValue) {
-                if (newValue) {
-                    console.log(`Combo value selected ${newValue.name}.`);
+            select: async function(combo) {
+                const selectedModuleId = combo.getValue()
+                const moduleInfo = await loadModuleInfo(token, selectedModuleId, undefined);
+                if (!moduleInfo) {
+                    console.error("Failed to load new module.");
+                    return;
                 }
+                // Update the module data to reflect the new module.
+                moduleData.name = moduleInfo.name;
+                moduleData.condition = moduleInfo.condition ? moduleInfo.condition : null;
+                moduleData.options = {};
+                for (let i = 0; i < moduleInfo.options.length; i++) {
+                    const newOption = moduleInfo.options[i];
+                    moduleData.options[newOption.name] = newOption.value ? newOption.value : '';
+                }
+                loadModule(moduleInfo);
             }
         }
     });
 
     const moduleOptionsContainer = new Ext.Panel({
-        title: moduleData.name,
-        padding: '10 10 10 10',
+        title: `Module ${index + 1}`,
+        tbar: [moduleSelect],
         layout: 'form',
         border: false,
-        items: [
-            {
-                xtype: 'displayfield',
-                fieldLabel: 'Module Name',
-                value: moduleData.name,
-            },
-            {
-                xtype: 'displayfield',
-                fieldLabel: 'Module Author',
-                value: moduleData.author ? moduleData.author : 'anonymous',
-            },
-        ],
         listeners: {
-            afterrender: loadModule
+            afterrender: function() {loadModule(undefined)}
         }
     });
 
-    async function loadModule() {
-        const moduleInfo = await loadModuleInfo(token, moduleData.name);
+    async function loadModule(moduleInfo) {
+        if (!moduleInfo)
+            moduleInfo = await loadModuleInfo(token, undefined, moduleData.name);
         if (!moduleInfo) {
            moduleOptionsContainer.update("<p>Failed to load module information.</p>"); 
            return;
@@ -102,6 +105,17 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
         // Update the combobox default value to be this module.
         // Can't use the moduleData name since it doesn't match the ID.
         moduleSelect.setValue(moduleInfo.id);
+
+        // Setup module form elements. Remove all incase we're switching from a different module.
+        moduleOptionsContainer.removeAll();
+        moduleOptionsContainer.add(new Ext.form.DisplayField({
+            fieldLabel: 'Module Name',
+            value: moduleInfo.name
+        }))
+        moduleOptionsContainer.add(new Ext.form.DisplayField({
+            fieldLabel: 'Module Author',
+            value: moduleInfo.author ? moduleInfo.author : 'anonymous'
+        }))
 
         for (let i = 0; i < moduleInfo.options.length; i++) {
 			const inputField = generate_form_input_field(
@@ -149,7 +163,6 @@ AutoRunModuleForm = function(moduleData, deleteFn, moveUp, moveDown, ruleId, ind
 
     AutoRunModuleForm.superclass.constructor.call(this, {
             items: [
-                moduleSelect,
                 moduleOptionsContainer,
                 buttonContainer
         ]
