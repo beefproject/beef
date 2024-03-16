@@ -48,9 +48,12 @@ RSpec.describe 'BeEF API Rate Limit' do
 		if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
 			OTR::ActiveRecord.establish_connection!
   		end
+
+		# Migrate (if required)
+		ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
 		context = ActiveRecord::Migration.new.migration_context
 		if context.needs_migration?
-		  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+  			ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 		end
 
 		sleep 2
