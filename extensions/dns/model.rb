@@ -12,7 +12,9 @@ module BeEF
           # Hooks the model's "save" event. Validates pattern/response and generates a rule identifier.
           before_save :check_rule
           self.table_name = 'dns_rules'
-          serialize :response, Array
+          # serialize :response, Array
+          serialize :response, type: Array
+
 
           private
 
