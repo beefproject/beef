@@ -114,14 +114,17 @@ RSpec.describe 'BeEF API Rate Limit' do
 		(0..2).each do |again|      # multiple sets of auth attempts
 		  # first pass -- apis in order, valid passwd on 9th attempt
 		  # subsequent passes apis shuffled
-		  puts "speed requesets"    # all should return 401
+		  print_info "Starting authentication attempt sequence #{again + 1}. The valid password is placed randomly among failed attempts."
+		#   print_info 'FILL THIS IN'
+		#   puts "speed requesets"    # all should return 401
 		  (0..50).each do |i|
 			test_api = apis[i%l]
 			expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
 			# t0 = t
 		  end
 		  # again with more time between calls -- there should be success (1st iteration)
-		  puts "delayed requests"
+	    print_info "Initiating delayed authentication requests to test successful authentication with correct credentials."
+    	print_info "Delayed requests are made to simulate more realistic login attempts and verify rate limiting."
 		  (0..(l*2)).each do |i|
 			test_api = apis[i%l]
 			if (test_api.is_pass?(BEEF_PASSWD))
