@@ -112,29 +112,25 @@ RSpec.describe 'BeEF API Rate Limit' do
 		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
 		l = apis.length
 		(0..2).each do |again|      # multiple sets of auth attempts
-		  # first pass -- apis in order, valid passwd on 9th attempt
-		  # subsequent passes apis shuffled
-		  print_info "Starting authentication attempt sequence #{again + 1}. The valid password is placed randomly among failed attempts."
-		#   print_info 'FILL THIS IN'
-		#   puts "speed requesets"    # all should return 401
-		  (0..50).each do |i|
-			test_api = apis[i%l]
-			expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
-			# t0 = t
-		  end
-		  # again with more time between calls -- there should be success (1st iteration)
-	    print_info "Initiating delayed authentication requests to test successful authentication with correct credentials."
-    	print_info "Delayed requests are made to simulate more realistic login attempts and verify rate limiting."
-		  (0..(l*2)).each do |i|
-			test_api = apis[i%l]
-			if (test_api.is_pass?(BEEF_PASSWD))
-				expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
-			else
-				expect(test_api.auth()[:payload]).to eql("401 Unauthorized")
-			end
-			sleep(0.5)
-			# t0 = t
-		  end
+		  	# first pass -- apis in order, valid passwd on 9th attempt
+		  	# subsequent passes apis shuffled
+		  	print_info "Starting authentication attempt sequence #{again + 1}. The valid password is placed randomly among failed attempts."
+			(0..50).each do |i|
+				test_api = apis[i%l]
+				expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
+		  	end
+		  	# again with more time between calls -- there should be success (1st iteration)
+	    	print_info "Initiating delayed authentication requests to test successful authentication with correct credentials."
+    		print_info "Delayed requests are made to simulate more realistic login attempts and verify rate limiting."
+		  	(0..(l*2)).each do |i|
+				test_api = apis[i%l]
+				if (test_api.is_pass?(BEEF_PASSWD))
+					expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
+				else
+					expect(test_api.auth()[:payload]).to eql("401 Unauthorized")
+				end
+				sleep(0.5)
+			  end
 		  apis.shuffle! # new order for next iteration
 		  apis = apis.reverse if (apis[0].is_pass?(BEEF_PASSWD)) # prevent the first from having valid passwd
 		end                         # multiple sets of auth attempts
