@@ -22,7 +22,7 @@ Dir['spec/support/*.rb'].each do |f|
 end
 
 ENV['RACK_ENV'] ||= 'test'
-ARGV = []
+ARGV.clear
 
 ## BrowserStack config
 
