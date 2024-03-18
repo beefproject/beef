@@ -199,7 +199,7 @@ GEM
     sqlite3 (1.7.2-x86_64-linux)
     stringio (3.1.0)
     sync (0.5.0)
-    term-ansicolor (1.7.1)
+    term-ansicolor (1.7.2)
       tins (~> 1.0)
     test-unit (3.6.1)
       power_assert
