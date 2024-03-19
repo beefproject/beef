@@ -1,13 +1,11 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 require 'yaml'
 require 'bundler/setup'
 load 'tasks/otr-activerecord.rake'
-#require 'pry-byebug'
-
 
 task :default => ["spec"]
 

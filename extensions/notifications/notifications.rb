@@ -1,12 +1,14 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
 require 'extensions/notifications/channels/email'
 require 'extensions/notifications/channels/pushover'
 require 'extensions/notifications/channels/slack_workspace'
+require 'extensions/notifications/channels/ntfy'
+
 
 module BeEF
   module Extension
@@ -34,6 +36,9 @@ module BeEF
           BeEF::Extension::Notifications::Channels::Pushover.new(message) if @config.get('beef.extension.notifications.pushover.enable') == true
 
           BeEF::Extension::Notifications::Channels::SlackWorkspace.new(message) if @config.get('beef.extension.notifications.slack.enable') == true
+
+          BeEF::Extension::Notifications::Channels::Ntfy.new(message) if @config.get('beef.extension.notifications.ntfy.enable') == true
+
         end
       end
     end

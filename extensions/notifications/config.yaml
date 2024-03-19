@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 beef:
@@ -26,3 +26,9 @@ beef:
               webhook_url: "your_webhook_url"
               channel: "#beef"     # Slack channel
               username: "notifier" # Username can be anything
+            ntfy:
+              enable: false
+              endpoint_url: "https://ntfy.sh/beef-[GUID]" # Update GUID
+              username: "" # Leave blank if not needed
+              password: "" # Leave blank if not needed
+

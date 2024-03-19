@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 require 'test/unit'
@@ -44,7 +44,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
   # Tests DNS spoofing of cloned webpages
   def test_1_dns_spoof
-    url = 'http://beefproject.com'
+    url = 'https://beefproject.com'
     mount = '/beefproject'
     dns_spoof = true
 

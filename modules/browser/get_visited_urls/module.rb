@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Get_visited_urls < BeEF::Core::Command
@@ -10,7 +10,7 @@ class Get_visited_urls < BeEF::Core::Command
         'name' => 'urls',
         'description' => 'Enter target URL(s)',
         'type' => 'textarea',
-        'value' => 'http://beefproject.com/',
+        'value' => 'https://beefproject.com/',
         'width' => '200px' }
     ]
   end

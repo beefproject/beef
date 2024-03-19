@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
@@ -244,7 +244,8 @@ finish() {
 	echo "Next steps:"
 	echo
 	echo "* Change the default password in config.yaml"
-	echo "* Configure geoipupdate to update the Maxmind GeoIP database."
+	echo "* Configure geoipupdate to update the Maxmind GeoIP database:"
+	echo "*   https://dev.maxmind.com/geoip/updating-databases"
 	echo "* Review the wiki for important configuration information:"
 	echo "  https://github.com/beefproject/beef/wiki/Configuration"
 	echo

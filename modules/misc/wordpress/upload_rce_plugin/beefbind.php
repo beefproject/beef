@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: beefbind
- * Plugin URI: http://beefproject.com
+ * Plugin URI: https://beefproject.com
  * Description: BeEF bind shell with CORS.
  * Version: 1.1
  * Authors: Bart Leppens, Erwan LR (@erwan_lr | WPScanTeam)
  * Author URI: https://twitter.com/bmantra
- * License: Copyright (c) 2006-2023Wade Alcorn - wade@bindshell.net - Browser Exploitation Framework (BeEF) - http://beefproject.com - See the file 'doc/COPYING' for copying permission
+ * License: Copyright (c) 2006-2024Wade Alcorn - wade@bindshell.net - Browser Exploitation Framework (BeEF) - https://beefproject.com - See the file 'doc/COPYING' for copying permission
 **/
 
 header("Access-Control-Allow-Origin: *");

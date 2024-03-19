@@ -128,7 +128,7 @@ def get_options_from_url(url, method, postdata, mname)
     input_name = nil
     input_value = nil
     # parse POST params as module options
-    CGI::parse(URI.parse("http://beefproject.com/?#{postdata}").query).each do |k, v|
+    CGI::parse(URI.parse("https://beefproject.com/?#{postdata}").query).each do |k, v|
       if k == 'submit'
         print_error "Invalid POST parameter 'submit' - see: https://github.com/beefproject/beef/issues/1117"
         exit 1

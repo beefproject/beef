@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 class Site_redirect < BeEF::Core::Command
   def self.options
     [
-      { 'ui_label' => 'Redirect URL', 'name' => 'redirect_url', 'description' => 'The URL the target will be redirected to.', 'value' => 'http://beefproject.com/',
+      { 'ui_label' => 'Redirect URL', 'name' => 'redirect_url', 'description' => 'The URL the target will be redirected to.', 'value' => 'https://beefproject.com/',
         'width' => '200px' }
     ]
   end

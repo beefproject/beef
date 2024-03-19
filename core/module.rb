@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
@@ -301,9 +301,13 @@ module BeEF
 
       targets = {}
       target_config.each do |k, v|
-        next unless BeEF::Core::Constants::CommandModule.const_defined? "VERIFIED_#{k.upcase}"
-
-        key = BeEF::Core::Constants::CommandModule.const_get "VERIFIED_#{k.upcase}"
+        # Convert the key to a string if it's not already one
+        k_str = k.to_s.upcase
+      
+        # Use the adjusted string key for the rest of the process
+        next unless BeEF::Core::Constants::CommandModule.const_defined? "VERIFIED_#{k_str}"
+      
+        key = BeEF::Core::Constants::CommandModule.const_get "VERIFIED_#{k_str}"
         targets[key] = [] unless targets.key? key
         browser = nil
 

@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
@@ -72,10 +72,12 @@ module BeEF
 
         return unless validate_public_config_variable?(@config)
 
+        # Note for developers:
+        # The configuration path 'beef.http.public_port' is deprecated.
+        # Use the new format for public_port variables as described in the BeEF project documentation.
+        # Refer to the BeEF configuration guide for the web server configuration details:
+        # https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration
         if @config['beef']['http']['public_port']
-          print_error 'Config path beef.http.public_port is deprecated.'
-          print_error 'Please use the new format for public variables found'
-          print_error 'https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration'
           return
         end
 
@@ -277,13 +279,15 @@ module BeEF
 
       private
 
+      # Note for developers:
+      # The configuration path 'beef.http.public' is deprecated.
+      # Use the new format for public variables as described in the BeEF project documentation.
+      # Refer to the BeEF configuration guide for the web server configuration details:
+      # https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration
       def validate_public_config_variable?(config)
         return true if config['beef']['http']['public'].is_a?(Hash) ||
                        config['beef']['http']['public'].is_a?(NilClass)
 
-        print_error 'Config path beef.http.public is deprecated.'
-        print_error 'Please use the new format for public variables found'
-        print_error 'https://github.com/beefproject/beef/wiki/Configuration#web-server-configuration'
         false
       end
     end

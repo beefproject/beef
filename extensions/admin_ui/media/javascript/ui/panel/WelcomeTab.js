@@ -1,6 +1,6 @@
 //
-// Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-// Browser Exploitation Framework (BeEF) - http://beefproject.com
+// Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
@@ -15,7 +15,7 @@ WelcomeTab = function() {
     welcome = " \
               <div style='font:11px tahoma,arial,helvetica,sans-serif;width:500px' > \
               <p><img src='<%= @base_path %>/media/images/beef.jpg' alt='BeEF - The Browser Exploitation Framework' /></p><br /> \
-              <p>Official website: <a href='https://beefproject.com/'>http://beefproject.com/</a></p><br />\
+              <p>Official website: <a href='https://beefproject.com/'>https://beefproject.com/</a></p><br />\
               <p><span style='font:bold 13px tahoma,arial,helvetica,sans-serif'>Getting Started</span></p><br />\
               <p>Welcome to BeEF!</p><br /> \
               <p>Before being able to fully explore the framework you will have to 'hook' a browser. To begin with you can point a browser towards the basic demo page <a href='/demos/basic.html' target='_blank'>here</a>, or the advanced version <a href='/demos/butcher/index.html' target='_blank'>here</a>.</p><br /> \

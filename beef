@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 #
-# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
-# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 
@@ -12,9 +12,9 @@
 $VERBOSE = nil
 
 #
-# @note Version check to ensure BeEF is running Ruby 2.7+
+# @note Version check to ensure BeEF is running Ruby 3.0+
 #
-min_ruby_version = '2.7'
+min_ruby_version = '3.0'
 if RUBY_VERSION < min_ruby_version
   puts
   puts "Ruby version #{RUBY_VERSION} is no longer supported. Please upgrade to Ruby version #{min_ruby_version} or later."
@@ -203,9 +203,10 @@ if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
 end
 
 # Migrate (if required)
+ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
 context = ActiveRecord::Migration.new.migration_context
 if context.needs_migration?
-  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate
+  ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 end
 #
 # @note Extensions may take a moment to load, thus we print out a please wait message

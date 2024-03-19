@@ -1,5 +1,7 @@
 ### BeEF ###
 beef.db
+beef.db-shm
+beef.db-wal
 beef.log
 test/msf-test
 extensions/admin_ui/media/javascript-min/
@@ -24,6 +26,9 @@ coverage/
 
 # BrowserStack
 local.log
+
+# Visual Studio Code
+.vscode/
 
 # The following lines were created by https://www.gitignore.io
 
