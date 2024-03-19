@@ -79,7 +79,7 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
     io-like (0.3.1)
-    irb (1.11.2)
+    irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
     json (2.7.1)
@@ -131,7 +131,7 @@ GEM
       mojo_magick (~> 0.6.5)
       rqrcode_core (~> 1.0)
     racc (1.7.3)
-    rack (2.2.8)
+    rack (2.2.8.1)
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
@@ -142,7 +142,7 @@ GEM
     rdoc (6.6.2)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
-    reline (0.4.2)
+    reline (0.4.3)
       io-console (~> 0.5)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -165,7 +165,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.0)
-    rubocop (1.60.2)
+    rubocop (1.62.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -173,18 +173,18 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.30.0, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.30.0)
-      parser (>= 3.2.1.0)
+    rubocop-ast (1.31.2)
+      parser (>= 3.3.0.4)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.17.0)
+    selenium-webdriver (4.18.1)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -195,11 +195,11 @@ GEM
       rack-protection (= 3.2.0)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (1.7.2-arm64-darwin)
-    sqlite3 (1.7.2-x86_64-linux)
+    sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86_64-linux)
     stringio (3.1.0)
     sync (0.5.0)
-    term-ansicolor (1.7.1)
+    term-ansicolor (1.7.2)
       tins (~> 1.0)
     test-unit (3.6.1)
       power_assert
@@ -243,7 +243,6 @@ GEM
       nokogiri (~> 1.8)
 
 PLATFORMS
-  aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
@@ -261,7 +260,7 @@ DEPENDENCIES
   eventmachine (~> 1.2, >= 1.2.7)
   execjs (~> 2.9)
   geckodriver-helper (~> 0.24.0)
-  irb (~> 1.11)
+  irb (~> 1.12)
   json
   maxmind-db (~> 1.2)
   mime-types (~> 3.5)
@@ -277,10 +276,10 @@ DEPENDENCIES
   rdoc (~> 6.6)
   rest-client (~> 2.1.0)
   rspec (~> 3.13)
-  rubocop (~> 1.60.2)
+  rubocop (~> 1.62.1)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.17)
+  selenium-webdriver (~> 4.18)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.7)

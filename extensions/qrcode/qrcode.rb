@@ -28,14 +28,25 @@ module BeEF
               fullurls << target
             # relative URLs
             else
-              # network interfaces
-              BeEF::Core::Console::Banners.interfaces.each do |int|
-                next if int == '0.0.0.0'
+              
+              # Retrieve the list of network interfaces from BeEF::Core::Console::Banners
+              interfaces = BeEF::Core::Console::Banners.interfaces
 
-                fullurls << "#{beef_proto}://#{int}:#{beef_port}#{target}"
+              # Check if the interfaces variable is nil, indicating that network interfaces are not available
+              if interfaces.nil?
+                print_error "[QR] Error: Network interfaces information is unavailable."
+                print_error "[QR] Error: This will be acceptable during testing."
+              else
+                # If interfaces are available, iterate over each network interface
+                interfaces.each do |int|
+                  # Skip the loop iteration if the interface address is '0.0.0.0' (which generally represents all IPv4 addresses on the local machine)
+                  next if int == '0.0.0.0'
+                  # Construct full URLs using the network interface address, and add them to the fullurls array
+                  # The URL is composed of the BeEF protocol, interface address, BeEF port, and the target path
+                  fullurls << "#{beef_proto}://#{int}:#{beef_port}#{target}"
+                end
               end
-              # beef host
-              fullurls << "#{beef_proto}://#{beef_host}:#{beef_port}#{target}" unless beef_host == '0.0.0.0'
+
             end
           end
 
