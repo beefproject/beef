@@ -9,27 +9,29 @@ require 'uri'
 
 RSpec.describe 'BeEF API Rate Limit' do
 
+    def configure_beef
+        @config = BeEF::Core::Configuration.instance
+
+        @config.set('beef.credentials.user', "beef")
+        @config.set('beef.credentials.passwd', "beef")
+
+        @username = @config.get('beef.credentials.user')
+        @password = @config.get('beef.credentials.passwd')
+    end
+
+    def load_beef_extensions_and_modules
+        # Load BeEF extensions
+        BeEF::Extensions.load
+
+        # Load BeEF modules only if they are not already loaded
+        BeEF::Modules.load if @config.get('beef.module').nil?
+    end
+
     def start_beef_server
-		@config = BeEF::Core::Configuration.instance
-		@config.set('beef.credentials.user', "beef")
-		@config.set('beef.credentials.passwd', "beef")
-		@username = @config.get('beef.credentials.user')
-		@password = @config.get('beef.credentials.passwd')
-		
-		# Load BeEF extensions
-		# Always load Extensions, as previous changes to the config from other tests may affect
-		# whether or not this test passes.
-		BeEF::Extensions.load
+        configure_beef
+        load_beef_extensions_and_modules
 
-		# Load BeEF modules
-        # Check if modules already loaded. No need to reload.
-		if @config.get('beef.module').nil?
-			BeEF::Modules.load
-		else
-			print_info "Modules already loaded"
-		end
-
-		# Grab DB file and regenerate if requested
+        # Grab DB file and regenerate if requested
 		db_file = @config.get('beef.database.file')
 
 		if BeEF::Core::Console::CommandLine.parse[:resetdb]
@@ -79,7 +81,7 @@ RSpec.describe 'BeEF API Rate Limit' do
       false
     end
     
-    def wait_for_beef_server_to_start(uri_str, timeout: 30)
+    def wait_for_beef_server_to_start(uri_str, timeout: 5)
       start_time = Time.now
     
       until beef_server_running?(uri_str) || (Time.now - start_time) > timeout do
@@ -92,7 +94,7 @@ RSpec.describe 'BeEF API Rate Limit' do
     def start_beef_server_and_wait
       pid = start_beef_server
     
-      if wait_for_beef_server_to_start('http://localhost:3000', timeout: 30)
+      if wait_for_beef_server_to_start('http://localhost:3000', timeout: 5)
         # print_info "Server started successfully."
       else
         print_info "Server failed to start within timeout."
@@ -106,38 +108,59 @@ RSpec.describe 'BeEF API Rate Limit' do
 	end
 
 	after(:all) do
-		print_info "Shutting down server"
-		Process.kill("KILL",@pid) unless @pid.nil?
+		# Shutting down server
+        Process.kill("KILL", @pid) unless @pid.nil?
+        Process.wait(@pid) # Ensure the process has exited and the port is released
+        @pid = nil
 	end
-	 
-	it 'adheres to auth rate limits' do
-		passwds = (1..9).map { |i| "broken_pass"}
-		passwds.push BEEF_PASSWD
+
+    it 'confirm correct creds are successful' do
+
+        sleep 0.5
+        test_api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, BEEF_PASSWD) 
+        expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
+
+    end
+    
+    it 'confirm incorrect creds are unsuccessful' do
+
+        sleep 0.5
+        test_api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, "wrong_passowrd") 
+        expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
+    end
+    
+    it 'adheres to 9 bad passwords then 1 correct auth rate limits' do
+
+        # create api structures with bad passwords and one good
+		passwds = (1..9).map { |i| "bad_password"} # incorrect password
+		passwds.push BEEF_PASSWD # correct password
 		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
-		l = apis.length
-		(0..2).each do |again|      # multiple sets of auth attempts
-		  	# first pass -- apis in order, valid passwd on 9th attempt
-		  	# subsequent passes apis shuffled
-		  	print_info "Starting authentication attempt sequence #{again + 1}. The valid password is placed randomly among failed attempts."
-			(0..50).each do |i|
-				test_api = apis[i%l]
-				expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
-		  	end
-		  	# again with more time between calls -- there should be success (1st iteration)
-	    	print_info "Initiating delayed authentication requests to test successful authentication with correct credentials."
-    		print_info "Delayed requests are made to simulate more realistic login attempts and verify rate limiting."
-		  	(0..(l*2)).each do |i|
-				test_api = apis[i%l]
-				if (test_api.is_pass?(BEEF_PASSWD))
-					expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
-				else
-					expect(test_api.auth()[:payload]).to eql("401 Unauthorized")
-				end
-				sleep(0.5)
-			  end
-		  apis.shuffle! # new order for next iteration
-		  apis = apis.reverse if (apis[0].is_pass?(BEEF_PASSWD)) # prevent the first from having valid passwd
-		end                         # multiple sets of auth attempts
-	end
+
+        (0..apis.length-1).each do |i|
+            test_api = apis[i]
+            expect(test_api.auth()[:payload]).to eql("401 Unauthorized") # all (unless the valid is first 1 in 10 chance)
+        end
+    end
+    
+    it 'adheres to random bad passords and 1 correct auth rate limits' do
+
+        # create api structures with bad passwords and one good
+		passwds = (1..9).map { |i| "bad_password"} # incorrect password
+		passwds.push BEEF_PASSWD # correct password
+		apis = passwds.map { |pswd| BeefRestClient.new('http', ATTACK_DOMAIN, '3000', BEEF_USER, pswd) }
+
+        apis.shuffle! # random order for next iteration
+        apis = apis.reverse if (apis[0].is_pass?(BEEF_PASSWD)) # prevent the first from having valid passwd
+
+        (0..apis.length-1).each do |i|
+            test_api = apis[i]
+            if (test_api.is_pass?(BEEF_PASSWD))
+                sleep(0.5)
+                expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
+            else
+                expect(test_api.auth()[:payload]).to eql("401 Unauthorized")
+            end
+        end
+    end    
  
 end
