@@ -134,6 +134,15 @@ module BeEF
               print_info "Starting WebSocketSecure server on wss://[#{config.beef_host}:#{config.get('beef.http.websocket.secure_port').to_i} [timer: #{ws_poll_timeout}]"
             end
           end
+
+                    #
+          # Print WebSocket servers
+          #
+          def print_http_proxy
+            config = BeEF::Core::Configuration.instance
+            print_info "HTTP Proxy: http://#{config.get('beef.extension.proxy.address')}:#{config.get('beef.extension.proxy.port')}"
+          end
+
         end
       end
     end
