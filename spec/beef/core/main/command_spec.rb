@@ -1,8 +1,7 @@
 RSpec.describe 'BeEF Command class testing' do
   before(:each) do
     # Reset or re-initialise the configuration to a default state
-    config = File.expand_path('../../../support/assets/config_old.yaml', __dir__)
-    @config_instance = BeEF::Core::Configuration.new(config)  
+    @config_instance = BeEF::Core::Configuration.instance  
   end
 
   it 'should return a beef configuration variable' do
