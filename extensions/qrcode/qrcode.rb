@@ -32,11 +32,7 @@ module BeEF
               # Retrieve the list of network interfaces from BeEF::Core::Console::Banners
               interfaces = BeEF::Core::Console::Banners.interfaces
 
-              # Check if the interfaces variable is nil, indicating that network interfaces are not available
-              if interfaces.nil?
-                print_error "[QR] Error: Network interfaces information is unavailable."
-                print_error "[QR] Error: This will be acceptable during testing."
-              else
+              if not interfaces.nil? and not interfaces.empty? # If interfaces are available, iterate over each network interface
                 # If interfaces are available, iterate over each network interface
                 interfaces.each do |int|
                   # Skip the loop iteration if the interface address is '0.0.0.0' (which generally represents all IPv4 addresses on the local machine)
