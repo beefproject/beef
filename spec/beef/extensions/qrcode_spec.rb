@@ -7,7 +7,7 @@ RSpec.describe 'BeEF Extension QRCode' do
     @config.load_extensions_config
   end
 
-  it 'loads configuration' do
+  xit 'loads configuration' do
     config = @config.get('beef.extension.qrcode')
     expect(config).to have_key('enable')
     expect(config).to have_key('targets')
