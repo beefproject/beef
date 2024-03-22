@@ -15,6 +15,7 @@ module BeEF
 
         def initialize
           super()
+          logger.level = Logger::ERROR
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule
           @data_chunks = {}
