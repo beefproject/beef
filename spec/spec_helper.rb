@@ -21,7 +21,7 @@ Dir['spec/support/*.rb'].each do |f|
   require f
 end
 
-ENV['RACK_ENV'] ||= 'test'
+ENV['RACK_ENV'] ||= 'test' # Set the environment to test
 ARGV.clear
 
 ## BrowserStack config
@@ -89,4 +89,120 @@ RSpec.configure do |config|
     Process.kill('KILL', server_pid)
     Process.kill('KILL', server_pids)
   end
+
+
+
+########################################
+
+require 'socket'
+
+  def port_available?
+    socket = TCPSocket.new('localhost', 3000)
+    socket.close
+    false  # If a connection is made, the port is in use, so it's not available.
+  rescue Errno::ECONNREFUSED
+    true   # If the connection is refused, the port is not in use, so it's available.
+  rescue Errno::EADDRNOTAVAIL
+    true   # If the connection is refused, the port is not in use, so it's available.
+  end
+
+
+  def configure_beef
+
+    # Reset or re-initialise the configuration to a default state
+    @config = BeEF::Core::Configuration.instance
+
+    @config.set('beef.credentials.user', "beef")
+    @config.set('beef.credentials.passwd', "beef")
+
+    @username = @config.get('beef.credentials.user')
+    @password = @config.get('beef.credentials.passwd')
+  end
+
+  # Load the server
+  def load_beef_extensions_and_modules
+      # Load BeEF extensions
+      BeEF::Extensions.load
+
+      # Load BeEF modules only if they are not already loaded
+      BeEF::Modules.load if @config.get('beef.module').nil?
+  end
+
+  def start_beef_server
+    exit unless port_available?
+    configure_beef
+    load_beef_extensions_and_modules
+
+    # Grab DB file and regenerate if requested
+    db_file = @config.get('beef.database.file')
+
+    if BeEF::Core::Console::CommandLine.parse[:resetdb]
+      File.delete(db_file) if File.exist?(db_file)
+    end
+
+    # Load up DB and migrate if necessary
+    ActiveRecord::Base.logger = nil
+    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
+    # otr-activerecord require you to manually establish the connection with the following line
+    #Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+    if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+      OTR::ActiveRecord.establish_connection!
+    end
+
+    # Migrate (if required)
+    ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
+    context = ActiveRecord::Migration.new.migration_context
+    if context.needs_migration?
+      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+    end
+    BeEF::Core::Migration.instance.update_db!
+
+    # Spawn HTTP Server
+    # print_info "Starting HTTP Hook Server"
+    http_hook_server = BeEF::Core::Server.instance
+    http_hook_server.prepare
+
+    # Generate a token for the server to respond with
+    BeEF::Core::Crypto::api_token
+
+    # Initiate server start-up
+    BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
+    pid = fork do
+      http_hook_server.start
+    end
+
+    return pid
+  end
+
+  def beef_server_running?(uri_str)
+    uri = URI.parse(uri_str)
+    response = Net::HTTP.get_response(uri)
+    response.is_a?(Net::HTTPSuccess)
+  rescue
+    false
+  end
+
+  def wait_for_beef_server_to_start(uri_str, timeout: 5)
+    start_time = Time.now
+
+    until beef_server_running?(uri_str) || (Time.now - start_time) > timeout do
+      sleep 0.1
+    end
+
+    beef_server_running?(uri_str)
+  end
+
+  def start_beef_server_and_wait
+    pid = start_beef_server
+
+    if wait_for_beef_server_to_start('http://localhost:3000', timeout: 5)
+      # print_info "Server started successfully."
+    else
+      print_error "Server failed to start within timeout."
+    end
+
+    pid
+  end
+
 end
