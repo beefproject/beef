@@ -11,6 +11,11 @@ RSpec.describe 'BeEF Extension DNS' do
     @dns = BeEF::Extension::Dns::Server.instance
   end
 
+  after(:all) do
+    # Stop the DNS server after each test case
+    BeEF::Extension::Dns::Server.instance.stop # this might not be needed?
+  end
+
   it 'loaded configuration' do
     config = @config.get('beef.extension.dns')
     expect(config).to have_key('protocol')
