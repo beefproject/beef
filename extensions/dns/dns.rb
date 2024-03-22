@@ -118,6 +118,7 @@ module BeEF
           @lock.synchronize do
             Thread.new do
               EventMachine.next_tick do
+                next if @server_started # Check if the server was already started
                 upstream = options[:upstream] || nil
 
                 listen = options[:listen] || nil
@@ -132,6 +133,7 @@ module BeEF
                 begin
                   # super(:listen => listen)
                   Thread.new { super() }
+                  @server_started = true # Set the server started flag
                 rescue RuntimeError => e
                   if e.message =~ /no datagram socket/ || e.message =~ /no acceptor/ # the port is in use
                     print_error "[DNS] Another process is already listening on port #{options[:listen]}"
@@ -144,6 +146,14 @@ module BeEF
               end
             end
           end
+        end
+
+        def stop
+          return unless @server_started # Check if the server was started
+      
+          # Logic to stop the Async::DNS server
+          puts EventMachine.stop if EventMachine.reactor_running?
+          @server_started = false # Reset the server started flag
         end
 
         # Entry point for processing incoming DNS requests. Attempts to find a matching rule and
