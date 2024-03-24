@@ -5,6 +5,26 @@ RSpec.describe 'BeEF Configuration' do
 
   before(:context) do
     @config_instance = BeEF::Core::Configuration.instance
+
+    @original_http_host = @config_instance.get('beef.http.host')
+    @original_http_port = @config_instance.get('beef.http.port')
+    @original_http_https = @config_instance.get('beef.http.https.enable')
+    @original_http_public_host = @config_instance.get('beef.http.public.host')
+    @original_http_public_port = @config_instance.get('beef.http.public.port')
+    @original_http_public_https = @config_instance.get('beef.http.public.https')
+    @original_http_hook_file = @config_instance.get('beef.http.hook_file')
+  end
+
+  after(:context) do
+    # Reset the configuration values
+    # This is important as the tests may change the configuration values
+    @config_instance.set('beef.http.host', @original_http_host)
+    @config_instance.set('beef.http.port', @original_http_port)
+    @config_instance.set('beef.http.https.enable', @original_http_https)
+    @config_instance.set('beef.http.public.host', @original_http_public_host)
+    @config_instance.set('beef.http.public.port', @original_http_public_port)
+    @config_instance.set('beef.http.public.https', @original_http_public_https)
+    @config_instance.set('beef.http.hook_file', @original_http_hook_file)
   end
 
   context 'http local host configuration values' do
