@@ -26,7 +26,6 @@ module BeEF
         begin
           # open base config
           @config = load(config)
-          # set default value if key? does not exist
           @config.default = nil
           @@config = config
         rescue StandardError => e
