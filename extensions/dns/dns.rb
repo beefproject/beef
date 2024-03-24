@@ -19,6 +19,7 @@ module BeEF
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule
           @data_chunks = {}
+          @server_started = false
         end
 
         # Adds a new DNS rule. If the rule already exists, its current ID is returned.
