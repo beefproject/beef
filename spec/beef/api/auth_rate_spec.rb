@@ -4,22 +4,15 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-require 'net/http'
-require 'uri'
-
 RSpec.describe 'BeEF API Rate Limit' do
-    
+
 	before(:each) do
-        port = 3000
-        expect(`lsof -i :#{port}`).to be_empty
         @pid = start_beef_server_and_wait
         @username = @config.get('beef.credentials.user')
         @password = @config.get('beef.credentials.passwd')
 	end
 
 	after(:each) do
-        # Stop the DNS server after each test case
-        BeEF::Extension::Dns::Server.instance.stop
 		# Shutting down server
         Process.kill("KILL", @pid) unless @pid.nil?
         Process.wait(@pid) unless @pid.nil? # Ensure the process has exited and the port is released 
@@ -27,19 +20,11 @@ RSpec.describe 'BeEF API Rate Limit' do
 	end
 
     it 'confirm correct creds are successful' do
-
-        # sleep 1
-        # uri = URI.parse("http://#{ATTACK_DOMAIN}:3000")
-        # response = Net::HTTP.get_response(uri)
-        # expect(response).to be_a(Net::HTTPSuccess) # HTTP request is successful
-
-        # sleep 60
         test_api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', @username, @password) 
         expect(@config.get('beef.credentials.user')).to eq('beef')
         expect(@config.get('beef.credentials.passwd')).to eq('beef')
         expect(test_api.auth()[:payload]).not_to eql("401 Unauthorized") 
         expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
-
     end
     
     it 'confirm incorrect creds are unsuccessful' do
@@ -49,7 +34,6 @@ RSpec.describe 'BeEF API Rate Limit' do
     end
     
     it 'adheres to 9 bad passwords then 1 correct auth rate limits' do
-
         # create api structures with bad passwords and one good
 		passwds = (1..9).map { |i| "bad_password"} # incorrect password
 		passwds.push @password # correct password
@@ -62,7 +46,6 @@ RSpec.describe 'BeEF API Rate Limit' do
     end
     
     it 'adheres to random bad passords and 1 correct auth rate limits' do
-
         # create api structures with bad passwords and one good
 		passwds = (1..9).map { |i| "bad_password"} # incorrect password
 		passwds.push @password # correct password

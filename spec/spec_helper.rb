@@ -90,14 +90,12 @@ RSpec.configure do |config|
     Process.kill('KILL', server_pids)
   end
 
-
-
 ########################################
 
 require 'socket'
 
   def port_available?
-    socket = TCPSocket.new('localhost', 3000)
+    socket = TCPSocket.new(@host, @port)
     socket.close
     false  # If a connection is made, the port is in use, so it's not available.
   rescue Errno::ECONNREFUSED
@@ -106,17 +104,13 @@ require 'socket'
     true   # If the connection is refused, the port is not in use, so it's available.
   end
 
-
   def configure_beef
-
     # Reset or re-initialise the configuration to a default state
     @config = BeEF::Core::Configuration.instance
 
     @config.set('beef.credentials.user', "beef")
     @config.set('beef.credentials.passwd', "beef")
-
-    @username = @config.get('beef.credentials.user')
-    @password = @config.get('beef.credentials.passwd')
+    @config.set('beef.http.https.enable', false)
   end
 
   # Load the server
@@ -129,10 +123,14 @@ require 'socket'
   end
 
   def start_beef_server
-    exit unless port_available?
     configure_beef
-    load_beef_extensions_and_modules
+    @port = @config.get('beef.http.port')
+    @host = @config.get('beef.http.host')
+    @host = '127.0.0.1'
 
+    exit unless port_available?
+    load_beef_extensions_and_modules
+    
     # Grab DB file and regenerate if requested
     db_file = @config.get('beef.database.file')
 
@@ -176,27 +174,29 @@ require 'socket'
   end
 
   def beef_server_running?(uri_str)
-    uri = URI.parse(uri_str)
-    response = Net::HTTP.get_response(uri)
-    response.is_a?(Net::HTTPSuccess)
-  rescue
-    false
+    begin
+      uri = URI.parse(uri_str)
+      response = Net::HTTP.get_response(uri)
+      response.is_a?(Net::HTTPSuccess)
+      rescue Errno::ECONNREFUSED
+        return false # Connection refused means the server is not running
+      rescue StandardError => e
+        return false # Any other error means the server is not running
+    end
   end
 
   def wait_for_beef_server_to_start(uri_str, timeout: 5)
-    start_time = Time.now
-
+    start_time = Time.now # Record the time we started
     until beef_server_running?(uri_str) || (Time.now - start_time) > timeout do
-      sleep 0.1
+      sleep 0.1 # Wait a bit before checking again
     end
-
-    beef_server_running?(uri_str)
+    beef_server_running?(uri_str) # Return the result of the check
   end
 
   def start_beef_server_and_wait
     pid = start_beef_server
 
-    if wait_for_beef_server_to_start('http://localhost:3000', timeout: 5)
+    if wait_for_beef_server_to_start('http://localhost:3000', timeout: 3)
       # print_info "Server started successfully."
     else
       print_error "Server failed to start within timeout."
