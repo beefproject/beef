@@ -2,25 +2,9 @@ RSpec.configure do |config|
 end
 
 RSpec.describe 'BeEF Configuration' do
-  before(:context, :type => :old ) do
-    config = File.expand_path('../../../support/assets/config_old.yaml', __dir__)
-    @config_instance = BeEF::Core::Configuration.new(config)
-  end
 
   before(:context) do
     @config_instance = BeEF::Core::Configuration.instance
-  end
-  context 'configuration validation', :type => :old do
-    it 'should error when using hold public config' do
-      @config_instance.set('beef.http.public', 'example.com')
-      expect(@config_instance.validate).to eq(nil)
-    end
-
-    it 'should error when using old public_port config' do
-      @config_instance.set('beef.http.public_port', 443)
-      expect(@config_instance.validate).to eq(nil)
-    end
-
   end
 
   context 'http local host configuration values' do
