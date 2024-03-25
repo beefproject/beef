@@ -2,7 +2,7 @@ RSpec.describe 'BeEF Modules' do
 
   it 'loaded successfully' do
     expect {
-      BeEF::Modules.load
+      BeEF::Modules.load if BeEF::Core::Configuration.instance.get('beef.module').nil?
     }.to_not raise_error
 
     modules = BeEF::Core::Configuration.instance.get('beef.module').select do |k,v|

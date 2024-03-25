@@ -1,11 +1,13 @@
 RSpec.describe 'BeEF Command class testing' do
   before(:each) do
     # Reset or re-initialise the configuration to a default state
-    @config_instance = BeEF::Core::Configuration.instance  
+    # @config_instance = BeEF::Core::Configuration.instance  
   end
 
   it 'should return a beef configuration variable' do
-    BeEF::Modules.load
+    expect {
+      BeEF::Modules.load if BeEF::Core::Configuration.instance.get('beef.module').nil?
+    }.to_not raise_error
     command_mock = BeEF::Core::Command.new('test_get_variable')
     expect(command_mock.config.beef_host).to eq('0.0.0.0')
 
