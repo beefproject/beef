@@ -243,6 +243,8 @@ BeEF::Core::Console::Banners.print_loaded_extensions
 BeEF::Core::Console::Banners.print_loaded_modules
 BeEF::Core::Console::Banners.print_network_interfaces_count
 BeEF::Core::Console::Banners.print_network_interfaces_routes
+BeEF::Core::Console::Banners.print_http_proxy
+BeEF::Core::Console::Banners.print_dns
 
 #
 # @note Prints the API key needed to use the RESTful API
