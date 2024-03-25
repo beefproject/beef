@@ -24,8 +24,23 @@ module BeEF
           #
           # @param http_hook_server [BeEF::Core::Server] HTTP server instance
           def self.pre_http_start(_http_hook_server)
-            dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
+            servers, interfaces, address, port, protocol, upstream_servers = get_dns_config # get the DNS configuration
+
+            # Start the DNS server
             dns = BeEF::Extension::Dns::Server.instance
+            dns.run(upstream: servers, listen: interfaces)
+          end
+
+          def self.print_dns_info
+            servers, interfaces, address, port, protocol, upstream_servers = get_dns_config # get the DNS configuration
+
+            # Print the DNS server information
+            print_info "DNS Server: #{address}:#{port} (#{protocol})"
+            print_more upstream_servers unless upstream_servers.empty?
+          end
+
+          def self.get_dns_config
+            dns_config = BeEF::Core::Configuration.instance.get('beef.extension.dns')
 
             protocol = begin
               dns_config['protocol'].to_sym
@@ -52,10 +67,7 @@ module BeEF
               end
             end
 
-            dns.run(upstream: servers, listen: interfaces)
-
-            print_info "DNS Server: #{address}:#{port} (#{protocol})"
-            print_more upstream_servers unless upstream_servers.empty?
+            return servers, interfaces, address, port, protocol, upstream_servers
           end
 
           # Mounts the handler for processing DNS RESTful API requests.
