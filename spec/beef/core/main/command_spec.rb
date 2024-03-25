@@ -1,9 +1,4 @@
 RSpec.describe 'BeEF Command class testing' do
-  before(:each) do
-    # Reset or re-initialise the configuration to a default state
-    # @config_instance = BeEF::Core::Configuration.instance  
-  end
-
   it 'should return a beef configuration variable' do
     expect {
       BeEF::Modules.load if BeEF::Core::Configuration.instance.get('beef.module').nil?
