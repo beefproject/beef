@@ -21,7 +21,6 @@ class BeefTest
     session.visit(ATTACK_URL)
     
     session.has_content?('Authentication', wait: 10)
-    save_screenshot(session)
 
     # enter the credentials
     session.execute_script("document.getElementById('pass').value = '#{CGI.escapeHTML(BEEF_PASSWD)}'\;")
@@ -47,13 +46,13 @@ class BeefTest
     session.execute_script(login_script)
 
     session.has_content?('Hooked Browsers', wait: 10)
-    save_screenshot(session)
 
     session
   end
 
   def self.logout(session)
-    session.click_link('Logout')
+    session.click_on('Logout')
+    session.has_content?('Authentication', wait: 10)
 
     session
   end
