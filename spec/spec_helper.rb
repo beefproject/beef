@@ -3,6 +3,10 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+# Set external and internal character encodings to UTF-8
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+
 require 'core/loader.rb'
 
 # @note We need to load variables that 'beef' usually does for us
@@ -207,6 +211,14 @@ require 'socket'
     end
 
     pid
+  end
+
+  def stop_beef_server(pid)
+    exit if pid.nil?
+    # Shutting down server
+    Process.kill("KILL", pid) unless pid.nil?
+    Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
+    pid = nil       
   end
 
 end
