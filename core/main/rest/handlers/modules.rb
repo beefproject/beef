@@ -25,21 +25,20 @@ module BeEF
         get '/' do
           mods = BeEF::Core::Models::CommandModule.all
 
-          mods_hash = {}
-          i = 0
+          mods_array = []
+
           mods.each do |mod|
             modk = BeEF::Module.get_key_by_database_id(mod.id)
             next unless BeEF::Module.is_enabled(modk)
 
-            mods_hash[i] = {
+            mods_array << {
               'id' => mod.id,
               'class' => config.get("beef.module.#{modk}.class"),
               'name' => config.get("beef.module.#{modk}.name"),
               'category' => config.get("beef.module.#{modk}.category")
             }
-            i += 1
           end
-          mods_hash.to_json
+          mods_array.to_json
         end
 
         get '/search/:mod_name' do

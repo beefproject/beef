@@ -90,6 +90,9 @@ module BeEF
               ui/panel/tabs/ZombieTabRTC.js
               ui/panel/Logout.js
               ui/panel/WelcomeTab.js
+              ui/panel/AutoRunTab.js
+              ui/panel/AutoRunRuleForm.js
+              ui/panel/AutoRunModuleForm.js
               ui/panel/ModuleSearching.js
             ]
 

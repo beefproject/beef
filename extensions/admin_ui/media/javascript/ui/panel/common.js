@@ -102,9 +102,9 @@ function generate_form_input_field(form, input, value, disabled, zombie) {
 
 	if(value) input_field.setValue(value);
 	if(disabled) input_field.setDisabled(true);
-		
+
 	form.add(input_field);
-		
+	return input_field;	
 };
 
 function get_dynamic_payload_details(payload, zombie) {
@@ -357,13 +357,13 @@ function genNewExploitPanel(panel, command_module_id, command_module_name, zombi
 							fieldLabel: 'Description',
 							fieldClass: 'command-module-panel-description',
 							value: module.Description
-					  }),
-            new Ext.form.DisplayField({
-              name: 'command_module_id_visible',
-              fieldLabel: 'Id',
-              fieldClass: 'command-module-panel-description',
-              value: command_module_id
-            })
+					  	}),
+						new Ext.form.DisplayField({
+							name: 'command_module_id_visible',
+							fieldLabel: 'Id',
+							fieldClass: 'command-module-panel-description',
+							value: command_module_id
+						})
 					],
 					
 					buttons:[{
