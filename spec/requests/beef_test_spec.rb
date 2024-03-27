@@ -14,10 +14,7 @@ RSpec.describe BeefTest do
     end
 
     after(:each) do
-        # Shutting down server
-        Process.kill("KILL", @pid) unless @pid.nil?
-        Process.wait(@pid) unless @pid.nil? # Ensure the process has exited and the port is released 
-        @pid = nil        
+        stop_beef_server(@pid)
     end
 
     describe '.login' do
