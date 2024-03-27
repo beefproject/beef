@@ -1,7 +1,8 @@
-# 
-# Tests for handling access to the Admin UI
-# 
-
+#
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
 require 'extensions/admin_ui/classes/httpcontroller'
 require 'extensions/admin_ui/classes/session'
 require 'extensions/admin_ui/controllers/authentication/authentication'
