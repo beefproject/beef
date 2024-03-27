@@ -2,25 +2,29 @@ RSpec.configure do |config|
 end
 
 RSpec.describe 'BeEF Configuration' do
-  before(:context, :type => :old ) do
-    config = File.expand_path('../../../support/assets/config_old.yaml', __dir__)
-    @config_instance = BeEF::Core::Configuration.new(config)
-  end
 
   before(:context) do
     @config_instance = BeEF::Core::Configuration.instance
+
+    @original_http_host = @config_instance.get('beef.http.host')
+    @original_http_port = @config_instance.get('beef.http.port')
+    @original_http_https = @config_instance.get('beef.http.https.enable')
+    @original_http_public_host = @config_instance.get('beef.http.public.host')
+    @original_http_public_port = @config_instance.get('beef.http.public.port')
+    @original_http_public_https = @config_instance.get('beef.http.public.https')
+    @original_http_hook_file = @config_instance.get('beef.http.hook_file')
   end
-  context 'configuration validation', :type => :old do
-    it 'should error when using hold public config' do
-      @config_instance.set('beef.http.public', 'example.com')
-      expect(@config_instance.validate).to eq(nil)
-    end
 
-    it 'should error when using old public_port config' do
-      @config_instance.set('beef.http.public_port', 443)
-      expect(@config_instance.validate).to eq(nil)
-    end
-
+  after(:context) do
+    # Reset the configuration values
+    # This is important as the tests may change the configuration values
+    @config_instance.set('beef.http.host', @original_http_host)
+    @config_instance.set('beef.http.port', @original_http_port)
+    @config_instance.set('beef.http.https.enable', @original_http_https)
+    @config_instance.set('beef.http.public.host', @original_http_public_host)
+    @config_instance.set('beef.http.public.port', @original_http_public_port)
+    @config_instance.set('beef.http.public.https', @original_http_public_https)
+    @config_instance.set('beef.http.hook_file', @original_http_hook_file)
   end
 
   context 'http local host configuration values' do

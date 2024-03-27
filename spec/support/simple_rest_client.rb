@@ -28,6 +28,7 @@ class BeefRestClient
   rescue StandardError => e
     { success: false, payload: e.message }
   end
+
   def version
     return { success: false, payload: 'no token' } if @token.nil?
 
