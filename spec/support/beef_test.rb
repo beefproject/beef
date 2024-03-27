@@ -65,6 +65,8 @@ class BeefTest
   def self.new_victim(victim = nil)
     victim = Capybara::Session.new(:selenium_headless) if victim.nil?
     victim.visit(VICTIM_URL)
+    victim.has_content?('You should be hooked into BeEF.', wait: 10)
+    # self.save_screenshot(victim, "./")
     victim
   end
 end
