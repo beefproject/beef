@@ -3,7 +3,6 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-
 require 'rest-client'
 require 'json'
 require_relative '../../spec_helper'

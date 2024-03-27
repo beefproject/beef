@@ -26,7 +26,6 @@ module BeEF
         begin
           # open base config
           @config = load(config)
-          # set default value if key? does not exist
           @config.default = nil
           @@config = config
         rescue StandardError => e
@@ -156,7 +155,7 @@ module BeEF
         "#{beef_proto}://#{beef_host}:#{beef_port}"
       end
 
-      # Returns the hool path value stored in the config file
+      # Returns the hook path value stored in the config file
       #
       # @return [String] hook file path
       def hook_file_path

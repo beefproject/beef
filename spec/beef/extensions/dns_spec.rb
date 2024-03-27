@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
 require 'resolv'
 require 'extensions/dns/extension.rb'
 
@@ -9,6 +14,11 @@ RSpec.describe 'BeEF Extension DNS' do
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
     @dns = BeEF::Extension::Dns::Server.instance
+  end
+
+  after(:all) do
+    # Stop the DNS server after each test case
+    BeEF::Extension::Dns::Server.instance.stop # this might not be needed?
   end
 
   it 'loaded configuration' do
