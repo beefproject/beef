@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
 require 'rest-client'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
