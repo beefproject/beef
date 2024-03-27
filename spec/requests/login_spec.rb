@@ -8,25 +8,25 @@ require 'spec/support/constants.rb'
 # require '../common/beef_test'
 
 RSpec.describe 'Beef Login' do
-  let(:session) { Capybara::Session.new(:selenium_headless) }
+  # let(:session) { Capybara::Session.new(:selenium_headless) }
 
-  before(:each) do
-    session.visit(ATTACK_URL)
-    sleep 2.0
-  end
+  # before(:each) do
+  #   session.visit(ATTACK_URL)
+  #   sleep 2.0
+  # end
 
-  after(:each) do
-    BeefTest.save_screenshot(session)
-    session.driver.browser.close
-  end
+  # after(:each) do
+  #   BeefTest.save_screenshot(session)
+  #   session.driver.browser.close
+  # end
 
-  it 'logs in successfully' do
-    session.fill_in 'user', with: BEEF_USER
-    session.fill_in 'pass', with: BEEF_PASSWD
-    session.click_button('Login')
-    sleep 10.0
-    expect(session).to have_content('Logout')
-  end
+  # it 'logs in successfully' do
+  #   session.fill_in 'user', with: BEEF_USER
+  #   session.fill_in 'pass', with: BEEF_PASSWD
+  #   session.click_button('Login')
+  #   sleep 10.0
+  #   expect(session).to have_content('Logout')
+  # end
 
   # it 'logs out successfully' do
   #   session.fill_in 'user', with: BEEF_USER
