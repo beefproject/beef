@@ -8,8 +8,6 @@ require 'capybara/rspec'
 require_relative '../support/beef_test'
 
 RSpec.describe BeefTest do
-    let(:session) { Capybara::Session.new(:selenium) }
-    let(:victim) { Capybara::Session.new(:selenium) }
 
     before(:each) do
         @pid = start_beef_server_and_wait
@@ -20,6 +18,7 @@ RSpec.describe BeefTest do
         Process.kill("KILL", @pid) unless @pid.nil?
         Process.wait(@pid) unless @pid.nil? # Ensure the process has exited and the port is released 
         @pid = nil
+        
     end
 
     describe '.login' do
@@ -46,6 +45,7 @@ RSpec.describe BeefTest do
             @sessoin = BeefTest.logout(@session)
             expect(@session.has_no_content?('Hooked Browsers', wait: 10))
             expect(@session.has_content?('Authentication', wait: 10))
+        @session.reset_session!
         end
     end
 
@@ -76,6 +76,40 @@ RSpec.describe BeefTest do
             # Remove the directory
             Dir.delete(directory)
             expect(File.directory?(directory)).to be false
+        end
+    end
+
+    let(:session) { Capybara::Session.new(:selenium_headless) }
+    let(:victim) { Capybara::Session.new(:selenium_headless) }
+
+    describe '.new_attacker' do
+        it 'creates a new attacker session' do
+            # # Test setup
+            expect(session).not_to be_nil
+
+            result = BeefTest.new_attacker(session)
+            
+            # Test assertions
+            expect(result).to eq(session)
+            expect(session.has_no_content?('Authentication', wait: 10))
+            expect(session.has_content?('Hooked Browsers', wait: 10))
+            session.reset_session!
+        end
+    end
+
+    describe '.new_victim' do
+        it 'creates a new victim session' do
+            # Test setup
+            allow(victim).to receive(:visit)
+            expect(victim).not_to be_nil
+
+            # Test execution
+            result = BeefTest.new_victim(victim)
+
+            # Test assertions
+            expect(victim).to have_received(:visit).with(VICTIM_URL)
+            expect(result).to eq(victim)
+            victim.reset_session!
         end
     end
 end

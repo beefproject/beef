@@ -13,7 +13,8 @@ class BeefTest
   def self.save_screenshot(session, dir = nil)
     outputDir = dir || BEEF_TEST_DIR
     Dir.mkdir(outputDir) unless File.directory?(outputDir)
-    session.driver.browser.save_screenshot(outputDir + Time.now.strftime('%Y-%m-%d--%H-%M-%S-%N') + '.png')
+    filename = outputDir + Time.now.strftime('%Y-%m-%d--%H-%M-%S-%N') + '.png'
+    session.driver.browser.save_screenshot(filename)
   end
 
   def self.login(session = nil)
@@ -57,12 +58,12 @@ class BeefTest
     session
   end
 
-  def self.new_attacker
-    self.login
+  def self.new_attacker(session = nil)
+    self.login(session)
   end
 
-  def self.new_victim
-    victim = Capybara::Session.new(:selenium_headless)
+  def self.new_victim(victim = nil)
+    victim = Capybara::Session.new(:selenium_headless) if victim.nil?
     victim.visit(VICTIM_URL)
     victim
   end
