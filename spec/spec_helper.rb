@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
 require 'core/loader.rb'
 
 # @note We need to load variables that 'beef' usually does for us
