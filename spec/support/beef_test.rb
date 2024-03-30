@@ -28,7 +28,7 @@ class BeefTest
     session.execute_script("document.getElementById('user').value = '#{CGI.escapeHTML(BEEF_USER)}'\;")
 
     # due to using JS there seems to be a race condition - this is a workaround
-    session.has_content?('beef', wait: 10)
+    session.has_content?('beef', wait: PAGE_LOAD_TIMEOUT)
 
     # click the login button
     login_script = <<-JAVASCRIPT
@@ -46,14 +46,14 @@ class BeefTest
     JAVASCRIPT
     session.execute_script(login_script)
 
-    session.has_content?('Hooked Browsers', wait: 10)
+    session.has_content?('Hooked Browsers', wait: PAGE_LOAD_TIMEOUT)
 
     session
   end
 
   def self.logout(session)
     session.click_on('Logout')
-    session.has_content?('Authentication', wait: 10)
+    session.has_content?('Authentication', wait: PAGE_LOAD_TIMEOUT)
 
     session
   end
@@ -65,7 +65,7 @@ class BeefTest
   def self.new_victim(victim = nil)
     victim = Capybara::Session.new(:selenium_headless) if victim.nil?
     victim.visit(VICTIM_URL)
-    victim.has_content?('You should be hooked into BeEF.', wait: 10)
+    victim.has_content?('You should be hooked into BeEF.', wait: PAGE_LOAD_TIMEOUT)
     # self.save_screenshot(victim, "./")
     victim
   end
