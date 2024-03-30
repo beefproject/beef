@@ -204,7 +204,7 @@ require 'socket'
   def start_beef_server_and_wait
     pid = start_beef_server
 
-    if wait_for_beef_server_to_start('http://localhost:3000', timeout: 3)
+    if wait_for_beef_server_to_start('http://localhost:3000', timeout: SERVER_START_TIMEOUT)
       # print_info "Server started successfully."
     else
       print_error "Server failed to start within timeout."
