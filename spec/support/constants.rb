@@ -26,3 +26,6 @@ RESTAPI_SENG = 'http://' + ATTACK_DOMAIN + ':3000/api/seng'
 RESTAPI_ADMIN = 'http://' + ATTACK_DOMAIN + ':3000/api/admin'
 RESTAPI_WEBRTC = 'http://' + ATTACK_DOMAIN + ':3000/api/webrtc'
 RESTAPI_REQUESTER = 'http://' + ATTACK_DOMAIN + ':3000/api/requester'
+
+# Other
+PAGE_LOAD_TIMEOUT = 5
