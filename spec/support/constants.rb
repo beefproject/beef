@@ -29,3 +29,4 @@ RESTAPI_REQUESTER = 'http://' + ATTACK_DOMAIN + ':3000/api/requester'
 
 # Other
 PAGE_LOAD_TIMEOUT = 5
+SERVER_START_TIMEOUT = 5
