@@ -5,9 +5,6 @@
 #
 require 'rspec'
 require 'spec/support/constants.rb'
-# require '../common/beef_test'
-
-
 
 RSpec.describe 'Beef Login' do
   let(:session) { Capybara::Session.new(:selenium_headless) }
