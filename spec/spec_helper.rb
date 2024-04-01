@@ -100,6 +100,15 @@ RSpec.configure do |config|
 
 ########################################
 
+def reset_beef_db
+  begin
+      db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
+      File.delete(db_file) if File.exist?(db_file)
+  rescue => e
+      print_error("Could not remove '#{db_file}' database file: #{e.message}")
+  end
+end
+
 require 'socket'
 
   def port_available?
