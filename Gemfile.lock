@@ -83,7 +83,7 @@ GEM
     irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
-    json (2.7.1)
+    json (2.7.2)
     language_server-protocol (3.17.0.3)
     matrix (0.4.2)
     maxmind-db (1.2.0)
