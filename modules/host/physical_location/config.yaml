@@ -8,7 +8,7 @@ beef:
         physical_location:
             enable: true
             category: "Host"
-            name: "Get Geolocation"
+            name: "Get Geolocation (API)"
             description: "This module will retrieve the physical location of the hooked browser using the geolocation API."
             authors: ["antisnatchor"]
             target:

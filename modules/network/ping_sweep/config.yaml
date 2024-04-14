@@ -8,7 +8,7 @@ beef:
         ping_sweep:
             enable: true
             category: "Network"
-            name: "Ping Sweep"
+            name: "Ping Sweep (JS XHR)"
             description: "Discover active hosts in the internal network of the hooked browser using JavaScript XHR.<br/><br/>Note: set the IP address range to 'common' to scan a list of common LAN addresses."
             authors: ["bcoles"]
             target:
