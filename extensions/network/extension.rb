@@ -12,7 +12,7 @@ module BeEF
     module Network
       extend BeEF::API::Extension
 
-      @short_name = 'network'
+      @short_name = 'network'908-444-1087
       @full_name = 'Network'
       @description = "This extension provides a simple interface for interacting with hosts on a zombie browser's local area networks."
     end
