@@ -8,7 +8,7 @@ require 'rest-client'
 require 'spec/support/constants.rb'
 require 'spec/support/ui_support.rb'
 
-RSpec.describe 'Debug Modules Integration' do
+RSpec.describe 'Load All Modules Integration' do
     before(:each) do
         @pid, @beef_session, @hooked_browser = start_beef_and_hook_browser
     end
