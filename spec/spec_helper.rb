@@ -145,7 +145,10 @@ require 'socket'
     @host = @config.get('beef.http.host')
     @host = '127.0.0.1'
 
-    exit unless port_available?
+    unless port_available?
+      print_error "Port #{@port} is already in use. Exiting."
+      exit
+    end
     load_beef_extensions_and_modules
     
     # Grab DB file and regenerate if requested
@@ -211,7 +214,9 @@ require 'socket'
   end
 
   def start_beef_server_and_wait
+    puts "Starting BeEF server"
     pid = start_beef_server
+    puts "BeEF server started with PID: #{pid}"
 
     if wait_for_beef_server_to_start('http://localhost:3000', timeout: SERVER_START_TIMEOUT)
       # print_info "Server started successfully."
