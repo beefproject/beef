@@ -23,7 +23,7 @@ gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.2'
 gem 'otr-activerecord', '~> 2.2.0'
 gem 'sqlite3', '~> 1.7'
-gem 'rubocop', '~> 1.63.2', require: false
+gem 'rubocop', '~> 1.63.3', require: false
 
 # Geolocation support
 group :geoip do
@@ -78,7 +78,7 @@ group :test do
     # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
     # gem 'selenium' # Requires old version of selenium which is no longer available
     gem 'geckodriver-helper', '~> 0.24.0'
-    gem 'selenium-webdriver', '~> 4.19'
+    gem 'selenium-webdriver', '~> 4.20'
 
     # Note: nokogiri is needed by capybara which may require one of the below commands
     # sudo apt-get install libxslt-dev libxml2-dev
