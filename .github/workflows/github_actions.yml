@@ -44,7 +44,7 @@ jobs:
         with:
           ruby-version: 3.0.3 # Not needed with a .ruby-version file
 
-      - name: 'Update and Install Dwpendencies'
+      - name: 'Update and Install Dependencies'
         run: |
           sudo apt update
           sudo apt install libcurl4 libcurl4-openssl-dev
