@@ -3,9 +3,7 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-require 'bundler/setup'
 require 'rspec/core/rake_task'
-# load 'tasks/otr-activerecord.rake'
 
 task :default => ["short"]
 
