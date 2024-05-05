@@ -3,23 +3,24 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-require 'yaml'
-require 'bundler/setup'
-load 'tasks/otr-activerecord.rake'
-
-task :default => ["spec"]
-
-desc 'Generate API documentation to doc/rdocs/index.html'
-task :rdoc do
-  Rake::Task['rdoc:rerdoc'].invoke
-end
-
-## RSPEC
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec) do |task|
+task :default => ["short"]
+
+RSpec::Core::RakeTask.new(:short) do |task|
+  task.rspec_opts = ['--tag ~run_on_browserstack', '--tag ~run_on_long_tests']
+end
+
+RSpec::Core::RakeTask.new(:long) do |task|
   task.rspec_opts = ['--tag ~run_on_browserstack']
 end
+
+RSpec::Core::RakeTask.new(:long_only) do |task|
+  task.rspec_opts = ['--tag ~run_on_browserstack', '--tag run_on_long_tests']
+end
+
+################################
+# Browserstack
 
 RSpec::Core::RakeTask.new(:browserstack) do |task|
   task.rspec_opts = ['--tag run_on_browserstack']
@@ -53,7 +54,7 @@ namespace :ssl do
     end
     Rake::Task['ssl:replace'].invoke
   end
-
+  
   desc 'Re-generate SSL certificate'
   task :replace do
     if File.file?('/usr/local/bin/openssl')
@@ -66,6 +67,14 @@ namespace :ssl do
     end
     IO.popen([path, 'req', '-new', '-newkey', 'rsa:4096', '-sha256', '-x509', '-days', '3650', '-nodes', '-out', 'beef_cert.pem', '-keyout', 'beef_key.pem', '-subj', '/CN=localhost'], 'r+').read.to_s
   end
+end
+
+################################
+# Generate API documentation
+
+desc 'Generate API documentation to doc/rdocs/index.html'
+task :rdoc do
+  Rake::Task['rdoc:rerdoc'].invoke
 end
 
 ################################
@@ -112,7 +121,6 @@ end
 
 @beef_process_id = nil;
 @beef_config_file = 'tmp/rk_beef_conf.yaml';
-
 
 task :beef_start => 'beef' do
   # read environment param for creds or use bad_fred
@@ -187,24 +195,6 @@ file '/tmp/msf-test/msfconsole' do
   puts "Installing MSF"
   sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git /tmp/msf-test"
 end
-
-
-################################
-# Create Mac DMG File
-
-task :dmg do
-  puts "\nCreating Working Directory\n";
-  sh "mkdir dmg";
-  sh "mkdir dmg/BeEF";
-  sh "rsync * dmg/BeEF --exclude=dmg -r";
-  sh "ln -s /Applications dmg/";
-  puts "\nCreating DMG File\n"
-  sh "hdiutil create ./BeEF.dmg -srcfolder dmg -volname BeEF -ov";
-  puts "\nCleaning Up\n"
-  sh "rm -r dmg";
-  puts "\nBeEF.dmg created\n"
-end
-
 
 ################################
 # ActiveRecord

@@ -5,16 +5,12 @@
 #
 require 'rspec'
 require 'spec/support/constants.rb'
-# require '../common/beef_test'
 
-
-
-RSpec.describe 'Beef Login' do
+RSpec.describe 'Beef Login', run_on_long_tests: true  do
   let(:session) { Capybara::Session.new(:selenium_headless) }
 
   before(:each) do
     @pid = start_beef_server
-    # sleep 2.0
   end
 
   after(:each) do

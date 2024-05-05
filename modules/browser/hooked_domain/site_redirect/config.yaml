@@ -8,7 +8,7 @@ beef:
         site_redirect:
             enable: true
             category: ["Browser", "Hooked Domain"]
-            name: "Redirect Browser"
+            name: "Redirect Browser (Standard)"
             description: "This module will redirect the selected hooked browser to the address specified in the 'Redirect URL' input."
             authors: ["wade", "vo"]
             target:

@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Network"
             name: "Fetch Port Scanner"
-            description: " Uses fetch to test the response in order to determine if a port is open or not"
+            description: "Uses fetch to test the response in order to determine if a port is open or not"
             authors: ["Crimes by Will", "jcrew99", "salmong1t"]
             # http://caniuse.com/cors
             target:

@@ -78,17 +78,24 @@ module BeEF
 
           # If we're adding a leaf to the command tree, and it's in a subfolder, we need to recurse
           # into the tree to find where it goes
+          # @param tree [Array] The tree to recurse into
+          # @param category [Array] The category to add the leaf to
+          # @param leaf [Hash] The leaf to add to the tree
           def update_command_module_tree_recurse(tree, category, leaf)
+            
+            # get a single folder from the category array
             working_category = category.shift
-
+            
             tree.each do |t|
-              if t['text'].eql? working_category && category.count > 0
+              if t['text'].eql?(working_category) && category.count > 0
                 # We have deeper to go
                 update_command_module_tree_recurse(t['children'], category, leaf)
               elsif t['text'].eql? working_category
                 # Bingo
                 t['children'].push(leaf)
                 break
+              else
+                # Not here, keep looking
               end
             end
 
@@ -107,12 +114,14 @@ module BeEF
             }
 
             # add the node to the branch in the command module tree
+            # if the category is an array it means it's likeyl a sub-folderised category
+            # so we need to recurse into the tree to find where it goes
             if cmd_category.is_a?(Array)
               # The category is an array, therefore it's a sub-folderised category
               cat_copy = cmd_category.dup # Don't work with the original array, because, then it breaks shit
               update_command_module_tree_recurse(tree, cat_copy, leaf_node)
             else
-              # original logic here, simply add the command to the tree.
+              # simply add the command to the tree as it hangs of one of the root folders
               tree.each do |x|
                 if x['text'].eql? cmd_category
                   x['children'].push(leaf_node)
@@ -123,6 +132,7 @@ module BeEF
           end
 
           # Recursive function to build the tree now with sub-folders
+          # this only build the folders and not the leaf command modules
           def build_recursive_tree(parent, input)
             cinput = input.shift.chomp('/')
             if cinput.split('/').count == 1 # then we have a single folder now
@@ -232,7 +242,7 @@ module BeEF
             sort_recursive_tree(tree)
 
             retitle_recursive_tree(tree)
-
+            
             # return a JSON array of hashes
             @body = tree.to_json
           end
