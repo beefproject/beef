@@ -13,7 +13,7 @@ beef.execute(function() {
 				if(windows[i].type=="normal") {
 					chrome.tabs.getAllInWindow(windows[i].id,function(tabs){
 						for(t in tabs) {
-                            //antisnatchor: if the extension has her own tabs open, we want to precent injecting the hook
+                            //antisnatchor: if the extension has its own tabs open, we want to prevent injecting the hook
                             //also there. Chrome extensions with tabs and http/s permissions cannot access URIs with protocol
                             // handlers chrome-extension://, and most of them will not have permissions to do so.
                             if(tabs[t].url.substring(0,16) != "chrome-extension"){
