@@ -85,6 +85,7 @@ GEM
       reline (>= 0.4.2)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
+    logger (1.6.0)
     matrix (0.4.2)
     maxmind-db (1.2.0)
     method_source (1.0.0)
@@ -150,8 +151,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.6)
+      strscan
     rqrcode_core (1.2.0)
     rr (3.1.0)
     rspec (3.13.0)
@@ -186,8 +187,9 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.21.1)
+    selenium-webdriver (4.24.0)
       base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -236,7 +238,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.5.0)
     webrick (1.8.1)
-    websocket (1.2.10)
+    websocket (1.2.11)
     websocket-client-simple (0.6.1)
       event_emitter
       websocket
@@ -282,7 +284,7 @@ DEPENDENCIES
   rubocop (~> 1.64.0)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.21)
+  selenium-webdriver (~> 4.24)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.4)
