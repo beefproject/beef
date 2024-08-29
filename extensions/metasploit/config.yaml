@@ -20,7 +20,7 @@ beef:
     extension:
         metasploit:
             name: 'Metasploit'
-            enable: false
+            enable: true
             # Metasploit msgrpc connection options
             host: "127.0.0.1"
             port: 55552
@@ -35,7 +35,7 @@ beef:
             # URIPATH from Metasploit Browser AutoPwn server module
             autopwn_url: "autopwn"
             # Start msfrpcd automatically with BeEF
-            auto_msfrpcd: false
+            auto_msfrpcd: true
             auto_msfrpcd_timeout: 120
             msf_path: [
               {os: 'osx', path: '/opt/local/msf/'},
