@@ -81,7 +81,7 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
     io-like (0.3.1)
-    irb (1.14.0)
+    irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.7.2)
@@ -280,7 +280,7 @@ DEPENDENCIES
   eventmachine (~> 1.2, >= 1.2.7)
   execjs (~> 2.9)
   geckodriver-helper (~> 0.24.0)
-  irb (~> 1.13)
+  irb (~> 1.14)
   json
   maxmind-db (~> 1.2)
   mime-types (~> 3.5)
