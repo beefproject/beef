@@ -160,7 +160,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.7)
+    rexml (3.3.8)
     rqrcode_core (1.2.0)
     rr (3.1.1)
     rspec (3.13.0)
@@ -194,7 +194,7 @@ GEM
     rushover (0.3.0)
       json
       rest-client
-    selenium-webdriver (4.24.0)
+    selenium-webdriver (4.25.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -298,7 +298,7 @@ DEPENDENCIES
   rubocop (~> 1.66.1)
   rubyzip (~> 2.3)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.24)
+  selenium-webdriver (~> 4.25)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 1.4)
