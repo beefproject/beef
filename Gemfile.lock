@@ -90,9 +90,10 @@ GEM
     matrix (0.4.2)
     maxmind-db (1.2.0)
     method_source (1.1.0)
-    mime-types (3.5.2)
+    mime-types (3.6.0)
+      logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0903)
+    mime-types-data (3.2024.1001)
     mini_mime (1.1.5)
     minitest (5.25.1)
     mojo_magick (0.6.8)
@@ -282,7 +283,7 @@ DEPENDENCIES
   irb (~> 1.13)
   json
   maxmind-db (~> 1.2)
-  mime-types (~> 3.5)
+  mime-types (~> 3.6)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
   otr-activerecord (~> 2.2.0)
