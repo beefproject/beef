@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: net/requester.js</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,59 +17,168 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: net/requester.js</h1>
+    <h1 class="page-title">Global</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>//
-// Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
-// Browser Exploitation Framework (BeEF) - https://beefproject.com
-// See the file 'doc/COPYING' for copying permission
-//
+        <h2></h2>
+        
+    
+</header>
 
-/**
- * request object structure:
- * + method: {String} HTTP method to use (GET or POST).
- * + host: {String} hostname
- * + query_string: {String} The query string is a part of the URL which is passed to the program.
- * + uri: {String} The URI syntax consists of a URI scheme name.
- * + headers: {Array} contain the operating parameters of the HTTP request. 
- * @namespace beef.net.requester
- */
-beef.net.requester = {
-	
-	handler: "requester",
-	/**
-     * 
-     * @param {array} requests_array 
-     */
-	send: function(requests_array) {
-        for(var i=0; i&lt;requests_array.length; i++){
-            request = requests_array[i];
-            if (request.proto == 'https') var scheme = 'https'; else var scheme = 'http';
-            beef.debug('[Requester] ' + request.method + ' ' + scheme + '://' + request.host + ':' + request.port + request.uri + ' - Data: ' + request.data);
-            beef.net.forge_request(scheme, request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
-                                       function(res, requestid) { beef.net.send('/requester', requestid, {
-                                           response_data: res.response_body,
-                                           response_status_code: res.status_code,
-                                           response_status_text: res.status_text,
-					                       response_port_status: res.port_status,
-                                           response_headers: res.headers});
-                                       }
-                                 );
-        }
-    }
-};
+<article>
+    <div class="container-overview">
+    
+        
 
-beef.regCmp('beef.net.requester');
-</code></pre>
-        </article>
-    </section>
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="platform"><span class="type-signature"></span>platform<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    <p>The platform object.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_platform.js.html">lib/platform.js</a>, <a href="lib_platform.js.html#line1075">line 1075</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

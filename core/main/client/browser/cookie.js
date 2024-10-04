@@ -72,7 +72,7 @@ beef.browser.cookie = {
 		},
 
 	    /** @memberof beef.browser.cookie */
-		veganLol: function (){
+		cookieValueRandomizer: function (){
 			var to_hell= '';
 			var min = 17;
 			var max = 25;
@@ -100,7 +100,7 @@ beef.browser.cookie = {
 		},
 		/** @memberof beef.browser.cookie */
 		hasSessionCookies: function (name){
-			this.setCookie( name, beef.browser.cookie.veganLol(), '', '/', '', '' );
+			this.setCookie( name, beef.browser.cookie.cookieValueRandomizer(), '', '/', '', '' );
 
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');
@@ -109,7 +109,7 @@ beef.browser.cookie = {
 		},
 		/** @memberof beef.browser.cookie */
 		hasPersistentCookies: function (name){
-			this.setCookie( name, beef.browser.cookie.veganLol(), 1, '/', '', '' );
+			this.setCookie( name, beef.browser.cookie.cookieValueRandomizer(), 1, '/', '', '' );
 
 			cookiesEnabled = (this.getCookie(name) == null)? false:true;
 			this.deleteCookie(name, '/', '');
