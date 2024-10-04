@@ -39,6 +39,14 @@
 beef.browser = {
 
     /**
+     * Returns the protocol.
+     * @example: beef.browser.getProtocol()
+     */
+    getProtocol: function() {
+        return document.location.protocol;
+    },
+
+    /**
      * Returns the user agent that the browser is claiming to be.
      * @example: beef.browser.getBrowserReportedName()
      */
@@ -137,7 +145,7 @@ beef.browser = {
      * @example: beef.browser.isIE10()
      */
     isIE10: function () {
-        return !!window.XMLHttpRequest &amp;&amp; !window.chrome &amp;&amp; !window.opera &amp;&amp; !!document.documentMode &amp;&amp; !window.XDomainRequest &amp;&amp; !!window.performance &amp;&amp; typeof navigator.msMaxTouchPoints !== "undefined";
+        return !!window.XMLHttpRequest &amp;&amp; !window.chrome &amp;&amp; !window.opera &amp;&amp; !!document.documentMode &amp;&amp; !!window.XDomainRequest &amp;&amp; !!window.performance &amp;&amp; typeof navigator.msMaxTouchPoints !== "undefined";
     },
 
     /**
@@ -155,7 +163,7 @@ beef.browser = {
      * @example: beef.browser.isEdge()
      */
     isEdge: function () {
-        return !beef.browser.isIE() &amp;&amp; !!window.StyleMedia;
+        return !beef.browser.isIE() &amp;&amp; !!window.styleMedia &amp;&amp; (/Edg\/\d+\.\d/.test(window.navigator.userAgent) || /Edge\/\d+\.\d/.test(window.navigator.userAgent));
     },
 
     /**
@@ -883,7 +891,7 @@ beef.browser = {
      * @example: beef.browser.isFF89()
      */
     isFF89: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/89./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/89./) != null;
     },
 
     /**
@@ -891,7 +899,7 @@ beef.browser = {
      * @example: beef.browser.isFF90()
      */
     isFF90: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/90./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/90./) != null;
     },
 
     /**
@@ -899,7 +907,7 @@ beef.browser = {
      * @example: beef.browser.isFF91()
      */
     isFF91: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/91./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/91./) != null;
     },
 
     /**
@@ -907,7 +915,7 @@ beef.browser = {
      * @example: beef.browser.isFF92()
      */
     isFF92: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/92./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/92./) != null;
     },
 
     /**
@@ -915,7 +923,7 @@ beef.browser = {
      * @example: beef.browser.isFF93()
      */
     isFF93: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/93./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/93./) != null;
     },
 
     /**
@@ -923,7 +931,7 @@ beef.browser = {
      * @example: beef.browser.isFF94()
      */
     isFF94: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/94./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/94./) != null;
     },
 
     /**
@@ -931,7 +939,7 @@ beef.browser = {
      * @example: beef.browser.isFF95()
      */
     isFF95: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/95./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/95./) != null;
     },
 
     /**
@@ -939,7 +947,7 @@ beef.browser = {
      * @example: beef.browser.isFF96()
      */
     isFF96: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/96./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/96./) != null;
     },
 
     /**
@@ -947,7 +955,7 @@ beef.browser = {
      * @example: beef.browser.isFF97()
      */
     isFF97: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/97./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/97./) != null;
     },
 
     /**
@@ -955,7 +963,7 @@ beef.browser = {
      * @example: beef.browser.isFF98()
      */
     isFF98: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/98./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/98./) != null;
     },
 
     /**
@@ -963,7 +971,7 @@ beef.browser = {
      * @example: beef.browser.isFF99()
      */
     isFF99: function () {
-        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; typeof navigator.mozGetUserMedia != "undefined" &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/99./) != null;
+        return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/99./) != null;
     },
 
     /**
@@ -2523,6 +2531,7 @@ beef.browser = {
     type: function () {
 
         return {
+            E: this.isEdge(), // Edge any version
             C5: this.isC5(), // Chrome 5
             C6: this.isC6(), // Chrome 6
             C7: this.isC7(), // Chrome 7
@@ -3946,8 +3955,8 @@ beef.browser = {
         var results;
 
         function unique(array) {
-          return $.grep(array, function(el, index) {
-            return index === $.inArray(el, array);
+          return $j.grep(array, function(el, index) {
+            return index === $j.inArray(el, array);
           });
         }
 
@@ -3969,7 +3978,7 @@ beef.browser = {
                 else results[i] = navigator.plugins[i].name;// + '-desc.' + navigator.plugins[i].description;
             }
             results = unique(results).toString();
-
+            
             // All browsers that don't support navigator.plugins
         } else {
             results = new Array();
@@ -4284,9 +4293,6 @@ beef.browser = {
 
         try {
             var cookies = document.cookie;
-            /* Never stop the madness dear C.
-             * var veglol = beef.browser.cookie.veganLol();
-             */
             if (cookies) details['browser.window.cookies'] = cookies;
         } catch (e) {
             beef.debug("Cookies can't be read. The hooked origin is most probably using HttpOnly.");
@@ -4668,13 +4674,13 @@ beef.regCmp('beef.browser');
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li><li><a href="BeefJS.html">BeefJS</a></li><li><a href="browser_jools.html">browser_jools</a></li><li><a href="platform.html">platform</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="BeefJS.html">BeefJS</a></li><li><a href="beef.are.html">are</a></li><li><a href="beef.browser.html">browser</a></li><li><a href="beef.browser.cookie.html">cookie</a></li><li><a href="beef.browser.popup.html">popup</a></li><li><a href="beef.dom.html">dom</a></li><li><a href="beef.encode.base64.html">base64</a></li><li><a href="beef.encode.json.html">json</a></li><li><a href="beef.geolocation.html">geolocation</a></li><li><a href="beef.hardware.html">hardware</a></li><li><a href="beef.init.html">init</a></li><li><a href="beef.logger.html">logger</a></li><li><a href="beef.mitb.html">mitb</a></li><li><a href="beef.net.html">net</a></li><li><a href="beef.net.connection.html">connection</a></li><li><a href="beef.net.cors.html">cors</a></li><li><a href="beef.net.dns.html">dns</a></li><li><a href="beef.net.local.html">local</a></li><li><a href="beef.net.portscanner.html">portscanner</a></li><li><a href="beef.net.requester.html">requester</a></li><li><a href="beef.net.xssrays.html">xssrays</a></li><li><a href="beef.os.html">os</a></li><li><a href="beef.session.html">session</a></li><li><a href="beef.timeout.html">timeout</a></li><li><a href="beef.updater.html">updater</a></li><li><a href="beef.webrtc.html">webrtc</a></li><li><a href="beef.websocket.html">websocket</a></li></ul><h3>Global</h3><ul><li><a href="global.html#platform">platform</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Jan 02 2020 16:29:11 GMT+1000 (Australian Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Oct 04 2024 17:02:30 GMT+1000 (Australian Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

