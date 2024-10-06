@@ -81,7 +81,7 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
     io-like (0.3.1)
-    irb (1.14.0)
+    irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.7.2)
@@ -90,9 +90,10 @@ GEM
     matrix (0.4.2)
     maxmind-db (1.2.0)
     method_source (1.1.0)
-    mime-types (3.5.2)
+    mime-types (3.6.0)
+      logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0903)
+    mime-types-data (3.2024.1001)
     mini_mime (1.1.5)
     minitest (5.25.1)
     mojo_magick (0.6.8)
@@ -245,10 +246,10 @@ GEM
       sync
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (4.2.0)
+    uglifier (4.2.1)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.6.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
       event_emitter
@@ -279,10 +280,10 @@ DEPENDENCIES
   eventmachine (~> 1.2, >= 1.2.7)
   execjs (~> 2.9)
   geckodriver-helper (~> 0.24.0)
-  irb (~> 1.13)
+  irb (~> 1.14)
   json
   maxmind-db (~> 1.2)
-  mime-types (~> 3.5)
+  mime-types (~> 3.6)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
   otr-activerecord (~> 2.2.0)
