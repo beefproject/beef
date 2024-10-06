@@ -14,7 +14,7 @@ gem 'rack', '~> 2.2'
 gem 'rack-protection', '~> 3.2.0'
 gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
-gem 'mime-types', '~> 3.5'
+gem 'mime-types', '~> 3.6'
 gem 'execjs', '~> 2.9'
 gem 'ansi', '~> 1.5'
 gem 'term-ansicolor', :require => 'term/ansicolor'
@@ -23,7 +23,7 @@ gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.2'
 gem 'otr-activerecord', '~> 2.2.0'
 gem 'sqlite3', '~> 1.4'
-gem 'rubocop', '~> 1.64.0', require: false
+gem 'rubocop', '~> 1.66.1', require: false
 
 # Geolocation support
 group :geoip do
@@ -65,7 +65,7 @@ group :test do
     gem 'rdoc', '~> 6.7'
     gem 'browserstack-local', '~> 1.4'
 
-    gem 'irb', '~> 1.13'
+    gem 'irb', '~> 1.14'
     gem 'pry-byebug', '~> 3.10', '>= 3.10.1'
 
     gem 'rest-client', '~> 2.1.0'
