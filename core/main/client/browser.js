@@ -947,11 +947,19 @@ beef.browser = {
     }, 
 
     /**
+     * Returns true if the browser is any version of Firefox based CSS property.
+     * @example: beef.browser.isFFcSS()
+    */
+    isFFcSS: function () {
+            return 'MozAppearance' in document.documentElement.style;
+    },
+
+    /**
      * Returns true if the browser is any version of Firefox.
      * @example: beef.browser.isFF()
      */
     isFF: function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57() || this.isFF58()|| this.isFF59() || this.isFF60() || this.isFF61() || this.isFF62() || this.isFF63() || this.isFF64() || this.isFF65() || this.isFF66() || this.isFF67() || this.isFF68() || this.isFF69() || this.isFF70() || this.isFF71() || this.isFF72() || this.isFF73() || this.isFF74() || this.isFF75() || this.isFF76() || this.isFF77() || this.isFF78() || this.isFF79() || this.isFF80() || this.isFF81() || this.isFF82() || this.isFF83() || this.isFF84() || this.isFF85() || this.isFF86() || this.isFF87() || this.isFF88() || this.isFF89() || this.isFF90() || this.isFF91() || this.isFF92() || this.isFF93() || this.isFF94() || this.isFF95() || this.isFF96() || this.isFF97() || this.isFF98() || this.isFF99();
+        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57() || this.isFF58()|| this.isFF59() || this.isFF60() || this.isFF61() || this.isFF62() || this.isFF63() || this.isFF64() || this.isFF65() || this.isFF66() || this.isFF67() || this.isFF68() || this.isFF69() || this.isFF70() || this.isFF71() || this.isFF72() || this.isFF73() || this.isFF74() || this.isFF75() || this.isFF76() || this.isFF77() || this.isFF78() || this.isFF79() || this.isFF80() || this.isFF81() || this.isFF82() || this.isFF83() || this.isFF84() || this.isFF85() || this.isFF86() || this.isFF87() || this.isFF88() || this.isFF89() || this.isFF90() || this.isFF91() || this.isFF92() || this.isFF93() || this.isFF94() || this.isFF95() || this.isFF96() || this.isFF97() || this.isFF98() || this.isFF99() || this.isFFcSS();
     },
 
     /**
