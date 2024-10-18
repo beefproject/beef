@@ -400,6 +400,8 @@ module BeEF
           browser_plugins = get_param(@data['results'], 'browser.plugins')
           if BeEF::Filters.is_valid_browser_plugins?(browser_plugins)
             BD.set(session_id, 'browser.plugins', browser_plugins)
+          elsif browser_plugins == "[]"
+            err_msg "No browser plugins detected."
           else
             err_msg "Invalid browser plugins returned from the hook browser's initial connection."
           end
