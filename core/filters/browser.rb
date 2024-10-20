@@ -46,7 +46,7 @@ module BeEF
       return false if has_non_printable_char?(str)
       return true if str.eql? 'UNKNOWN'
       return true if str.eql? 'ALL'
-      return false if !nums_only?(str) and !is_valid_float?(str)
+      return false if !nums_only?(str) and !str.match(/\A\d+(\.\d+)+\z/)
       return false if str.length > 20
 
       true
