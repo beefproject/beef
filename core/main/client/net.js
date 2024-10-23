@@ -74,7 +74,7 @@ beef.net = {
         this.status_text = null;        // success, timeout, error, ...
         this.response_body = null;      // "<html>…." if not a cross-origin request
         this.port_status = null;        // tcp port is open, closed or not http
-        this.was_cross_domain = null;   // true or false
+        this.was_cross_origin = null;   // true or false
         this.was_timedout = null;       // the user specified timeout was reached
         this.duration = null;           // how long it took for the request to complete
         this.headers = null;            // full response headers
@@ -217,11 +217,11 @@ beef.net = {
      * @return {Object} this object contains the response details
      */
     request: function (scheme, method, domain, port, path, anchor, data, timeout, dataType, callback) {
-        //check if same domain or cross domain
-        var cross_domain = true;
+        //check if same origin or cross origin
+        var cross_origin = true;
         if (document.domain == domain.replace(/(\r\n|\n|\r)/gm, "")) { //strip eventual line breaks
             if (document.location.port == "" || document.location.port == null) {
-                cross_domain = !(port == "80" || port == "443");
+                cross_origin = !(port == "80" || port == "443");
             }
         }
 
@@ -238,12 +238,12 @@ beef.net = {
 
         //define response object
         var response = new this.response;
-        response.was_cross_domain = cross_domain;
+        response.was_cross_origin = cross_origin;
         var start_time = new Date().getTime();
 
         /*
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
-         * This will turn POSTs into GETs for remote-domain requests.
+         * This will turn POSTs into GETs for cross origin requests.
          */
         if (method == "POST") {
             $j.ajaxSetup({
@@ -310,7 +310,7 @@ beef.net = {
     /**
      * Similar to beef.net.request, except from a few things that are needed when dealing with forged requests:
      *  - requestid: needed on the callback
-     *  - allowCrossDomain: set cross-domain requests as allowed or blocked
+     *  - allowCrossOrigin: set cross-origin requests as allowed or blocked
      *
      * forge_request is used mainly by the Requester and Tunneling Proxy Extensions.
      * Example usage:
@@ -318,20 +318,20 @@ beef.net = {
      *   true, null, { foo: "bar" }, 5, 'html', false, null, function(response) {
      *   alert(response.response_body)})
      */
-    forge_request: function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossDomain, requestid, callback) {
+    forge_request: function (scheme, method, domain, port, path, anchor, headers, data, timeout, dataType, allowCrossOrigin, requestid, callback) {
 
         if (domain == "undefined" || path == "undefined") {
             beef.debug("[beef.net.forge_request] Error: Malformed request. No host specified.");
             return;
         }
 
-        // check if same domain or cross domain
-        var cross_domain = true;
+        // check if same origin or cross origin
+        var cross_origin = true;
         if (document.domain == domain && document.location.protocol == scheme + ':') {
             if (document.location.port == "" || document.location.port == null) {
-                cross_domain = !(port == "80" || port == "443");
+                cross_origin = !(port == "80" || port == "443");
             } else {
-                if (document.location.port == port) cross_domain = false;
+                if (document.location.port == port) cross_origin = false;
             }
         }
 
@@ -348,23 +348,23 @@ beef.net = {
 
         // define response object
         var response = new this.response;
-        response.was_cross_domain = cross_domain;
+        response.was_cross_origin = cross_origin;
         var start_time = new Date().getTime();
 
-        // if cross-domain requests are not allowed and the request is cross-domain
+        // if cross-origin requests are not allowed and the request is cross-origin
         // don't proceed and return
-        if (allowCrossDomain == "false" && cross_domain) {
+        if (allowCrossOrigin == "false" && cross_origin) {
             beef.debug("[beef.net.forge_request] Error: Cross Domain Request. The request was not sent.");
             response.status_code = -1;
-            response.status_text = "crossdomain";
-            response.port_status = "crossdomain";
+            response.status_text = "crossorigin";
+            response.port_status = "crossorigin";
             response.response_body = "ERROR: Cross Domain Request. The request was not sent.\n";
             response.headers = "ERROR: Cross Domain Request. The request was not sent.\n";
             if (callback != null) callback(response, requestid);
             return response;
         }
 
-        // if the request was cross-domain from a HTTPS origin to HTTP
+        // if the request was cross-origin from a HTTPS origin to HTTP
         // don't proceed and return
         if (document.location.protocol == 'https:' && scheme == 'http') {
             beef.debug("[beef.net.forge_request] Error: Mixed Active Content. The request was not sent.");
@@ -379,7 +379,7 @@ beef.net = {
 
         /*
          * according to http://api.jquery.com/jQuery.ajax/, Note: having 'script':
-         * This will turn POSTs into GETs for remote-domain requests.
+         * This will turn POSTs into GETs for cross origin requests.
          */
         if (method == "POST") {
             $j.ajaxSetup({
@@ -432,10 +432,10 @@ beef.net = {
             },
 
             complete: function (xhr, textStatus) {
-                // cross-domain request
-                if (cross_domain) {
+                // cross-origin request
+                if (cross_origin) {
 
-                    response.port_status = "crossdomain";
+                    response.port_status = "crossorigin";
 
                     if (xhr.status != 0) {
                         response.status_code = xhr.status;
@@ -446,7 +446,7 @@ beef.net = {
                     if (textStatus) {
                         response.status_text = textStatus;
                     } else {
-                        response.status_text = "crossdomain";
+                        response.status_text = "crossorigin";
                     }
 
                     if (xhr.getAllResponseHeaders()) {
@@ -460,7 +460,7 @@ beef.net = {
                     }
 
                 } else {
-                    // same-domain request
+                    // same-origin request
                     response.status_code = xhr.status;
                     response.status_text = textStatus;
                     response.headers = xhr.getAllResponseHeaders();

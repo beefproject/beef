@@ -547,7 +547,7 @@ module BeEF
           end
 
           # log a few info of newly hooked zombie in the console
-          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked domain [#{log_zombie_domain}:#{log_zombie_port}]"
+          print_info "New Hooked Browser [id:#{zombie.id}, ip:#{zombie.ip}, browser:#{browser_name}-#{browser_version}, os:#{os_name}-#{os_version}], hooked origin [#{log_zombie_domain}:#{log_zombie_port}]"
 
           # add localhost as network host
           if config.get('beef.extension.network.enable')

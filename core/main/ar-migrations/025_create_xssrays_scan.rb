@@ -5,7 +5,7 @@ class CreateXssraysScan < ActiveRecord::Migration[6.0]
       t.datetime :scan_start
       t.datetime :scan_finish
       t.text :domain
-      t.text :cross_domain
+      t.text :cross_origin
       t.integer :clean_timeout
       t.boolean :is_started
       t.boolean :is_finished

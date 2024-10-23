@@ -9,7 +9,7 @@ beef:
             enable: true
             category: ["Browser", "Hooked Domain"]
             name: "Cisco ASA Plaintext Passwords"
-            description: "Recover Username, password, and second password (MFA) used for a Cisco ASA WebVPN session. The hooked domain needs to be the domain authenticated against."
+            description: "Recover Username, password, and second password (MFA) used for a Cisco ASA WebVPN session. The hooked origin needs to be the origin authenticated against."
             authors: ["catatonicprime"]
             target:
                 working: ["All"]

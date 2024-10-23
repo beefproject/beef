@@ -9,7 +9,7 @@ beef:
             enable: true
             category: "Misc"
             name: "Wordpress Post-Auth RCE"
-            description: "This module attempts to upload and activate a malicious wordpress plugin.  Afterwards, the URI to trigger it is: http://vulnerable-wordpress.site/wordpress/wp-content/plugins/beefbind/beefbind.php.  The command to execute can be send by a POST-parameter named 'cmd'.  CORS headers have been added to allow bidirectional crossdomain communication."
+            description: "This module attempts to upload and activate a malicious wordpress plugin.  Afterwards, the URI to trigger it is: http://vulnerable-wordpress.site/wordpress/wp-content/plugins/beefbind/beefbind.php.  The command to execute can be send by a POST-parameter named 'cmd'.  CORS headers have been added to allow bidirectional crossorigin communication."
             authors: ["Bart Leppens"]
             target:
                 working: ["ALL"]

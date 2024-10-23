@@ -256,7 +256,7 @@ module BeEF
       #
       def load_modules_config
         set('beef.module', {})
-        # support nested sub-categories, like browser/hooked_domain/ajax_fingerprint
+        # support nested sub-categories, like browser/hooked_origin/ajax_fingerprint
         module_configs = File.join("#{$root_dir}/modules/**", 'config.yaml')
         Dir.glob(module_configs) do |cf|
           y = load(cf)

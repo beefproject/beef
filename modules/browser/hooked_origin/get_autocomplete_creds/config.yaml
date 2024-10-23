@@ -9,7 +9,7 @@ beef:
             enable: true
             category: ["Browser", "Hooked Domain"]
             name: "Get Autocomplete Credentials"
-            description: "This module steals saved credentials for the hooked domain.<br/><br/>Tested on Firefox 68 and Chrome 49.<br/><br/>Note: On Firefox, the window must have focus."
+            description: "This module steals saved credentials for the hooked origin.<br/><br/>Tested on Firefox 68 and Chrome 49.<br/><br/>Note: On Firefox, the window must have focus."
             authors: ["bcoles"]
             target:
                 working: ["FF", "C"]

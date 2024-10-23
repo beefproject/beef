@@ -31,7 +31,7 @@
  *  for example, if someone deletes all but one type of cookie, once
  *  that cookie is re-discovered, all of the other cookie types get reset
  *
- *  !!! SOME OF THESE ARE CROSS-DOMAIN COOKIES, THIS MEANS
+ *  !!! SOME OF THESE ARE CROSS-ORIGIN COOKIES, THIS MEANS
  *  OTHER SITES WILL BE ABLE TO READ SOME OF THESE COOKIES !!!
  *
  * USAGE:
@@ -803,7 +803,7 @@ this.evercookie_cookie = function(name, value)
         else
             return this.getFromStr(name, document.cookie);
     }catch(e){
-        // the hooked domain is using HttpOnly, so we must set the hook ID in a different way.
+        // the hooked origin is using HttpOnly, so we must set the hook ID in a different way.
         // evercookie_userdata and evercookie_window will be used in this case.
     }
 };

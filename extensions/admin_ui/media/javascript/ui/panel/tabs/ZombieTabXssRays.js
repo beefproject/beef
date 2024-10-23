@@ -106,9 +106,9 @@ ZombieTab_XssRaysTab = function(zombie) {
                 padding: '10px 5px 0 5px'
             },{
                xtype:'checkbox',
-               id:'cross_domain',
-               fieldLabel: 'Cross-domain (check for XSS on cross-domain resources)',
-               name: 'cross_domain',
+               id:'cross_origin',
+               fieldLabel: 'Cross-origin (check for XSS on cross-origin resources)',
+               name: 'cross_origin',
                checked: true
             }],
 
@@ -120,7 +120,7 @@ ZombieTab_XssRaysTab = function(zombie) {
                     bar.update_sending('Starting XssRays on ' + zombie.ip + ' ...');
 					form.submit({
 						params: {
-							cross_domain: document.getElementById('cross_domain').checked
+							cross_origin: document.getElementById('cross_origin').checked
 						},
 						success: function() {
 							bar.update_sent("Scan settings saved for hooked browser [" + zombie.ip + "]. XssRays will be added to victim DOM on next polling.");

@@ -181,7 +181,7 @@ module BeEF
             port: host_port,
             path: uri,
             request_date: Time.now,
-            allow_cross_domain: 'true'
+            allow_cross_origin: 'true'
           )
 
           print_debug "added new http request for #{zombie.session}"
