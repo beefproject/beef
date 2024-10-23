@@ -261,7 +261,8 @@ module BeEF
               proxy_log_string += " [server: #{proxy_server}]"
               if config.get('beef.extension.network.enable') == true && (proxy_server =~ /^([\d.]+):(\d+)$/)
                 print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{Regexp.last_match(1)}]")
-                BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: Regexp.last_match(1), type: 'Proxy')
+                hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
+                BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: Regexp.last_match(1), type: 'Proxy')
               end
             end
             BeEF::Core::Logger.instance.register('Zombie', proxy_log_string.to_s, zombie.id.to_s)
@@ -552,7 +553,8 @@ module BeEF
           # add localhost as network host
           if config.get('beef.extension.network.enable')
             print_debug('Hooked browser has network interface 127.0.0.1')
-            BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: '127.0.0.1', hostname: 'localhost',
+            hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: '127.0.0.1', hostname: 'localhost',
                                                    os: BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
           end
 

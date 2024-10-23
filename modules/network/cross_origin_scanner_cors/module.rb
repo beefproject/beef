@@ -19,9 +19,10 @@ class Cross_origin_scanner_cors < BeEF::Core::Command
     port = Regexp.last_match(3)
     type = 'HTTP Server (CORS)'
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+      BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: type)
     end
   end
 

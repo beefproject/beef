@@ -17,6 +17,8 @@ class Get_internal_ip_webrtc < BeEF::Core::Command
     # save the network host
     ips = Regexp.last_match(1).to_s.split(/,/)
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
+
     if !ips.nil? && !ips.empty?
       os = BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name')
       ips.uniq.each do |ip|
@@ -25,7 +27,7 @@ class Get_internal_ip_webrtc < BeEF::Core::Command
         next unless BeEF::Filters.is_valid_ip?(ip)
 
         print_debug("Hooked browser has network interface #{ip}")
-        BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip, os: os)
+        BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: ip, os: os)
       end
     end
   end

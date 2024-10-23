@@ -24,14 +24,14 @@ class Get_internal_ip_java < BeEF::Core::Command
     return unless configuration.get('beef.extension.network.enable') == true
 
     session_id = @datastore['beefhook']
-
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     # save the network host
     return unless @datastore['results'] =~ /^([\d.]+)$/
 
     ip = Regexp.last_match(1)
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser has network interface #{ip}")
-      BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip)
+      BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: ip)
     end
   end
 end

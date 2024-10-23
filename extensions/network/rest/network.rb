@@ -65,7 +65,7 @@ module BeEF
         get '/hosts/:id' do
           id = params[:id]
 
-          hooked_browser = @hb.where(session: id).distinct
+          hooked_browser = @hb.where(session: id).first
           hosts = @nh.where(hooked_browser: hooked_browser).distinct.order(:hooked_browser)
           count = hosts.length
 
@@ -88,8 +88,8 @@ module BeEF
         # Returns all services given a specific hooked browser id
         get '/services/:id' do
           id = params[:id]
-
-          services = @ns.where(hooked_browser_id: id).distinct.order(:id)
+          hooked_browser = @hb.where(session: id).first
+          services = @ns.where(hooked_browser: hooked_browser).distinct.order(:id)
           count = services.length
 
           result = {}

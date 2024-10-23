@@ -24,9 +24,10 @@ class Detect_cups < BeEF::Core::Command
     port = Regexp.last_match(3)
     session_id = @datastore['beefhook']
     type = 'CUPS'
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found 'CUPS' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+      BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: type)
     end
   end
 end
