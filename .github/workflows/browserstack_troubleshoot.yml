@@ -9,5 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test BrowserStack credentials
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: |
-          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" https://api.browserstack.com/automate/plan.json
+          curl -u "${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}" https://api.browserstack.com/automate/plan.json
