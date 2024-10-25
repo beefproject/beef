@@ -47,7 +47,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       OTR::ActiveRecord.establish_connection!
     end
     context = ActiveRecord::Migration.new.migration_context
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
 
     BeEF::Core::Migration.instance.update_db!
 

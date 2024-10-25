@@ -5,13 +5,6 @@ on:
     branches: [ master ]
       
 jobs:
-  test-browserstacks-creds:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test BrowserStack credentials
-        run: |
-          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" https://api.browserstack.com/automate/plan.json
-
   approve:
     runs-on: ubuntu-latest
 
@@ -33,10 +26,6 @@ jobs:
         with:
           username:  ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-
-      - name: Test BrowserStack credentials
-        run: |
-          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" https://api.browserstack.com/automate/plan.json
 
       - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
         uses: browserstack/github-actions/setup-local@master

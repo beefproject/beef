@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.1.4)
-      activesupport (= 7.1.4)
-    activerecord (7.1.4)
-      activemodel (= 7.1.4)
-      activesupport (= 7.1.4)
+    activemodel (7.1.4.2)
+      activesupport (= 7.1.4.2)
+    activerecord (7.1.4.2)
+      activemodel (= 7.1.4.2)
+      activesupport (= 7.1.4.2)
       timeout (>= 0.4.0)
-    activesupport (7.1.4)
+    activesupport (7.1.4.2)
       base64
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -268,6 +268,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activerecord (~> 7.0)
   ansi (~> 1.5)
   async (~> 1.32)
   async-dns (~> 1.3)
