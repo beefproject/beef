@@ -19,7 +19,7 @@ module BeEF
             beef_js_path = "#{$root_dir}/core/main/client/"
 
             # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
-            ext_js_sub_files = %w[lib/jquery-1.12.4.min.js lib/jquery-migrate-1.4.1.js lib/evercookie.js lib/json2.js lib/mdetect.js lib/platform.js lib/jquery.blockUI.js lib/bowser-2.11.0.min.js]
+            ext_js_sub_files = %w[lib/jquery-1.12.4.min.js lib/jquery-migrate-1.4.1.js lib/evercookie.js lib/json2.js lib/mdetect.js lib/platform.js lib/jquery.blockUI.js]
 
             # @note BeEF libraries: need Eruby evaluation and obfuscation
             beef_js_sub_files = %w[beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js
