@@ -91,15 +91,12 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       @debug_mod_ids = JSON.parse(RestClient.get("#{RESTAPI_MODULES}?token=#{@token}"))
       @debug_mod_names_ids = {}
       @debug_mods = @debug_mod_ids.to_a.select do |cmd_mod|
-        puts "cmd_mod:"
-        p cmd_mod
         category = Array(cmd_mod['category'])
         category_string = if category.is_a?(Array)
                             category.join(', ')
                           else
                             category.to_s
                           end
-        p category
         p category_string
         category_string.include?('Debug')
         p category_string.include?('Debug')
