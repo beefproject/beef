@@ -94,6 +94,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
         puts "cmd_mod:"
         p cmd_mod
         category = Array(cmd_mod[1]&.dig('category')) # Ensure category is always an array
+        p category
         category.include?('Debug')
         p category.include?('Debug')
       end.map do |debug_mod|
