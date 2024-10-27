@@ -99,6 +99,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
                           else
                             category.to_s
                           end
+        p category
         p category_string
         category_string.include?('Debug')
         p category_string.include?('Debug')
