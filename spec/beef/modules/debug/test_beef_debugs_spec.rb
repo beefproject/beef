@@ -94,10 +94,12 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       p @debug_mod_ids
 
       @debug_mod_names_ids = {}
-      @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
-                                  .map do |debug_mod|
-                                    @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
-                                  end
+      @debug_mods = @debug_mod_ids.to_a.select do |cmd_mod|
+        category = Array(cmd_mod[1]['category']) # Ensure category is always an array
+        category.include?('Debug')
+      end.map do |debug_mod|
+        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
+      end
     rescue StandardError => e
       print_info "Exception: #{e}"
       print_info "Exception Class: #{e.class}"
