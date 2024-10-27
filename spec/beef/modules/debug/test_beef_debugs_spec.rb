@@ -92,7 +92,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       @debug_mod_names_ids = {}
       @debug_mods = @debug_mod_ids.to_a.select do |cmd_mod|
         puts "cmd_mod:"
-        p cmd_mod
+        p cmd_mod[1]
         category = Array(cmd_mod[1]['category']) # Ensure category is always an array
         category.include?('Debug')
       end.map do |debug_mod|
