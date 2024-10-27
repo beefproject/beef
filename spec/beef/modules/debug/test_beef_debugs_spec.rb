@@ -89,6 +89,10 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
 
       # Grab Command Module IDs as they can differ from machine to machine
       @debug_mod_ids = JSON.parse(RestClient.get("#{RESTAPI_MODULES}?token=#{@token}"))
+
+      puts "Full API response:"
+      p @debug_mod_ids
+
       @debug_mod_names_ids = {}
       @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
                                   .map do |debug_mod|
