@@ -104,6 +104,8 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
         category_string.include?('Debug')
         p category_string.include?('Debug')
       end.map do |debug_mod|
+        puts 'debug_mod: '
+        p debug_mod
         @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
       end
     rescue StandardError => e
