@@ -103,7 +103,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       end.map do |debug_mod|
         puts 'debug_mod: '
         p debug_mod
-        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
+        @debug_mod_names_ids[debug_mod['class']] = debug_mod['id']
       end
     rescue StandardError => e
       print_info "Exception: #{e}"
