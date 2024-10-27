@@ -40,7 +40,7 @@ RSpec.describe 'BeEF Extension Requester' do
 
       # Migrate if required
       context = ActiveRecord::Migration.new.migration_context
-      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
 
       # Start HTTP hook server
       http_hook_server = BeEF::Core::Server.instance

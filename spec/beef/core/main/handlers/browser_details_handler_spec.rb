@@ -48,9 +48,9 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
       OTR::ActiveRecord.establish_connection!
     end
-    context = ActiveRecord::Migration.new.migration_context
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
 
+    context = ActiveRecord::Migration.new.migration_context
+    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
     BeEF::Core::Migration.instance.update_db!
 
     # Spawn HTTP Server
