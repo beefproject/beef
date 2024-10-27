@@ -89,18 +89,12 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
 
       # Grab Command Module IDs as they can differ from machine to machine
       @debug_mod_ids = JSON.parse(RestClient.get("#{RESTAPI_MODULES}?token=#{@token}"))
-
       @debug_mod_names_ids = {}
       @debug_mods = @debug_mod_ids.to_a.select do |cmd_mod|
         category = Array(cmd_mod[1]['category']) # Ensure category is always an array
         category.include?('Debug')
       end.map do |debug_mod|
-        # Only process if debug_mod[1] exists and has the expected keys
-        if debug_mod[1] && debug_mod[1].key?('class') && debug_mod[1].key?('id')
-          @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
-        else
-          puts "Warning: Incomplete data found for debug_mod: #{debug_mod.inspect}"
-        end
+        @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
       end
     rescue StandardError => e
       print_info "Exception: #{e}"
