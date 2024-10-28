@@ -47,7 +47,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       OTR::ActiveRecord.establish_connection!
     end
     context = ActiveRecord::Migration.new.migration_context
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
 
     BeEF::Core::Migration.instance.update_db!
 
@@ -90,10 +90,17 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       # Grab Command Module IDs as they can differ from machine to machine
       @debug_mod_ids = JSON.parse(RestClient.get("#{RESTAPI_MODULES}?token=#{@token}"))
       @debug_mod_names_ids = {}
-      @debug_mods = @debug_mod_ids.to_a.select { |cmd_mod| cmd_mod[1]['category'] == 'Debug' }
-                                  .map do |debug_mod|
-                                    @debug_mod_names_ids[debug_mod[1]['class']] = debug_mod[1]['id']
-                                  end
+      @debug_mods = @debug_mod_ids.to_a.select do |cmd_mod|
+        category = Array(cmd_mod['category'])
+        category_string = if category.is_a?(Array)
+                            category.join(', ')
+                          else
+                            category.to_s
+                          end
+        category_string.include?('Debug')
+      end.map do |debug_mod|
+        @debug_mod_names_ids[debug_mod['class']] = debug_mod['id']
+      end
     rescue StandardError => e
       print_info "Exception: #{e}"
       print_info "Exception Class: #{e.class}"

@@ -125,7 +125,7 @@ module BeEF
             path: uri_path_and_qs,
             request_date: Time.now,
             hooked_browser_id: get_tunneling_proxy,
-            allow_cross_domain: 'true'
+            allow_cross_origin: 'true'
           )
           http.save
           print_debug(
@@ -133,7 +133,7 @@ module BeEF
             "domain[#{http.domain}:#{http.port}], " \
             "method[#{http.method}], " \
             "path[#{http.path}], " \
-            "cross domain[#{http.allow_cross_domain}]"
+            "cross origin[#{http.allow_cross_origin}]"
           )
 
           # Wait for the HTTP response to be stored in the db.

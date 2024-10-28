@@ -49,7 +49,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
       OTR::ActiveRecord.establish_connection!
     end
     context = ActiveRecord::Migration.new.migration_context
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
     BeEF::Core::Migration.instance.update_db!
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'

