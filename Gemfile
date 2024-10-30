@@ -22,7 +22,7 @@ gem 'rubyzip', '~> 2.3'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.2'
 gem 'activerecord', '~> 7.0' 
-gem 'otr-activerecord', '~> 2.2.0'
+gem 'otr-activerecord', '~> 2.4.0'
 gem 'sqlite3', '~> 1.4'
 gem 'rubocop', '~> 1.67.0', require: false
 
