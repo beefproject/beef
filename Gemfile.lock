@@ -63,7 +63,7 @@ GEM
     espeak-ruby (1.1.0)
     event_emitter (0.2.6)
     eventmachine (1.2.7)
-    execjs (2.9.1)
+    execjs (2.10.0)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
@@ -279,7 +279,7 @@ DEPENDENCIES
   erubis (~> 2.7)
   espeak-ruby (~> 1.1.0)
   eventmachine (~> 1.2, >= 1.2.7)
-  execjs (~> 2.9)
+  execjs (~> 2.10)
   geckodriver-helper (~> 0.24.0)
   irb (~> 1.14)
   json
