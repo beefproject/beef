@@ -108,7 +108,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.7.3)
+    nio4r (2.7.4)
     nokogiri (1.16.7-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.16.7-arm-linux)
@@ -126,7 +126,7 @@ GEM
       hashie-forbidden_attributes (~> 0.1)
     parallel (1.26.3)
     parseconfig (1.1.2)
-    parser (3.3.5.0)
+    parser (3.3.5.1)
       ast (~> 2.4.1)
       racc
     power_assert (2.0.4)
@@ -168,7 +168,7 @@ GEM
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.1)
+    rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -241,7 +241,7 @@ GEM
     tilt (2.4.0)
     timeout (0.4.1)
     timers (4.3.5)
-    tins (1.35.0)
+    tins (1.37.0)
       bigdecimal
       sync
     tzinfo (2.0.6)
@@ -268,7 +268,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activerecord (~> 7.0)
+  activerecord (= 7.1.4.2)
   ansi (~> 1.5)
   async (~> 1.32)
   async-dns (~> 1.3)
