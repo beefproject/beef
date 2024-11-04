@@ -43,7 +43,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         # Ruby version is defined in .ruby-version file
         with:
-          ruby-version: 3.0.3 # Not needed with a .ruby-version file
+          ruby-version: 3.2.2 # Not needed with a .ruby-version file
 
       - name: 'Update and Install Dependencies'
         run: |
