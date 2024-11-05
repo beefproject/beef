@@ -34,15 +34,14 @@ jobs:
           local-identifier: random
 
       - name: 'Checkout the repository'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
 
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.3 # Not needed with a .ruby-version file
+        # Ruby version is defined in .ruby-version file
 
       - name: 'Update and Install Dependencies'
         run: |
