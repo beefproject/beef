@@ -1,7 +1,7 @@
 name: 'BrowserStack Test'
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ master ]
       
 jobs:
@@ -34,14 +34,15 @@ jobs:
           local-identifier: random
 
       - name: 'Checkout the repository'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
 
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
-        # ruby-version will be picked up with the .ruby-version file
+        with:
+          ruby-version: 3.2.2 # Not needed with a .ruby-version file
 
       - name: 'Update and Install Dependencies'
         run: |
