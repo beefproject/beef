@@ -1,7 +1,7 @@
 name: 'BrowserStack Test'
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ master ]
       
 jobs:
@@ -41,7 +41,7 @@ jobs:
 
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
-      # ruby-version will be picked up with the .ruby-version file
+        # ruby-version will be picked up with the .ruby-version file
 
       - name: 'Update and Install Dependencies'
         run: |
