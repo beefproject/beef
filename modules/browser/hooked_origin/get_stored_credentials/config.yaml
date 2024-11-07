@@ -9,7 +9,7 @@ beef:
             enable: true
             category: ["Browser", "Hooked Domain"]
             name: "Get Stored Credentials"
-            description: "This module retrieves saved username/password combinations from the login page on the hooked domain.<br /><br />It will fail if more than one set of domain credentials are saved in the browser."
+            description: "This module retrieves saved username/password combinations from the login page on the hooked origin.<br /><br />It will fail if more than one set of origin credentials are saved in the browser."
             authors: ["bcoles"]
             target:
                 working: ["FF"]

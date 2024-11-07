@@ -171,7 +171,7 @@ beef.net.xssrays = {
                 this.xss({href:url.href, pathname:url.pathname, hostname:url.hostname, port: url.port, protocol: location.protocol,
                     search:url.search, type: 'url'});//scan each link & param
             } else {
-                beef.debug('Scan is not Cross-domain.  URLS\nurl :' + url.hostname.toString());
+                beef.debug('Scan is not Cross-origin.  URLS\nurl :' + url.hostname.toString());
                 beef.debug('\nlocation :' + location.hostname.toString());
             }
         }
@@ -251,7 +251,7 @@ beef.net.xssrays = {
                             continue;
                         }
                         if (!this.crossDomain && (this.host(action).toString() != this.host(location.toString()))) {
-                            beef.debug('Scan is not Cross-domain. FormPost\naction :' + this.host(action).toString());
+                            beef.debug('Scan is not Cross-origin. FormPost\naction :' + this.host(action).toString());
                             beef.debug('location :' + this.host(location));
                             continue;
                         }

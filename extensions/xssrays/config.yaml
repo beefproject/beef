@@ -10,4 +10,4 @@ beef:
             name: 'XSSRays'
             authors: ["antisnatchor"]
             clean_timeout: 3000
-            cross_domain: true
+            cross_origin: true

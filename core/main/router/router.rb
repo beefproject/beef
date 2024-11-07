@@ -27,9 +27,9 @@ module BeEF
 
           # @note If CORS is enabled, expose the appropriate headers
           if config.get('beef.http.restful_api.allow_cors')
-            allowed_domains = config.get('beef.http.restful_api.cors_allowed_domains')
-            if allowed_domains
-              headers 'Access-Control-Allow-Origin' => allowed_domains
+            allowed_origins = config.get('beef.http.restful_api.cors_allowed_origins')
+            if allowed_origins
+              headers 'Access-Control-Allow-Origin' => allowed_origins
             end
             headers 'Access-Control-Allow-Methods' => 'POST, GET'
 

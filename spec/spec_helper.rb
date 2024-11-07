@@ -50,7 +50,6 @@ CONFIG['key'] = ENV['BROWSERSTACK_ACCESS_KEY'] || ''
 
 ## DB config
 ActiveRecord::Base.logger = nil
-OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
 OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: ':memory:')
 
 # otr-activerecord requires manually establishing the connection with the following line
@@ -62,7 +61,8 @@ ActiveRecord::Schema.verbose = false
 
 # Migrate (if required)
 ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
-context = ActiveRecord::Migration.new.migration_context
+ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
 if context.needs_migration?
   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 end
@@ -160,7 +160,6 @@ require 'socket'
 
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
-    OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
     OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database: db_file)
     # otr-activerecord require you to manually establish the connection with the following line
     #Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
@@ -170,10 +169,12 @@ require 'socket'
 
     # Migrate (if required)
     ActiveRecord::Migration.verbose = false # silence activerecord migration stdout messages
-    context = ActiveRecord::Migration.new.migration_context
+    ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
     if context.needs_migration?
       ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
     end
+
     BeEF::Core::Migration.instance.update_db!
 
     # Spawn HTTP Server

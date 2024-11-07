@@ -4,8 +4,8 @@ class CreateHttp < ActiveRecord::Migration[6.0]
       t.text :hooked_browser_id
       # The http request to perform. In clear text.
       t.text :request
-      # Boolean value as string to say whether cross-domain requests are allowed
-      t.boolean :allow_cross_domain, default: true
+      # Boolean value as string to say whether cross-origin requests are allowed
+      t.boolean :allow_cross_origin, default: true
       # The http response body received. In clear text.
       t.text :response_data
       # The http response code. Useful to handle cases like 404, 500, 302, ...
@@ -26,7 +26,7 @@ class CreateHttp < ActiveRecord::Migration[6.0]
       t.text :domain
       # The port on which perform the request.
       t.text :port
-      # Boolean value to say if the request was cross-domain
+      # Boolean value to say if the request was cross-origin
       t.text :has_ran, default: 'waiting'
       # The path of the request.
       # Example: /secret.html

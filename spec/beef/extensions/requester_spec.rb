@@ -34,13 +34,13 @@ RSpec.describe 'BeEF Extension Requester' do
 
       # Connect to DB
       ActiveRecord::Base.logger = nil
-      OTR::ActiveRecord.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
       OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: 'beef.db')
       OTR::ActiveRecord.establish_connection! if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
 
       # Migrate if required
-      context = ActiveRecord::Migration.new.migration_context
-      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration).migrate if context.needs_migration?
+      ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+      context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
 
       # Start HTTP hook server
       http_hook_server = BeEF::Core::Server.instance
