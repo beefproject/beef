@@ -7,7 +7,7 @@ on:
 jobs:    
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
-    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    runs-on: ubuntu-latest  # Can be self-hosted runner
     environment:
       name: Integrate Pull Request
     env: 
