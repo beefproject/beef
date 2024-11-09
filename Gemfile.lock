@@ -87,7 +87,7 @@ GEM
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.7.6)
+    json (2.8.1)
     language_server-protocol (3.17.0.3)
     logger (1.6.1)
     matrix (0.4.2)
