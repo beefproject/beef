@@ -12,6 +12,7 @@ module BeEF
         HB = BeEF::Core::Models::HookedBrowser
         H = BeEF::Core::Models::Http
         @response = nil
+        @ssl_context = nil
 
         # Multi-threaded Tunneling Proxy: listens on host:port configured in extensions/proxy/config.yaml
         # and forwards requests to the hooked browser using the Requester component.
@@ -20,14 +21,14 @@ module BeEF
           @proxy_server = TCPServer.new(@conf.get('beef.extension.proxy.address'), @conf.get('beef.extension.proxy.port'))
 
           # setup proxy for SSL/TLS
-          ssl_context = OpenSSL::SSL::SSLContext.new
+          @ssl_context = OpenSSL::SSL::SSLContext.new
           # ssl_context.ssl_version = :TLSv1_2
 
           # load certificate
           begin
             cert_file = @conf.get('beef.extension.proxy.cert')
             cert = File.read(cert_file)
-            ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
+            @ssl_context.cert = OpenSSL::X509::Certificate.new(cert)
           rescue StandardError
             print_error "[Proxy] Could not load SSL certificate '#{cert_file}'"
           end
@@ -36,17 +37,14 @@ module BeEF
           begin
             key_file = @conf.get('beef.extension.proxy.key')
             key = File.read(key_file)
-            ssl_context.key = OpenSSL::PKey::RSA.new(key)
+            @ssl_context.key = OpenSSL::PKey::RSA.new(key)
           rescue StandardError
             print_error "[Proxy] Could not load SSL key '#{key_file}'"
           end
 
-          ssl_server = OpenSSL::SSL::SSLServer.new(@proxy_server, ssl_context)
-          ssl_server.start_immediately = false
-
           loop do
-            ssl_socket = ssl_server.accept
-            Thread.new ssl_socket, &method(:handle_request)
+            socket = @proxy_server.accept
+            Thread.new socket, &method(:handle_request)
           end
         end
 
@@ -69,6 +67,7 @@ module BeEF
               break if line.strip.empty?
             end
             socket.puts("HTTP/1.0 200 Connection established\r\n\r\n")
+            socket = OpenSSL::SSL::SSLSocket(socket, @ssl_context)
             socket.accept
             print_debug("[PROXY] Handled CONNECT to #{host_port}")
             request_line = socket.readline
