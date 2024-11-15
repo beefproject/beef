@@ -67,7 +67,7 @@ module BeEF
               break if line.strip.empty?
             end
             socket.puts("HTTP/1.0 200 Connection established\r\n\r\n")
-            socket = OpenSSL::SSL::SSLSocket(socket, @ssl_context)
+            socket = OpenSSL::SSL::SSLSocket.new(socket, @ssl_context)
             socket.accept
             print_debug("[PROXY] Handled CONNECT to #{host_port}")
             request_line = socket.readline
