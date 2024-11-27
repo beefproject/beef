@@ -18,6 +18,7 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
     return unless configuration.get('beef.extension.network.enable') == true
 
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
 
     # log discovered hosts
     case @datastore['results']
@@ -25,7 +26,7 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
       ip = Regexp.last_match(1)
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found host #{ip}")
-        BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip)
+        BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: ip)
       end
     # log discovered network services
     when /^proto=(.+)&ip=(.+)&port=(\d+)&title/
@@ -35,7 +36,7 @@ class Cross_origin_scanner_flash < BeEF::Core::Command
       type = 'HTTP Server (Flash)'
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-        BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+        BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: type)
       end
     end
   end

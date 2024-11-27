@@ -18,9 +18,10 @@ class Ping_sweep < BeEF::Core::Command
     ip = Regexp.last_match(1)
     # ping = Regexp.last_match(2)
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found host #{ip}")
-      BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip)
+      BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: ip)
     end
   end
 
