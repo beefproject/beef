@@ -5,7 +5,7 @@ class ConfigFile
   def generate(class_name)
     return <<-EOF
 #
-# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -34,7 +34,7 @@ class ModuleFile
     end
     return <<-EOF
 #
-# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -67,7 +67,7 @@ class CommandFile
     end
     return <<-EOF
 //
-// Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //

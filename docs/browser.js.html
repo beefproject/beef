@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>//
-// Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -972,14 +972,25 @@ beef.browser = {
      */
     isFF99: function () {
         return !!window.devicePixelRatio &amp;&amp; !!window.history.replaceState &amp;&amp; (this.getProtocol() == "https:" ? typeof navigator.mozGetUserMedia != "undefined" : true) &amp;&amp; (typeof window.crypto != "undefined" &amp;&amp; typeof window.crypto.getRandomValues != "undefined") &amp;&amp; typeof Math.hypot == 'function' &amp;&amp; typeof String.prototype.codePointAt === 'function' &amp;&amp; typeof Number.isSafeInteger === 'function' &amp;&amp; window.navigator.userAgent.match(/Firefox\/99./) != null;
+    }, 
+
+    /**
+     * Returns true if the browser is any version of Firefox.
+     * @example: beef.browser.isFFbowser()
+    */
+    isFFbowser: function () {
+        const parser = bowser.getParser(navigator.userAgent);
+        const browserName = parser.getBrowserName();
+        return browserName == 'Firefox';
     },
 
     /**
-     * Returns true if FF.
+     * Returns true if the browser is any version of Firefox.
      * @example: beef.browser.isFF()
      */
     isFF: function () {
-        return this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57() || this.isFF58()|| this.isFF59() || this.isFF60() || this.isFF61() || this.isFF62() || this.isFF63() || this.isFF64() || this.isFF65() || this.isFF66() || this.isFF67() || this.isFF68() || this.isFF69() || this.isFF70() || this.isFF71() || this.isFF72() || this.isFF73() || this.isFF74() || this.isFF75() || this.isFF76() || this.isFF77() || this.isFF78() || this.isFF79() || this.isFF80() || this.isFF81() || this.isFF82() || this.isFF83() || this.isFF84() || this.isFF85() || this.isFF86() || this.isFF87() || this.isFF88() || this.isFF89() || this.isFF90() || this.isFF91() || this.isFF92() || this.isFF93() || this.isFF94() || this.isFF95() || this.isFF96() || this.isFF97() || this.isFF98() || this.isFF99();
+        var legacyCheck = this.isFF2() || this.isFF3() || this.isFF3_5() || this.isFF3_6() || this.isFF4() || this.isFF5() || this.isFF6() || this.isFF7() || this.isFF8() || this.isFF9() || this.isFF10() || this.isFF11() || this.isFF12() || this.isFF13() || this.isFF14() || this.isFF15() || this.isFF16() || this.isFF17() || this.isFF18() || this.isFF19() || this.isFF20() || this.isFF21() || this.isFF22() || this.isFF23() || this.isFF24() || this.isFF25() || this.isFF26() || this.isFF27() || this.isFF28() || this.isFF29() || this.isFF30() || this.isFF31() || this.isFF32() || this.isFF33() || this.isFF34() || this.isFF35() || this.isFF36() || this.isFF37() || this.isFF38() || this.isFF39() || this.isFF40() || this.isFF41() || this.isFF42() || this.isFF43() || this.isFF44() || this.isFF45() || this.isFF46() || this.isFF47() || this.isFF48() || this.isFF49() || this.isFF50() || this.isFF51() || this.isFF52() || this.isFF53() || this.isFF54() || this.isFF55() || this.isFF56() || this.isFF57() || this.isFF58()|| this.isFF59() || this.isFF60() || this.isFF61() || this.isFF62() || this.isFF63() || this.isFF64() || this.isFF65() || this.isFF66() || this.isFF67() || this.isFF68() || this.isFF69() || this.isFF70() || this.isFF71() || this.isFF72() || this.isFF73() || this.isFF74() || this.isFF75() || this.isFF76() || this.isFF77() || this.isFF78() || this.isFF79() || this.isFF80() || this.isFF81() || this.isFF82() || this.isFF83() || this.isFF84() || this.isFF85() || this.isFF86() || this.isFF87() || this.isFF88() || this.isFF89() || this.isFF90() || this.isFF91() || this.isFF92() || this.isFF93() || this.isFF94() || this.isFF95() || this.isFF96() || this.isFF97() || this.isFF98() || this.isFF99();
+        return legacyCheck || this.isFFbowser();
     },
 
     /**
@@ -2467,11 +2478,22 @@ beef.browser = {
     },
 
     /**
+     * Returns true for modern versions of Chrome (above 9).
+     * @example: beef.browser.isCbowser()
+     */
+    isCbowser: function () {
+        const parser = bowser.getParser(navigator.userAgent);
+        const browserName = parser.getBrowserName();
+        return browserName == 'Chrome';
+    },    
+
+    /**
      * Returns true if Chrome.
      * @example: beef.browser.isC()
      */
     isC: function () {
-        return this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC19iOS() || this.isC20() || this.isC20iOS() || this.isC21() || this.isC21iOS() || this.isC22() || this.isC22iOS() || this.isC23() || this.isC23iOS() || this.isC24() || this.isC24iOS() || this.isC25() || this.isC25iOS() || this.isC26() || this.isC26iOS() || this.isC27() || this.isC27iOS() || this.isC28() || this.isC28iOS() || this.isC29() || this.isC29iOS() || this.isC30() || this.isC30iOS() || this.isC31() || this.isC31iOS() || this.isC32() || this.isC32iOS() || this.isC33() || this.isC33iOS() || this.isC34() || this.isC34iOS() || this.isC35() || this.isC35iOS() || this.isC36() || this.isC36iOS() || this.isC37() || this.isC37iOS() || this.isC38() || this.isC38iOS() || this.isC39() || this.isC39iOS() || this.isC40() || this.isC40iOS() || this.isC41() || this.isC41iOS() || this.isC42() || this.isC42iOS() || this.isC43() || this.isC43iOS() || this.isC44() || this.isC44iOS() || this.isC45() || this.isC45iOS() || this.isC46() || this.isC46iOS() || this.isC47() || this.isC47iOS() || this.isC48() || this.isC48iOS() || this.isC49() || this.isC49iOS() || this.isC50() || this.isC50iOS() || this.isC51() || this.isC51iOS() || this.isC52() || this.isC52iOS() || this.isC53() || this.isC53iOS() || this.isC54() || this.isC54iOS() || this.isC55() || this.isC55iOS() || this.isC56() || this.isC56iOS() || this.isC57() || this.isC57iOS() || this.isC58() || this.isC58iOS() || this.isC59() || this.isC59iOS()|| this.isC60() || this.isC60iOS()|| this.isC61() || this.isC61iOS()|| this.isC62() || this.isC62iOS()|| this.isC63() || this.isC63iOS()|| this.isC64() || this.isC64iOS()|| this.isC65() || this.isC65iOS()|| this.isC66() || this.isC66iOS()|| this.isC67() || this.isC67iOS()|| this.isC68() || this.isC68iOS()|| this.isC69() || this.isC69iOS()|| this.isC70() || this.isC70iOS()|| this.isC71() || this.isC71iOS()|| this.isC72() || this.isC72iOS()|| this.isC73() || this.isC73iOS()|| this.isC74() || this.isC74iOS()|| this.isC75() || this.isC75iOS()|| this.isC76() || this.isC76iOS()|| this.isC77() || this.isC77iOS()|| this.isC78() || this.isC78iOS()|| this.isC79() || this.isC79iOS()|| this.isC80() || this.isC80iOS()|| this.isC81() || this.isC81iOS()|| this.isC82() || this.isC82iOS()|| this.isC83() || this.isC83iOS()|| this.isC84() || this.isC84iOS()|| this.isC85() || this.isC85iOS()|| this.isC86() || this.isC86iOS()|| this.isC87() || this.isC87iOS()|| this.isC88() || this.isC88iOS()|| this.isC89() || this.isC89iOS()|| this.isC90() || this.isC90iOS()|| this.isC91() || this.isC91iOS()|| this.isC92() || this.isC92iOS()|| this.isC93() || this.isC93iOS()|| this.isC94() || this.isC94iOS()|| this.isC95() || this.isC95iOS()|| this.isC96() || this.isC96iOS()|| this.isC97() || this.isC97iOS()|| this.isC98() || this.isC98iOS()|| this.isC99() || this.isC99iOS();
+        var legacyCheck = this.isC5() || this.isC6() || this.isC7() || this.isC8() || this.isC9() || this.isC10() || this.isC11() || this.isC12() || this.isC13() || this.isC14() || this.isC15() || this.isC16() || this.isC17() || this.isC18() || this.isC19() || this.isC19iOS() || this.isC20() || this.isC20iOS() || this.isC21() || this.isC21iOS() || this.isC22() || this.isC22iOS() || this.isC23() || this.isC23iOS() || this.isC24() || this.isC24iOS() || this.isC25() || this.isC25iOS() || this.isC26() || this.isC26iOS() || this.isC27() || this.isC27iOS() || this.isC28() || this.isC28iOS() || this.isC29() || this.isC29iOS() || this.isC30() || this.isC30iOS() || this.isC31() || this.isC31iOS() || this.isC32() || this.isC32iOS() || this.isC33() || this.isC33iOS() || this.isC34() || this.isC34iOS() || this.isC35() || this.isC35iOS() || this.isC36() || this.isC36iOS() || this.isC37() || this.isC37iOS() || this.isC38() || this.isC38iOS() || this.isC39() || this.isC39iOS() || this.isC40() || this.isC40iOS() || this.isC41() || this.isC41iOS() || this.isC42() || this.isC42iOS() || this.isC43() || this.isC43iOS() || this.isC44() || this.isC44iOS() || this.isC45() || this.isC45iOS() || this.isC46() || this.isC46iOS() || this.isC47() || this.isC47iOS() || this.isC48() || this.isC48iOS() || this.isC49() || this.isC49iOS() || this.isC50() || this.isC50iOS() || this.isC51() || this.isC51iOS() || this.isC52() || this.isC52iOS() || this.isC53() || this.isC53iOS() || this.isC54() || this.isC54iOS() || this.isC55() || this.isC55iOS() || this.isC56() || this.isC56iOS() || this.isC57() || this.isC57iOS() || this.isC58() || this.isC58iOS() || this.isC59() || this.isC59iOS()|| this.isC60() || this.isC60iOS()|| this.isC61() || this.isC61iOS()|| this.isC62() || this.isC62iOS()|| this.isC63() || this.isC63iOS()|| this.isC64() || this.isC64iOS()|| this.isC65() || this.isC65iOS()|| this.isC66() || this.isC66iOS()|| this.isC67() || this.isC67iOS()|| this.isC68() || this.isC68iOS()|| this.isC69() || this.isC69iOS()|| this.isC70() || this.isC70iOS()|| this.isC71() || this.isC71iOS()|| this.isC72() || this.isC72iOS()|| this.isC73() || this.isC73iOS()|| this.isC74() || this.isC74iOS()|| this.isC75() || this.isC75iOS()|| this.isC76() || this.isC76iOS()|| this.isC77() || this.isC77iOS()|| this.isC78() || this.isC78iOS()|| this.isC79() || this.isC79iOS()|| this.isC80() || this.isC80iOS()|| this.isC81() || this.isC81iOS()|| this.isC82() || this.isC82iOS()|| this.isC83() || this.isC83iOS()|| this.isC84() || this.isC84iOS()|| this.isC85() || this.isC85iOS()|| this.isC86() || this.isC86iOS()|| this.isC87() || this.isC87iOS()|| this.isC88() || this.isC88iOS()|| this.isC89() || this.isC89iOS()|| this.isC90() || this.isC90iOS()|| this.isC91() || this.isC91iOS()|| this.isC92() || this.isC92iOS()|| this.isC93() || this.isC93iOS()|| this.isC94() || this.isC94iOS()|| this.isC95() || this.isC95iOS()|| this.isC96() || this.isC96iOS()|| this.isC97() || this.isC97iOS()|| this.isC98() || this.isC98iOS()|| this.isC99() || this.isC99iOS();
+        return legacyCheck || this.isCbowser();
     },
 
     /**
@@ -2515,11 +2537,22 @@ beef.browser = {
     },
 
     /**
+     * Returns true if the browser is any version of Opera.
+     * @example: beef.browser.isObowser()
+    */
+    isObowser: function () {
+        const parser = bowser.getParser(navigator.userAgent);
+        const browserName = parser.getBrowserName();
+        return browserName == 'Opera';
+    },
+
+    /**
      * Returns true if Opera.
      * @example: beef.browser.isO()
      */
     isO: function () {
-        return this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11() || this.isO12();
+        var legacyCheck = this.isO9_52() || this.isO9_60() || this.isO10() || this.isO11() || this.isO12();
+        return legacyCheck || this.isObowser();
     },
 
     /**
@@ -4680,7 +4713,7 @@ beef.regCmp('beef.browser');
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Oct 23 2024 16:03:46 GMT+1000 (Australian Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Dec 25 2024 11:28:12 GMT+1000 (Australian Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
