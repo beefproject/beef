@@ -198,7 +198,7 @@ GEM
       rack-protection (= 3.2.0)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (2.4.1-x86_64-linux-gnu)
+    sqlite3 (2.5.0-x86_64-linux-gnu)
     stringio (3.1.2)
     sync (0.5.0)
     term-ansicolor (1.11.2)
@@ -286,7 +286,7 @@ DEPENDENCIES
   selenium-webdriver (~> 4.27)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
-  sqlite3 (~> 2.4)
+  sqlite3 (~> 2.5)
   term-ansicolor
   test-unit-full (~> 0.0.5)
   thin (~> 1.8)
