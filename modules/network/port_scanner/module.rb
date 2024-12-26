@@ -34,10 +34,11 @@ class Port_scanner < BeEF::Core::Command
     port = Regexp.last_match(3)
     service = Regexp.last_match(4)
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     proto = 'http'
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, ntype: service)
+      BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: service)
     end
   end
 end
