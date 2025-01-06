@@ -18,7 +18,7 @@ gem 'mime-types', '~> 3.6'
 gem 'execjs', '~> 2.10'
 gem 'ansi', '~> 1.5'
 gem 'term-ansicolor', :require => 'term/ansicolor'
-gem 'rubyzip', '~> 2.3'
+gem 'rubyzip', '~> 2.4'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.2'
 gem 'activerecord', '~> 7.2' 

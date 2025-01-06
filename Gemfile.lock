@@ -181,7 +181,7 @@ GEM
       parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
+    rubyzip (2.4.1)
     rushover (0.3.0)
       json
       rest-client
@@ -281,7 +281,7 @@ DEPENDENCIES
   rest-client (~> 2.1.0)
   rspec (~> 3.13)
   rubocop (~> 1.69.2)
-  rubyzip (~> 2.3)
+  rubyzip (~> 2.4)
   rushover (~> 0.3.0)
   selenium-webdriver (~> 4.27)
   sinatra (~> 3.2)
