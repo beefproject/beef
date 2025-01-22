@@ -82,7 +82,8 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
     io-like (0.3.1)
-    irb (1.14.3)
+    irb (1.15.1)
+      pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.9.1)
@@ -119,13 +120,16 @@ GEM
       ast (~> 2.4.1)
       racc
     power_assert (2.0.5)
+    pp (0.6.2)
+      prettyprint
+    prettyprint (0.2.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
-    psych (5.2.2)
+    psych (5.2.3)
       date
       stringio
     public_suffix (6.0.1)
@@ -264,7 +268,7 @@ DEPENDENCIES
   eventmachine (~> 1.2, >= 1.2.7)
   execjs (~> 2.10)
   geckodriver-helper (~> 0.24.0)
-  irb (~> 1.14)
+  irb (~> 1.15)
   json
   maxmind-db (~> 1.2)
   mime-types (~> 3.6)
