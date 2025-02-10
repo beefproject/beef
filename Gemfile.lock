@@ -86,7 +86,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.9.1)
+    json (2.10.0)
     language_server-protocol (3.17.0.3)
     logger (1.6.5)
     matrix (0.4.2)
