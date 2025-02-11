@@ -106,7 +106,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.5.0)
+    net-smtp (0.5.1)
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.4)
