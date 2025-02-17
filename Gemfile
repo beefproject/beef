@@ -50,7 +50,7 @@ end
 
 # DNS extension
 group :ext_dns do
-  gem 'async-dns', '~> 1.3'
+  gem 'async-dns', '~> 1.4'
   gem 'async', '~> 1.32'
 end
 
