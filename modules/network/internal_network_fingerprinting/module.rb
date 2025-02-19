@@ -31,9 +31,10 @@ class Internal_network_fingerprinting < BeEF::Core::Command
     discovered = Regexp.last_match(4)
     url = Regexp.last_match(5)
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found '#{discovered}' [ip: #{ip}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: discovered)
+      BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: discovered)
     end
   end
 end

@@ -1084,7 +1084,7 @@ ZombieTab_Network = function(zombie) {
                 autoDestroy: true,
                 autoLoad: false,
                 root: 'services',
-                fields: ['id', 'proto', 'ip', 'port', 'type'],
+                fields: ['id', 'proto', 'ip', 'port', 'ntype'],
                 sortInfo: {field: 'ip', direction: 'ASC'}
         });
 
@@ -1118,7 +1118,7 @@ ZombieTab_Network = function(zombie) {
                         {header: 'IP Address', width: 10, sortable: true, dataIndex: 'ip', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
                         {header: 'Port', width: 5, sortable: true, dataIndex: 'port', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
                         {header: 'Protocol', width: 5, sortable: true, dataIndex: 'proto', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}},
-                        {header: 'Type', width: 20, sortable: true, dataIndex: 'type', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
+                        {header: 'Type', width: 20, sortable: true, dataIndex: 'ntype', renderer: function(value){return $jEncoder.encoder.encodeForHTML(value)}}
                 ],
 
                 listeners: {

@@ -23,15 +23,16 @@ class Get_ntop_network_hosts < BeEF::Core::Command
     port = Regexp.last_match(3)
     data = Regexp.last_match(4)
     session_id = @datastore['beefhook']
+    hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: session_id).first
     type = 'ntop'
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found 'ntop' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+      BeEF::Core::Models::NetworkService.create(hooked_browser: hooked_browser, proto: proto, ip: ip, port: port, ntype: type)
     end
     data.to_s.scan(/"hostNumIpAddress":"([\d.]+)"/).flatten.each do |ip|
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found host #{ip}")
-        BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip, port: port)
+        BeEF::Core::Models::NetworkHost.create(hooked_browser: hooked_browser, ip: ip, port: port)
       end
     end
   end
