@@ -34,7 +34,7 @@ module BeEF
           print_debug '[OBFUSCATION - Minifier] JavaScript has been minified'
           output
         rescue StandardError => e
-          print_error "[OBFUSCATION - Minifier] JavaScript couldn't be minified: #{e.messsage}"
+          print_error "[OBFUSCATION - Minifier] JavaScript couldn't be minified: #{e.message}"
           input
         end
       end
