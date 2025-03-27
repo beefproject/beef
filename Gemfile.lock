@@ -89,7 +89,7 @@ GEM
     json (2.10.2)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
-    logger (1.6.6)
+    logger (1.7.0)
     matrix (0.4.2)
     maxmind-db (1.2.0)
     method_source (1.1.0)
@@ -194,7 +194,7 @@ GEM
       json
       rest-client
     securerandom (0.4.1)
-    selenium-webdriver (4.29.1)
+    selenium-webdriver (4.30.1)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -291,7 +291,7 @@ DEPENDENCIES
   rubocop (~> 1.75.1)
   rubyzip (~> 2.4)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.29)
+  selenium-webdriver (~> 4.30)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 2.6)
