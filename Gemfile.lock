@@ -82,7 +82,7 @@ GEM
     io-console (0.8.0)
     io-endpoint (0.15.1)
     io-like (0.3.1)
-    irb (1.15.1)
+    irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
