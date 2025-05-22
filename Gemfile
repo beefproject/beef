@@ -14,7 +14,7 @@ gem 'rack', '~> 2.2'
 gem 'rack-protection', '~> 3.2.0'
 gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
-gem 'mime-types', '~> 3.6'
+gem 'mime-types', '~> 3.7'
 gem 'execjs', '~> 2.10'
 gem 'ansi', '~> 1.5'
 gem 'term-ansicolor', :require => 'term/ansicolor'
