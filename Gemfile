@@ -21,7 +21,7 @@ gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'rubyzip', '~> 2.4'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.2'
-gem 'activerecord', '~> 7.2' 
+gem 'activerecord', '~> 8.0' 
 gem 'otr-activerecord', '~> 2.5.0'
 gem 'sqlite3', '~> 2.6'
 gem 'rubocop', '~> 1.75.3', require: false
