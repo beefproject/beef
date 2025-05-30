@@ -20,7 +20,7 @@ gem 'ansi', '~> 1.5'
 gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'rubyzip', '~> 2.4'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
-gem 'rake', '~> 13.2'
+gem 'rake', '~> 13.3'
 gem 'activerecord', '~> 7.2' 
 gem 'otr-activerecord', '~> 2.5.0'
 gem 'sqlite3', '~> 2.6'
