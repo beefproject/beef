@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carta para Thias 🎁</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #4a148c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      max-width: 600px;
+      padding: 40px 30px;
+      position: relative;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #880e4f;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .signature {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 1.2rem;
+      color: #ad1457;
+    }
+    .audio-control {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #880e4f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(136, 14, 79, 0.3);
+    }
+    .audio-control:hover {
+      background: #ad1457;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <button id="audioBtn" class="audio-control" title="Pausar/Reproducir música">🔊</button>
+    <h1>Para Thias 💌</h1>
+    <p>Hola Thias,</p>
+    <p>Hoy, 29 de agosto, no podía dejar pasar este día sin escribirte. Aunque la distancia —y quizás el silencio pero bueno—</p>
+    <p>Cumplís un año más de vida, y espero de corazón que llegue cargado de luz, salud, momentos que te llenen el alma y personas que te recuerden lo increíble que sos. Aunque ya no esté cerca, aunque nuestras palabras hayan dejado de cruzarse como antes, lo que fuiste y lo que significaste no se borra. Fuiste importante, lo sos, y lo serás de alguna forma siempre.</p>
+    <p>Te deseo lo mejor de lo mejor, no solo hoy, sino cada día que el mundo tenga la suerte de tenerte en él. Que la vida te abrace con lo que merecés y que sigas creciendo, brillando y alcanzando todo lo que te propongas.</p>
+    <p>Gracias por haber sido parte de mi vida, y por todo lo que dejaste en mí. Hoy, desde lejos, te mando un abrazo silencioso pero real, deseando que seas feliz, sinceramente.</p>
+    <p>Feliz cumpleaños, Thais.✨</p>
+    <p class="signature">💖 Maycol.i</p>
+  </div>
+
+  <audio id="audio" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/26/audio_443a35be70.mp3?filename=happy-rock-ambient-5690.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const audioBtn = document.getElementById('audioBtn');
+
+    audioBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        audioBtn.textContent = '🔊';
+      } else {
+        audio.pause();
+        audioBtn.textContent = '🔈';
+      }
+    });
+  </script>
+
+</body>
+</html>
