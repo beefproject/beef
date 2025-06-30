@@ -32,7 +32,7 @@ GEM
     async-dns (1.4.1)
       async
       io-endpoint
-    base64 (0.2.0)
+    base64 (0.3.0)
     benchmark (0.4.0)
     bigdecimal (3.1.8)
     browserstack-local (1.4.3)
@@ -196,7 +196,7 @@ GEM
       json
       rest-client
     securerandom (0.4.1)
-    selenium-webdriver (4.33.0)
+    selenium-webdriver (4.34.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -293,7 +293,7 @@ DEPENDENCIES
   rubocop (~> 1.77.0)
   rubyzip (~> 2.4)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.33)
+  selenium-webdriver (~> 4.34)
   sinatra (~> 3.2)
   slack-notifier (~> 2.4)
   sqlite3 (~> 2.7)
