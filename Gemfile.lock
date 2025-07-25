@@ -53,7 +53,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    curb (1.0.9)
+    curb (1.1.0)
     daemons (1.4.1)
     date (3.4.1)
     diff-lcs (1.6.2)
@@ -267,7 +267,7 @@ DEPENDENCIES
   async-dns (~> 1.4)
   browserstack-local (~> 1.4)
   capybara (~> 3.40)
-  curb (~> 1.0)
+  curb (~> 1.1)
   em-websocket (~> 0.5.3)
   erubis (~> 2.7)
   espeak-ruby (~> 1.1.0)
