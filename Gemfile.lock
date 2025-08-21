@@ -191,7 +191,7 @@ GEM
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.4.1)
+    rubyzip (3.0.1)
     rushover (0.3.0)
       json
       rest-client
@@ -291,7 +291,7 @@ DEPENDENCIES
   rest-client (~> 2.1.0)
   rspec (~> 3.13)
   rubocop (~> 1.79.2)
-  rubyzip (~> 2.4)
+  rubyzip (~> 3.0)
   rushover (~> 0.3.0)
   selenium-webdriver (~> 4.35)
   sinatra (~> 3.2)
