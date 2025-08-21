@@ -9,7 +9,7 @@
     "license": "GNU General Public License v2.0",
     "devDependencies": {
         "jsdoc": "^4.0.0",
-        "jsdoc-to-markdown": "^9.1.1"
+        "jsdoc-to-markdown": "^9.1.2"
     },
     "dependencies": {}
 }
