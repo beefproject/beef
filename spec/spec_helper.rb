@@ -193,14 +193,20 @@ RSpec.configure do |config|
 
   # --- HARD fork-safety: disconnect every pool/adapter we can find ---
   def disconnect_all_active_record!
+    print_info "Entering disconnect_all_active_record!"
     if defined?(ActiveRecord::Base)
-      # Disconnect every connection pool explicitly
+      print_info "Disconnecting ActiveRecord connections"
       handler = ActiveRecord::Base.connection_handler
-      handler.connection_pool_list.each { |pool| pool.disconnect! } if handler.respond_to?(:connection_pool_list)
-      ActiveRecord::Base.clear_active_connections!
-      ActiveRecord::Base.clear_all_connections!
+      if handler.respond_to?(:connection_pool_list)
+        print_info "Using connection_pool_list"
+        handler.connection_pool_list.each { |pool| pool.disconnect! }
+      elsif handler.respond_to?(:connection_pools)
+        print_info "Using connection_pools"
+        handler.connection_pools.each_value { |pool| pool.disconnect! }
+      end
+    else
+      print_info "ActiveRecord::Base not defined"
     end
-    OTR::ActiveRecord.disconnect! if defined?(OTR::ActiveRecord)
   end
 
   def start_beef_server

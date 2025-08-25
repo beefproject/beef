@@ -59,6 +59,11 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     http_hook_server.prepare
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
+
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
+
     # Initiate server start-up
     @pids = fork do
       BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)

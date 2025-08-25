@@ -12,6 +12,11 @@ RSpec.describe 'BeEF Redirector' do
     @server = Thin::Server.new('127.0.0.1', @port.to_s, @rackApp)
     trap("INT") { @server.stop }
     trap("TERM") { @server.stop }
+
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
+
     @pid = fork do
       @server.start!
     end
