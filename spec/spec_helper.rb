@@ -35,7 +35,7 @@ Dir['spec/support/*.rb'].each { |f| require f }
 ENV['RACK_ENV'] ||= 'test' # Set the environment to test
 ARGV.clear
 
-SERVER_START_TIMEOUT = Integer(ENV['SERVER_START_TIMEOUT'] || 20)
+# SERVER_START_TIMEOUT = Integer(ENV['SERVER_START_TIMEOUT'] || 20)
 
 ## BrowserStack config
 
