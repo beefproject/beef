@@ -37,6 +37,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     end
 
     # Grab DB file and regenerate if requested
+    print_info 'TESTING MESSAGE'
     print_info 'Loading database'
 
     # Load up DB and migrate if necessary
