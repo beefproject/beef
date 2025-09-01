@@ -1,13 +1,13 @@
 name: 'BrowserStack Test'
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ master ]
       
 jobs:    
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
-    runs-on: ubuntu-latest  # Can be self-hosted runner also
+    runs-on: ubuntu-latest  
     environment:
       name: Integrate Pull Request
     env: 
@@ -28,9 +28,6 @@ jobs:
 
       - name: 'Checkout the repository'
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 2
 
       - name: 'Setting up Ruby'
         uses: ruby/setup-ruby@v1
