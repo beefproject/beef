@@ -140,7 +140,7 @@ RSpec.configure do |config|
   end
 
   # Ensure every example starts with a fresh connection pool
-  config.after(:each) do
+  config.before(:each) do
     disconnect_all_active_record!
   end
 
