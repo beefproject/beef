@@ -139,6 +139,11 @@ RSpec.configure do |config|
     end
   end
 
+  # Ensure every example starts with a fresh connection pool
+  config.after(:each) do
+    disconnect_all_active_record!
+  end
+
   def server_teardown(webdriver, server_pid, server_pids)
     webdriver.quit
   rescue StandardError => e
@@ -196,15 +201,15 @@ require 'socket'
 
   # --- HARD fork-safety: disconnect every pool/adapter we can find ---
   def disconnect_all_active_record!
-    print_info "Entering disconnect_all_active_record!"
+    # print_info "Entering disconnect_all_active_record!"
     if defined?(ActiveRecord::Base)
-      print_info "Disconnecting ActiveRecord connections"
+      # print_info "Disconnecting ActiveRecord connections"
       handler = ActiveRecord::Base.connection_handler
       if handler.respond_to?(:connection_pool_list)
-        print_info "Using connection_pool_list"
+        # print_info "Using connection_pool_list"
         handler.connection_pool_list.each { |pool| pool.disconnect! }
       elsif handler.respond_to?(:connection_pools)
-        print_info "Using connection_pools"
+        # print_info "Using connection_pools"
         handler.connection_pools.each_value { |pool| pool.disconnect! }
       end
     else
