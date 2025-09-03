@@ -139,23 +139,26 @@ RSpec.configure do |config|
     end
   end
 
-  # Ensure every example starts with a fresh connection pool
-  config.before(:each) do
-    disconnect_all_active_record!
-  end
-
   def server_teardown(webdriver, server_pid, server_pids)
-    webdriver.quit
-  rescue StandardError => e
-    print_info "Exception: #{e}"
-    print_info "Exception Class: #{e.class}"
-    print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.backtrace}"
-    exit 0
-  ensure
-    print_info 'Shutting down server'
-    Process.kill('KILL', server_pid)
-    Process.kill('KILL', server_pids)
+    begin
+      webdriver&.quit
+    rescue => e
+      warn "[server_teardown] webdriver quit failed: #{e.class}: #{e.message}"
+    end
+
+    begin
+      Process.kill('KILL', server_pid) if server_pid
+    rescue => e
+      warn "[server_teardown] kill failed: #{e.class}: #{e.message}"
+    end
+
+    Array(server_pids).each do |pid|
+      begin
+        Process.kill('KILL', pid) if pid
+      rescue
+        # ignore
+      end
+    end
   end
 
 ########################################
