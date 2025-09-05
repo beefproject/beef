@@ -72,10 +72,9 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
     disconnect_all_active_record!
 
     # Initiate server start-up
-    @pids = fork do
-      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-    end
     @pid = fork do
+      http_hook_server.prepare
+      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
       http_hook_server.start
     end
 
