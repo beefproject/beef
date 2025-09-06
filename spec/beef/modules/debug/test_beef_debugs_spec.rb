@@ -14,6 +14,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
   before(:all) do
     # Grab config and set creds in variables for ease of access
     @config = BeEF::Core::Configuration.instance
+    @pids = []  # ensure defined for teardown consistency
     # Grab DB file and regenerate if requested
     print_info 'Loading database'
     db_file = @config.get('beef.database.file')
@@ -55,7 +56,6 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'
     http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
 
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
@@ -64,10 +64,9 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
     disconnect_all_active_record!
 
     # Initiate server start-up
-    @pids = fork do
-      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-    end
     @pid = fork do
+      http_hook_server.prepare
+      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
       http_hook_server.start
     end
 
@@ -120,6 +119,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
 
   after(:all) do
     server_teardown(@driver, @pid, @pids)
+    disconnect_all_active_record!
   end
 
   it 'The Test_beef.debug() command module successfully executes' do
