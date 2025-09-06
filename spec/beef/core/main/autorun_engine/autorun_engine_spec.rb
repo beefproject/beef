@@ -63,7 +63,6 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'
     http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
 
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
@@ -103,6 +102,7 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
 
   after(:all) do
     server_teardown(@driver, @pid, @pids)
+    disconnect_all_active_record!
   end
 
   it 'AutoRunEngine is working' do
