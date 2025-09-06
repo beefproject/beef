@@ -10,13 +10,19 @@ require_relative '../../../../spec_helper'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
+MUTEX = Mutex.new
+
 RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   before(:all) do
 
     @config = BeEF::Core::Configuration.instance
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
-    File.delete(db_file) if File.exist?(db_file)
+
+    if ENV['RESET_DB']
+      File.delete(db_file) if File.exist?(db_file)
+    end
+    
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @username = @config.get('beef.credentials.user')
@@ -50,9 +56,12 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
 
     # Migrate (if required)
     ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
-
+    MUTEX.synchronize do
+      context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+      if context.needs_migration?
+        ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+      end
+    end
     BeEF::Core::Migration.instance.update_db!
 
     # Spawn HTTP Server

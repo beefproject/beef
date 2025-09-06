@@ -11,6 +11,8 @@ require_relative '../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
+MUTEX = Mutex.new
+
 RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   before(:all) do
     @config = BeEF::Core::Configuration.instance
@@ -49,8 +51,12 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     end
 
     ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
+    MUTEX.synchronize do
+      context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+      if context.needs_migration?
+        ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+      end
+    end
     
     BeEF::Core::Migration.instance.update_db!
     # Spawn HTTP Server
