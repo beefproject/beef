@@ -74,7 +74,7 @@ group :test do
 
     # Note: curb gem requires curl libraries
     # sudo apt-get install libcurl4-openssl-dev
-    gem 'curb', '~> 1.1'
+    gem 'curb', '~> 1.2'
 
     # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
     # gem 'selenium' # Requires old version of selenium which is no longer available
