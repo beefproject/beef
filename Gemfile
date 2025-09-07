@@ -8,7 +8,7 @@ gem 'net-smtp', require: false
 gem 'json'
 
 gem 'eventmachine', '~> 1.2', '>= 1.2.7'
-gem 'thin', '~> 1.8'
+gem 'thin', '~> 2.0'
 gem 'sinatra', '~> 3.2'
 gem 'rack', '~> 2.2'
 gem 'rack-protection', '~> 3.2.0'
