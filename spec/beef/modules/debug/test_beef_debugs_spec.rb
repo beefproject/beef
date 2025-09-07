@@ -10,8 +10,6 @@ require_relative '../../../spec_helper'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
 
-MUTEX = Mutex.new
-
 RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
   before(:all) do
     # Grab config and set creds in variables for ease of access

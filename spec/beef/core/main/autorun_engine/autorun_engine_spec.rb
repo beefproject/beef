@@ -10,8 +10,6 @@ require_relative '../../../../spec_helper'
 require_relative '../../../../support/constants'
 require_relative '../../../../support/beef_test'
 
-MUTEX = Mutex.new
-
 RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
   before(:all) do
     @config = BeEF::Core::Configuration.instance

@@ -25,6 +25,8 @@ require 'selenium-webdriver'
 require 'browserstack/local'
 require 'byebug'
 
+MUTEX ||= Mutex.new
+
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
   require f

@@ -11,8 +11,6 @@ require_relative '../../support/beef_test'
 require 'core/main/network_stack/websocket/websocket'
 require 'websocket-client-simple'
 
-MUTEX = Mutex.new
-
 RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   before(:all) do
     @config = BeEF::Core::Configuration.instance
