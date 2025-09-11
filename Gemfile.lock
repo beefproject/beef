@@ -238,8 +238,8 @@ GEM
     sqlite3 (2.7.3-x86_64-linux-musl)
     stringio (3.1.7)
     sync (0.5.0)
-    term-ansicolor (1.11.2)
-      tins (~> 1.0)
+    term-ansicolor (1.11.3)
+      tins (~> 1)
     test-unit (3.7.0)
       power_assert
     test-unit-context (0.5.1)
