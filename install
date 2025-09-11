@@ -207,30 +207,71 @@ check_ruby_version() {
 	fi
 }
 
+check_bundle_command() {
+    if command_exists "bundle${RUBYSUFFIX}" || command_exists bundle; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 check_bundler() {
+    info 'Detecting bundler gem...'
 
-	info 'Detecting bundler gem...'
+    if check_bundle_command; then
+        info "bundle command is available"
+    else
+        info 'Installing bundler gem...'
+        if ! gem${RUBYSUFFIX} install bundler; then
+            fatal "Failed to install bundler"
+        fi
 
-	if command_exists bundler${RUBYSUFFIX}; then
-		info "bundler${RUBYSUFFIX} gem is installed"
-	else
-		info 'Installing bundler gem...'
-		gem${RUBYSUFFIX} install bundler
-	fi
+        if check_bundle_command; then
+            info "bundle command is now available"
+        else
+            if ! USER_GEM_HOME=$(ruby${RUBYSUFFIX} -e "require 'rubygems'; puts Gem.user_dir" 2>/dev/null); then
+                fatal "Failed to get gem environment via Ruby"
+            fi
+
+            local GEM_BIN_PATH="${USER_GEM_HOME}/bin"
+            if [ -d "${GEM_BIN_PATH}" ]; then
+                export PATH="${GEM_BIN_PATH}:${PATH}"
+                info "Added ${GEM_BIN_PATH} to PATH for this session"
+
+                if check_bundle_command; then
+                    info "bundle command is now available in PATH"
+                else
+                    fatal "bundle command still not found after adding ${GEM_BIN_PATH} to PATH"
+                fi
+            else
+                fatal "Gem bin directory not found at ${GEM_BIN_PATH}"
+            fi
+        fi
+    fi
 }
 
 install_beef() {
-
 	echo "Installing required Ruby gems..."
 
 	if [ -w Gemfile.lock ]; then
 		/bin/rm Gemfile.lock
 	fi
 
+	local GEM_PATH="$(ruby${RUBYSUFFIX} -e 'puts Gem.user_dir' 2>/dev/null)"
+	if [ -z "$GEM_PATH" ]; then
+		fatal "Failed to determine user gem directory"
+	fi
+
+	mkdir -p "$GEM_PATH" 2>/dev/null || true
+
 	if command_exists bundle${RUBYSUFFIX}; then
+		bundle${RUBYSUFFIX} config set --local path "$GEM_PATH"
 		bundle${RUBYSUFFIX} install
-	else
+	elif command_exists bundle; then
+		bundle config set --local path "$GEM_PATH"
 		bundle install
+	else
+		fatal "bundle command not found. Please ensure bundler is installed."
 	fi
 }
 
