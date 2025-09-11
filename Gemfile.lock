@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.2.2.2)
-      activesupport (= 7.2.2.2)
-    activerecord (7.2.2.2)
-      activemodel (= 7.2.2.2)
-      activesupport (= 7.2.2.2)
+    activemodel (8.0.2.1)
+      activesupport (= 8.0.2.1)
+    activerecord (8.0.2.1)
+      activemodel (= 8.0.2.1)
+      activesupport (= 8.0.2.1)
       timeout (>= 0.4.0)
-    activesupport (7.2.2.2)
+    activesupport (8.0.2.1)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -19,6 +19,7 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ansi (1.5.0)
@@ -275,6 +276,7 @@ GEM
     unicode-display_width (3.1.5)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
+    uri (1.0.3)
     webrick (1.9.1)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
@@ -296,7 +298,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activerecord (~> 7.2)
+  activerecord (~> 8.0)
   ansi (~> 1.5)
   async (~> 1.32)
   async-dns (~> 1.4)
