@@ -231,6 +231,7 @@ install_beef() {
 		bundle${RUBYSUFFIX} install
 	else
 		bundle install
+
 	fi
 }
 
