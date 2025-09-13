@@ -97,9 +97,10 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0902)
+    mime-types-data (3.2025.0909)
     mini_mime (1.1.5)
     minitest (5.25.5)
+    mize (0.6.1)
     mojo_magick (0.6.8)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
@@ -139,7 +140,7 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.4.0)
+    prism (1.5.0)
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -177,7 +178,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.4.3)
+    rexml (3.4.4)
     rqrcode_core (1.2.0)
     rr (3.1.2)
     rspec (3.13.1)
@@ -265,16 +266,17 @@ GEM
     tilt (2.6.1)
     timeout (0.4.3)
     timers (4.4.0)
-    tins (1.43.0)
+    tins (1.44.1)
       bigdecimal
+      mize (~> 0.6)
       sync
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.1)
       execjs (>= 0.3.0, < 3)
-    unicode-display_width (3.1.5)
-      unicode-emoji (~> 4.0, >= 4.0.4)
-    unicode-emoji (4.0.4)
+    unicode-display_width (3.2.0)
+      unicode-emoji (~> 4.1)
+    unicode-emoji (4.1.0)
     webrick (1.9.1)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
@@ -340,4 +342,4 @@ DEPENDENCIES
   xmlrpc (~> 0.3.3)
 
 BUNDLED WITH
-   2.5.18
+   2.6.2
