@@ -53,7 +53,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    curb (1.2.1)
+    curb (1.2.2)
     daemons (1.4.1)
     date (3.4.1)
     diff-lcs (1.6.2)
