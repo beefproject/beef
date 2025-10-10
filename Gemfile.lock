@@ -154,7 +154,7 @@ GEM
       mojo_magick (~> 0.6.5)
       rqrcode_core (~> 1.0)
     racc (1.8.1)
-    rack (3.2.2)
+    rack (3.2.3)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
