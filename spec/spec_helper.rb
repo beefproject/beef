@@ -25,6 +25,8 @@ require 'selenium-webdriver'
 require 'browserstack/local'
 require 'byebug'
 
+MUTEX ||= Mutex.new
+
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
   require f
@@ -67,6 +69,61 @@ if context.needs_migration?
   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 end
 
+# -------------------------------------------------------------------
+# Console logger shims
+# Some extensions may call Console.level= or BeEF::Core::Console.level=
+# Ensure both are safe.
+# -------------------------------------------------------------------
+module BeEF
+  module Core
+    module Console
+      class << self
+        attr_accessor :logger
+        def level=(val)
+          (self.logger ||= Logger.new($stdout)).level = val
+        end
+        def level
+          (self.logger ||= Logger.new($stdout)).level
+        end
+        # Proxy common logger methods if called directly (info, warn, error, etc.)
+        def method_missing(m, *args, &blk)
+          lg = (self.logger ||= Logger.new($stdout))
+          return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+          super
+        end
+        def respond_to_missing?(m, include_priv = false)
+          (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
+        end
+      end
+    end
+  end
+end
+BeEF::Core::Console.logger ||= Logger.new($stdout)
+
+# Some code may reference a top-level ::Console constant (not namespaced)
+unless defined?(::Console) && ::Console.respond_to?(:level=)
+  module ::Console
+    class << self
+      attr_accessor :logger
+      def level=(val)
+        (self.logger ||= Logger.new($stdout)).level = val
+      end
+      def level
+        (self.logger ||= Logger.new($stdout)).level
+      end
+      # Proxy to logger for typical logging calls
+      def method_missing(m, *args, &blk)
+        lg = (self.logger ||= Logger.new($stdout))
+        return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+        super
+      end
+      def respond_to_missing?(m, include_priv = false)
+        (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
+      end
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.bisect_runner = :shell
@@ -85,17 +142,25 @@ RSpec.configure do |config|
   end
 
   def server_teardown(webdriver, server_pid, server_pids)
-    webdriver.quit
-  rescue StandardError => e
-    print_info "Exception: #{e}"
-    print_info "Exception Class: #{e.class}"
-    print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.backtrace}"
-    exit 0
-  ensure
-    print_info 'Shutting down server'
-    Process.kill('KILL', server_pid)
-    Process.kill('KILL', server_pids)
+    begin
+      webdriver&.quit
+    rescue => e
+      warn "[server_teardown] webdriver quit failed: #{e.class}: #{e.message}"
+    end
+
+    begin
+      Process.kill('KILL', server_pid) if server_pid
+    rescue => e
+      warn "[server_teardown] kill failed: #{e.class}: #{e.message}"
+    end
+
+    Array(server_pids).each do |pid|
+      begin
+        Process.kill('KILL', pid) if pid
+      rescue
+        # ignore
+      end
+    end
   end
 
 ########################################
@@ -139,6 +204,24 @@ require 'socket'
       BeEF::Modules.load if @config.get('beef.module').nil?
   end
 
+  # --- HARD fork-safety: disconnect every pool/adapter we can find ---
+  def disconnect_all_active_record!
+    # print_info "Entering disconnect_all_active_record!"
+    if defined?(ActiveRecord::Base)
+      # print_info "Disconnecting ActiveRecord connections"
+      handler = ActiveRecord::Base.connection_handler
+      if handler.respond_to?(:connection_pool_list)
+        # print_info "Using connection_pool_list"
+        handler.connection_pool_list.each { |pool| pool.disconnect! }
+      elsif handler.respond_to?(:connection_pools)
+        # print_info "Using connection_pools"
+        handler.connection_pools.each_value { |pool| pool.disconnect! }
+      end
+    else
+      print_info "ActiveRecord::Base not defined"
+    end
+  end
+
   def start_beef_server
     configure_beef
     @port = @config.get('beef.http.port')
@@ -157,6 +240,9 @@ require 'socket'
     if BeEF::Core::Console::CommandLine.parse[:resetdb]
       File.delete(db_file) if File.exist?(db_file)
     end
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
 
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
