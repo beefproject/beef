@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.2.2.2)
-      activesupport (= 7.2.2.2)
-    activerecord (7.2.2.2)
-      activemodel (= 7.2.2.2)
-      activesupport (= 7.2.2.2)
+    activemodel (8.0.3)
+      activesupport (= 8.0.3)
+    activerecord (8.0.3)
+      activemodel (= 8.0.3)
+      activesupport (= 8.0.3)
       timeout (>= 0.4.0)
-    activesupport (7.2.2.2)
+    activesupport (8.0.3)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -19,6 +19,7 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ansi (1.5.0)
@@ -34,7 +35,7 @@ GEM
       io-endpoint
     base64 (0.3.0)
     benchmark (0.4.1)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     browserstack-local (1.4.3)
     byebug (12.0.0)
     capybara (3.40.0)
@@ -99,7 +100,7 @@ GEM
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2025.0902)
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (5.26.0)
     mojo_magick (0.6.8)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
@@ -277,6 +278,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
+    uri (1.0.4)
     webrick (1.9.1)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
@@ -298,7 +300,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activerecord (~> 7.2)
+  activerecord (~> 8.0)
   ansi (~> 1.5)
   async (~> 1.32)
   async-dns (~> 1.4)
