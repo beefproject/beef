@@ -229,7 +229,7 @@ check_bundler() {
         if check_bundle_command; then
             info "bundle command is now available"
         else
-            if ! USER_GEM_HOME=$(ruby${RUBYSUFFIX} -e "require 'rubygems'; puts Gem.user_dir" 2>/dev/null); then
+            if ! USER_GEM_HOME=$(get_user_gem_home); then
                 fatal "Failed to get gem environment via Ruby"
             fi
 
