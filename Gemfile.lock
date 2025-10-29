@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (8.0.3)
-      activesupport (= 8.0.3)
-    activerecord (8.0.3)
-      activemodel (= 8.0.3)
-      activesupport (= 8.0.3)
+    activemodel (8.0.4)
+      activesupport (= 8.0.4)
+    activerecord (8.0.4)
+      activemodel (= 8.0.4)
+      activesupport (= 8.0.4)
       timeout (>= 0.4.0)
-    activesupport (8.0.3)
+    activesupport (8.0.4)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -34,7 +34,7 @@ GEM
       async
       io-endpoint
     base64 (0.3.0)
-    benchmark (0.4.1)
+    benchmark (0.5.0)
     bigdecimal (3.3.1)
     browserstack-local (1.4.3)
     byebug (12.0.0)
@@ -265,7 +265,7 @@ GEM
       logger
       rack (>= 1, < 4)
     tilt (2.6.1)
-    timeout (0.4.3)
+    timeout (0.4.4)
     timers (4.4.0)
     tins (1.43.0)
       bigdecimal
