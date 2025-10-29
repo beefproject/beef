@@ -262,7 +262,9 @@ install_beef() {
 		fatal "Failed to determine user gem directory"
 	fi
 
-	mkdir -p "$GEM_PATH" 2>/dev/null || true
+	if ! mkdir -p "$GEM_PATH" 2>/dev/null; then
+		fatal "Failed to create gem directory at $GEM_PATH"
+	fi
 
 	if command_exists bundle${RUBYSUFFIX}; then
 		bundle${RUBYSUFFIX} config set --local path "$GEM_PATH"
