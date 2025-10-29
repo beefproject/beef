@@ -257,7 +257,7 @@ install_beef() {
 		/bin/rm Gemfile.lock
 	fi
 
-	local GEM_PATH="$(ruby${RUBYSUFFIX} -e 'puts Gem.user_dir' 2>/dev/null)"
+	local GEM_PATH="$(get_user_gem_dir)"
 	if [ -z "$GEM_PATH" ]; then
 		fatal "Failed to determine user gem directory"
 	fi
