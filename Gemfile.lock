@@ -211,7 +211,7 @@ GEM
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (3.2.1)
+    rubyzip (3.2.2)
     rushover (0.3.0)
       json
       rest-client
