@@ -48,7 +48,7 @@ module BeEF
       # @note Hooking this API method stops the default flow of the Module.execute() method.
       def override_execute(mod, hbsession, opts); end
 
-      # Fired when retreiving dynamic payload
+      # Fired when retrieving dynamic payload
       # @return [Hash] a hash of options
       # @note the option hash is merged with all other API hook's returned hash. Hooking this API method prevents the default options being returned.
       def get_payload_options; end

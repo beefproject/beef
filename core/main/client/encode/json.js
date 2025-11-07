@@ -16,7 +16,7 @@ beef.encode.json = {
      */
 	stringify: function(o) {
         if (typeof(JSON) == 'object' && JSON.stringify) {
-            // Error on stringifying cylcic structures caused polling to die
+            // Error on stringifying cyclic structures caused polling to die
             try {
                 s = JSON.stringify(o);    
             } catch(error) {

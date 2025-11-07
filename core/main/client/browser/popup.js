@@ -5,7 +5,7 @@
 //
 
 /**
- * Provides fuctions for working with cookies. 
+ * Provides functions for working with cookies. 
  * Several functions adopted from http://davidwalsh.name/popup-block-javascript
  * Original author unknown.
  * @namespace beef.browser.popup

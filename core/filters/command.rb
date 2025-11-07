@@ -58,7 +58,7 @@ module BeEF
 
     # Check for word and underscore chars
     # @param [String] str String for testing
-    # @return [Boolean] If the sting has valid param characters
+    # @return [Boolean] If the string has valid param characters
     def self.has_valid_param_chars?(str)
       return false if str.nil?
       return false unless str.is_a? String
