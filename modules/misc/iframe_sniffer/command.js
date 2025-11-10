@@ -10,7 +10,7 @@ beef.execute(function() {
   var anchorsToCheck = '<%= @anchorsToCheck %>';
   var arrayOfAnchorsToCheck = [];
 
-  //the anchors should be seperated with ','
+  //the anchors should be separated with ','
   //remove tabs, newlines, carriage returns and spaces
   anchorsToCheck = anchorsToCheck.replace(/[ \t\r\n]/g,'');
   arrayOfAnchorsToCheck = anchorsToCheck.split(',');
@@ -61,7 +61,7 @@ beef.execute(function() {
             poll();
           }
           else {
-            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'time-out occured!');
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'time-out occurred!');
           }
        }, 100);
     };

@@ -24,7 +24,7 @@ package {
 
                 if (!this._cam) {
 
-	                //Either the camera is not available or some other error has occured
+	                //Either the camera is not available or some other error has occurred
                     ExternalInterface.call("naPermissions");
 
                 } else if (this._cam.muted) {

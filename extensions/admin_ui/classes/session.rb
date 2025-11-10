@@ -38,7 +38,7 @@ module BeEF
         end
 
         #
-        # set teh auth_timestamp
+        # set the auth_timestamp
         #
         def set_auth_timestamp(time)
           @auth_timestamp = time

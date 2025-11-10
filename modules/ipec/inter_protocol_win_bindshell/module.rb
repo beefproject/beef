@@ -15,7 +15,7 @@ class Inter_protocol_win_bindshell < BeEF::Core::Command
       { 'name' => 'rhost', 'ui_label' => 'Target Address', 'value' => '127.0.0.1' },
       { 'name' => 'rport',   'ui_label' => 'Target Port',    'value' => '4444' },
       { 'name' => 'timeout', 'ui_label' => 'Timeout (s)',    'value' => '30' },
-      { 'name' => 'commands', 'ui_label' => 'Shell Commands', 'description' => 'Enter shell commands to execute. Note: ampersands are required to seperate commands', 'type' => 'textarea',
+      { 'name' => 'commands', 'ui_label' => 'Shell Commands', 'description' => 'Enter shell commands to execute. Note: ampersands are required to separate commands', 'type' => 'textarea',
         'value' => 'echo User: & whoami & echo Directory Path: & pwd & echo Directory Contents: & dir & echo HostName: & hostname & ipconfig & netstat -an', 'width' => '200px' }
     ]
   end
