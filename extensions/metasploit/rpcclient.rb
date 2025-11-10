@@ -14,7 +14,7 @@ module BeEF
 
           unless @config.key?('host') || @config.key?('uri') || @config.key?('port') ||
                  @config.key?('user') || @config.key?('pass')
-            print_error 'There is not enough information to initalize Metasploit connectivity at this time'
+            print_error 'There is not enough information to initialize Metasploit connectivity at this time'
             print_error 'Please check your options in config.yaml to verify that all information is present'
             BeEF::Core::Configuration.instance.set('beef.extension.metasploit.enabled', false)
             BeEF::Core::Configuration.instance.set('beef.extension.metasploit.loaded', false)
@@ -137,7 +137,7 @@ module BeEF
           res = super(@config['user'], @config['pass'])
 
           unless res
-            print_error '[Metasploit] Could not authenticate to Metasploit RPC sevrice.'
+            print_error '[Metasploit] Could not authenticate to Metasploit RPC service.'
             return false
           end
 

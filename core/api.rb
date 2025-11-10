@@ -29,7 +29,7 @@ module BeEF
       #
       def register(owner, clss, method, params = [])
         unless verify_api_path(clss, method)
-          print_error "API Registrar: Attempted to register non-existant API method #{clss} :#{method}"
+          print_error "API Registrar: Attempted to register non-existent API method #{clss} :#{method}"
           return
         end
 

