@@ -343,4 +343,4 @@ DEPENDENCIES
   xmlrpc (~> 0.3.3)
 
 BUNDLED WITH
-   2.5.18
+   2.7.2
