@@ -72,8 +72,8 @@ module BeEF
                 res['request'] = request
                 session_key = BeEF::Core::Configuration.instance.get('beef.http.hook_session_name')
                 res['beefsession'] = request.cookies[session_key] ||
-                                    request.params[session_key] ||
-                                    request.env[session_key]
+                                     request.params[session_key] ||
+                                     request.env[session_key]
 
                 execute(res)
               rescue JSON::ParserError => e
