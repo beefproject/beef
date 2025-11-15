@@ -1,580 +1,580 @@
 class BeefRestAPI
 
 # initialize
-def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
-  @user = user
-  @pass = pass
-  @url = "#{proto}://#{host}:#{port}/api/"
-  @token = nil
-end
+  def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
+    @user = user
+    @pass = pass
+    @url = "#{proto}://#{host}:#{port}/api/"
+    @token = nil
+  end
 
 ################################################################################
 ### BeEF core API
 ################################################################################
 
 # authenticate and get API token
-def auth
-  print_verbose 'Retrieving authentication token'
-  begin
-  response = RestClient.post "#{@url}admin/login",
-    { 'username' => "#{@user}",
-      'password' => "#{@pass}" }.to_json,
-    :content_type => :json,
-    :accept => :json
-  result = JSON.parse(response.body)
-  @token = result['token']
-  print_good "Retrieved RESTful API token: #{@token}"
-  rescue => e
-    print_error "Could not retrieve RESTful API token: #{e.message}"
+  def auth
+    print_verbose 'Retrieving authentication token'
+    begin
+      response = RestClient.post "#{@url}admin/login",
+        { 'username' => "#{@user}",
+          'password' => "#{@pass}" }.to_json,
+        :content_type => :json,
+        :accept => :json
+      result = JSON.parse(response.body)
+      @token = result['token']
+      print_good "Retrieved RESTful API token: #{@token}"
+      rescue => e
+        print_error "Could not retrieve RESTful API token: #{e.message}"
+    end
   end
-end
 
 # get BeEF version
-def version
-  begin
-    response = RestClient.get "#{@url}server/version", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    print_good "Retrieved BeEF version: #{result['version']}"
-    result['version']
-  rescue => e
-    print_error "Could not retrieve BeEF version: #{e.message}"
+  def version
+    begin
+      response = RestClient.get "#{@url}server/version", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      print_good "Retrieved BeEF version: #{result['version']}"
+      result['version']
+    rescue => e
+      print_error "Could not retrieve BeEF version: #{e.message}"
+    end
   end
-end
 
 # get server mounts
-def mounts
-  begin
-    response = RestClient.get "#{@url}server/mounts", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    print_good "Retrieved BeEF server mounts: #{result['mounts']}"
-    result['mounts']
-  rescue => e
-    print_error "Could not retrieve BeEF version: #{e.message}"
+  def mounts
+    begin
+      response = RestClient.get "#{@url}server/mounts", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      print_good "Retrieved BeEF server mounts: #{result['mounts']}"
+      result['mounts']
+    rescue => e
+      print_error "Could not retrieve BeEF version: #{e.message}"
+    end
   end
-end
 
 # get online hooked browsers
-def online_browsers
-  begin
-    print_verbose 'Retrieving online browsers'
-    response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    browsers = result['hooked-browsers']['online']
-    print_good "Retrieved online browser list [#{browsers.size} online]"
-    browsers
-  rescue => e
-    print_error "Could not retrieve browser details: #{e.message}"
+  def online_browsers
+    begin
+      print_verbose 'Retrieving online browsers'
+      response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      browsers = result['hooked-browsers']['online']
+      print_good "Retrieved online browser list [#{browsers.size} online]"
+      browsers
+    rescue => e
+      print_error "Could not retrieve browser details: #{e.message}"
+    end
   end
-end
 
 # get offline hooked browsers
-def offline_browsers 
-  begin
-    print_verbose 'Retrieving offline browsers'
-    response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    browsers = result['hooked-browsers']['offline']
-    print_good "Retrieved offline browser list [#{browsers.size} offline]"
-    browsers
-  rescue => e
-    print_error "Could not retrieve browser details: #{e.message}"
+  def offline_browsers 
+    begin
+      print_verbose 'Retrieving offline browsers'
+      response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      browsers = result['hooked-browsers']['offline']
+      print_good "Retrieved offline browser list [#{browsers.size} offline]"
+      browsers
+    rescue => e
+      print_error "Could not retrieve browser details: #{e.message}"
+    end
   end
-end
 
 # get hooked browser details by session
-def browser_details session
-  begin
-    print_verbose "Retrieving browser details for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}browserdetails/#{session}", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    details = result['details']
-    print_good "Retrieved #{details.size} browser details"
-    details
-  rescue => e
-    print_error "Could not retrieve browser details: #{e.message}"
+  def browser_details session
+    begin
+      print_verbose "Retrieving browser details for hooked browser [session: #{session}]"
+      response = RestClient.get "#{@url}browserdetails/#{session}", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      details = result['details']
+      print_good "Retrieved #{details.size} browser details"
+      details
+    rescue => e
+      print_error "Could not retrieve browser details: #{e.message}"
+    end
   end
-end
 
 # delete a browser by session
-def delete_browser session
-  begin
-    print_verbose "Removing hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}hooks/#{session}/delete", { :params => { :token => @token } }
-    print_good "Removed browser [session: #{session}]" if response.code == 200
-    response
-  rescue => e
-    print_error "Could not delete hooked browser: #{e.message}"
+  def delete_browser session
+    begin
+      print_verbose "Removing hooked browser [session: #{session}]"
+      response = RestClient.get "#{@url}hooks/#{session}/delete", { :params => { :token => @token } }
+      print_good "Removed browser [session: #{session}]" if response.code == 200
+      response
+    rescue => e
+      print_error "Could not delete hooked browser: #{e.message}"
+    end
   end
-end
 
 # get BeEF logs
-def logs
-  begin
-    print_verbose 'Retrieving logs'
-    response = RestClient.get "#{@url}logs", { :params => { :token => @token } }
-    logs = JSON.parse(response.body)
-    print_good "Retrieved #{logs['logs_count']} log entries"
-    logs
-  rescue => e
-    print_error "Could not retrieve logs: #{e.message}"
+  def logs
+    begin
+      print_verbose 'Retrieving logs'
+      response = RestClient.get "#{@url}logs", { :params => { :token => @token } }
+      logs = JSON.parse(response.body)
+      print_good "Retrieved #{logs['logs_count']} log entries"
+      logs
+    rescue => e
+      print_error "Could not retrieve logs: #{e.message}"
+    end
   end
-end
 
 # get hooked browser logs by session
-def browser_logs session
-  begin
-    print_verbose "Retrieving browser logs [session: #{session}]"
-    response = RestClient.get "#{@url}logs/#{session}", { :params => { :token => @token } }
-    logs = JSON.parse(response.body)
-    print_good "Retrieved #{logs['logs'].size} browser logs"
-    logs
-  rescue => e
-    print_error "Could not retrieve browser logs: #{e.message}"
+  def browser_logs session
+    begin
+      print_verbose "Retrieving browser logs [session: #{session}]"
+      response = RestClient.get "#{@url}logs/#{session}", { :params => { :token => @token } }
+      logs = JSON.parse(response.body)
+      print_good "Retrieved #{logs['logs'].size} browser logs"
+      logs
+    rescue => e
+      print_error "Could not retrieve browser logs: #{e.message}"
+    end
   end
-end
 
 ################################################################################
 ### command module API
 ################################################################################
 
 # get command module categories
-def categories
-  begin
-    print_verbose 'Retrieving module categories'
-    response = RestClient.get "#{@url}categories", { :params => { :token => @token } }
-    categories = JSON.parse(response.body)
-    print_good "Retrieved #{categories.size} module categories"
-    categories
-  rescue => e
-    print_error "Could not retrieve logs: #{e.message}"
+  def categories
+    begin
+      print_verbose 'Retrieving module categories'
+      response = RestClient.get "#{@url}categories", { :params => { :token => @token } }
+      categories = JSON.parse(response.body)
+      print_good "Retrieved #{categories.size} module categories"
+      categories
+    rescue => e
+      print_error "Could not retrieve logs: #{e.message}"
+    end
   end
-end
 
 # get command modules
-def modules
-  begin
-    print_verbose 'Retrieving modules'
-    response = RestClient.get "#{@url}modules", { :params => { :token => @token } }
-    @modules = JSON.parse(response.body)
-    print_good "Retrieved #{@modules.size} available command modules"
-    @modules
-  rescue => e
-    print_error "Could not retrieve modules: #{e.message}"
+  def modules
+    begin
+      print_verbose 'Retrieving modules'
+      response = RestClient.get "#{@url}modules", { :params => { :token => @token } }
+      @modules = JSON.parse(response.body)
+      print_good "Retrieved #{@modules.size} available command modules"
+      @modules
+    rescue => e
+      print_error "Could not retrieve modules: #{e.message}"
+    end
   end
-end
 
 # get module id by module short name
-def get_module_id mod_name
-  print_verbose "Retrieving id for module [name: #{mod_name}]"
-  @modules.each do |mod|
-    # normal modules
-    if mod_name.capitalize == mod[1]['class']
-      return mod[1]['id']
-      break
-      # metasploit modules
-    elsif mod[1]['class'] == 'Msf_module' && mod_name.capitalize == mod[1]['name']
-      return mod[1]['id']
-      break
+  def get_module_id mod_name
+    print_verbose "Retrieving id for module [name: #{mod_name}]"
+    @modules.each do |mod|
+      # normal modules
+      if mod_name.capitalize == mod[1]['class']
+        return mod[1]['id']
+        break
+        # metasploit modules
+      elsif mod[1]['class'] == 'Msf_module' && mod_name.capitalize == mod[1]['name']
+        return mod[1]['id']
+        break
+      end
     end
+    nil
   end
-  nil
-end
 
 # get command module details
-def module_details id
-  begin
-    print_verbose "Retrieving details for command module [id: #{id}]"
-    response = RestClient.get "#{@url}modules/#{id}", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved details for module [#{details['name']}]"
-    details
-  rescue => e
-    print_error "Could not retrieve modules: #{e.message}"
+  def module_details id
+    begin
+      print_verbose "Retrieving details for command module [id: #{id}]"
+      response = RestClient.get "#{@url}modules/#{id}", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved details for module [#{details['name']}]"
+      details
+    rescue => e
+      print_error "Could not retrieve modules: #{e.message}"
+    end
   end
-end
 
 # execute module
-def execute_module session, mod_id, options
-  print_verbose "Executing module [id: #{mod_id}, #{options}]"
-  begin
-    response = RestClient.post "#{@url}modules/#{session}/#{mod_id}?token=#{@token}", options.to_json,
-      :content_type => :json,
-      :accept => :json
-    result = JSON.parse(response.body)
-    if result['success'] ==  'true'
-      print_good "Executed module [id: #{mod_id}]"
-    else
-      print_error "Could not execute module [id: #{mod_id}]"
+  def execute_module session, mod_id, options
+    print_verbose "Executing module [id: #{mod_id}, #{options}]"
+    begin
+      response = RestClient.post "#{@url}modules/#{session}/#{mod_id}?token=#{@token}", options.to_json,
+        :content_type => :json,
+        :accept => :json
+      result = JSON.parse(response.body)
+      if result['success'] ==  'true'
+        print_good "Executed module [id: #{mod_id}]"
+      else
+        print_error "Could not execute module [id: #{mod_id}]"
+      end
+      result
+    rescue => e
+      print_error "Could not start payload handler: #{e.message}"
     end
-    result
-  rescue => e
-    print_error "Could not start payload handler: #{e.message}"
   end
-end
 
 ################################################################################
 ### Metasploit API
 ################################################################################
 
 # get metasploit version
-def msf_version
-  begin
-    response = RestClient.get "#{@url}msf/version", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    version = result['version']['version']
-    print_good "Retrieved Metasploit version: #{version}"
-    version
-  rescue => e
-    print_error "Could not retrieve Metasploit version: #{e.message}"
+  def msf_version
+    begin
+      response = RestClient.get "#{@url}msf/version", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      version = result['version']['version']
+      print_good "Retrieved Metasploit version: #{version}"
+      version
+    rescue => e
+      print_error "Could not retrieve Metasploit version: #{e.message}"
+    end
   end
-end
 
 # get metasploit jobs
-def msf_jobs
-  begin
-    response = RestClient.get "#{@url}msf/jobs", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    jobs = result['jobs']
-    print_good "Retrieved job list [#{jobs.size} jobs]"
-    jobs
-  rescue => e
-    print_error "Could not retrieve Metasploit job list: #{e.message}"
+  def msf_jobs
+    begin
+      response = RestClient.get "#{@url}msf/jobs", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      jobs = result['jobs']
+      print_good "Retrieved job list [#{jobs.size} jobs]"
+      jobs
+    rescue => e
+      print_error "Could not retrieve Metasploit job list: #{e.message}"
+    end
   end
-end
 
 # get metasploit job info
-def msf_job_info id
-  begin
-    response = RestClient.get "#{@url}msf/job/#{id}/info", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved job information [id: #{id}]"
-    details
-  rescue => e
-    print_error "Could not retrieve job info: #{e.message}"
+  def msf_job_info id
+    begin
+      response = RestClient.get "#{@url}msf/job/#{id}/info", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved job information [id: #{id}]"
+      details
+    rescue => e
+      print_error "Could not retrieve job info: #{e.message}"
+    end
   end
-end
 
 # start metasploit payload handler
-def msf_handler options
-  print_verbose "Starting Metasploit payload handler [#{options}]"
-  begin
-    response = RestClient.post "#{@url}msf/handler?token=#{@token}", options.to_json,
-      :content_type => :json,
-      :accept => :json
-    result = JSON.parse(response.body)
-    job_id = result['id']
-    if job_id.nil?
-      print_error 'Could not start payload handler: Job id is nil'
-    else
-      print_good "Started payload handler [id: #{job_id}]"
+  def msf_handler options
+    print_verbose "Starting Metasploit payload handler [#{options}]"
+    begin
+      response = RestClient.post "#{@url}msf/handler?token=#{@token}", options.to_json,
+        :content_type => :json,
+        :accept => :json
+      result = JSON.parse(response.body)
+      job_id = result['id']
+      if job_id.nil?
+        print_error 'Could not start payload handler: Job id is nil'
+      else
+        print_good "Started payload handler [id: #{job_id}]"
+      end
+      job_id
+    rescue => e
+      print_error "Could not start payload handler: #{e.message}"
     end
-    job_id
-  rescue => e
-    print_error "Could not start payload handler: #{e.message}"
   end
-end
 
 # stop metasploit job
-def msf_job_stop id
-  print_verbose "Stopping Metasploit job [id: #{id}]"
-  begin
-    response = RestClient.get "#{@url}msf/job/#{id}/stop", { :params => { :token => @token } }
-    result = JSON.parse(response.body)
-    if result['success'].nil?
-      print_error "Could not stop Metasploit job [id: #{id}]: No such job ?"
-    else
-      print_good "Stopped job [id: #{id}]"
+  def msf_job_stop id
+    print_verbose "Stopping Metasploit job [id: #{id}]"
+    begin
+      response = RestClient.get "#{@url}msf/job/#{id}/stop", { :params => { :token => @token } }
+      result = JSON.parse(response.body)
+      if result['success'].nil?
+        print_error "Could not stop Metasploit job [id: #{id}]: No such job ?"
+      else
+        print_good "Stopped job [id: #{id}]"
+      end
+      result
+    rescue => e
+      print_error "Could not stop Metasploit job [id: #{id}]: #{e.message}"
     end
-    result
-  rescue => e
-    print_error "Could not stop Metasploit job [id: #{id}]: #{e.message}"
   end
-end
 
 ################################################################################
 ### Network API
 ################################################################################
 
 # get all network hosts
-def network_hosts_all
-  begin
-    print_verbose 'Retrieving all network hosts'
-    response = RestClient.get "#{@url}network/hosts", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved #{details['count']} network hosts"
-    details
-  rescue => e
-    print_error "Could not retrieve network hosts: #{e.message}"
+  def network_hosts_all
+    begin
+      print_verbose 'Retrieving all network hosts'
+      response = RestClient.get "#{@url}network/hosts", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved #{details['count']} network hosts"
+      details
+    rescue => e
+      print_error "Could not retrieve network hosts: #{e.message}"
+    end
   end
-end
 
 # get all network services
-def network_services_all
-  begin
-    print_verbose 'Retrieving all network services'
-    response = RestClient.get "#{@url}network/services", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved #{details['count']} network services"
-    details
-  rescue => e
-    print_error "Could not retrieve network services: #{e.message}"
+  def network_services_all
+    begin
+      print_verbose 'Retrieving all network services'
+      response = RestClient.get "#{@url}network/services", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved #{details['count']} network services"
+      details
+    rescue => e
+      print_error "Could not retrieve network services: #{e.message}"
+    end
   end
-end
 
 # get network hosts by session
-def network_hosts session
-  begin
-    print_verbose "Retrieving network hosts for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}network/hosts/#{session}", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved #{details['count']} network hosts"
-    details
-  rescue => e
-    print_error "Could not retrieve network hosts: #{e.message}"
+  def network_hosts session
+    begin
+      print_verbose "Retrieving network hosts for hooked browser [session: #{session}]"
+      response = RestClient.get "#{@url}network/hosts/#{session}", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved #{details['count']} network hosts"
+      details
+    rescue => e
+      print_error "Could not retrieve network hosts: #{e.message}"
+    end
   end
-end
 
 # get network services by session
-def network_services session
-  begin
-    print_verbose "Retrieving network services for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}network/services/#{session}", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved #{details['count']} network services"
-    details
-  rescue => e
-    print_error "Could not retrieve network services: #{e.message}"
+  def network_services session
+    begin
+      print_verbose "Retrieving network services for hooked browser [session: #{session}]"
+      response = RestClient.get "#{@url}network/services/#{session}", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved #{details['count']} network services"
+      details
+    rescue => e
+      print_error "Could not retrieve network services: #{e.message}"
+    end
   end
-end
 
 ################################################################################
 ### XssRays API
 ################################################################################
 
 # get all rays
-def xssrays_rays_all
-  print_verbose 'Retrieving all rays'
-  response = RestClient.get "#{@url}xssrays/rays", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good "Retrieved #{details['count']} rays"
-  details
-rescue => e
-  print_error "Could not retrieve rays: #{e.message}"
-end
+  def xssrays_rays_all
+    print_verbose 'Retrieving all rays'
+    response = RestClient.get "#{@url}xssrays/rays", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good "Retrieved #{details['count']} rays"
+    details
+  rescue => e
+    print_error "Could not retrieve rays: #{e.message}"
+  end
 
 # get rays by session
-def xssrays_rays session
-  print_verbose "Retrieving rays for hooked browser [session: #{session}]"
-  response = RestClient.get "#{@url}xssrays/rays/#{session}", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good "Retrieved #{details['count']} rays"
-  details
-rescue => e
-  print_error "Could not retrieve rays: #{e.message}"
-end
+  def xssrays_rays session
+    print_verbose "Retrieving rays for hooked browser [session: #{session}]"
+    response = RestClient.get "#{@url}xssrays/rays/#{session}", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good "Retrieved #{details['count']} rays"
+    details
+  rescue => e
+    print_error "Could not retrieve rays: #{e.message}"
+  end
 
 # get all scans
-def xssrays_scans_all
-  print_verbose 'Retrieving all scans'
-  response = RestClient.get "#{@url}xssrays/scans", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good "Retrieved #{details['count']} scans"
-  details
-rescue => e
-  print_error "Could not retrieve scans: #{e.message}"
-end
+  def xssrays_scans_all
+    print_verbose 'Retrieving all scans'
+    response = RestClient.get "#{@url}xssrays/scans", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good "Retrieved #{details['count']} scans"
+    details
+  rescue => e
+    print_error "Could not retrieve scans: #{e.message}"
+  end
 
 # get scans by session
-def xssrays_scans session
-  print_verbose "Retrieving scans for hooked browser [session: #{session}]"
-  response = RestClient.get "#{@url}xssrays/scans/#{session}", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good "Retrieved #{details['count']} scans"
-  details
-rescue => e
-  print_error "Could not retrieve scans: #{e.message}"
-end
+  def xssrays_scans session
+    print_verbose "Retrieving scans for hooked browser [session: #{session}]"
+    response = RestClient.get "#{@url}xssrays/scans/#{session}", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good "Retrieved #{details['count']} scans"
+    details
+  rescue => e
+    print_error "Could not retrieve scans: #{e.message}"
+  end
 
 ################################################################################
 ### DNS API
 ################################################################################
 
 # get ruleset
-def dns_ruleset
-  begin
-    print_verbose 'Retrieving DNS ruleset'
-    response = RestClient.get "#{@url}dns/ruleset", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved #{details['count']} rules"
-    details
-  rescue => e
-    print_error "Could not retrieve DNS ruleset: #{e.message}"
+  def dns_ruleset
+    begin
+      print_verbose 'Retrieving DNS ruleset'
+      response = RestClient.get "#{@url}dns/ruleset", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved #{details['count']} rules"
+      details
+    rescue => e
+      print_error "Could not retrieve DNS ruleset: #{e.message}"
+    end
   end
-end
 
 # add a rule
-def dns_add_rule(dns_pattern, dns_resource, dns_response)
-  dns_response = [dns_response] if dns_response.is_a?(String)
-  print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
-  response = RestClient.post "#{@url}dns/rule?token=#{@token}", {
-    'pattern' => dns_pattern,
-    'resource' => dns_resource,
-    'response' => dns_response }.to_json,
-  :content_type => :json,
-  :accept => :json
-  details = JSON.parse(response.body)
-  rule_id = details['id']
-
-  if rule_id.nil?
-    print_error("Could not add DNS rule: #{details['error']}")
-    return details
-  end
-
-  print_good "Added rule [id: #{details['id']}]"
-  details
-rescue => e
-  print_error "Could not add DNS rule: #{e.message}"
-end
-
-# get rule details
-def dns_get_rule(id)
-  begin
-    print_verbose "Retrieving DNS rule details [id: #{id}]"
-    response = RestClient.get "#{@url}dns/rule/#{id}", { :params => { :token => @token } }
+  def dns_add_rule(dns_pattern, dns_resource, dns_response)
+    dns_response = [dns_response] if dns_response.is_a?(String)
+    print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
+    response = RestClient.post "#{@url}dns/rule?token=#{@token}", {
+      'pattern' => dns_pattern,
+      'resource' => dns_resource,
+      'response' => dns_response }.to_json,
+    :content_type => :json,
+    :accept => :json
     details = JSON.parse(response.body)
-    print_good "Retrieved rule [id: #{details['id']}]"
+    rule_id = details['id']
+
+    if rule_id.nil?
+      print_error("Could not add DNS rule: #{details['error']}")
+      return details
+    end
+
+    print_good "Added rule [id: #{details['id']}]"
     details
   rescue => e
-    print_error "Could not retrieve DNS rule: #{e.message}"
+    print_error "Could not add DNS rule: #{e.message}"
   end
-end
+
+# get rule details
+  def dns_get_rule(id)
+    begin
+      print_verbose "Retrieving DNS rule details [id: #{id}]"
+      response = RestClient.get "#{@url}dns/rule/#{id}", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved rule [id: #{details['id']}]"
+      details
+    rescue => e
+      print_error "Could not retrieve DNS rule: #{e.message}"
+    end
+  end
 
 # delete a rule
-def dns_delete_rule(id)
-  response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
-  details = JSON.parse(response.body)
-  print_good "Deleted rule [id: #{id}]"
-  details
-rescue => e
-  print_error "Could not delete DNS rule: #{e.message}"
-end
+  def dns_delete_rule(id)
+    response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
+    details = JSON.parse(response.body)
+    print_good "Deleted rule [id: #{id}]"
+    details
+  rescue => e
+    print_error "Could not delete DNS rule: #{e.message}"
+  end
 
 ################################################################################
 ### Autorun
 ################################################################################
 
-def autorun_rules
-  print_verbose 'Retrieving Autorun rules'
-  response = RestClient.get "#{@url}autorun/rules", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good("Retrieved #{details['count']} rules")
-  details
-rescue => e
-  print_error("Could not retrieve Autorun rules: #{e.message}")
-end
-
-def autorun_delete_rule(id)
-  print_verbose "Deleting Autorun rule with ID: #{id}"
-  response = RestClient.delete "#{@url}autorun/rule/#{id}?token=#{@token}"
-  details = JSON.parse(response.body)
-  print_good("Deleted rule [id: #{id}]")
-  details
-rescue => e
-  print_error("Could not delete Autorun rule: #{e.message}")
-end
-
-def autorun_add_rule(data)
-  print_verbose "Adding Autorun rule: #{data}"
-  response = RestClient.post "#{@url}autorun/rule/add?token=#{@token}",
-    data.to_json,
-    :content_type => :json,
-    :accept => :json
-  details = JSON.parse(response.body)
-  rule_id = details['rule_id']
-
-  if rule_id.nil?
-    print_error("Could not add Autorun rule: #{details['error']}")
-    return details
+  def autorun_rules
+    print_verbose 'Retrieving Autorun rules'
+    response = RestClient.get "#{@url}autorun/rules", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good("Retrieved #{details['count']} rules")
+    details
+  rescue => e
+    print_error("Could not retrieve Autorun rules: #{e.message}")
   end
 
-  print_good("Added rule [id: #{details['id']}]")
-  details
-rescue => e
-  print_error("Could not add Autorun rule: #{e.message}")
-end
+  def autorun_delete_rule(id)
+    print_verbose "Deleting Autorun rule with ID: #{id}"
+    response = RestClient.delete "#{@url}autorun/rule/#{id}?token=#{@token}"
+    details = JSON.parse(response.body)
+    print_good("Deleted rule [id: #{id}]")
+    details
+  rescue => e
+    print_error("Could not delete Autorun rule: #{e.message}")
+  end
 
-def autorun_run_rule_on_all_browsers(rule_id)
-  print_verbose "Running Autorun rule #{rule_id} on all browsers"
-  response = RestClient.get "#{@url}autorun/run/#{rule_id}", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_debug details
-  print_good('Done')
-  details
-rescue => e
-  print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
-end
+  def autorun_add_rule(data)
+    print_verbose "Adding Autorun rule: #{data}"
+    response = RestClient.post "#{@url}autorun/rule/add?token=#{@token}",
+      data.to_json,
+      :content_type => :json,
+      :accept => :json
+    details = JSON.parse(response.body)
+    rule_id = details['rule_id']
 
-def autorun_run_rule_on_browser(rule_id, hb_id)
-  print_verbose "Running Autorun rule #{rule_id} on browser #{hb_id}"
-  response = RestClient.get "#{@url}autorun/run/#{rule_id}/#{hb_id}", { :params => { :token => @token } }
-  details = JSON.parse(response.body)
-  print_good('Done')
-  details
-rescue => e
-  print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
-end
+    if rule_id.nil?
+      print_error("Could not add Autorun rule: #{details['error']}")
+      return details
+    end
+
+    print_good("Added rule [id: #{details['id']}]")
+    details
+  rescue => e
+    print_error("Could not add Autorun rule: #{e.message}")
+  end
+
+  def autorun_run_rule_on_all_browsers(rule_id)
+    print_verbose "Running Autorun rule #{rule_id} on all browsers"
+    response = RestClient.get "#{@url}autorun/run/#{rule_id}", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_debug details
+    print_good('Done')
+    details
+  rescue => e
+    print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
+  end
+
+  def autorun_run_rule_on_browser(rule_id, hb_id)
+    print_verbose "Running Autorun rule #{rule_id} on browser #{hb_id}"
+    response = RestClient.get "#{@url}autorun/run/#{rule_id}/#{hb_id}", { :params => { :token => @token } }
+    details = JSON.parse(response.body)
+    print_good('Done')
+    details
+  rescue => e
+    print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
+  end
 
 ################################################################################
 ### WebRTC
 ################################################################################
 
 # get webrtc status for hooked browser by session
-def webrtc_status id
-  begin
-    print_verbose "Retrieving status for hooked browser [id: #{id}]"
-    response = RestClient.get "#{@url}webrtc/status/#{id}", { :params => { :token => @token } }
-    details = JSON.parse(response.body)
-    print_good "Retrieved status for hooked browser [id: #{id}]"
-    details
-  rescue => e
-    print_error "Could not retrieve status: #{e.message}"
+  def webrtc_status id
+    begin
+      print_verbose "Retrieving status for hooked browser [id: #{id}]"
+      response = RestClient.get "#{@url}webrtc/status/#{id}", { :params => { :token => @token } }
+      details = JSON.parse(response.body)
+      print_good "Retrieved status for hooked browser [id: #{id}]"
+      details
+    rescue => e
+      print_error "Could not retrieve status: #{e.message}"
+    end
   end
-end
 
 ################################################################################
 ### Social Engineering
 ################################################################################
 
 # bind dropper to path
-def bind(fname, path)
-  print_verbose "Binding 'extensions/social_engineering/droppers/#{fname}' to '#{path}'"
-  begin
-    response = RestClient.post "#{@url}/server/bind?token=#{@token}",
-    { 'mount' => "#{path}",
-      'local_file' => "#{fname}" }.to_json,
-    :content_type => :json,
-    :accept => :json
-  print_good "Bound '#{fname}' successfully" if response.code == 200
-  rescue => e
-    print_error "Could not bind file #{fname}: #{e.message}"
+  def bind(fname, path)
+    print_verbose "Binding 'extensions/social_engineering/droppers/#{fname}' to '#{path}'"
+    begin
+      response = RestClient.post "#{@url}/server/bind?token=#{@token}",
+      { 'mount' => "#{path}",
+        'local_file' => "#{fname}" }.to_json,
+      :content_type => :json,
+      :accept => :json
+    print_good "Bound '#{fname}' successfully" if response.code == 200
+    rescue => e
+      print_error "Could not bind file #{fname}: #{e.message}"
+    end
   end
-end
 
 # clone page and bind to path
-def clone_page(url, path, use_existing, dns_spoof)
-  print_verbose "Binding '#{url}' to '#{path}'"
-  begin
-    response = RestClient.post "#{@url}/seng/clone_page?token=#{@token}",
-    { 'mount' => "#{path}",
-      'url' => "#{url}",
-      'use_existing' => use_existing,
-      'dns_spoof' => dns_spoof }.to_json,
-    :content_type => :json,
-    :accept => :json
-    print_good "Bound '#{url}' successfully" if response.code == 200
-  rescue => e
-    print_error "Could not bind URL #{url}: #{e.message}"
+  def clone_page(url, path, use_existing, dns_spoof)
+    print_verbose "Binding '#{url}' to '#{path}'"
+    begin
+      response = RestClient.post "#{@url}/seng/clone_page?token=#{@token}",
+      { 'mount' => "#{path}",
+        'url' => "#{url}",
+        'use_existing' => use_existing,
+        'dns_spoof' => dns_spoof }.to_json,
+      :content_type => :json,
+      :accept => :json
+      print_good "Bound '#{url}' successfully" if response.code == 200
+    rescue => e
+      print_error "Could not bind URL #{url}: #{e.message}"
+    end
   end
-end
 
 end

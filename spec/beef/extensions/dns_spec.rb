@@ -47,7 +47,7 @@ RSpec.describe 'BeEF Extension DNS' do
           :pattern => 'foo.bar',
           :resource => IN::A,
           :response => [response] ) do |transaction|
-            transaction.respond!(response)
+          transaction.respond!(response)
         end
       }.to_not raise_error
       expect(id).to_not be_nil
@@ -61,7 +61,7 @@ RSpec.describe 'BeEF Extension DNS' do
           :pattern => %r{i\.(love|hate)\.beef\.com?},
           :resource => IN::A,
           :response => [response] ) do |transaction|
-            transaction.respond!(response)
+          transaction.respond!(response)
         end
       }.to_not raise_error
       expect(id).to_not be_nil
@@ -81,7 +81,7 @@ RSpec.describe 'BeEF Extension DNS' do
             :pattern => %r{i\.(love|hate)\.beef\.com?},
             :resource => IN::A,
             :response => [response] ) do |transaction|
-              transaction.respond!(response)
+            transaction.respond!(response)
           end
         }.to_not raise_error
         expect(id).to_not be_nil
@@ -102,7 +102,7 @@ RSpec.describe 'BeEF Extension DNS' do
             :pattern => pattern,
             :resource => IN::A,
             :response => [response] ) do |transaction|
-              transaction.respond!(response)
+            transaction.respond!(response)
           end
         }.to_not raise_error
 
@@ -111,7 +111,7 @@ RSpec.describe 'BeEF Extension DNS' do
             :pattern => pattern,
             :resource => IN::A,
             :response => [response] ) do |transaction|
-              transaction.respond!(response)
+            transaction.respond!(response)
           end
         }.to_not raise_error
 
@@ -120,7 +120,7 @@ RSpec.describe 'BeEF Extension DNS' do
             :pattern => pattern,
             :resource => IN::A,
             :response => [response] ) do |transaction|
-              transaction.respond!(response)
+            transaction.respond!(response)
           end
         }.to_not raise_error
 
@@ -159,7 +159,7 @@ RSpec.describe 'BeEF Extension DNS' do
         :pattern => pattern,
         :resource => IN::A,
         :response => [response] ) do |transaction|
-          transaction.respond!(response)
+        transaction.respond!(response)
       end
     }.to_not raise_error
 
@@ -194,7 +194,7 @@ RSpec.describe 'BeEF Extension DNS' do
         :pattern => pattern,
         :resource => IN::A,
         :response => [response] ) do |transaction|
-          transaction.respond!(response)
+        transaction.respond!(response)
       end
     }.to_not raise_error
 

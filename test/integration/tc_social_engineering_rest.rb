@@ -69,11 +69,11 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     # Iterate local IPs (excluding loopbacks) to find a match to the 'dig'
     # output
     assert_block do
-        Socket.ip_address_list.each { |i|
-            if !(i.ipv4_loopback? || i.ipv6_loopback?)
-                return true if i.ip_address.to_s.eql?(dig_output.to_s)
-            end
-        }
+      Socket.ip_address_list.each { |i|
+        if !(i.ipv4_loopback? || i.ipv6_loopback?)
+          return true if i.ip_address.to_s.eql?(dig_output.to_s)
+        end
+      }
     end
 
     # assert(foundmatch)

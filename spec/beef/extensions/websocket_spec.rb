@@ -23,7 +23,7 @@ RSpec.describe 'BeEF Extension WebSockets' do
   end
 
   it 'confirms that a websocket server has been started' do
-	  expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
+	   expect(@ws).to be_a_kind_of(BeEF::Core::Websocket::Websocket)
   end
 
   it 'confirms that a secure websocket server has been started' do

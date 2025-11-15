@@ -95,52 +95,52 @@ module BeEF
             # Find existing status message
             stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => zombie_db.id, :target_hooked_browser_id => peer_zombie_db.id) || nil
             unless stat.nil?
-                stat.status = 'Connected'
+              stat.status = 'Connected'
                 stat.updated_at = Time.now
                 stat.save
             end
             stat2 = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => peer_zombie_db.id, :target_hooked_browser_id => zombie_db.id) || nil
             unless stat2.nil?
-                stat2.status = 'Connected'
+              stat2.status = 'Connected'
                 stat2.updated_at = Time.now
                 stat2.save
             end
           elsif (message.end_with?('disconnected'))
             stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => zombie_db.id, :target_hooked_browser_id => peer_zombie_db.id) || nil
             unless stat.nil?
-                stat.status = 'Disconnected'
+              stat.status = 'Disconnected'
                 stat.updated_at = Time.now
                 stat.save
             end
             stat2 = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => peer_zombie_db.id, :target_hooked_browser_id => zombie_db.id) || nil
             unless stat2.nil?
-                stat2.status = 'Disconnected'
+              stat2.status = 'Disconnected'
                 stat2.updated_at = Time.now
                 stat2.save
             end
           elsif (message == 'Stayin alive')
             stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => zombie_db.id, :target_hooked_browser_id => peer_zombie_db.id) || nil
             unless stat.nil?
-                stat.status = 'Stealthed!!'
+              stat.status = 'Stealthed!!'
                 stat.updated_at = Time.now
                 stat.save
             end
             stat2 = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => peer_zombie_db.id, :target_hooked_browser_id => zombie_db.id) || nil
             unless stat2.nil?
-                stat2.status = 'Peer-controlled stealth-mode'
+              stat2.status = 'Peer-controlled stealth-mode'
                 stat2.updated_at = Time.now
                 stat2.save
             end
           elsif (message == 'Coming out of stealth...')
             stat = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => zombie_db.id, :target_hooked_browser_id => peer_zombie_db.id) || nil
             unless stat.nil?
-                stat.status = 'Connected'
+              stat.status = 'Connected'
                 stat.updated_at = Time.now
                 stat.save
             end
             stat2 = BeEF::Core::Models::Rtcstatus.first(:hooked_browser_id => peer_zombie_db.id, :target_hooked_browser_id => zombie_db.id) || nil
             unless stat2.nil?
-                stat2.status = 'Connected'
+              stat2.status = 'Connected'
                 stat2.updated_at = Time.now
                 stat2.save
             end

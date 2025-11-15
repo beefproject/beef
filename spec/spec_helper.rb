@@ -175,10 +175,10 @@ RSpec.configure do |config|
 
 def reset_beef_db
   begin
-      db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
-      File.delete(db_file) if File.exist?(db_file)
-  rescue => e
-      print_error("Could not remove '#{db_file}' database file: #{e.message}")
+    db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
+    File.delete(db_file) if File.exist?(db_file)
+rescue => e
+  print_error("Could not remove '#{db_file}' database file: #{e.message}")
   end
 end
 
@@ -206,7 +206,7 @@ require 'socket'
   # Load the server
   def load_beef_extensions_and_modules
       # Load BeEF extensions
-      BeEF::Extensions.load
+    BeEF::Extensions.load
 
       # Load BeEF modules only if they are not already loaded
       BeEF::Modules.load if @config.get('beef.module').nil?

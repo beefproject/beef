@@ -50,10 +50,10 @@ class TC_WebRTCRest < Test::Unit::TestCase
       browsers = result['hooked-browsers']['online']
       browsers.each_with_index do |elem, index|
         if index == browsers.length - 1
-            @@victim2id = browsers["#{index}"]['id'].to_s
+          @@victim2id = browsers["#{index}"]['id'].to_s
         end
         if index == browsers.length - 2
-            @@victim1id = browsers["#{index}"]['id'].to_s
+          @@victim1id = browsers["#{index}"]['id'].to_s
         end
       end
 

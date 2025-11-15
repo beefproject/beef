@@ -158,7 +158,7 @@ module BeEF
 
           # check if rule specifies multiple browsers
           if rule.browser =~ /\A[A-Z]+\Z/
-              return false unless rule.browser == 'ALL' || browser == rule.browser
+            return false unless rule.browser == 'ALL' || browser == rule.browser
 
               # check if the browser version matches
               browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)

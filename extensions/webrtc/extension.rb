@@ -4,17 +4,17 @@
 # See the file 'doc/COPYING' for copying permission
 #
 module BeEF
-module Extension
-module WebRTC
+  module Extension
+    module WebRTC
 
-	extend BeEF::API::Extension
+    	 extend BeEF::API::Extension
 
-    @short_name = 'webrtc'
-    @full_name = 'WebRTC'
-    @description = 'WebRTC extension to all browsers to connect to each other (P2P) with WebRTC'
-  
-end
-end
+      @short_name = 'webrtc'
+      @full_name = 'WebRTC'
+      @description = 'WebRTC extension to all browsers to connect to each other (P2P) with WebRTC'
+      
+    end
+  end
 end
 
 require 'extensions/webrtc/models/rtcsignal'

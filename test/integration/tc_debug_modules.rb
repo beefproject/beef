@@ -57,14 +57,14 @@ class TC_DebugModules < Test::Unit::TestCase
     assert_not_nil response.body
     result = JSON.parse(response.body)
     result.each do |mod|
-     case mod[1]['class']
-       when 'Test_return_long_string'
-         @@mod_debug_long_string = mod[1]['id']
-       when 'Test_return_ascii_chars'
-         @@mod_debug_ascii_chars = mod[1]['id']
-       when 'Test_network_request'
-         @@mod_debug_test_network = mod[1]['id']
-     end
+      case mod[1]['class']
+        when 'Test_return_long_string'
+          @@mod_debug_long_string = mod[1]['id']
+        when 'Test_return_ascii_chars'
+          @@mod_debug_ascii_chars = mod[1]['id']
+        when 'Test_network_request'
+          @@mod_debug_test_network = mod[1]['id']
+      end
     end
     assert_not_nil @@mod_debug_long_string
     assert_not_nil @@mod_debug_ascii_chars
@@ -126,7 +126,7 @@ class TC_DebugModules < Test::Unit::TestCase
     #TODO if the response is empty, the body size is 2, basically an empty Hash.
     # don't know why empty?, nil and other checks are not working.
     while(response.body.size <= 2 && count < 10)
-       response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_ascii_chars}/#{cmd_id}?token=#{@@token}"
+      response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_ascii_chars}/#{cmd_id}?token=#{@@token}"
        sleep 2
        count += 1
     end
