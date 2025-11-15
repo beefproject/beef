@@ -45,6 +45,9 @@ Style/Documentation:
 Style/GuardClause:
   Enabled: false
 
+Style/IfInsideElse:
+  Enabled: false
+
 Style/RescueStandardError:
   Enabled: false
 
