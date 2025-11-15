@@ -204,7 +204,7 @@ module BeEF
           def initialize(message = nil)
             str = 'Invalid "%s" parameter passed to /api/xssrays handler'
             message = format str, message unless message.nil?
-            super(message)
+            super
           end
         end
       end

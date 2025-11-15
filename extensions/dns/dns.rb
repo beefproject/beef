@@ -14,7 +14,7 @@ module BeEF
         include Singleton
 
         def initialize
-          super()
+          super
           logger.level = Logger::ERROR
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule

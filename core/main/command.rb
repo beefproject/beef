@@ -33,7 +33,7 @@ module BeEF
       # @param [Hash] hash
       #
       def initialize(hash = nil)
-        super(hash)
+        super
       end
     end
 

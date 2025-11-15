@@ -11,7 +11,7 @@ require_relative '../wordpress_command'
 
 class Wordpress_add_user < WordPressCommand
   def self.options
-    super() + [
+    super + [
       { 'name' => 'username', 'ui_label' => 'Username', 'value' => 'beef' },
       { 'name' => 'password', 'ui_label' => 'Pwd', 'value' => SecureRandom.hex(5) },
       { 'name' => 'email', 'ui_label' => 'Email', 'value' => '' },

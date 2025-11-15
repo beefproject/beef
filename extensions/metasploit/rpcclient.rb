@@ -119,7 +119,7 @@ module BeEF
         end
 
         def call(meth, *args)
-          super(meth, *args)
+          super
         rescue StandardError => e
           print_error "[Metasploit] RPC call to '#{meth}' failed: #{e}"
           print_error e.backtrace

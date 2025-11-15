@@ -271,7 +271,7 @@ module BeEF
           def initialize(message = nil)
             str = 'Invalid "%s" parameter passed to /api/requester handler'
             message = format str, message unless message.nil?
-            super(message)
+            super
           end
         end
       end

@@ -42,7 +42,7 @@ class Wordpress_upload_rce_plugin < WordPressCommand
   end
 
   def self.options
-    super() + [
+    super + [
       { 'name' => 'auth_key', 'ui_label' => 'Auth Key', 'value' => SecureRandom.hex(8) }
     ]
   end

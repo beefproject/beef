@@ -195,7 +195,7 @@ module BeEF
             def initialize(message = nil)
               str = 'Failed to add DNS rule with invalid response for %s resource record', message
               message = format str, message unless message.nil?
-              super(message)
+              super
             end
           end
 
