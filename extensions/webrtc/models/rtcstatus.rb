@@ -12,7 +12,6 @@ module BeEF
       # This includes things like connection status, and executed modules etc
       #
 
-
       class Rtcstatus < BeEF::Core::Model
         belongs_to :hooked_browser
       end
