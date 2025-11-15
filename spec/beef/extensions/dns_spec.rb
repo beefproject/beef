@@ -44,9 +44,9 @@ RSpec.describe 'BeEF Extension DNS' do
       response = '1.2.3.4'
       expect {
         id = @dns.add_rule(
-          :pattern => 'foo.bar',
-          :resource => IN::A,
-          :response => [response]) do |transaction|
+          pattern: 'foo.bar',
+          resource: IN::A,
+          response: [response]) do |transaction|
           transaction.respond!(response)
         end
       }.to_not raise_error
@@ -58,9 +58,9 @@ RSpec.describe 'BeEF Extension DNS' do
       response = '9.9.9.9'
       expect {
         id = @dns.add_rule(
-          :pattern => %r{i\.(love|hate)\.beef\.com?},
-          :resource => IN::A,
-          :response => [response]) do |transaction|
+          pattern: %r{i\.(love|hate)\.beef\.com?},
+          resource: IN::A,
+          response: [response]) do |transaction|
           transaction.respond!(response)
         end
       }.to_not raise_error
@@ -78,9 +78,9 @@ RSpec.describe 'BeEF Extension DNS' do
         id = nil
         expect {
           id = @dns.add_rule(
-            :pattern => %r{i\.(love|hate)\.beef\.com?},
-            :resource => IN::A,
-            :response => [response]) do |transaction|
+            pattern: %r{i\.(love|hate)\.beef\.com?},
+            resource: IN::A,
+            response: [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -99,27 +99,27 @@ RSpec.describe 'BeEF Extension DNS' do
 
         expect {
           id = @dns.add_rule(
-            :pattern => pattern,
-            :resource => IN::A,
-            :response => [response]) do |transaction|
+            pattern: pattern,
+            resource: IN::A,
+            response: [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
 
         expect {
           same_id = @dns.add_rule(
-            :pattern => pattern,
-            :resource => IN::A,
-            :response => [response]) do |transaction|
+            pattern: pattern,
+            resource: IN::A,
+            response: [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
 
         expect {
           same_id = @dns.add_rule(
-            :pattern => pattern,
-            :resource => IN::A,
-            :response => [response]) do |transaction|
+            pattern: pattern,
+            resource: IN::A,
+            response: [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -156,9 +156,9 @@ RSpec.describe 'BeEF Extension DNS' do
 
     expect {
       id = @dns.add_rule(
-        :pattern => pattern,
-        :resource => IN::A,
-        :response => [response]) do |transaction|
+        pattern: pattern,
+        resource: IN::A,
+        response: [response]) do |transaction|
         transaction.respond!(response)
       end
     }.to_not raise_error
@@ -191,9 +191,9 @@ RSpec.describe 'BeEF Extension DNS' do
 
     expect {
       id = @dns.add_rule(
-        :pattern => pattern,
-        :resource => IN::A,
-        :response => [response]) do |transaction|
+        pattern: pattern,
+        resource: IN::A,
+        response: [response]) do |transaction|
         transaction.respond!(response)
       end
     }.to_not raise_error
@@ -219,9 +219,9 @@ RSpec.describe 'BeEF Extension DNS' do
 
     rules.each do |r|
       @dns.add_rule(
-        :pattern => r[:pattern],
-        :resource => IN::A,
-        :response => r[:response]
+        pattern: r[:pattern],
+        resource: IN::A,
+        response: r[:response]
       )
     end
 

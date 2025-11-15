@@ -17,8 +17,8 @@ class TC_NetworkRest < Test::Unit::TestCase
       $:.unshift($root_dir)
 
       # login and get api token
-      json = { :username => BEEF_USER, :password => BEEF_PASSWD }.to_json
-      @@headers = { :content_type => :json, :accept => :json }
+      json = { username: BEEF_USER, password: BEEF_PASSWD }.to_json
+      @@headers = { content_type: :json, accept: :json }
 
       response = RestClient.post("#{RESTAPI_ADMIN}/login",
                                  json,
@@ -30,12 +30,12 @@ class TC_NetworkRest < Test::Unit::TestCase
       # create hooked browser and get session id
       BeefTest.new_victim
       sleep 5.0
-      response = RestClient.get "#{RESTAPI_HOOKS}", { :params => { :token => @@token } }
+      response = RestClient.get "#{RESTAPI_HOOKS}", { params: { token: @@token } }
       result = JSON.parse(response.body)
       @@hb_session = result['hooked-browsers']['online']['0']['session']
 
       # Retrieve Port Scanner module command ID
-      response = RestClient.get "#{RESTAPI_MODULES}", { :params => { :token => @@token } }
+      response = RestClient.get "#{RESTAPI_MODULES}", { params: { token: @@token } }
       result = JSON.parse(response.body)
       result.each do |mod|
         if mod[1]['class'] == 'Port_scanner'
@@ -53,8 +53,8 @@ class TC_NetworkRest < Test::Unit::TestCase
                                  'opentimeout' => 2500,
                                  'delay' => 600,
                                  'debug' => false }.to_json,
-                               :content_type => :json,
-                               :accept => :json
+                               content_type: :json,
+                               accept: :json
       result = JSON.parse(response.body)
       success = result['success']
       @@cmd_id = result['command_id']
@@ -89,7 +89,7 @@ class TC_NetworkRest < Test::Unit::TestCase
   def test_get_hosts_valid_session
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/hosts/#{@@hb_session}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/hosts/#{@@hb_session}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -107,7 +107,7 @@ class TC_NetworkRest < Test::Unit::TestCase
     session_id = 'z'
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/hosts/#{session_id}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/hosts/#{session_id}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -120,7 +120,7 @@ class TC_NetworkRest < Test::Unit::TestCase
     id = 1
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/host/#{id}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/host/#{id}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -132,7 +132,7 @@ class TC_NetworkRest < Test::Unit::TestCase
   def test_get_hosts_invalid_id
     id = 'z'
     assert_raise RestClient::ResourceNotFound do
-      RestClient.get("#{RESTAPI_NETWORK}/host/#{id}", :params => { :token => @@token })
+      RestClient.get("#{RESTAPI_NETWORK}/host/#{id}", params: { token: @@token })
     end
   end
 
@@ -151,7 +151,7 @@ class TC_NetworkRest < Test::Unit::TestCase
   def test_get_services_valid_session
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/services/#{@@hb_session}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/services/#{@@hb_session}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -169,7 +169,7 @@ class TC_NetworkRest < Test::Unit::TestCase
     session_id = 'z'
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/services/#{session_id}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/services/#{session_id}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -182,7 +182,7 @@ class TC_NetworkRest < Test::Unit::TestCase
     id = 1
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get("#{RESTAPI_NETWORK}/service/#{id}", :params => { :token => @@token })
+      rest_response = RestClient.get("#{RESTAPI_NETWORK}/service/#{id}", params: { token: @@token })
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -194,7 +194,7 @@ class TC_NetworkRest < Test::Unit::TestCase
   def test_get_services_invalid_id
     id = 'z'
     assert_raise RestClient::ResourceNotFound do
-      RestClient.get("#{RESTAPI_NETWORK}/service/#{id}", :params => { :token => @@token })
+      RestClient.get("#{RESTAPI_NETWORK}/service/#{id}", params: { token: @@token })
     end
   end
 

@@ -5,7 +5,7 @@
 #
 require 'rspec/core/rake_task'
 
-task :default => ['short']
+task default: ['short']
 
 RSpec::Core::RakeTask.new(:short) do |task|
   task.rspec_opts = ['--tag ~run_on_browserstack', '--tag ~run_on_long_tests']
@@ -122,7 +122,7 @@ end
 @beef_process_id = nil;
 @beef_config_file = 'tmp/rk_beef_conf.yaml';
 
-task :beef_start => 'beef' do
+task beef_start: 'beef' do
   # read environment param for creds or use bad_fred
   test_user = ENV['TEST_BEEF_USER'] || 'bad_fred'
   test_pass = ENV['TEST_BEEF_PASS'] || 'bad_fred_no_access'
@@ -167,7 +167,7 @@ end
 
 @msf_process_id = nil;
 
-task :msf_start => '/tmp/msf-test/msfconsole' do
+task msf_start: '/tmp/msf-test/msfconsole' do
   printf 'Starting MSF (wait 45 seconds)...'
   @msf_process_id = IO.popen('/tmp/msf-test/msfconsole -r test/thirdparty/msf/unit/BeEF.rc 2> /dev/null', 'w+')
   delays = [10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
@@ -183,11 +183,11 @@ task :msf_stop do
   @msf_process_id.puts 'quit'
 end
 
-task :msf_install => '/tmp/msf-test/msfconsole' do
+task msf_install: '/tmp/msf-test/msfconsole' do
   # Handled by the 'test/msf-test/msfconsole' task.
 end
 
-task :msf_update => '/tmp/msf-test/msfconsole' do
+task msf_update: '/tmp/msf-test/msfconsole' do
   sh 'cd /tmp/msf-test;git pull'
 end
 

@@ -13,8 +13,8 @@ class TC_DnsRest < Test::Unit::TestCase
   class << self
 
     def startup
-      json = { :username => BEEF_USER, :password => BEEF_PASSWD }.to_json
-      @@headers = { :content_type => :json, :accept => :json }
+      json = { username: BEEF_USER, password: BEEF_PASSWD }.to_json
+      @@headers = { content_type: :json, accept: :json }
 
       response = RestClient.post("#{RESTAPI_ADMIN}/login",
                                  json,
@@ -46,7 +46,7 @@ class TC_DnsRest < Test::Unit::TestCase
     resource = 'A'
     dns_response = ['1.2.3.4']
 
-    json = { :pattern => pattern, :resource => resource, :response => dns_response }.to_json
+    json = { pattern: pattern, resource: resource, response: dns_response }.to_json
 
     rest_response = RestClient.post("#{RESTAPI_DNS}/rule?token=#{@@token}",
                                     json,
@@ -76,7 +76,7 @@ class TC_DnsRest < Test::Unit::TestCase
     resource = 'A'
     dns_response = ['1.1.1.1']
 
-    hash = { :pattern => pattern, :resource => resource, :response => dns_response }
+    hash = { pattern: pattern, resource: resource, response: dns_response }
 
     # Test that an empty "pattern" key returns 400
     assert_raise RestClient::BadRequest do

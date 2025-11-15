@@ -156,7 +156,7 @@ def get_options_from_url(url, method, postdata, mname)
       end
     end
   end
-  return { :target_url=>target_url, :method=>method, :enctype=>enctype, :options=>options }
+  return { target_url: target_url, method: method, enctype: enctype, options: options }
 end
 
 #
@@ -224,7 +224,7 @@ def get_options_from_burp_file(fname, mname)
         end
     end
   end
-  return { :target_url=>target_url, :method=>method, :enctype=>enctype, :options=>options }
+  return { target_url: target_url, method: method, enctype: enctype, options: options }
 end
 
 #
