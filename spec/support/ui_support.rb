@@ -26,7 +26,7 @@ def start_beef_and_hook_browser()
   expect(beef_session).to have_content('Commands', wait: PAGE_LOAD_TIMEOUT)
   beef_session.click_on('Commands')
 
-  return pid, beef_session, hooked_browser
+  [pid, beef_session, hooked_browser]
 end
 
 def stop_beef_and_unhook_browser(pid, beef_session, hooked_browser)

@@ -269,7 +269,7 @@ module BeEF
 
           case config.get('beef.http.web_server_imitation.type')
           when 'apache'
-            return <<-EOF
+            <<-EOF
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html><head>
 <title>404 Not Found</title>
@@ -282,7 +282,7 @@ module BeEF
 </body></html>
 EOF
           when 'iis'
-            return <<-EOF
+            <<-EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML><HEAD><TITLE>The page cannot be found</TITLE>
 <META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
@@ -314,7 +314,7 @@ The page you are looking for might have been removed, had its name changed, or i
 </BODY></HTML>
 EOF
           when 'nginx'
-            return <<-EOF
+            <<-EOF
 <html>
 <head><title>404 Not Found</title></head>
 <body bgcolor="white">

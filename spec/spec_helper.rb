@@ -287,7 +287,7 @@ RSpec.configure do |config|
       http_hook_server.start
     end
 
-    return pid
+    pid
   end
 
   def beef_server_running?(uri_str)
@@ -296,9 +296,9 @@ RSpec.configure do |config|
       response = Net::HTTP.get_response(uri)
       response.is_a?(Net::HTTPSuccess)
     rescue Errno::ECONNREFUSED
-        return false # Connection refused means the server is not running
+        false # Connection refused means the server is not running
     rescue StandardError => e
-        return false # Any other error means the server is not running
+        false # Any other error means the server is not running
     end
   end
 

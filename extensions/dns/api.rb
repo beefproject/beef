@@ -67,7 +67,7 @@ module BeEF
               end
             end
 
-            return servers, interfaces, address, port, protocol, upstream_servers
+            [servers, interfaces, address, port, protocol, upstream_servers]
           end
 
           # Mounts the handler for processing DNS RESTful API requests.

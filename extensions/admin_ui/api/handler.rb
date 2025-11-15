@@ -46,7 +46,7 @@ module BeEF
 
             print_debug "[AdminUI] Minified #{evaluated.size} bytes to #{minified.size} bytes"
 
-            return minified
+            minified
           end
 
           def self.write_minified_js(name, content)
