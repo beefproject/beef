@@ -82,7 +82,7 @@ end
 config = if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
            BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
          else
-  BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+           BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
          end
 
 #
