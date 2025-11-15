@@ -41,6 +41,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       print_info 'Modules already loaded'
     end
 
+
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
     OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: db_file)
@@ -81,7 +82,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
       @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
       @caps['name'] = self.class.description || ENV['name'] || 'no-name'
       @caps['browserstack.local'] = true
-      @caps['browserstack.localIdentifier'] = ENV.fetch('BROWSERSTACK_LOCAL_IDENTIFIER', nil)
+      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
       @driver = Selenium::WebDriver.for(:remote,
                                         url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
                                         options: @caps)

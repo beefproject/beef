@@ -28,7 +28,7 @@ RSpec.describe 'BeEF Extension Requester' do
       @config = BeEF::Core::Configuration.instance
       @config.set('beef.credentials.user', 'beef')
       @config.set('beef.credentials.passwd', 'beef')
-
+      
       # Generate API token
       BeEF::Core::Crypto::api_token
 
@@ -56,7 +56,7 @@ RSpec.describe 'BeEF Extension Requester' do
       response = api.auth()
       @token = response[:token]
 
-      while (response = RestClient.get("#{RESTAPI_HOOKS}", { params: { token: @token } })) &&
+      while (response = RestClient.get("#{RESTAPI_HOOKS}", {params: {token: @token}})) &&
             (hb_details = JSON.parse(response.body)) &&
             hb_details['hooked-browsers']['online'].empty?
         sleep 2

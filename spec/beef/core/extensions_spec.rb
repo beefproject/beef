@@ -1,4 +1,5 @@
 RSpec.describe 'BeEF Extensions' do
+
   it 'loaded successfully' do
     expect {
       BeEF::Extensions.load
@@ -15,5 +16,7 @@ RSpec.describe 'BeEF Extensions' do
       expect(v).to have_key('loaded')
       expect(v['loaded']).to be(true)
     end
+
   end
+
 end

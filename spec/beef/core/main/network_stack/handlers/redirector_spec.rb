@@ -1,4 +1,5 @@
 RSpec.describe 'BeEF Redirector' do
+
   before(:all) do
     @port = 2002
     config = {}
@@ -9,8 +10,9 @@ RSpec.describe 'BeEF Redirector' do
     @rackApp = Rack::URLMap.new(@mounts)
     Thin::Logging.silent = true
     @server = Thin::Server.new('127.0.0.1', @port.to_s, @rackApp)
-    trap('INT') { @server.stop }
-    trap('TERM') { @server.stop }
+    trap("INT") { @server.stop }
+    trap("TERM") { @server.stop }
+
 
     # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
     disconnect_all_active_record!
@@ -23,13 +25,14 @@ RSpec.describe 'BeEF Redirector' do
   end
 
   after(:all) do
-    Process.kill('INT',@pid)
+    Process.kill("INT",@pid)
   end
 
   it 'redirects' do
     response = Curl::Easy.http_get("http://127.0.0.1:#{@port}/test/")
     expect(response.response_code).to eql(302)
-    expect(response.body_str).to eql('302 found')
-    expect(response.header_str).to match(%r{Location: http://www.beefproject\.com})
+    expect(response.body_str).to eql("302 found")
+    expect(response.header_str).to match(/Location: http:\/\/www.beefproject\.com/)
   end
+
 end

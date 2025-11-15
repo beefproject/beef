@@ -22,7 +22,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     if ENV['RESET_DB']
       File.delete(db_file) if File.exist?(db_file)
     end
-
+    
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @config.set('beef.http.websocket.secure', false)
@@ -59,13 +59,14 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
         ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
       end
     end
-
+    
     BeEF::Core::Migration.instance.update_db!
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'
     http_hook_server = BeEF::Core::Server.instance
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
+
 
     # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
     disconnect_all_active_record!
@@ -81,7 +82,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
       @caps = CONFIG['common_caps'].merge(CONFIG['browser_caps'][TASK_ID])
       @caps['name'] = self.class.description || ENV['name'] || 'no-name'
       @caps['browserstack.local'] = true
-      @caps['browserstack.localIdentifier'] = ENV.fetch('BROWSERSTACK_LOCAL_IDENTIFIER', nil)
+      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
 
       @driver = Selenium::WebDriver.for(:remote,
                                         url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",

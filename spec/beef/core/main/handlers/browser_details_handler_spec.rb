@@ -12,6 +12,7 @@ require_relative '../../../../support/beef_test'
 
 RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   before(:all) do
+
     @config = BeEF::Core::Configuration.instance
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
@@ -19,7 +20,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     if ENV['RESET_DB']
       File.delete(db_file) if File.exist?(db_file)
     end
-
+    
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @username = @config.get('beef.credentials.user')
@@ -83,7 +84,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
       @caps['name'] = self.class.description || ENV['name'] || 'no-name'
       @caps['browserstack.local'] = true
       @caps['browserstack.video'] = true
-      @caps['browserstack.localIdentifier'] = ENV.fetch('BROWSERSTACK_LOCAL_IDENTIFIER', nil)
+      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
 
       @driver = Selenium::WebDriver.for(:remote,
                                         url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",

@@ -5,6 +5,7 @@ AllCops:
 
   Exclude:
     - "tools/**/*"
+    - "spec/**/*"
     - "test/**/*"
 
 Layout/LineLength:

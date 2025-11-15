@@ -79,23 +79,18 @@ module BeEF
     module Console
       class << self
         attr_accessor :logger
-
         def level=(val)
           (self.logger ||= Logger.new($stdout)).level = val
         end
-
         def level
           (self.logger ||= Logger.new($stdout)).level
         end
-
         # Proxy common logger methods if called directly (info, warn, error, etc.)
         def method_missing(m, *args, &blk)
           lg = (self.logger ||= Logger.new($stdout))
           return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
-
           super
         end
-
         def respond_to_missing?(m, include_priv = false)
           (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
         end
@@ -110,23 +105,18 @@ unless defined?(::Console) && ::Console.respond_to?(:level=)
   module ::Console
     class << self
       attr_accessor :logger
-
       def level=(val)
         (self.logger ||= Logger.new($stdout)).level = val
       end
-
       def level
         (self.logger ||= Logger.new($stdout)).level
       end
-
       # Proxy to logger for typical logging calls
       def method_missing(m, *args, &blk)
         lg = (self.logger ||= Logger.new($stdout))
         return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
-
         super
       end
-
       def respond_to_missing?(m, include_priv = false)
         (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
       end
@@ -173,18 +163,18 @@ RSpec.configure do |config|
     end
   end
 
-  ########################################
+########################################
 
-  def reset_beef_db
-    begin
+def reset_beef_db
+  begin
       db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
       File.delete(db_file) if File.exist?(db_file)
-    rescue => e
-    print_error("Could not remove '#{db_file}' database file: #{e.message}")
-    end
+  rescue => e
+      print_error("Could not remove '#{db_file}' database file: #{e.message}")
   end
+end
 
-  require 'socket'
+require 'socket'
 
   def port_available?
     socket = TCPSocket.new(@host, @port)
@@ -200,18 +190,18 @@ RSpec.configure do |config|
     # Reset or re-initialise the configuration to a default state
     @config = BeEF::Core::Configuration.instance
 
-    @config.set('beef.credentials.user', 'beef')
-    @config.set('beef.credentials.passwd', 'beef')
+    @config.set('beef.credentials.user', "beef")
+    @config.set('beef.credentials.passwd', "beef")
     @config.set('beef.http.https.enable', false)
   end
 
   # Load the server
   def load_beef_extensions_and_modules
-    # Load BeEF extensions
-    BeEF::Extensions.load
+      # Load BeEF extensions
+      BeEF::Extensions.load
 
-    # Load BeEF modules only if they are not already loaded
-    BeEF::Modules.load if @config.get('beef.module').nil?
+      # Load BeEF modules only if they are not already loaded
+      BeEF::Modules.load if @config.get('beef.module').nil?
   end
 
   # --- HARD fork-safety: disconnect every pool/adapter we can find ---
@@ -228,7 +218,7 @@ RSpec.configure do |config|
         handler.connection_pools.each_value { |pool| pool.disconnect! }
       end
     else
-      print_info 'ActiveRecord::Base not defined'
+      print_info "ActiveRecord::Base not defined"
     end
   end
 
@@ -243,7 +233,7 @@ RSpec.configure do |config|
       exit
     end
     load_beef_extensions_and_modules
-
+    
     # Grab DB file and regenerate if requested
     db_file = @config.get('beef.database.file')
 
@@ -287,7 +277,7 @@ RSpec.configure do |config|
       http_hook_server.start
     end
 
-    pid
+    return pid
   end
 
   def beef_server_running?(uri_str)
@@ -295,10 +285,10 @@ RSpec.configure do |config|
       uri = URI.parse(uri_str)
       response = Net::HTTP.get_response(uri)
       response.is_a?(Net::HTTPSuccess)
-    rescue Errno::ECONNREFUSED
-        false # Connection refused means the server is not running
-    rescue StandardError => e
-        false # Any other error means the server is not running
+      rescue Errno::ECONNREFUSED
+        return false # Connection refused means the server is not running
+      rescue StandardError => e
+        return false # Any other error means the server is not running
     end
   end
 
@@ -311,14 +301,14 @@ RSpec.configure do |config|
   end
 
   def start_beef_server_and_wait
-    puts 'Starting BeEF server'
+    puts "Starting BeEF server"
     pid = start_beef_server
     puts "BeEF server started with PID: #{pid}"
 
     if wait_for_beef_server_to_start('http://localhost:3000', timeout: SERVER_START_TIMEOUT)
       # print_info "Server started successfully."
     else
-      print_error 'Server failed to start within timeout.'
+      print_error "Server failed to start within timeout."
     end
 
     pid
@@ -327,8 +317,9 @@ RSpec.configure do |config|
   def stop_beef_server(pid)
     exit if pid.nil?
     # Shutting down server
-    Process.kill('KILL', pid) unless pid.nil?
-    Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released
-    pid = nil
+    Process.kill("KILL", pid) unless pid.nil?
+    Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
+    pid = nil       
   end
+
 end
