@@ -117,7 +117,7 @@ module BeEF
 
             web_ui_all = evaluate_and_minify(admin_ui_js, params)
             unless web_ui_all
-              raise StandardError, "[AdminUI] evaluate_and_minify JavaScript failed: web_ui_all JavaScript is empty"
+              raise StandardError, '[AdminUI] evaluate_and_minify JavaScript failed: web_ui_all JavaScript is empty'
             end
 
             write_minified_js('web_ui_all.js', web_ui_all)
@@ -125,7 +125,7 @@ module BeEF
             auth_js_file = "#{File.binread("#{File.dirname(__FILE__)}/../media/javascript/ui/authentication.js")}\n\n"
             web_ui_auth = evaluate_and_minify(auth_js_file, params)
             unless web_ui_auth
-              raise StandardError, "[AdminUI] evaluate_and_minify JavaScript failed: web_ui_auth JavaScript is empty"
+              raise StandardError, '[AdminUI] evaluate_and_minify JavaScript failed: web_ui_auth JavaScript is empty'
             end
 
             write_minified_js('web_ui_auth.js', web_ui_auth)

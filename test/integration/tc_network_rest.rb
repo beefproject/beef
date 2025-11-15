@@ -32,14 +32,14 @@ class TC_NetworkRest < Test::Unit::TestCase
       sleep 5.0
       response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @@token}}
       result = JSON.parse(response.body)
-      @@hb_session = result["hooked-browsers"]["online"]["0"]["session"]
+      @@hb_session = result['hooked-browsers']['online']['0']['session']
 
       # Retrieve Port Scanner module command ID
       response = RestClient.get "#{RESTAPI_MODULES}", {:params => {:token => @@token}}
       result = JSON.parse(response.body)
       result.each do |mod|
         if mod[1]['class'] == 'Port_scanner'
-          @@mod_port_scanner = mod[1]["id"]
+          @@mod_port_scanner = mod[1]['id']
           break
         end
       end
@@ -72,7 +72,7 @@ class TC_NetworkRest < Test::Unit::TestCase
     rest_response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_port_scanner}/#{@@cmd_id}?token=#{@@token}"
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    raise "Port Scanner module failed to identify any open ports" unless result.to_s =~ /Port 3000 is OPEN/
+    raise 'Port Scanner module failed to identify any open ports' unless result.to_s =~ /Port 3000 is OPEN/
   end
 
   # Tests GET /api/network/hosts handler

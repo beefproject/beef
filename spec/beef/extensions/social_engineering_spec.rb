@@ -22,13 +22,13 @@ RSpec.describe 'BeEF Extension Social Engineering' do
     xit 'clone web page', if: !`which wget`.empty? do
       expect {
         BeEF::Core::Server.instance.prepare
-        BeEF::Extension::SocialEngineering::WebCloner.instance.clone_page("https://www.google.com", "/", nil, nil)
+        BeEF::Extension::SocialEngineering::WebCloner.instance.clone_page('https://www.google.com', '/', nil, nil)
       }.to_not raise_error
     end
 
     it 'persistence web cloner', if: !`which wget`.empty? do
       expect {
-        BeEF::Core::Models::WebCloner.create(uri: "example.com", mount: "/")
+        BeEF::Core::Models::WebCloner.create(uri: 'example.com', mount: '/')
       }.to_not raise_error
     end
   end

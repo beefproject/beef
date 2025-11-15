@@ -14,7 +14,7 @@ end
 
 # authenticate and get API token
 def auth
-  print_verbose "Retrieving authentication token"
+  print_verbose 'Retrieving authentication token'
   begin
   response = RestClient.post "#{@url}admin/login",
     { 'username' => "#{@user}",
@@ -56,10 +56,10 @@ end
 # get online hooked browsers
 def online_browsers
   begin
-    print_verbose "Retrieving online browsers"
+    print_verbose 'Retrieving online browsers'
     response = RestClient.get "#{@url}hooks", {:params => {:token => @token}}
     result = JSON.parse(response.body)
-    browsers = result["hooked-browsers"]["online"]
+    browsers = result['hooked-browsers']['online']
     print_good "Retrieved online browser list [#{browsers.size} online]"
     browsers
   rescue => e
@@ -70,10 +70,10 @@ end
 # get offline hooked browsers
 def offline_browsers 
   begin
-    print_verbose "Retrieving offline browsers"
+    print_verbose 'Retrieving offline browsers'
     response = RestClient.get "#{@url}hooks", {:params => {:token => @token}}
     result = JSON.parse(response.body)
-    browsers = result["hooked-browsers"]["offline"]
+    browsers = result['hooked-browsers']['offline']
     print_good "Retrieved offline browser list [#{browsers.size} offline]"
     browsers
   rescue => e
@@ -110,7 +110,7 @@ end
 # get BeEF logs
 def logs
   begin
-    print_verbose "Retrieving logs"
+    print_verbose 'Retrieving logs'
     response = RestClient.get "#{@url}logs", {:params => {:token => @token}}
     logs = JSON.parse(response.body)
     print_good "Retrieved #{logs['logs_count']} log entries"
@@ -140,7 +140,7 @@ end
 # get command module categories
 def categories
   begin
-    print_verbose "Retrieving module categories"
+    print_verbose 'Retrieving module categories'
     response = RestClient.get "#{@url}categories", {:params => {:token => @token}}
     categories = JSON.parse(response.body)
     print_good "Retrieved #{categories.size} module categories"
@@ -153,7 +153,7 @@ end
 # get command modules
 def modules
   begin
-    print_verbose "Retrieving modules"
+    print_verbose 'Retrieving modules'
     response = RestClient.get "#{@url}modules", {:params => {:token => @token}}
     @modules = JSON.parse(response.body)
     print_good "Retrieved #{@modules.size} available command modules"
@@ -168,12 +168,12 @@ def get_module_id mod_name
   print_verbose "Retrieving id for module [name: #{mod_name}]"
   @modules.each do |mod|
     # normal modules
-    if mod_name.capitalize == mod[1]["class"]
-      return mod[1]["id"]
+    if mod_name.capitalize == mod[1]['class']
+      return mod[1]['id']
       break
       # metasploit modules
-    elsif mod[1]["class"] == "Msf_module" && mod_name.capitalize == mod[1]["name"]
-      return mod[1]["id"]
+    elsif mod[1]['class'] == 'Msf_module' && mod_name.capitalize == mod[1]['name']
+      return mod[1]['id']
       break
     end
   end
@@ -265,7 +265,7 @@ def msf_handler options
     result = JSON.parse(response.body)
     job_id = result['id']
     if job_id.nil?
-      print_error "Could not start payload handler: Job id is nil"
+      print_error 'Could not start payload handler: Job id is nil'
     else
       print_good "Started payload handler [id: #{job_id}]"
     end
@@ -300,7 +300,7 @@ end
 # get all network hosts
 def network_hosts_all
   begin
-    print_verbose "Retrieving all network hosts"
+    print_verbose 'Retrieving all network hosts'
     response = RestClient.get "#{@url}network/hosts", {:params => {:token => @token}}
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network hosts"
@@ -313,7 +313,7 @@ end
 # get all network services
 def network_services_all
   begin
-    print_verbose "Retrieving all network services"
+    print_verbose 'Retrieving all network services'
     response = RestClient.get "#{@url}network/services", {:params => {:token => @token}}
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network services"
@@ -356,7 +356,7 @@ end
 
 # get all rays
 def xssrays_rays_all
-  print_verbose "Retrieving all rays"
+  print_verbose 'Retrieving all rays'
   response = RestClient.get "#{@url}xssrays/rays", {:params => {:token => @token}}
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} rays"
@@ -378,7 +378,7 @@ end
 
 # get all scans
 def xssrays_scans_all
-  print_verbose "Retrieving all scans"
+  print_verbose 'Retrieving all scans'
   response = RestClient.get "#{@url}xssrays/scans", {:params => {:token => @token}}
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} scans"
@@ -407,7 +407,7 @@ end
 # get ruleset
 def dns_ruleset
   begin
-    print_verbose "Retrieving DNS ruleset"
+    print_verbose 'Retrieving DNS ruleset'
     response = RestClient.get "#{@url}dns/ruleset", {:params => {:token => @token}}
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} rules"
@@ -470,7 +470,7 @@ end
 ################################################################################
 
 def autorun_rules
-  print_verbose "Retrieving Autorun rules"
+  print_verbose 'Retrieving Autorun rules'
   response = RestClient.get "#{@url}autorun/rules", {:params => {:token => @token}}
   details = JSON.parse(response.body)
   print_good("Retrieved #{details['count']} rules")

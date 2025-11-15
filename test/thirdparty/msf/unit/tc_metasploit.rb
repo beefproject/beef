@@ -9,7 +9,7 @@ require 'pp'
 class TC_Metasploit < Test::Unit::TestCase
 
   def setup
-    $root_dir="../../../../"
+    $root_dir='../../../../'
     $:.unshift File.join( %w{ ../../../../ } )
     require 'core/loader'
   end

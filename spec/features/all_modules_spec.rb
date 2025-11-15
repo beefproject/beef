@@ -17,9 +17,9 @@ RSpec.describe 'Load All Modules Integration', run_on_long_tests: true  do
         stop_beef_and_unhook_browser(@pid, @beef_session, @hooked_browser)
     end
     
-    it "Load all modules" do
+    it 'Load all modules' do
         
-        Dir.glob("modules/**/config.yaml").each do |file|
+        Dir.glob('modules/**/config.yaml').each do |file|
             module_yaml_data = YAML.load_file(file)
             
             module_yaml_data['beef']['module'].each do |module_key, module_value|

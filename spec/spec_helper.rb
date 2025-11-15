@@ -192,8 +192,8 @@ require 'socket'
     # Reset or re-initialise the configuration to a default state
     @config = BeEF::Core::Configuration.instance
 
-    @config.set('beef.credentials.user', "beef")
-    @config.set('beef.credentials.passwd', "beef")
+    @config.set('beef.credentials.user', 'beef')
+    @config.set('beef.credentials.passwd', 'beef')
     @config.set('beef.http.https.enable', false)
   end
 
@@ -220,7 +220,7 @@ require 'socket'
         handler.connection_pools.each_value { |pool| pool.disconnect! }
       end
     else
-      print_info "ActiveRecord::Base not defined"
+      print_info 'ActiveRecord::Base not defined'
     end
   end
 
@@ -303,14 +303,14 @@ require 'socket'
   end
 
   def start_beef_server_and_wait
-    puts "Starting BeEF server"
+    puts 'Starting BeEF server'
     pid = start_beef_server
     puts "BeEF server started with PID: #{pid}"
 
     if wait_for_beef_server_to_start('http://localhost:3000', timeout: SERVER_START_TIMEOUT)
       # print_info "Server started successfully."
     else
-      print_error "Server failed to start within timeout."
+      print_error 'Server failed to start within timeout.'
     end
 
     pid
@@ -319,7 +319,7 @@ require 'socket'
   def stop_beef_server(pid)
     exit if pid.nil?
     # Shutting down server
-    Process.kill("KILL", pid) unless pid.nil?
+    Process.kill('KILL', pid) unless pid.nil?
     Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
     pid = nil       
   end

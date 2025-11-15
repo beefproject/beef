@@ -36,19 +36,19 @@ end
 old_copyright = 'Copyright (c) 2006-2024'
 new_copyright = 'Copyright (c) 2006-2025'
 
-Dir.glob("../../**/*.{rb,js,yaml,html,md,txt,css,c,nasm,java,php,as}").each do |file|
+Dir.glob('../../**/*.{rb,js,yaml,html,md,txt,css,c,nasm,java,php,as}').each do |file|
   next if File.basename(file) == 'copyright_update.rb'  # Skip this file
 
   update_copyright(file, old_copyright, new_copyright)
 end
 
 # Handle files without extensions, excluding copyright_update.rb
-Dir.glob("../../**/*").reject { |f| 
+Dir.glob('../../**/*').reject { |f| 
   File.directory?(f) || File.extname(f) != '' || File.basename(f) == 'copyright_update.rb'
 }.each do |file|
   update_copyright(file, old_copyright, new_copyright)
 end
 
-@log.info("Copyright update process completed.")
-@log_file_logger.info("Copyright update process completed.")
+@log.info('Copyright update process completed.')
+@log_file_logger.info('Copyright update process completed.')
 log_file.close

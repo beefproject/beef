@@ -39,7 +39,7 @@ module BeEF
           # @note get and check command id from the request
           command_id = get_param(@data, 'cid')
           unless command_id.is_a?(Integer)
-            print_error("Command ID is invalid")
+            print_error('Command ID is invalid')
             return
           end
 

@@ -123,9 +123,9 @@ end
 #
 # @note Exit on default credentials
 #
-if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
-  print_error "ERROR: Default username and password in use!"
-  print_more "Change the beef.credentials.passwd in config.yaml"
+if config.get('beef.credentials.user').eql?('beef') && config.get('beef.credentials.passwd').eql?('beef')
+  print_error 'ERROR: Default username and password in use!'
+  print_more 'Change the beef.credentials.passwd in config.yaml'
   exit 1
 end
 
@@ -270,7 +270,7 @@ BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 #
 # @note Start the WebSocket server
 #
-if config.get("beef.http.websocket.enable")
+if config.get('beef.http.websocket.enable')
   BeEF::Core::Websocket::Websocket.instance
   BeEF::Core::Console::Banners.print_websocket_servers
 end

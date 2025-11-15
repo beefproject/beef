@@ -381,7 +381,7 @@ class TC_DnsRest < Test::Unit::TestCase
     address = @@config.get('beef.extension.dns.address')
     port = @@config.get('beef.extension.dns.port')
 
-    dig_output = IO.popen(["dig", "@#{address}", "-p", "#{port}", "-t", "#{type}", "#{pattern}"], 'r+').read
+    dig_output = IO.popen(['dig', "@#{address}", '-p', "#{port}", '-t', "#{type}", "#{pattern}"], 'r+').read
     assert_match(regex, dig_output)
   end
 

@@ -29,17 +29,17 @@ module BeEF
             rtcmanagementoutput = []
 
             # Get all RTCSignals for this browser
-            BeEF::Core::Models::RtcSignal.where(:target_hooked_browser_id => hb.id, :has_sent => "waiting").each { |h|
+            BeEF::Core::Models::RtcSignal.where(:target_hooked_browser_id => hb.id, :has_sent => 'waiting').each { |h|
               # output << self.requester_parse_db_request(h)
               rtcsignaloutput << h.signal
-              h.has_sent = "sent"
+              h.has_sent = 'sent'
               h.save
             }
 
             # Get all RTCManagement messages for this browser
-            BeEF::Core::Models::RtcManage.where(:hooked_browser_id => hb.id, :has_sent => "waiting").each {|h|
+            BeEF::Core::Models::RtcManage.where(:hooked_browser_id => hb.id, :has_sent => 'waiting').each {|h|
               rtcmanagementoutput << h.message
-              h.has_sent = "sent"
+              h.has_sent = 'sent'
               h.save
             }
 
@@ -53,7 +53,7 @@ module BeEF
             #todo antisnatchor: remove this gsub crap adding some hook packing.
             # The below is how antisnatchor was managing insertion of messages dependent on WebSockets or not
             # Hopefully this still works
-            if config.get("beef.http.websocket.enable") && ws.getsocket(hb.session)
+            if config.get('beef.http.websocket.enable') && ws.getsocket(hb.session)
               
               rtcsignaloutput.each {|o|
                 add_rtcsignal_to_body o

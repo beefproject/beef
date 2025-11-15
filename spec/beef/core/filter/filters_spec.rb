@@ -11,7 +11,7 @@ RSpec.describe 'BeEF Filters' do
     end
 
     it 'Empty String' do
-      expect(BeEF::Filters::is_non_empty_string?("")).to be(false)
+      expect(BeEF::Filters::is_non_empty_string?('')).to be(false)
     end
 
     it 'null' do
@@ -19,19 +19,19 @@ RSpec.describe 'BeEF Filters' do
     end
 
     it 'First char is num' do
-      expect(BeEF::Filters::is_non_empty_string?("0")).to be(true)
+      expect(BeEF::Filters::is_non_empty_string?('0')).to be(true)
     end
 
     it 'First char is alpha' do
-      expect(BeEF::Filters::is_non_empty_string?("A")).to be(true)
+      expect(BeEF::Filters::is_non_empty_string?('A')).to be(true)
     end
 
     it 'Four num chars' do
-      expect(BeEF::Filters::is_non_empty_string?("3333")).to be(true)
+      expect(BeEF::Filters::is_non_empty_string?('3333')).to be(true)
     end
 
     it 'Four num chars begining with alpha' do
-      expect(BeEF::Filters::is_non_empty_string?("A3333")).to be(true)
+      expect(BeEF::Filters::is_non_empty_string?('A3333')).to be(true)
     end
 
     it 'Four num chars begining with null' do
@@ -69,7 +69,7 @@ RSpec.describe 'BeEF Filters' do
     context 'false with' do
 
       it 'general' do
-        chars = [nil, "", "\x01", "\xFF", "A", "A3333", "0", "}", ".", "+", "-", "-1", "0.A", "3333", "33 33", " AAAAA", "AAAAAA "]
+        chars = [nil, '', "\x01", "\xFF", 'A', 'A3333', '0', '}', '.', '+', '-', '-1', '0.A', '3333', '33 33', ' AAAAA', 'AAAAAA ']
         chars.each do |c|
           expect(BeEF::Filters::has_null?(c)).to be(false)
         end
@@ -120,7 +120,7 @@ RSpec.describe 'BeEF Filters' do
     context 'false with' do
 
       it 'general' do
-        chars = [nil, "", "A", "A3333", "0", "}", ".", "+", "-", "-1", "0.A", "3333", " 0AAAAA", " 0AAA "]
+        chars = [nil, '', 'A', 'A3333', '0', '}', '.', '+', '-', '-1', '0.A', '3333', ' 0AAAAA', ' 0AAA ']
         chars.each do |c|
           expect(BeEF::Filters::has_non_printable_char?(c)).to be(false)
         end
@@ -171,14 +171,14 @@ RSpec.describe 'BeEF Filters' do
   context 'nums_only?' do
 
     it 'false with general' do
-      chars = [nil, 1, "", "A", "A3333", "\x003333", "}", ".", "+", "-", "-1"]
+      chars = [nil, 1, '', 'A', 'A3333', "\x003333", '}', '.', '+', '-', '-1']
       chars.each do |c|
         expect(BeEF::Filters::nums_only?(c)).to be(false)
       end
     end
 
     it 'true with general' do
-      chars = ["0", "333"]
+      chars = ['0', '333']
       chars.each do |c|
         expect(BeEF::Filters::nums_only?(c)).to be(true)
       end
@@ -189,14 +189,14 @@ RSpec.describe 'BeEF Filters' do
   context 'is_valid_float?' do
 
     it 'false with general' do
-      chars = [nil, 1, "", "A", "A3333", "\x003333", "}", ".", "+", "-", "-1", "0", "333", "0.A"]
+      chars = [nil, 1, '', 'A', 'A3333', "\x003333", '}', '.', '+', '-', '-1', '0', '333', '0.A']
       chars.each do |c|
         expect(BeEF::Filters::is_valid_float?(c)).to be(false)
       end
     end
 
     it 'true with general' do
-      chars = ["33.33", "0.0", "1.0", "0.1"]
+      chars = ['33.33', '0.0', '1.0', '0.1']
       chars.each do |c|
         expect(BeEF::Filters::is_valid_float?(c)).to be(true)
       end
@@ -207,14 +207,14 @@ RSpec.describe 'BeEF Filters' do
   context 'hexs_only?' do
 
     it 'false with general' do
-      chars = [nil, 1, "", "\x003333", "}", ".", "+", "-", "-1", "0.A", "33.33", "0.0", "1.0", "0.1"]
+      chars = [nil, 1, '', "\x003333", '}', '.', '+', '-', '-1', '0.A', '33.33', '0.0', '1.0', '0.1']
       chars.each do |c|
         expect(BeEF::Filters::hexs_only?(c)).to be(false)
       end
     end
 
     it 'true with general' do
-      chars = ["0123456789ABCDEFabcdef", "0", "333", "A33333", "A"]
+      chars = ['0123456789ABCDEFabcdef', '0', '333', 'A33333', 'A']
       chars.each do |c|
         expect(BeEF::Filters::hexs_only?(c)).to be(true)
       end
@@ -225,14 +225,14 @@ RSpec.describe 'BeEF Filters' do
   context 'first_char_is_num?' do
 
     it 'false with general' do
-      chars = ["", "A", "A33333", "\x0033333"]
+      chars = ['', 'A', 'A33333', "\x0033333"]
       chars.each do |c|
         expect(BeEF::Filters::first_char_is_num?(c)).to be(false)
       end
     end
 
     it 'true with general' do
-      chars = ["333", "0AAAAAA", "0"]
+      chars = ['333', '0AAAAAA', '0']
       chars.each do |c|
         expect(BeEF::Filters::first_char_is_num?(c)).to be(true)
       end
@@ -243,14 +243,14 @@ RSpec.describe 'BeEF Filters' do
   context 'has_whitespace_char?' do
 
     it 'false with general' do
-      chars = ["", "A", "A33333", "\x0033333", "0", "}", ".", "+", "-", "-1", "0.A"]
+      chars = ['', 'A', 'A33333', "\x0033333", '0', '}', '.', '+', '-', '-1', '0.A']
       chars.each do |c|
         expect(BeEF::Filters::has_whitespace_char?(c)).to be(false)
       end
     end
 
     it 'true with general' do
-      chars = ["33 33", "    ", "                ", " 0AAAAAAA", " 0AAAAAAA ", "\t0AAAAAAA", "\n0AAAAAAAA"]
+      chars = ['33 33', '    ', '                ', ' 0AAAAAAA', ' 0AAAAAAA ', "\t0AAAAAAA", "\n0AAAAAAAA"]
       chars.each do |c|
         expect(BeEF::Filters::has_whitespace_char?(c)).to be(true)
       end
@@ -263,7 +263,7 @@ RSpec.describe 'BeEF Filters' do
     context 'false with' do
 
       it 'general' do
-        chars = [nil, "", "\n", "\r", "\x01", "}", ".", "+", "-", "-1", "ee-!@$%^&*}=0.A", "33 33", " AAAA", "AAA "]
+        chars = [nil, '', "\n", "\r", "\x01", '}', '.', '+', '-', '-1', 'ee-!@$%^&*}=0.A', '33 33', ' AAAA', 'AAA ']
         chars.each do |c|
           expect(BeEF::Filters::alphanums_only?(c)).to be(false)
         end
@@ -308,7 +308,7 @@ RSpec.describe 'BeEF Filters' do
     context 'true with' do
 
       it 'general' do
-        chars = ["A", "A3333", "0", "3333"]
+        chars = ['A', 'A3333', '0', '3333']
         chars.each do |c|
           expect(BeEF::Filters::alphanums_only?(c)).to be(true)
         end
@@ -339,14 +339,14 @@ RSpec.describe 'BeEF Filters' do
   context 'has_valid_param_chars?' do
 
     it 'false' do
-      chars = [nil, "", "+"]
+      chars = [nil, '', '+']
       chars.each do |c|
         expect(BeEF::Filters::has_valid_param_chars?(c)).to be(false)
       end
     end
 
     it 'true' do
-      expect(BeEF::Filters::has_valid_param_chars?("A")).to be(true)
+      expect(BeEF::Filters::has_valid_param_chars?('A')).to be(true)
     end
 
   end

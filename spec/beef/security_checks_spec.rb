@@ -8,7 +8,7 @@ RSpec.describe 'BeEF Security Checks' do
 
         f.grep(/\Weval\W/im) do |line|
           # check if comment starting with the '#' character
-          clean_line = line.downcase.gsub(/[ ]/, "")
+          clean_line = line.downcase.gsub(/[ ]/, '')
           if clean_line[0] != '#' # check first non-whitespace position
             raise "Illegal use of 'eval' found in\n Path: #{path}\nLine:  #{line}"
           end 

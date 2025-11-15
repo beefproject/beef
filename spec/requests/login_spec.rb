@@ -80,7 +80,7 @@ RSpec.describe 'Beef Login', run_on_long_tests: true  do
     expect(attacker).to have_content('Logout', wait: 10)
     expect(attacker).to have_content(VICTIM_DOMAIN, wait: 10)
 
-    attacker.click_on("127.0.0.1", match: :first)
+    attacker.click_on('127.0.0.1', match: :first)
 
     expect(attacker).to have_content('Details')
     expect(attacker).to have_content('Commands')

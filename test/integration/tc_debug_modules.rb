@@ -46,7 +46,7 @@ class TC_DebugModules < Test::Unit::TestCase
     assert_equal 200, response.code
     assert_not_nil response.body
     result = JSON.parse(response.body)
-    @@hb_session = result["hooked-browsers"]["online"]["0"]["session"]
+    @@hb_session = result['hooked-browsers']['online']['0']['session']
     assert_not_nil @@hb_session
   end
 
@@ -57,13 +57,13 @@ class TC_DebugModules < Test::Unit::TestCase
     assert_not_nil response.body
     result = JSON.parse(response.body)
     result.each do |mod|
-     case mod[1]["class"]
-       when "Test_return_long_string"
-         @@mod_debug_long_string = mod[1]["id"]
-       when "Test_return_ascii_chars"
-         @@mod_debug_ascii_chars = mod[1]["id"]
-       when "Test_network_request"
-         @@mod_debug_test_network = mod[1]["id"]
+     case mod[1]['class']
+       when 'Test_return_long_string'
+         @@mod_debug_long_string = mod[1]['id']
+       when 'Test_return_ascii_chars'
+         @@mod_debug_ascii_chars = mod[1]['id']
+       when 'Test_network_request'
+         @@mod_debug_test_network = mod[1]['id']
      end
     end
     assert_not_nil @@mod_debug_long_string
@@ -73,7 +73,7 @@ class TC_DebugModules < Test::Unit::TestCase
   #
   ## Test debug module "Test_return_long_string" using the RESTful API
   def test_return_long_string
-    repeat_string = "BeEF"
+    repeat_string = 'BeEF'
     repeat_count = 20
 
     response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_long_string}?token=#{@@token}",
@@ -133,7 +133,7 @@ class TC_DebugModules < Test::Unit::TestCase
     result = JSON.parse(response.body)
     data = JSON.parse(result['0']['data'])['data']
     assert_not_nil data
-    ascii_chars = ""
+    ascii_chars = ''
     (32..127).each do |i| ascii_chars << i.chr end
     assert_equal ascii_chars,data
   end
@@ -144,7 +144,7 @@ class TC_DebugModules < Test::Unit::TestCase
     # Test same-origin request (response code and content of secret_page.html)
     response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_test_network}?token=#{@@token}",
                                 #override only a few parameters, the other ones will have default values from modules's module.rb definition
-                               {"domain" => ATTACK_DOMAIN, "port" => "3000", "path" => "/demos/secret_page.html"}.to_json,
+                               {'domain' => ATTACK_DOMAIN, 'port' => '3000', 'path' => '/demos/secret_page.html'}.to_json,
                                :content_type => :json,
                                :accept => :json
     assert_equal 200, response.code
@@ -169,8 +169,8 @@ class TC_DebugModules < Test::Unit::TestCase
     result = JSON.parse(response.body)
     data = JSON.parse(result['0']['data'])['data']
     assert_not_nil data
-    assert_equal 200, JSON.parse(data)["status_code"]
-    assert JSON.parse(data)["port_status"].include?("open")
+    assert_equal 200, JSON.parse(data)['status_code']
+    assert JSON.parse(data)['port_status'].include?('open')
 
   end
 end

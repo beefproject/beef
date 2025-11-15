@@ -56,7 +56,7 @@ def navigate_to_category(session, category_name = nil)
     session.click_on('Commands')
     expect(session).to have_content(category_name, wait: PAGE_LOAD_TIMEOUT)
 
-    session.first(:link_or_button, category_name + " ").click
+    session.first(:link_or_button, category_name + ' ').click
 end
 
 def expand_category_tree(session, category, module_name = nil)
@@ -96,11 +96,11 @@ def collapse_category_tree(session, category)
         category.reverse.each do |category_name|
             # Collapse the sub-folder
             session.scroll_to(category_name)
-            session.first(:link_or_button, category_name + " ").click
+            session.first(:link_or_button, category_name + ' ').click
         end 
     else
         session.scroll_to(category)
-        session.first(:link_or_button, category + " ").click
+        session.first(:link_or_button, category + ' ').click
     end
 end
 

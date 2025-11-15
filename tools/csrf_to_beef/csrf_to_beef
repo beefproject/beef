@@ -7,7 +7,7 @@ $VERSION = '0.0.3'
 # @note Ruby version check
 #
 if RUBY_VERSION =~ /^1\.[0-8]/
-  puts "Ruby version " + RUBY_VERSION + " is not supported. Please use Ruby 1.9 or newer."
+  puts 'Ruby version ' + RUBY_VERSION + ' is not supported. Please use Ruby 1.9 or newer.'
   exit 1
 end
 
@@ -25,27 +25,27 @@ require './lib/module'
 def usage
   puts "CSRF to BeEF module tool v#{$VERSION}, create a BeEF CSRF module from file or URL."
   puts
-  puts "Usage: ./csrf_to_beef [options] --name <NAME>  <--url=URL|--file=FILE>"
+  puts 'Usage: ./csrf_to_beef [options] --name <NAME>  <--url=URL|--file=FILE>'
   puts
-  puts "Options:"
-  puts "  -h, --help            Help"
-  puts "  -v, --verbose         Verbose output"
-  puts "  -n, --name NAME       BeEF module name"
-  puts "  -u, --url URL         CSRF URL"
-  puts "  -m, --method METHOD   CSRF HTTP method (GET/POST)"
-  puts "  -d, --post-data DATA  CSRF HTTP POST data"
-  puts "  -f, --file FILE       Burp CSRF PoC file"
+  puts 'Options:'
+  puts '  -h, --help            Help'
+  puts '  -v, --verbose         Verbose output'
+  puts '  -n, --name NAME       BeEF module name'
+  puts '  -u, --url URL         CSRF URL'
+  puts '  -m, --method METHOD   CSRF HTTP method (GET/POST)'
+  puts '  -d, --post-data DATA  CSRF HTTP POST data'
+  puts '  -f, --file FILE       Burp CSRF PoC file'
   puts
-  puts "Example Usage:"
+  puts 'Example Usage:'
   puts
-  puts "  CSRF URL:"
-  puts "  ./csrf_to_beef --name \"example csrf\" --url \"http://example.com/index.html?param=value\""
+  puts '  CSRF URL:'
+  puts '  ./csrf_to_beef --name "example csrf" --url "http://example.com/index.html?param=value"'
   puts
-  puts "  CSRF URL (POST):"
-  puts "  ./csrf_to_beef --name \"example csrf\" --url \"http://example.com/index.html\" --method POST --post-data \"param1=value&param2=value\""
+  puts '  CSRF URL (POST):'
+  puts '  ./csrf_to_beef --name "example csrf" --url "http://example.com/index.html" --method POST --post-data "param1=value&param2=value"'
   puts
-  puts "  Burp Suite CSRF PoC file:"
-  puts "  ./csrf_to_beef --name \"example csrf\" --file sample.html"
+  puts '  Burp Suite CSRF PoC file:'
+  puts '  ./csrf_to_beef --name "example csrf" --file sample.html'
   puts 
   exit 1
 end
@@ -176,10 +176,10 @@ def get_options_from_burp_file(fname, mname)
 
   # parse PoC file
   if html.to_s =~ /var xhr = new XMLHttpRequest/
-    print_error "Could not parse PoC file - XMLHttpRequest is not yet supported."
+    print_error 'Could not parse PoC file - XMLHttpRequest is not yet supported.'
     exit 1
   elsif html.to_s !~ /<form/
-    print_error "Could not parse PoC file - unrecognized format."
+    print_error 'Could not parse PoC file - unrecognized format.'
     exit 1
   end
 
@@ -256,7 +256,7 @@ def write_module(target_url, method='GET', enctype, options)
   print_debug com_file
   File.open("#{@class_name}/command.js", 'w') { |file| file.write(com_file) }
 
-  print_good "Complete!"
+  print_good 'Complete!'
   print_status "Now copy the '#{@class_name}' directory to the BeEF 'modules/exploits/' directory."
   print_debug "cp \"#{@class_name}\" ../../modules/exploits/ -R"
 

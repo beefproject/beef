@@ -47,13 +47,13 @@ class TC_WebRTCRest < Test::Unit::TestCase
       rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
         :token => @@token}}
       result = JSON.parse(rest_response.body)
-      browsers = result["hooked-browsers"]["online"]
+      browsers = result['hooked-browsers']['online']
       browsers.each_with_index do |elem, index|
         if index == browsers.length - 1
-            @@victim2id = browsers["#{index}"]["id"].to_s
+            @@victim2id = browsers["#{index}"]['id'].to_s
         end
         if index == browsers.length - 2
-            @@victim1id = browsers["#{index}"]["id"].to_s
+            @@victim1id = browsers["#{index}"]['id'].to_s
         end
       end
 
@@ -77,7 +77,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    browsers = result["hooked-browsers"]["online"]
+    browsers = result['hooked-browsers']['online']
     assert_not_nil browsers
     assert_operator browsers.length, :>=, 2
   end
@@ -88,12 +88,12 @@ class TC_WebRTCRest < Test::Unit::TestCase
     rest_response = nil
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/go?token=#{@@token}",
-        {:from => @@victim1id, :to => @@victim2id, :verbose => "true"}.to_json,
+        {:from => @@victim1id, :to => @@victim2id, :verbose => 'true'}.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    assert_equal true, result["success"]
+    assert_equal true, result['success']
 
     sleep 30.0
 
@@ -106,14 +106,14 @@ class TC_WebRTCRest < Test::Unit::TestCase
     result = JSON.parse(rest_response.body)
 
     loghitcount = 0
-    result["logs"].reverse.each {|l|
+    result['logs'].reverse.each {|l|
       # Using free-space matching mode /x below to wrap regex.
       # therefore need to escape spaces I want to check, hence the \
       regex = Regexp.new(/Browser:(#{@@victim1id}|#{@@victim2id})\ received\ 
                          message\ from\ Browser:(#{@@victim1id}|#{@@victim2id})
                          :\ ICE\ Status:\ connected/x)
-      loghitcount += 1 if (not regex.match(l["event"]).nil?) and
-                          (l["type"].to_s.eql?("WebRTC"))
+      loghitcount += 1 if (not regex.match(l['event']).nil?) and
+                          (l['type'].to_s.eql?('WebRTC'))
     }
     assert_equal 2, loghitcount
   end
@@ -125,12 +125,12 @@ class TC_WebRTCRest < Test::Unit::TestCase
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
         {:from => @@victim1id, :to => @@victim2id,
-         :message => "RTC test message"}.to_json,
+         :message => 'RTC test message'}.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    assert_equal true, result["success"]
+    assert_equal true, result['success']
 
     sleep 10.0
 
@@ -143,15 +143,15 @@ class TC_WebRTCRest < Test::Unit::TestCase
     result = JSON.parse(rest_response.body)
 
     assert_block do
-      result["logs"].reverse.each {|l|
+      result['logs'].reverse.each {|l|
         # Using free-space matching mode /x below to wrap regex.
         # therefore need to escape spaces I want to check, hence the \
         regex = Regexp.new(/Browser:(#{@@victim1id}|#{@@victim2id})\ received\ 
                            message\ from\ Browser:
                            (#{@@victim1id}|#{@@victim2id})
                            :\ RTC\ test\ message/x)
-        return true if (not regex.match(l["event"]).nil?) and
-                            (l["type"].to_s.eql?("WebRTC"))
+        return true if (not regex.match(l['event']).nil?) and
+                            (l['type'].to_s.eql?('WebRTC'))
       }
     end
   end
@@ -167,15 +167,15 @@ class TC_WebRTCRest < Test::Unit::TestCase
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    online = result["hooked-browsers"]["online"]
+    online = result['hooked-browsers']['online']
     assert_block do
       online.each {|hb|
-        return true if hb[1]["id"].eql?(@@victim1id)
+        return true if hb[1]['id'].eql?(@@victim1id)
       }
     end
     assert_block do
       online.each {|hb|
-        return true if hb[1]["id"].eql?(@@victim2id)
+        return true if hb[1]['id'].eql?(@@victim2id)
       }
     end
       
@@ -185,12 +185,12 @@ class TC_WebRTCRest < Test::Unit::TestCase
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
         {:from => @@victim1id, :to => @@victim2id,
-         :message => "!gostealth"}.to_json,
+         :message => '!gostealth'}.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    assert_equal true, result["success"]
+    assert_equal true, result['success']
 
     sleep 40.0 #Wait until that browser is offline.
 
@@ -202,10 +202,10 @@ class TC_WebRTCRest < Test::Unit::TestCase
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    offline = result["hooked-browsers"]["offline"]
+    offline = result['hooked-browsers']['offline']
     assert_block do
       offline.each {|hb|
-        return true if hb[1]["id"].eql?(@@victim2id)
+        return true if hb[1]['id'].eql?(@@victim2id)
       }
     end
 
@@ -214,12 +214,12 @@ class TC_WebRTCRest < Test::Unit::TestCase
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
         {:from => @@victim1id, :to => @@victim2id,
-         :message => "!endstealth"}.to_json,
+         :message => '!endstealth'}.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    assert_equal true, result["success"]
+    assert_equal true, result['success']
 
     sleep 10.0 # Wait until browser comes back
 
@@ -231,10 +231,10 @@ class TC_WebRTCRest < Test::Unit::TestCase
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
-    online = result["hooked-browsers"]["online"]
+    online = result['hooked-browsers']['online']
     assert_block do
       online.each {|hb|
-        return true if hb[1]["id"].eql?(@@victim2id)
+        return true if hb[1]['id'].eql?(@@victim2id)
       }
     end
 

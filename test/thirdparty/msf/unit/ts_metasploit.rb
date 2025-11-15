@@ -11,7 +11,7 @@ begin
   require 'msfrpc-client'
 rescue LoadError
   puts "The following instruction failed: require 'msfrpc-client'"
-  puts "Please run: sudo gem install msfrpc-client"
+  puts 'Please run: sudo gem install msfrpc-client'
   exit
 end
 
@@ -21,7 +21,7 @@ require './tc_metasploit'
 class TS_BeefTests
   def self.suite
 
-    suite = Test::Unit::TestSuite.new(name="BeEF Metasploit Test Suite")
+    suite = Test::Unit::TestSuite.new(name='BeEF Metasploit Test Suite')
     suite << TC_CheckEnvironment.suite
     suite << TC_Metasploit.suite
 

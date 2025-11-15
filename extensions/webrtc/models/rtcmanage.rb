@@ -13,8 +13,8 @@ module Models
   
     # Starts the RTCPeerConnection process, establishing a WebRTC connection between the caller and the receiver
     def self.initiate(caller, receiver, verbosity = false)
-      stunservers = BeEF::Core::Configuration.instance.get("beef.extension.webrtc.stunservers")
-      turnservers = BeEF::Core::Configuration.instance.get("beef.extension.webrtc.turnservers")
+      stunservers = BeEF::Core::Configuration.instance.get('beef.extension.webrtc.stunservers')
+      turnservers = BeEF::Core::Configuration.instance.get('beef.extension.webrtc.turnservers')
 
       # Add the beef.webrtc.start() JavaScript call into the RtcManage table - this will be picked up by the browser on next hook.js poll
       # This is for the Receiver

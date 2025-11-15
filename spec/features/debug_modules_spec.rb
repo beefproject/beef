@@ -24,8 +24,8 @@ RSpec.describe 'Debug Modules Integration', run_on_long_tests: true  do
         expect(@beef_session).to have_content('Debug Message:', wait: PAGE_LOAD_TIMEOUT)
     end
     
-    it "Load all debug modules" do
-        Dir.glob("modules/debug/**/config.yaml").each do |file|
+    it 'Load all debug modules' do
+        Dir.glob('modules/debug/**/config.yaml').each do |file|
             module_yaml_data = YAML.load_file(file)
     
             module_yaml_data['beef']['module'].each do |module_key, module_value|

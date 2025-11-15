@@ -13,9 +13,9 @@ require './lib/beef_rest_api'
 
 if ARGV.length == 0
   puts "#{$0}:"
-  puts "|  Example BeEF RESTful API script"
-  puts "|  Use --help for help"
-  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  puts '|  Example BeEF RESTful API script'
+  puts '|  Use --help for help'
+  puts '|_ Use verbose mode (-v) and debug mode (-d) for more output'
   exit 1
 end
 
@@ -66,20 +66,20 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 # Retrieve BeEF version
 @api.version
 
-print_status("Retrieving Autorun rules")
+print_status('Retrieving Autorun rules')
 rules = @api.autorun_rules
 print_debug(rules)
 
-print_status("Adding a rule")
+print_status('Adding a rule')
 
 res = @api.autorun_add_rule({
-  "name": "Say Hello",
-  "author": "REST API",
+  "name": 'Say Hello',
+  "author": 'REST API',
   "modules": [
     {
-      "name": "alert_dialog",
+      "name": 'alert_dialog',
       "options": {
-        "text":"Hello from REST API"
+        "text":'Hello from REST API'
       }
     }
   ],

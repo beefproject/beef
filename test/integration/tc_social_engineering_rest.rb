@@ -61,8 +61,8 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     # Send DNS request to server to verify that a new rule was added
     dns_address = @@config.get('beef.extension.dns.address')
     dns_port = @@config.get('beef.extension.dns.port')
-    dig_output = IO.popen(["dig", "@#{dns_address}", "-p", "#{dns_port}", "-t",
-                          "A", "+short", "#{domain}"], 'r+').read.strip!
+    dig_output = IO.popen(['dig', "@#{dns_address}", '-p', "#{dns_port}", '-t',
+                          'A', '+short', "#{domain}"], 'r+').read.strip!
 
     foundmatch = false
 

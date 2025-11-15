@@ -13,9 +13,9 @@ require './lib/beef_rest_api'
 
 if ARGV.length == 0
   puts "#{$0}:"
-  puts "|  Example BeEF RESTful API script"
-  puts "|  Use --help for help"
-  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  puts '|  Example BeEF RESTful API script'
+  puts '|  Use --help for help'
+  puts '|_ Use verbose mode (-v) and debug mode (-d) for more output'
   exit 1
 end
 
@@ -89,12 +89,12 @@ exit 1 if hooks.empty?
 print_debug hooks
 
 # Execute alert dialog on all online browsers
-mod_id = @api.get_module_id "Alert_dialog"
+mod_id = @api.get_module_id 'Alert_dialog'
 hooks.each do |hook|
   next if hook['id'].nil?
 
   print_status "Executing module [id: #{mod_id}, browser: #{hook['id']}]"
-  result = @api.execute_module(hook['session'], mod_id, { "text" => "hello!" })
+  result = @api.execute_module(hook['session'], mod_id, { 'text' => 'hello!' })
   print_debug result
 end
 

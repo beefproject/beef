@@ -10,8 +10,8 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
     @rackApp = Rack::URLMap.new(@mounts)
     Thin::Logging.silent = true
     @server = Thin::Server.new('127.0.0.1', @port.to_s, @rackApp)
-    trap("INT") { @server.stop }
-    trap("TERM") { @server.stop }
+    trap('INT') { @server.stop }
+    trap('TERM') { @server.stop }
 
     # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
     disconnect_all_active_record!
@@ -24,7 +24,7 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
   end
 
   after(:all) do
-    Process.kill("INT",@pid)
+    Process.kill('INT',@pid)
   end
 
   it 'delete' do
