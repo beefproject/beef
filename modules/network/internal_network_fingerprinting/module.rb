@@ -29,7 +29,7 @@ class Internal_network_fingerprinting < BeEF::Core::Command
     ip = Regexp.last_match(2)
     port = Regexp.last_match(3)
     discovered = Regexp.last_match(4)
-    url = Regexp.last_match(5)
+    Regexp.last_match(5)
     session_id = @datastore['beefhook']
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found '#{discovered}' [ip: #{ip}]")

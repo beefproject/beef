@@ -55,7 +55,7 @@ module BeEF
                   if line.include?('<form ') || line.include?('<FORM ')
                     line_attrs = line.split(' ')
                     c = 0
-                    cc = 0
+                    0
                     # TODO: probably doable also with map!
                     # modify the form 'action' attribute
                     line_attrs.each do |attr|

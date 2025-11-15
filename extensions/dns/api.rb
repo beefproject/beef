@@ -24,7 +24,7 @@ module BeEF
           #
           # @param http_hook_server [BeEF::Core::Server] HTTP server instance
           def self.pre_http_start(_http_hook_server)
-            servers, interfaces, address, port, protocol, upstream_servers = get_dns_config # get the DNS configuration
+            servers, interfaces, _, _, _, _ = get_dns_config # get the DNS configuration
 
             # Start the DNS server
             dns = BeEF::Extension::Dns::Server.instance
@@ -32,7 +32,7 @@ module BeEF
           end
 
           def self.print_dns_info
-            servers, interfaces, address, port, protocol, upstream_servers = get_dns_config # get the DNS configuration
+            _, _, address, port, protocol, upstream_servers = get_dns_config # get the DNS configuration
 
             # Print the DNS server information
             print_info "DNS Server: #{address}:#{port} (#{protocol})"

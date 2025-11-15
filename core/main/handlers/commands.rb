@@ -32,7 +32,7 @@ module BeEF
         def setup
           @http_params = @data['request'].params
           @http_header = {}
-          http_header = @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }.each do |key, value|
+          @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }.each do |key, value|
             @http_header[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           end
 

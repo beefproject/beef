@@ -27,9 +27,9 @@ module BeEF
             controller.run(@request, @response)
 
             @response = Rack::Response.new(
-              body = [controller.body],
-              status = controller.status,
-              header = controller.headers
+              [controller.body],
+              controller.status,
+              controller.headers
             )
           end
 

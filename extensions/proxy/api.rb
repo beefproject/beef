@@ -12,7 +12,7 @@ module BeEF
           BeEF::API::Registrar.instance.register(BeEF::Extension::Proxy::API::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
           def self.pre_http_start(http_hook_server)
-            config = BeEF::Core::Configuration.instance
+            BeEF::Core::Configuration.instance
             Thread.new do
               http_hook_server.semaphore.synchronize do
                 BeEF::Extension::Proxy::Proxy.new

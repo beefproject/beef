@@ -71,7 +71,7 @@ module BeEF
 
           # Parse http_headers. Unfortunately Rack doesn't provide a util-method to get them :(
           @http_headers = {}
-          http_header = @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }
+          @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }
                                         .each do |key, value|
             @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           end

@@ -17,9 +17,9 @@ module BeEF
           def call(_env)
             # [@status, @header, @body]
             @response = Rack::Response.new(
-              body = @body,
-              status = @status,
-              header = @header
+              @body,
+              @status,
+              @header
             )
           end
 

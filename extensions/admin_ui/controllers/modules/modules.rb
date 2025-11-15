@@ -196,7 +196,7 @@ module BeEF
           # Returns the list of all command_modules for a TreePanel in the interface.
           def select_command_modules_tree
             blanktree = []
-            tree = []
+            []
 
             # Due to the sub-folder nesting, we use some really badly hacked together recursion
             # Note to the bored - if someone (anyone please) wants to refactor, I'll buy you cookies. -x
@@ -253,7 +253,7 @@ module BeEF
               print_error 'command_module_id is nil'
               return
             end
-            command_module = BeEF::Core::Models::CommandModule.find(command_module_id)
+            BeEF::Core::Models::CommandModule.find(command_module_id)
             key = BeEF::Module.get_key_by_database_id(command_module_id)
 
             payload_name = @params['payload_name'] || nil

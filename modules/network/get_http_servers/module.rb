@@ -28,7 +28,7 @@ class Get_http_servers < BeEF::Core::Command
     proto = Regexp.last_match(1)
     ip = Regexp.last_match(2)
     port = Regexp.last_match(3)
-    url = Regexp.last_match(4)
+    Regexp.last_match(4)
     session_id = @datastore['beefhook']
     if !ip.nil? && BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found HTTP Server [proto: #{proto}, ip: #{ip}, port: #{port}]")

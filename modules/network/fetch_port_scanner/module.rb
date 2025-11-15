@@ -20,7 +20,7 @@ class Fetch_port_scanner < BeEF::Core::Command
     configuration = BeEF::Core::Configuration.instance
     return unless configuration.get('beef.extension.network.enable') == true
 
-    session_id = @datastore['beefhook']
+    @datastore['beefhook']
 
     # @todo log the network service
     # will need to once the datastore is confirmed.

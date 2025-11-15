@@ -74,7 +74,7 @@ module BeEF
 
             xssraysdetails = BeEF::Core::Models::Xssraysdetail.where(hooked_browser_id: hb.id)
             xssraysdetails.destroy_all
-          rescue StandardError => e
+          rescue StandardError
             # @todo why is this error swallowed?
             # the xssraysscan module may not be enabled
           end

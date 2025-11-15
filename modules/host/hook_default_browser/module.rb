@@ -8,7 +8,7 @@ class Hook_default_browser < BeEF::Core::Command
   def self.options
     configuration = BeEF::Core::Configuration.instance
     proto = configuration.get('beef.http.https.enable') == true ? 'https' : 'http'
-    hook_uri = "#{proto}://#{configuration.get('beef.http.host')}:#{configuration.get('beef.http.port')}/demos/report.html"
+    "#{proto}://#{configuration.get('beef.http.host')}:#{configuration.get('beef.http.port')}/demos/report.html"
     # @todo why is this commented out?
     [
       # {'name' => 'url', 'ui_label'=>'URL', 'type' => 'text', 'width' => '400px', 'value' => hook_uri },

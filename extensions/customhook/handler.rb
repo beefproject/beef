@@ -11,7 +11,7 @@ module BeEF
           @body = ''
           @request = Rack::Request.new(env)
           @params = @request.query_string
-          @response = Rack::Response.new(body = [], 200, header = {})
+          @response = Rack::Response.new([], 200, {})
           config = BeEF::Core::Configuration.instance
           eruby = Erubis::FastEruby.new(File.read("#{File.dirname(__FILE__)}/html/index.html"))
           config.get('beef.extension.customhook.hooks').each do |h|
@@ -27,9 +27,9 @@ module BeEF
           end
 
           @response = Rack::Response.new(
-            body = [@body],
-            status = 200,
-            header = {
+            [@body],
+            200,
+            {
               'Pragma' => 'no-cache',
               'Cache-Control' => 'no-cache',
               'Expires' => '0',

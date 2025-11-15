@@ -76,7 +76,7 @@ module BeEF
                                      request.env[session_key]
 
                 execute(res)
-              rescue JSON::ParserError => e
+              rescue JSON::ParserError
                 print_debug 'Network stack could not decode packet stream.'
                 print_debug "Dumping Stream Data [base64]: #{data}"
                 print_debug "Dumping Stream Data: #{b64}"

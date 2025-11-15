@@ -52,12 +52,12 @@ module BeEF
               success = web_cloner.clone_page(uri, mount, use_existing, dns_spoof)
 
               if success
-                result = {
+                {
                   'success' => true,
                   'mount' => mount
                 }.to_json
               else
-                result = {
+                {
                   'success' => false
                 }.to_json
                 halt 500
