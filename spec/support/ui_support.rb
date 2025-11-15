@@ -74,7 +74,6 @@ def expand_category_tree(session, category, module_name = nil)
           # scroll to the element
           session.scroll_to(element)
         rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
-
         puts "StaleElementReferenceError: #{element_text}"
         puts e.message
         next
