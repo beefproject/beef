@@ -82,9 +82,11 @@ module BeEF
         def level=(val)
           (self.logger ||= Logger.new($stdout)).level = val
         end
+
         def level
           (self.logger ||= Logger.new($stdout)).level
         end
+
         # Proxy common logger methods if called directly (info, warn, error, etc.)
         def method_missing(m, *args, &blk)
           lg = (self.logger ||= Logger.new($stdout))
@@ -92,6 +94,7 @@ module BeEF
 
           super
         end
+
         def respond_to_missing?(m, include_priv = false)
           (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
         end
@@ -109,9 +112,11 @@ unless defined?(::Console) && ::Console.respond_to?(:level=)
       def level=(val)
         (self.logger ||= Logger.new($stdout)).level = val
       end
+
       def level
         (self.logger ||= Logger.new($stdout)).level
       end
+
       # Proxy to logger for typical logging calls
       def method_missing(m, *args, &blk)
         lg = (self.logger ||= Logger.new($stdout))
@@ -119,6 +124,7 @@ unless defined?(::Console) && ::Console.respond_to?(:level=)
 
         super
       end
+
       def respond_to_missing?(m, include_priv = false)
         (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
       end

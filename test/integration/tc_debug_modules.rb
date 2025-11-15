@@ -70,6 +70,7 @@ class TC_DebugModules < Test::Unit::TestCase
     assert_not_nil @@mod_debug_ascii_chars
     assert_not_nil @@mod_debug_test_network
   end
+
   #
   ## Test debug module "Test_return_long_string" using the RESTful API
   def test_return_long_string
@@ -105,6 +106,7 @@ class TC_DebugModules < Test::Unit::TestCase
     assert_not_nil data
     assert_equal (repeat_string * repeat_count),data
   end
+
   #
   ## Test debug module "Test_return_ascii_chars" using the RESTful API
   def test_return_ascii_chars
