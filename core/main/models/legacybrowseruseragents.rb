@@ -16,8 +16,7 @@ module BeEF
       #
       module LegacyBrowserUserAgents
         def self.user_agents
-          [
-          ]
+          []
         end
       end
     end
