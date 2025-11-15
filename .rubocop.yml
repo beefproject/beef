@@ -38,6 +38,9 @@ Metrics/PerceivedComplexity:
 Naming/ClassAndModuleCamelCase:
   Enabled: false
 
+Style/BlockDelimiters:
+  Enabled: false
+
 Style/CommentAnnotation:
   Enabled: false
 
