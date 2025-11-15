@@ -186,8 +186,8 @@ module BeEF
             "<p><a href=\"http://httpd.apache.org/\"><img src=\"#{bp}/media/images/icons/apache_pb.gif\" alt=\"[ Powered by Apache ]\"/></a> <a href=\"http://www.centos.org/\"><img src=\"#{bp}/media/images/icons/powered_by_rh.png\" alt=\"[ Powered by CentOS Linux ]\" width=\"88\" height=\"31\" /></a></p>" \
             '</div>' \
             '</div>' \
-            '</div>' \
-            ' <div class="content">' \
+            '</div> ' \
+            '<div class="content">' \
             '<div class="content-middle"><h2>About CentOS:</h2><b>The Community ENTerprise Operating System</b> (CentOS) is an Enterprise-class Linux Distribution derived from sources freely provided to the public by a prominent North American Enterprise Linux vendor.  CentOS conforms fully with the upstream vendors redistribution policy and aims to be 100% binary compatible. (CentOS mainly changes packages to remove upstream vendor branding and artwork.)  The CentOS Project is the organization that builds CentOS.</p>' \
             '<p>For information on CentOS please visit the <a href="http://www.centos.org/">CentOS website</a>.</p>' \
             '<p><h2>Note:</h2><p>CentOS is an Operating System and it is used to power this website; however, the webserver is owned by the domain owner and not the CentOS Project.  <b>If you have issues with the content of this site, contact the owner of the domain, not the CentOS project.</b>' \
@@ -235,12 +235,12 @@ module BeEF
             "<html>\n" \
             "<head>\n" \
             "<title>Welcome to nginx!</title>\n" \
-            "<style>\n" \
-            "    body {\n" \
-            "        width: 35em;\n" \
-            "        margin: 0 auto;\n" \
-            "        font-family: Tahoma, Verdana, Arial, sans-serif;\n" \
-            "    }\n" \
+            "<style>\n    " \
+            "body {\n        " \
+            "width: 35em;\n        " \
+            "margin: 0 auto;\n        " \
+            "font-family: Tahoma, Verdana, Arial, sans-serif;\n    " \
+            "}\n" \
             "</style>\n" \
             "</head>\n" \
             "<body>\n" \
