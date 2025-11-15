@@ -32,7 +32,7 @@ module BeEF
               # Retrieve the list of network interfaces from BeEF::Core::Console::Banners
               interfaces = BeEF::Core::Console::Banners.interfaces
 
-              if not interfaces.nil? and not interfaces.empty? # If interfaces are available, iterate over each network interface
+              if !interfaces.nil? and !interfaces.empty? # If interfaces are available, iterate over each network interface
                 # If interfaces are available, iterate over each network interface
                 interfaces.each do |int|
                   # Skip the loop iteration if the interface address is '0.0.0.0' (which generally represents all IPv4 addresses on the local machine)
