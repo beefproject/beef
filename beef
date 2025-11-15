@@ -35,7 +35,7 @@ end
 #
 # @note set load path, application root directory and user preferences directory
 #
-$root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
+$root_dir = File.join(File.expand_path(__dir__), '.')
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 

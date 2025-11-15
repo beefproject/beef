@@ -7,7 +7,7 @@ module BeEF
   module Extension
     module Demos
       class Handler < BeEF::Core::Router::Router
-        set :public_folder, "#{File.expand_path(File.dirname(__FILE__))}/html/"
+        set :public_folder, "#{__dir__}/html/"
       end
     end
   end
