@@ -46,7 +46,7 @@ RSpec.describe 'BeEF Extension DNS' do
         id = @dns.add_rule(
           :pattern => 'foo.bar',
           :resource => IN::A,
-          :response => [response] ) do |transaction|
+          :response => [response]) do |transaction|
           transaction.respond!(response)
         end
       }.to_not raise_error
@@ -60,7 +60,7 @@ RSpec.describe 'BeEF Extension DNS' do
         id = @dns.add_rule(
           :pattern => %r{i\.(love|hate)\.beef\.com?},
           :resource => IN::A,
-          :response => [response] ) do |transaction|
+          :response => [response]) do |transaction|
           transaction.respond!(response)
         end
       }.to_not raise_error
@@ -80,7 +80,7 @@ RSpec.describe 'BeEF Extension DNS' do
           id = @dns.add_rule(
             :pattern => %r{i\.(love|hate)\.beef\.com?},
             :resource => IN::A,
-            :response => [response] ) do |transaction|
+            :response => [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -101,7 +101,7 @@ RSpec.describe 'BeEF Extension DNS' do
           id = @dns.add_rule(
             :pattern => pattern,
             :resource => IN::A,
-            :response => [response] ) do |transaction|
+            :response => [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -110,7 +110,7 @@ RSpec.describe 'BeEF Extension DNS' do
           same_id = @dns.add_rule(
             :pattern => pattern,
             :resource => IN::A,
-            :response => [response] ) do |transaction|
+            :response => [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -119,7 +119,7 @@ RSpec.describe 'BeEF Extension DNS' do
           same_id = @dns.add_rule(
             :pattern => pattern,
             :resource => IN::A,
-            :response => [response] ) do |transaction|
+            :response => [response]) do |transaction|
             transaction.respond!(response)
           end
         }.to_not raise_error
@@ -158,7 +158,7 @@ RSpec.describe 'BeEF Extension DNS' do
       id = @dns.add_rule(
         :pattern => pattern,
         :resource => IN::A,
-        :response => [response] ) do |transaction|
+        :response => [response]) do |transaction|
         transaction.respond!(response)
       end
     }.to_not raise_error
@@ -193,7 +193,7 @@ RSpec.describe 'BeEF Extension DNS' do
       id = @dns.add_rule(
         :pattern => pattern,
         :resource => IN::A,
-        :response => [response] ) do |transaction|
+        :response => [response]) do |transaction|
         transaction.respond!(response)
       end
     }.to_not raise_error
