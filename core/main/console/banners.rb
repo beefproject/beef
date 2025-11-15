@@ -156,7 +156,6 @@ module BeEF
               print_more upstream_servers unless upstream_servers.empty?
             end
           end
-
         end
       end
     end

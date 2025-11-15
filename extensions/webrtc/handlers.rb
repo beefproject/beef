@@ -11,7 +11,6 @@ module BeEF
       # The http handler that manages the WebRTC signals sent from browsers to other browsers.
       #
       class SignalHandler
-
         R = BeEF::Core::Models::RtcSignal
         Z = BeEF::Core::Models::HookedBrowser
 
@@ -57,7 +56,6 @@ module BeEF
       # The http handler that manages the WebRTC messages sent from browsers.
       #
       class MessengeHandler
-
         Z = BeEF::Core::Models::HookedBrowser
 
         def initialize(data)
@@ -157,7 +155,6 @@ module BeEF
           end
 
         end
-
       end
     end
   end

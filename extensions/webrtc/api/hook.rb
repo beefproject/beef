@@ -14,7 +14,6 @@ module BeEF
 
         require 'uri'
         class Hook
-
           include BeEF::Core::Handlers::Modules::BeEFJS
 
           # If the RtcSignal table contains requests that need to be sent (has_sent = waiting), retrieve
@@ -102,7 +101,6 @@ module BeEF
               });
             }
           end
-
         end
       end
     end

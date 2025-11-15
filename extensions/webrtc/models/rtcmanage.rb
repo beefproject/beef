@@ -10,7 +10,6 @@ module BeEF
       # Table stores the queued up JS commands for managing the client-side webrtc logic.
       #
       class RtcManage < BeEF::Core::Model
-
         # Starts the RTCPeerConnection process, establishing a WebRTC connection between the caller and the receiver
         def self.initiate(caller, receiver, verbosity = false)
           stunservers = BeEF::Core::Configuration.instance.get('beef.extension.webrtc.stunservers')
@@ -39,7 +38,6 @@ module BeEF
           r = BeEF::Core::Models::RtcManage.new(hooked_browser_id: id, message: "beef.webrtc.status(#{id});")
           r.save!
         end
-
       end
 
     end

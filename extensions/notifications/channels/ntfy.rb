@@ -6,7 +6,6 @@ module BeEF
     module Notifications
       module Channels
         class Ntfy
-
           # Constructor
           def initialize(message)
             @config = BeEF::Core::Configuration.instance
@@ -36,7 +35,6 @@ module BeEF
             # Send request
             http.request(req)
           end
-
         end
       end
     end

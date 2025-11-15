@@ -14,11 +14,8 @@ module BeEF
 
 
       class Rtcmodulestatus < BeEF::Core::Model
-
         belongs_to :hooked_browser
         belongs_to :command_module
-
-
       end
 
     end
