@@ -145,7 +145,7 @@ module BeEF
               stat2.save
             end
           elsif (message.start_with?('execcmd'))
-            mod = /\(\/command\/(.*)\.js\)/.match(message)[1]
+            mod = %r{\(/command/(.*)\.js\)}.match(message)[1]
             resp = /Result:.(.*)/.match(message)[1]
             stat = BeEF::Core::Models::Rtcmodulestatus.new(hooked_browser_id: zombie_db.id,
                                                            target_hooked_browser_id: peer_zombie_db.id,

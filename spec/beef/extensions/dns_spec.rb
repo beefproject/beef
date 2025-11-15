@@ -56,7 +56,7 @@ RSpec.describe 'BeEF Extension DNS' do
       response = '9.9.9.9'
       expect {
         id = @dns.add_rule(
-          pattern: %r{i\.(love|hate)\.beef\.com?},
+          pattern: /i\.(love|hate)\.beef\.com?/,
           resource: IN::A,
           response: [response]) do |transaction|
           transaction.respond!(response)
@@ -76,7 +76,7 @@ RSpec.describe 'BeEF Extension DNS' do
         id = nil
         expect {
           id = @dns.add_rule(
-            pattern: %r{i\.(love|hate)\.beef\.com?},
+            pattern: /i\.(love|hate)\.beef\.com?/,
             resource: IN::A,
             response: [response]) do |transaction|
             transaction.respond!(response)
