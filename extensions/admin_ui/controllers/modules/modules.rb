@@ -82,7 +82,6 @@ module BeEF
           # @param category [Array] The category to add the leaf to
           # @param leaf [Hash] The leaf to add to the tree
           def update_command_module_tree_recurse(tree, category, leaf)
-
             # get a single folder from the category array
             working_category = category.shift
 

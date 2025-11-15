@@ -19,7 +19,6 @@ module BeEF
         end
 
         def setup
-
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
           (print_error 'beefhook is null';return) if beef_hook.nil?
@@ -47,7 +46,6 @@ module BeEF
             signal: signal
           )
           signal.save
-
         end
       end
 
@@ -152,7 +150,6 @@ module BeEF
                                                            updated_at: Time.now)
             stat.save
           end
-
         end
       end
     end

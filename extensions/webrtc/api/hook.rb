@@ -70,7 +70,6 @@ module BeEF
                 add_rtcmanagement_to_body o
               } unless rtcmanagementoutput.empty?
             end
-
           end
 
           def add_rtcsignal_to_body(output)
