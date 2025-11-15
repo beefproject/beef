@@ -21,7 +21,7 @@ module BeEF
         @root_dir = File.expand_path('../../../', __dir__)
         @command_urls = {}
         @mounts = {}
-        @rack_app
+        @rack_app = nil
         @semaphore = Mutex.new
       end
 

@@ -26,10 +26,6 @@ module BeEF
               }
             )
           end
-
-          @request
-
-          @response
         end
       end
     end

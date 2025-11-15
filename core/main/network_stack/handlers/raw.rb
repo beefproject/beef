@@ -22,10 +22,6 @@ module BeEF
               @header
             )
           end
-
-          @request
-
-          @response
         end
       end
     end

@@ -196,7 +196,6 @@ module BeEF
           # Returns the list of all command_modules for a TreePanel in the interface.
           def select_command_modules_tree
             blanktree = []
-            []
 
             # Due to the sub-folder nesting, we use some really badly hacked together recursion
             # Note to the bored - if someone (anyone please) wants to refactor, I'll buy you cookies. -x

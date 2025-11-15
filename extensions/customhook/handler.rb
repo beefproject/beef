@@ -9,8 +9,10 @@ module BeEF
       class Handler
         def call(env)
           @body = ''
+          # @note Object representing the HTTP request
           @request = Rack::Request.new(env)
           @params = @request.query_string
+          # @note Object representing the HTTP response
           @response = Rack::Response.new([], 200, {})
           config = BeEF::Core::Configuration.instance
           eruby = Erubis::FastEruby.new(File.read("#{File.dirname(__FILE__)}/html/index.html"))
@@ -39,12 +41,6 @@ module BeEF
             }
           )
         end
-
-        # @note Object representing the HTTP request
-        @request
-
-        # @note Object representing the HTTP response
-        @response
       end
     end
   end

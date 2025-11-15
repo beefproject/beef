@@ -100,7 +100,6 @@ module BeEF
           request.cookies.each  do |cookie|
             return true if (cookie[0].to_s.eql? session_cookie_name) and (cookie[1].eql? @id)
           end
-          request
 
           # not a valid session
           false

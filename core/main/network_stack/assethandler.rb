@@ -244,9 +244,6 @@ module BeEF
 
             false
           end
-
-          @http_server
-          @allocations
         end
       end
     end

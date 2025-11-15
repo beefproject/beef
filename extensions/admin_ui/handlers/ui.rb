@@ -32,9 +32,6 @@ module BeEF
               controller.headers
             )
           end
-
-          @request
-          @response
         end
       end
     end

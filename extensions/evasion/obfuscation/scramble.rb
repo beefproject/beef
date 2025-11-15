@@ -29,7 +29,6 @@ module BeEF
               @output.gsub!(var, value)
               print_debug "[OBFUSCATION - SCRAMBLER] string [#{var}] scrambled -> [#{value}]"
             end
-            @output
           end
 
           if config.get('beef.extension.evasion.scramble_cookies')
@@ -44,8 +43,6 @@ module BeEF
               print_debug "[OBFUSCATION - SCRAMBLER] cookie [BEEFHOOK] scrambled -> [#{config.get('beef.http.hook_session_name')}]"
             end
           end
-
-          @output
         end
       end
     end

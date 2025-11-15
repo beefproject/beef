@@ -251,11 +251,6 @@ module BeEF
           opt['value'] = oc_value(opt['name']) || opt['value']
         end
       end
-
-      @use_template
-      @eruby
-      @update_zombie
-      @results
     end
   end
 end

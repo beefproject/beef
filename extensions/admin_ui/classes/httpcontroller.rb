@@ -143,8 +143,6 @@ module BeEF
 
         private
 
-        @eruby
-
         # Unescapes a URL-encoded string.
         def unescape(s)
           s.tr('+', ' ').gsub(/%([\da-f]{2})/in) { [Regexp.last_match(1)].pack('H*') }
