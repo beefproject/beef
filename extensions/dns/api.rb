@@ -24,7 +24,7 @@ module BeEF
           #
           # @param http_hook_server [BeEF::Core::Server] HTTP server instance
           def self.pre_http_start(_http_hook_server)
-            servers, interfaces, _, _, _, _ = get_dns_config # get the DNS configuration
+            servers, interfaces, = get_dns_config # get the DNS configuration
 
             # Start the DNS server
             dns = BeEF::Extension::Dns::Server.instance
