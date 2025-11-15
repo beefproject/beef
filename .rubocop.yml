@@ -39,6 +39,9 @@ Naming/ClassAndModuleCamelCase:
 Style/Documentation:
   Enabled: false
 
+Style/GuardClause:
+  Enabled: false
+
 Style/RescueStandardError:
   Enabled: false
 
