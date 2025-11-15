@@ -80,7 +80,7 @@ end
 # @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
 #
 config = if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
-  BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
+           BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
 else
   BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
          end
