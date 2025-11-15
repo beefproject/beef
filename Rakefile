@@ -106,7 +106,7 @@ task :xserver_start do
   delays = [2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 10 seconds
     printf '.'
-    sleep (i) # increase the . display rate
+    sleep(i) # increase the . display rate
   end
   puts '.'
 end
@@ -145,7 +145,7 @@ task beef_start: 'beef' do
   delays = [5, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   delays.each do |i| # delay for a few seconds
     printf '.'
-    sleep (i)
+    sleep(i)
   end
   puts ".\n\n"
 end
@@ -173,7 +173,7 @@ task msf_start: '/tmp/msf-test/msfconsole' do
   delays = [10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 45 seconds
     printf '.'
-    sleep (i) # increase the . display rate
+    sleep(i) # increase the . display rate
   end
   puts '.'
 end
