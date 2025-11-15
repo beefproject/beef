@@ -1,6 +1,6 @@
 class BeefRestAPI
 
-# initialize
+  # initialize
   def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
     @user = user
     @pass = pass
@@ -8,11 +8,11 @@ class BeefRestAPI
     @token = nil
   end
 
-################################################################################
-### BeEF core API
-################################################################################
+  ################################################################################
+  ### BeEF core API
+  ################################################################################
 
-# authenticate and get API token
+  # authenticate and get API token
   def auth
     print_verbose 'Retrieving authentication token'
     begin
@@ -29,7 +29,7 @@ class BeefRestAPI
     end
   end
 
-# get BeEF version
+  # get BeEF version
   def version
     begin
       response = RestClient.get "#{@url}server/version", { :params => { :token => @token } }
@@ -41,7 +41,7 @@ class BeefRestAPI
     end
   end
 
-# get server mounts
+  # get server mounts
   def mounts
     begin
       response = RestClient.get "#{@url}server/mounts", { :params => { :token => @token } }
@@ -53,7 +53,7 @@ class BeefRestAPI
     end
   end
 
-# get online hooked browsers
+  # get online hooked browsers
   def online_browsers
     begin
       print_verbose 'Retrieving online browsers'
@@ -67,7 +67,7 @@ class BeefRestAPI
     end
   end
 
-# get offline hooked browsers
+  # get offline hooked browsers
   def offline_browsers 
     begin
       print_verbose 'Retrieving offline browsers'
@@ -81,7 +81,7 @@ class BeefRestAPI
     end
   end
 
-# get hooked browser details by session
+  # get hooked browser details by session
   def browser_details session
     begin
       print_verbose "Retrieving browser details for hooked browser [session: #{session}]"
@@ -95,7 +95,7 @@ class BeefRestAPI
     end
   end
 
-# delete a browser by session
+  # delete a browser by session
   def delete_browser session
     begin
       print_verbose "Removing hooked browser [session: #{session}]"
@@ -107,7 +107,7 @@ class BeefRestAPI
     end
   end
 
-# get BeEF logs
+  # get BeEF logs
   def logs
     begin
       print_verbose 'Retrieving logs'
@@ -120,7 +120,7 @@ class BeefRestAPI
     end
   end
 
-# get hooked browser logs by session
+  # get hooked browser logs by session
   def browser_logs session
     begin
       print_verbose "Retrieving browser logs [session: #{session}]"
@@ -133,11 +133,11 @@ class BeefRestAPI
     end
   end
 
-################################################################################
-### command module API
-################################################################################
+  ################################################################################
+  ### command module API
+  ################################################################################
 
-# get command module categories
+  # get command module categories
   def categories
     begin
       print_verbose 'Retrieving module categories'
@@ -150,7 +150,7 @@ class BeefRestAPI
     end
   end
 
-# get command modules
+  # get command modules
   def modules
     begin
       print_verbose 'Retrieving modules'
@@ -163,7 +163,7 @@ class BeefRestAPI
     end
   end
 
-# get module id by module short name
+  # get module id by module short name
   def get_module_id mod_name
     print_verbose "Retrieving id for module [name: #{mod_name}]"
     @modules.each do |mod|
@@ -180,7 +180,7 @@ class BeefRestAPI
     nil
   end
 
-# get command module details
+  # get command module details
   def module_details id
     begin
       print_verbose "Retrieving details for command module [id: #{id}]"
@@ -193,7 +193,7 @@ class BeefRestAPI
     end
   end
 
-# execute module
+  # execute module
   def execute_module session, mod_id, options
     print_verbose "Executing module [id: #{mod_id}, #{options}]"
     begin
@@ -212,11 +212,11 @@ class BeefRestAPI
     end
   end
 
-################################################################################
-### Metasploit API
-################################################################################
+  ################################################################################
+  ### Metasploit API
+  ################################################################################
 
-# get metasploit version
+  # get metasploit version
   def msf_version
     begin
       response = RestClient.get "#{@url}msf/version", { :params => { :token => @token } }
@@ -229,7 +229,7 @@ class BeefRestAPI
     end
   end
 
-# get metasploit jobs
+  # get metasploit jobs
   def msf_jobs
     begin
       response = RestClient.get "#{@url}msf/jobs", { :params => { :token => @token } }
@@ -242,7 +242,7 @@ class BeefRestAPI
     end
   end
 
-# get metasploit job info
+  # get metasploit job info
   def msf_job_info id
     begin
       response = RestClient.get "#{@url}msf/job/#{id}/info", { :params => { :token => @token } }
@@ -254,7 +254,7 @@ class BeefRestAPI
     end
   end
 
-# start metasploit payload handler
+  # start metasploit payload handler
   def msf_handler options
     print_verbose "Starting Metasploit payload handler [#{options}]"
     begin
@@ -274,7 +274,7 @@ class BeefRestAPI
     end
   end
 
-# stop metasploit job
+  # stop metasploit job
   def msf_job_stop id
     print_verbose "Stopping Metasploit job [id: #{id}]"
     begin
@@ -291,11 +291,11 @@ class BeefRestAPI
     end
   end
 
-################################################################################
-### Network API
-################################################################################
+  ################################################################################
+  ### Network API
+  ################################################################################
 
-# get all network hosts
+  # get all network hosts
   def network_hosts_all
     begin
       print_verbose 'Retrieving all network hosts'
@@ -308,7 +308,7 @@ class BeefRestAPI
     end
   end
 
-# get all network services
+  # get all network services
   def network_services_all
     begin
       print_verbose 'Retrieving all network services'
@@ -321,7 +321,7 @@ class BeefRestAPI
     end
   end
 
-# get network hosts by session
+  # get network hosts by session
   def network_hosts session
     begin
       print_verbose "Retrieving network hosts for hooked browser [session: #{session}]"
@@ -334,7 +334,7 @@ class BeefRestAPI
     end
   end
 
-# get network services by session
+  # get network services by session
   def network_services session
     begin
       print_verbose "Retrieving network services for hooked browser [session: #{session}]"
@@ -347,11 +347,11 @@ class BeefRestAPI
     end
   end
 
-################################################################################
-### XssRays API
-################################################################################
+  ################################################################################
+  ### XssRays API
+  ################################################################################
 
-# get all rays
+  # get all rays
   def xssrays_rays_all
     print_verbose 'Retrieving all rays'
     response = RestClient.get "#{@url}xssrays/rays", { :params => { :token => @token } }
@@ -362,7 +362,7 @@ class BeefRestAPI
     print_error "Could not retrieve rays: #{e.message}"
   end
 
-# get rays by session
+  # get rays by session
   def xssrays_rays session
     print_verbose "Retrieving rays for hooked browser [session: #{session}]"
     response = RestClient.get "#{@url}xssrays/rays/#{session}", { :params => { :token => @token } }
@@ -373,7 +373,7 @@ class BeefRestAPI
     print_error "Could not retrieve rays: #{e.message}"
   end
 
-# get all scans
+  # get all scans
   def xssrays_scans_all
     print_verbose 'Retrieving all scans'
     response = RestClient.get "#{@url}xssrays/scans", { :params => { :token => @token } }
@@ -384,7 +384,7 @@ class BeefRestAPI
     print_error "Could not retrieve scans: #{e.message}"
   end
 
-# get scans by session
+  # get scans by session
   def xssrays_scans session
     print_verbose "Retrieving scans for hooked browser [session: #{session}]"
     response = RestClient.get "#{@url}xssrays/scans/#{session}", { :params => { :token => @token } }
@@ -395,11 +395,11 @@ class BeefRestAPI
     print_error "Could not retrieve scans: #{e.message}"
   end
 
-################################################################################
-### DNS API
-################################################################################
+  ################################################################################
+  ### DNS API
+  ################################################################################
 
-# get ruleset
+  # get ruleset
   def dns_ruleset
     begin
       print_verbose 'Retrieving DNS ruleset'
@@ -412,7 +412,7 @@ class BeefRestAPI
     end
   end
 
-# add a rule
+  # add a rule
   def dns_add_rule(dns_pattern, dns_resource, dns_response)
     dns_response = [dns_response] if dns_response.is_a?(String)
     print_verbose "Adding DNS rule [pattern: #{dns_pattern}, resource: #{dns_resource}, response: #{dns_response}]"
@@ -436,7 +436,7 @@ class BeefRestAPI
     print_error "Could not add DNS rule: #{e.message}"
   end
 
-# get rule details
+  # get rule details
   def dns_get_rule(id)
     begin
       print_verbose "Retrieving DNS rule details [id: #{id}]"
@@ -449,7 +449,7 @@ class BeefRestAPI
     end
   end
 
-# delete a rule
+  # delete a rule
   def dns_delete_rule(id)
     response = RestClient.delete "#{@url}dns/rule/#{id}?token=#{@token}"
     details = JSON.parse(response.body)
@@ -459,9 +459,9 @@ class BeefRestAPI
     print_error "Could not delete DNS rule: #{e.message}"
   end
 
-################################################################################
-### Autorun
-################################################################################
+  ################################################################################
+  ### Autorun
+  ################################################################################
 
   def autorun_rules
     print_verbose 'Retrieving Autorun rules'
@@ -524,11 +524,11 @@ class BeefRestAPI
     print_error "Could not run Autorun rule #{rule_id}: #{e.message}"
   end
 
-################################################################################
-### WebRTC
-################################################################################
+  ################################################################################
+  ### WebRTC
+  ################################################################################
 
-# get webrtc status for hooked browser by session
+  # get webrtc status for hooked browser by session
   def webrtc_status id
     begin
       print_verbose "Retrieving status for hooked browser [id: #{id}]"
@@ -541,11 +541,11 @@ class BeefRestAPI
     end
   end
 
-################################################################################
-### Social Engineering
-################################################################################
+  ################################################################################
+  ### Social Engineering
+  ################################################################################
 
-# bind dropper to path
+  # bind dropper to path
   def bind(fname, path)
     print_verbose "Binding 'extensions/social_engineering/droppers/#{fname}' to '#{path}'"
     begin
@@ -560,7 +560,7 @@ class BeefRestAPI
     end
   end
 
-# clone page and bind to path
+  # clone page and bind to path
   def clone_page(url, path, use_existing, dns_spoof)
     print_verbose "Binding '#{url}' to '#{path}'"
     begin

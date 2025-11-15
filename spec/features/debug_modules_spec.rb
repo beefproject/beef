@@ -31,7 +31,7 @@ RSpec.describe 'Debug Modules Integration', run_on_long_tests: true  do
       module_yaml_data['beef']['module'].each do |module_key, module_value|
         module_category = module_value['category']
         module_name = module_value['name']
-          # some descriptions are too long and include html tags
+        # some descriptions are too long and include html tags
         module_description_sub = module_value['description'][0, 20]
 
         expect(@beef_session).to have_content(module_category, wait: PAGE_LOAD_TIMEOUT)
@@ -47,13 +47,13 @@ RSpec.describe 'Debug Modules Integration', run_on_long_tests: true  do
         expect(@beef_session).to have_content(module_description_sub, wait: PAGE_LOAD_TIMEOUT)
         expect(@beef_session).to have_content('Execute', wait: PAGE_LOAD_TIMEOUT)
 
-          # execute the module
+        # execute the module
         @beef_session.click_on('Execute')
 
-          # expect the module to make command output visible
+        # expect the module to make command output visible
         expect(@beef_session).to have_content('command 1', wait: PAGE_LOAD_TIMEOUT)
 
-          # click on the command section to display the output
+        # click on the command section to display the output
         @beef_session.all('div.x-grid3-cell-inner').each do |div|
           if div.text == 'command 1'
             div.click

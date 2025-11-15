@@ -247,7 +247,7 @@ RSpec.describe 'BeEF Extension DNS' do
 
 end
 
-  # Tests each supported type of query failure
+# Tests each supported type of query failure
 #  def test_13_failure_types
 #    begin
 #      id = @@dns.add_rule(

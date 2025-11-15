@@ -40,7 +40,7 @@ RSpec.describe 'Load All Modules Integration', run_on_long_tests: true  do
         expect(module_description_sub).not_to be_nil
         expect(module_description_sub).to be_a(String)
           
-          # print the category and module name
+        # print the category and module name
         if module_category.is_a?(Array) 
           category_tree_text =  module_category.join(' > ')
         else
@@ -48,14 +48,14 @@ RSpec.describe 'Load All Modules Integration', run_on_long_tests: true  do
         end
         print_info "Category: #{category_tree_text}, Module: #{module_name}"
           
-          # click on the module then expect the description and execute button to be visible
+        # click on the module then expect the description and execute button to be visible
         click_on_module(@beef_session, module_category, module_name)
           
-          # expect the module description and the execute button to be visible
+        # expect the module description and the execute button to be visible
         expect(@beef_session).to have_content(module_description_sub, wait: PAGE_LOAD_TIMEOUT)
         expect(@beef_session).to have_content('Execute', wait: PAGE_LOAD_TIMEOUT)
 
-          # tidy up and collapse the category tree
+        # tidy up and collapse the category tree
         collapse_category_tree(@beef_session, module_category)
       end
     end

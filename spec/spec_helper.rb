@@ -171,7 +171,7 @@ RSpec.configure do |config|
     end
   end
 
-########################################
+  ########################################
 
   def reset_beef_db
     begin
@@ -205,10 +205,10 @@ RSpec.configure do |config|
 
   # Load the server
   def load_beef_extensions_and_modules
-      # Load BeEF extensions
+    # Load BeEF extensions
     BeEF::Extensions.load
 
-      # Load BeEF modules only if they are not already loaded
+    # Load BeEF modules only if they are not already loaded
     BeEF::Modules.load if @config.get('beef.module').nil?
   end
 

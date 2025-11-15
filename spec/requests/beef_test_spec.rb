@@ -37,7 +37,7 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
       expect(port_available?) # # Check if the tcp port is open
       expect(@session.has_content?('Hooked Browsers', wait: 10))
         
-        # Log out of the session
+      # Log out of the session
       @sessoin = BeefTest.logout(@session)
       expect(@session.has_no_content?('Hooked Browsers', wait: 10))
       expect(@session.has_content?('Authentication', wait: 10))
@@ -49,27 +49,27 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
     it 'saves a screenshot' do
       session = Capybara::Session.new(:selenium_headless) if session.nil?
         
-        # Ensure the new directory does not exist
+      # Ensure the new directory does not exist
       outputDir = '/tmp'
       directory = "#{outputDir}/#{SecureRandom.hex}/"
       expect(File.directory?(directory)).to be false
 
-        # Save the screenshot
+      # Save the screenshot
       BeefTest.save_screenshot(session, directory)
 
-        # Ensure the screenshot was saved
+      # Ensure the screenshot was saved
       expect(File.directory?(directory)).to be true
       screenshot_files = Dir.glob("#{directory}/*.png")
       expect(screenshot_files.empty?).to be false
 
-        # Ensure the screenshot file is not empty and clean up
+      # Ensure the screenshot file is not empty and clean up
       screenshot_files.each do |file|
         expect(File.size(file)).to be > 0
         File.delete(file)
       end
       expect(Dir.glob("#{directory}/*.png").empty?).to be true     
         
-        # Remove the directory
+      # Remove the directory
       Dir.delete(directory)
       expect(File.directory?(directory)).to be false
     end
@@ -80,12 +80,12 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
 
   describe '.new_attacker' do
     it 'creates a new attacker session' do
-        # # Test setup
+      # # Test setup
       expect(session).not_to be_nil
 
       result = BeefTest.new_attacker(session)
         
-        # Test assertions
+      # Test assertions
       expect(result).to eq(session)
       expect(session.has_no_content?('Authentication', wait: 10))
       expect(session.has_content?('Hooked Browsers', wait: 10))
@@ -95,14 +95,14 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
 
   describe '.new_victim' do
     it 'creates a new victim session' do
-        # Test setup
+      # Test setup
       allow(victim).to receive(:visit)
       expect(victim).not_to be_nil
 
-        # Test execution
+      # Test execution
       result = BeefTest.new_victim(victim)
 
-        # Test assertions
+      # Test assertions
       expect(victim).to have_received(:visit).with(VICTIM_URL)
       expect(result).to eq(victim)
       victim.reset_session!

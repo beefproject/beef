@@ -13,7 +13,7 @@ RSpec.describe 'BeEF API Rate Limit', run_on_long_tests: true  do
  	end
 
 	 after(:each) do
- 		# Shutting down server
+ 		 # Shutting down server
     Process.kill('KILL', @pid) unless @pid.nil?
     Process.wait(@pid) unless @pid.nil? # Ensure the process has exited and the port is released 
     @pid = nil

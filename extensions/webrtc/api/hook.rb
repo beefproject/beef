@@ -63,7 +63,7 @@ module BeEF
               } unless rtcmanagementoutput.empty?
               # ws.send(content + @body,hb.session)
               ws.send(@body,hb.session)
-               #if we use WebSockets, just reply wih the component contents
+            #if we use WebSockets, just reply wih the component contents
             else # if we use XHR-polling, add the component to the main hook file
               rtcsignaloutput.each {|o|
                 add_rtcsignal_to_body o

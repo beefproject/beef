@@ -41,7 +41,7 @@ def navigate_to_hooked_browser(session, hooked_browser_text = nil)
   hooked_browser_text = '127.0.0.1' if hooked_browser_text.nil?
   expect(session).to have_content(hooked_browser_text, wait: BROWSER_HOOKING_TIMEOUT)
 
-    # click on the hooked browser in the leaf
+  # click on the hooked browser in the leaf
   session.all('a', text: hooked_browser_text)[1].click
   expect(session).to have_content('Commands', wait: PAGE_LOAD_TIMEOUT)
 end
@@ -52,7 +52,7 @@ def navigate_to_category(session, category_name = nil)
 
   navigate_to_hooked_browser unless session.has_content?('Current Browser')
 
-    # ensure the command module tree is visible
+  # ensure the command module tree is visible
   session.click_on('Commands')
   expect(session).to have_content(category_name, wait: PAGE_LOAD_TIMEOUT)
 
@@ -62,7 +62,7 @@ end
 def expand_category_tree(session, category, module_name = nil)
   if category.is_a?(Array)
     category.each do |category_name|
-        # find the category element and scroll to it
+      # find the category element and scroll to it
       session.all('div', text: category_name).each do |element|
         begin
           element_text = element.text
@@ -94,7 +94,7 @@ end
 def collapse_category_tree(session, category)
   if category.is_a?(Array)
     category.reverse.each do |category_name|
-        # Collapse the sub-folder
+      # Collapse the sub-folder
       session.scroll_to(category_name)
       session.first(:link_or_button, category_name + ' ').click
     end 
@@ -105,10 +105,10 @@ def collapse_category_tree(session, category)
 end
 
 def click_on_module(session, category, module_name)
-    # expand the category tree to make the module visible
+  # expand the category tree to make the module visible
   expand_category_tree(session, category, module_name)
     
-    # click on the module in the expanded tree
+  # click on the module in the expanded tree
   session.scroll_to(module_name)
   expect(session).to have_content(module_name, wait: PAGE_LOAD_TIMEOUT)
   modules = session.all(:link_or_button, module_name)
