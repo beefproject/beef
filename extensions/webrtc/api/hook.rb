@@ -64,7 +64,7 @@ module BeEF
                 }
               end
               # ws.send(content + @body,hb.session)
-              ws.send(@body,hb.session)
+              ws.send(@body, hb.session)
             # if we use WebSockets, just reply wih the component contents
             else # if we use XHR-polling, add the component to the main hook file
               unless rtcsignaloutput.empty?
