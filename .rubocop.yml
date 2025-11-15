@@ -39,6 +39,9 @@ Metrics/PerceivedComplexity:
 Naming/ClassAndModuleCamelCase:
   Enabled: false
 
+Style/CommentAnnotation:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
