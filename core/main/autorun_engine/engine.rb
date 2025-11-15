@@ -163,7 +163,7 @@ module BeEF
             # check if the browser version matches
             browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
             return false unless browser_version_match
-            else
+          else
               browser_match = false
               rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
                 if b == browser || b == 'ALL'
