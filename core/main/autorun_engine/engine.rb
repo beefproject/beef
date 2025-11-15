@@ -165,13 +165,13 @@ module BeEF
             return false unless browser_version_match
           else
             browser_match = false
-              rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
-                if b == browser || b == 'ALL'
-                  browser_match = true
-                  break
-                end
+            rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
+              if b == browser || b == 'ALL'
+                browser_match = true
+                break
               end
-              return false unless browser_match
+            end
+            return false unless browser_match
           end
 
           true
