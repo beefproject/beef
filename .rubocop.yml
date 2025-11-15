@@ -8,6 +8,9 @@ AllCops:
     - "spec/**/*"
     - "test/**/*"
 
+Bundler/OrderedGems:
+  Enabled: false
+
 Layout/LineLength:
   Enabled: true
   Max: 180
