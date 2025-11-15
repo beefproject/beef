@@ -17,7 +17,7 @@ class Gmail_phishing < BeEF::Core::Command
     [
       { 'name' => 'xss_hook_url',
         'description' => 'The URI including the XSS to hook a browser. If the XSS is not exploitable via an URI, ' \
-        'simply leave this field empty, but this means you will loose the hooked browser after executing this module.',
+                         'simply leave this field empty, but this means you will loose the hooked browser after executing this module.',
         'ui_label' => 'XSS hook URI',
         'value' => xss_hook_url,
         'width' => '300px' }, {
@@ -29,7 +29,7 @@ class Gmail_phishing < BeEF::Core::Command
         }, {
           'name' => 'wait_seconds_before_redirect',
           'description' => 'When the user submits his credentials on the phishing page, we have to wait (in ms) ' \
-          'before we redirect to the real Gmail page, so that BeEF gets the credentials in time.',
+                           'before we redirect to the real Gmail page, so that BeEF gets the credentials in time.',
           'ui_label' => 'Redirect delay (ms)',
           'value' => wait_seconds_before_redirect,
           'width' => '100px'
