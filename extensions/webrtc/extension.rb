@@ -6,7 +6,7 @@
 module BeEF
   module Extension
     module WebRTC
-    	 extend BeEF::API::Extension
+       extend BeEF::API::Extension
 
       @short_name = 'webrtc'
       @full_name = 'WebRTC'
