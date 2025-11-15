@@ -16,14 +16,14 @@ RSpec.describe 'Debug Modules Integration', run_on_long_tests: true  do
   after(:each) do
     stop_beef_and_unhook_browser(@pid, @beef_session, @hooked_browser)
   end
-    
+
   it 'Test beef.debug module' do
     click_on_module(@beef_session, 'Debug', 'Test beef.debug')
     expect(@beef_session).to have_content('Execute', wait: PAGE_LOAD_TIMEOUT)
     expect(@beef_session).to have_content('244', wait: PAGE_LOAD_TIMEOUT) # Module ID
     expect(@beef_session).to have_content('Debug Message:', wait: PAGE_LOAD_TIMEOUT)
   end
-    
+
   it 'Load all debug modules' do
     Dir.glob('modules/debug/**/config.yaml').each do |file|
       module_yaml_data = YAML.load_file(file)
@@ -63,12 +63,12 @@ RSpec.describe 'Debug Modules Integration', run_on_long_tests: true  do
 
         if module_name == 'Return Image' # this module returns an image not a string
           image_selector = "img[src^='data:image/png;base64,iVBORw0KGgo']"
-          expect(@beef_session).to have_css(image_selector, wait: PAGE_LOAD_TIMEOUT) 
+          expect(@beef_session).to have_css(image_selector, wait: PAGE_LOAD_TIMEOUT)
         else
           expect(@beef_session).to have_content('data: ', wait: PAGE_LOAD_TIMEOUT)
         end
       end
     end
   end
-    
+
 end

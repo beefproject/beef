@@ -20,7 +20,7 @@ class BeefTest
   def self.login(session = nil)
     session = Capybara::Session.new(:selenium_headless) if session.nil?
     session.visit(ATTACK_URL)
-    
+
     session.has_content?('Authentication', wait: 10)
 
     # enter the credentials

@@ -241,7 +241,7 @@ RSpec.configure do |config|
       exit
     end
     load_beef_extensions_and_modules
-    
+
     # Grab DB file and regenerate if requested
     db_file = @config.get('beef.database.file')
 
@@ -326,7 +326,7 @@ RSpec.configure do |config|
     exit if pid.nil?
     # Shutting down server
     Process.kill('KILL', pid) unless pid.nil?
-    Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
-    pid = nil       
+    Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released
+    pid = nil
   end
 end

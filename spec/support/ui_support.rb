@@ -70,7 +70,7 @@ def expand_category_tree(session, category, module_name = nil)
 
           match_data = element_text.match(/\A([\w\s]+)\s\((\d+)\)\z/)
           next unless match_data
-      
+
           # scroll to the element
           session.scroll_to(element)
       rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
@@ -90,14 +90,14 @@ def expand_category_tree(session, category, module_name = nil)
   end
   expect(session).to have_content(module_name, wait: PAGE_LOAD_TIMEOUT)
 end
-        
+
 def collapse_category_tree(session, category)
   if category.is_a?(Array)
     category.reverse.each do |category_name|
       # Collapse the sub-folder
       session.scroll_to(category_name)
       session.first(:link_or_button, category_name + ' ').click
-    end 
+    end
   else
     session.scroll_to(category)
     session.first(:link_or_button, category + ' ').click
@@ -107,7 +107,7 @@ end
 def click_on_module(session, category, module_name)
   # expand the category tree to make the module visible
   expand_category_tree(session, category, module_name)
-    
+
   # click on the module in the expanded tree
   session.scroll_to(module_name)
   expect(session).to have_content(module_name, wait: PAGE_LOAD_TIMEOUT)

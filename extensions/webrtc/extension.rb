@@ -12,7 +12,7 @@ module BeEF
       @short_name = 'webrtc'
       @full_name = 'WebRTC'
       @description = 'WebRTC extension to all browsers to connect to each other (P2P) with WebRTC'
-      
+
     end
   end
 end

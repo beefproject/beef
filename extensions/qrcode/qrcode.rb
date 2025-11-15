@@ -28,7 +28,7 @@ module BeEF
               fullurls << target
             # relative URLs
             else
-              
+
               # Retrieve the list of network interfaces from BeEF::Core::Console::Banners
               interfaces = BeEF::Core::Console::Banners.interfaces
 

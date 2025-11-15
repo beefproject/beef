@@ -54,7 +54,7 @@ namespace :ssl do
     end
     Rake::Task['ssl:replace'].invoke
   end
-  
+
   desc 'Re-generate SSL certificate'
   task :replace do
     if File.file?('/usr/local/bin/openssl')

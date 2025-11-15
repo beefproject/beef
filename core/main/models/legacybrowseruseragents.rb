@@ -9,7 +9,7 @@ module BeEF
       #
       # Objects stores known 'legacy' browser User Agents.
       #
-      # This table is used to determine if a hooked browser is a 'legacy' 
+      # This table is used to determine if a hooked browser is a 'legacy'
       # browser.
       #
       # TODO: make it an actual table

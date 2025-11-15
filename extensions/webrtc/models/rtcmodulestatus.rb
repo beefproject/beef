@@ -11,16 +11,16 @@ module BeEF
       # Table stores the webrtc status information
       # This includes things like connection status, and executed modules etc
       #
-      
+
 
       class Rtcmodulestatus < BeEF::Core::Model
-          
+
         belongs_to :hooked_browser
         belongs_to :command_module
-      
+
 
       end
-      
+
     end
   end
 end

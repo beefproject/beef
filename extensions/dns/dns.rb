@@ -153,7 +153,7 @@ module BeEF
 
         def stop
           return unless @server_started # Check if the server was started
-      
+
           # Logic to stop the Async::DNS server
           puts EventMachine.stop if EventMachine.reactor_running?
           @server_started = false # Reset the server started flag

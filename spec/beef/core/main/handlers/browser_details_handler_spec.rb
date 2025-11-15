@@ -19,7 +19,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
     if ENV['RESET_DB']
       File.delete(db_file) if File.exist?(db_file)
     end
-    
+
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @username = @config.get('beef.credentials.user')

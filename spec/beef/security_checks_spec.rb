@@ -11,7 +11,7 @@ RSpec.describe 'BeEF Security Checks' do
           clean_line = line.downcase.gsub(/[ ]/, '')
           if clean_line[0] != '#' # check first non-whitespace position
             raise "Illegal use of 'eval' found in\n Path: #{path}\nLine:  #{line}"
-          end 
+          end
         end
       end
     end

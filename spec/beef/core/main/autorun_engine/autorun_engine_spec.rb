@@ -57,7 +57,7 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
         ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
       end
     end
-    
+
     BeEF::Core::Migration.instance.update_db!
 
     # add AutoRunEngine rule

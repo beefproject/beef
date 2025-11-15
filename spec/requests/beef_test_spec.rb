@@ -35,7 +35,7 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
     it 'logs out successfully' do
       expect(port_available?) # # Check if the tcp port is open
       expect(@session.has_content?('Hooked Browsers', wait: 10))
-        
+
       # Log out of the session
       @sessoin = BeefTest.logout(@session)
       expect(@session.has_no_content?('Hooked Browsers', wait: 10))
@@ -47,7 +47,7 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
   describe '.save_screenshot' do
     it 'saves a screenshot' do
       session = Capybara::Session.new(:selenium_headless) if session.nil?
-        
+
       # Ensure the new directory does not exist
       outputDir = '/tmp'
       directory = "#{outputDir}/#{SecureRandom.hex}/"
@@ -66,8 +66,8 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
         expect(File.size(file)).to be > 0
         File.delete(file)
       end
-      expect(Dir.glob("#{directory}/*.png").empty?).to be true     
-        
+      expect(Dir.glob("#{directory}/*.png").empty?).to be true
+
       # Remove the directory
       Dir.delete(directory)
       expect(File.directory?(directory)).to be false
@@ -83,7 +83,7 @@ RSpec.describe BeefTest, run_on_long_tests: true  do
       expect(session).not_to be_nil
 
       result = BeefTest.new_attacker(session)
-        
+
       # Test assertions
       expect(result).to eq(session)
       expect(session.has_no_content?('Authentication', wait: 10))

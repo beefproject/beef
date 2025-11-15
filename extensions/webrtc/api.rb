@@ -6,11 +6,11 @@
 module BeEF
   module Extension
     module WebRTC
-      
+
       module RegisterHttpHandler
-        
+
         BeEF::API::Registrar.instance.register(BeEF::Extension::WebRTC::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
-        
+
         # We register the http handler for the WebRTC signalling extension.
         # This http handler will handle WebRTC signals from browser to browser
 
@@ -20,7 +20,7 @@ module BeEF
           beef_server.mount('/rtcmessage', BeEF::Extension::WebRTC::MessengeHandler)
           beef_server.mount('/api/webrtc', BeEF::Extension::WebRTC::WebRTCRest.new)
         end
-        
+
       end
 
       module RegisterPreHookCallback
@@ -35,7 +35,7 @@ module BeEF
         end
 
       end
-      
+
     end
   end
 end

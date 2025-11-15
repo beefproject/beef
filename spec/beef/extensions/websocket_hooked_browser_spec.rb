@@ -22,7 +22,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     if ENV['RESET_DB']
       File.delete(db_file) if File.exist?(db_file)
     end
-    
+
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @config.set('beef.http.websocket.secure', false)
@@ -59,7 +59,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
         ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
       end
     end
-    
+
     BeEF::Core::Migration.instance.update_db!
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'

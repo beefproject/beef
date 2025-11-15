@@ -44,7 +44,7 @@ RSpec.describe 'BeEF Extension AdminUI' do
     expect(@config.set('beef.restrictions.permitted_ui_subnet',['192.168.0.10'])).to eq true
     expect(@config.set('beef.http.allow_reverse_proxy',false)).to eq true
     env = { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/ui/authentication' }
-    request = Rack::Request.new(env) 
+    request = Rack::Request.new(env)
     request.add_header('HTTP_X_FORWARDED_FOR','192.168.0.10')
     request.add_header('REMOTE_ADDR','192.168.0.20')
     expect(ui.get_ip(request)).to eq '192.168.0.20'

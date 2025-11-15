@@ -4,8 +4,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
-# A lot of this logic is cloned from the requester extension, which had a sane way of sending/recvng 
-# JS to the clients.. 
+# A lot of this logic is cloned from the requester extension, which had a sane way of sending/recvng
+# JS to the clients..
 
 module BeEF
   module Extension
@@ -54,7 +54,7 @@ module BeEF
             # The below is how antisnatchor was managing insertion of messages dependent on WebSockets or not
             # Hopefully this still works
             if config.get('beef.http.websocket.enable') && ws.getsocket(hb.session)
-              
+
               rtcsignaloutput.each {|o|
                 add_rtcsignal_to_body o
               } unless rtcsignaloutput.empty?

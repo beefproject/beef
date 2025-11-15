@@ -56,7 +56,7 @@ RSpec.describe 'BeEF Filters' do
       expect(BeEF::Filters::exists?('A', 'B')).to be(false)
     end
   end
-  
+
   context 'has_null?' do
     context 'false with' do
       it 'general' do
@@ -147,7 +147,7 @@ RSpec.describe 'BeEF Filters' do
         end
       end
     end
-    
+
   end
 
   context 'nums_only?' do
@@ -213,7 +213,7 @@ RSpec.describe 'BeEF Filters' do
       end
     end
   end
-  
+
   context 'has_whitespace_char?' do
     it 'false with general' do
       chars = ['', 'A', 'A33333', "\x0033333", '0', '}', '.', '+', '-', '-1', '0.A']
@@ -229,7 +229,7 @@ RSpec.describe 'BeEF Filters' do
       end
     end
   end
-  
+
   context 'alphanums_only?' do
     context 'false with' do
       it 'general' do
@@ -300,7 +300,7 @@ RSpec.describe 'BeEF Filters' do
         end
       end
     end
-    
+
   end
 
   context 'has_valid_param_chars?' do
