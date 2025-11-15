@@ -93,7 +93,7 @@ BeEF.logger.level = config.get('beef.debug') ? Logger::DEBUG : Logger::WARN
 #
 # @note Check the system language settings for UTF-8 compatibility
 #
-env_lang = ENV['LANG']
+env_lang = ENV.fetch('LANG', nil)
 if env_lang !~ /(utf8|utf-8)/i
   print_warning "Warning: System language $LANG '#{env_lang}' does not appear to be UTF-8 compatible."
   if env_lang =~ /\A([a-z]+_[a-z]+)\./i

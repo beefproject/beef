@@ -83,7 +83,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
       @caps['name'] = self.class.description || ENV['name'] || 'no-name'
       @caps['browserstack.local'] = true
       @caps['browserstack.video'] = true
-      @caps['browserstack.localIdentifier'] = ENV['BROWSERSTACK_LOCAL_IDENTIFIER']
+      @caps['browserstack.localIdentifier'] = ENV.fetch('BROWSERSTACK_LOCAL_IDENTIFIER', nil)
 
       @driver = Selenium::WebDriver.for(:remote,
                                         url: "http://#{CONFIG['user']}:#{CONFIG['key']}@#{CONFIG['server']}/wd/hub",
