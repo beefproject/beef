@@ -135,7 +135,7 @@ module BeEF
           if !os_version.nil? || rule.os_version != 'ALL'
             os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
             os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
-            return false unless (os_major_version_match && os_minor_version_match)
+            return false unless os_major_version_match && os_minor_version_match
           end
 
           true

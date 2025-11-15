@@ -86,7 +86,7 @@ module BeEF
 
           # Perform logic depending on message (updating database)
           puts "message = '#{message}'"
-          if (message == 'ICE Status: connected')
+          if message == 'ICE Status: connected'
             # Find existing status message
             stat = BeEF::Core::Models::Rtcstatus.first(hooked_browser_id: zombie_db.id, target_hooked_browser_id: peer_zombie_db.id) || nil
             unless stat.nil?
@@ -100,7 +100,7 @@ module BeEF
               stat2.updated_at = Time.now
               stat2.save
             end
-          elsif (message.end_with?('disconnected'))
+          elsif message.end_with?('disconnected')
             stat = BeEF::Core::Models::Rtcstatus.first(hooked_browser_id: zombie_db.id, target_hooked_browser_id: peer_zombie_db.id) || nil
             unless stat.nil?
               stat.status = 'Disconnected'
@@ -113,7 +113,7 @@ module BeEF
               stat2.updated_at = Time.now
               stat2.save
             end
-          elsif (message == 'Stayin alive')
+          elsif message == 'Stayin alive'
             stat = BeEF::Core::Models::Rtcstatus.first(hooked_browser_id: zombie_db.id, target_hooked_browser_id: peer_zombie_db.id) || nil
             unless stat.nil?
               stat.status = 'Stealthed!!'
@@ -126,7 +126,7 @@ module BeEF
               stat2.updated_at = Time.now
               stat2.save
             end
-          elsif (message == 'Coming out of stealth...')
+          elsif message == 'Coming out of stealth...'
             stat = BeEF::Core::Models::Rtcstatus.first(hooked_browser_id: zombie_db.id, target_hooked_browser_id: peer_zombie_db.id) || nil
             unless stat.nil?
               stat.status = 'Connected'
@@ -139,7 +139,7 @@ module BeEF
               stat2.updated_at = Time.now
               stat2.save
             end
-          elsif (message.start_with?('execcmd'))
+          elsif message.start_with?('execcmd')
             mod = %r{\(/command/(.*)\.js\)}.match(message)[1]
             resp = /Result:.(.*)/.match(message)[1]
             stat = BeEF::Core::Models::Rtcmodulestatus.new(hooked_browser_id: zombie_db.id,
