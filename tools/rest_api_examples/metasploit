@@ -86,6 +86,7 @@ print_debug jobs
 # Retrieve msf job details
 jobs.each do |job_id,job_name|
   next if job_id !~ /\A\d+\Z/
+
   print_status "Retrieving details for Metasploit job [id: #{job_id}] [#{job_name}]"
   details = @api.msf_job_info(job_id)
   print_debug details

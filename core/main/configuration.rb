@@ -42,6 +42,7 @@ module BeEF
       # @return [Hash] YAML formatted hash
       def load(file)
         return nil unless File.exist?(file)
+
         YAML.safe_load(File.binread(file))
       end
 

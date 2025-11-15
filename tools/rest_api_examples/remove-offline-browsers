@@ -74,6 +74,7 @@ print_debug hooks
 # Remove each offline browser
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Removing hooked browser [id: #{hook['id']}]"
   details = @api.delete_browser(hook['session'])
   print_debug details

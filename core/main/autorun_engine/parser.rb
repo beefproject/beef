@@ -28,11 +28,13 @@ module BeEF
           unless modules.size == execution_delay.size
             raise ArgumentError, "Number of execution_delay values (#{execution_delay.size}) must be consistent with number of modules (#{modules.size})"
           end
+
           execution_delay.each { |delay| raise TypeError, "Invalid execution_delay value: #{delay}. Values must be Integers." unless delay.is_a?(Integer) }
 
           unless modules.size == execution_order.size
             raise ArgumentError, "Number of execution_order values (#{execution_order.size}) must be consistent with number of modules (#{modules.size})"
           end
+
           execution_order.each { |order| raise TypeError, "Invalid execution_order value: #{order}. Values must be Integers." unless order.is_a?(Integer) }
 
           # if multiple browsers were specified, check each browser

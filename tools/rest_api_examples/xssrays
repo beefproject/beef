@@ -81,11 +81,13 @@ print_debug hooks
 # Retrieve rays for each hooked browser
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving rays for browser [id: #{hook['id']}]"
   rays = @api.xssrays_rays(hook['session'])
   print_debug rays
   rays['rays'].each do |ray|
     next if ray['id'].nil?
+
     print_verbose "#{ray['vector_name']} (#{ray['vector_method']})"
   end
 end
@@ -93,11 +95,13 @@ end
 # Retrieve scans for each hooked browser
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving scans for browser [id: #{hook['id']}]"
   scans = @api.xssrays_scans(hook['session'])
   print_debug scans
   scans['scans'].each do |scan|
     next if scan['id'].nil?
+
     print_verbose "Scan [#{scan['id']}] on domain #{scan['domain']}"
   end
 end

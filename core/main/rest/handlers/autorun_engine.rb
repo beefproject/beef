@@ -73,6 +73,7 @@ module BeEF
           rule_id = params[:rule_id]
           rule = BeEF::Core::Models::Rule.find(rule_id)
           raise InvalidParameterError, 'id' if rule.nil?
+
           rule.destroy
 
           { 'success' => true }.to_json
@@ -91,6 +92,7 @@ module BeEF
           rule_id = params[:rule_id]
           rule = BeEF::Core::Models::Rule.find(rule_id)
           raise InvalidParameterError, 'id' if rule.nil?
+
           data = JSON.parse request.body.read
           rloader = BeEF::Core::AutorunEngine::RuleLoader.instance
           rloader.update_rule_json(rule_id, data)

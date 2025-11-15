@@ -67,6 +67,7 @@ def expand_category_tree(session, category, module_name = nil)
                 begin
                     element_text = element.text
                     next unless element_text.start_with?(category_name)
+
                     match_data = element_text.match(/\A([\w\s]+)\s\((\d+)\)\z/)
                     next unless match_data
                 

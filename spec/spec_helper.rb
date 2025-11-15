@@ -89,6 +89,7 @@ module BeEF
         def method_missing(m, *args, &blk)
           lg = (self.logger ||= Logger.new($stdout))
           return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+
           super
         end
         def respond_to_missing?(m, include_priv = false)
@@ -115,6 +116,7 @@ unless defined?(::Console) && ::Console.respond_to?(:level=)
       def method_missing(m, *args, &blk)
         lg = (self.logger ||= Logger.new($stdout))
         return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+
         super
       end
       def respond_to_missing?(m, include_priv = false)

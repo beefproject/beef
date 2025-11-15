@@ -37,6 +37,7 @@ module BeEF
                 interfaces.each do |int|
                   # Skip the loop iteration if the interface address is '0.0.0.0' (which generally represents all IPv4 addresses on the local machine)
                   next if int == '0.0.0.0'
+
                   # Construct full URLs using the network interface address, and add them to the fullurls array
                   # The URL is composed of the BeEF protocol, interface address, BeEF port, and the target path
                   fullurls << "#{beef_proto}://#{int}:#{beef_port}#{target}"

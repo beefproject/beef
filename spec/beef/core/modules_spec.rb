@@ -26,6 +26,7 @@ RSpec.describe 'BeEF Modules' do
   it 'safe client debug log' do
     Dir['../../modules/**/*.js'].each do |path|
       next unless File.file?(path)
+
       File.open(path) do |f|
         f.grep(/\bconsole\.log\W*\(/m) do |line|
           fail "Function 'console.log' instead of 'beef.debug' inside\n Path: #{path}\nLine: #{line}"
@@ -37,6 +38,7 @@ RSpec.describe 'BeEF Modules' do
   it 'safe variable decleration' do
     Dir['../../modules/**/*.js'].each do |path|
       next unless File.file?(path)
+
       File.open(path) do |f|
         f.grep(/\blet\W+[a-zA-Z0-9_\.]+\W*=/) do |line|
           fail "Variable declared with 'let' instead of 'var' inside\n Path: #{path}\nLine: #{line}"

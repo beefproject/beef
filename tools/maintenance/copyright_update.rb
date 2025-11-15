@@ -38,6 +38,7 @@ new_copyright = 'Copyright (c) 2006-2025'
 
 Dir.glob("../../**/*.{rb,js,yaml,html,md,txt,css,c,nasm,java,php,as}").each do |file|
   next if File.basename(file) == 'copyright_update.rb'  # Skip this file
+
   update_copyright(file, old_copyright, new_copyright)
 end
 

@@ -230,10 +230,12 @@ module BeEF
             if opts.key?('ver')
               if subv.key?('min_ver')
                 break unless subv['min_ver'].is_a?(Integer) && opts['ver'].to_i >= subv['min_ver']
+
                 rating += 1
               end
               if subv.key?('max_ver')
                 break unless (subv['max_ver'].is_a?(Integer) && opts['ver'].to_i <= subv['max_ver']) || subv['max_ver'] == 'latest'
+
                 rating += 1
               end
             end

@@ -71,6 +71,7 @@ logs = @api.logs
 print_debug logs
 logs['logs'].each do |log|
   next if log['id'].nil?
+
   print_verbose "#{log['date']} - #{log['event']}"
 end
 
@@ -82,11 +83,13 @@ print_debug hooks
 # Retrieve hooked browser logs
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving logs for browser [id: #{hook['id']}]"
   logs = @api.browser_logs(hook['session'])
   print_debug logs
   logs['logs'].each do |log|
     next if log['id'].nil?
+
     print_verbose "#{log['date']} - #{log['event']}"
   end
 end

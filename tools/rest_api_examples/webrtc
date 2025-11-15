@@ -74,6 +74,7 @@ print_debug hooks
 # Retrieve hooked browser details
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving WebRTC status for browser [id: #{hook['id']}]"
   details = @api.webrtc_status(hook['id'])
   print_debug details

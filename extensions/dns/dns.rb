@@ -121,6 +121,7 @@ module BeEF
             Thread.new do
               EventMachine.next_tick do
                 next if @server_started # Check if the server was already started
+
                 upstream = options[:upstream] || nil
 
                 listen = options[:listen] || nil

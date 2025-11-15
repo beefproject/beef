@@ -77,6 +77,7 @@ print_debug modules
 # Retrieve module details
 modules.each do |m|
   next if m['id'].nil?
+
   print_status "Retrieving module details [id: #{m['id']}]"
   details = @api.module_details(m['id'])
   print_debug details
@@ -91,6 +92,7 @@ print_debug hooks
 mod_id = @api.get_module_id "Alert_dialog"
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Executing module [id: #{mod_id}, browser: #{hook['id']}]"
   result = @api.execute_module(hook['session'], mod_id, { "text" => "hello!" })
   print_debug result

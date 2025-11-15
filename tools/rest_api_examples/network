@@ -82,11 +82,13 @@ print_debug hooks
 # Retrieve network hosts for each hooked browser
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving network hosts for browser [id: #{hook['id']}]"
   hosts = @api.network_hosts(hook['session'])
   print_debug hosts
   hosts['hosts'].each do |host|
     next if host['id'].nil?
+
     print_verbose "#{host['ip']}" + (" - #{host['type']}" unless host['type'].nil?).to_s
   end
 end
@@ -94,11 +96,13 @@ end
 # Retrieve network services for each hooked browser
 hooks.each do |hook|
   next if hook['id'].nil?
+
   print_status "Retrieving network services for browser [id: #{hook['id']}]"
   services = @api.network_services(hook['session'])
   print_debug services
   services['services'].each do |service|
     next if service['id'].nil?
+
     print_verbose "#{service['ip']}:#{service['port']}" + (" - #{service['type']}" unless service['type'].nil?).to_s
   end
 end
