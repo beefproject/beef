@@ -98,7 +98,7 @@ end
 ################################
 # X11 set up
 
-@xserver_process_id = nil;
+@xserver_process_id = nil
 
 task :xserver_start do
   printf 'Starting X11 Server (wait 10 seconds)...'
@@ -119,8 +119,8 @@ end
 ################################
 # BeEF environment set up
 
-@beef_process_id = nil;
-@beef_config_file = 'tmp/rk_beef_conf.yaml';
+@beef_process_id = nil
+@beef_config_file = 'tmp/rk_beef_conf.yaml'
 
 task beef_start: 'beef' do
   # read environment param for creds or use bad_fred
@@ -165,7 +165,7 @@ end
 ################################
 # MSF environment set up
 
-@msf_process_id = nil;
+@msf_process_id = nil
 
 task msf_start: '/tmp/msf-test/msfconsole' do
   printf 'Starting MSF (wait 45 seconds)...'
