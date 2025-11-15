@@ -458,7 +458,7 @@ module BeEF
           print_debug("Hooked browser [id:#{zombie.id}] has IP [ip: #{zombie.ip}]")
 
           if !os_name.nil? and !os_version.nil?
-            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name + '-' + os_version)
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: "#{os_name}-#{os_version}")
           elsif !os_name.nil?
             BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name)
           else

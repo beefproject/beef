@@ -32,7 +32,7 @@ module BeEF
             @allocations[url] = { 'target' => target }
             @http_server.mount(url, BeEF::Core::NetworkStack::Handlers::Redirector.new(target))
             @http_server.remap
-            print_info 'Redirector to [' + target + '] bound to url [' + url + ']'
+            print_info "Redirector to [#{target}] bound to url [#{url}]"
             url
           rescue StandardError => e
             print_error "Failed to mount #{path} : #{e.message}"
@@ -53,7 +53,7 @@ module BeEF
               BeEF::Core::NetworkStack::Handlers::Raw.new(status, header, body)
             )
             @http_server.remap
-            print_info 'Raw HTTP bound to url [' + url + ']'
+            print_info "Raw HTTP bound to url [#{url}]"
             url
           rescue StandardError => e
             print_error "Failed to mount #{path} : #{e.message}"
@@ -218,8 +218,8 @@ module BeEF
           # @param [Integer] length The amount of characters to be used when generating a random URL
           # @return [String] Generated URL
           def build_url(path, extension, length = 20)
-            url = path.nil? ? '/' + rand(36**length).to_s(36) : path
-            url += extension.nil? ? '' : '.' + extension
+            url = path.nil? ? "/#{rand(36**length).to_s(36)}" : path
+            url += extension.nil? ? '' : ".#{extension}"
             url
           end
 

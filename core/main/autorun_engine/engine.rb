@@ -504,9 +504,9 @@ module BeEF
 
             if config.get('beef.extension.evasion.enable')
               evasion = BeEF::Extension::Evasion::Evasion.instance
-              command_body = evasion.obfuscate(command_module.output) + "\n\n"
+              command_body = "#{evasion.obfuscate(command_module.output)}\n\n"
             else
-              command_body = command_module.output + "\n\n"
+              command_body = "#{command_module.output}\n\n"
             end
 
             # @note prints the event to the console

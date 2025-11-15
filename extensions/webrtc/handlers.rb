@@ -90,7 +90,7 @@ module BeEF
           BeEF::Core::Logger.instance.register('WebRTC', "Browser:#{zombie_db.id} received message from Browser:#{peer_zombie_db.id}: #{message}")
 
           # Perform logic depending on message (updating database)
-          puts "message = '" + message + "'"
+          puts "message = '#{message}'"
           if (message == 'ICE Status: connected')
             # Find existing status message
             stat = BeEF::Core::Models::Rtcstatus.first(hooked_browser_id: zombie_db.id, target_hooked_browser_id: peer_zombie_db.id) || nil

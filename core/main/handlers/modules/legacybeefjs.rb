@@ -46,22 +46,22 @@ module BeEF
                   print_debug "Excluding #{ext_js_sub_file} from core files obfuscation list"
                   # do not obfuscate the file
                   ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                  ext_js_to_not_obfuscate << ("#{File.read(ext_js_sub_file_path)}\n\n")
                 else
                   ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                  ext_js_to_obfuscate << ("#{File.read(ext_js_sub_file_path)}\n\n")
                 end
               else
                 # Evasion is not enabled, do not obfuscate anything
                 ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                ext_js_to_not_obfuscate << ("#{File.read(ext_js_sub_file_path)}\n\n")
               end
             end
 
             # @note construct the beef_js string from file(s)
             beef_js_sub_files.each do |beef_js_sub_file|
               beef_js_sub_file_path = beef_js_path + beef_js_sub_file
-              beef_js << (File.read(beef_js_sub_file_path) + "\n\n")
+              beef_js << ("#{File.read(beef_js_sub_file_path)}\n\n")
             end
 
             # @note create the config for the hooked browser session
@@ -152,9 +152,9 @@ module BeEF
               config = BeEF::Core::Configuration.instance
               if config.get('beef.extension.evasion.enable')
                 evasion = BeEF::Extension::Evasion::Evasion.instance
-                @body << evasion.obfuscate(File.read(component_path) + "\n\n")
+                @body << evasion.obfuscate("#{File.read(component_path)}\n\n")
               else
-                @body << (File.read(component_path) + "\n\n")
+                @body << ("#{File.read(component_path)}\n\n")
               end
 
               # @note finally we add the component to the list of components already generated so it does not get generated numerous times.

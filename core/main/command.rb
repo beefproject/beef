@@ -226,7 +226,7 @@ module BeEF
       def use(component)
         return if @beefjs_components.include? component
 
-        component_path = '/' + component
+        component_path = "/#{component}"
         component_path.gsub!(/beef./, '')
         component_path.gsub!(/\./, '/')
         component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"

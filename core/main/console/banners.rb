@@ -35,7 +35,7 @@ module BeEF
             # data += "Blog: http://blog.beefproject.com\n"
             data += "Wiki: https://github.com/beefproject/beef/wiki\n"
             print_more data
-            print_info 'Project Creator: ' + 'Wade Alcorn'.red + ' (@WadeAlcorn)'
+            print_info "Project Creator: #{'Wade Alcorn'.red} (@WadeAlcorn)"
           end
 
           #

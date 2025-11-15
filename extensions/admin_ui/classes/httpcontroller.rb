@@ -87,7 +87,7 @@ module BeEF
             return
           end
 
-          function = @paths[path] || @paths[path + '/'] # check hash for '<path>' and '<path>/'
+          function = @paths[path] || @paths["#{path}/"] # check hash for '<path>' and '<path>/'
           if function.nil?
             print_error "[Admin UI] Path does not exist: #{path}"
             return

@@ -13,7 +13,7 @@ class BeefTest
   def self.save_screenshot(session, dir = nil)
     outputDir = dir || BEEF_TEST_DIR
     Dir.mkdir(outputDir) unless File.directory?(outputDir)
-    filename = outputDir + Time.now.strftime('%Y-%m-%d--%H-%M-%S-%N') + '.png'
+    filename = "#{outputDir}#{Time.now.strftime('%Y-%m-%d--%H-%M-%S-%N')}.png"
     session.driver.browser.save_screenshot(filename)
   end
 

@@ -79,7 +79,7 @@ module BeEF
               # //', "")
               ws.send(@output, hooked_browser.session)
             else
-              @body << (@output + "\n\n")
+              @body << ("#{@output}\n\n")
             end
             # @note prints the event to the console
             if BeEF::Settings.console?
