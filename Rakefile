@@ -128,7 +128,7 @@ task beef_start: 'beef' do
   test_pass = ENV['TEST_BEEF_PASS'] || 'bad_fred_no_access'
 
   # write a rake config file for beef
-  config = YAML.safe_load(File.read('./config.yaml'))
+  config = YAML.safe_load_file('./config.yaml')
   config['beef']['credentials']['user'] = test_user
   config['beef']['credentials']['passwd'] = test_pass
   Dir.mkdir('tmp') unless Dir.exist?('tmp')
