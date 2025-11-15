@@ -20,7 +20,7 @@ module BeEF
           setup()
         end
 
-        def setup()
+        def setup
 
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
@@ -65,7 +65,7 @@ module BeEF
           setup()
         end
 
-        def setup()
+        def setup
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
           (print_error 'beefhook is null';return) if beef_hook.nil?

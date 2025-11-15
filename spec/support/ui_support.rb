@@ -7,7 +7,7 @@ require 'rspec'
 require 'rest-client'
 require 'spec/support/constants.rb'
 
-def start_beef_and_hook_browser()
+def start_beef_and_hook_browser
   reset_beef_db
   pid = start_beef_server_and_wait
   beef_session = BeefTest.login
