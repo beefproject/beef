@@ -554,7 +554,7 @@ class BeefRestAPI
         'local_file' => "#{fname}" }.to_json,
       :content_type => :json,
       :accept => :json
-    print_good "Bound '#{fname}' successfully" if response.code == 200
+      print_good "Bound '#{fname}' successfully" if response.code == 200
     rescue => e
       print_error "Could not bind file #{fname}: #{e.message}"
     end

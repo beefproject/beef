@@ -128,7 +128,7 @@ module BeEF
             host_name = request.host
             unless BeEF::Filters.is_valid_hostname?(host_name)
               (print_error 'Invalid host name'
-              return)
+               return)
             end
 
             # Generate the hook js provided to the hookwed browser (the magic happens here)

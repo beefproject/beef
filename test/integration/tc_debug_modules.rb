@@ -127,8 +127,8 @@ class TC_DebugModules < Test::Unit::TestCase
     # don't know why empty?, nil and other checks are not working.
     while(response.body.size <= 2 && count < 10)
       response = RestClient.get "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_ascii_chars}/#{cmd_id}?token=#{@@token}"
-       sleep 2
-       count += 1
+      sleep 2
+      count += 1
     end
     assert_equal 200, response.code
     assert_not_nil response.body

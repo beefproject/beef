@@ -31,7 +31,7 @@ module BeEF
         # This is also used so that BeEF can send RTCManagement messages to the hooked browser too
         def self.pre_hook_send(hooked_browser, body, params, request, response)
           dhook = BeEF::Extension::WebRTC::API::Hook.new
-            dhook.requester_run(hooked_browser, body)
+          dhook.requester_run(hooked_browser, body)
         end
 
       end

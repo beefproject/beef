@@ -173,16 +173,16 @@ RSpec.configure do |config|
 
 ########################################
 
-def reset_beef_db
-  begin
-    db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
-    File.delete(db_file) if File.exist?(db_file)
-rescue => e
-  print_error("Could not remove '#{db_file}' database file: #{e.message}")
+  def reset_beef_db
+    begin
+      db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
+      File.delete(db_file) if File.exist?(db_file)
+  rescue => e
+    print_error("Could not remove '#{db_file}' database file: #{e.message}")
+    end
   end
-end
 
-require 'socket'
+  require 'socket'
 
   def port_available?
     socket = TCPSocket.new(@host, @port)
@@ -209,7 +209,7 @@ require 'socket'
     BeEF::Extensions.load
 
       # Load BeEF modules only if they are not already loaded
-      BeEF::Modules.load if @config.get('beef.module').nil?
+    BeEF::Modules.load if @config.get('beef.module').nil?
   end
 
   # --- HARD fork-safety: disconnect every pool/adapter we can find ---
