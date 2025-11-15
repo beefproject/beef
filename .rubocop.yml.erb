@@ -1,11 +1,11 @@
 AllCops:
-  Exclude:
-    - 'test/**/*'
-    - 'tmp/**/*'
-    - 'tools/**/*'
-    - 'doc/**/*'
   TargetRubyVersion: <%= File.read(".ruby-version").strip[/^(\d+\.\d+)/, 1] || raise("Ruby version not found") %>
+
   NewCops: enable
+
+  Exclude:
+    - "tools/**/*"
+    - "test/**/*"
 
 Layout/LineLength:
   Enabled: true
@@ -20,6 +20,9 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Enabled: false
 
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
 Metrics/MethodLength:
   Enabled: false
 
@@ -29,14 +32,11 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
 Naming/ClassAndModuleCamelCase:
   Enabled: false
 
-Style/FrozenStringLiteralComment:
+Style/Documentation:
   Enabled: false
 
-Style/Documentation:
+Style/FrozenStringLiteralComment:
   Enabled: false
