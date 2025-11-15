@@ -12,6 +12,7 @@ module BeEF
   module Core
     class Server
       include Singleton
+
       attr_reader :root_dir, :url, :configuration, :command_urls, :mounts, :semaphore
 
       def initialize

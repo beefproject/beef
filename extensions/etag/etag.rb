@@ -11,6 +11,7 @@ module BeEF
 
       class ETagMessages
         include Singleton
+
         attr_accessor :messages
 
         def initialize

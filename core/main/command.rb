@@ -28,6 +28,7 @@ module BeEF
     #
     class CommandContext < Erubis::Context
       include BeEF::Core::CommandUtils
+
       #
       # Constructor
       # @param [Hash] hash

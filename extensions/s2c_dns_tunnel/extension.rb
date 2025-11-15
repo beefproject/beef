@@ -7,6 +7,7 @@ module BeEF
   module Extension
     module ServerClientDnsTunnel
       extend BeEF::API::Extension
+
       @short_name   = 'S2C DNS Tunnel'
       @full_name    = 'Server-to-Client DNS Tunnel'
       @description  = 'This extension provides a custom BeEF DNS server and HTTP server ' \
