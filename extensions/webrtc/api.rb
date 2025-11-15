@@ -25,7 +25,7 @@ module BeEF
 
         # We register this pre hook action to ensure that signals going to a browser are included back in the hook.js polling
         # This is also used so that BeEF can send RTCManagement messages to the hooked browser too
-        def self.pre_hook_send(hooked_browser, body, params, request, response)
+        def self.pre_hook_send(hooked_browser, body, _params, _request, _response)
           dhook = BeEF::Extension::WebRTC::API::Hook.new
           dhook.requester_run(hooked_browser, body)
         end
