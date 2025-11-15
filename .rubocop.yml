@@ -12,8 +12,7 @@ Bundler/OrderedGems:
   Enabled: false
 
 Layout/LineLength:
-  Enabled: true
-  Max: 180
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
