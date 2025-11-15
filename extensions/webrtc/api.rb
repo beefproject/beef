@@ -6,9 +6,7 @@
 module BeEF
   module Extension
     module WebRTC
-
       module RegisterHttpHandler
-
         BeEF::API::Registrar.instance.register(BeEF::Extension::WebRTC::RegisterHttpHandler, BeEF::API::Server, 'mount_handler')
 
         # We register the http handler for the WebRTC signalling extension.
@@ -20,11 +18,9 @@ module BeEF
           beef_server.mount('/rtcmessage', BeEF::Extension::WebRTC::MessengeHandler)
           beef_server.mount('/api/webrtc', BeEF::Extension::WebRTC::WebRTCRest.new)
         end
-
       end
 
       module RegisterPreHookCallback
-
         BeEF::API::Registrar.instance.register(BeEF::Extension::WebRTC::RegisterPreHookCallback, BeEF::API::Server::Hook, 'pre_hook_send')
 
         # We register this pre hook action to ensure that signals going to a browser are included back in the hook.js polling
@@ -33,9 +29,7 @@ module BeEF
           dhook = BeEF::Extension::WebRTC::API::Hook.new
           dhook.requester_run(hooked_browser, body)
         end
-
       end
-
     end
   end
 end

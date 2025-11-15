@@ -39,7 +39,6 @@ module BeEF
           r.save!
         end
       end
-
     end
   end
 end

@@ -6,7 +6,6 @@
 module BeEF
   module Extension
     module WebRTC
-
       #
       # The http handler that manages the WebRTC signals sent from browsers to other browsers.
       #

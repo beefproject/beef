@@ -12,7 +12,6 @@ module BeEF
       class RtcSignal < BeEF::Core::Model
         belongs_to :hooked_browser
       end
-
     end
   end
 end

@@ -17,7 +17,6 @@ module BeEF
         belongs_to :hooked_browser
         belongs_to :command_module
       end
-
     end
   end
 end

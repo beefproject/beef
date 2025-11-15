@@ -11,7 +11,6 @@ module BeEF
   module Extension
     module WebRTC
       module API
-
         require 'uri'
         class Hook
           include BeEF::Core::Handlers::Modules::BeEFJS
