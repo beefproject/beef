@@ -81,7 +81,7 @@ module BeEF
           end
 
           def add_rtcsignal_to_body(output)
-            @body << %Q{
+            @body << "
               beef.execute(function() {
                 var peerid = null;
                 for (k in beefrtcs) {
@@ -97,15 +97,15 @@ module BeEF
                   );
                 }
               });
-            }
+            "
           end
 
           def add_rtcmanagement_to_body(output)
-            @body << %Q{
+            @body << "
               beef.execute(function() {
                 #{output}
               });
-            }
+            "
           end
         end
       end
