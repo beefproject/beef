@@ -21,28 +21,38 @@ module BeEF
         def setup
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
-          (print_error 'beefhook is null'
- return) if beef_hook.nil?
+          if beef_hook.nil?
+            print_error 'beefhook is null'
+            return
+          end
 
           # validates the target hook token
           target_beef_id = @data['results']['targetbeefid'] || nil
-          (print_error 'targetbeefid is null'
- return) if target_beef_id.nil?
+          if target_beef_id.nil?
+            print_error 'targetbeefid is null'
+            return
+          end
 
           # validates the signal
           signal = @data['results']['signal'] || nil
-          (print_error 'Signal is null'
- return) if signal.nil?
+          if signal.nil?
+            print_error 'Signal is null'
+            return
+          end
 
           # validates that a hooked browser with the beef_hook token exists in the db
           zombie_db = Z.first(session: beef_hook) || nil
-          (print_error 'Invalid beefhook id: the hooked browser cannot be found in the database'
- return) if zombie_db.nil?
+          if zombie_db.nil?
+            print_error 'Invalid beefhook id: the hooked browser cannot be found in the database'
+            return
+          end
 
           # validates that a target browser with the target_beef_token exists in the db
           target_zombie_db = Z.first(id: target_beef_id) || nil
-          (print_error 'Invalid targetbeefid: the target hooked browser cannot be found in the database'
- return) if target_zombie_db.nil?
+          if target_zombie_db.nil?
+            print_error 'Invalid targetbeefid: the target hooked browser cannot be found in the database'
+            return
+          end
 
           # save the results in the database
           signal = R.new(
@@ -68,28 +78,38 @@ module BeEF
         def setup
           # validates the hook token
           beef_hook = @data['beefhook'] || nil
-          (print_error 'beefhook is null'
- return) if beef_hook.nil?
+          if beef_hook.nil?
+            print_error 'beefhook is null'
+            return
+          end
 
           # validates the target hook token
           peer_id = @data['results']['peerid'] || nil
-          (print_error 'peerid is null'
- return) if peer_id.nil?
+          if peer_id.nil?
+            print_error 'peerid is null'
+            return
+          end
 
           # validates the message
           message = @data['results']['message'] || nil
-          (print_error 'Message is null'
- return) if message.nil?
+          if message.nil?
+            print_error 'Message is null'
+            return
+          end
 
           # validates that a hooked browser with the beef_hook token exists in the db
           zombie_db = Z.first(session: beef_hook) || nil
-          (print_error 'Invalid beefhook id: the hooked browser cannot be found in the database'
- return) if zombie_db.nil?
+          if zombie_db.nil?
+            print_error 'Invalid beefhook id: the hooked browser cannot be found in the database'
+            return
+          end
 
           # validates that a browser with the peerid exists in the db
           peer_zombie_db = Z.first(id: peer_id) || nil
-          (print_error 'Invalid peer_id: the peer hooked browser cannot be found in the database'
- return) if peer_zombie_db.nil?
+          if peer_zombie_db.nil?
+            print_error 'Invalid peer_id: the peer hooked browser cannot be found in the database'
+            return
+          end
 
           # Writes the event into the BeEF Logger
           BeEF::Core::Logger.instance.register('WebRTC', "Browser:#{zombie_db.id} received message from Browser:#{peer_zombie_db.id}: #{message}")
