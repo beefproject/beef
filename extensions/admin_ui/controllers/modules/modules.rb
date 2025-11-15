@@ -307,9 +307,9 @@ module BeEF
             C.where(command_module_id: command_module_id, hooked_browser_id: zombie_id).each do |command|
               commands.push({
                               'id' => i,
-                'object_id' => command.id,
-                'creationdate' => Time.at(command.creationdate.to_i).strftime('%Y-%m-%d %H:%M').to_s,
-                'label' => command.label
+                              'object_id' => command.id,
+                              'creationdate' => Time.at(command.creationdate.to_i).strftime('%Y-%m-%d %H:%M').to_s,
+                              'label' => command.label
                             })
               i += 1
             end
