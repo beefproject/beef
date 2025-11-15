@@ -160,7 +160,7 @@ module BeEF
 
           # Validate target hsot
           host = req_parts[4]
-          host_parts = host.split(/:/)
+          host_parts = host.split(':')
           host_name = host_parts[0]
           host_port = host_parts[1] || nil
 

@@ -74,7 +74,7 @@ module BeEF
             end
             if hook_session_config['beef_host'].eql? '0.0.0.0'
               hook_session_config['beef_host'] = req_host
-              hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
+              hook_session_config['beef_url'].sub!('0.0.0.0', req_host)
             end
 
             # @note set the XHR-polling timeout
@@ -88,7 +88,7 @@ module BeEF
             if !hook_session_config['beef_public_port'].nil? && (hook_session_config['beef_port'] != hook_session_config['beef_public_port'])
               hook_session_config['beef_port'] = hook_session_config['beef_public_port']
               hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_port']}/, hook_session_config['beef_public_port'])
-              hook_session_config['beef_url'].sub!(/http:/, 'https:') if hook_session_config['beef_public_port'] == '443'
+              hook_session_config['beef_url'].sub!('http:', 'https:') if hook_session_config['beef_public_port'] == '443'
             end
 
             # @note Set some WebSocket properties
@@ -121,7 +121,7 @@ module BeEF
           def legacy_find_beefjs_component_path(component)
             component_path = component
             component_path.gsub!(/beef./, '')
-            component_path.gsub!(/\./, '/')
+            component_path.gsub!('.', '/')
             component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"
 
             return false unless File.exist? component_path

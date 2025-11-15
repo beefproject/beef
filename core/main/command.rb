@@ -17,7 +17,7 @@ module BeEF
       # @return [String] Formatted string
       #
       def format_multiline(text)
-        text.gsub(/\n/, '\n')
+        text.gsub("\n", '\n')
       end
     end
 
@@ -229,7 +229,7 @@ module BeEF
 
         component_path = "/#{component}"
         component_path.gsub!(/beef./, '')
-        component_path.gsub!(/\./, '/')
+        component_path.gsub!('.', '/')
         component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"
 
         raise "Invalid beefjs component for command module #{@path}" unless File.exist? component_path

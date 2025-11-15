@@ -31,7 +31,7 @@ class Hook_default_browser < BeEF::Core::Command
     File.open('./modules/host/hook_default_browser/bounce_to_ie.pdf', 'r') do |original_hook_file|
       original_hook_file.each_line do |line|
         # If the line includes the hook token, then replace it with the actual hook URI
-        line = line.sub(/<hookURI>/, hook_uri) if line.include? '<hookURI>'
+        line = line.sub('<hookURI>', hook_uri) if line.include? '<hookURI>'
         # write the line to a new file
         configured_hook_file.write(line)
       end

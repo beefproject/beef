@@ -15,7 +15,7 @@ class Get_internal_ip_webrtc < BeEF::Core::Command
     return unless @datastore['results'] =~ /IP is ([\d.,]+)/
 
     # save the network host
-    ips = Regexp.last_match(1).to_s.split(/,/)
+    ips = Regexp.last_match(1).to_s.split(',')
     session_id = @datastore['beefhook']
     if !ips.nil? && !ips.empty?
       os = BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name')

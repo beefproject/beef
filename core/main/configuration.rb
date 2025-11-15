@@ -247,7 +247,7 @@ module BeEF
             next
           end
 
-          y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(%r{#{$root_dir}/}, '')
+          y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub('config.yaml', '').gsub(%r{#{$root_dir}/}, '')
           @config = y.deep_merge(@config)
         end
       end
