@@ -79,6 +79,7 @@ module BeEF
     module Console
       class << self
         attr_accessor :logger
+
         def level=(val)
           (self.logger ||= Logger.new($stdout)).level = val
         end
@@ -109,6 +110,7 @@ unless defined?(::Console) && ::Console.respond_to?(:level=)
   module ::Console
     class << self
       attr_accessor :logger
+
       def level=(val)
         (self.logger ||= Logger.new($stdout)).level = val
       end
