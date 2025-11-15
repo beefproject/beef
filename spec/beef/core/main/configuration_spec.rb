@@ -2,7 +2,6 @@ RSpec.configure do |config|
 end
 
 RSpec.describe 'BeEF Configuration' do
-
   before(:context) do
     @config_instance = BeEF::Core::Configuration.instance
 

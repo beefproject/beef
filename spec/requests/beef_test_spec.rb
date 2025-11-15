@@ -8,7 +8,6 @@ require 'capybara/rspec'
 require_relative '../support/beef_test'
 
 RSpec.describe BeefTest, run_on_long_tests: true  do
-
   before(:each) do
     @pid = start_beef_server_and_wait
   end

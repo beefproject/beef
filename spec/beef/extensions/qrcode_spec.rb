@@ -6,7 +6,6 @@
 require 'extensions/qrcode/extension'
 
 RSpec.describe 'BeEF Extension QRCode' do
-
   before(:all) do
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
@@ -19,5 +18,4 @@ RSpec.describe 'BeEF Extension QRCode' do
     expect(config).to have_key('qrsize')
     expect(config).to have_key('qrborder')
   end
-
 end

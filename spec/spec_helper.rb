@@ -329,5 +329,4 @@ RSpec.configure do |config|
     Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
     pid = nil       
   end
-
 end

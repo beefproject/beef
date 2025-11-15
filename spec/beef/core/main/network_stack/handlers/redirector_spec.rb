@@ -1,5 +1,4 @@
 RSpec.describe 'BeEF Redirector' do
-
   before(:all) do
     @port = 2002
     config = {}
@@ -33,5 +32,4 @@ RSpec.describe 'BeEF Redirector' do
     expect(response.body_str).to eql('302 found')
     expect(response.header_str).to match(/Location: http:\/\/www.beefproject\.com/)
   end
-
 end

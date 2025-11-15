@@ -1,5 +1,4 @@
 RSpec.describe 'BeEF Dynamic Reconsturction' do
-
   before(:all) do
     @port = 2001
     config = {}
@@ -43,7 +42,6 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
   end
 
   context 'get' do
-
     it 'no params' do
       response = Curl::Easy.http_get("http://127.0.0.1:#{@port}/test")
       expect(response.response_code).to eql(404)
@@ -80,7 +78,5 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
       expect(response.response_code).to eql(200)
       expect(response.body_str).to be_empty
     end
-
   end
-
 end

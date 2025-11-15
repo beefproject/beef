@@ -6,7 +6,6 @@
 require 'extensions/proxy/extension'
 
 RSpec.describe 'BeEF Extension Proxy' do
-
   before(:all) do
     @config = BeEF::Core::Configuration.instance
     @config.load_extensions_config
@@ -20,5 +19,4 @@ RSpec.describe 'BeEF Extension Proxy' do
     expect(config).to have_key('key')
     expect(config).to have_key('cert')
   end
-
 end

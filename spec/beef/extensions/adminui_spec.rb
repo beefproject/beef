@@ -49,5 +49,4 @@ RSpec.describe 'BeEF Extension AdminUI' do
     request.add_header('REMOTE_ADDR','192.168.0.20')
     expect(ui.get_ip(request)).to eq '192.168.0.20'
   end
-
 end

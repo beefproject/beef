@@ -1,5 +1,4 @@
 RSpec.describe 'BeEF Modules' do
-
   it 'loaded successfully' do
     expect {
       BeEF::Modules.load if BeEF::Core::Configuration.instance.get('beef.module').nil?
@@ -46,5 +45,4 @@ RSpec.describe 'BeEF Modules' do
       end
     end
   end
-
 end

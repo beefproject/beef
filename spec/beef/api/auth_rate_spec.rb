@@ -5,7 +5,6 @@
 #
 
 RSpec.describe 'BeEF API Rate Limit', run_on_long_tests: true  do
-
 	 before(:each) do
     @pid = start_beef_server_and_wait
     @username = @config.get('beef.credentials.user')

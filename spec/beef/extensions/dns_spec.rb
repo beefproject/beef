@@ -7,7 +7,6 @@ require 'resolv'
 require 'extensions/dns/extension.rb'
 
 RSpec.describe 'BeEF Extension DNS' do
-
   IN = Resolv::DNS::Resource::IN
 
   before(:all) do
@@ -38,7 +37,6 @@ RSpec.describe 'BeEF Extension DNS' do
   end
 
   context 'add good rule' do
-
     it '1.2.3.4' do
       id = nil
       response = '1.2.3.4'
@@ -86,11 +84,9 @@ RSpec.describe 'BeEF Extension DNS' do
         }.to_not raise_error
         expect(id).to_not be_nil
       end
-
     end
 
     context 'add bad rule' do
-
       it '4.2.4.2' do
         id = nil
         same_id = nil
@@ -126,9 +122,7 @@ RSpec.describe 'BeEF Extension DNS' do
 
         expect(id).to eql(same_id)
       end
-
     end
-
   end
 
   # it 'id format' do
@@ -242,9 +236,7 @@ RSpec.describe 'BeEF Extension DNS' do
   end
 
   it 'failure types' do
-
   end
-
 end
 
 # Tests each supported type of query failure

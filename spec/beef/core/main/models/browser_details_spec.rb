@@ -1,5 +1,4 @@
 RSpec.describe 'BeEF BrowserDetails' do
-
   before(:all) do
     @session = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
   end
@@ -28,5 +27,4 @@ RSpec.describe 'BeEF BrowserDetails' do
     expect(BeEF::Core::Models::BrowserDetails.get(@session, key_name)).to_not eql(original_key_value)
     expect(BeEF::Core::Models::BrowserDetails.get(@session, key_name)).to eql(new_key_value)
   end
-
 end

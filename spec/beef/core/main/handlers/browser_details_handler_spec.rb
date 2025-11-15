@@ -12,7 +12,6 @@ require_relative '../../../../support/beef_test'
 
 RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   before(:all) do
-
     @config = BeEF::Core::Configuration.instance
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
