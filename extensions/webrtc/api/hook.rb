@@ -35,7 +35,7 @@ module BeEF
             }
 
             # Get all RTCManagement messages for this browser
-            BeEF::Core::Models::RtcManage.where(hooked_browser_id: hb.id, has_sent: 'waiting').each {|h|
+            BeEF::Core::Models::RtcManage.where(hooked_browser_id: hb.id, has_sent: 'waiting').each { |h|
               rtcmanagementoutput << h.message
               h.has_sent = 'sent'
               h.save
@@ -53,20 +53,20 @@ module BeEF
             # Hopefully this still works
             if config.get('beef.http.websocket.enable') && ws.getsocket(hb.session)
 
-              rtcsignaloutput.each {|o|
+              rtcsignaloutput.each { |o|
                 add_rtcsignal_to_body o
               } unless rtcsignaloutput.empty?
-              rtcmanagementoutput.each {|o|
+              rtcmanagementoutput.each { |o|
                 add_rtcmanagement_to_body o
               } unless rtcmanagementoutput.empty?
               # ws.send(content + @body,hb.session)
               ws.send(@body,hb.session)
             #if we use WebSockets, just reply wih the component contents
             else # if we use XHR-polling, add the component to the main hook file
-              rtcsignaloutput.each {|o|
+              rtcsignaloutput.each { |o|
                 add_rtcsignal_to_body o
               } unless rtcsignaloutput.empty?
-              rtcmanagementoutput.each {|o|
+              rtcmanagementoutput.each { |o|
                 add_rtcmanagement_to_body o
               } unless rtcmanagementoutput.empty?
             end
