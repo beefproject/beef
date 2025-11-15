@@ -179,7 +179,7 @@ RSpec.configure do |config|
     begin
       db_file = BeEF::Core::Configuration.instance.get('beef.database.file')
       File.delete(db_file) if File.exist?(db_file)
-  rescue => e
+    rescue => e
     print_error("Could not remove '#{db_file}' database file: #{e.message}")
     end
   end
@@ -295,9 +295,9 @@ RSpec.configure do |config|
       uri = URI.parse(uri_str)
       response = Net::HTTP.get_response(uri)
       response.is_a?(Net::HTTPSuccess)
-      rescue Errno::ECONNREFUSED
+    rescue Errno::ECONNREFUSED
         return false # Connection refused means the server is not running
-      rescue StandardError => e
+    rescue StandardError => e
         return false # Any other error means the server is not running
     end
   end
