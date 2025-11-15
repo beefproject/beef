@@ -97,7 +97,7 @@ env_lang = ENV.fetch('LANG', nil)
 if env_lang !~ /(utf8|utf-8)/i
   print_warning "Warning: System language $LANG '#{env_lang}' does not appear to be UTF-8 compatible."
   if env_lang =~ /\A([a-z]+_[a-z]+)\./i
-    country = $1
+    country = Regexp.last_match(1)
     print_more "Try: export LANG=#{country}.utf8"
   end
 end
