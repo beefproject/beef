@@ -67,7 +67,6 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
 
-
     # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
     disconnect_all_active_record!
 

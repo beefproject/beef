@@ -9,7 +9,6 @@ require 'extensions/notifications/channels/pushover'
 require 'extensions/notifications/channels/slack_workspace'
 require 'extensions/notifications/channels/ntfy'
 
-
 module BeEF
   module Extension
     module Notifications

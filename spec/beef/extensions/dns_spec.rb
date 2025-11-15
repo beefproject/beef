@@ -149,7 +149,6 @@ RSpec.describe 'BeEF Extension DNS' do
   #   expect(id).to match(/^\h{8}$/)
   # end
 
-
   it 'get good rule' do
     pattern = 'be.ef'
     response = '1.1.1.1'
@@ -247,9 +246,6 @@ RSpec.describe 'BeEF Extension DNS' do
   end
 
 end
-
-
-
 
   # Tests each supported type of query failure
 #  def test_13_failure_types

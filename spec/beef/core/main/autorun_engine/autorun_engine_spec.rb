@@ -42,7 +42,6 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
       print_info 'Modules already loaded'
     end
 
-
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
     OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: db_file)

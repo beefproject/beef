@@ -13,7 +13,6 @@ RSpec.describe 'BeEF Redirector' do
     trap('INT') { @server.stop }
     trap('TERM') { @server.stop }
 
-
     # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
     disconnect_all_active_record!
 
