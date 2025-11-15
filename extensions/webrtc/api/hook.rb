@@ -53,22 +53,30 @@ module BeEF
             # Hopefully this still works
             if config.get('beef.http.websocket.enable') && ws.getsocket(hb.session)
 
-              rtcsignaloutput.each { |o|
-                add_rtcsignal_to_body o
-              } unless rtcsignaloutput.empty?
-              rtcmanagementoutput.each { |o|
-                add_rtcmanagement_to_body o
-              } unless rtcmanagementoutput.empty?
+              unless rtcsignaloutput.empty?
+                rtcsignaloutput.each { |o|
+                  add_rtcsignal_to_body o
+                }
+              end
+              unless rtcmanagementoutput.empty?
+                rtcmanagementoutput.each { |o|
+                  add_rtcmanagement_to_body o
+                }
+              end
               # ws.send(content + @body,hb.session)
               ws.send(@body,hb.session)
             #if we use WebSockets, just reply wih the component contents
             else # if we use XHR-polling, add the component to the main hook file
-              rtcsignaloutput.each { |o|
-                add_rtcsignal_to_body o
-              } unless rtcsignaloutput.empty?
-              rtcmanagementoutput.each { |o|
-                add_rtcmanagement_to_body o
-              } unless rtcmanagementoutput.empty?
+              unless rtcsignaloutput.empty?
+                rtcsignaloutput.each { |o|
+                  add_rtcsignal_to_body o
+                }
+              end
+              unless rtcmanagementoutput.empty?
+                rtcmanagementoutput.each { |o|
+                  add_rtcmanagement_to_body o
+                }
+              end
             end
           end
 
