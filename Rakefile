@@ -88,8 +88,8 @@ namespace :rdoc do
     rd.rdoc_dir = 'doc/rdocs'
     rd.main = 'README.mkd'
     rd.rdoc_files.include('core/**/*\.rb')
-    #'extensions/**/*\.rb'
-    #'modules/**/*\.rb'
+    # 'extensions/**/*\.rb'
+    # 'modules/**/*\.rb'
     rd.options << '--line-numbers'
     rd.options << '--all'
   end

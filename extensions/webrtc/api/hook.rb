@@ -48,7 +48,7 @@ module BeEF
             ws = BeEF::Core::Websocket::Websocket.instance
 
             # todo antisnatchor: prevent sending "content" multiple times. Better leaving it after the first run, and don't send it again.
-            #todo antisnatchor: remove this gsub crap adding some hook packing.
+            # todo antisnatchor: remove this gsub crap adding some hook packing.
             # The below is how antisnatchor was managing insertion of messages dependent on WebSockets or not
             # Hopefully this still works
             if config.get('beef.http.websocket.enable') && ws.getsocket(hb.session)
@@ -65,7 +65,7 @@ module BeEF
               end
               # ws.send(content + @body,hb.session)
               ws.send(@body,hb.session)
-            #if we use WebSockets, just reply wih the component contents
+            # if we use WebSockets, just reply wih the component contents
             else # if we use XHR-polling, add the component to the main hook file
               unless rtcsignaloutput.empty?
                 rtcsignaloutput.each { |o|
