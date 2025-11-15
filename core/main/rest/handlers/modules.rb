@@ -145,7 +145,7 @@ module BeEF
             options = []
             data.each { |k, v| options.push({ 'name' => k, 'value' => v }) }
             exec_results = BeEF::Module.execute(modk, params[:session], options)
-            exec_results.nil? ? '{"success":"false"}' : "{\"success\":\"true\",\"command_id\":\"#{exec_results.to_s}\"}"
+            exec_results.nil? ? '{"success":"false"}' : "{\"success\":\"true\",\"command_id\":\"#{exec_results}\"}"
           rescue StandardError
             print_error "Invalid JSON input for module '#{params[:mod_id]}'"
             error 400 # Bad Request

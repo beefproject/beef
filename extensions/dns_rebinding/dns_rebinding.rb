@@ -5,7 +5,7 @@ module BeEF
       class Server
         @debug_mode = false
         def self.log(msg)
-          warn msg.to_s if @debug_mode
+          warn msg if @debug_mode
         end
 
         def self.run_server(address, port)
@@ -112,7 +112,7 @@ module BeEF
 
         def self.handle_victim(socket, http_message)
           log "[Victim]request from victim\n"
-          log "#{http_message['start_string'].to_s}\n"
+          log "#{http_message['start_string']}\n"
 
           if http_message['start_string'].include?('POST')
             # Get result from POST query
@@ -124,8 +124,8 @@ module BeEF
 
             length = http_message['headers']['Content-Length'].to_i
             content_type = http_message['headers']['Content-Type']
-            log "[Victim]Content-type: #{content_type.to_s}\n"
-            log "[Vicitm]Length: #{length.to_s}\n"
+            log "[Victim]Content-type: #{content_type}\n"
+            log "[Vicitm]Length: #{length}\n"
 
             response = http_message['response']
             log "[Victim]Get content!\n"
@@ -154,7 +154,7 @@ module BeEF
             @mutex_queries.lock
             log "[Victim]Get the last query\n"
             last_query = @queries.pop
-            log "[Victim]Last query:#{last_query.to_s}\n"
+            log "[Victim]Last query:#{last_query}\n"
             @mutex_queries.unlock
 
             response = last_query[2]

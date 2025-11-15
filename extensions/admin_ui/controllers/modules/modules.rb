@@ -190,7 +190,7 @@ module BeEF
                 retitle_recursive_tree([c]) if c.has_key?('cls') && c['cls'] == 'folder'
               end
               num_of_command_modules = command_module_branch['children'].length + num_of_subs
-              command_module_branch['text'] = "#{command_module_branch['text']} (#{num_of_command_modules.to_s})"
+              command_module_branch['text'] = "#{command_module_branch['text']} (#{num_of_command_modules})"
             end
           end
 
