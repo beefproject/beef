@@ -16,7 +16,7 @@ module BeEF
           eruby = Erubis::FastEruby.new(File.read("#{File.dirname(__FILE__)}/html/index.html"))
           config.get('beef.extension.customhook.hooks').each do |h|
             path = config.get("beef.extension.customhook.hooks.#{h.first}.path")
-            next unless path == (env['REQUEST_URI']).to_s
+            next unless path == env['REQUEST_URI'].to_s
 
             print_info "[Custom Hook] Handling request for custom hook mounted at '#{path}'"
             @body << eruby.evaluate({

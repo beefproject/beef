@@ -25,14 +25,14 @@ module BeEF
         #
         get '/' do
           if config.get('beef.http.websocket.enable') == false
-            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15)))
-            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - 15)))
+            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', Time.new.to_i - 15))
+            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', Time.new.to_i - 15))
           # If we're using websockets use the designated threshold timeout to determine live, instead of hardcoded 15
           # Why is it hardcoded 15?
           else
             timeout = config.get('beef.http.websocket.ws_poll_timeout')
-            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - timeout)))
-            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', (Time.new.to_i - timeout)))
+            online_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', Time.new.to_i - timeout))
+            offline_hooks = hb_to_json(BeEF::Core::Models::HookedBrowser.where('lastseen <= ?', Time.new.to_i - timeout))
           end
 
           output = {

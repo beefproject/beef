@@ -278,7 +278,7 @@ module BeEF
               <p>The requested URL was not found on this server.</p>
               <hr>
               <address>Apache/2.2.3 (CentOS)</address>
-              #{("<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404'))}
+              #{"<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404')}
               </body></html>
             EOF
           when 'iis'
@@ -310,7 +310,7 @@ module BeEF
               <li>Open <b>IIS Help</b>, which is accessible in IIS Manager (inetmgr),and search for topics titled <b>Web Site Setup</b>, <b>Common Administrative Tasks</b>, and <b>About Custom Error Messa
               </ul>
               </TD></TR></TABLE>
-              #{("<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404'))}
+              #{"<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404')}
               </BODY></HTML>
             EOF
           when 'nginx'
@@ -320,7 +320,7 @@ module BeEF
               <body bgcolor="white">
               <center><h1>404 Not Found</h1></center>
               <hr><center>nginx</center>
-              #{("<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404'))}
+              #{"<script src='#{config.get('beef.http.hook_file')}'></script>" if config.get('beef.http.web_server_imitation.hook_404')}
               </body>
               </html>
             EOF

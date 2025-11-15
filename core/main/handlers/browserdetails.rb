@@ -242,7 +242,7 @@ module BeEF
             X_FORWARDED
             X_FORWARDED_FOR
           ].each do |header|
-            proxy_clients << (JSON.parse(zombie.httpheaders)[header]).to_s unless JSON.parse(zombie.httpheaders)[header].nil?
+            proxy_clients << JSON.parse(zombie.httpheaders)[header].to_s unless JSON.parse(zombie.httpheaders)[header].nil?
           end
 
           # retrieve proxy server

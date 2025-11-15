@@ -53,7 +53,7 @@ module BeEF
             PQ.each do |packet|
               next if checked.include?("#{packet[:beefhook]}:#{String(packet[:stream_id])}")
 
-              checked << ("#{packet[:beefhook]}:#{String(packet[:stream_id])}")
+              checked << "#{packet[:beefhook]}:#{String(packet[:stream_id])}"
               pc = 0
               PQ.each do |p|
                 pc += 1 if packet[:beefhook] == p[:beefhook] and packet[:stream_id] == p[:stream_id]

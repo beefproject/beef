@@ -100,7 +100,7 @@ module BeEF
 
             admin_ui_js = ''
             global_js.each do |file_name|
-              admin_ui_js << ("#{File.binread("#{File.dirname(__FILE__)}/../media/javascript/#{file_name}")}\n\n")
+              admin_ui_js << "#{File.binread("#{File.dirname(__FILE__)}/../media/javascript/#{file_name}")}\n\n"
             end
 
             config = BeEF::Core::Configuration.instance

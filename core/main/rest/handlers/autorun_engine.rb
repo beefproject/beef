@@ -113,7 +113,7 @@ module BeEF
         get '/run/:rule_id' do
           rule_id = params[:rule_id]
 
-          online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15))
+          online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', Time.new.to_i - 15)
 
           if online_hooks.nil?
             return { 'success' => false, 'error' => 'There are currently no hooked browsers online.' }.to_json

@@ -16,14 +16,14 @@ module BeEF
     # @param [String] mod module key
     # @return [Boolean] if the module key is enabled in BeEF's configuration
     def self.is_enabled(mod)
-      (is_present(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.enable") == true)
+      is_present(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.enable") == true
     end
 
     # Checks to see if the module reports that it has loaded through the configuration
     # @param [String] mod module key
     # @return [Boolean] if the module key is loaded in BeEF's configuration
     def self.is_loaded(mod)
-      (is_enabled(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.loaded") == true)
+      is_enabled(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.loaded") == true
     end
 
     # Returns module class definition

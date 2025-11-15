@@ -35,7 +35,7 @@ class Wordpress_upload_rce_plugin < WordPressCommand
 
     # Escape payload to be able to put it in the JS
     payload.each_byte do |byte|
-      escaped_payload << ("\\#{'x%02X' % byte}")
+      escaped_payload << "\\#{'x%02X' % byte}"
     end
 
     escaped_payload
