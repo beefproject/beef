@@ -15,7 +15,7 @@ module BeEF
 
         def initialize(data)
           @data = data
-          setup()
+          setup
         end
 
         def setup
@@ -72,7 +72,7 @@ module BeEF
 
         def initialize(data)
           @data = data
-          setup()
+          setup
         end
 
         def setup
