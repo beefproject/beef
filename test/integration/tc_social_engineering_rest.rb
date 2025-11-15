@@ -15,8 +15,8 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
     # Login to API before performing any tests
     def startup
-      json = {:username => BEEF_USER, :password => BEEF_PASSWD}.to_json
-      @@headers = {:content_type => :json, :accept => :json}
+      json = { :username => BEEF_USER, :password => BEEF_PASSWD }.to_json
+      @@headers = { :content_type => :json, :accept => :json }
 
       response = RestClient.post("#{RESTAPI_ADMIN}/login",
                                  json,
@@ -48,7 +48,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     mount = '/beefproject'
     dns_spoof = true
 
-    json = {:url => url, :mount => mount, :dns_spoof => dns_spoof}.to_json
+    json = { :url => url, :mount => mount, :dns_spoof => dns_spoof }.to_json
 
     domain = url.gsub(%r{^https?://}, '')
 

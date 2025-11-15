@@ -123,7 +123,7 @@ class TC_Metasploit < Test::Unit::TestCase
   def test_launch_exploit
     new_api
     @api.login
-    opts = { 'PAYLOAD' => 'windows/meterpreter/bind_tcp', 'URIPATH' => '/test1','SRVPORT' => 8080}
+    opts = { 'PAYLOAD' => 'windows/meterpreter/bind_tcp', 'URIPATH' => '/test1','SRVPORT' => 8080 }
     ret = nil
     assert_nothing_raised do
       ret = @api.launch_exploit('windows/browser/adobe_utilprintf',opts)

@@ -15,8 +15,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
 
     # Login to API before performing any tests - and fetch config too
     def startup
-      json = {:username => BEEF_USER, :password => BEEF_PASSWD}.to_json
-      @@headers = {:content_type => :json, :accept => :json}
+      json = { :username => BEEF_USER, :password => BEEF_PASSWD }.to_json
+      @@headers = { :content_type => :json, :accept => :json }
 
       response = RestClient.post("#{RESTAPI_ADMIN}/login",
                                  json,
@@ -44,8 +44,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
       sleep 8.0
 
       # Fetch last online browsers' ids
-      rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_HOOKS}", { :params => {
+        :token => @@token } }
       result = JSON.parse(rest_response.body)
       browsers = result['hooked-browsers']['online']
       browsers.each_with_index do |elem, index|
@@ -72,8 +72,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
 
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_HOOKS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -88,7 +88,7 @@ class TC_WebRTCRest < Test::Unit::TestCase
     rest_response = nil
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/go?token=#{@@token}",
-        {:from => @@victim1id, :to => @@victim2id, :verbose => 'true'}.to_json,
+        { :from => @@victim1id, :to => @@victim2id, :verbose => 'true' }.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
@@ -99,8 +99,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
 
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_LOGS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_LOGS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -124,8 +124,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     rest_response = nil
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
-        {:from => @@victim1id, :to => @@victim2id,
-         :message => 'RTC test message'}.to_json,
+        { :from => @@victim1id, :to => @@victim2id,
+         :message => 'RTC test message' }.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
@@ -136,8 +136,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
 
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_LOGS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_LOGS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -162,8 +162,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     # Test our two browsers are still online
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_HOOKS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -184,8 +184,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     rest_response = nil
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
-        {:from => @@victim1id, :to => @@victim2id,
-         :message => '!gostealth'}.to_json,
+        { :from => @@victim1id, :to => @@victim2id,
+         :message => '!gostealth' }.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
@@ -197,8 +197,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     # Test that the browser is now offline
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_HOOKS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)
@@ -213,8 +213,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     rest_response = nil
     assert_nothing_raised do
       rest_response = RestClient.post("#{RESTAPI_WEBRTC}/msg?token=#{@@token}",
-        {:from => @@victim1id, :to => @@victim2id,
-         :message => '!endstealth'}.to_json,
+        { :from => @@victim1id, :to => @@victim2id,
+         :message => '!endstealth' }.to_json,
         @@headers)
     end
     check_rest_response(rest_response)
@@ -226,8 +226,8 @@ class TC_WebRTCRest < Test::Unit::TestCase
     # Test that the browser is now online
     rest_response = nil
     assert_nothing_raised do
-      rest_response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {
-        :token => @@token}}
+      rest_response = RestClient.get "#{RESTAPI_HOOKS}", { :params => {
+        :token => @@token } }
     end
     check_rest_response(rest_response)
     result = JSON.parse(rest_response.body)

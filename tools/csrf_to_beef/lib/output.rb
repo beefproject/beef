@@ -6,7 +6,7 @@ class String
     "\e[#{color_code}m#{self}\e[0m"
   end
 
-  {:red => 31,
+  { :red => 31,
    :green => 32,
    :yellow => 33,
    :blue => 34,

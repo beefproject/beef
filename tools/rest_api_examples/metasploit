@@ -73,10 +73,10 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 
 # Start payload handlers
 handlers = [
-  @api.msf_handler( {'PAYLOAD'=>'generic/shell_reverse_tcp', 'LPORT' => '6666', 'LHOST' => host} ),
-  @api.msf_handler( {'PAYLOAD'=>'cmd/unix/reverse', 'LPORT' => '6010', 'LHOST' => host} ),
-  @api.msf_handler( {'PAYLOAD'=>'linux/x86/meterpreter/reverse_tcp', 'LPORT' => '6020', 'LHOST'=> host} ),
-  @api.msf_handler( {'PAYLOAD'=>'windows/meterpreter/reverse_tcp', 'LPORT' => '6030', 'LHOST'=> host} )
+  @api.msf_handler( { 'PAYLOAD'=>'generic/shell_reverse_tcp', 'LPORT' => '6666', 'LHOST' => host } ),
+  @api.msf_handler( { 'PAYLOAD'=>'cmd/unix/reverse', 'LPORT' => '6010', 'LHOST' => host } ),
+  @api.msf_handler( { 'PAYLOAD'=>'linux/x86/meterpreter/reverse_tcp', 'LPORT' => '6020', 'LHOST'=> host } ),
+  @api.msf_handler( { 'PAYLOAD'=>'windows/meterpreter/reverse_tcp', 'LPORT' => '6030', 'LHOST'=> host } )
 ]
 
 # Retrieve msf jobs

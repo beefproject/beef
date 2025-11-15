@@ -27,7 +27,7 @@ class TC_DebugModules < Test::Unit::TestCase
   def test_1_restful_auth
     response = RestClient.post "#{RESTAPI_ADMIN}/login",
                                { 'username' => "#{BEEF_USER}",
-                                 'password' => "#{BEEF_PASSWD}"}.to_json,
+                                 'password' => "#{BEEF_PASSWD}" }.to_json,
                                :content_type => :json,
                                :accept => :json
     assert_equal 200, response.code
@@ -42,7 +42,7 @@ class TC_DebugModules < Test::Unit::TestCase
   def test_2_restful_hooks
     BeefTest.new_victim
     sleep 5.0
-    response = RestClient.get "#{RESTAPI_HOOKS}", {:params => {:token => @@token}}
+    response = RestClient.get "#{RESTAPI_HOOKS}", { :params => { :token => @@token } }
     assert_equal 200, response.code
     assert_not_nil response.body
     result = JSON.parse(response.body)
@@ -52,7 +52,7 @@ class TC_DebugModules < Test::Unit::TestCase
 
   # Test RESTful API modules handler, retrieving the IDs of the 3 debug modules currently in the framework
   def test_3_restful_modules
-    response = RestClient.get "#{RESTAPI_MODULES}", {:params => {:token => @@token}}
+    response = RestClient.get "#{RESTAPI_MODULES}", { :params => { :token => @@token } }
     assert_equal 200, response.code
     assert_not_nil response.body
     result = JSON.parse(response.body)
@@ -78,7 +78,7 @@ class TC_DebugModules < Test::Unit::TestCase
 
     response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_long_string}?token=#{@@token}",
                                { 'repeat_string' => repeat_string,
-                                 'repeat'        => repeat_count}.to_json,
+                                 'repeat'        => repeat_count }.to_json,
                                :content_type => :json,
                                :accept => :json
     assert_equal 200, response.code
@@ -144,7 +144,7 @@ class TC_DebugModules < Test::Unit::TestCase
     # Test same-origin request (response code and content of secret_page.html)
     response = RestClient.post "#{RESTAPI_MODULES}/#{@@hb_session}/#{@@mod_debug_test_network}?token=#{@@token}",
                                 #override only a few parameters, the other ones will have default values from modules's module.rb definition
-                               {'domain' => ATTACK_DOMAIN, 'port' => '3000', 'path' => '/demos/secret_page.html'}.to_json,
+                               { 'domain' => ATTACK_DOMAIN, 'port' => '3000', 'path' => '/demos/secret_page.html' }.to_json,
                                :content_type => :json,
                                :accept => :json
     assert_equal 200, response.code

@@ -32,7 +32,7 @@ end
 # get BeEF version
 def version
   begin
-    response = RestClient.get "#{@url}server/version", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}server/version", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     print_good "Retrieved BeEF version: #{result['version']}"
     result['version']
@@ -44,7 +44,7 @@ end
 # get server mounts
 def mounts
   begin
-    response = RestClient.get "#{@url}server/mounts", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}server/mounts", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     print_good "Retrieved BeEF server mounts: #{result['mounts']}"
     result['mounts']
@@ -57,7 +57,7 @@ end
 def online_browsers
   begin
     print_verbose 'Retrieving online browsers'
-    response = RestClient.get "#{@url}hooks", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     browsers = result['hooked-browsers']['online']
     print_good "Retrieved online browser list [#{browsers.size} online]"
@@ -71,7 +71,7 @@ end
 def offline_browsers 
   begin
     print_verbose 'Retrieving offline browsers'
-    response = RestClient.get "#{@url}hooks", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}hooks", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     browsers = result['hooked-browsers']['offline']
     print_good "Retrieved offline browser list [#{browsers.size} offline]"
@@ -85,7 +85,7 @@ end
 def browser_details session
   begin
     print_verbose "Retrieving browser details for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}browserdetails/#{session}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}browserdetails/#{session}", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     details = result['details']
     print_good "Retrieved #{details.size} browser details"
@@ -99,7 +99,7 @@ end
 def delete_browser session
   begin
     print_verbose "Removing hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}hooks/#{session}/delete", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}hooks/#{session}/delete", { :params => { :token => @token } }
     print_good "Removed browser [session: #{session}]" if response.code == 200
     response
   rescue => e
@@ -111,7 +111,7 @@ end
 def logs
   begin
     print_verbose 'Retrieving logs'
-    response = RestClient.get "#{@url}logs", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}logs", { :params => { :token => @token } }
     logs = JSON.parse(response.body)
     print_good "Retrieved #{logs['logs_count']} log entries"
     logs
@@ -124,7 +124,7 @@ end
 def browser_logs session
   begin
     print_verbose "Retrieving browser logs [session: #{session}]"
-    response = RestClient.get "#{@url}logs/#{session}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}logs/#{session}", { :params => { :token => @token } }
     logs = JSON.parse(response.body)
     print_good "Retrieved #{logs['logs'].size} browser logs"
     logs
@@ -141,7 +141,7 @@ end
 def categories
   begin
     print_verbose 'Retrieving module categories'
-    response = RestClient.get "#{@url}categories", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}categories", { :params => { :token => @token } }
     categories = JSON.parse(response.body)
     print_good "Retrieved #{categories.size} module categories"
     categories
@@ -154,7 +154,7 @@ end
 def modules
   begin
     print_verbose 'Retrieving modules'
-    response = RestClient.get "#{@url}modules", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}modules", { :params => { :token => @token } }
     @modules = JSON.parse(response.body)
     print_good "Retrieved #{@modules.size} available command modules"
     @modules
@@ -184,7 +184,7 @@ end
 def module_details id
   begin
     print_verbose "Retrieving details for command module [id: #{id}]"
-    response = RestClient.get "#{@url}modules/#{id}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}modules/#{id}", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved details for module [#{details['name']}]"
     details
@@ -220,7 +220,7 @@ end
 # get metasploit version
 def msf_version
   begin
-    response = RestClient.get "#{@url}msf/version", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}msf/version", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     version = result['version']['version']
     print_good "Retrieved Metasploit version: #{version}"
@@ -233,7 +233,7 @@ end
 # get metasploit jobs
 def msf_jobs
   begin
-    response = RestClient.get "#{@url}msf/jobs", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}msf/jobs", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     jobs = result['jobs']
     print_good "Retrieved job list [#{jobs.size} jobs]"
@@ -246,7 +246,7 @@ end
 # get metasploit job info
 def msf_job_info id
   begin
-    response = RestClient.get "#{@url}msf/job/#{id}/info", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}msf/job/#{id}/info", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved job information [id: #{id}]"
     details
@@ -279,7 +279,7 @@ end
 def msf_job_stop id
   print_verbose "Stopping Metasploit job [id: #{id}]"
   begin
-    response = RestClient.get "#{@url}msf/job/#{id}/stop", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}msf/job/#{id}/stop", { :params => { :token => @token } }
     result = JSON.parse(response.body)
     if result['success'].nil?
       print_error "Could not stop Metasploit job [id: #{id}]: No such job ?"
@@ -301,7 +301,7 @@ end
 def network_hosts_all
   begin
     print_verbose 'Retrieving all network hosts'
-    response = RestClient.get "#{@url}network/hosts", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}network/hosts", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network hosts"
     details
@@ -314,7 +314,7 @@ end
 def network_services_all
   begin
     print_verbose 'Retrieving all network services'
-    response = RestClient.get "#{@url}network/services", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}network/services", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network services"
     details
@@ -327,7 +327,7 @@ end
 def network_hosts session
   begin
     print_verbose "Retrieving network hosts for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}network/hosts/#{session}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}network/hosts/#{session}", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network hosts"
     details
@@ -340,7 +340,7 @@ end
 def network_services session
   begin
     print_verbose "Retrieving network services for hooked browser [session: #{session}]"
-    response = RestClient.get "#{@url}network/services/#{session}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}network/services/#{session}", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} network services"
     details
@@ -357,7 +357,7 @@ end
 # get all rays
 def xssrays_rays_all
   print_verbose 'Retrieving all rays'
-  response = RestClient.get "#{@url}xssrays/rays", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}xssrays/rays", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} rays"
   details
@@ -368,7 +368,7 @@ end
 # get rays by session
 def xssrays_rays session
   print_verbose "Retrieving rays for hooked browser [session: #{session}]"
-  response = RestClient.get "#{@url}xssrays/rays/#{session}", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}xssrays/rays/#{session}", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} rays"
   details
@@ -379,7 +379,7 @@ end
 # get all scans
 def xssrays_scans_all
   print_verbose 'Retrieving all scans'
-  response = RestClient.get "#{@url}xssrays/scans", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}xssrays/scans", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} scans"
   details
@@ -390,7 +390,7 @@ end
 # get scans by session
 def xssrays_scans session
   print_verbose "Retrieving scans for hooked browser [session: #{session}]"
-  response = RestClient.get "#{@url}xssrays/scans/#{session}", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}xssrays/scans/#{session}", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good "Retrieved #{details['count']} scans"
   details
@@ -408,7 +408,7 @@ end
 def dns_ruleset
   begin
     print_verbose 'Retrieving DNS ruleset'
-    response = RestClient.get "#{@url}dns/ruleset", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}dns/ruleset", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved #{details['count']} rules"
     details
@@ -445,7 +445,7 @@ end
 def dns_get_rule(id)
   begin
     print_verbose "Retrieving DNS rule details [id: #{id}]"
-    response = RestClient.get "#{@url}dns/rule/#{id}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}dns/rule/#{id}", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved rule [id: #{details['id']}]"
     details
@@ -471,7 +471,7 @@ end
 
 def autorun_rules
   print_verbose 'Retrieving Autorun rules'
-  response = RestClient.get "#{@url}autorun/rules", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}autorun/rules", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good("Retrieved #{details['count']} rules")
   details
@@ -511,7 +511,7 @@ end
 
 def autorun_run_rule_on_all_browsers(rule_id)
   print_verbose "Running Autorun rule #{rule_id} on all browsers"
-  response = RestClient.get "#{@url}autorun/run/#{rule_id}", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}autorun/run/#{rule_id}", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_debug details
   print_good('Done')
@@ -522,7 +522,7 @@ end
 
 def autorun_run_rule_on_browser(rule_id, hb_id)
   print_verbose "Running Autorun rule #{rule_id} on browser #{hb_id}"
-  response = RestClient.get "#{@url}autorun/run/#{rule_id}/#{hb_id}", {:params => {:token => @token}}
+  response = RestClient.get "#{@url}autorun/run/#{rule_id}/#{hb_id}", { :params => { :token => @token } }
   details = JSON.parse(response.body)
   print_good('Done')
   details
@@ -539,7 +539,7 @@ end
 def webrtc_status id
   begin
     print_verbose "Retrieving status for hooked browser [id: #{id}]"
-    response = RestClient.get "#{@url}webrtc/status/#{id}", {:params => {:token => @token}}
+    response = RestClient.get "#{@url}webrtc/status/#{id}", { :params => { :token => @token } }
     details = JSON.parse(response.body)
     print_good "Retrieved status for hooked browser [id: #{id}]"
     details
