@@ -4,6 +4,8 @@
 # See the file 'doc/COPYING' for copying permission
 #
 
+source 'https://rubygems.org'
+
 gem 'net-smtp', require: false
 gem 'json'
 
@@ -24,7 +26,6 @@ gem 'rake', '~> 13.3'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
 gem 'sqlite3', '~> 2.8'
-gem 'rubocop', '~> 1.81.7', require: false
 
 # Geolocation support
 group :geoip do
@@ -59,6 +60,10 @@ group :ext_qrcode do
   gem 'qr4r', '~> 0.6.1'
 end
 
+group :development do
+  gem 'rubocop', '~> 1.81.7', require: false
+end
+
 # For running unit tests
 group :test do
   gem 'test-unit-full', '~> 0.0.5'
@@ -86,5 +91,3 @@ group :test do
   # sudo port install libxml2 libxslt
   gem 'capybara', '~> 3.40'
 end
-
-source 'https://rubygems.org'
