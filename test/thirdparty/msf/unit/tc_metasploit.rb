@@ -9,8 +9,8 @@ require 'pp'
 class TC_Metasploit < Test::Unit::TestCase
 
   def setup
-    $root_dir="../../../../"
-    $:.unshift File.join( %w{ ../../../../ } )
+    $root_dir='../../../../'
+    $:.unshift File.join(%w{ ../../../../ })
     require 'core/loader'
   end
 
@@ -97,7 +97,7 @@ class TC_Metasploit < Test::Unit::TestCase
     assert_nothing_raised do
       info = @api.get_exploit_info('windows/dcerpc/ms03_026_dcom')
     end
-    assert( info['name'].nil? != true)
+    assert(info['name'].nil? != true)
   end
 
   def test_get_options
@@ -107,7 +107,7 @@ class TC_Metasploit < Test::Unit::TestCase
     assert_nothing_raised do
       info = @api.get_options('windows/dcerpc/ms03_026_dcom')
     end
-    assert( info['RHOST'].nil? != true)
+    assert(info['RHOST'].nil? != true)
   end
 
   def test_payloads
@@ -117,18 +117,18 @@ class TC_Metasploit < Test::Unit::TestCase
     assert_nothing_raised do
       payloads = @api.payloads
     end
-    assert( payloads.length > 5 )
+    assert(payloads.length > 5)
   end
 
   def test_launch_exploit
     new_api
     @api.login
-    opts = { 'PAYLOAD' => 'windows/meterpreter/bind_tcp', 'URIPATH' => '/test1','SRVPORT' => 8080}
+    opts = { 'PAYLOAD' => 'windows/meterpreter/bind_tcp', 'URIPATH' => '/test1','SRVPORT' => 8080 }
     ret = nil
     assert_nothing_raised do
       ret = @api.launch_exploit('windows/browser/adobe_utilprintf',opts)
     end
-    assert(ret['job_id'] != nil )
+    assert(ret['job_id'] != nil)
   end
 
   def test_launch_autopwn
@@ -138,6 +138,6 @@ class TC_Metasploit < Test::Unit::TestCase
     assert_nothing_raised do
       ret = @api.launch_autopwn
     end
-    assert(ret['job_id'] != nil )
+    assert(ret['job_id'] != nil)
   end
 end

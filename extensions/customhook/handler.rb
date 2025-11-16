@@ -9,14 +9,16 @@ module BeEF
       class Handler
         def call(env)
           @body = ''
+          # @note Object representing the HTTP request
           @request = Rack::Request.new(env)
           @params = @request.query_string
-          @response = Rack::Response.new(body = [], 200, header = {})
+          # @note Object representing the HTTP response
+          @response = Rack::Response.new([], 200, {})
           config = BeEF::Core::Configuration.instance
           eruby = Erubis::FastEruby.new(File.read("#{File.dirname(__FILE__)}/html/index.html"))
           config.get('beef.extension.customhook.hooks').each do |h|
             path = config.get("beef.extension.customhook.hooks.#{h.first}.path")
-            next unless path == (env['REQUEST_URI']).to_s
+            next unless path == env['REQUEST_URI'].to_s
 
             print_info "[Custom Hook] Handling request for custom hook mounted at '#{path}'"
             @body << eruby.evaluate({
@@ -27,9 +29,9 @@ module BeEF
           end
 
           @response = Rack::Response.new(
-            body = [@body],
-            status = 200,
-            header = {
+            [@body],
+            200,
+            {
               'Pragma' => 'no-cache',
               'Cache-Control' => 'no-cache',
               'Expires' => '0',
@@ -39,12 +41,6 @@ module BeEF
             }
           )
         end
-
-        # @note Object representing the HTTP request
-        @request
-
-        # @note Object representing the HTTP response
-        @response
       end
     end
   end

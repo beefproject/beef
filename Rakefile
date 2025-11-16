@@ -5,7 +5,7 @@
 #
 require 'rspec/core/rake_task'
 
-task :default => ["short"]
+task default: ['short']
 
 RSpec::Core::RakeTask.new(:short) do |task|
   task.rspec_opts = ['--tag ~run_on_browserstack', '--tag ~run_on_long_tests']
@@ -27,7 +27,7 @@ RSpec::Core::RakeTask.new(:browserstack) do |task|
 end
 
 RSpec::Core::RakeTask.new(:bs) do |task|
-  configs = Dir["spec/support/browserstack/**/*.yml"]
+  configs = Dir['spec/support/browserstack/**/*.yml']
   configs.each do |config|
     config = config.split('spec/support/browserstack')[1]
     ENV['CONFIG_FILE'] = config
@@ -48,13 +48,13 @@ namespace :ssl do
       puts 'Certificate already exists. Replace? [Y/n]'
       confirm = STDIN.getch.chomp
       unless confirm.eql?('') || confirm.downcase.eql?('y')
-        puts "Aborted"
+        puts 'Aborted'
         exit 1
       end
     end
     Rake::Task['ssl:replace'].invoke
   end
-  
+
   desc 'Re-generate SSL certificate'
   task :replace do
     if File.file?('/usr/local/bin/openssl')
@@ -62,7 +62,7 @@ namespace :ssl do
     elsif File.file?('/usr/bin/openssl')
       path = '/usr/bin/openssl'
     else
-      puts "[-] Error: could not find openssl"
+      puts '[-] Error: could not find openssl'
       exit 1
     end
     IO.popen([path, 'req', '-new', '-newkey', 'rsa:4096', '-sha256', '-x509', '-days', '3650', '-nodes', '-out', 'beef_cert.pem', '-keyout', 'beef_key.pem', '-subj', '/CN=localhost'], 'r+').read.to_s
@@ -88,8 +88,8 @@ namespace :rdoc do
     rd.rdoc_dir = 'doc/rdocs'
     rd.main = 'README.mkd'
     rd.rdoc_files.include('core/**/*\.rb')
-      #'extensions/**/*\.rb'
-      #'modules/**/*\.rb'
+    # 'extensions/**/*\.rb'
+    # 'modules/**/*\.rb'
     rd.options << '--line-numbers'
     rd.options << '--all'
   end
@@ -98,15 +98,15 @@ end
 ################################
 # X11 set up
 
-@xserver_process_id = nil;
+@xserver_process_id = nil
 
 task :xserver_start do
-  printf "Starting X11 Server (wait 10 seconds)..."
-  @xserver_process_id = IO.popen("/usr/bin/Xvfb :0 -screen 0 1024x768x24 2> /dev/null", "w+")
+  printf 'Starting X11 Server (wait 10 seconds)...'
+  @xserver_process_id = IO.popen('/usr/bin/Xvfb :0 -screen 0 1024x768x24 2> /dev/null', 'w+')
   delays = [2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 10 seconds
     printf '.'
-    sleep (i) # increase the . display rate
+    sleep(i) # increase the . display rate
   end
   puts '.'
 end
@@ -119,16 +119,16 @@ end
 ################################
 # BeEF environment set up
 
-@beef_process_id = nil;
-@beef_config_file = 'tmp/rk_beef_conf.yaml';
+@beef_process_id = nil
+@beef_config_file = 'tmp/rk_beef_conf.yaml'
 
-task :beef_start => 'beef' do
+task beef_start: 'beef' do
   # read environment param for creds or use bad_fred
   test_user = ENV['TEST_BEEF_USER'] || 'bad_fred'
   test_pass = ENV['TEST_BEEF_PASS'] || 'bad_fred_no_access'
 
   # write a rake config file for beef
-  config = YAML.safe_load(File.read('./config.yaml'))
+  config = YAML.safe_load_file('./config.yaml')
   config['beef']['credentials']['user'] = test_user
   config['beef']['credentials']['passwd'] = test_pass
   Dir.mkdir('tmp') unless Dir.exist?('tmp')
@@ -140,12 +140,12 @@ task :beef_start => 'beef' do
   config = nil
   puts "Using config file: #{@beef_config_file}\n"
 
-  printf "Starting BeEF (wait a few seconds)..."
-  @beef_process_id = IO.popen("ruby ./beef -c #{@beef_config_file} -x 2> /dev/null", "w+")
+  printf 'Starting BeEF (wait a few seconds)...'
+  @beef_process_id = IO.popen("ruby ./beef -c #{@beef_config_file} -x 2> /dev/null", 'w+')
   delays = [5, 5, 5, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   delays.each do |i| # delay for a few seconds
     printf '.'
-    sleep (i)
+    sleep(i)
   end
   puts ".\n\n"
 end
@@ -165,41 +165,41 @@ end
 ################################
 # MSF environment set up
 
-@msf_process_id = nil;
+@msf_process_id = nil
 
-task :msf_start => '/tmp/msf-test/msfconsole' do
-  printf "Starting MSF (wait 45 seconds)..."
-  @msf_process_id = IO.popen("/tmp/msf-test/msfconsole -r test/thirdparty/msf/unit/BeEF.rc 2> /dev/null", "w+")
+task msf_start: '/tmp/msf-test/msfconsole' do
+  printf 'Starting MSF (wait 45 seconds)...'
+  @msf_process_id = IO.popen('/tmp/msf-test/msfconsole -r test/thirdparty/msf/unit/BeEF.rc 2> /dev/null', 'w+')
   delays = [10, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0.5, 0.5, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.05, 0.05]
   delays.each do |i| # delay for 45 seconds
     printf '.'
-    sleep (i) # increase the . display rate
+    sleep(i) # increase the . display rate
   end
   puts '.'
 end
 
 task :msf_stop do
   puts "\nShutting down MSF...\n"
-  @msf_process_id.puts "quit"
+  @msf_process_id.puts 'quit'
 end
 
-task :msf_install => '/tmp/msf-test/msfconsole' do
+task msf_install: '/tmp/msf-test/msfconsole' do
   # Handled by the 'test/msf-test/msfconsole' task.
 end
 
-task :msf_update => '/tmp/msf-test/msfconsole' do
-  sh "cd /tmp/msf-test;git pull"
+task msf_update: '/tmp/msf-test/msfconsole' do
+  sh 'cd /tmp/msf-test;git pull'
 end
 
 file '/tmp/msf-test/msfconsole' do
-  puts "Installing MSF"
-  sh "cd test;git clone https://github.com/rapid7/metasploit-framework.git /tmp/msf-test"
+  puts 'Installing MSF'
+  sh 'cd test;git clone https://github.com/rapid7/metasploit-framework.git /tmp/msf-test'
 end
 
 ################################
 # ActiveRecord
 namespace :db do
   task :environment do
-    require_relative "beef"
+    require_relative 'beef'
   end
 end

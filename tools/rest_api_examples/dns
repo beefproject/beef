@@ -13,9 +13,9 @@ require './lib/beef_rest_api'
 
 if ARGV.length == 0
   puts "#{$0}:"
-  puts "|  Example BeEF RESTful API script"
-  puts "|  Use --help for help"
-  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  puts '|  Example BeEF RESTful API script'
+  puts '|  Use --help for help'
+  puts '|_ Use verbose mode (-v) and debug mode (-d) for more output'
   exit 1
 end
 
@@ -67,7 +67,7 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 @api.version
 
 # Add a rule
-print_status "Adding a DNS rule"
+print_status 'Adding a DNS rule'
 pattern = 'beefproject.com'
 resource = 'A'
 response = ['127.0.0.1', '127.0.0.2']
@@ -76,7 +76,7 @@ print_debug result
 id = result['id']
 
 # Retrieve ruleset
-print_status "Retrieving DNS rule set"
+print_status 'Retrieving DNS rule set'
 rules = @api.dns_ruleset
 print_debug rules
 
@@ -90,7 +90,7 @@ result = @api.dns_delete_rule(id)
 print_debug result
 
 # Retrieve ruleset
-print_status "Retrieving DNS rule set"
+print_status 'Retrieving DNS rule set'
 rules = @api.dns_ruleset
 print_debug rules
 

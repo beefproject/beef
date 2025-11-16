@@ -101,7 +101,7 @@ module BeEF
                   unless msg_hash['cookie'].nil?
                     print_debug('[WebSocket] Browser says hello! WebSocket is running')
                     # insert new connection in activesocket
-                    @@activeSocket[(msg_hash['cookie']).to_s] = ws
+                    @@activeSocket[msg_hash['cookie'].to_s] = ws
                     print_debug("[WebSocket] activeSocket content [#{@@activeSocket}]")
 
                     hb_session = msg_hash['cookie']

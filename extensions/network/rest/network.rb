@@ -178,7 +178,7 @@ module BeEF
 
           def initialize(message = nil)
             message = "Invalid \"#{message}\" parameter passed to /api/network handler" unless message.nil?
-            super(message)
+            super
           end
         end
       end

@@ -35,7 +35,7 @@ end
 #
 # @note set load path, application root directory and user preferences directory
 #
-$root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '.')
+$root_dir = File.join(File.expand_path(__dir__), '.')
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
@@ -79,11 +79,11 @@ end
 #
 # @note Initialize the Configuration object. Loads a different config.yaml if -c flag was passed.
 #
-if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
-  config = BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
-else
-  config = BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
-end
+config = if BeEF::Core::Console::CommandLine.parse[:ext_config].empty?
+           BeEF::Core::Configuration.new("#{$root_dir}/config.yaml")
+         else
+           BeEF::Core::Configuration.new("#{BeEF::Core::Console::CommandLine.parse[:ext_config]}")
+         end
 
 #
 # @note set log level
@@ -93,11 +93,11 @@ BeEF.logger.level = config.get('beef.debug') ? Logger::DEBUG : Logger::WARN
 #
 # @note Check the system language settings for UTF-8 compatibility
 #
-env_lang = ENV['LANG']
+env_lang = ENV.fetch('LANG', nil)
 if env_lang !~ /(utf8|utf-8)/i
   print_warning "Warning: System language $LANG '#{env_lang}' does not appear to be UTF-8 compatible."
   if env_lang =~ /\A([a-z]+_[a-z]+)\./i
-    country = $1
+    country = Regexp.last_match(1)
     print_more "Try: export LANG=#{country}.utf8"
   end
 end
@@ -123,9 +123,9 @@ end
 #
 # @note Exit on default credentials
 #
-if config.get("beef.credentials.user").eql?('beef') && config.get("beef.credentials.passwd").eql?('beef')
-  print_error "ERROR: Default username and password in use!"
-  print_more "Change the beef.credentials.passwd in config.yaml"
+if config.get('beef.credentials.user').eql?('beef') && config.get('beef.credentials.passwd').eql?('beef')
+  print_error 'ERROR: Default username and password in use!'
+  print_more 'Change the beef.credentials.passwd in config.yaml'
   exit 1
 end
 
@@ -194,9 +194,9 @@ end
 
 # Connect to DB
 ActiveRecord::Base.logger = nil
-OTR::ActiveRecord.configure_from_hash!(adapter:'sqlite3', database:db_file)
+OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: db_file)
 # otr-activerecord require you to manually establish the connection with the following line
-#Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
+# Also a check to confirm that the correct Gem version is installed to require it, likely easier for old systems.
 if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
   OTR::ActiveRecord.establish_connection!
 end
@@ -250,7 +250,7 @@ BeEF::Core::Console::Banners.print_dns
 #
 # @note Prints the API key needed to use the RESTful API
 #
-print_info "RESTful API key: #{BeEF::Core::Crypto::api_token}"
+print_info "RESTful API key: #{BeEF::Core::Crypto.api_token}"
 
 #
 # @note Load the GeoIP database
@@ -270,7 +270,7 @@ BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
 #
 # @note Start the WebSocket server
 #
-if config.get("beef.http.websocket.enable")
+if config.get('beef.http.websocket.enable')
   BeEF::Core::Websocket::Websocket.instance
   BeEF::Core::Console::Banners.print_websocket_servers
 end

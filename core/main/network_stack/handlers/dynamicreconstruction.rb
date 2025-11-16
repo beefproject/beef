@@ -51,9 +51,9 @@ module BeEF
           def check_packets
             checked = []
             PQ.each do |packet|
-              next if checked.include?(packet[:beefhook] + ':' + String(packet[:stream_id]))
+              next if checked.include?("#{packet[:beefhook]}:#{String(packet[:stream_id])}")
 
-              checked << (packet[:beefhook] + ':' + String(packet[:stream_id]))
+              checked << "#{packet[:beefhook]}:#{String(packet[:stream_id])}"
               pc = 0
               PQ.each do |p|
                 pc += 1 if packet[:beefhook] == p[:beefhook] and packet[:stream_id] == p[:stream_id]
@@ -72,14 +72,14 @@ module BeEF
                 res['request'] = request
                 session_key = BeEF::Core::Configuration.instance.get('beef.http.hook_session_name')
                 res['beefsession'] = request.cookies[session_key] ||
-                                    request.params[session_key] ||
-                                    request.env[session_key]
+                                     request.params[session_key] ||
+                                     request.env[session_key]
 
                 execute(res)
-              rescue JSON::ParserError => e
+              rescue JSON::ParserError
                 print_debug 'Network stack could not decode packet stream.'
-                print_debug 'Dumping Stream Data [base64]: ' + data
-                print_debug 'Dumping Stream Data: ' + b64
+                print_debug "Dumping Stream Data [base64]: #{data}"
+                print_debug "Dumping Stream Data: #{b64}"
               end
             end
           end

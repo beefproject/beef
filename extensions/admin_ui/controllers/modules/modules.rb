@@ -82,10 +82,9 @@ module BeEF
           # @param category [Array] The category to add the leaf to
           # @param leaf [Hash] The leaf to add to the tree
           def update_command_module_tree_recurse(tree, category, leaf)
-            
             # get a single folder from the category array
             working_category = category.shift
-            
+
             tree.each do |t|
               if t['text'].eql?(working_category) && category.count > 0
                 # We have deeper to go
@@ -190,14 +189,13 @@ module BeEF
                 retitle_recursive_tree([c]) if c.has_key?('cls') && c['cls'] == 'folder'
               end
               num_of_command_modules = command_module_branch['children'].length + num_of_subs
-              command_module_branch['text'] = command_module_branch['text'] + ' (' + num_of_command_modules.to_s + ')'
+              command_module_branch['text'] = "#{command_module_branch['text']} (#{num_of_command_modules})"
             end
           end
 
           # Returns the list of all command_modules for a TreePanel in the interface.
           def select_command_modules_tree
             blanktree = []
-            tree = []
 
             # Due to the sub-folder nesting, we use some really badly hacked together recursion
             # Note to the bored - if someone (anyone please) wants to refactor, I'll buy you cookies. -x
@@ -242,7 +240,7 @@ module BeEF
             sort_recursive_tree(tree)
 
             retitle_recursive_tree(tree)
-            
+
             # return a JSON array of hashes
             @body = tree.to_json
           end
@@ -254,7 +252,7 @@ module BeEF
               print_error 'command_module_id is nil'
               return
             end
-            command_module = BeEF::Core::Models::CommandModule.find(command_module_id)
+            BeEF::Core::Models::CommandModule.find(command_module_id)
             key = BeEF::Module.get_key_by_database_id(command_module_id)
 
             payload_name = @params['payload_name'] || nil
@@ -307,11 +305,11 @@ module BeEF
 
             C.where(command_module_id: command_module_id, hooked_browser_id: zombie_id).each do |command|
               commands.push({
-                'id' => i,
-                'object_id' => command.id,
-                'creationdate' => Time.at(command.creationdate.to_i).strftime('%Y-%m-%d %H:%M').to_s,
-                'label' => command.label
-              })
+                              'id' => i,
+                              'object_id' => command.id,
+                              'creationdate' => Time.at(command.creationdate.to_i).strftime('%Y-%m-%d %H:%M').to_s,
+                              'label' => command.label
+                            })
               i += 1
             end
 

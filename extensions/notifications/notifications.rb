@@ -9,7 +9,6 @@ require 'extensions/notifications/channels/pushover'
 require 'extensions/notifications/channels/slack_workspace'
 require 'extensions/notifications/channels/ntfy'
 
-
 module BeEF
   module Extension
     module Notifications
@@ -38,7 +37,6 @@ module BeEF
           BeEF::Extension::Notifications::Channels::SlackWorkspace.new(message) if @config.get('beef.extension.notifications.slack.enable') == true
 
           BeEF::Extension::Notifications::Channels::Ntfy.new(message) if @config.get('beef.extension.notifications.ntfy.enable') == true
-
         end
       end
     end

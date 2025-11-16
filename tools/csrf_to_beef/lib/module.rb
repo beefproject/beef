@@ -28,7 +28,7 @@ end
 #
 class ModuleFile
   def generate(class_name, target_url, options)
-    options_rb = ""
+    options_rb = ''
     options.to_enum.with_index(1).each do |input, input_index|
       options_rb += "      { 'name' => 'input_#{input_index}', 'ui_label' => %q(#{input[0]}), 'value' => %q(#{input[1]}) },\n"
     end
@@ -61,7 +61,7 @@ end
 #
 class CommandFile
   def generate(class_name, method, enctype, options)
-    options_js = ""
+    options_js = ''
     options.to_enum.with_index(1).each do |input, input_index|
       options_js += "        {'type':'hidden', 'name':'#{input.first.to_s.gsub(/'/, "\\'")}', 'value':'<%= CGI.escape(@input_#{input_index}) %>' },\n"
     end

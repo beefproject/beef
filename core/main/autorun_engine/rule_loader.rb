@@ -202,7 +202,7 @@ module BeEF
         # @param [String] JSON ARE ruleset file path
         def load_rule_file(json_rule_path)
           rule_file = File.open(json_rule_path, 'r:UTF-8', &:read)
-          self.load_rule_json(JSON.parse(rule_file))
+          load_rule_json(JSON.parse(rule_file))
         rescue => e
           print_error("[ARE] Failed to load ruleset from #{json_rule_path}: #{e.message}")
         end

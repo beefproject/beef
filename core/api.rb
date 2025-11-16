@@ -132,7 +132,7 @@ module BeEF
       # @param [String] mthd the target method to verify
       #
       def verify_api_path(clss, mthd)
-        (clss.const_defined?('API_PATHS') && clss.const_get('API_PATHS').key?(mthd))
+        clss.const_defined?('API_PATHS') && clss.const_get('API_PATHS').key?(mthd)
       end
 
       #

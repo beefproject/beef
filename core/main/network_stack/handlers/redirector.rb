@@ -18,18 +18,14 @@ module BeEF
 
           def call(_env)
             @response = Rack::Response.new(
-              body = ['302 found'],
-              status = 302,
-              header = {
+              ['302 found'],
+              302,
+              {
                 'Content-Type' => 'text',
                 'Location' => @target
               }
             )
           end
-
-          @request
-
-          @response
         end
       end
     end

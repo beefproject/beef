@@ -21,7 +21,7 @@ module BeEF
     #   @param [String] str String for testing
     #   @return [Boolean] Whether or not the only characters in str are specified in chars
     def self.only?(chars, str)
-      regex = Regexp.new('[^' + chars + ']')
+      regex = Regexp.new("[^#{chars}]")
       regex.match(str.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')).nil?
     end
 

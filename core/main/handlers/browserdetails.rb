@@ -71,8 +71,8 @@ module BeEF
 
           # Parse http_headers. Unfortunately Rack doesn't provide a util-method to get them :(
           @http_headers = {}
-          http_header = @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }
-                                        .each do |key, value|
+          @data['request'].env.select { |k, _v| k.to_s.start_with? 'HTTP_' }
+                          .each do |key, value|
             @http_headers[key.sub(/^HTTP_/, '')] = value.force_encoding('UTF-8')
           end
           zombie.httpheaders = @http_headers.to_json
@@ -242,7 +242,7 @@ module BeEF
             X_FORWARDED
             X_FORWARDED_FOR
           ].each do |header|
-            proxy_clients << (JSON.parse(zombie.httpheaders)[header]).to_s unless JSON.parse(zombie.httpheaders)[header].nil?
+            proxy_clients << JSON.parse(zombie.httpheaders)[header].to_s unless JSON.parse(zombie.httpheaders)[header].nil?
           end
 
           # retrieve proxy server
@@ -400,8 +400,8 @@ module BeEF
           browser_plugins = get_param(@data['results'], 'browser.plugins')
           if BeEF::Filters.is_valid_browser_plugins?(browser_plugins)
             BD.set(session_id, 'browser.plugins', browser_plugins)
-          elsif browser_plugins == "[]"
-            err_msg "No browser plugins detected."
+          elsif browser_plugins == '[]'
+            err_msg 'No browser plugins detected.'
           else
             err_msg "Invalid browser plugins returned from the hook browser's initial connection."
           end
@@ -458,7 +458,7 @@ module BeEF
           print_debug("Hooked browser [id:#{zombie.id}] has IP [ip: #{zombie.ip}]")
 
           if !os_name.nil? and !os_version.nil?
-            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name + '-' + os_version)
+            BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: "#{os_name}-#{os_version}")
           elsif !os_name.nil?
             BeEF::Core::Models::NetworkHost.create(hooked_browser: zombie, ip: zombie.ip, ntype: 'Host', os: os_name)
           else

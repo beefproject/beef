@@ -73,6 +73,7 @@ module BeEF
           rule_id = params[:rule_id]
           rule = BeEF::Core::Models::Rule.find(rule_id)
           raise InvalidParameterError, 'id' if rule.nil?
+
           rule.destroy
 
           { 'success' => true }.to_json
@@ -91,6 +92,7 @@ module BeEF
           rule_id = params[:rule_id]
           rule = BeEF::Core::Models::Rule.find(rule_id)
           raise InvalidParameterError, 'id' if rule.nil?
+
           data = JSON.parse request.body.read
           rloader = BeEF::Core::AutorunEngine::RuleLoader.instance
           rloader.update_rule_json(rule_id, data)
@@ -111,7 +113,7 @@ module BeEF
         get '/run/:rule_id' do
           rule_id = params[:rule_id]
 
-          online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', (Time.new.to_i - 15))
+          online_hooks = BeEF::Core::Models::HookedBrowser.where('lastseen >= ?', Time.new.to_i - 15)
 
           if online_hooks.nil?
             return { 'success' => false, 'error' => 'There are currently no hooked browsers online.' }.to_json

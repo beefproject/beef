@@ -34,7 +34,7 @@ module BeEF
         attr_accessor :messages
 
         def initialize
-          super()
+          super
           @lock = Mutex.new
         end
 

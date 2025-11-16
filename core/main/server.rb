@@ -12,6 +12,7 @@ module BeEF
   module Core
     class Server
       include Singleton
+
       attr_reader :root_dir, :url, :configuration, :command_urls, :mounts, :semaphore
 
       def initialize
@@ -20,7 +21,7 @@ module BeEF
         @root_dir = File.expand_path('../../../', __dir__)
         @command_urls = {}
         @mounts = {}
-        @rack_app
+        @rack_app = nil
         @semaphore = Mutex.new
       end
 

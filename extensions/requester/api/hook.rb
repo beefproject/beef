@@ -106,13 +106,13 @@ module BeEF
             req_parts.each_with_index do |value, index|
               if verb.eql?('POST')
                 if index.positive? && (index < @post_data_index) # only add HTTP headers, not the verb/uri/version or post-data
-                  header_key = value.split(/: /)[0]
-                  header_value = value.split(/: /)[1]
+                  header_key = value.split(': ')[0]
+                  header_value = value.split(': ')[1]
                   headers[header_key] = header_value
                 end
               elsif index.positive?
-                header_key = value.split(/: /)[0]
-                header_value = value.split(/: /)[1]
+                header_key = value.split(': ')[0]
+                header_value = value.split(': ')[1]
                 headers[header_key] = header_value # only add HTTP headers, not the verb/uri/version
               end
             end

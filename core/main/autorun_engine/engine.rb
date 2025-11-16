@@ -135,7 +135,7 @@ module BeEF
           if !os_version.nil? || rule.os_version != 'ALL'
             os_major_version_match = compare_versions(os_ver_hook_maj.to_s, os_ver_rule_cond, os_ver_rule_maj.to_s)
             os_minor_version_match = compare_versions(os_ver_hook_min.to_s, os_ver_rule_cond, os_ver_rule_min.to_s)
-            return false unless (os_major_version_match && os_minor_version_match)
+            return false unless os_major_version_match && os_minor_version_match
           end
 
           true
@@ -158,20 +158,20 @@ module BeEF
 
           # check if rule specifies multiple browsers
           if rule.browser =~ /\A[A-Z]+\Z/
-              return false unless rule.browser == 'ALL' || browser == rule.browser
+            return false unless rule.browser == 'ALL' || browser == rule.browser
 
-              # check if the browser version matches
-              browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
-              return false unless browser_version_match
-            else
-              browser_match = false
-              rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
-                if b == browser || b == 'ALL'
-                  browser_match = true
-                  break
-                end
+            # check if the browser version matches
+            browser_version_match = compare_versions(browser_version.to_s, b_ver_cond, b_ver.to_s)
+            return false unless browser_version_match
+          else
+            browser_match = false
+            rule.browser.gsub(/[^A-Z,]/i, '').split(',').each do |b|
+              if b == browser || b == 'ALL'
+                browser_match = true
+                break
               end
-              return false unless browser_match
+            end
+            return false unless browser_match
           end
 
           true
@@ -504,9 +504,9 @@ module BeEF
 
             if config.get('beef.extension.evasion.enable')
               evasion = BeEF::Extension::Evasion::Evasion.instance
-              command_body = evasion.obfuscate(command_module.output) + "\n\n"
+              command_body = "#{evasion.obfuscate(command_module.output)}\n\n"
             else
-              command_body = command_module.output + "\n\n"
+              command_body = "#{command_module.output}\n\n"
             end
 
             # @note prints the event to the console

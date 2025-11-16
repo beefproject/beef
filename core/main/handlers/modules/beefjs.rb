@@ -46,22 +46,22 @@ module BeEF
                   print_debug "Excluding #{ext_js_sub_file} from core files obfuscation list"
                   # do not obfuscate the file
                   ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                  ext_js_to_not_obfuscate << "#{File.read(ext_js_sub_file_path)}\n\n"
                 else
                   ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                  ext_js_to_obfuscate << "#{File.read(ext_js_sub_file_path)}\n\n"
                 end
               else
                 # Evasion is not enabled, do not obfuscate anything
                 ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
+                ext_js_to_not_obfuscate << "#{File.read(ext_js_sub_file_path)}\n\n"
               end
             end
 
             # @note construct the beef_js string from file(s)
             beef_js_sub_files.each do |beef_js_sub_file|
               beef_js_sub_file_path = beef_js_path + beef_js_sub_file
-              beef_js << (File.read(beef_js_sub_file_path) + "\n\n")
+              beef_js << "#{File.read(beef_js_sub_file_path)}\n\n"
             end
 
             # @note create the config for the hooked browser session
@@ -74,7 +74,7 @@ module BeEF
             end
             if hook_session_config['beef_host'].eql? '0.0.0.0'
               hook_session_config['beef_host'] = req_host
-              hook_session_config['beef_url'].sub!(/0\.0\.0\.0/, req_host)
+              hook_session_config['beef_url'].sub!('0.0.0.0', req_host)
             end
 
             # @note set the XHR-polling timeout
@@ -88,7 +88,7 @@ module BeEF
             if !hook_session_config['beef_public_port'].nil? && (hook_session_config['beef_port'] != hook_session_config['beef_public_port'])
               hook_session_config['beef_port'] = hook_session_config['beef_public_port']
               hook_session_config['beef_url'].sub!(/#{hook_session_config['beef_port']}/, hook_session_config['beef_public_port'])
-              hook_session_config['beef_url'].sub!(/http:/, 'https:') if hook_session_config['beef_public_port'] == '443'
+              hook_session_config['beef_url'].sub!('http:', 'https:') if hook_session_config['beef_public_port'] == '443'
             end
 
             # @note Set some WebSocket properties
@@ -121,7 +121,7 @@ module BeEF
           def find_beefjs_component_path(component)
             component_path = component
             component_path.gsub!(/beef./, '')
-            component_path.gsub!(/\./, '/')
+            component_path.gsub!('.', '/')
             component_path.replace "#{$root_dir}/core/main/client/#{component_path}.js"
 
             return false unless File.exist? component_path
@@ -152,9 +152,9 @@ module BeEF
               config = BeEF::Core::Configuration.instance
               if config.get('beef.extension.evasion.enable')
                 evasion = BeEF::Extension::Evasion::Evasion.instance
-                @body << evasion.obfuscate(File.read(component_path) + "\n\n")
+                @body << evasion.obfuscate("#{File.read(component_path)}\n\n")
               else
-                @body << (File.read(component_path) + "\n\n")
+                @body << "#{File.read(component_path)}\n\n"
               end
 
               # @note finally we add the component to the list of components already generated so it does not get generated numerous times.

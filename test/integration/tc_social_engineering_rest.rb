@@ -15,8 +15,8 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
 
     # Login to API before performing any tests
     def startup
-      json = {:username => BEEF_USER, :password => BEEF_PASSWD}.to_json
-      @@headers = {:content_type => :json, :accept => :json}
+      json = { username: BEEF_USER, password: BEEF_PASSWD }.to_json
+      @@headers = { content_type: :json, accept: :json }
 
       response = RestClient.post("#{RESTAPI_ADMIN}/login",
                                  json,
@@ -48,7 +48,7 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     mount = '/beefproject'
     dns_spoof = true
 
-    json = {:url => url, :mount => mount, :dns_spoof => dns_spoof}.to_json
+    json = { url: url, mount: mount, dns_spoof: dns_spoof }.to_json
 
     domain = url.gsub(%r{^https?://}, '')
 
@@ -61,19 +61,19 @@ class TC_SocialEngineeringRest < Test::Unit::TestCase
     # Send DNS request to server to verify that a new rule was added
     dns_address = @@config.get('beef.extension.dns.address')
     dns_port = @@config.get('beef.extension.dns.port')
-    dig_output = IO.popen(["dig", "@#{dns_address}", "-p", "#{dns_port}", "-t",
-                          "A", "+short", "#{domain}"], 'r+').read.strip!
+    dig_output = IO.popen(['dig', "@#{dns_address}", '-p', "#{dns_port}", '-t',
+                          'A', '+short', "#{domain}"], 'r+').read.strip!
 
     foundmatch = false
 
     # Iterate local IPs (excluding loopbacks) to find a match to the 'dig'
     # output
     assert_block do
-        Socket.ip_address_list.each { |i|
-            if !(i.ipv4_loopback? || i.ipv6_loopback?)
-                return true if i.ip_address.to_s.eql?(dig_output.to_s)
-            end
-        }
+      Socket.ip_address_list.each { |i|
+        if !(i.ipv4_loopback? || i.ipv6_loopback?)
+          return true if i.ip_address.to_s.eql?(dig_output.to_s)
+        end
+      }
     end
 
     # assert(foundmatch)
