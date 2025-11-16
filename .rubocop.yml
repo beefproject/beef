@@ -4,6 +4,7 @@ AllCops:
   NewCops: enable
 
   Exclude:
+    - "vendor/**/*"
     - "tools/**/*"
     - "spec/**/*"
     - "test/**/*"
