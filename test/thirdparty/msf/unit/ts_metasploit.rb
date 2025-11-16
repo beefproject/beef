@@ -21,7 +21,7 @@ require './tc_metasploit'
 class TS_BeefTests
   def self.suite
 
-    suite = Test::Unit::TestSuite.new(name='BeEF Metasploit Test Suite')
+    suite = Test::Unit::TestSuite.new('BeEF Metasploit Test Suite')
     suite << TC_CheckEnvironment.suite
     suite << TC_Metasploit.suite
 
@@ -30,4 +30,3 @@ class TS_BeefTests
 end
 
 Test::Unit::UI::Console::TestRunner.run(TS_BeefTests)
-

@@ -28,7 +28,7 @@ require '../api/1333_auth_rate' # API rate testing issue #1333'
 class TS_BeefIntegrationTests
   def self.suite
 
-    suite = Test::Unit::TestSuite.new(name='BeEF Integration Test Suite')
+    suite = Test::Unit::TestSuite.new('BeEF Integration Test Suite')
     suite << TC_CheckEnvironment.suite
     suite << TC_Login.suite
     suite << TC_DebugModules.suite
