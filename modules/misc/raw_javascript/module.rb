@@ -6,7 +6,7 @@
 class Raw_javascript < BeEF::Core::Command
   def self.options
     [
-      { 'name' => 'cmd', 'description' => 'Javascript Code', 'ui_label' => 'Javascript Code', 'value' => "alert(\'BeEF Raw Javascript\');\nreturn \'It worked!\';",
+      { 'name' => 'cmd', 'description' => 'Javascript Code', 'ui_label' => 'Javascript Code', 'value' => "alert('BeEF Raw Javascript');\nreturn 'It worked!';",
         'type' => 'textarea', 'width' => '400px', 'height' => '100px' }
     ]
   end

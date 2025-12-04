@@ -16,14 +16,14 @@ module BeEF
     # @param [String] mod module key
     # @return [Boolean] if the module key is enabled in BeEF's configuration
     def self.is_enabled(mod)
-      (is_present(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.enable") == true)
+      is_present(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.enable") == true
     end
 
     # Checks to see if the module reports that it has loaded through the configuration
     # @param [String] mod module key
     # @return [Boolean] if the module key is loaded in BeEF's configuration
     def self.is_loaded(mod)
-      (is_enabled(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.loaded") == true)
+      is_enabled(mod) && BeEF::Core::Configuration.instance.get("beef.module.#{mod}.loaded") == true
     end
 
     # Returns module class definition
@@ -230,10 +230,12 @@ module BeEF
             if opts.key?('ver')
               if subv.key?('min_ver')
                 break unless subv['min_ver'].is_a?(Integer) && opts['ver'].to_i >= subv['min_ver']
+
                 rating += 1
               end
               if subv.key?('max_ver')
                 break unless (subv['max_ver'].is_a?(Integer) && opts['ver'].to_i <= subv['max_ver']) || subv['max_ver'] == 'latest'
+
                 rating += 1
               end
             end
@@ -303,10 +305,10 @@ module BeEF
       target_config.each do |k, v|
         # Convert the key to a string if it's not already one
         k_str = k.to_s.upcase
-      
+
         # Use the adjusted string key for the rest of the process
         next unless BeEF::Core::Constants::CommandModule.const_defined? "VERIFIED_#{k_str}"
-      
+
         key = BeEF::Core::Constants::CommandModule.const_get "VERIFIED_#{k_str}"
         targets[key] = [] unless targets.key? key
         browser = nil

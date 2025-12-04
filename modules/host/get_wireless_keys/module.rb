@@ -14,7 +14,7 @@ class Get_wireless_keys < BeEF::Core::Command
     save content
     filename = "#{$home_dir}/exported_wlan_profiles_#{ip}_-_#{timestamp}_#{@datastore['cid']}.xml"
     f = File.open(filename, 'w+')
-    f.write((@datastore['results']).sub('result=', ''))
+    f.write(@datastore['results'].sub('result=', ''))
     writeToResults = {}
     writeToResults['data'] = "Please import #{filename} into your windows machine"
     BeEF::Core::Models::Command.save_result(@datastore['beefhook'], @datastore['cid'], @friendlyname, writeToResults, 0)

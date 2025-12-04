@@ -42,6 +42,7 @@ module BeEF
       # @return [Hash] YAML formatted hash
       def load(file)
         return nil unless File.exist?(file)
+
         YAML.safe_load(File.binread(file))
       end
 
@@ -246,7 +247,7 @@ module BeEF
             next
           end
 
-          y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub(/config\.yaml/, '').gsub(%r{#{$root_dir}/}, '')
+          y['beef']['extension'][y['beef']['extension'].keys.first]['path'] = cf.gsub('config.yaml', '').gsub(%r{#{$root_dir}/}, '')
           @config = y.deep_merge(@config)
         end
       end

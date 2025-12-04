@@ -145,7 +145,7 @@ module BeEF
             options = []
             data.each { |k, v| options.push({ 'name' => k, 'value' => v }) }
             exec_results = BeEF::Module.execute(modk, params[:session], options)
-            exec_results.nil? ? '{"success":"false"}' : '{"success":"true","command_id":"' + exec_results.to_s + '"}'
+            exec_results.nil? ? '{"success":"false"}' : "{\"success\":\"true\",\"command_id\":\"#{exec_results}\"}"
           rescue StandardError
             print_error "Invalid JSON input for module '#{params[:mod_id]}'"
             error 400 # Bad Request
@@ -172,7 +172,7 @@ module BeEF
         # curl example (alert module with custom text, 2 hooked browsers)):
         #
         # curl -H "Content-Type: application/json; charset=UTF-8" -d '{"mod_id":110,"mod_params":{"text":"mucci?"},"hb_ids":[1,2]}'
-        #-X POST http://127.0.0.1:3000/api/modules/multi_browser?token=2316d82702b83a293e2d46a0886a003a6be0a633
+        # -X POST http://127.0.0.1:3000/api/modules/multi_browser?token=2316d82702b83a293e2d46a0886a003a6be0a633
         #
         post '/multi_browser' do
           request.body.rewind

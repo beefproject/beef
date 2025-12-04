@@ -160,7 +160,7 @@ module BeEF
 
           # Validate target hsot
           host = req_parts[4]
-          host_parts = host.split(/:/)
+          host_parts = host.split(':')
           host_name = host_parts[0]
           host_port = host_parts[1] || nil
 
@@ -230,7 +230,7 @@ module BeEF
           response_data = ''
 
           unless http.response_data.nil?
-            if (http.response_data.length > (1024 * 100)) # more than 100K
+            if http.response_data.length > (1024 * 100) # more than 100K
               response_data = http.response_data[0..(1024 * 100)]
               response_data += "\n<---------- Response Data Truncated---------->"
             else
@@ -271,7 +271,7 @@ module BeEF
           def initialize(message = nil)
             str = 'Invalid "%s" parameter passed to /api/requester handler'
             message = format str, message unless message.nil?
-            super(message)
+            super
           end
         end
       end

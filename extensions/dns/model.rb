@@ -149,13 +149,7 @@ module BeEF
                   minimum: response[6]
                 }
 
-                format "t.respond!(Resolv::DNS::Name.create('%<mname>s'), " +
-                       "Resolv::DNS::Name.create('%<rname>s'), " +
-                       '%<serial>d, ' +
-                       '%<refresh>d, ' +
-                       '%<retry>d, ' +
-                       '%<expire>d, ' +
-                       '%<minimum>d)',
+                format "t.respond!(Resolv::DNS::Name.create('%<mname>s'), Resolv::DNS::Name.create('%<rname>s'), %<serial>d, %<refresh>d, %<retry>d, %<expire>d, %<minimum>d)",
                        data
               elsif (response.is_a?(Symbol) && response.to_s =~ sym_regex) || response =~ sym_regex
                 format 't.fail!(:%s)', response.to_sym
@@ -201,7 +195,7 @@ module BeEF
             def initialize(message = nil)
               str = 'Failed to add DNS rule with invalid response for %s resource record', message
               message = format str, message unless message.nil?
-              super(message)
+              super
             end
           end
 

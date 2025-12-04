@@ -84,7 +84,7 @@ module BeEF
             return result.to_json
           end
 
-          if verbose.to_s =~ (/^(true|t|yes|y|1)$/i)
+          if verbose.to_s =~ /^(true|t|yes|y|1)$/i
             BeEF::Core::Models::RtcManage.initiate(fromhb.to_i, tohb.to_i, true)
           else
             BeEF::Core::Models::RtcManage.initiate(fromhb.to_i, tohb.to_i)
@@ -468,7 +468,7 @@ module BeEF
           def initialize(message = nil)
             str = 'Invalid "%s" parameter passed to /api/webrtc handler'
             message = format str, message unless message.nil?
-            super(message)
+            super
           end
         end
       end

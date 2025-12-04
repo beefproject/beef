@@ -1,0 +1,36 @@
+name: "RuboCop"
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  rubocop:
+    name: "RuboCop Analysis"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout the repository"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+
+      - name: "Update and Install Dependencies"
+        run: |
+          sudo apt update
+          sudo apt install libcurl4 libcurl4-openssl-dev
+
+      - name: "Setting up Ruby"
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: "Configure Bundle testing and install gems"
+        run: |
+          bundle config unset --local without
+          bundle config set --local with 'development'
+          bundle install
+
+      - name: "Run RuboCop"
+        run: |
+          bundle exec rubocop --display-only-safe-correctable
