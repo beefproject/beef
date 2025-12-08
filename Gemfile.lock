@@ -215,7 +215,7 @@ GEM
       json
       rest-client
     securerandom (0.4.1)
-    selenium-webdriver (4.38.0)
+    selenium-webdriver (4.39.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -331,7 +331,7 @@ DEPENDENCIES
   rubocop (~> 1.81.7)
   rubyzip (~> 3.2)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.38)
+  selenium-webdriver (~> 4.39)
   sinatra (~> 4.1)
   slack-notifier (~> 2.4)
   sqlite3 (~> 2.8)
