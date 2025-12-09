@@ -29,7 +29,7 @@ gem 'sqlite3', '~> 2.8'
 
 # Geolocation support
 group :geoip do
-  gem 'maxmind-db', '~> 1.3'
+  gem 'maxmind-db', '~> 1.4'
 end
 
 gem 'parseconfig', '~> 1.1', '>= 1.1.2'
@@ -68,7 +68,7 @@ end
 group :test do
   gem 'test-unit-full', '~> 0.0.5'
   gem 'rspec', '~> 3.13'
-  gem 'rdoc', '~> 6.15'
+  gem 'rdoc', '~> 6.17'
   gem 'browserstack-local', '~> 1.4'
 
   gem 'irb', '~> 1.15'
@@ -84,7 +84,7 @@ group :test do
   # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
   # gem 'selenium' # Requires old version of selenium which is no longer available
   gem 'geckodriver-helper', '~> 0.24.0'
-  gem 'selenium-webdriver', '~> 4.38'
+  gem 'selenium-webdriver', '~> 4.39'
 
   # Note: nokogiri is needed by capybara which may require one of the below commands
   # sudo apt-get install libxslt-dev libxml2-dev
