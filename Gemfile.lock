@@ -1,20 +1,20 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (8.0.4)
-      activesupport (= 8.0.4)
-    activerecord (8.0.4)
-      activemodel (= 8.0.4)
-      activesupport (= 8.0.4)
+    activemodel (8.1.1)
+      activesupport (= 8.1.1)
+    activerecord (8.1.1)
+      activemodel (= 8.1.1)
+      activesupport (= 8.1.1)
       timeout (>= 0.4.0)
-    activesupport (8.0.4)
+    activesupport (8.1.1)
       base64
-      benchmark (>= 0.3)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
+      json
       logger (>= 1.4.2)
       minitest (>= 5.1)
       securerandom (>= 0.3)
@@ -34,7 +34,6 @@ GEM
       async
       io-endpoint
     base64 (0.3.0)
-    benchmark (0.5.0)
     bigdecimal (3.3.1)
     browserstack-local (1.4.3)
     byebug (12.0.0)
@@ -63,7 +62,7 @@ GEM
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
-    erb (5.1.3)
+    erb (6.0.0)
     erubis (2.7.0)
     espeak-ruby (1.1.0)
     event_emitter (0.2.6)
@@ -88,19 +87,19 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.16.0)
+    json (2.17.1)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
     matrix (0.4.3)
-    maxmind-db (1.3.2)
+    maxmind-db (1.4.0)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2025.0902)
     mini_mime (1.1.5)
-    minitest (5.26.0)
+    minitest (5.26.1)
     mojo_magick (0.6.8)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
@@ -129,8 +128,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
-    otr-activerecord (2.5.0)
-      activerecord (>= 6.0, < 8.1)
+    otr-activerecord (2.6.0)
+      activerecord (>= 6.0, < 9.0)
     parallel (1.27.0)
     parseconfig (1.1.2)
     parser (3.3.10.0)
@@ -167,7 +166,7 @@ GEM
       rack (>= 1.3)
     rainbow (3.1.1)
     rake (13.3.1)
-    rdoc (6.15.1)
+    rdoc (6.17.0)
       erb
       psych (>= 4.0.0)
       tsort
@@ -216,7 +215,7 @@ GEM
       json
       rest-client
     securerandom (0.4.1)
-    selenium-webdriver (4.38.0)
+    selenium-webdriver (4.39.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -230,15 +229,15 @@ GEM
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
-    sqlite3 (2.8.0-aarch64-linux-gnu)
-    sqlite3 (2.8.0-aarch64-linux-musl)
-    sqlite3 (2.8.0-arm-linux-gnu)
-    sqlite3 (2.8.0-arm-linux-musl)
-    sqlite3 (2.8.0-arm64-darwin)
-    sqlite3 (2.8.0-x86_64-darwin)
-    sqlite3 (2.8.0-x86_64-linux-gnu)
-    sqlite3 (2.8.0-x86_64-linux-musl)
-    stringio (3.1.7)
+    sqlite3 (2.8.1-aarch64-linux-gnu)
+    sqlite3 (2.8.1-aarch64-linux-musl)
+    sqlite3 (2.8.1-arm-linux-gnu)
+    sqlite3 (2.8.1-arm-linux-musl)
+    sqlite3 (2.8.1-arm64-darwin)
+    sqlite3 (2.8.1-x86_64-darwin)
+    sqlite3 (2.8.1-x86_64-linux-gnu)
+    sqlite3 (2.8.1-x86_64-linux-musl)
+    stringio (3.1.9)
     sync (0.5.0)
     term-ansicolor (1.11.3)
       tins (~> 1)
@@ -278,7 +277,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
-    uri (1.0.4)
+    uri (1.1.1)
     webrick (1.9.1)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
@@ -300,7 +299,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activerecord (~> 8.0)
+  activerecord (~> 8.1)
   ansi (~> 1.5)
   async (~> 1.32)
   async-dns (~> 1.4)
@@ -315,24 +314,24 @@ DEPENDENCIES
   geckodriver-helper (~> 0.24.0)
   irb (~> 1.15)
   json
-  maxmind-db (~> 1.3)
+  maxmind-db (~> 1.4)
   mime-types (~> 3.7)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
-  otr-activerecord (~> 2.5.0)
+  otr-activerecord (~> 2.6.0)
   parseconfig (~> 1.1, >= 1.1.2)
   pry-byebug (~> 3.11)
   qr4r (~> 0.6.1)
   rack (~> 3.2)
   rack-protection (~> 4.2.1)
   rake (~> 13.3)
-  rdoc (~> 6.15)
+  rdoc (~> 6.17)
   rest-client (~> 2.1.0)
   rspec (~> 3.13)
   rubocop (~> 1.81.7)
   rubyzip (~> 3.2)
   rushover (~> 0.3.0)
-  selenium-webdriver (~> 4.38)
+  selenium-webdriver (~> 4.39)
   sinatra (~> 4.1)
   slack-notifier (~> 2.4)
   sqlite3 (~> 2.8)
@@ -344,4 +343,4 @@ DEPENDENCIES
   xmlrpc (~> 0.3.3)
 
 BUNDLED WITH
-   2.5.18
+   2.7.2

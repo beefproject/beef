@@ -4,7 +4,7 @@ AllCops:
     - 'tmp/**/*'
     - 'tools/**/*'
     - 'doc/**/*'
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: <%= File.read(".ruby-version").strip[/^(\d+\.\d+)/, 1] || raise("Ruby version not found") %>
   NewCops: enable
 
 Layout/LineLength:
