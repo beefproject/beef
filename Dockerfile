@@ -15,7 +15,7 @@
 ###########################################################################################################
 
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
-FROM ruby:3.4.7-slim-bullseye AS builder
+FROM ruby:3.4.5-slim-bullseye AS builder
 
 COPY . /beef
 
@@ -28,10 +28,12 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
     git \
     curl \
     xz-utils \
+    pkg-config \
     make \
     g++ \
     libcurl4-openssl-dev \
     ruby-dev \
+    libyaml-dev \
     libffi-dev \
     zlib1g-dev \
     libsqlite3-dev \
@@ -44,7 +46,7 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
 
 
 # ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
-FROM ruby:3.4.7-slim-bullseye
+FROM ruby:3.4.5-slim-bullseye
 LABEL maintainer="Beef Project" \
       source_url="github.com/beefproject/beef" \
       homepage="https://beefproject.com/"
@@ -61,6 +63,9 @@ RUN adduser --home /beef --gecos beef --disabled-password beef \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     curl \
+    wget \
+    espeak \
+    lame \
     openssl \
     libssl-dev \
     libreadline-dev \

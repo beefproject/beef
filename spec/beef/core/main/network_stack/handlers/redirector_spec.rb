@@ -32,7 +32,7 @@ RSpec.describe 'BeEF Redirector' do
     response = Curl::Easy.http_get("http://127.0.0.1:#{@port}/test/")
     expect(response.response_code).to eql(302)
     expect(response.body_str).to eql("302 found")
-    expect(response.header_str).to match(/Location: http:\/\/www.beefproject\.com/)
+    expect(response.header_str).to match(/location:\s*http:\/\/www\.beefproject\.com/i)
   end
 
 end
