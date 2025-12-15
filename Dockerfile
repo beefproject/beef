@@ -15,7 +15,7 @@
 ###########################################################################################################
 
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
-FROM ruby:3.4.5-slim-bullseye AS builder
+FROM ruby:3.4.7-slim-bookworm AS builder
 
 COPY . /beef
 
@@ -46,7 +46,7 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
 
 
 # ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
-FROM ruby:3.4.5-slim-bullseye
+FROM ruby:3.4.7-slim-bookworm
 LABEL maintainer="Beef Project" \
       source_url="github.com/beefproject/beef" \
       homepage="https://beefproject.com/"
