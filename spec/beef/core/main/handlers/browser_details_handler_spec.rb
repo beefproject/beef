@@ -12,7 +12,7 @@ require_relative '../../../../support/beef_test'
 
 RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   before(:all) do
-
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @config = BeEF::Core::Configuration.instance
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
@@ -106,6 +106,7 @@ RSpec.describe 'Browser Details Handler', run_on_browserstack: true do
   after(:all) do
     server_teardown(@driver, @pid, @pids)
     disconnect_all_active_record!
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
   end
 
   it 'can successfully hook a browser' do

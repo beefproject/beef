@@ -12,6 +12,7 @@ require_relative '../../../support/beef_test'
 
 RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     # Grab config and set creds in variables for ease of access
     @config = BeEF::Core::Configuration.instance
     @pids = []  # ensure defined for teardown consistency
@@ -128,6 +129,7 @@ RSpec.describe 'BeEF Debug Command Modules:', run_on_browserstack: true do
   after(:all) do
     server_teardown(@driver, @pid, @pids)
     disconnect_all_active_record!
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'The Test_beef.debug() command module successfully executes' do

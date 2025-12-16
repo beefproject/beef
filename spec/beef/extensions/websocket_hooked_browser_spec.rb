@@ -13,6 +13,7 @@ require 'websocket-client-simple'
 
 RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @config = BeEF::Core::Configuration.instance
     # Grab DB file and regenerate if requested
     print_info 'Loading database'
@@ -104,6 +105,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   after(:all) do
     server_teardown(@driver, @pid, @pids)
     disconnect_all_active_record!
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
   end
 
   it 'confirms a websocket server has been started' do
