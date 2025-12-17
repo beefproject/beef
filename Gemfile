@@ -24,7 +24,7 @@ gem 'rake', '~> 13.3'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
 gem 'sqlite3', '~> 2.8'
-gem 'rubocop', '~> 1.81.7', require: false
+gem 'rubocop', '~> 1.82.0', require: false
 
 # Geolocation support
 group :geoip do
