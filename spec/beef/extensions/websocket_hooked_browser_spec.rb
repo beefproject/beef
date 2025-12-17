@@ -105,7 +105,7 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   after(:all) do
     server_teardown(@driver, @pid, @pids)
     disconnect_all_active_record!
-    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'confirms a websocket server has been started' do

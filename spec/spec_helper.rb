@@ -271,6 +271,8 @@ require 'socket'
     # Generate a token for the server to respond with
     BeEF::Core::Crypto::api_token
 
+    disconnect_all_active_record!
+
     # Initiate server start-up
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
     pid = fork do
