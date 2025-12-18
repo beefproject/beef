@@ -1,6 +1,7 @@
 RSpec.describe 'BeEF Redirector' do
 
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @port = 2002
     config = {}
     config[:BindAddress] = '127.0.0.1'
@@ -26,6 +27,7 @@ RSpec.describe 'BeEF Redirector' do
 
   after(:all) do
     Process.kill("INT",@pid)
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'redirects' do

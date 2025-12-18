@@ -12,6 +12,7 @@ require_relative '../../../../support/beef_test'
 
 RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @config = BeEF::Core::Configuration.instance
 
     # Grab DB file and regenerate if requested
@@ -110,6 +111,7 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
   after(:all) do
     server_teardown(@driver, @pid, @pids)
     disconnect_all_active_record!
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'AutoRunEngine is working' do
