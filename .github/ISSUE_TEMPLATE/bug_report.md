@@ -1,3 +1,8 @@
+---
+name: Bug report
+about: Report a bug to help us improve BeEF
+---
+
 ## First Steps
 
 1. Confirm that your issue has not been posted previously by searching here: https://github.com/beefproject/beef/issues
