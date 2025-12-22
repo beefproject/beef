@@ -24,7 +24,7 @@ gem 'rake', '~> 13.3'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
 gem 'sqlite3', '~> 2.8'
-gem 'rubocop', '~> 1.81.7', require: false
+gem 'rubocop', '~> 1.82.0', require: false
 
 # Geolocation support
 group :geoip do
@@ -66,7 +66,7 @@ group :test do
   gem 'rdoc', '~> 6.17'
   gem 'browserstack-local', '~> 1.4'
 
-  gem 'irb', '~> 1.15'
+  gem 'irb', '~> 1.16'
   gem 'pry-byebug', '~> 3.11'
 
   gem 'rest-client', '~> 2.1.0'

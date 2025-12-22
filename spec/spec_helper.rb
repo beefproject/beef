@@ -271,6 +271,8 @@ require 'socket'
     # Generate a token for the server to respond with
     BeEF::Core::Crypto::api_token
 
+    disconnect_all_active_record!
+
     # Initiate server start-up
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
     pid = fork do
@@ -322,4 +324,60 @@ require 'socket'
     pid = nil       
   end
 
+end
+
+# -------------------------------------------------------------------
+# ActiveRecord connection snapshot/restore helpers (test isolation)
+# Some specs disconnect ActiveRecord (fork safety), destroying the SQLite in-memory DB.
+# These helpers restore it for later specs.
+# -------------------------------------------------------------------
+module SpecActiveRecordConnection
+  module_function
+
+  def snapshot
+    # Capture the current AR connection configuration hash if possible.
+    if ActiveRecord::Base.respond_to?(:connection_db_config) && ActiveRecord::Base.connection_db_config
+      ActiveRecord::Base.connection_db_config.configuration_hash
+    else
+      ActiveRecord::Base.connection_config
+    end
+  rescue StandardError
+    nil
+  end
+
+  def restore!(config_hash)
+    # Ensure we don't leave AR disconnected for subsequent specs.
+    begin
+      handler = ActiveRecord::Base.connection_handler
+      if handler.respond_to?(:connection_pool_list)
+        handler.connection_pool_list.each { |pool| pool.disconnect! }
+      elsif handler.respond_to?(:connection_pools)
+        handler.connection_pools.each_value { |pool| pool.disconnect! }
+      else
+        ActiveRecord::Base.connection_pool.disconnect!
+      end
+    rescue StandardError
+      # ignore
+    end
+
+    if config_hash
+      OTR::ActiveRecord.configure_from_hash!(config_hash)
+    else
+      # Fallback to suite default
+      OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: ':memory:')
+    end
+
+    if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+      OTR::ActiveRecord.establish_connection!
+    end
+    ActiveRecord::Schema.verbose = false
+
+    # Run migrations if the restored DB is empty/outdated
+    ActiveRecord::Migration.verbose = false
+    ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+    if context.needs_migration?
+      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+    end
+  end
 end
