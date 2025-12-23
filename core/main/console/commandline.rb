@@ -17,7 +17,6 @@ module BeEF
         @options[:ext_config] = ''
         @options[:port] = ''
         @options[:ws_port] = ''
-        @options[:interactive] = false
         @options[:update_disabled] = false
         @options[:update_auto] = false
 
@@ -63,9 +62,6 @@ module BeEF
               @options[:update_auto] = true
             end
 
-            # opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
-            #  @options[:interactive] = true
-            # end
           end
 
           optparse.parse!
