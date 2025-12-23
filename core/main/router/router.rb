@@ -14,6 +14,19 @@ module BeEF
 
         configure do
           set :show_exceptions, false
+
+          # Configure Rack::Protection::HostAuthorization.
+          # Allow Rack development defaults and dynamically permit the public host
+          # defined by beef.http.public.host to prevent "Host not permitted" errors.
+          permitted = [
+            '.localhost',
+            '.test',
+            IPAddr.new('0.0.0.0/0'),
+            IPAddr.new('::/0')
+          ]
+          public_host = config.get('beef.http.public.host').to_s.strip
+          permitted << public_host unless public_host.empty?
+          set :host_authorization, { permitted_hosts: permitted }
         end
 
         # @note Override default 404 HTTP response
