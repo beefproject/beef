@@ -27,6 +27,7 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
  && apt-get install -y --no-install-recommends \
     git \
     curl \
+    libssl-dev \
     xz-utils \
     pkg-config \
     make \
@@ -67,7 +68,6 @@ RUN adduser --home /beef --gecos beef --disabled-password beef \
     espeak \
     lame \
     openssl \
-    libssl-dev \
     libreadline-dev \
     libyaml-dev \
     libxml2-dev \
