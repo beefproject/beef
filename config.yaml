@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2006-2024 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
 # BeEF Configuration file
 
 beef:
-    version: '0.5.4.0'
+    version: '0.6.0.0'
     # More verbose messages (server-side)
     debug: false
     # More verbose messages (client-side)
