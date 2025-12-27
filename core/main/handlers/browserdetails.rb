@@ -557,10 +557,6 @@ module BeEF
             BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: '127.0.0.1', hostname: 'localhost',
                                                    os: BeEF::Core::Models::BrowserDetails.get(session_id, 'host.os.name'))
           end
-
-          # check if any ARE rules shall be triggered only if the channel is != WebSockets (XHR). If the channel
-          # is WebSockets, then ARe rules are triggered after channel is established.
-          BeEF::Core::AutorunEngine::Engine.instance.find_and_run_all_matching_rules_for_zombie(zombie.id) unless config.get('beef.http.websocket.enable')
         end
 
         def get_param(query, key)
