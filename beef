@@ -39,6 +39,10 @@ $root_dir = File.join(File.expand_path(File.dirname(File.realpath(__FILE__))), '
 $:.unshift($root_dir)
 $home_dir = File.expand_path("#{Dir.home}/.beef/", __FILE__).freeze
 
+# @note Parse BeEF CLI options early (prevents Rack help from taking over)
+require 'core/main/console/commandline'
+BeEF::Core::Console::CommandLine.parse
+
 #
 # @note Require core loader
 #
