@@ -6,7 +6,7 @@
  * Version: 1.1
  * Authors: Bart Leppens, Erwan LR (@erwan_lr | WPScanTeam)
  * Author URI: https://twitter.com/bmantra
- * License: Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net - Browser Exploitation Framework (BeEF) - https://beefproject.com - See the file 'doc/COPYING' for copying permission
+ * License: Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net - Browser Exploitation Framework (BeEF) - https://beefproject.com - See the file 'doc/COPYING' for copying permission
 **/
 
 header("Access-Control-Allow-Origin: *");
