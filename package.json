@@ -3,7 +3,9 @@
     "version": "0.6.0.0",
     "description": "The Browser Exploitation Framework Project",
     "scripts": {
-        "docs": "./node_modules/.bin/jsdoc -c conf.json"
+        "docs": "./node_modules/.bin/jsdoc -c conf.json",
+        "lint": "eslint",
+        "lint:fix": "eslint --fix"
     },
     "author": "Wade Alcorn",
     "license": "GNU General Public License v2.0",
