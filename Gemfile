@@ -61,6 +61,7 @@ end
 
 # For running unit tests
 group :test do
+  gem 'simplecov', '~> 0.22'
   gem 'test-unit-full', '~> 0.0.5'
   gem 'rspec', '~> 3.13'
   gem 'rdoc', '~> 7.0'
