@@ -16,206 +16,219 @@ For local testing on the same machine:
 2.  Navigate to the hook demo page: `http://127.0.0.1:3000/demos/butcher/index.html`.
 3.  The browser will appear in the BeEF "Online Browsers" list as `127.0.0.1`.
 
-## 2. Testing Strategy: Firefox First
+## 2. Testing Strategy: Grouped Execution
 
-1.  **Primary Browser (Firefox)**: Use Firefox for **all** modules listed in Section 3.1.
-    *   This list includes every module compatible with Firefox or "ALL" browsers.
-2.  **Secondary Browser (Chrome/Safari/Edge)**: Use a secondary browser *only* for modules in Section 3.2.
-    *   These are modules that explicitly identify as working in Chrome/Safari/Edge but *not* Firefox.
-3.  **Skip Legacy**: Modules not listed in Section 3 are incompatible with modern browsers (e.g., IE-only, old Java/Flash exploits) and should be skipped.
-
-### 2.1 Execution Procedure
-1.  **Select Hooked Browser**: Click on your **Firefox** hook (or secondary browser for List 3.2).
-2.  **Find Module**: Search for the module name in the BeEF "Commands" tab.
-3.  **Read Instructions**: Follow the guidance in the **Instructions** column below.
-4.  **Execute**: Click "Execute" and verify the "Command History".
-5.  **Cleanup**: Perform any cleanup actions (e.g., clear cookies, close tabs) listed in the **Cleanup Needed** column.
+1.  **Phase 1: Common Infrastructure (Firefox)**: Start here. These modules work on the standard Linux/Firefox setup provided by the VM and don't require external devices or specific insecure software.
+2.  **Phase 2: Specific Requirements (Firefox)**: Test these if you have the specific requirements (e.g., Android device, Flash plugin, specific vulnerable server running).
+3.  **Phase 3: Other Browsers**: Use Chrome/Edge/Safari for modules that explicitly don't work in Firefox.
 
 ## 3. Module Inventory and Instructions
 
+### 3.1 Phase 1: Common Infrastructure (Standard Firefox)
 
-### 3.1 Primary Test List (Firefox)
-
-Test these modules using **Firefox**.
-
+Test these modules using **Firefox** on your local Linux VM. They leverage standard browser features or the BeEF infrastructure itself.
 
 | Module Name | Instructions / Description | Cleanup Needed |
 | :--- | :--- | :--- |
 | **Alert User** | 1. Configure: `Title`, `Message`, `Button name`<br>2. Click Execute.<br><br>_Show user an alert_ | None. |
-| **Apache Cookie Disclosure** | 1. Click Execute.<br><br>_This module exploits CVE-2012-0053 in order to read the victim's cookies, even if issued with the HttpOnly attribute. The exploit only works if the target server is running Apache HTTP Server 2.2.0 through 2.2.21._ | Clear browser cookies. |
-| **Apache Felix Remote Shell (Reverse Shell)** | 1. Configure: `Target Host`, `Target Port`, `Local Host`...<br>2. Click Execute.<br><br>_This module attempts to get a reverse shell on an Apache Felix Remote Shell server using the 'exec' command. The org.eclipse.osgi and org.eclipse.equinox.console bundles must be installed and active._ | None. |
-| **Beep** | 1. Click Execute.<br><br>_Make the phone beep. This module requires the PhoneGap API._ | None. |
-| **Bindshell (POSIX)** | 1. Configure: `Target Address`, `Target Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening POSIX shell bound on the target specified in the 'Target Address' input field.   The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet._ | None. |
-| **Bindshell (Windows)** | 1. Configure: `Target Address`, `Target Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_Using Inter-Protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening Windows shell bound on the target specified in the 'Target Address' input field.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.  The results of the commands are not returned to BeEF.  Note: ampersands are required to separate commands._ | None. |
 | **BlockUI Modal Dialog** | 1. Configure: `Message`, `Timeout (s)`<br>2. Click Execute.<br><br>_This module uses jQuery  BlockUI  to block the window and display a message._ | None. |
-| **Browser AutoPwn** | 1. Configure: `Listener URL`<br>2. Click Execute.<br><br>_This module will redirect a user to the autopwn port on a Metasploit listener and then rely on Metasploit to handle the resulting shells.  If the Metasploit extension is loaded, this module will pre-populate the URL to the pre-launched listener.  Otherwise, enter the URL you would like the user to be redirected to._ | None. |
-| **Check Connection** | 1. Click Execute.<br><br>_Find out the network connection type e.g. Wifi, 3G. This module requires the PhoneGap API._ | None. |
-| **Clickjacking** | 1. Configure: `iFrame Src`, `Security restricted (IE)`, `Sandbox`...<br>2. Click Execute.<br><br>_Allows you to perform basic multi-click clickjacking. The iframe follows the mouse, so anywhere the user clicks on the page will be over x-pos,y-pos. The optional JS configuration values specify local Javascript to exectute when a user clicks, allowing the page can give visual feedback. The attack stops when y-pos is set to a non-numeric values (e.g. a dash).   For a demo, visit /demos/clickjacking/clickjack_attack.html with the default settings (based on browser they may have to be adjusted)._ | None. |
-| **Clippy** | 1. Configure: `Clippy image directory`, `Custom text`, `Executable`...<br>2. Click Execute.<br><br>_Brings up a clippy image and asks the user to do stuff. Users who accept are prompted to download an executable.  You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt._ | None. |
-| **ColdFusion Directory Traversal Exploit** | 1. Configure: `Retrieve file  (in CF /lib dir)`, `CF server OS`, `ColdFusion version`<br>2. Click Execute.<br><br>_ColdFusion 9.0, 8.0.1, 9.0 and 9.0.1 are vulnerable to directory traversal that leads to arbitrary file retrieval from the ColdFusion server (CVE-2010-2861)_ | None. |
-| **Confirm Close Tab** | 1. Configure: `Confirm text`, `Create a pop-under window on user\`<br>2. Click Execute.<br><br>_Shows a confirm dialog to the user when they try to close a tab. If they click yes, re-display the confirmation dialog. This doesn't work on Opera < v12. In Chrome you can't keep opening confirm dialogs._ | Close tab/window. Check for residual pop-unders. |
+| **Clickjacking** | 1. Configure: `iFrame Src`, `Security restricted (IE)`, `Sandbox`...<br>2. Click Execute.<br><br>_Allows you to perform basic multi-click clickjacking._ | None. |
+| **Confirm Close Tab** | 1. Configure: `Confirm text`, `Create a pop-under window on user\`<br>2. Click Execute.<br><br>_Shows a confirm dialog to the user when they try to close a tab._ | Close tab/window. Check for residual pop-unders. |
 | **Create Foreground iFrame** | 1. Click Execute.<br><br>_Rewrites all links on the webpage to spawn a 100% by 100% iFrame with a source relative to the selected link._ | Close tab/window. Check for residual pop-unders. |
 | **Create Invisible Iframe** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_Creates an invisible iframe._ | None. |
-| **Create Pop Under** | 1. Configure: `Clickjack`<br>2. Click Execute.<br><br>_This module creates a new discreet pop under window with the BeEF hook included.  Another browser node will be added to the hooked browser tree.  Modern browsers block popups by default and warn the user the popup was blocked (unless the origin is permitted to spawn popups).  However, this check is bypassed for some user-initiated events such as clicking the page. Use the 'clickjack' option below to add an event handler which spawns the popup when the user clicks anywhere on the page. Running the module multiple times will spawn multiple popups for a single click event.  Note: mobile devices may open the new popup window on top or redirect the current window, rather than open in the background._ | Close tab/window. Check for residual pop-unders. |
-| **Cross-Origin Scanner (CORS)** | 1. Configure: `Scan IP range (C class)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Scan an IP range for web servers which allow cross-origin requests using CORS. The HTTP response is returned to BeEF.  Note: set the IP address range to 'common' to scan a list of common LAN addresses._ | None. |
-| **Cross-Origin Scanner (Flash)** | 1. Configure: `Scan IP range (C class)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_This module scans an IP range to locate web servers with a permissive Flash cross-origin policy. The HTTP response is returned to BeEF.  Note: set the IP address range to 'common' to scan a list of common LAN addresses.  This module uses ContentHijacking.swf from  CrossSiteContentHijacking  by Soroush Dalili (@irsdl)._ | None. |
-| **Cross-Site Faxing (XSF)** | 1. Configure: `Target Address`, `Target Port`, `Name of the receiver`...<br>2. Click Execute.<br><br>_Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will send a message to ActiveFax RAW server socket (3000 by default) on the target specified in the 'Target Address' input field.  This module can send a FAX to a (premium) faxnumber via the ActiveFax Server.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet._ | None. |
-| **Cross-Site Printing (XSP)** | 1. Configure: `Target Address`, `Target Port`, `Message`<br>2. Click Execute.<br><br>_Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will send a message to a listening print port (9100 by default) on the target specified in the 'Target Address' input field.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet._ | None. |
+| **Create Pop Under** | 1. Configure: `Clickjack`<br>2. Click Execute.<br><br>_This module creates a new discreet pop under window with the BeEF hook included._ | Close tab/window. Check for residual pop-unders. |
+| **Cross-Origin Scanner (CORS)** | 1. Configure: `Scan IP range (C class)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Scan an IP range for web servers which allow cross-origin requests using CORS._ | None. |
 | **DNS Enumeration** | 1. Configure: `DNS (comma separated)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover DNS hostnames within the victim's network using dictionary and timing attacks._ | None. |
-| **DNS Tunnel** | 1. Configure: `Domain`, `Data to send`<br>2. Click Execute.<br><br>_This module sends data one way over DNS, client to server only. BeEF's DNS server is used to reconstruct chunks of data being extruded via DNS.   Make sure that:  - the DNS extension is enabled,  - the DNS server is listening on port 53, - the hooked browser is resolving the domain you specified via BeEF's DNS server.  By default all DNS requests used to extrude data return NXDomain responses._ | None. |
-| **DNS Tunnel** | 1. Configure: `Domain`, `Message`, `Wait between requests (ms)`<br>2. Click Execute.<br><br>_This module sends data one way over DNS.  A domain and message are taken as input. The message is XOR'd, url encoded, the '%' are replaced with '.' and the message is split into segments of 230 bytes. The segments are sent in sequence along with the sequence number and XOR key.  Note: A remote domain with a DNS server configured to accept wildcard subdomains is required to receive the data. BeEF does not support this feature so you're on your own when it comes to decoding the information._ | None. |
-| **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel (DNS tunnel).   A payload name and message are taken as input. The message is sent as a bitstream, decoded, and then can be accessed via Window object property specified in payload name parameter.  Note: To use this feature you should enable S2C DNS Tunnel extension._ | None. |
-| **DOSer** | 1. Configure: `URL`, `Delay between requests (ms)`, `HTTP Method`...<br>2. Click Execute.<br><br>_Do infinite GET or POST requests to a target, spawning a WebWorker in order to don't slow down the hooked page. If the browser doesn't support WebWorkers, the module will not run._ | None. |
-| **Detect Airdroid** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_This module attempts to detect Airdroid application for Android running on localhost (default port: 8888)_ | None. |
-| **Detect Antivirus** | 1. Click Execute.<br><br>_This module detects the javascript code automatically included by some AVs (currently supports detection for Kaspersky, Avira, Avast (ASW), BitDefender, Norton, Dr. Web)_ | None. |
-| **Detect Burp** | 1. Click Execute.<br><br>_This module checks if the browser is using Burp. The Burp web interface must be enabled (default). The proxy IP address is returned to BeEF._ | None. |
-| **Detect CUPS** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_This module attempts to detect Common UNIX Printing System (CUPS) on localhost on the default port 631._ | None. |
-| **Detect Coupon Printer** | 1. Click Execute.<br><br>_This module attempts to detect Coupon Printer on localhost on the default WebSocket port 4004._ | None. |
-| **Detect Ethereum ENS** | 1. Configure: `What Ethereum ENS image resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Ethereum ENS resolvers. Note that the detection may fail when attempting to load a HTTP resource from a hooked HTTPS page._ | None. |
+| **DNS Tunnel** | 1. Configure: `Domain`, `Data to send`<br>2. Click Execute.<br><br>_This module sends data one way over DNS, client to server only._ | None. |
+| **DNS Tunnel** | 1. Configure: `Domain`, `Message`, `Wait between requests (ms)`<br>2. Click Execute.<br><br>_This module sends data one way over DNS. Message split into chunks._ | None. |
+| **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel._ | None. |
+| **DOSer** | 1. Configure: `URL`, `Delay between requests (ms)`, `HTTP Method`...<br>2. Click Execute.<br><br>_Do infinite GET or POST requests to a target._ | None. |
+| **Detect Antivirus** | 1. Click Execute.<br><br>_This module detects the javascript code automatically included by some AVs._ | None. |
+| **Detect Burp** | 1. Click Execute.<br><br>_This module checks if the browser is using Burp._ | None. |
 | **Detect Extensions** | 1. Click Execute.<br><br>_This module detects extensions installed in Google Chrome and Mozilla Firefox._ | Remove installed extension if any. |
-| **Detect FireBug** | 1. Click Execute.<br><br>_This module checks if the Mozilla Firefox Firebug extension is being use to inspect the current window._ | None. |
-| **Detect Foxit Reader** | 1. Click Execute.<br><br>_This module will check if the browser has Foxit Reader Plugin._ | None. |
-| **Detect Google Desktop** | 1. Click Execute.<br><br>_This module attempts to detect Google Desktop running on the default port 4664._ | None. |
+| **Detect FireBug** | 1. Click Execute.<br><br>_This module checks if the Mozilla Firefox Firebug extension is being use._ | None. |
 | **Detect LastPass** | 1. Click Execute.<br><br>_This module checks if the LastPass extension is installed and active._ | None. |
 | **Detect MIME Types** | 1. Click Execute.<br><br>_This module retrieves the browser's supported MIME types._ | None. |
-| **Detect OpenNIC DNS** | 1. Configure: `What OpenNIC image resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using OpenNIC DNS resolvers.  Note that the detection may fail when attempting to load a HTTP resource from a hooked HTTPS page._ | None. |
-| **Detect PhoneGap** | 1. Click Execute.<br><br>_Detects if the PhoneGap API is present._ | None. |
 | **Detect Popup Blocker** | 1. Click Execute.<br><br>_Detect if popup blocker is enabled._ | None. |
-| **Detect QuickTime** | 1. Click Execute.<br><br>_This module will check if the browser has Quicktime support._ | None. |
-| **Detect RealPlayer** | 1. Click Execute.<br><br>_This module will check if the browser has RealPlayer support._ | None. |
-| **Detect Silverlight** | 1. Click Execute.<br><br>_This module will check if the browser has Silverlight support._ | None. |
-| **Detect Social Networks** | 1. Configure: `Detection Timeout`<br>2. Click Execute.<br><br>_This module will detect if the Hooked Browser is currently authenticated to GMail, Facebook and Twitter._ | None. |
 | **Detect Toolbars** | 1. Click Execute.<br><br>_Detects which browser toolbars are installed._ | None. |
-| **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor (https://www.torproject.org/)._ | None. |
-| **Detect Unity Web Player** | 1. Click Execute.<br><br>_Detects Unity Web Player._ | None. |
-| **Detect VLC** | 1. Click Execute.<br><br>_This module will check if the browser has VLC plugin._ | None. |
-| **Detect Windows Media Player** | 1. Click Execute.<br><br>_This module will check if the browser has the Windows Media Player plugin installed._ | None. |
-| **ETag Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Message`<br>2. Click Execute.<br><br>_This module sends data from server to client using ETag HTTP header.  A payload name and message are taken as input. The structure of ETag header isn't modified. The message is sent as a bitstream, decoded, and then can be accessed via Window object property specified in payload name parameter.   Note: To use this feature you should enable ETag extension._ | None. |
-| **EXTRAnet Collaboration Tool (extra-ct) Command Execution** | 1. Configure: `Remote Host`, `Remote Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_This module exploits a command execution vulnerability in the 'admserver' component of the EXTRAnet Collaboration Tool (default port 10100) to execute operating system commands.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.  The results of the commands are not returned to BeEF.  Note: Spaces in the command are not supported._ | None. |
-| **Fake Flash Update** | 1. Configure: `Image`, `Payload URI`<br>2. Click Execute.<br><br>_Prompts the user to install an update to  Adobe Flash Player  from the specified URL._ | None. |
-| **Fake Notification Bar (Chrome)** | 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake notification bar at the top of the screen, similar to those presented in Chrome. If the user clicks the notification they will be prompted to download the file specified below.  You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt._ | None. |
-| **Fake Notification Bar (Firefox)** | 1. Configure: `Plugin URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake notification bar at the top of the screen, similar to those presented in Firefox. If the user clicks the notification they will be prompted to download a file from the the specified URL._ | None. |
-| **Fake Notification Bar (IE)** | 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake notification bar at the top of the screen, similar to those presented in IE. If the user clicks the notification they will be prompted to download the file specified below.  You can mount an exe in BeEF as per extensions/social_engineering/droppers/readme.txt._ | None. |
-| **Fake Notification Bar** | 1. Configure: `Notification text`<br>2. Click Execute.<br><br>_Displays a fake notification bar at the top of the screen, similar to those presented in IE._ | None. |
-| **Farsite X25 gateway remote code execution** | 1. Configure: `HTTP(s)`, `Remote Host`, `Local Host`...<br>2. Click Execute.<br><br>_This module exploits CVE-2014-7175 to write a payload to the router and CVE-2014-7173 to execute it. Once you have shell you can use the setuid /http/bin/execCmd to execute commands as root._ | None. |
-| **Fetch Port Scanner** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`<br>2. Click Execute.<br><br>_Uses fetch to test the response in order to determine if a port is open or not_ | None. |
-| **Fingerprint Browser (PoC)** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser type and version using URI protocol handlers unique to Safari, Internet Explorer and Mozilla Firefox._ | None. |
-| **Fingerprint Browser** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser and browser capabilities using  FingerprintJS2 ._ | None. |
-| **Fingerprint Local Network** | 1. Configure: `Scan IP range (C class)`, `Ports to test`, `Workers`...<br>2. Click Execute.<br><br>_Discover devices and applications in the victim's Local Area Network.  This module uses a signature based approach - based on default logo images/favicons for known network device/applications - to fingerprint each IP address within the LAN.  Partially based on  Yokosou  and  jslanscanner .  Note: set the IP address range to 'common' to scan a list of common LAN addresses._ | None. |
-| **Fingerprint Routers** | 1. Click Execute.<br><br>_This module attempts to discover network routers on the local network of the hooked browser. It scans for web servers on IP addresses commonly used by routers. It uses a signature based approach - based on default image paths for known network devices - to determine if the web server is a router web interface.  Ported to BeEF from  JsLanScanner .  Note: The user may see authentication popups in the event any of the target IP addresses are using HTTP authentication._ | None. |
-| **Firephp 0.7.1 RCE** | 1. Click Execute.<br><br>_Exploit FirePHP <= 0.7.1 to execute arbitrary JavaScript within the trusted 'chrome://' zone.  This module forces the browser to load '/firephp' on the BeEF server.  The payload is executed silently once the user moves the mouse over the array returned for 'http://[BeEF]/firephp' in Firebug.   Note:  Use msfpayload to generate JavaScript payloads. The default payload binds a shell on port 4444. See 'modules/exploits/firephp/payload.js'_ | None. |
+| **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor._ | None. |
+| **ETag Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Message`<br>2. Click Execute.<br><br>_This module sends data from server to client using ETag HTTP header._ | None. |
+| **Fetch Port Scanner** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`<br>2. Click Execute.<br><br>_Uses fetch to test the response in order to determine if a port is open or not._ | None. |
+| **Fingerprint Browser (PoC)** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser type and version._ | None. |
+| **Fingerprint Browser** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser and browser capabilities using  FingerprintJS2._ | None. |
+| **Fingerprint Local Network** | 1. Configure: `Scan IP range (C class)`, `Ports to test`, `Workers`...<br>2. Click Execute.<br><br>_Discover devices and applications in the victim's Local Area Network._ | None. |
+| **Fingerprint Routers** | 1. Click Execute.<br><br>_This module attempts to discover network routers on the local network._ | None. |
+| **Get Geolocation (API)** | 1. Click Execute.<br><br>_This module will retrieve the physical location using the HTML5 geolocation API._ | None. |
+| **Get HTTP Servers (Favicon)** | 1. Configure: `Remote IP(s)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Attempts to discover HTTP servers on the specified IP range by checking for a favicon._ | None. |
+| **Get Internal IP WebRTC** | 1. Click Execute.<br><br>_Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC._ | None. |
+| **Get Protocol Handlers** | 1. Configure: `Link Protocol(s)`, `Link Address`<br>2. Click Execute.<br><br>_This module attempts to identify protocol handlers present on the hooked browser._ | None. |
+| **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using WPAD._ | None. |
+| **Get Visited Domains** | 1. Configure: `Specify custom page to check`<br>2. Click Execute.<br><br>_This module will retrieve rapid history extraction through non-destructive cache timing._ | None. |
+| **Hijack Opener Window** | 1. Click Execute.<br><br>_This module abuses window.location.opener to hijack the opening window._ | Close tab/window. Check for residual pop-unders. |
+| **Hook Default Browser** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use a PDF to attempt to hook the default browser._ | None. |
+| **Identify LAN Subnets** | 1. Configure: `Timeout for each request (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network(s) of the hooked browser._ | None. |
+| **Lcamtuf Download** | 1. Configure: `Real File Path`, `Malicious File Path`, `Run Once`<br>2. Click Execute.<br><br>_This module will attempt to execute a lcamtuf download._ | Delete downloaded files. |
+| **Man-In-The-Browser** | 1. Click Execute.<br><br>_This module will use a Man-In-The-Browser attack to ensure that the BeEF hook will stay._ | Close tab/window. Check for residual pop-unders. |
+| **Ping Sweep (FF)** | 1. Configure: `Scan IP range (C class or IP)`, `Timeout (ms)`, `Delay between requests (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser._ | None. |
+| **Ping Sweep (JS XHR)** | 1. Configure: `Scan IP range (C class)`, `Workers`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser using JavaScript XHR._ | None. |
+| **Play Sound** | 1. Configure: `Sound File Path`<br>2. Click Execute.<br><br>_Play a sound on the hooked browser._ | None. |
+| **Port Scanner (Multiple Methods)** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`, `Closed port timeout (ms)`...<br>2. Click Execute.<br><br>_Scan ports in a given hostname, using WebSockets, CORS and img tags._ | None. |
+| **Pretty Theft** | 1. Configure: `Dialog Type`, `Backing`, `Custom Logo (Generic only)`<br>2. Click Execute.<br><br>_Asks the user for their username and password using a floating div._ | None. |
+| **Raw JavaScript** | 1. Configure: `Javascript Code`<br>2. Click Execute.<br><br>_Execute arbitrary JavaScript._ | None. |
+| **Replace Videos (Fake Plugin)** | 1. Configure: `Payload URL`, `jQuery Selector`<br>2. Click Execute.<br><br>_Replaces an object selected with jQuery with an image advising the user to install a missing plugin._ | None. |
+| **Resource Exhaustion DoS** | 1. Click Execute.<br><br>_This module attempts to exhaust system resources rendering the browser unusable._ | None. |
+| **Return Ascii Chars** | 1. Click Execute.<br><br>_This module will return the set of ascii chars._ | None. |
+| **Return Image** | 1. Click Execute.<br><br>_This module will test returning a PNG image as a base64 encoded string._ | None. |
+| **Simple Hijacker** | 1. Configure: `Targetted domains`, `Template to use`<br>2. Click Execute.<br><br>_Hijack clicks on links to display what you want._ | None. |
+| **Spoof Address Bar (data URL)** | 1. Configure: `Spoofed URL`, `Real URL`<br>2. Click Execute.<br><br>_This module redirects the browser to a legitimate looking URL with a data scheme._ | None. |
+| **Spyder Eye** | 1. Configure: `Repeat`, `Delay`<br>2. Click Execute.<br><br>_This module takes a picture of the victim's browser window._ | None. |
+| **TabNabbing** | 1. Configure: `URL`, `Wait (minutes)`<br>2. Click Execute.<br><br>_This module redirects to the specified URL after the tab has been inactive._ | None. |
+| **Test CORS Request** | 1. Configure: `Method`, `URL`, `Data`<br>2. Click Execute.<br><br>_Test the beef.net.cors.request function._ | None. |
+| **Test HTTP Redirect** | 1. Click Execute.<br><br>_Test the HTTP 'redirect' handler._ | None. |
+| **Test JS variable passing** | 1. Configure: `Payload Name`<br>2. Click Execute.<br><br>_Test for JS variable passing._ | None. |
+| **Test Network Request** | 1. Configure: `Scheme`, `Method`, `Domain`...<br>2. Click Execute.<br><br>_Test the beef.net.request function by retrieving a URL._ | None. |
+| **Test Returning Results** | 1. Configure: `Times to repeat`, `String to repeat`<br>2. Click Execute.<br><br>_This module will return a string of the specified length._ | None. |
+| **Test beef.debug()** | 1. Configure: `Debug Message`<br>2. Click Execute.<br><br>_Test the 'beef.debug()' function._ | None. |
+| **Text to Voice** | 1. Configure: `Text`, `Language`<br>2. Click Execute.<br><br>_Convert text to mp3 and play it on the hooked browser._ | None. |
+| **UnBlockUI** | 1. Click Execute.<br><br>_This module removes all jQuery BlockUI dialogs._ | None. |
+| **Unhook** | 1. Click Execute.<br><br>_This module removes the BeEF hook from the hooked page._ | None. |
+| **iFrame Event Key Logger** | 1. Configure: `iFrame Src`, `Send Back Interval (ms)`<br>2. Click Execute.<br><br>_Creates a 100% by 100% iFrame overlay with event logging._ | None. |
+
+
+### 3.2 Phase 2: Specific Requirements (Firefox)
+
+These modules require specific devices, plugins, vulnerable software, or valid credentials to work.
+
+#### 3.2.1 Mobile & PhoneGap
+Requires an Android/iOS device or PhoneGap environment.
+
+| Module Name | Instructions / Description | Cleanup Needed |
+| :--- | :--- | :--- |
+| **Beep** | 1. Click Execute.<br><br>_Make the phone beep. This module requires the PhoneGap API._ | None. |
+| **Check Connection** | 1. Click Execute.<br><br>_Find out the network connection type e.g. Wifi, 3G. This module requires the PhoneGap API._ | None. |
+| **Detect PhoneGap** | 1. Click Execute.<br><br>_Detects if the PhoneGap API is present._ | None. |
 | **Geolocation** | 1. Click Execute.<br><br>_Geo locate your victim. This module requires the PhoneGap API._ | None. |
-| **Get Battery Status** | 1. Click Execute.<br><br>_Get informations of the victim current battery status_ | None. |
-| **Get Geolocation (API)** | 1. Click Execute.<br><br>_This module will retrieve the physical location of the hooked browser using the geolocation API._ | None. |
-| **Get Geolocation (Third-Party)** | 1. Configure: `API`<br>2. Click Execute.<br><br>_This module retrieves the physical location of the hooked browser using third-party hosted geolocation APIs._ | None. |
-| **Get HTTP Servers (Favicon)** | 1. Configure: `Remote IP(s)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Attempts to discover HTTP servers on the specified IP range by checking for a favicon.  Note: You can specify multiple remote IP addresses (separated by commas) or a range of IP addresses for a class C network (10.1.1.1-10.1.1.254). Set the IP address to 'common' to scan a list of common LAN addresses._ | None. |
-| **Get Internal IP (Java)** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_Retrieve the local network interface IP address of the victim machine using an unsigned Java applet.  The browser must have Java enabled and configured to allow execution of unsigned Java applets.  Note that modern Java (as of Java 7u51) will outright refuse to execute unsigned Java applets, and will also reject self-signed Java applets unless they're added to the exception list._ | None. |
-| **Get Internal IP WebRTC** | 1. Click Execute.<br><br>_Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC Peer-to-Peer connection framework. Code from  http://net.ipcalf.com/_ | None. |
 | **Get Network Connection Type** | 1. Click Execute.<br><br>_Retrieve the network connection type (wifi, 3G, etc). Note: Android only._ | None. |
-| **Get Protocol Handlers** | 1. Configure: `Link Protocol(s)`, `Link Address`<br>2. Click Execute.<br><br>_This module attempts to identify protocol handlers present on the hooked browser. Only Internet Explorer and Firefox are supported.  Firefox users are prompted to launch the application for which the protocol handler is responsible.  Firefox users are warned when there is no application assigned to a protocol handler.    The possible return values are: unknown, exists, does not exist._ | None. |
-| **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using Web Proxy Auto-Discovery Protocol (WPAD).  Note: The zombie browser must resolve  wpad  to an IP address successfully for this module to work._ | None. |
-| **Get System Info (Java)** | 1. Click Execute.<br><br>_This module will retrieve basic information about the host system using an unsigned Java Applet.   The details will include:     - Operating system details   - Java VM details   - NIC names and IP   - Number of processors   - Amount of memory   - Screen display modes_ | None. |
-| **Get Visited Domains** | 1. Configure: `Specify custom page to check`<br>2. Click Execute.<br><br>_This module will retrieve rapid history extraction through non-destructive cache timing. Based on work done by Michal Zalewski at http://lcamtuf.coredump.cx/cachetime/  You can specify additional resources to fetch during visited domains analysis. To do so, paste to the below text field full URLs leading to CSS, image, JS or other *static* resources hosted on desired page (mind to avoid CDN resources, as they vary). Separate domain names with url by using semicolon (;), specify next domains by separating them with comma (,)._ | None. |
-| **Get Visited URLs (Avant Browser)** | 1. Configure: `Command ID`<br>2. Click Execute.<br><br>_This module attempts to retrieve a user's browser history by invoking the 'AFRunCommand()' privileged function.  Note: Avant Browser in Firefox engine mode only._ | None. |
-| **Get Visited URLs (Old Browsers)** | 1. Configure: `URL(s)`<br>2. Click Execute.<br><br>_This module will detect whether or not the hooked browser has visited the specified URL(s)_ | None. |
-| **Get Wireless Keys** | 1. Click Execute.<br><br>_This module will retrieve the wireless profiles from the target system (Windows Vista and Windows 7 only).  You will need to copy the results to 'exported_wlan_profiles.xml' and then reimport back into your Windows Vista/7 computers by running the command: netsh wlan add profile filename="exported_wlan_profiles.xml".  After that, just launch and connect to the wireless network without any password prompt.  For more information, refer to http://pauldotcom.com/2012/03/retrieving-wireless-keys-from.html_ | None. |
-| **Get ntop Network Hosts** | 1. Configure: `Remote Host`, `Remote Port`<br>2. Click Execute.<br><br>_This module retrieves network information from ntop (unauthenticated).  Tested on:  ntop v.5.0.1 on Ubuntu 14.04.1 Server (x86_64)  ntop v.5.0 on Fedora 19.1 (x86_64)  ntop v.4.1.0 on Solaris 11.1 (x86)   This module does not work for ntop-ng._ | None. |
-| **GlassFish WAR Upload XSRF** | 1. Configure: `Host`, `Filename`, `Base64 of exploit`<br>2. Click Execute.<br><br>_This module attempts to deploy a malicious war file on an Oracle GlassFish Server 3.1.1 (build 12).  It makes advantage of a CSRF bug in the REST interface. For more information refer to  http://blog.malerisch.net/2012/04/oracle-glassfish-server-rest-csrf.html ._ | None. |
 | **Globalization Status** | 1. Click Execute.<br><br>_Examine device local settings. This module requires the PhoneGap API._ | None. |
-| **Google Phishing** | 1. Configure: `XSS hook URI`, `Gmail logout interval (ms)`, `Redirect delay (ms)`<br>2. Click Execute.<br><br>_This plugin uses an image tag to XSRF the logout button of Gmail. Continuously the user is logged out of Gmail (eg. if he is logged in in another tab). Additionally it will show the Google favicon and a Gmail phishing page (although the URL is NOT the Gmail URL)._ | None. |
-| **GroovyShell Server Command Execution** | 1. Configure: `Remote Host`, `Remote Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_This module uses the GroovyShell Server interface (default port 6789) to execute operating system commands.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.  The results of the commands are not returned to BeEF.  Note: Spaces in the command are not supported._ | None. |
-| **HP uCMDB 9.0x add user CSRF** | 1. Configure: `Protocol`, `Host`, `Port`...<br>2. Click Execute.<br><br>_This module attempts to add additional users to the HP uCMDB (universal configuration management database). For more information please refer to  http://bmantra.blogspot.com/2012/10/hp-ucmdb-jmx-console-csrf.html_ | None. |
-| **Hijack Opener Window** | 1. Click Execute.<br><br>_This module abuses window.location.opener to hijack the opening window, replacing it with a BeEF hook and 100% * 100% iframe containing the referring web page. Note that the iframe will be blank if the origin makes use of a restrictive X-Frame-Origin directive.  This attack will only work if the opener did not make use of the  noopener  and  noreferrer  directives. Refer to  Target=_blank - the most underestimated vulnerability ever  for more information._ | Close tab/window. Check for residual pop-unders. |
-| **Hook Default Browser** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use a PDF to attempt to hook the default browser (assuming it isn't currently hooked).   Normally, this will be IE but it will also work when Chrome is set to the default. When executed, the hooked browser will load a PDF and use that to start the default browser. If successful another browser will appear in the browser tree._ | None. |
-| **IMAP** | 1. Configure: `IMAP Server`, `Port`, `Commands`<br>2. Click Execute.<br><br>_Using Inter-protocol Communication (IPEC) zombie browser will send commands to an IMAP4 server. The target address can be on the zombie's subnet which is potentially not directly accessible from the Internet. Have in mind that browser Port Banning is denying connections to default IMAP port 143._ | None. |
-| **IRC NAT Pinning** | 1. Configure: `Connect to`, `Private IP`, `Private Port`<br>2. Click Execute.<br><br>_Attempts to open closed ports on statefull firewalls and attempts to create pinholes on NAT-devices.  The firewall/NAT-device must support IRC connection tracking. BeEF will automatically bind a socket on port 6667 (IRC). Then you can connect to the victims public IP on that port.  For more information, please refer to:  http://samy.pl/natpin/  ._ | None. |
-| **IRC** | 1. Configure: `IRC Server`, `Port`, `Username`...<br>2. Click Execute.<br><br>_Using Inter-protocol Exploitation/Communication (IPEC) the hooked browser will connect to an IRC server, join a channel and send messages to it.  NOTE: Some IRC servers (like freenode) have implemented protections against connections from a web browser. This module is unlikely to work in those instances._ | None. |
-| **Identify LAN Subnets** | 1. Configure: `Timeout for each request (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network(s) of the hooked browser. This module works by attempting to connect to commonly used LAN IP addresses and timing the response._ | None. |
-| **Jboss 6.0.0M1 JMX Deploy Exploit** | 1. Configure: `Remote Target Host`, `Remote Target Port`, `MSF Listener Host`...<br>2. Click Execute.<br><br>_Deploy a JSP reverse or bind shell (Metasploit one) using the JMX exposed deploymentFileRepository MBean of JBoss. The first request made is a HEAD one to bypass auth and deploy the malicious JSP, the second request is a GET one that triggers the reverse connection to the specified MSF listener. Remember to run the MSF multi/handler listener with java/jsp_shell_reverse_tcp as payload, in case you are using the reverse payload._ | None. |
-| **Jenkins Code Exec CSRF** | 1. Configure: `Remote Host`, `Remote Port`, `Target URI`...<br>2. Click Execute.<br><br>_This module attempts to get a reverse shell from Jenkins web interface Groovy Script console. Works if the user is authenticated with console privileges or authentication is disabled._ | None. |
-| **Kemp LoadBalancer Command Execution** | 1. Configure: `URL`, `Remote Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_This module exploits a remote code execution vulnerability in Kemp LoadBalancer 7.1-16. More information can be found here:  http://blog.malerisch.net/2015/04/playing-with-kemp-load-master.html_ | None. |
 | **Keychain** | 1. Configure: `Service name`, `Key`, `Value`...<br>2. Click Execute.<br><br>_Read/CreateUpdate/Delete Keychain Elements. This module requires the PhoneGap API._ | None. |
-| **Lcamtuf Download** | 1. Configure: `Real File Path`, `Malicious File Path`, `Run Once`<br>2. Click Execute.<br><br>_This module will attempt to execute a lcamtuf download.  The file will be served with an alternative  Content-Disposition: attachment  header.  For more information please refer to  http://lcamtuf.blogspot.co.uk/2012/05/yes-you-can-have-fun-with-downloads.html  ._ | Delete downloaded files. |
 | **List Contacts** | 1. Click Execute.<br><br>_Examine device contacts. This module requires the PhoneGap API._ | None. |
 | **List Files** | 1. Configure: `Directory`<br>2. Click Execute.<br><br>_Examine device file system. This module requires the PhoneGap API._ | None. |
 | **List Plugins** | 1. Click Execute.<br><br>_Attempts to guess installed plugins. This module requires the PhoneGap API._ | None. |
-| **Make Skype Call (Skype)** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_This module will force the browser to attempt a skype call. It will exploit the insecure handling of URL schemes  The protocol handler used will be: skype._ | None. |
-| **Man-In-The-Browser** | 1. Click Execute.<br><br>_This module will use a Man-In-The-Browser attack to ensure that the BeEF hook will stay until the user leaves the domain (manually changing it in the URL bar)_ | Close tab/window. Check for residual pop-unders. |
 | **No Sleep** | 1. Click Execute.<br><br>_This module uses  NoSleep.js  to prevent display sleep and enable wake lock in any Android or iOS web browser._ | None. |
 | **Persist resume** | 1. Click Execute.<br><br>_Persist over applications sleep/wake events. This module requires the PhoneGap API._ | None. |
 | **Persistence (PhoneGap)** | 1. Configure: `Hook URL`<br>2. Click Execute.<br><br>_Insert the BeEF hook into PhoneGap's index.html (iPhone only). This module requires the PhoneGap API._ | None. |
-| **Ping Sweep (FF)** | 1. Configure: `Scan IP range (C class or IP)`, `Timeout (ms)`, `Delay between requests (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser. It works by calling a Java method from JavaScript and does not require user interaction.  For browsers other than Firefox, use the 'Ping Sweep (Java)' module._ | None. |
-| **Ping Sweep (JS XHR)** | 1. Configure: `Scan IP range (C class)`, `Workers`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser using JavaScript XHR.  Note: set the IP address range to 'common' to scan a list of common LAN addresses._ | None. |
-| **Play Sound** | 1. Configure: `Sound File Path`<br>2. Click Execute.<br><br>_Play a sound on the hooked browser._ | None. |
-| **Port Scanner (Multiple Methods)** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`, `Closed port timeout (ms)`...<br>2. Click Execute.<br><br>_Scan ports in a given hostname, using WebSockets, CORS and img tags. It uses the three methods to avoid blocked ports or Same Origin Policy.  Note: The user may see authentication popups in the event any of the target ports are web servers using HTTP authentication._ | None. |
-| **Pretty Theft** | 1. Configure: `Dialog Type`, `Backing`, `Custom Logo (Generic only)`<br>2. Click Execute.<br><br>_Asks the user for their username and password using a floating div._ | None. |
 | **Prompt User** | 1. Configure: `Title`, `Question`, `Yes`...<br>2. Click Execute.<br><br>_Ask device user a question. This module requires the PhoneGap API._ | None. |
-| **QEMU Monitor 'migrate' Command Execution** | 1. Configure: `Remote Host`, `Remote Port`, `Payload`...<br>2. Click Execute.<br><br>_This module attempts to get a reverse shell from  QEMU monitor service  (TCP or Telnet) using the 'migrate' command.  Works only if SSL/TLS and authentication are disabled. See:  https://www.qemu.org/docs/master/system/security.html ._ | None. |
-| **QNX QCONN Command Execution** | 1. Configure: `Remote Host`, `Remote Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_This module exploits a vulnerability in the qconn component of QNX Neutrino which can be abused to allow unauthenticated users to execute arbitrary commands under the context of the 'root' user.  The results of the commands are not returned to BeEF._ | None. |
-| **RFI Scanner** | 1. Configure: `Target Protocol`, `Target Host`, `Target Port`...<br>2. Click Execute.<br><br>_This module scans the specified web server for ~2,500 remote file include vulnerabilities using the  fuzzdb   RFI list . Many of these vulns require the target to have register_globals enabled in the PHP config.  The scan will take about 10 minutes with the default settings. Successful exploitation results in a reverse shell. Be sure to start your shell handler on the local port specified below._ | None. |
-| **Raw JavaScript** | 1. Configure: `Javascript Code`<br>2. Click Execute.<br><br>_This module will send the code entered in the 'JavaScript Code' section to the selected hooked browsers where it will be executed. Code is run inside an anonymous function and the return value is passed to the framework. Multiline scripts are allowed, no special encoding is required._ | None. |
-| **Read Gmail** | 1. Click Execute.<br><br>_If we are able to run in the context of mail.google.com (either by SOP bypass or other issue) then lets go read some email, grabs unread message ids from gmails atom feed, then grabs content of each message_ | None. |
-| **Redis** | 1. Configure: `Target Address`, `Target Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_Using Inter-Protocol Exploitation/Communication (IPEC) the hooked browser will send commands to a listening Redis daemon on the target specified in the 'Target Address' input field.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.  The results of the Redis commands are not returned to BeEF.  Note: Use '\n' to separate Redis commands and '\\n' for new lines._ | None. |
-| **Remove Hook Element** | 1. Click Execute.<br><br>_This module removes the BeEF hook script element from the hooked page, but the underlying BeEF DOM object remains._ | None. |
-| **Replace Videos (Fake Plugin)** | 1. Configure: `Payload URL`, `jQuery Selector`<br>2. Click Execute.<br><br>_Replaces an object selected with jQuery (all embed tags by default) with an image advising the user to install a missing plugin. If the user clicks the image they will be prompted to download a file from the specified URL._ | None. |
-| **Resource Exhaustion DoS** | 1. Click Execute.<br><br>_This module attempts to exhaust system resources rendering the browser unusable._ | None. |
-| **Return Ascii Chars** | 1. Click Execute.<br><br>_This module will return the set of ascii chars._ | None. |
-| **Return Image** | 1. Click Execute.<br><br>_This module will test returning a PNG image as a base64 encoded string. The image should be rendered in the BeEF web interface._ | None. |
-| **Shell Shock (CVE-2014-6271)** | 1. Configure: `Target`, `HTTP Method`, `Bash Command`<br>2. Click Execute.<br><br>_Attempt to use vulnerability CVE-2014-627 to execute arbitrary code. The default command attempts to get a reverse shell. Note: Set the LHOST and LPORT._ | None. |
-| **Shell Shock Scanner (Reverse Shell)** | 1. Configure: `HTTP Method`, `Target Protocol`, `Target Host`...<br>2. Click Execute.<br><br>_This module attempts to get a reverse shell on the specified web server, blindly, by requesting ~400 potentially vulnerable CGI scripts. Each CGI is requested with a shellshock payload in the 'Accept' HTTP header. The list of CGI scripts was taken from  Shocker .  The scan will take about 2 minutes with the default settings. Successful exploitation results in a reverse shell. Be sure to start your shell handler on the local port specified below._ | None. |
-| **Simple Hijacker** | 1. Configure: `Targetted domains`, `Template to use`<br>2. Click Execute.<br><br>_Hijack clicks on links to display what you want._ | None. |
-| **Skype iPhone XSS Steal Contacts** | 1. Click Execute.<br><br>_This module will steal iPhone contacts using a Skype XSS vuln._ | None. |
-| **Spoof Address Bar (data URL)** | 1. Configure: `Spoofed URL`, `Real URL`<br>2. Click Execute.<br><br>_This module redirects the browser to a legitimate looking URL with a ''data'' scheme, such as ''data:text/html,http://victim.com'', with a BeEF hook and a user-specified URL in a 100% x 100% iframe._ | None. |
-| **Spyder Eye** | 1. Configure: `Repeat`, `Delay`<br>2. Click Execute.<br><br>_This module takes a picture of the victim's browser window._ | None. |
 | **Start Recording Audio** | 1. Configure: `File Name`<br>2. Click Execute.<br><br>_Start recording audio. This module requires the PhoneGap API._ | None. |
 | **Stop Recording Audio** | 1. Click Execute.<br><br>_Stop recording audio. This module requires the PhoneGap API._ | None. |
-| **TabNabbing** | 1. Configure: `URL`, `Wait (minutes)`<br>2. Click Execute.<br><br>_This module redirects to the specified URL after the tab has been inactive for a specified amount of time._ | None. |
-| **Test CORS Request** | 1. Configure: `Method`, `URL`, `Data`<br>2. Click Execute.<br><br>_Test the beef.net.cors.request function by retrieving a URL._ | None. |
-| **Test HTTP Redirect** | 1. Click Execute.<br><br>_Test the HTTP 'redirect' handler._ | None. |
-| **Test JS variable passing** | 1. Configure: `Payload Name`<br>2. Click Execute.<br><br>_Test for JS variable passing from another BeEF's script via Window object_ | None. |
-| **Test Network Request** | 1. Configure: `Scheme`, `Method`, `Domain`...<br>2. Click Execute.<br><br>_Test the beef.net.request function by retrieving a URL._ | None. |
-| **Test Returning Results** | 1. Configure: `Times to repeat`, `String to repeat`<br>2. Click Execute.<br><br>_This module will return a string of the specified length._ | None. |
-| **Test beef.debug()** | 1. Configure: `Debug Message`<br>2. Click Execute.<br><br>_Test the 'beef.debug()' function. This function wraps 'console.log()'_ | None. |
-| **Text to Voice** | 1. Configure: `Text`, `Language`<br>2. Click Execute.<br><br>_Convert text to mp3 and play it on the hooked browser. Note: this module requires Lame and eSpeak to be installed._ | None. |
-| **Track Physical Movement** | 1. Click Execute.<br><br>_This module will track the physical movement of the user's device. Ported from  user.activity  by @KrauseFx._ | None. |
-| **UnBlockUI** | 1. Click Execute.<br><br>_This module removes all jQuery BlockUI dialogs._ | None. |
-| **Unhook** | 1. Click Execute.<br><br>_This module removes the BeEF hook from the hooked page._ | None. |
+| **Track Physical Movement** | 1. Click Execute.<br><br>_This module will track the physical movement of the user's device._ | None. |
 | **Upload File** | 1. Configure: `Destination`, `File Path`<br>2. Click Execute.<br><br>_Upload files from device to a server of your choice. This module requires the PhoneGap API._ | None. |
-| **VTiger CRM Upload Exploit** | 1. Configure: `Target Web Server`, `Target Directory`, `Malicious Filename`...<br>2. Click Execute.<br><br>_This module demonstrates chained exploitation. It will upload and execute a reverse shell. The vulnerability is exploited in the CRM  vtiger 5.0.4  The default PHP requires a listener, so don't forget to start one, for example: nc -l 8888._ | None. |
-| **WAN Emulator Command Execution** | 1. Configure: `Target Host`, `Target Port`, `Local Host`...<br>2. Click Execute.<br><br>_Attempts to get a reverse root shell on a WAN Emulator server. Tested on version 2.3 however other versions are likely to be vulnerable._ | None. |
-| **Webcam (Flash)** | 1. Configure: `Social Engineering Title`, `Social Engineering Text`, `Number of pictures`...<br>2. Click Execute.<br><br>_This module will show the Adobe Flash 'Allow Webcam' dialog to the user. The user has to click the allow button, otherwise this module will not return pictures. The title/text to convince the user can be customised. You can customise how many pictures you want to take and in which interval (default will take 20 pictures, 1 picture per second). The picture is sent as a base64 encoded JPG string._ | None. |
-| **Webcam Permission Check** | 1. Click Execute.<br><br>_This module will check to see if the user has allowed the BeEF domain (or all domains) to access the Camera and Mic with Flash. This module is transparent and should not be detected by the user (ie. no popup requesting permission will appear)_ | None. |
-| **WordPress Add User** | 1. Configure: `Username`, `Pwd`, `Email`...<br>2. Click Execute.<br><br>_Adds a WordPress User. No email will be sent to the email address entered, and weak password are allowed._ | None. |
-| **WordPress Current User Info** | 1. Click Execute.<br><br>_Get the current logged in user information (such as username, email etc)_ | None. |
-| **WordPress Upload RCE Plugin** | 1. Configure: `Auth Key`<br>2. Click Execute.<br><br>_This module attempts to upload and activate a malicious wordpress plugin, which will be hidden from the plugins list in the dashboard. Afterwards, the URI to trigger is: http://vulnerable-wordpress.site/wp-content/plugins/beefbind/beefbind.php,  and the command to execute can be send by a POST-parameter named 'cmd', with a 'BEEF' header containing the value of the auth_key option. However, there are more stealthy ways to send the POST request to execute the command, depending on the target. CORS headers have been added to allow bidirectional crossorigin communication._ | None. |
-| **Wordpress Add Administrator** | 1. Configure: `Username:`, `Pwd:`, `Email:`...<br>2. Click Execute.<br><br>_This module stealthily adds a Wordpress administrator account_ | Close tab/window. Check for residual pop-unders. |
-| **Wordpress Post-Auth RCE** | 1. Configure: `Target Web Server`<br>2. Click Execute.<br><br>_This module attempts to upload and activate a malicious wordpress plugin.  Afterwards, the URI to trigger it is: http://vulnerable-wordpress.site/wordpress/wp-content/plugins/beefbind/beefbind.php.  The command to execute can be send by a POST-parameter named 'cmd'.  CORS headers have been added to allow bidirectional crossorigin communication._ | None. |
-| **Zenoss 3.x Add User CSRF** | 1. Configure: `Zenoss web root`, `Username`, `Password`...<br>2. Click Execute.<br><br>_Attempts to add a user to a Zenoss Core 3.x server._ | None. |
-| **Zenoss 3.x Command Execution** | 1. Configure: `Target Host`, `Target Port`, `Local Host`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell on a Zenoss 3.x server. Valid credentials are required._ | None. |
-| **iFrame Event Key Logger** | 1. Configure: `iFrame Src`, `Send Back Interval (ms)`<br>2. Click Execute.<br><br>_Creates a 100% by 100% iFrame overlay with event logging. The content of the overlay is set in the 'iFrame Src' option._ | None. |
-| **ruby-nntpd Command Execution** | 1. Configure: `Remote Host`, `Remote Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_This module uses the 'eval' verb in ruby-nntpd 0.01dev (default port 1119) to execute operating system commands.  The target address can be on the hooked browser's subnet which is potentially not directly accessible from the Internet.  The results of the commands are not returned to BeEF._ | None. |
 
-### 3.2 Secondary Test List (Other Modern Browsers)
+#### 3.2.2 Legacy Plugins (Flash, Java, Silverlight, etc.)
+Requires the specific plugin to be installed and enabled in the browser.
+
+| Module Name | Instructions / Description | Cleanup Needed |
+| :--- | :--- | :--- |
+| **Cross-Origin Scanner (Flash)** | 1. Configure: `Scan IP range (C class)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Scans an IP range... This module uses ContentHijacking.swf._ | None. |
+| **Detect Foxit Reader** | 1. Click Execute.<br><br>_This module will check if the browser has Foxit Reader Plugin._ | None. |
+| **Detect QuickTime** | 1. Click Execute.<br><br>_This module will check if the browser has Quicktime support._ | None. |
+| **Detect RealPlayer** | 1. Click Execute.<br><br>_This module will check if the browser has RealPlayer support._ | None. |
+| **Detect Silverlight** | 1. Click Execute.<br><br>_This module will check if the browser has Silverlight support._ | None. |
+| **Detect Unity Web Player** | 1. Click Execute.<br><br>_Detects Unity Web Player._ | None. |
+| **Detect VLC** | 1. Click Execute.<br><br>_This module will check if the browser has VLC plugin._ | None. |
+| **Detect Windows Media Player** | 1. Click Execute.<br><br>_This module will check if the browser has the Windows Media Player plugin installed._ | None. |
+| **Get Internal IP (Java)** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_Retrieve the local network interface IP address of the victim machine using an unsigned Java applet._ | None. |
+| **Get System Info (Java)** | 1. Click Execute.<br><br>_This module will retrieve basic information about the host system using an unsigned Java Applet._ | None. |
+| **Webcam (Flash)** | 1. Configure: `Social Engineering Title`...<br>2. Click Execute.<br><br>_Shows the Adobe Flash 'Allow Webcam' dialog._ | None. |
+| **Webcam Permission Check** | 1. Click Execute.<br><br>_Checks if user has allowed BeEF domain to access Camera/Mic with Flash._ | None. |
+
+#### 3.2.3 Specific Target Software / Services
+Requires a specific vulnerable software or service to be running and accessible (e.g., Apache, JBoss, Printers).
+
+| Module Name | Instructions / Description | Cleanup Needed |
+| :--- | :--- | :--- |
+| **Apache Cookie Disclosure** | 1. Click Execute.<br><br>_Exploits CVE-2012-0053. Requires Apache HTTP Server 2.2.0 through 2.2.21._ | Clear browser cookies. |
+| **Apache Felix Remote Shell** | 1. Configure: `Target Host`, `Target Port`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell on an Apache Felix Remote Shell server._ | None. |
+| **Bindshell (POSIX)** | 1. Configure: `Target Address`, `Target Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_Sends commands to a listening POSIX shell._ | None. |
+| **Bindshell (Windows)** | 1. Configure: `Target Address`, `Target Port`, `Timeout (s)`...<br>2. Click Execute.<br><br>_Sends commands to a listening Windows shell._ | None. |
+| **ColdFusion Directory Traversal** | 1. Configure: `Retrieve file`, `CF server OS`...<br>2. Click Execute.<br><br>_Exploits directory traversal in ColdFusion 8/9._ | None. |
+| **Cross-Site Faxing (XSF)** | 1. Configure: `Target Address`, `Target Port`...<br>2. Click Execute.<br><br>_Sends commands to ActiveFax RAW server socket._ | None. |
+| **Cross-Site Printing (XSP)** | 1. Configure: `Target Address`, `Target Port`...<br>2. Click Execute.<br><br>_Sends a message to a listening print port (9100)._ | None. |
+| **Detect Airdroid** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_Attempts to detect Airdroid application for Android running on localhost._ | None. |
+| **Detect CUPS** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_Attempts to detect Common UNIX Printing System (CUPS) on localhost._ | None. |
+| **Detect Coupon Printer** | 1. Click Execute.<br><br>_Attempts to detect Coupon Printer on localhost._ | None. |
+| **Detect Ethereum ENS** | 1. Configure: `Image resource`...<br>2. Click Execute.<br><br>_Detects if using Ethereum ENS resolvers._ | None. |
+| **Detect Google Desktop** | 1. Click Execute.<br><br>_Attempts to detect Google Desktop running on the default port 4664._ | None. |
+| **Detect OpenNIC DNS** | 1. Configure: `Image resource`...<br>2. Click Execute.<br><br>_Detects if using OpenNIC DNS resolvers._ | None. |
+| **EXTRAnet Collaboration Tool** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Exploits command execution in 'admserver' component._ | None. |
+| **Farsite X25 gateway** | 1. Configure: `HTTP(s)`, `Remote Host`...<br>2. Click Execute.<br><br>_Exploits CVE-2014-7175/7173 to execute code._ | None. |
+| **Firephp 0.7.1 RCE** | 1. Click Execute.<br><br>_Exploit FirePHP <= 0.7.1._ | None. |
+| **Get Wireless Keys** | 1. Click Execute.<br><br>_Retrieve wireless profiles (Windows Vista and Windows 7 only)._ | None. |
+| **Get ntop Network Hosts** | 1. Configure: `Remote Host`, `Remote Port`<br>2. Click Execute.<br><br>_Retrieves information from ntop (unauthenticated)._ | None. |
+| **GlassFish WAR Upload** | 1. Configure: `Host`, `Filename`...<br>2. Click Execute.<br><br>_Attempts to deploy a malicious war file on GlassFish Server 3.1.1._ | None. |
+| **GroovyShell Server** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Uses GroovyShell Server interface to execute commands._ | None. |
+| **HP uCMDB 9.0x add user** | 1. Configure: `Protocol`, `Host`, `Port`...<br>2. Click Execute.<br><br>_Attempts to add users to HP uCMDB._ | None. |
+| **IMAP** | 1. Configure: `IMAP Server`, `Port`, `Commands`<br>2. Click Execute.<br><br>_Sends commands to an IMAP4 server._ | None. |
+| **IRC** | 1. Configure: `IRC Server`, `Port`, `Username`...<br>2. Click Execute.<br><br>_Connects to an IRC server and sends messages._ | None. |
+| **IRC NAT Pinning** | 1. Configure: `Connect to`, `Private IP`, `Private Port`<br>2. Click Execute.<br><br>_Attempts to open closed ports on statefull firewalls compatible with IRC tracking._ | None. |
+| **Jboss 6.0.0M1 JMX Deploy** | 1. Configure: `Remote Target Host`...<br>2. Click Execute.<br><br>_Deploy a JSP reverse or bind shell using JMX._ | None. |
+| **Jenkins Code Exec CSRF** | 1. Configure: `Remote Host`, `Target URI`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell from Jenkins Groovy Script console._ | None. |
+| **Kemp LoadBalancer RCE** | 1. Configure: `URL`, `Remote Port`...<br>2. Click Execute.<br><br>_Exploits RCE in Kemp LoadBalancer 7.1-16._ | None. |
+| **QEMU Monitor 'migrate'** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell from QEMU monitor service._ | None. |
+| **QNX QCONN Command Exec** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Exploits vulnerability in qconn component of QNX Neutrino._ | None. |
+| **RFI Scanner** | 1. Configure: `Target Protocol`, `Target Host`...<br>2. Click Execute.<br><br>_Scans web server for RFI vulnerabilities._ | None. |
+| **Redis** | 1. Configure: `Target Address`, `Target Port`...<br>2. Click Execute.<br><br>_Sends commands to a listening Redis daemon._ | None. |
+| **Shell Shock (CVE-2014-6271)** | 1. Configure: `Target`, `HTTP Method`...<br>2. Click Execute.<br><br>_Attemp to use vulnerability CVE-2014-627 to execute arbitrary code._ | None. |
+| **Shell Shock Scanner** | 1. Configure: `HTTP Method`, `Target Protocol`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell by requesting ~400 potentially vulnerable CGI scripts._ | None. |
+| **VTiger CRM Upload Exploit** | 1. Configure: `Target Web Server`...<br>2. Click Execute.<br><br>_Uploads and executes a reverse shell on VTiger CRM 5.0.4._ | None. |
+| **WAN Emulator Command Exec** | 1. Configure: `Target Host`, `Target Port`...<br>2. Click Execute.<br><br>_Attempts to get a reverse root shell on a WAN Emulator server._ | None. |
+| **WordPress Add User** | 1. Configure: `Username`, `Pwd`, `Email`...<br>2. Click Execute.<br><br>_Adds a WordPress User._ | None. |
+| **WordPress Add Administrator** | 1. Configure: `Username:`, `Pwd:`...<br>2. Click Execute.<br><br>_Stealthily adds a Wordpress administrator account._ | Close tab/window. Check for residual pop-unders. |
+| **WordPress Current User** | 1. Click Execute.<br><br>_Get the current logged in user information._ | None. |
+| **WordPress Upload RCE (Plugin)** | 1. Configure: `Auth Key`<br>2. Click Execute.<br><br>_Attempts to upload and activate a malicious wordpress plugin._ | None. |
+| **Wordpress Post-Auth RCE** | 1. Configure: `Target Web Server`<br>2. Click Execute.<br><br>_Attempts to upload and activate a malicious wordpress plugin._ | None. |
+| **Zenoss 3.x Add User** | 1. Configure: `Zenoss web root`...<br>2. Click Execute.<br><br>_Attempts to add a user to a Zenoss Core 3.x server._ | None. |
+| **Zenoss 3.x Command Exec** | 1. Configure: `Target Host`, `Target Port`...<br>2. Click Execute.<br><br>_Attempts to get a reverse shell on a Zenoss 3.x server._ | None. |
+| **ruby-nntpd Command Exec** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Uses 'eval' verb in ruby-nntpd 0.01dev to execute commands._ | None. |
+
+#### 3.2.4 Social Engineering / Account Phishing
+Requires the user to be logged into valid accounts (Gmail, Facebook, etc.) or susceptible to specific social engineering tricks.
+
+| Module Name | Instructions / Description | Cleanup Needed |
+| :--- | :--- | :--- |
+| **Clippy** | 1. Configure: `Clippy image directory`...<br>2. Click Execute.<br><br>_Brings up a clippy image and asks the user to do stuff._ | None. |
+| **Detect Social Networks** | 1. Configure: `Detection Timeout`<br>2. Click Execute.<br><br>_Detects if authenticated to GMail, Facebook and Twitter._ | None. |
+| **Fake Flash Update** | 1. Configure: `Image`, `Payload URI`<br>2. Click Execute.<br><br>_Prompts the user to install an update to Adobe Flash Player._ | None. |
+| **Fake Notification Bar** | 1. Configure: `Notification text`<br>2. Click Execute.<br><br>_Displays a fake notification bar._ | None. |
+| **Fake Notification Bar (Chrome)**| 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake Chrome notification bar._ | None. |
+| **Fake Notification Bar (Firefox)**| 1. Configure: `Plugin URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake Firefox notification bar._ | None. |
+| **Fake Notification Bar (IE)** | 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake IE notification bar._ | None. |
+| **Google Phishing** | 1. Configure: `XSS hook URI`, `Gmail logout interval`...<br>2. Click Execute.<br><br>_XSRF logout of Gmail, show phishing page._ | None. |
+| **Read Gmail** | 1. Click Execute.<br><br>_Grabs unread message ids from gmail atom feed._ | None. |
+| **Send Gvoice SMS** | 1. Configure: `To`, `Message`<br>2. Click Execute.<br><br>_Send a text message (SMS) through Google Voice._ | None. |
+| **Skype iPhone XSS** | 1. Click Execute.<br><br>_Steals iPhone contacts using a Skype XSS vuln._ | None. |
+
+### 3.3 Phase 3: Other Browsers & Specialized Extensions
 
 Test these modules **only if they cannot be tested in Firefox**. Use Chrome, Safari, or Edge.
-
 
 | Module Name | Instructions / Description | Cleanup Needed |
 | :--- | :--- | :--- |
 | **DNS Rebinding** | 1. Click Execute.<br><br>_dnsrebind_ | None. |
 | **Detect Evernote Web Clipper** | 1. Click Execute.<br><br>_This module checks if the Evernote Web Clipper extension is installed and active._ | None. |
-| **Execute On Tab** | 1. Configure: `URL`, `Javascript`<br>2. Click Execute.<br><br>_Open a new tab and execute the Javascript code on it. The Chrome Extension needs to have the 'tabs' permission, as well as access to the domain._ | None. |
+| **Execute On Tab** | 1. Configure: `URL`, `Javascript`<br>2. Click Execute.<br><br>_Open a new tab and execute the Javascript code on it. Chrome Extension specific._ | None. |
 | **Fake Evernote Web Clipper Login** | 1. Click Execute.<br><br>_Displays a fake Evernote Web Clipper login dialog._ | None. |
-| **Fake LastPass** | 1. Click Execute.<br><br>_Displays a fake LastPass user dialog._ | None. |
-| **Get All Cookies** | 1. Configure: `Domain (e.g. http://facebook.com)`<br>2. Click Execute.<br><br>_Steal cookies, even HttpOnly cookies, providing the hooked extension has cookies access. If a URL is not specified then  all  cookies are returned (this can be a lot!)_ | Clear browser cookies. |
-| **Grab Google Contacts** | 1. Click Execute.<br><br>_Attempt to grab the contacts of the currently logged in Google account, exploiting the export to CSV feature._ | None. |
-| **Hook Microsoft Edge** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use the 'microsoft-edge:' protocol handler to attempt to hook Microsoft Edge (assuming it isn't currently hooked).  Note: the user will be prompted to open Microsoft Edge._ | None. |
+| **Fake LastPass** | 1. Click Execute.<br><br>_Displays a fake LastPass user dialog. (Often Chrome specific)_ | None. |
+| **Get All Cookies** | 1. Configure: `Domain (e.g. http://facebook.com)`<br>2. Click Execute.<br><br>_Steal cookies, even HttpOnly cookies, providing the hooked extension has cookies access._ | Clear browser cookies. |
+| **Get Visited URLs (Avant Browser)** | 1. Configure: `Command ID`<br>2. Click Execute.<br><br>_Attempts to retrieve history requiring 'AFRunCommand()'. Avant Browser only._ | None. |
+| **Get Visited URLs (Old Browsers)** | 1. Configure: `URL(s)`<br>2. Click Execute.<br><br>_Detects visited URLs in older browsers._ | None. |
+| **Grab Google Contacts** | 1. Click Execute.<br><br>_Attempt to grab the contacts... exploiting export to CSV._ | None. |
+| **Hook Microsoft Edge** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_Uses 'microsoft-edge:' protocol handler to hook Edge._ | None. |
 | **Inject BeEF** | 1. Click Execute.<br><br>_Attempt to inject the BeEF hook on all the available tabs._ | None. |
-| **JSONP Service Worker** | 1. Configure: `Path of the current domain compromized JSONP endpoint (ex: /jsonp?callback=)`, `Temporary HTML body to show to the users`<br>2. Click Execute.<br><br>_This module will exploit an unfiltered callback parameter in a JSONP endpoint (of the same domain compromized) to ensure that BeEF will hook every time the user revisits the domain_ | Close tab/window. Check for residual pop-unders. |
-| **Local File Theft** | 1. Configure: `Target file`<br>2. Click Execute.<br><br>_JavaScript may have filesystem access if we are running from a local resource and using the file:// scheme. This module checks common locations and cheekily snaches anything it finds. Shamelessly plagurised from http://kos.io/xsspwn. To test this module save the BeEF hook page locally and open in Safari from the your localfile system._ | None. |
-| **Make Telephone Call** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_This module will force the browser to attempt a telephone call in iOS. It will exploit the insecure handling of URL schemes in iOS.  The protocol handler used will be: tel_ | None. |
-| **Ping Sweep (Java)** | 1. Configure: `Scan IP range (C class or IP)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser. Same logic of the Ping Sweep module, but using an unsigned Java applet to work in browsers other than Firefox.  For Firefox, use the normal PingSweep module._ | None. |
-| **Screenshot** | 1. Click Execute.<br><br>_Screenshots current tab the user is in, screenshot returned as base64d data for a dataurl_ | None. |
-| **Send Gvoice SMS** | 1. Configure: `To`, `Message`<br>2. Click Execute.<br><br>_Send a text message (SMS) through the Google Voice account of the victim, if she's logged in to Google._ | None. |
-| **Webcam HTML5** | 1. Configure: `Screenshot size`<br>2. Click Execute.<br><br>_This module will leverage HTML5s WebRTC to capture webcam images. Only tested in Chrome, and it will display a dialog to ask if the user wants to enable their webcam.  If no image shown choose smaller image size_ | None. |
-| **iFrame Sniffer** | 1. Configure: `input URL`, `anchors to check`<br>2. Click Execute.<br><br>_This module attempts to do framesniffing (aka Leaky Frame).  It will append leakyframe.js (written by Paul Stone) to the DOM and check for specified anchors to be present on a URL. For more information, refer to  https://www.contextis.com/en/blog/framesniffing-against-sharepoint-and-linkedin_ | None. |
+| **JSONP Service Worker** | 1. Configure: `Path of the current domain`...<br>2. Click Execute.<br><br>_Exploits unfiltered callback in JSONP endpoint._ | Close tab/window. Check for residual pop-unders. |
+| **Local File Theft** | 1. Configure: `Target file`<br>2. Click Execute.<br><br>_JavaScript may have filesystem access if using file:// scheme (Safari/Local)._ | None. |
+| **Make Skype Call** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_Forces browser to Skype call. Protocol handler `skype:`._ | None. |
+| **Make Telephone Call** | 1. Configure: `Number`<br>2. Click Execute.<br><br>_Forces browser to telephone call (iOS). Protocol handler `tel:`._ | None. |
+| **Ping Sweep (Java)** | 1. Configure: `Scan IP range (C class or IP)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover active hosts... using unsigned Java applet. (Alt for FF)_ | None. |
+| **Screenshot** | 1. Click Execute.<br><br>_Screenshots current tab (Chrome/HTML5)._ | None. |
+| **Webcam HTML5** | 1. Configure: `Screenshot size`<br>2. Click Execute.<br><br>_Leverage HTML5 WebRTC to capture webcam images. Only tested in Chrome._ | None. |
+| **iFrame Sniffer** | 1. Configure: `input URL`, `anchors to check`<br>2. Click Execute.<br><br>_Attempts to do framesniffing (aka Leaky Frame)._ | None. |
