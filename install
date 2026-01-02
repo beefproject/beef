@@ -130,12 +130,12 @@ install_linux() {
 		installing --auto git make gcc openssl-devel gcc-c++ patch readline-devel zlib-devel yaml-devel libffi-devel bzip2 autoconf automake libtool bison sqlite-devel nodejs sudo
 	elif [ "${Distro}" = "Arch" ]; then
 		sudo pacman -Syu
-		sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs
+		sudo pacman -S curl git make openssl gcc readline zlib libyaml sqlite bzip2 autoconf automake libtool bison nodejs --needed
 		if command_exists rvm || command_exists rbenv; then
 			info "Ruby package Manager exists - Ruby install skipped"
 		else
 			info "No Ruby package manager detected - will install Ruby"
-			sudo pacman -S ruby ruby-rdoc
+			sudo pacman -S ruby ruby-rdoc --needed
 		fi
 	elif [ "${Distro}" = "Alpine" ]; then
 		apk update
