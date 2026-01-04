@@ -30,74 +30,74 @@ Test these modules using **Firefox** on your local Linux VM. They leverage stand
 
 | Status | Module Name | Instructions / Description | Cleanup Needed | Comments |
 | :---: | :--- | :--- | :--- | :--- |
-| [x] | **Alert Dialog** | 1. Configure: `Title`, `Message`, `Button name`<br>2. Click Execute.<br><br>_Show user an alert_ | None. | |
-| [x] | **BlockUI Modal Dialog** | 1. Configure: `Message`, `Timeout (s)`<br>2. Click Execute.<br><br>_This module uses jQuery  BlockUI  to block the window and display a message._ | None. | |
-| [x] | **Clickjacking** | 1. Configure: `iFrame Src`, `Security restricted (IE)`, `Sandbox`...<br>2. Click Execute.<br><br>_Allows you to perform basic multi-click clickjacking._ | None. | |
+| [x] | **Alert Dialog** | 1. Set `Title`, `Message`, and `Button name`.<br>2. Execute module.<br>3. Verify alert dialog appears on hooked page with configured text. | None. | |
+| [x] | **BlockUI Modal Dialog** | 1. Set `Message` and `Timeout (s)`.<br>2. Execute module.<br>3. Verify blocking overlay appears with message.<br>4. Wait for timeout or use UnBlockUI to remove. | None. | |
+| [x] | **Clickjacking** | 1. Set `iFrame Src` to target page for clickjacking.<br>2. Execute module.<br>3. Verify page shows overlay for click-based attack.<br>4. Click as user would to test interaction capture. | None. | |
 | [x] | **Confirm Close Tab** | 1. Configure: `Confirm text`, `Create a pop-under window on user\`<br>2. Click Execute.<br><br>_Shows a confirm dialog to the user when they try to close a tab._ | Close tab/window. Check for residual pop-unders. | a window pops up, but the text not as per command |
-| [NEXT ] | **Create Foreground iFrame** | 1. Click Execute.<br><br>_Rewrites all links on the webpage to spawn a 100% by 100% iFrame with a source relative to the selected link._ | Close tab/window. Check for residual pop-unders. | |
-| [ ] | **Create Invisible Iframe** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_Creates an invisible iframe._ | None. | |
-| [ ] | **Create Pop Under** | 1. Configure: `Clickjack`<br>2. Click Execute.<br><br>_This module creates a new discreet pop under window with the BeEF hook included._ | Close tab/window. Check for residual pop-unders. | |
-| [ ] | **Cross-Origin Scanner (CORS)** | 1. Configure: `Scan IP range (C class)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Scan an IP range for web servers which allow cross-origin requests using CORS._ | None. | |
+| [x ] | **Create Foreground iFrame** | 1. Execute module.<br>2. Click "Our Meaty Friends" button to reveal links.<br>3. Click any link (e.g., "The Browser Exploitation Framework Project homepage").<br>4. Verify page loads in fullscreen iFrame overlay (check DevTools for `<iframe>` with `z-index:1` and 100% width/height).<br>5. Confirm hook remains active in BeEF UI. | Close tab/window. | |
+| [x] | **Create Invisible Iframe** | 1. Set `URL` to any valid URL (e.g., `http://example.com`).<br>2. Execute module.<br>3. Open DevTools → Elements → search for `<iframe>` with `visibility:hidden` or `display:none`.<br>4. Verify iframe exists with correct src. | None. | |
+| [x] | **Create Pop Under** | 1. Set `Clickjack` to `on` (waits for click) or `off` (immediate).<br>2. Execute module.<br>3. If Clickjack=on, click anywhere on page.<br>4. Check for small hidden window in taskbar (or DevTools: new window to `/demos/plain.html`).<br>5. Verify BeEF shows 2nd hooked browser. | Close pop-under window. | |
+| [-] | **Cross-Origin Scanner (CORS)** | 1. Set `Scan IP range` (e.g., `127.0.0.1-127.0.0.1`) and `Ports` (e.g., `80,443,8080`).<br>2. Execute module.<br>3. Check command results for list of discovered web servers allowing CORS. | None. | See [CORS-001](testing_errors.md#cors-001-cross-origin-scanner-cors-module-error) |
 | [ ] | **DNS Enumeration** | 1. Configure: `DNS (comma separated)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover DNS hostnames within the victim's network using dictionary and timing attacks._ | None. | |
 | [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Data to send`<br>2. Click Execute.<br><br>_This module sends data one way over DNS, client to server only._ | None. | |
 | [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Message`, `Wait between requests (ms)`<br>2. Click Execute.<br><br>_This module sends data one way over DNS. Message split into chunks._ | None. | |
 | [ ] | **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel._ | None. | |
 | [ ] | **DOSer** | 1. Configure: `URL`, `Delay between requests (ms)`, `HTTP Method`...<br>2. Click Execute.<br><br>_Do infinite GET or POST requests to a target._ | None. | |
-| [ ] | **Detect Antivirus** | 1. Click Execute.<br><br>_This module detects the javascript code automatically included by some AVs._ | None. | |
-| [ ] | **Detect Burp** | 1. Click Execute.<br><br>_This module checks if the browser is using Burp._ | None. | |
-| [ ] | **Detect Extensions** | 1. Click Execute.<br><br>_This module detects extensions installed in Google Chrome and Mozilla Firefox._ | Remove installed extension if any. | |
+| [ ] | **Detect Antivirus** | 1. Execute module.<br>2. Check command results for detected AV products (e.g., Norton, McAfee, Avast JS signatures). | None. | |
+| [ ] | **Detect Burp** | 1. Run Burp Suite with browser proxied through it.<br>2. Execute module.<br>3. Check if Burp is detected (result shows "Burp detected" or similar). | None. | |
+| [ ] | **Detect Extensions** | 1. Execute module.<br>2. Check command results for list of detected Chrome/Firefox extensions. | None. | |
 | [ ] | **Detect FireBug** | 1. Click Execute.<br><br>_This module checks if the Mozilla Firefox Firebug extension is being use._ | None. | |
 | [ ] | **Detect LastPass** | 1. Click Execute.<br><br>_This module checks if the LastPass extension is installed and active._ | None. | |
 | [ ] | **Detect MIME Types** | 1. Click Execute.<br><br>_This module retrieves the browser's supported MIME types._ | None. | |
-| [ ] | **Detect Popup Blocker** | 1. Click Execute.<br><br>_Detect if popup blocker is enabled._ | None. | |
+| [ ] | **Detect Popup Blocker** | 1. Execute module.<br>2. Check command result: "Popup blocker enabled" or "Popup blocker not detected". | None. | |
 | [ ] | **Detect Toolbars** | 1. Click Execute.<br><br>_Detects which browser toolbars are installed._ | None. | |
 | [ ] | **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor._ | None. | |
 | [ ] | **ETag Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Message`<br>2. Click Execute.<br><br>_This module sends data from server to client using ETag HTTP header._ | None. | |
-| [ ] | **Fetch Port Scanner** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`<br>2. Click Execute.<br><br>_Uses fetch to test the response in order to determine if a port is open or not._ | None. | |
-| [ ] | **Fingerprint Browser (PoC)** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser type and version._ | None. | |
-| [ ] | **Fingerprint Browser** | 1. Click Execute.<br><br>_This module attempts to fingerprint the browser and browser capabilities using  FingerprintJS2._ | None. | |
+| [ ] | **Fetch Port Scanner** | 1. Set `Scan IP or Hostname` (e.g., `127.0.0.1`) and `Specific port(s)` (e.g., `22,80,443,3000`).<br>2. Execute module.<br>3. Check command results for open/closed port status. | None. | |
+| [ ] | **Fingerprint Browser (PoC)** | 1. Execute module.<br>2. Check command results for browser name, version, and platform. | None. | |
+| [ ] | **Fingerprint Browser** | 1. Execute module.<br>2. Check command results for detailed fingerprint (canvas, WebGL, fonts, plugins, etc.). | None. | |
 | [ ] | **Fingerprint Local Network** | 1. Configure: `Scan IP range (C class)`, `Ports to test`, `Workers`...<br>2. Click Execute.<br><br>_Discover devices and applications in the victim's Local Area Network._ | None. | |
 | [ ] | **Fingerprint Routers** | 1. Click Execute.<br><br>_This module attempts to discover network routers on the local network._ | None. | |
-| [ ] | **Get Geolocation (API)** | 1. Click Execute.<br><br>_This module will retrieve the physical location using the HTML5 geolocation API._ | None. | |
+| [ ] | **Get Geolocation (API)** | 1. Execute module.<br>2. Allow/deny location permission in browser popup.<br>3. If allowed, check results for latitude/longitude coordinates. | None. | |
 | [ ] | **Get HTTP Servers (Favicon)** | 1. Configure: `Remote IP(s)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Attempts to discover HTTP servers on the specified IP range by checking for a favicon._ | None. | |
-| [ ] | **Get Internal IP WebRTC** | 1. Click Execute.<br><br>_Retrieve the internal (behind NAT) IP address of the victim machine using WebRTC._ | None. | |
+| [ ] | **Get Internal IP WebRTC** | 1. Execute module.<br>2. Check command results for local/private IP address (e.g., `192.168.x.x`). | None. | |
 | [ ] | **Get Protocol Handlers** | 1. Configure: `Link Protocol(s)`, `Link Address`<br>2. Click Execute.<br><br>_This module attempts to identify protocol handlers present on the hooked browser._ | None. | |
 | [ ] | **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using WPAD._ | None. | |
 | [ ] | **Get Visited Domains** | 1. Configure: `Specify custom page to check`<br>2. Click Execute.<br><br>_This module will retrieve rapid history extraction through non-destructive cache timing._ | None. | |
-| [ ] | **Hijack Opener Window** | 1. Click Execute.<br><br>_This module abuses window.location.opener to hijack the opening window._ | Close tab/window. Check for residual pop-unders. | |
+| [ ] | **Hijack Opener Window** | 1. First open demo page via a link from another page (so `window.opener` exists).<br>2. Execute module on the opened tab.<br>3. Check if opener window's location changed to BeEF `/iframe#` URL.<br>4. Verify result in command output. | Close affected windows. | |
 | [ ] | **Hook Default Browser** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use a PDF to attempt to hook the default browser._ | None. | |
 | [ ] | **Identify LAN Subnets** | 1. Configure: `Timeout for each request (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network(s) of the hooked browser._ | None. | |
 | [ ] | **Lcamtuf Download** | 1. Configure: `Real File Path`, `Malicious File Path`, `Run Once`<br>2. Click Execute.<br><br>_This module will attempt to execute a lcamtuf download._ | Delete downloaded files. | |
-| [ ] | **Link Rewrite** | 1. Click Execute.<br><br>_This module will rewrite all the href attributes of all matched links._ | None. | |
-| [ ] | **Man-In-The-Browser** | 1. Click Execute.<br><br>_This module will use a Man-In-The-Browser attack to ensure that the BeEF hook will stay._ | Close tab/window. Check for residual pop-unders. | |
+| [ ] | **Link Rewrite** | 1. Execute module.<br>2. Click "Our Meaty Friends" button to reveal links.<br>3. Hover over any link and check DevTools or status bar.<br>4. Verify all `href` attributes have been modified. | Refresh page to restore links. | |
+| [ ] | **Man-In-The-Browser** | 1. Execute module.<br>2. Click any link on page to navigate.<br>3. Verify page loads via AJAX (URL bar may not change, or content loads dynamically).<br>4. Confirm BeEF hook remains active.<br>5. Check command result shows "Browser hooked". | Close tab. | |
 | [ ] | **No Sleep** | 1. Click Execute.<br><br>_This module uses  NoSleep.js  to prevent display sleep and enable wake lock in any Android or iOS web browser._ | None. | |
 | [ ] | **Ping Sweep (FF)** | 1. Configure: `Scan IP range (C class or IP)`, `Timeout (ms)`, `Delay between requests (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser._ | None. | |
 | [ ] | **Ping Sweep (JS XHR)** | 1. Configure: `Scan IP range (C class)`, `Workers`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network of the hooked browser using JavaScript XHR._ | None. | |
-| [ ] | **Play Sound** | 1. Configure: `Sound File Path`<br>2. Click Execute.<br><br>_Play a sound on the hooked browser._ | None. | |
-| [ ] | **Port Scanner (Multiple Methods)** | 1. Configure: `Scan IP or Hostname`, `Specific port(s) to scan`, `Closed port timeout (ms)`...<br>2. Click Execute.<br><br>_Scan ports in a given hostname, using WebSockets, CORS and img tags._ | None. | |
-| [ ] | **Pretty Theft** | 1. Configure: `Dialog Type`, `Backing`, `Custom Logo (Generic only)`<br>2. Click Execute.<br><br>_Asks the user for their username and password using a floating div._ | None. | |
-| [ ] | **Raw JavaScript** | 1. Configure: `Javascript Code`<br>2. Click Execute.<br><br>_Execute arbitrary JavaScript._ | None. | |
-| [ ] | **Redirect Browser (Rickroll)** | 1. Click Execute.<br><br>_Overwrite the body of the page the victim is on with a full screen Rickroll._ | None. | |
-| [ ] | **Redirect Browser (Standard)** | 1. Configure: `Redirect URL`<br>2. Click Execute.<br><br>_Redirect the hooked browser to the address specified._ | None. | |
-| [ ] | **Redirect Browser (iFrame)** | 1. Configure: `Redirect URL`, `Title`, `Favicon`...<br>2. Click Execute.<br><br>_Creates a 100% x 100% overlaying iframe._ | None. | |
+| [ ] | **Play Sound** | 1. Set `Sound File Path` to a valid audio URL (e.g., `/demos/alert.mp3` or external URL).<br>2. Execute module.<br>3. Listen for audio playback on hooked browser. | None. | |
+| [ ] | **Port Scanner (Multiple Methods)** | 1. Set `Scan IP or Hostname` (e.g., `127.0.0.1`) and `Specific port(s)` (e.g., `22,80,443,3000`).<br>2. Execute module.<br>3. Check results for open ports (tries WebSockets, CORS, img tags). | None. | |
+| [ ] | **Pretty Theft** | 1. Set `Dialog Type` (e.g., `Facebook`, `LinkedIn`, `Windows`, `Generic`).<br>2. Set `Backing` (e.g., `Grey`, `Clear`).<br>3. Execute module.<br>4. Verify fake login dialog appears on hooked page.<br>5. Enter test credentials and submit.<br>6. Check BeEF command results for captured credentials. | None. | |
+| [ ] | **Raw JavaScript** | 1. Set `Javascript Code` (e.g., `alert('test')` or `console.log(document.cookie)`).<br>2. Execute module.<br>3. Verify JS executed (alert shown, or check DevTools console). | None. | |
+| [ ] | **Redirect Browser (Rickroll)** | 1. Execute module.<br>2. Verify page is replaced with fullscreen Rickroll video.<br>3. Confirm hook remains active in BeEF UI. | Refresh page to restore. | |
+| [ ] | **Redirect Browser (Standard)** | 1. Set `Redirect URL` (e.g., `https://example.com`).<br>2. Execute module.<br>3. Verify browser navigates to specified URL (hook will be lost). | Re-hook if needed. | |
+| [ ] | **Redirect Browser (iFrame)** | 1. Set `Redirect URL`, optional `Title` and `Favicon`.<br>2. Execute module.<br>3. Verify page shows iFrame overlay with target URL.<br>4. Confirm hook remains active. | Close tab. | |
 | [ ] | **Replace Videos (Fake Plugin)** | 1. Configure: `Payload URL`, `jQuery Selector`<br>2. Click Execute.<br><br>_Replaces an object selected with jQuery with an image advising the user to install a missing plugin._ | None. | |
-| [ ] | **Resource Exhaustion DoS** | 1. Click Execute.<br><br>_This module attempts to exhaust system resources rendering the browser unusable._ | None. | |
-| [ ] | **Return Ascii Chars** | 1. Click Execute.<br><br>_This module will return the set of ascii chars._ | None. | |
-| [ ] | **Return Image** | 1. Click Execute.<br><br>_This module will test returning a PNG image as a base64 encoded string._ | None. | |
+| [ ] | **Resource Exhaustion DoS** | 1. Execute module.<br>2. Observe browser becoming slow/unresponsive.<br>3. May need to force-close browser tab/window. | Force-close tab if needed. | |
+| [ ] | **Return Ascii Chars** | 1. Execute module.<br>2. Check command results for ASCII character set. | None. | |
+| [ ] | **Return Image** | 1. Execute module.<br>2. Check command results for base64-encoded PNG image data. | None. | |
 | [ ] | **Simple Hijacker** | 1. Configure: `Targetted domains`, `Template to use`<br>2. Click Execute.<br><br>_Hijack clicks on links to display what you want._ | None. | |
 | [ ] | **Spoof Address Bar (data URL)** | 1. Configure: `Spoofed URL`, `Real URL`<br>2. Click Execute.<br><br>_This module redirects the browser to a legitimate looking URL with a data scheme._ | None. | |
-| [ ] | **Spyder Eye** | 1. Configure: `Repeat`, `Delay`<br>2. Click Execute.<br><br>_This module takes a picture of the victim's browser window._ | None. | |
-| [ ] | **TabNabbing** | 1. Configure: `URL`, `Wait (minutes)`<br>2. Click Execute.<br><br>_This module redirects to the specified URL after the tab has been inactive._ | None. | |
+| [ ] | **Spyder Eye** | 1. Set `Repeat` (number of screenshots) and `Delay` (ms between shots).<br>2. Execute module.<br>3. Check command results for base64-encoded screenshot(s) of the victim's viewport. | None. | |
+| [ ] | **TabNabbing** | 1. Set `URL` (e.g. fake login page) and `Wait` time (e.g., 1 minute).<br>2. Execute module.<br>3. Switch to a different tab and wait the configured time.<br>4. Switch back and verify the hooked tab has navigated to specified URL. | Close tab. | |
 | [ ] | **Test CORS Request** | 1. Configure: `Method`, `URL`, `Data`<br>2. Click Execute.<br><br>_Test the beef.net.cors.request function._ | None. | |
 | [ ] | **Test HTTP Redirect** | 1. Click Execute.<br><br>_Test the HTTP 'redirect' handler._ | None. | |
 | [ ] | **Test JS variable passing** | 1. Configure: `Payload Name`<br>2. Click Execute.<br><br>_Test for JS variable passing._ | None. | |
 | [ ] | **Test Network Request** | 1. Configure: `Scheme`, `Method`, `Domain`...<br>2. Click Execute.<br><br>_Test the beef.net.request function by retrieving a URL._ | None. | |
 | [ ] | **Test Returning Results** | 1. Configure: `Times to repeat`, `String to repeat`<br>2. Click Execute.<br><br>_This module will return a string of the specified length._ | None. | |
 | [ ] | **Test beef.debug()** | 1. Configure: `Debug Message`<br>2. Click Execute.<br><br>_Test the 'beef.debug()' function._ | None. | |
-| [ ] | **Text to Voice** | 1. Configure: `Text`, `Language`<br>2. Click Execute.<br><br>_Convert text to mp3 and play it on the hooked browser._ | None. | |
-| [ ] | **UnBlockUI** | 1. Click Execute.<br><br>_This module removes all jQuery BlockUI dialogs._ | None. | |
-| [ ] | **Unhook** | 1. Click Execute.<br><br>_This module removes the BeEF hook from the hooked page._ | None. | |
-| [ ] | **iFrame Event Key Logger** | 1. Configure: `iFrame Src`, `Send Back Interval (ms)`<br>2. Click Execute.<br><br>_Creates a 100% by 100% iFrame overlay with event logging._ | None. | |
+| [ ] | **Text to Voice** | 1. Set `Text` (e.g., "Hello world") and `Language` (e.g., `en`).<br>2. Execute module.<br>3. Listen for audio playback of the text. | None. | |
+| [ ] | **UnBlockUI** | 1. First execute "BlockUI Modal Dialog" module to create a blocking overlay.<br>2. Then execute this "UnBlockUI" module.<br>3. Verify the BlockUI overlay is removed. | None. | |
+| [ ] | **Unhook** | 1. Execute module.<br>2. Verify hook JavaScript is removed from page (check DevTools console).<br>3. Confirm browser goes "Offline" in BeEF UI.<br>4. Confirm no further commands can be executed. | Re-hook page if needed. | |
+| [ ] | **iFrame Event Key Logger** | 1. Set `iFrame Src` (target URL to load in overlay).<br>2. Set `Send Back Interval` (e.g., 5000ms).<br>3. Execute module.<br>4. Type in the iFrame overlay.<br>5. Check BeEF command results for captured keystrokes. | Close tab. | |
 
 
 ### 3.2 Phase 2: Specific Requirements (Firefox)
