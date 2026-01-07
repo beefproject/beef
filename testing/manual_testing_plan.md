@@ -34,24 +34,19 @@ Test these modules using **Firefox** on your local Linux VM. They leverage stand
 | [x] | **BlockUI Modal Dialog** | 1. Set `Message` and `Timeout (s)`.<br>2. Execute module.<br>3. Verify blocking overlay appears with message.<br>4. Wait for timeout or use UnBlockUI to remove. | None. | |
 | [x] | **Clickjacking** | 1. Set `iFrame Src` to target page for clickjacking.<br>2. Execute module.<br>3. Verify page shows overlay for click-based attack.<br>4. Click as user would to test interaction capture. | None. | |
 | [x] | **Confirm Close Tab** | 1. Configure: `Confirm text`, `Create a pop-under window on user\`<br>2. Click Execute.<br><br>_Shows a confirm dialog to the user when they try to close a tab._ | Close tab/window. Check for residual pop-unders. | a window pops up, but the text not as per command |
-| [x ] | **Create Foreground iFrame** | 1. Execute module.<br>2. Click "Our Meaty Friends" button to reveal links.<br>3. Click any link (e.g., "The Browser Exploitation Framework Project homepage").<br>4. Verify page loads in fullscreen iFrame overlay (check DevTools for `<iframe>` with `z-index:1` and 100% width/height).<br>5. Confirm hook remains active in BeEF UI. | Close tab/window. | |
+| [x] | **Create Foreground iFrame** | 1. Execute module.<br>2. Click "Our Meaty Friends" button to reveal links.<br>3. Click any link (e.g., "The Browser Exploitation Framework Project homepage").<br>4. Verify page loads in fullscreen iFrame overlay (check DevTools for `<iframe>` with `z-index:1` and 100% width/height).<br>5. Confirm hook remains active in BeEF UI. | Close tab/window. | |
 | [x] | **Create Invisible Iframe** | 1. Set `URL` to any valid URL (e.g., `http://example.com`).<br>2. Execute module.<br>3. Open DevTools → Elements → search for `<iframe>` with `visibility:hidden` or `display:none`.<br>4. Verify iframe exists with correct src. | None. | |
 | [x] | **Create Pop Under** | 1. Set `Clickjack` to `on` (waits for click) or `off` (immediate).<br>2. Execute module.<br>3. If Clickjack=on, click anywhere on page.<br>4. Check for small hidden window in taskbar (or DevTools: new window to `/demos/plain.html`).<br>5. Verify BeEF shows 2nd hooked browser. | Close pop-under window. | |
 | [-] | **Cross-Origin Scanner (CORS)** | 1. Set `Scan IP range` (e.g., `127.0.0.1-127.0.0.1`) and `Ports` (e.g., `80,443,8080`).<br>2. Execute module.<br>3. Check command results for list of discovered web servers allowing CORS. | None. | See [CORS-001](testing_errors.md#cors-001-cross-origin-scanner-cors-module-error) |
-| [ ] | **DNS Enumeration** | 1. Configure: `DNS (comma separated)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover DNS hostnames within the victim's network using dictionary and timing attacks._ | None. | |
-| [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Data to send`<br>2. Click Execute.<br><br>_This module sends data one way over DNS, client to server only._ | None. | |
-| [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Message`, `Wait between requests (ms)`<br>2. Click Execute.<br><br>_This module sends data one way over DNS. Message split into chunks._ | None. | |
-| [ ] | **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel._ | None. | |
+| [x] | **DNS Enumeration** | 1. Configure: `DNS (comma separated)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover DNS hostnames within the victim's network using dictionary and timing attacks._ | None. | |
 | [ ] | **DOSer** | 1. Configure: `URL`, `Delay between requests (ms)`, `HTTP Method`...<br>2. Click Execute.<br><br>_Do infinite GET or POST requests to a target._ | None. | |
 | [ ] | **Detect Antivirus** | 1. Execute module.<br>2. Check command results for detected AV products (e.g., Norton, McAfee, Avast JS signatures). | None. | |
-| [ ] | **Detect Burp** | 1. Run Burp Suite with browser proxied through it.<br>2. Execute module.<br>3. Check if Burp is detected (result shows "Burp detected" or similar). | None. | |
 | [ ] | **Detect Extensions** | 1. Execute module.<br>2. Check command results for list of detected Chrome/Firefox extensions. | None. | |
 | [ ] | **Detect FireBug** | 1. Click Execute.<br><br>_This module checks if the Mozilla Firefox Firebug extension is being use._ | None. | |
 | [ ] | **Detect LastPass** | 1. Click Execute.<br><br>_This module checks if the LastPass extension is installed and active._ | None. | |
 | [ ] | **Detect MIME Types** | 1. Click Execute.<br><br>_This module retrieves the browser's supported MIME types._ | None. | |
 | [ ] | **Detect Popup Blocker** | 1. Execute module.<br>2. Check command result: "Popup blocker enabled" or "Popup blocker not detected". | None. | |
 | [ ] | **Detect Toolbars** | 1. Click Execute.<br><br>_Detects which browser toolbars are installed._ | None. | |
-| [ ] | **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor._ | None. | |
 | [ ] | **ETag Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Message`<br>2. Click Execute.<br><br>_This module sends data from server to client using ETag HTTP header._ | None. | |
 | [ ] | **Fetch Port Scanner** | 1. Set `Scan IP or Hostname` (e.g., `127.0.0.1`) and `Specific port(s)` (e.g., `22,80,443,3000`).<br>2. Execute module.<br>3. Check command results for open/closed port status. | None. | |
 | [ ] | **Fingerprint Browser (PoC)** | 1. Execute module.<br>2. Check command results for browser name, version, and platform. | None. | |
@@ -62,10 +57,8 @@ Test these modules using **Firefox** on your local Linux VM. They leverage stand
 | [ ] | **Get HTTP Servers (Favicon)** | 1. Configure: `Remote IP(s)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Attempts to discover HTTP servers on the specified IP range by checking for a favicon._ | None. | |
 | [ ] | **Get Internal IP WebRTC** | 1. Execute module.<br>2. Check command results for local/private IP address (e.g., `192.168.x.x`). | None. | |
 | [ ] | **Get Protocol Handlers** | 1. Configure: `Link Protocol(s)`, `Link Address`<br>2. Click Execute.<br><br>_This module attempts to identify protocol handlers present on the hooked browser._ | None. | |
-| [ ] | **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using WPAD._ | None. | |
 | [ ] | **Get Visited Domains** | 1. Configure: `Specify custom page to check`<br>2. Click Execute.<br><br>_This module will retrieve rapid history extraction through non-destructive cache timing._ | None. | |
 | [ ] | **Hijack Opener Window** | 1. First open demo page via a link from another page (so `window.opener` exists).<br>2. Execute module on the opened tab.<br>3. Check if opener window's location changed to BeEF `/iframe#` URL.<br>4. Verify result in command output. | Close affected windows. | |
-| [ ] | **Hook Default Browser** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use a PDF to attempt to hook the default browser._ | None. | |
 | [ ] | **Identify LAN Subnets** | 1. Configure: `Timeout for each request (ms)`<br>2. Click Execute.<br><br>_Discover active hosts in the internal network(s) of the hooked browser._ | None. | |
 | [ ] | **Lcamtuf Download** | 1. Configure: `Real File Path`, `Malicious File Path`, `Run Once`<br>2. Click Execute.<br><br>_This module will attempt to execute a lcamtuf download._ | Delete downloaded files. | |
 | [ ] | **Link Rewrite** | 1. Execute module.<br>2. Click "Our Meaty Friends" button to reveal links.<br>3. Hover over any link and check DevTools or status bar.<br>4. Verify all `href` attributes have been modified. | Refresh page to restore links. | |
@@ -159,6 +152,7 @@ Requires a specific vulnerable software or service to be running and accessible 
 | [ ] | **Cross-Site Faxing (XSF)** | 1. Configure: `Target Address`, `Target Port`...<br>2. Click Execute.<br><br>_Sends commands to ActiveFax RAW server socket._ | None. | |
 | [ ] | **Cross-Site Printing (XSP)** | 1. Configure: `Target Address`, `Target Port`...<br>2. Click Execute.<br><br>_Sends a message to a listening print port (9100)._ | None. | |
 | [ ] | **Detect Airdroid** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_Attempts to detect Airdroid application for Android running on localhost._ | None. | |
+| [ ] | **Detect Burp** | 1. Run Burp Suite with browser proxied through it.<br>2. Execute module.<br>3. Check if Burp is detected (result shows "Burp detected" or similar). | None. | |
 | [ ] | **Detect CUPS** | 1. Configure: `IP or Hostname`, `Port`<br>2. Click Execute.<br><br>_Attempts to detect Common UNIX Printing System (CUPS) on localhost._ | None. | |
 | [ ] | **Detect Coupon Printer** | 1. Click Execute.<br><br>_Attempts to detect Coupon Printer on localhost._ | None. | |
 | [ ] | **Detect Ethereum ENS** | 1. Configure: `Image resource`...<br>2. Click Execute.<br><br>_Detects if using Ethereum ENS resolvers._ | None. | |
@@ -171,6 +165,7 @@ Requires a specific vulnerable software or service to be running and accessible 
 | [ ] | **Get ntop Network Hosts** | 1. Configure: `Remote Host`, `Remote Port`<br>2. Click Execute.<br><br>_Retrieves information from ntop (unauthenticated)._ | None. | |
 | [ ] | **GlassFish WAR Upload** | 1. Configure: `Host`, `Filename`...<br>2. Click Execute.<br><br>_Attempts to deploy a malicious war file on GlassFish Server 3.1.1._ | None. | |
 | [ ] | **GroovyShell Server** | 1. Configure: `Remote Host`, `Remote Port`...<br>2. Click Execute.<br><br>_Uses GroovyShell Server interface to execute commands._ | None. | |
+| [ ] | **Hook Default Browser** | 1. Configure: `URL`<br>2. Click Execute.<br><br>_This module will use a PDF to attempt to hook the default browser._ | None. | |
 | [ ] | **HP uCMDB 9.0x add user** | 1. Configure: `Protocol`, `Host`, `Port`...<br>2. Click Execute.<br><br>_Attempts to add users to HP uCMDB._ | None. | |
 | [ ] | **IBM iNotes (Extract List)** | 1. Click Execute.<br><br>_Extracts iNotes contact list._ | None. | |
 | [ ] | **IBM iNotes (Flooder)** | 1. Configure: `To`, `Subject`, `Body`, `Count`...<br>2. Click Execute.<br><br>_Floods an email address from the victim's account._ | None. | |
@@ -216,6 +211,17 @@ Requires the user to be logged into valid accounts (Gmail, Facebook, etc.) or su
 | [ ] | **Read Gmail** | 1. Click Execute.<br><br>_Grabs unread message ids from gmail atom feed._ | None. | |
 | [ ] | **Send Gvoice SMS** | 1. Configure: `To`, `Message`<br>2. Click Execute.<br><br>_Send a text message (SMS) through Google Voice._ | None. | |
 | [ ] | **Skype iPhone XSS** | 1. Click Execute.<br><br>_Steals iPhone contacts using a Skype XSS vuln._ | None. | |
+
+#### 3.2.5 Advanced Network & Infrastructure
+Requires specific network configurations (e.g., DNS, Tor, Proxy, WPAD).
+
+| Status | Module Name | Instructions / Description | Cleanup Needed | Comments |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Data to send`<br>2. Click Execute.<br><br>_This module sends data one way over DNS, client to server only._ | None. | |
+| [ ] | **DNS Tunnel** | 1. Configure: `Domain`, `Message`, `Wait between requests (ms)`<br>2. Click Execute.<br><br>_This module sends data one way over DNS. Message split into chunks._ | None. | |
+| [ ] | **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel._ | None. | |
+| [ ] | **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor._ | None. | |
+| [ ] | **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using WPAD._ | None. | |
 
 ### 3.3 Phase 3: Other Browsers & Specialized Extensions
 
