@@ -108,11 +108,8 @@ module BeEF
                     hooked_browser = BeEF::Core::Models::HookedBrowser.where(session: hb_session).first
                     if hooked_browser.nil?
                       print_error '[WebSocket] Fingerprinting not finished yet.'
-                      print_more 'ARE rules were not triggered. You may want to trigger them manually via REST API.'
                       next
                     end
-
-                    BeEF::Core::AutorunEngine::Engine.instance.find_and_run_all_matching_rules_for_zombie(hooked_browser.id)
 
                     next
                   end
@@ -139,15 +136,6 @@ module BeEF
                     # Check if new modules need to be sent
                     zombie_commands = BeEF::Core::Models::Command.where(hooked_browser_id: hooked_browser.id, instructions_sent: false)
                     zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
-
-                    # Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
-                    are_body = ''
-                    are_executions = BeEF::Core::Models::Execution.where(is_sent: false, session_id: hooked_browser.session)
-                    are_executions.each do |are_exec|
-                      are_body += are_exec.mod_body
-                      are_exec.update(is_sent: true, exec_time: Time.new.to_i)
-                    end
-                    @@activeSocket[hooked_browser.session].send(are_body) unless are_body.empty?
 
                     # @todo antisnatchor:
                     # @todo - re-use the pre_hook_send callback mechanisms to have a generic check for multipl extensions

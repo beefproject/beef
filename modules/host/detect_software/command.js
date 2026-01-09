@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if (!("ActiveXObject" in window)) {
     beef.debug('[Detect Software] Unspported browser');
-    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.status.error());
     return false;
   }
 
