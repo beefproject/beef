@@ -39,21 +39,16 @@ Test these modules using **Firefox** on your local Linux VM. They leverage stand
 | [x] | **Create Pop Under** | 1. Set `Clickjack` to `on` (waits for click) or `off` (immediate).<br>2. Execute module.<br>3. If Clickjack=on, click anywhere on page.<br>4. Check for small hidden window in taskbar (or DevTools: new window to `/demos/plain.html`).<br>5. Verify BeEF shows 2nd hooked browser. | Close pop-under window. | |
 | [-] | **Cross-Origin Scanner (CORS)** | 1. Set `Scan IP range` (e.g., `127.0.0.1-127.0.0.1`) and `Ports` (e.g., `80,443,8080`).<br>2. Execute module.<br>3. Check command results for list of discovered web servers allowing CORS. | None. | See [CORS-001](testing_errors.md#cors-001-cross-origin-scanner-cors-module-error) |
 | [x] | **DNS Enumeration** | 1. Configure: `DNS (comma separated)`, `Timeout (ms)`<br>2. Click Execute.<br><br>_Discover DNS hostnames within the victim's network using dictionary and timing attacks._ | None. | |
-| [ ] | **DOSer** | 1. Configure: `URL`, `Delay between requests (ms)`, `HTTP Method`...<br>2. Click Execute.<br><br>_Do infinite GET or POST requests to a target._ | None. | |
-| [ ] | **Detect Antivirus** | 1. Execute module.<br>2. Check command results for detected AV products (e.g., Norton, McAfee, Avast JS signatures). | None. | |
-| [ ] | **Detect Extensions** | 1. Execute module.<br>2. Check command results for list of detected Chrome/Firefox extensions. | None. | |
-| [ ] | **Detect FireBug** | 1. Click Execute.<br><br>_This module checks if the Mozilla Firefox Firebug extension is being use._ | None. | |
-| [ ] | **Detect LastPass** | 1. Click Execute.<br><br>_This module checks if the LastPass extension is installed and active._ | None. | |
-| [ ] | **Detect MIME Types** | 1. Click Execute.<br><br>_This module retrieves the browser's supported MIME types._ | None. | |
-| [ ] | **Detect Popup Blocker** | 1. Execute module.<br>2. Check command result: "Popup blocker enabled" or "Popup blocker not detected". | None. | |
-| [ ] | **Detect Toolbars** | 1. Click Execute.<br><br>_Detects which browser toolbars are installed._ | None. | |
-| [ ] | **ETag Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Message`<br>2. Click Execute.<br><br>_This module sends data from server to client using ETag HTTP header._ | None. | |
-| [ ] | **Fetch Port Scanner** | 1. Set `Scan IP or Hostname` (e.g., `127.0.0.1`) and `Specific port(s)` (e.g., `22,80,443,3000`).<br>2. Execute module.<br>3. Check command results for open/closed port status. | None. | |
-| [ ] | **Fingerprint Browser (PoC)** | 1. Execute module.<br>2. Check command results for browser name, version, and platform. | None. | |
-| [ ] | **Fingerprint Browser** | 1. Execute module.<br>2. Check command results for detailed fingerprint (canvas, WebGL, fonts, plugins, etc.). | None. | |
-| [ ] | **Fingerprint Local Network** | 1. Configure: `Scan IP range (C class)`, `Ports to test`, `Workers`...<br>2. Click Execute.<br><br>_Discover devices and applications in the victim's Local Area Network._ | None. | |
-| [ ] | **Fingerprint Routers** | 1. Click Execute.<br><br>_This module attempts to discover network routers on the local network._ | None. | |
-| [ ] | **Get Geolocation (API)** | 1. Execute module.<br>2. Allow/deny location permission in browser popup.<br>3. If allowed, check results for latitude/longitude coordinates. | None. | |
+| [x] | **DOSer** | 1. Set `URL` to `http://127.0.0.1:3000/demos/plain.html`.<br>2. Set `Delay between requests (ms)` to `100`.<br>3. Set `HTTP Method` to `GET`.<br>4. Execute module.<br>5. Wait for status report in results (appears every 10s: "Requests sent: X").<br>6. Verify ongoing requests in browser DevTools → Network tab. | Refresh hooked page to stop worker. | |
+| [-] | **Detect Extensions** | 1. Execute module.<br>2. Check command results for list of detected Chrome/Firefox extensions. | None. | See [EXT-001](testing_errors.md#ext-001-detect-extensions-module-failure) |
+| [x] | **Detect MIME Types** | 1. Click Execute.<br><br>_This module retrieves the browser's supported MIME types._ | None. | |
+| [x] | **Detect Popup Blocker** | 1. Execute module.<br>2. Check command result: "Popup blocker enabled" or "Popup blocker not detected". | None. | |
+| [x] | **Fetch Port Scanner** | 1. Set `Scan IP or Hostname` (e.g., `127.0.0.1`) and `Specific port(s)` (e.g., `22,80,443,3000`).<br>2. Execute module.<br>3. Check command results for open/closed port status. | None. | |
+| [-] | **Fingerprint Browser (PoC)** | 1. Execute module.<br>2. Check command results for browser name, version, and platform. | None. | See [FP-001](testing_errors.md#fp-001-fingerprint-browser-poc-module-failure) |
+| [x] | **Fingerprint Browser** | 1. Execute module.<br>2. Check command results for detailed fingerprint (canvas, WebGL, fonts, plugins, etc.). | None. | |
+| [-] | **Fingerprint Local Network** | 1. Run `hostname -I` to find your IP (e.g., `192.168.1.5`).<br>2. Set `Scan IP range` to `common` (or specific IP).<br>3. Open Browser DevTools -> Network tab.<br>4. Execute module.<br>5. **Verify**: You will see many requests in DevTools (red/failed is normal).<br>6. **Duration**: `common` scan takes ~10-30s. Full /24 scan takes minutes.<br>7. Check BeEF results for any detected devices. | Refresh page to stop early. | See [NET-001](testing_errors.md#net-001-fingerprint-local-network-no-feedback) |
+| [-] | **Fingerprint Routers** | 1. Click Execute.<br><br>_This module attempts to discover network routers on the local network._ | None. | See [NET-002](testing_errors.md#net-002-fingerprint-routers-module-error) |
+| [x] | **Get Geolocation (API)** | 1. Execute module.<br>2. Allow/deny location permission in browser popup.<br>3. If allowed, check results for latitude/longitude coordinates. | None. | |
 | [ ] | **Get HTTP Servers (Favicon)** | 1. Configure: `Remote IP(s)`, `Ports`, `Workers`...<br>2. Click Execute.<br><br>_Attempts to discover HTTP servers on the specified IP range by checking for a favicon._ | None. | |
 | [ ] | **Get Internal IP WebRTC** | 1. Execute module.<br>2. Check command results for local/private IP address (e.g., `192.168.x.x`). | None. | |
 | [ ] | **Get Protocol Handlers** | 1. Configure: `Link Protocol(s)`, `Link Address`<br>2. Click Execute.<br><br>_This module attempts to identify protocol handlers present on the hooked browser._ | None. | |
@@ -207,7 +202,7 @@ Requires the user to be logged into valid accounts (Gmail, Facebook, etc.) or su
 | [ ] | **Fake Notification Bar (Chrome)**| 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake Chrome notification bar._ | None. | |
 | [ ] | **Fake Notification Bar (Firefox)**| 1. Configure: `Plugin URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake Firefox notification bar._ | None. | |
 | [ ] | **Fake Notification Bar (IE)** | 1. Configure: `URL`, `Notification text`<br>2. Click Execute.<br><br>_Displays a fake IE notification bar._ | None. | |
-| [ ] | **Google Phishing** | 1. Configure: `XSS hook URI`, `Gmail logout interval`...<br>2. Click Execute.<br><br>_XSRF logout of Gmail, show phishing page._ | None. | |
+| [x] | **Google Phishing** | 1. Configure: `XSS hook URI`, `Gmail logout interval`...<br>2. Click Execute.<br><br>_XSRF logout of Gmail, show phishing page._ | None. | |
 | [ ] | **Read Gmail** | 1. Click Execute.<br><br>_Grabs unread message ids from gmail atom feed._ | None. | |
 | [ ] | **Send Gvoice SMS** | 1. Configure: `To`, `Message`<br>2. Click Execute.<br><br>_Send a text message (SMS) through Google Voice._ | None. | |
 | [ ] | **Skype iPhone XSS** | 1. Click Execute.<br><br>_Steals iPhone contacts using a Skype XSS vuln._ | None. | |
@@ -222,6 +217,51 @@ Requires specific network configurations (e.g., DNS, Tor, Proxy, WPAD).
 | [ ] | **DNS Tunnel: Server-to-Client** | 1. Configure: `Payload Name`, `Zone`, `Message`<br>2. Click Execute.<br><br>_This module retrieves data sent by the server over DNS covert channel._ | None. | |
 | [ ] | **Detect Tor** | 1. Configure: `What Tor resource to request`, `Detection timeout`<br>2. Click Execute.<br><br>_This module will detect if the zombie is currently using Tor._ | None. | |
 | [ ] | **Get Proxy Servers (WPAD)** | 1. Click Execute.<br><br>_This module retrieves proxy server addresses for the zombie browser's local network using WPAD._ | None. | |
+
+#### 3.2.6 Antivirus (Requires Specific AV/Extension)
+The "Detect Antivirus" module looks for artifacts (injected scripts, user-agent changes, or specific DOM elements) created by commercial antivirus products or their browser extensions.
+
+**Setup Steps (Local VM):**
+1.  **Install Browser Extension**: BeEF detects specfic artifacts in the DOM or User-Agent string. A free option to test is the **Avast Online Security** extension.
+    - Open Firefox in the VM.
+    - Navigate to the [Avast Online Security & Privacy](https://addons.mozilla.org/en-US/firefox/addon/avast-online-security/) addon page.
+    - Click **Add to Firefox**.
+2.  **Execute**: Run the module.
+    - *Note: valid detection depends on the extension injecting specific signatures (e.g. `ASW/` in User-Agent) which may vary by version.*
+
+| Status | Module Name | Instructions / Description | Cleanup Needed | Comments |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **Detect Antivirus** | 1. Install Avast extension (see above).<br>2. Execute module.<br>3. Check results for "Avast" or other detected AV. | Uninstall extension. | |
+
+#### 3.2.7 Browser Extensions (Requires Installation)
+These modules detect specific browser extensions which must be installed in the hooked browser to be detectable.
+
+**Setup Steps:**
+1.  **LastPass**: Install the [LastPass Password Manager](https://addons.mozilla.org/en-US/firefox/addon/lastpass-password-manager/) extension in Firefox.
+2.  **FireBug**: Note that FireBug is legacy/obsolete. This module may only work on older browser versions or specific legacy environments.
+
+| Status | Module Name | Instructions / Description | Cleanup Needed | Comments |
+| :---: | :--- | :--- | :--- | :--- |
+| [x] | **Detect FireBug** | 1. Execute module.<br>2. Verify detection if legacy FireBug is present. | None. | |
+| [ ] | **Detect LastPass** | 1. Install LastPass extension.<br>2. Execute module.<br>3. Verify results show "Detected LastPass...". | Uninstall extension. | |
+| [ ] | **Detect Toolbars** | 1. Install a supported toolbar (e.g. legacy Google Toolbar, Alexa Toolbar).<br>2. Execute module.<br>3. Verify results show the detected toolbar name. | Uninstall toolbar. | |
+
+#### 3.2.8 BeEF Extensions (Requires Configuration)
+Some modules require specific BeEF extensions to be enabled in the server configuration.
+
+**Setup Steps:**
+1.  **Enable ETag Extension**:
+    - Open `config.yaml` in the BeEF root directory.
+    - Find the `extension: etag:` section.
+    - Set `enable: true`.
+2.  **Enable S2C DNS Tunnel Extension** (if testing DNS Tunnel S2C):
+    - In `config.yaml`, find `extension: s2c_dns_tunnel:`.
+    - Set `enable: true`.
+3.  **Restart BeEF**: You must restart the BeEF server for these changes to take effect.
+
+| Status | Module Name | Instructions / Description | Cleanup Needed | Comments |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **ETag Tunnel: Server-to-Client** | 1. Enable **ETag extension** in `config.yaml` and restart BeEF.<br>2. Set `Payload Name` and `Message`.<br>3. Execute module.<br>4. Verify message is delivered (check browser results/window property). | Disable extension in `config.yaml` (optional). | |
 
 ### 3.3 Phase 3: Other Browsers & Specialized Extensions
 
