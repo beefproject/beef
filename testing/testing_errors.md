@@ -11,6 +11,7 @@ This document tracks errors and issues encountered during manual testing of BeEF
 **Date**: 2026-01-04  
 **Browser**: Firefox (Linux)  
 **Status**: ❌ Not Passed
+**Github Issue**: [#3493](https://github.com/beefproject/beef/issues/3493)
 
 ### Test Configuration
 - **Scan IP range**: `127.0.0.1-127.0.0.1`
@@ -74,6 +75,7 @@ In `modules/network/cross_origin_scanner_cors/module.rb`, change `type:` to `nty
 **Date**: 2026-01-12
 **Browser**: Firefox / Chrome (Modern)
 **Status**: ❌ Not Passed
+**Github Issue**: [#3494](https://github.com/beefproject/beef/issues/3494)
 
 ### Test Configuration
 - **Browser**: Firefox/Chrome (Latest)
@@ -107,6 +109,7 @@ No output / "No extensions detected".
 **Category**: User Interface
 **Date**: 2026-01-12
 **Status**: ⚠️ Usability Issue
+**Github Issue**: [#3495](https://github.com/beefproject/beef/issues/3495)
 
 ### Error Description
 The module search bar in the "Commands" tab does not perform exact phrase matching or prioritized relevance sorting. Searching for a multi-word module name (e.g., "Detect FireBug") returns all modules matching the first word (e.g., "Detect"), resulting in a cluttered list of irrelevant modules.
@@ -133,6 +136,7 @@ The tree shows all modules containing "Detect" (e.g., "Detect Antivirus", "Detec
 **Date**: 2026-01-12
 **Browser**: Firefox / Chrome (Modern)
 **Status**: ❌ Not Passed
+**Github Issue**: [#3496](https://github.com/beefproject/beef/issues/3496)
 
 ### Test Configuration
 - **Browser**: Firefox/Chrome (Latest)
@@ -163,6 +167,7 @@ Update the browser identification logic in `modules/browser/fingerprint_browser_
 **Date**: 2026-01-12
 **Browser**: Firefox (Linux)
 **Status**: ❌ Not Passed / ⚠️ UX Issue
+**Github Issue**: [#3497](https://github.com/beefproject/beef/issues/3497)
 
 ### Test Configuration
 - **Scan IP range**: `common` or specific local IP (e.g., `192.168.x.x`)
@@ -201,6 +206,7 @@ BeEF UI shows command as executing (or just sent), but no data is returned to th
 **Date**: 2026-01-12
 **Browser**: Firefox (Linux)
 **Status**: ❌ Not Passed
+**Github Issue**: [#3498](https://github.com/beefproject/beef/issues/3498)
 
 ### Test Configuration
 - **Browser**: Firefox
