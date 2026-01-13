@@ -83,8 +83,11 @@ RUN adduser --home /beef --gecos beef --disabled-password beef \
  && rm -rf /var/lib/apt/lists/*
 
 # Install geckodriver for Selenium tests
-RUN GECKODRIVER_VERSION=$(curl -sL https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")') \
- && wget -q "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" \
+# Pin version and verify checksum to mitigate supply chain attacks
+ENV GECKODRIVER_VERSION=v0.36.0
+ENV GECKODRIVER_SHA256=0bde38707eb0a686a20c6bd50f4adcc7d60d4f73c60eb83ee9e0db8f65823e04
+RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" \
+ && echo "${GECKODRIVER_SHA256}  geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" | sha256sum -c - \
  && tar -xzf "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" -C /usr/local/bin \
  && chmod +x /usr/local/bin/geckodriver \
  && rm "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
