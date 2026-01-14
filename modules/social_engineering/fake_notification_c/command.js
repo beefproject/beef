@@ -29,8 +29,8 @@ beef.execute(function() {
 	});
 	$j(hid).css('cursor','pointer');
 	$j(hid).slideDown(300,function() {
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Notification has been displayed', beef.are.status_success());
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Notification has been displayed', beef.status.success());
 	});
-	return [beef.are.status_success(), 'Notification has been displayed'];
+	return [beef.status.success(), 'Notification has been displayed'];
 
 });

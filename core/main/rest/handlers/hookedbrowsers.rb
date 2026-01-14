@@ -133,8 +133,6 @@ module BeEF
           BeEF::Core::Models::BrowserDetails.create(session_id: hb.session, detail_key: 'host.os.version', detail_value: os_version)
           BeEF::Core::Models::BrowserDetails.create(session_id: hb.session, detail_key: 'Arch', detail_value: arch)
 
-          # TODO: if there where any ARE rules defined for this hooked browser,
-          # after updating OS/arch, force a retrigger of the rule.
           { 'success' => true }.to_json
         end
 
