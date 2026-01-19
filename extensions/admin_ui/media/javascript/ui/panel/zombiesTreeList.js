@@ -467,24 +467,26 @@ try{
 		}
 
 		// set zombie hover balloon text for tree node
+		// Use Ext.util.Format.htmlEncode() to prevent XSS via malicious browser properties
+		var encode = Ext.util.Format.htmlEncode;
 		var balloon_text = "";
-		balloon_text += hooked_browser.ip;
+		balloon_text += encode(hooked_browser.ip);
 		balloon_text += "<hr/>"
 		balloon_text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/favicon.png' /> ";
-		balloon_text += "Origin: " + hooked_browser.domain + ":" + hooked_browser.port;
+		balloon_text += "Origin: " + encode(hooked_browser.domain) + ":" + encode(hooked_browser.port);
 		balloon_text += "<br/>";
 		balloon_text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(browser_icon) + "' /> ";
-		balloon_text += "Browser: " + hooked_browser.browser_name + " " + hooked_browser.browser_version;
+		balloon_text += "Browser: " + encode(hooked_browser.browser_name) + " " + encode(hooked_browser.browser_version);
 		balloon_text += "<br/>";
 		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(os_icon) + "' /> ";
 		if (hooked_browser.os_version == 'Unknown') {
-		  balloon_text += "OS: " + hooked_browser.os_name;
+		  balloon_text += "OS: " + encode(hooked_browser.os_name);
 		} else {
-		  balloon_text += "OS: " + hooked_browser.os_name + ' ' + hooked_browser.os_version;
+		  balloon_text += "OS: " + encode(hooked_browser.os_name) + ' ' + encode(hooked_browser.os_version);
 		}
 		balloon_text += "<br/>";
 		balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/" + escape(hw_icon) + "' /> ";
-		balloon_text += "Hardware: " + hooked_browser.hw_name;
+		balloon_text += "Hardware: " + encode(hooked_browser.hw_name);
 		balloon_text += "<br/>";
 
 		if ( !hooked_browser.country || !hooked_browser.country_code || hooked_browser.country == 'Unknown' ) {
@@ -492,11 +494,11 @@ try{
 			balloon_text += "Location: Unknown";
 		} else {
 			balloon_text += " <img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country-squared/" + escape(hooked_browser.country_code.toLowerCase()) + ".svg' /> ";
-			balloon_text += "Location: " + hooked_browser.city + ", " + hooked_browser.country;
+			balloon_text += "Location: " + encode(hooked_browser.city) + ", " + encode(hooked_browser.country);
 		}
 
 		balloon_text += "<hr/>";
-		balloon_text += "Local Date: " + hooked_browser.date;
+		balloon_text += "Local Date: " + encode(hooked_browser.date);
 		hooked_browser.qtip = balloon_text;
 
 		// set zombie text label for tree node
@@ -511,7 +513,7 @@ try{
 			text += "<img width='13px' height='13px' class='zombie-tree-icon' src='<%= @base_path %>/media/images/icons/country-squared/" + escape(hooked_browser.country_code.toLowerCase()) + ".svg' /> ";
 		}
 
-		text += hooked_browser.ip;
+		text += encode(hooked_browser.ip);
 		hooked_browser.text = text;
 
 		//save a new online HB
