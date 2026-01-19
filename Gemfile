@@ -67,7 +67,7 @@ group :test do
   gem 'browserstack-local', '~> 1.4'
 
   gem 'irb', '~> 1.16'
-  gem 'pry-byebug', '~> 3.11'
+  gem 'pry-byebug', '~> 3.12'
 
   gem 'rest-client', '~> 2.1.0'
   gem 'websocket-client-simple', '~> 0.6.1'

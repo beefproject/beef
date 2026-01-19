@@ -36,7 +36,8 @@ GEM
     base64 (0.3.0)
     bigdecimal (4.0.1)
     browserstack-local (1.4.3)
-    byebug (12.0.0)
+    byebug (13.0.0)
+      reline (>= 0.6.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -141,12 +142,13 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.7.0)
-    pry (0.15.2)
+    pry (0.16.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.11.0)
-      byebug (~> 12.0)
-      pry (>= 0.13, < 0.16)
+      reline (>= 0.6.0)
+    pry-byebug (3.12.0)
+      byebug (~> 13.0)
+      pry (>= 0.13, < 0.17)
     psych (5.3.1)
       date
       stringio
@@ -321,7 +323,7 @@ DEPENDENCIES
   net-smtp
   otr-activerecord (~> 2.6.0)
   parseconfig (~> 1.1, >= 1.1.2)
-  pry-byebug (~> 3.11)
+  pry-byebug (~> 3.12)
   qr4r (~> 0.6.1)
   rack (~> 3.2)
   rack-protection (~> 4.2.1)
