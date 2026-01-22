@@ -13,7 +13,7 @@ RSpec.describe 'Print functions' do
     # Mock stdout to avoid cluttering test output
     allow($stdout).to receive(:puts)
     allow($stdout).to receive(:print)
-    
+
     # Mock logger methods
     allow(logger).to receive(:error)
     allow(logger).to receive(:info)
@@ -144,13 +144,13 @@ RSpec.describe 'Print functions' do
         multi_line = "line1\nline2\nline3"
         expect($stdout).to receive(:puts).with(match(/line1/))
         expect($stdout).to receive(:puts).with(match(/line2/))
-        expect($stdout).to receive(:puts).with(match(/\|_  line3/)) # Last line has |_
+        expect($stdout).to receive(:puts).with(match(/\|_  line3/)) # Last line has "|_"
         expect(logger).to receive(:info).exactly(3).times
         print_more(multi_line)
       end
 
       it 'formats last line with |_ prefix' do
-        single_line = "single line"
+        single_line = 'single line'
         expect($stdout).to receive(:puts).with(match(/\|_  single line/))
         expect(logger).to receive(:info).with(match(/\|_  single line/))
         print_more(single_line)
@@ -159,14 +159,14 @@ RSpec.describe 'Print functions' do
 
     context 'with array input' do
       it 'formats each array element as a line' do
-        lines_array = ["line1", "line2", "line3"]
+        lines_array = %w[line1 line2 line3]
         expect($stdout).to receive(:puts).exactly(3).times
         expect(logger).to receive(:info).exactly(3).times
         print_more(lines_array)
       end
 
       it 'formats last array element with |_ prefix' do
-        lines_array = ["line1", "line2"]
+        lines_array = %w[line1 line2]
         expect($stdout).to receive(:puts).with(match(/\|   line1/))
         expect($stdout).to receive(:puts).with(match(/\|_  line2/))
         print_more(lines_array)
