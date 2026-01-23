@@ -32,7 +32,7 @@ RSpec.describe 'BeEF Modules' do
 
       # Skip hard_load if module file doesn't exist (e.g., test modules)
       mod_path = config.get("beef.module.#{k}.path")
-      mod_file = "#{$root_dir}/#{mod_path}/module.rb"
+      mod_file = "#{$root_dir}/#{mod_path}/module.rb" # rubocop:disable Style/GlobalVars
       if File.exist?(mod_file)
         expect do
           BeEF::Module.hard_load(k)
