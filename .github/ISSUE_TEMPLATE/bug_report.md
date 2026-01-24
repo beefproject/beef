@@ -1,3 +1,8 @@
+---
+name: Bug report
+about: Report a bug to help us improve BeEF
+---
+
 ## First Steps
 
 1. Confirm that your issue has not been posted previously by searching here: https://github.com/beefproject/beef/issues
@@ -26,6 +31,7 @@
 2. Update `client_debug` to `true`
 3. Retrieve browser logs from your browser's developer console (Ctrl + Shift + I or F12 depending on browser)
 4. Retrieve your server-side logs from `~/.beef/beef.log`
-   * If using **beef-xss** logs found with `journalctl -u beef-xss`
+   * If you have a kali (beef-xss) problem, you can submit a bug here:
+     https://www.kali.org/docs/community/submitting-issues-kali-bug-tracker/
 
 **If we request additional information and we don't hear back from you within a week, we will be closing the ticket off.**

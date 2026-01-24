@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -13,12 +13,17 @@ require 'websocket-client-simple'
 
 RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @config = BeEF::Core::Configuration.instance
     # Grab DB file and regenerate if requested
     print_info 'Loading database'
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
-    File.delete(db_file) if File.exist?(db_file)
+
+    if ENV['RESET_DB']
+      File.delete(db_file) if File.exist?(db_file)
+    end
+    
     @config.set('beef.credentials.user', 'beef')
     @config.set('beef.credentials.passwd', 'beef')
     @config.set('beef.http.websocket.secure', false)
@@ -49,21 +54,28 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     end
 
     ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
-    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
-    ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate if context.needs_migration?
+    MUTEX.synchronize do
+      context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+      if context.needs_migration?
+        ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+      end
+    end
     
     BeEF::Core::Migration.instance.update_db!
     # Spawn HTTP Server
     print_info 'Starting HTTP Hook Server'
     http_hook_server = BeEF::Core::Server.instance
-    http_hook_server.prepare
     # Generate a token for the server to respond with
     @token = BeEF::Core::Crypto.api_token
+
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
+
     # Initiate server start-up
-    @pids = fork do
-      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
-    end
     @pid = fork do
+      http_hook_server.prepare
+      BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
       http_hook_server.start
     end
 
@@ -86,12 +98,14 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
 
       sleep 1 until wait.until { @driver.execute_script('return window.beef.session.get_hook_session_id().length') > 0 }
 
-      @session = @driver.execute_script('return window.beef.session.get_hook_session_id().length')
+      @session = @driver.execute_script('return window.beef.session.get_hook_session_id()')
     end
   end
 
   after(:all) do
     server_teardown(@driver, @pid, @pids)
+    disconnect_all_active_record!
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'confirms a websocket server has been started' do

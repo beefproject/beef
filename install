@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -184,19 +184,7 @@ check_ruby_version() {
 	info 'Detecting Ruby environment...'
 
 	MIN_RUBY_VER='3.0'
-	if command_exists rvm; then
-		RUBY_VERSION=$(rvm current | cut -d'-' -f 2)
-		info "Ruby version ${RUBY_VERSION} is installed with RVM"
-		if RUBY_VERSION -lt MIN_RUBY_VER; then
-			fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
-		fi
-	elif command_exists rbenv; then
-		RUBY_VERSION=$(rbenv version | cut -d' ' -f 2)
-		info "Ruby version ${RUBY_VERSION} is installed with rbenv"
-		if RUBY_VERSION -lt MIN_RUBY_VER; then
-			fatal "Ruby version ${RUBY_VERSION} is not supported. Please install Ruby ${MIN_RUBY_VER} (or newer) and restart the installer."
-		fi
-	elif command_exists ruby${RUBYSUFFIX}; then
+	if command_exists ruby${RUBYSUFFIX}; then
 		RUBY_VERSION=$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION")
 		info "Ruby version ${RUBY_VERSION} is installed"
 		if [ "$(ruby${RUBYSUFFIX} -e "puts RUBY_VERSION.to_f >= ${MIN_RUBY_VER}")" = 'false' ]; then

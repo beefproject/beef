@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -10,7 +10,7 @@ class Inter_protocol_redis < BeEF::Core::Command
       { 'name' => 'rhost', 'ui_label' => 'Target Address', 'value' => '127.0.0.1' },
       { 'name' => 'rport',   'ui_label' => 'Target Port',    'value' => '6379' },
       { 'name' => 'timeout', 'ui_label' => 'Timeout (s)',    'value' => '15' },
-      { 'name' => 'commands', 'ui_label' => 'Redis commands', 'description' => "Enter Redis commands to execute. Note: Use '\\n' to seperate Redis commands and '\\\\n' for new lines.",
+      { 'name' => 'commands', 'ui_label' => 'Redis commands', 'description' => "Enter Redis commands to execute. Note: Use '\\n' to separate Redis commands and '\\\\n' for new lines.",
         'type' => 'textarea', 'value' => cmd, 'width' => '200px' }
     ]
   end

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -71,7 +71,12 @@ module BeEF
 
           # @note get zombie if already hooked the framework
           hook_session_name = config.get('beef.http.hook_session_name')
-          hook_session_id = request[hook_session_name]
+          hook_session_id =
+            if request.respond_to?(:[])
+              request[hook_session_name]
+            else
+              request.params[hook_session_name] || request.env[hook_session_name]
+            end
           begin
             raise ActiveRecord::RecordNotFound if hook_session_id.nil?
 

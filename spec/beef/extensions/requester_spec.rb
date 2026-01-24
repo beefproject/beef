@@ -1,7 +1,7 @@
 require 'extensions/requester/extension'
 
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -24,6 +24,7 @@ RSpec.describe 'BeEF Extension Requester' do
 
   xit 'requester works' do
     begin
+      ar_snapshot = SpecActiveRecordConnection.snapshot
       # Start beef server
       @config = BeEF::Core::Configuration.instance
       @config.set('beef.credentials.user', 'beef')
@@ -77,6 +78,7 @@ RSpec.describe 'BeEF Extension Requester' do
       BeEF::Core::Models::Http.where(hooked_browser_id: hb_session).delete_all if defined? hb_session
       Process.kill('KILL', @pid) if defined? @pid
       Process.kill('KILL', @pids) if defined? @pids
+      SpecActiveRecordConnection.restore!(ar_snapshot)
     end
   end
 end

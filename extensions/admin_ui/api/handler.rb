@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -149,7 +149,7 @@ module BeEF
 
             # mount the media folder where we store static files (javascript, css, images, audio) for the admin ui
             media_dir = "#{File.dirname(__FILE__)}/../media/"
-            beef_server.mount("#{bp}/media", Rack::File.new(media_dir))
+            beef_server.mount("#{bp}/media", Rack::Files.new(media_dir))
 
             # If we're not imitating a web server, mount the favicon to /favicon.ico
             # NOTE: this appears to be broken

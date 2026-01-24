@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions / Support
+    url: https://github.com/beefproject/beef/wiki
+    about: Please check the wiki before opening an issue.
