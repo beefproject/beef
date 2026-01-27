@@ -21,11 +21,11 @@ jobs:
     - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        days-before-stale: 14
+        days-before-stale: 120
         days-before-pr-stale: 29
-        days-before-close: 11
+        days-before-close: 7
         days-before-pr-close: 31
-        stale-issue-message: 'This issue as been marked as stale due to inactivity and will be closed in 7 days'
+        stale-issue-message: 'This issue has been marked as stale due to inactivity and will be closed in 7 days'
         stale-pr-message: 'Stale pull request message'
         stale-issue-label: 'Stale'
         stale-pr-label: 'no-pr-activity'
