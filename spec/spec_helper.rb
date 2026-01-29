@@ -239,8 +239,7 @@ require 'socket'
     @host = '127.0.0.1'
 
     unless port_available?
-      print_error "Port #{@port} is already in use. Exiting."
-      exit
+      raise "Port #{@port} is already in use. Cannot start BeEF server."
     end
     load_beef_extensions_and_modules
     
@@ -327,11 +326,9 @@ require 'socket'
   end
 
   def stop_beef_server(pid)
-    exit if pid.nil?
-    # Shutting down server
+    return if pid.nil?
     Process.kill("KILL", pid) unless pid.nil?
     Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
-    pid = nil       
   end
 
 end
