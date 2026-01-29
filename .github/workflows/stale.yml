@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/stale@v5
+    - uses: actions/stale@28ca1036281a5e5922ead5184a1bbf96e5fc984e # v10.0.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 120
@@ -30,6 +30,6 @@ jobs:
         stale-issue-label: 'Stale'
         stale-pr-label: 'no-pr-activity'
         exempt-issue-labels: 'Critical, High, Low, Medium, Review, Backlog'
-        exempt-milestones: true
+        exempt-all-milestones: true
         exempt-draft-pr: true
-        start-date: '2022-06-15'
+        start-date: '2022-06-15T00:00:00Z'
