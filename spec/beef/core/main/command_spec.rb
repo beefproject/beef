@@ -198,7 +198,7 @@ RSpec.describe BeEF::Core::Command do
 
   describe '#oc_value' do
     it 'returns option value when option exists' do
-      option = BeEF::Core::Models::OptionCache.create!(name: 'test_option', value: 'test_value')
+      BeEF::Core::Models::OptionCache.create!(name: 'test_option', value: 'test_value')
       command = described_class.new('test_get_variable')
       expect(command.oc_value('test_option')).to eq('test_value')
     end
