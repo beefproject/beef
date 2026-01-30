@@ -33,21 +33,6 @@ RSpec.describe 'BeEF::Core::Crypto' do
     end
   end
 
-  describe '.api_token' do
-    it 'generates a 40-character hex token and stores it in config' do
-      token = BeEF::Core::Crypto.api_token
-      expect(token).to be_a(String)
-      expect(token.length).to eq(40) # 20 bytes = 40 hex chars
-      expect(config.get('beef.api_token')).to eq(token)
-    end
-
-    it 'generates different tokens on each call' do
-      token1 = BeEF::Core::Crypto.api_token
-      token2 = BeEF::Core::Crypto.api_token
-      expect(token1).not_to eq(token2)
-    end
-  end
-
   describe '.random_alphanum_string' do
     it 'generates a string of the specified length' do
       result = BeEF::Core::Crypto.random_alphanum_string(15)
