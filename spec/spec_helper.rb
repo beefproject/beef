@@ -3,6 +3,16 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+# Coverage must start before loading application code.
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+  add_group 'Core', 'core'
+  add_group 'Extensions', 'extensions'
+  add_group 'Modules', 'modules'
+  track_files '{core,extensions,modules}/**/*.rb'
+end
+
 # Set external and internal character encodings to UTF-8
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
@@ -229,8 +239,7 @@ require 'socket'
     @host = '127.0.0.1'
 
     unless port_available?
-      print_error "Port #{@port} is already in use. Exiting."
-      exit
+      raise "Port #{@port} is already in use. Cannot start BeEF server."
     end
     load_beef_extensions_and_modules
     
@@ -317,11 +326,9 @@ require 'socket'
   end
 
   def stop_beef_server(pid)
-    exit if pid.nil?
-    # Shutting down server
+    return if pid.nil?
     Process.kill("KILL", pid) unless pid.nil?
     Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
-    pid = nil       
   end
 
 end
