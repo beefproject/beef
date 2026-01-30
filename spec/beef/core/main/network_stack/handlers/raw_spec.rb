@@ -1,3 +1,9 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
 RSpec.describe BeEF::Core::NetworkStack::Handlers::Raw do
   describe '#initialize' do
     it 'initializes with status, header, and body' do

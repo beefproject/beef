@@ -1,3 +1,9 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
 RSpec.describe BeEF::Filters do
   describe '.is_non_empty_string?' do
     it 'nil' do
