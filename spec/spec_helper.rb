@@ -3,7 +3,6 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-
 # Coverage must start before loading application code.
 require 'simplecov'
 SimpleCov.start do
