@@ -41,7 +41,6 @@ RSpec.describe BeEF::Core::Handlers::BrowserDetails do
     else
       stub_const('BeEF::Core::Models::NetworkHost', double('NetworkHost', create: nil))
     end
-    allow(BeEF::Core::AutorunEngine::Engine.instance).to receive(:find_and_run_all_matching_rules_for_zombie)
   end
 
   describe '#initialize' do
