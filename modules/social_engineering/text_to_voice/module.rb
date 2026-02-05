@@ -4,17 +4,23 @@
 # See the file 'doc/COPYING' for copying permission
 #
 class Text_to_voice < BeEF::Core::Command
-  require 'espeak'
-  include ESpeak
-
   def pre_send
-    # Ensure lame and espeak are installed
-    if IO.popen(%w[which lame], 'r').read.to_s.eql?('')
-      print_error('[Text to Voice] Lame is not in $PATH (apt-get install lame)')
+    # Check for required binaries
+    if IO.popen(%w[which espeak], 'r').read.to_s.eql?('')
+      print_error('[Text to Voice] eSpeak is not in $PATH (brew install espeak on macOS, apt-get install espeak on Linux)')
       return
     end
-    if IO.popen(%w[which espeak], 'r').read.to_s.eql?('')
-      print_error('[Text to Voice] eSpeak is not in $PATH (apt-get install espeak)')
+    if IO.popen(%w[which lame], 'r').read.to_s.eql?('')
+      print_error('[Text to Voice] Lame is not in $PATH (brew install lame on macOS, apt-get install lame on Linux)')
+      return
+    end
+
+    # Load espeak gem (only if binaries are available)
+    begin
+      require 'espeak'
+      include ESpeak
+    rescue LoadError, StandardError => e
+      print_error("[Text to Voice] Failed to load espeak gem: #{e.message}")
       return
     end
 
@@ -25,9 +31,16 @@ class Text_to_voice < BeEF::Core::Command
       message  = input['value'] if input['name'] == 'message'
       language = input['value'] if input['name'] == 'language'
     end
-    unless Voice.all.map(&:language).include?(language)
-      print_error("[Text to Voice] Language '#{language}' is not supported")
-      print_more("Supported languages: #{Voice.all.map(&:language).join(',')}")
+    
+    # Validate language
+    begin
+      unless Voice.all.map(&:language).include?(language)
+        print_error("[Text to Voice] Language '#{language}' is not supported")
+        print_more("Supported languages: #{Voice.all.map(&:language).join(',')}")
+        return
+      end
+    rescue StandardError => e
+      print_error("[Text to Voice] Could not validate language: #{e.message}")
       return
     end
 
