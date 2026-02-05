@@ -1,3 +1,9 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
 RSpec.describe 'BeEF Filesystem' do
   def file_test(file)
     expect(File.file?(file)).to be(true)
