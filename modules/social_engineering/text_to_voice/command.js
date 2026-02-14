@@ -11,10 +11,10 @@ beef.execute(function() {
     var sound = new Audio(url);
     sound.play();
     beef.debug('[Text to Voice] Playing mp3: ' + url);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=message sent", beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=message sent", beef.status.success());
   } catch (e) {
     beef.debug("[Text to Voice] HTML5 audio unsupported. Could not play: " + url);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=audio not supported", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=audio not supported", beef.status.error());
   }
 
 });

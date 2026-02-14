@@ -66,7 +66,6 @@ window.onclose = function (event) {
  *  - browser details (see browser.js) are sent back to the "/init" handler
  *  - the polling starts (checks for new commands, and execute them)
  *  - the logger component is initialized (see logger.js)
- *  - the Autorun Engine is initialized (see are.js)
  * @memberof beef.init
  */
 function beef_init() {

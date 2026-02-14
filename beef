@@ -267,11 +267,6 @@ BeEF::Core::GeoIp.instance
 BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
 
 #
-# @note Load any ARE (Autorun Rule Engine) rules scanning the <beef_root>/arerules/enabled directory
-#
-BeEF::Core::AutorunEngine::RuleLoader.instance.load_directory
-
-#
 # @note Start the WebSocket server
 #
 if config.get("beef.http.websocket.enable")

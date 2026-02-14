@@ -39,8 +39,6 @@
 #
 # o Returning the shell command results is not supported in Chrome, Safari and Opera as JavaScript cannot be executed within the bindshell iframe. The shell commands are executed on the target shell however.
 #
-# o This module is incompatible with autorun. Upon completing the shell commands it will load the original hooked window in a child iframe resulting in an additional hook. This will result in an infinite loop if this module is set to autorun.
-#
 
 class Inter_protocol_posix_bindshell < BeEF::Core::Command
   def self.options

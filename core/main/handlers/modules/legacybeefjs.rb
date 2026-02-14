@@ -23,7 +23,7 @@ module BeEF
 
             # @note BeEF libraries: need Eruby evaluation and obfuscation
             beef_js_sub_files = %w[beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js
-                                   encode/json.js net/local.js init.js mitb.js geolocation.js net/dns.js net/connection.js net/cors.js net/requester.js net/xssrays.js net/portscanner.js are.js]
+                                   encode/json.js net/local.js init.js mitb.js geolocation.js net/dns.js net/connection.js net/cors.js net/requester.js net/xssrays.js net/portscanner.js status.js]
             # @note Load websocket library only if WS server is enabled in config.yaml
             beef_js_sub_files << 'websocket.js' if config.get('beef.http.websocket.enable') == true
             # @note Load webrtc library only if WebRTC extension is enabled

