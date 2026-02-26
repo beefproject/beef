@@ -8,11 +8,11 @@
 
 require_relative '../../../spec_helper'
 
-# Stub Dns extension so network/dns_rebinding/module.rb can load (references BeEF::Extension::Dns::Server).
+# Stub Dns extension only when the real one is not loaded (e.g. rake coverage:modules).
+# If we stub when the real extension loads later (e.g. dns_spec), we get "superclass mismatch for class Server".
+# When the real Dns is already loaded (rake short), we stub Server.instance in the pre_send example instead.
 unless BeEF::Extension.const_defined?(:Dns)
   BeEF::Extension.const_set(:Dns, Module.new)
-end
-unless BeEF::Extension::Dns.const_defined?(:Server)
   dns_server_instance = Object.new
   def dns_server_instance.add_rule(*) 1 end
   def dns_server_instance.remove_rule!(*) nil end
@@ -111,6 +111,11 @@ paths.each do |path|
     describe '#pre_send' do
       it 'runs without error when defined' do
         next unless described_class.method_defined?(:pre_send)
+        # When real Dns extension is loaded (rake short), stub Server.instance so Dns_rebinding works
+        if BeEF::Extension.const_defined?(:Dns) && BeEF::Extension::Dns.const_defined?(:Server)
+          dns_instance = double('DnsServer', add_rule: 1, remove_rule!: nil)
+          allow(BeEF::Extension::Dns::Server).to receive(:instance).and_return(dns_instance)
+        end
         handler = instance_double('AssetHandler')
         allow(handler).to receive(:unbind).and_return(nil)
         allow(handler).to receive(:bind).and_return(nil)

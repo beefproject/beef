@@ -12,13 +12,8 @@ require_relative '../../../spec_helper'
 project_root = File.expand_path('../../../../', __dir__)
 browser_module_paths = Dir[File.join(project_root, 'modules/browser/**/module.rb')].sort
 
-BRANCH_COVERAGE = {
-  'modules/browser/detect_wmp' => { datastore: { 'results' => 'wmp=Yes', 'wmp' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
-  'modules/browser/detect_vlc' => { datastore: { 'results' => 'vlc=Yes', 'vlc' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
-  'modules/browser/detect_office' => { datastore: { 'results' => 'office=Office 2016', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
-  'modules/browser/detect_foxit' => { datastore: { 'results' => 'foxit=Yes', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
-  'modules/browser/detect_activex' => { datastore: { 'results' => 'activex=Yes', 'activex' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } }
-}.freeze
+# Load branch coverage data from centralized config
+BRANCH_COVERAGE = BeefTestConfig.branch_coverage_for(:browser)
 
 browser_module_paths.each do |path|
   rel = path.sub("#{project_root}/", '').sub(/\.rb$/, '')
