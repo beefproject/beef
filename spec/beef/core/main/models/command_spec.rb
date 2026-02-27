@@ -113,7 +113,7 @@ RSpec.describe BeEF::Core::Models::Command do
     end
 
     it 'raises TypeError when command is not found for id and hooked_browser' do
-      other_hb = BeEF::Core::Models::HookedBrowser.create!(session: 'other_session', ip: '127.0.0.1')
+      BeEF::Core::Models::HookedBrowser.create!(session: 'other_session', ip: '127.0.0.1')
 
       expect do
         described_class.save_result('other_session', command.id, 'Name', {}, 1)
