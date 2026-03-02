@@ -44,7 +44,7 @@ module BeEF
 
           # hooked window host name
           log_zombie_port = 0
-          if !@data['results']['browser.window.hostname'].nil?
+          if !@data['results']['browser.window.hostname'].nil? && BeEF::Filters.is_valid_hostname?(@data['results']['browser.window.hostname'])
             log_zombie_domain = @data['results']['browser.window.hostname']
           elsif !@data['request'].referer.nil? and !@data['request'].referer.empty?
             referer = @data['request'].referer
@@ -59,7 +59,7 @@ module BeEF
           end
 
           # hooked window host port
-          if @data['results']['browser.window.hostport'].nil?
+          if @data['results']['browser.window.hostport'].nil? || !BeEF::Filters.is_valid_port?(@data['results']['browser.window.hostport'].to_s)
             log_zombie_domain_parts = log_zombie_domain.split(':')
             log_zombie_port = log_zombie_domain_parts[1].to_i if log_zombie_domain_parts.length > 1
           else
@@ -92,6 +92,7 @@ module BeEF
             BD.set(session_id, 'browser.name.friendly', browser_friendly_name)
           else
             err_msg "Invalid browser name returned from the hook browser's initial connection."
+            browser_name = 'Unknown'
           end
 
           if BeEF::Filters.is_valid_ip?(zombie.ip)
@@ -242,11 +243,17 @@ module BeEF
             X_FORWARDED
             X_FORWARDED_FOR
           ].each do |header|
-            proxy_clients << (JSON.parse(zombie.httpheaders)[header]).to_s unless JSON.parse(zombie.httpheaders)[header].nil?
+            val = JSON.parse(zombie.httpheaders)[header]
+            unless val.nil?
+              val.to_s.split(',').each do |ip|
+                proxy_clients << ip.strip if BeEF::Filters.is_valid_ip?(ip.strip)
+              end
+            end
           end
 
           # retrieve proxy server
           proxy_server = JSON.parse(zombie.httpheaders)['VIA'] unless JSON.parse(zombie.httpheaders)['VIA'].nil?
+          proxy_server = nil unless proxy_server.nil? || BeEF::Filters.has_valid_browser_details_chars?(proxy_server)
 
           # store and log proxy details
           if using_proxy == true
@@ -273,6 +280,7 @@ module BeEF
             BD.set(session_id, 'browser.version', browser_version)
           else
             err_msg "Invalid browser version returned from the hook browser's initial connection."
+            browser_version = 'Unknown'
           end
 
           # get and store browser string
@@ -293,7 +301,11 @@ module BeEF
 
           # get and store browser language
           browser_lang = get_param(@data['results'], 'browser.language')
-          BD.set(session_id, 'browser.language', browser_lang)
+          if BeEF::Filters.has_valid_browser_details_chars?(browser_lang)
+            BD.set(session_id, 'browser.language', browser_lang)
+          else
+            err_msg "Invalid browser language returned from the hook browser's initial connection."
+          end
 
           # get and store the cookies
           cookies = get_param(@data['results'], 'browser.window.cookies')
@@ -309,6 +321,7 @@ module BeEF
             BD.set(session_id, 'host.os.name', os_name)
           else
             err_msg "Invalid operating system name returned from the hook browser's initial connection."
+            os_name = 'Unknown'
           end
 
           # get and store the OS family
@@ -322,15 +335,28 @@ module BeEF
           # get and store the OS version
           # - without checks as it can be very different, for instance on linux/bsd)
           os_version = get_param(@data['results'], 'host.os.version')
-          BD.set(session_id, 'host.os.version', os_version)
+          if BeEF::Filters.has_valid_browser_details_chars?(os_version)
+            BD.set(session_id, 'host.os.version', os_version)
+          else
+            err_msg "Invalid operating system version returned from the hook browser's initial connection."
+            os_version = 'Unknown'
+          end
 
-          # get and store the OS arch - without checks
+          # get and store the OS arch
           os_arch = get_param(@data['results'], 'host.os.arch')
-          BD.set(session_id, 'host.os.arch', os_arch)
+          if BeEF::Filters.has_valid_browser_details_chars?(os_arch)
+            BD.set(session_id, 'host.os.arch', os_arch)
+          else
+            err_msg "Invalid operating system architecture returned from the hook browser's initial connection."
+          end
 
           # get and store default browser
           default_browser = get_param(@data['results'], 'host.software.defaultbrowser')
-          BD.set(session_id, 'host.software.defaultbrowser', default_browser)
+          if BeEF::Filters.has_valid_browser_details_chars?(default_browser)
+            BD.set(session_id, 'host.software.defaultbrowser', default_browser)
+          else
+            err_msg "Invalid default browser returned from the hook browser's initial connection."
+          end
 
           # get and store the hardware type
           hw_type = get_param(@data['results'], 'hardware.type')
