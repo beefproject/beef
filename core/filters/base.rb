@@ -187,7 +187,7 @@ module BeEF
     def self.has_valid_browser_details_chars?(str)
       return false unless is_non_empty_string?(str)
 
-      !(str =~ %r{[^\w\d\s()-.,;:_/!\302\256]}).nil?
+      (str =~ %r{[^\w\d\s()-.,;:_/!\302\256]}).nil?
     end
 
     # Check for valid base details characters
