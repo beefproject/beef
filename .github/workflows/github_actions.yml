@@ -3,16 +3,27 @@ name: 'BrowserStack Test'
 on:
   pull_request_target:
     branches: [ master ]
-      
-jobs:    
+    types: [ labeled ]
+
+jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
-    runs-on: ubuntu-latest  # Can be self-hosted runner also
-    environment:
-      name: Integrate Pull Request
-    env: 
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'safe_to_test'
+    env:
       GITACTIONS: true
     steps:
+
+      - name: 'Remove safe_to_test label'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              name: 'safe_to_test'
+            });
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
@@ -27,7 +38,7 @@ jobs:
           local-identifier: random
 
       - name: 'Checkout the repository'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
@@ -40,11 +51,13 @@ jobs:
         run: |
           sudo apt update
           sudo apt install libcurl4 libcurl4-openssl-dev
+
       - name: 'Configure Bundle testing and install gems'
         run: |
           bundle config unset --local without
           bundle config set --local with 'test' 'development'
           bundle install
+
       - name: 'Run BrowserStack simple verification'
         run: |
           bundle exec rake browserstack --trace
