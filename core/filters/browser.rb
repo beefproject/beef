@@ -11,7 +11,7 @@ module BeEF
     def self.is_valid_browsername?(str) # rubocop:disable Naming/PredicatePrefix
       return false unless is_non_empty_string?(str)
       return false if str.length > 2
-      return false if has_non_printable_char?(str)
+      return false unless has_valid_browser_details_chars?(str)
 
       true
     end
@@ -21,7 +21,7 @@ module BeEF
     # @return [Boolean] If the string has valid Operating System name characters
     def self.is_valid_osname?(str) # rubocop:disable Naming/PredicatePrefix
       return false unless is_non_empty_string?(str)
-      return false if has_non_printable_char?(str)
+      return false unless has_valid_browser_details_chars?(str)
       return false if str.length < 2
 
       true
@@ -32,7 +32,7 @@ module BeEF
     # @return [Boolean] If the string has valid Hardware name characters
     def self.is_valid_hwname?(str) # rubocop:disable Naming/PredicatePrefix
       return false unless is_non_empty_string?(str)
-      return false if has_non_printable_char?(str)
+      return false unless has_valid_browser_details_chars?(str)
       return false if str.length < 2
 
       true
@@ -71,7 +71,7 @@ module BeEF
     # @return [Boolean] If the string has valid browser / ua string characters
     def self.is_valid_browserstring?(str) # rubocop:disable Naming/PredicatePrefix
       return false unless is_non_empty_string?(str)
-      return false if has_non_printable_char?(str)
+      return false unless has_valid_browser_details_chars?(str)
       return false if str.length > 300
 
       true
@@ -93,7 +93,7 @@ module BeEF
     # @return [Boolean] If the string has valid system platform characters
     def self.is_valid_system_platform?(str) # rubocop:disable Naming/PredicatePrefix
       return false unless is_non_empty_string?(str)
-      return false if has_non_printable_char?(str)
+      return false unless has_valid_browser_details_chars?(str)
       return false if str.length > 200
 
       true
