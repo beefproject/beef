@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -17,7 +17,7 @@ beef.status = {
    * @method success
    * @return {number} 1
    */
-  success: function(){
+  success: function () {
     return 1;
   },
   /**
@@ -26,7 +26,7 @@ beef.status = {
    * @method unknown
    * @return {number} 0
    */
-  unknown: function(){
+  unknown: function () {
     return 0;
   },
   /**
@@ -35,7 +35,7 @@ beef.status = {
    * @method error
    * @return {number} -1
    */
-  error: function(){
+  error: function () {
     return -1;
   }
 };
