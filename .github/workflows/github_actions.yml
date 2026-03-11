@@ -9,6 +9,9 @@ jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
     runs-on: ubuntu-latest
+    concurrency:
+      group: browserstack-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     if: |
       github.event.label.name == 'safe_to_test' ||
       github.event.pull_request.user.login == 'dependabot[bot]'
