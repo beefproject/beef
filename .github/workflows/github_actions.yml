@@ -3,27 +3,41 @@ name: 'BrowserStack Test'
 on:
   pull_request_target:
     branches: [ master ]
-    types: [ labeled ]
+    types: [ labeled, opened, synchronize ]
 
 jobs:
   ubuntu-job:
     name: 'BrowserStack Test on Ubuntu'
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'safe_to_test'
+    concurrency:
+      group: browserstack-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    if: |
+      github.event.label.name == 'safe_to_test' ||
+      github.event.pull_request.user.login == 'dependabot[bot]'
     env:
       GITACTIONS: true
     steps:
 
       - name: 'Remove safe_to_test label'
+        if: github.event.label.name == 'safe_to_test'
         uses: actions/github-script@v8
         with:
           script: |
-            await github.rest.issues.removeLabel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              name: 'safe_to_test'
-            });
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                name: 'safe_to_test'
+              });
+            } catch (e) {
+              if (e.status === 404) {
+                console.log('Label already removed, skipping');
+              } else {
+                throw e;
+              }
+            }
 
       - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
