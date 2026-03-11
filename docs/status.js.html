@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: popup</title>
+    <title>JSDoc: Source: status.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,190 +17,60 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: popup</h1>
+    <h1 class="page-title">Source: status.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="beef.browser.html">.browser</a>.</span>popup</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Provides fuctions for working with cookies.
-Several functions adopted from http://davidwalsh.name/popup-block-javascript
-Original author unknown.</p></div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_popup.js.html">browser/popup.js</a>, <a href="browser_popup.js.html#line7">line 7</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".blocker_enabled"><span class="type-signature">(static) </span>blocker_enabled<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_popup.js.html">browser/popup.js</a>, <a href="browser_popup.js.html#line15">line 15</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
+// Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+// Browser Exploitation Framework (BeEF) - https://beefproject.com
+// See the file 'doc/COPYING' for copying permission
+//
+
+/**
+ * Status code helpers for module command results.
+ * Modules use these when sending results back to the BeEF server.
+ * @namespace beef.status
+ */
+
+beef.status = {
+  /**
+   * Success status code
+   * @memberof beef.status
+   * @method success
+   * @return {number} 1
+   */
+  success: function () {
+    return 1;
+  },
+  /**
+   * Unknown status code
+   * @memberof beef.status
+   * @method unknown
+   * @return {number} 0
+   */
+  unknown: function () {
+    return 0;
+  },
+  /**
+   * Error status code
+   * @memberof beef.status
+   * @method error
+   * @return {number} -1
+   */
+  error: function () {
+    return -1;
+  }
+};
+beef.regCmp("beef.status");
+</code></pre>
+        </article>
+    </section>
 
 
 
