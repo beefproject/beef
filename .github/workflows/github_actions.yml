@@ -3,7 +3,7 @@ name: 'BrowserStack Test'
 on:
   pull_request_target:
     branches: [ master ]
-    types: [ labeled, opened, synchronize ]
+    types: [ labeled ]
 
 jobs:
   ubuntu-job:
@@ -12,15 +12,12 @@ jobs:
     concurrency:
       group: browserstack-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    if: |
-      github.event.label.name == 'safe_to_test' ||
-      github.event.pull_request.user.login == 'dependabot[bot]'
+    if: github.event.label.name == 'safe_to_test'
     env:
       GITACTIONS: true
     steps:
 
       - name: 'Remove safe_to_test label'
-        if: github.event.label.name == 'safe_to_test'
         uses: actions/github-script@v8
         with:
           script: |
