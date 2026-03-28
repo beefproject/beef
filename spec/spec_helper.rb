@@ -3,14 +3,112 @@
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+
 # Coverage must start before loading application code.
-require 'simplecov'
-SimpleCov.start do
-  add_filter '/spec/'
-  add_group 'Core', 'core'
-  add_group 'Extensions', 'extensions'
-  add_group 'Modules', 'modules'
-  track_files '{core,extensions,modules}/**/*.rb'
+require 'simplecov' and SimpleCov.start if ENV['COVERAGE']
+
+# Load test configuration for branch coverage data
+module BeefTestConfig
+  def self.branch_coverage_for(component)
+    case component
+    when :browser
+      {
+        'modules/browser/detect_wmp' => { datastore: { 'results' => 'wmp=Yes', 'wmp' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_vlc' => { datastore: { 'results' => 'vlc=Yes', 'vlc' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_office' => { datastore: { 'results' => 'office=Office 2016', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_foxit' => { datastore: { 'results' => 'foxit=Yes', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_activex' => { datastore: { 'results' => 'activex=Yes', 'activex' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } }
+      }
+    when :network
+      {
+        'modules/network/port_scanner' => {
+          datastore: { 'results' => 'ip=1.2.3.4&port=HTTP: Port 80 is OPEN Apache', 'beefhook' => '1', 'result' => '', 'port' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/ping_sweep' => {
+          datastore: { 'results' => 'ip=192.168.1.1&ping=10ms', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        }
+      }
+    else
+      {}
+    end
+  end
+end
+
+# Returns [total_lines, covered_lines] for a group, or nil if no group.
+def group_coverage(r, group_name)
+  group = r.groups[group_name]
+  return nil unless group&.respond_to?(:each)
+
+  total_lines = 0
+  covered_lines = 0
+  group.each do |src_file|
+    total_lines += src_file.lines_of_code
+    covered_lines += src_file.covered_lines.compact.size
+  end
+  [total_lines, covered_lines]
+end
+
+# Print one group's coverage (skip forked children: very low coverage or zero).
+def print_group_coverage(r, group_name, color: "\e[36m")
+  total_lines, covered_lines = group_coverage(r, group_name)
+  return unless total_lines && total_lines.positive?
+  return if covered_lines.zero?
+
+  pct = covered_lines.to_f / total_lines * 100
+  # Skip noise from forked children (e.g. 0.03% Core).
+  return if pct < 1.0
+
+  puts "#{color}#{group_name} coverage: #{pct.round(2)}% (#{covered_lines} / #{total_lines} lines)\e[0m"
+end
+
+# Only print from the main process (skip forked children with tiny coverage).
+MIN_COVERAGE_PCT = 5.0
+
+def coverage_from_main_process?(r, focus)
+  case focus
+  when 'all'
+    %w[Core Extensions Modules].any? do |name|
+      total, covered = group_coverage(r, name)
+      next false unless total && total.positive?
+      (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+    end
+  when 'core'
+    total, covered = group_coverage(r, 'Core')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  when 'extensions'
+    total, covered = group_coverage(r, 'Extensions')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  when 'modules', nil
+    total, covered = group_coverage(r, 'Modules')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  else
+    false
+  end
+end
+
+at_exit do
+  if defined?(SimpleCov) && SimpleCov.respond_to?(:result) && (r = SimpleCov.result)
+    focus = ENV['COVERAGE']
+    next unless coverage_from_main_process?(r, focus)
+
+    case focus
+    when 'core'
+      print_group_coverage(r, 'Core')
+    when 'extensions'
+      print_group_coverage(r, 'Extensions')
+    when 'modules'
+      print_group_coverage(r, 'Modules')
+    when 'all'
+      puts
+      print_group_coverage(r, 'Core')
+      print_group_coverage(r, 'Extensions')
+      print_group_coverage(r, 'Modules')
+    else
+      print_group_coverage(r, 'Modules')
+    end
+  end
 end
 
 # Set external and internal character encodings to UTF-8
