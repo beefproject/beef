@@ -22,7 +22,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
-    ansi (1.5.0)
+    ansi (1.6.0)
     archive-zip (0.13.1)
       io-like (~> 0.4.0)
     ast (2.4.3)
@@ -312,7 +312,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (~> 8.1)
-  ansi (~> 1.5)
+  ansi (~> 1.6)
   async (~> 1.32)
   async-dns (~> 1.4)
   browserstack-local (~> 1.4)
