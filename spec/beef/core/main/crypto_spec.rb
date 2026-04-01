@@ -59,6 +59,7 @@ RSpec.describe 'BeEF::Core::Crypto' do
     it 'raises TypeError for invalid inputs' do
       expect { BeEF::Core::Crypto.random_hex_string('invalid') }.to raise_error(TypeError)
       expect { BeEF::Core::Crypto.random_hex_string(0) }.to raise_error(TypeError, /Invalid length/)
+      expect { BeEF::Core::Crypto.random_hex_string(-1) }.to raise_error(TypeError, /Invalid length/)
     end
   end
 
