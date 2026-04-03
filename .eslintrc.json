@@ -1,0 +1,46 @@
+{
+  "env": {
+    "browser": true,
+    "es6": false
+  },
+  "extends": ["eslint:recommended"],
+
+  "parserOptions": {
+    "ecmaVersion": 5,
+    "sourceType": "script"
+  },
+
+  "ignorePatterns": [
+    "core/main/client/lib/**"
+  ],
+
+  "rules": {
+    /* Keep this minimal at first. Add project-specific rules after seeing CI logs. */
+  },
+
+  "globals": {
+    // beef
+    "beef": "readonly",
+
+    // jQuery / alias
+    "$": "readonly",
+    "jQuery": "readonly",
+    "$j": "readonly",
+
+    // BeEF bootstrapping
+    "beef_init": "readonly",
+
+    // Existing libraries
+    "MobileEsp": "readonly",
+    "evercookie": "readonly",
+    "swfobject": "readonly",
+
+    // Browser-specific globals (old IE / old Firefox)
+    "XDomainRequest": "readonly",
+    "MozWebSocket": "readonly",
+    "clipboardData": "readonly",
+
+    // Debug
+    "isDebug": "readonly"
+  }
+}
