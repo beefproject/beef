@@ -69,7 +69,7 @@ GEM
     espeak-ruby (1.1.0)
     event_emitter (0.2.6)
     eventmachine (1.2.7)
-    execjs (2.10.0)
+    execjs (2.10.1)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
