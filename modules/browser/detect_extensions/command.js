@@ -1099,7 +1099,7 @@ beef.execute(function() {
 				if (!failed) {
 					failed = true;
 					if (e.indexOf("detect_chrome_extension") != -1) {
-						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
+						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.status.error());
 					}
 				}
 			};
@@ -1108,7 +1108,7 @@ beef.execute(function() {
                 detect_chrome_extension(chrome_extensions[i][0], chrome_extensions[i][1]);
             }
         } catch(e) {
-            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.are.status_error());
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Chrome extensions failed', beef.status.error());
         }
     } else if(beef.browser.isFF()) {
         try {
@@ -1117,7 +1117,7 @@ beef.execute(function() {
 				if (!failed) {
 					failed = true;
 					if (e.indexOf("detect_firefox_extension") != -1) {
-						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
+						beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.status.error());
 					}
 				}
 			};
@@ -1126,11 +1126,11 @@ beef.execute(function() {
                 detect_firefox_extension(firefox_extensions[i], i);
             }
         } catch(e) {
-            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.are.status_error());
+            beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=detecting Firefox extensions failed', beef.status.error());
         }
     } else {
       beef.debug('[Detect Extensions] Unspported browser');
-      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=unsupported browser', beef.are.status_error());
+      beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=unsupported browser', beef.status.error());
     }
 
 });

