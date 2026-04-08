@@ -307,4 +307,142 @@ RSpec.describe BeEF::Filters do
       end
     end
   end
+
+  describe '.is_valid_ip?' do
+    it 'returns false for nil, empty, or non-string' do
+      expect(BeEF::Filters.is_valid_ip?(nil)).to be(false)
+      expect(BeEF::Filters.is_valid_ip?('')).to be(false)
+    end
+
+    it 'returns true for valid IPv4' do
+      expect(BeEF::Filters.is_valid_ip?('127.0.0.1')).to be(true)
+      expect(BeEF::Filters.is_valid_ip?('192.168.1.1')).to be(true)
+      expect(BeEF::Filters.is_valid_ip?('10.0.0.1')).to be(true)
+      expect(BeEF::Filters.is_valid_ip?('0.0.0.0')).to be(true)
+    end
+
+    it 'returns false for invalid IPv4' do
+      expect(BeEF::Filters.is_valid_ip?('256.1.1.1')).to be(false)
+      expect(BeEF::Filters.is_valid_ip?('1.2.3')).to be(false)
+      expect(BeEF::Filters.is_valid_ip?('not.an.ip')).to be(false)
+    end
+
+    it 'accepts :ipv4 version' do
+      expect(BeEF::Filters.is_valid_ip?('127.0.0.1', :ipv4)).to be(true)
+      expect(BeEF::Filters.is_valid_ip?('256.1.1.1', :ipv4)).to be(false)
+    end
+
+    it 'accepts :both version (default)' do
+      expect(BeEF::Filters.is_valid_ip?('127.0.0.1')).to be(true)
+    end
+  end
+
+  describe '.is_valid_private_ip?' do
+    it 'returns false when ip is not valid' do
+      expect(BeEF::Filters.is_valid_private_ip?(nil)).to be(false)
+      expect(BeEF::Filters.is_valid_private_ip?('8.8.8.8')).to be(false)
+    end
+
+    it 'returns true for 127.x (localhost)' do
+      expect(BeEF::Filters.is_valid_private_ip?('127.0.0.1')).to be(true)
+    end
+
+    it 'returns true for 192.168.x' do
+      expect(BeEF::Filters.is_valid_private_ip?('192.168.1.1')).to be(true)
+    end
+
+    it 'returns true for 10.x' do
+      expect(BeEF::Filters.is_valid_private_ip?('10.0.0.1')).to be(true)
+    end
+
+    it 'returns false for public IPv4' do
+      expect(BeEF::Filters.is_valid_private_ip?('8.8.8.8')).to be(false)
+    end
+  end
+
+  describe '.is_valid_port?' do
+    it 'returns true for valid port range' do
+      expect(BeEF::Filters.is_valid_port?(1)).to be(true)
+      expect(BeEF::Filters.is_valid_port?('80')).to be(true)
+      expect(BeEF::Filters.is_valid_port?(65535)).to be(true)
+    end
+
+    it 'returns false for 0 or negative' do
+      expect(BeEF::Filters.is_valid_port?(0)).to be(false)
+      expect(BeEF::Filters.is_valid_port?('0')).to be(false)
+    end
+
+    it 'returns false for port above 65535' do
+      expect(BeEF::Filters.is_valid_port?(65536)).to be(false)
+    end
+  end
+
+  describe '.is_valid_domain?' do
+    it 'returns false for nil or empty' do
+      expect(BeEF::Filters.is_valid_domain?(nil)).to be(false)
+      expect(BeEF::Filters.is_valid_domain?('')).to be(false)
+    end
+
+    it 'returns true for valid domain format' do
+      expect(BeEF::Filters.is_valid_domain?('example.com')).to be(true)
+      expect(BeEF::Filters.is_valid_domain?('sub.example.co.uk')).to be(true)
+    end
+
+    it 'returns false for invalid domain format' do
+      expect(BeEF::Filters.is_valid_domain?('no-tld')).to be(false)
+      expect(BeEF::Filters.is_valid_domain?('.leading')).to be(false)
+    end
+  end
+
+  describe '.has_valid_browser_details_chars?' do
+    it 'returns false for nil or empty' do
+      expect(BeEF::Filters.has_valid_browser_details_chars?(nil)).to be(false)
+      expect(BeEF::Filters.has_valid_browser_details_chars?('')).to be(false)
+    end
+
+    it 'returns false when string only has allowed chars' do
+      # Method returns true when regex matches (invalid char found); false when only valid chars
+      expect(BeEF::Filters.has_valid_browser_details_chars?('abc')).to be(false)
+      expect(BeEF::Filters.has_valid_browser_details_chars?('a-b (c)')).to be(false)
+    end
+
+    it 'returns true when string contains disallowed character' do
+      expect(BeEF::Filters.has_valid_browser_details_chars?('ab@c')).to be(true)
+    end
+  end
+
+  describe '.has_valid_base_chars?' do
+    it 'returns false for nil or empty' do
+      expect(BeEF::Filters.has_valid_base_chars?(nil)).to be(false)
+      expect(BeEF::Filters.has_valid_base_chars?('')).to be(false)
+    end
+
+    it 'returns true when string only has printable (and registered symbol)' do
+      expect(BeEF::Filters.has_valid_base_chars?('abc')).to be(true)
+      expect(BeEF::Filters.has_valid_base_chars?('Hello 123')).to be(true)
+    end
+
+    it 'returns false when string has non-printable character' do
+      expect(BeEF::Filters.has_valid_base_chars?("ab\x00c")).to be(false)
+    end
+  end
+
+  describe '.is_valid_yes_no?' do
+    it 'returns true for Yes and No (case insensitive)' do
+      expect(BeEF::Filters.is_valid_yes_no?('Yes')).to be(true)
+      expect(BeEF::Filters.is_valid_yes_no?('No')).to be(true)
+      expect(BeEF::Filters.is_valid_yes_no?('yes')).to be(true)
+      expect(BeEF::Filters.is_valid_yes_no?('no')).to be(true)
+    end
+
+    it 'returns false for other values' do
+      expect(BeEF::Filters.is_valid_yes_no?('')).to be(false)
+      expect(BeEF::Filters.is_valid_yes_no?('maybe')).to be(false)
+      expect(BeEF::Filters.is_valid_yes_no?('1')).to be(false)
+    end
+
+    it 'returns false when string has non-printable character' do
+      expect(BeEF::Filters.is_valid_yes_no?("Yes\x00")).to be(false)
+    end
+  end
 end
