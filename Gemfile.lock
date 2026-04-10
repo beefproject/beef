@@ -290,12 +290,13 @@ GEM
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
     uri (1.1.1)
-    webrick (1.9.1)
+    webrick (1.9.2)
     websocket (1.2.11)
     websocket-client-simple (0.6.1)
       event_emitter
       websocket
-    xmlrpc (0.3.3)
+    xmlrpc (0.3.4)
+      rexml
       webrick
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -353,7 +354,7 @@ DEPENDENCIES
   thin (~> 2.0)
   uglifier (~> 4.2)
   websocket-client-simple (~> 0.6.1)
-  xmlrpc (~> 0.3.3)
+  xmlrpc (~> 0.3.4)
 
 BUNDLED WITH
    2.7.2
