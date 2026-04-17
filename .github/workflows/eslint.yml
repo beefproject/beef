@@ -1,0 +1,82 @@
+name: JavaScript Linting
+
+on:
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint-changed-files:
+    name: Lint Changed JavaScript Files (Blocking)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed JavaScript files
+        id: changed-js-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: '**/*.js'
+          files_ignore: |
+            node_modules/**
+            core/main/client/lib/**
+            **/*.min.js
+            extensions/admin_ui/media/javascript-min/**
+          separator: ' '
+
+      - name: Lint changed JavaScript files
+        if: steps.changed-js-files.outputs.any_changed == 'true'
+        run: |
+          echo "Linting ${{ steps.changed-js-files.outputs.all_changed_files_count }} changed JavaScript file(s)"
+          npx eslint ${{ steps.changed-js-files.outputs.all_changed_files }}
+
+      - name: No JavaScript files changed
+        if: steps.changed-js-files.outputs.any_changed == 'false'
+        run: |
+          echo "No JavaScript files were changed in this PR. Skipping ESLint."
+
+  lint-all-files:
+    name: Lint All JavaScript Files (Non-blocking Report)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint all JavaScript files (report-only)
+        run: |
+          echo "Running ESLint on entire codebase"
+          echo "This is a report-only job and will not block the PR."
+          npx eslint "**/*.js" || true
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "Full codebase linting completed. Check the logs above for details."
+          echo "This job does not affect PR merge status."
