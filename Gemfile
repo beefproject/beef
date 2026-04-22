@@ -67,7 +67,7 @@ group :test do
   gem 'rdoc', '~> 7.2'
   gem 'browserstack-local', '~> 1.4'
 
-  gem 'irb', '~> 1.17'
+  gem 'irb', '~> 1.18'
   gem 'pry-byebug', '~> 3.12'
 
   gem 'rest-client', '~> 2.1.0'
