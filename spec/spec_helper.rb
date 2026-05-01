@@ -167,7 +167,7 @@ RSpec.configure do |config|
     Array(server_pids).each do |pid|
       begin
         Process.kill('KILL', pid) if pid
-      rescue
+      rescue StandardError
         # ignore
       end
     end
