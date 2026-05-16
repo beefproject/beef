@@ -5,11 +5,81 @@
 #
 require 'rspec/core/rake_task'
 
-task :default => ["short"]
+task default: ['short']
 
-RSpec::Core::RakeTask.new(:short) do |task|
-  task.rspec_opts = ['--tag ~run_on_browserstack', '--tag ~run_on_long_tests']
+# Run rspec with an explicit file list (avoids envs that only run 557).
+# Note: when run with all 81 files, module specs load after extensions; the Dns stub in
+# network_spec must not run before the real Dns extension (dns_spec) or you get "superclass mismatch".
+desc 'Run short spec suite (all specs except browserstack/long)'
+task :short do
+  short_files = Dir[File.join(Dir.pwd, 'spec', '**', '*_spec.rb')].sort
+  $stderr.puts "[rake short] spec files=#{short_files.size}"
+  abort '[rake short] Expected 81+ spec files; check you are in project root.' if short_files.size < 80
+  opts = [
+    '--tag', '~run_on_browserstack',
+    '--tag', '~run_on_long_tests'
+  ]
+  ok = system('bundle', 'exec', 'rspec', *short_files, *opts)
+  abort 'rspec failed' unless ok
 end
+
+# Legacy namespace for backward compatibility
+namespace :coverage do
+  task :modules => 'coverage_modules'
+  task :core => 'coverage_core'
+  task :extensions => 'coverage_extensions'
+  task :all => 'coverage'
+end
+
+# Base spec tasks
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rspec_opts = ['--tag', '~run_on_browserstack', '--tag', '~run_on_long_tests']
+end
+
+RSpec::Core::RakeTask.new(:spec_core) do |t|
+  t.pattern = 'spec/beef/core/**/*_spec.rb'
+  t.rspec_opts = ['--tag', '~run_on_browserstack', '--tag', '~run_on_long_tests']
+end
+
+RSpec::Core::RakeTask.new(:spec_extensions) do |t|
+  t.pattern = 'spec/beef/extensions/**/*_spec.rb'
+  t.rspec_opts = ['--tag', '~run_on_browserstack', '--tag', '~run_on_long_tests']
+end
+
+RSpec::Core::RakeTask.new(:spec_modules) do |t|
+  t.pattern = 'spec/beef/modules/**/*_spec.rb'
+  t.rspec_opts = ['--tag', '~run_on_browserstack', '--tag', '~run_on_long_tests']
+end
+
+# Coverage tasks using environment variables for cleaner configuration
+desc 'Run all specs with complete coverage tracking'
+task :coverage do
+  ENV['COVERAGE'] = 'all'
+  Rake::Task['spec'].invoke
+end
+
+desc 'Run core specs with coverage'
+task :coverage_core do
+  ENV['COVERAGE'] = 'core'
+  Rake::Task['spec_core'].invoke
+end
+
+desc 'Run extensions specs with coverage'
+task :coverage_extensions do
+  ENV['COVERAGE'] = 'extensions'
+  Rake::Task['spec_extensions'].invoke
+end
+
+desc 'Run modules specs with coverage'
+task :coverage_modules do
+  ENV['COVERAGE'] = 'modules'
+  Rake::Task['spec_modules'].invoke
+end
+
+# Alias for backward compatibility
+task :coverage_complete => :coverage
+task :coverage_all => :coverage
 
 RSpec::Core::RakeTask.new(:long) do |task|
   task.rspec_opts = ['--tag ~run_on_browserstack']

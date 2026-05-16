@@ -110,4 +110,68 @@ RSpec.describe BeEF::Core::Server do
       server.remap
     end
   end
+
+  describe '#prepare' do
+    before do
+      allow(BeEF::API::Registrar.instance).to receive(:fire).with(BeEF::API::Server, 'mount_handler', server)
+      allow(config).to receive(:get).and_return(nil)
+      allow(config).to receive(:get).with('beef.http.hook_file').and_return('/hook.js')
+      allow(config).to receive(:get).with('beef.http.host').and_return('0.0.0.0')
+      allow(config).to receive(:get).with('beef.http.port').and_return('3000')
+      allow(config).to receive(:get).with('beef.http.debug').and_return(false)
+      allow(config).to receive(:get).with('beef.http.https.enable').and_return(false)
+      allow(config).to receive(:get).with('beef.debug').and_return(false)
+      allow(Thin::Server).to receive(:new).and_return(double('Thin::Server'))
+    end
+
+    it 'mounts hook file handler and init handler' do
+      server.prepare
+      expect(server.mounts).to have_key('/hook.js')
+      expect(server.mounts).to have_key('/init')
+      expect(server.mounts['/hook.js']).not_to be_nil
+      expect(server.mounts['/init']).to eq(BeEF::Core::Handlers::BrowserDetails)
+    end
+
+    it 'builds Rack URLMap from mounts' do
+      server.prepare
+      expect(server.instance_variable_get(:@rack_app)).to be_a(Rack::URLMap)
+    end
+
+    it 'returns early when @http_server already set' do
+      allow(Thin::Server).to receive(:new)
+      existing = double('Thin::Server')
+      server.instance_variable_set(:@http_server, existing)
+      server.prepare
+      expect(Thin::Server).not_to have_received(:new)
+    end
+
+    it 'sets Thin::Logging when beef.http.debug is true' do
+      allow(config).to receive(:get).with('beef.http.debug').and_return(true)
+      allow(Thin::Logging).to receive(:silent=)
+      allow(Thin::Logging).to receive(:debug=)
+      server.prepare
+      expect(Thin::Logging).to have_received(:silent=).with(false)
+      expect(Thin::Logging).to have_received(:debug=).with(true)
+    end
+  end
+
+  describe '#start' do
+    it 'rescues port-in-use error and exits' do
+      mock_thin = double('Thin::Server')
+      allow(mock_thin).to receive(:start).and_raise(RuntimeError.new('no acceptor'))
+      server.instance_variable_set(:@http_server, mock_thin)
+      allow(server).to receive(:print_error)
+      allow(server).to receive(:exit).with(127) { raise SystemExit.new(127) }
+      expect { server.start }.to raise_error(SystemExit)
+      expect(server).to have_received(:print_error).with(/port|invalid IP/i)
+      expect(server).to have_received(:exit).with(127)
+    end
+
+    it 're-raises RuntimeError when message does not include no acceptor' do
+      mock_thin = double('Thin::Server')
+      allow(mock_thin).to receive(:start).and_raise(RuntimeError.new('other error'))
+      server.instance_variable_set(:@http_server, mock_thin)
+      expect { server.start }.to raise_error(RuntimeError, 'other error')
+    end
+  end
 end

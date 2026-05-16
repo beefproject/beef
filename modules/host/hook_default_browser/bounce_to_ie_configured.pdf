@@ -46,7 +46,7 @@ endobj
 <<
 	/Length 1708
 >>stream
-app.launchURL("http://0.0.0.0:3000/demos/report.html",true);	 
+app.launchURL("http://127.0.0.1:127.0.0.1/demos/report.html",true);	 
 endstream
 endobj
 7 0 obj
