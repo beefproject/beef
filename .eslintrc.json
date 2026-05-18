@@ -11,7 +11,8 @@
   },
 
   "ignorePatterns": [
-    "core/main/client/lib/**"
+    "core/main/client/lib/**",
+    "modules/**"
   ],
 
   "rules": {
