@@ -73,7 +73,7 @@ jobs:
         run: |
           echo "Running ESLint on entire codebase"
           echo "This is a report-only job and will not block the PR."
-          npx eslint "**/*.js" || true
+          npx eslint . || true
 
       - name: Summary
         if: always()
