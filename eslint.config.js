@@ -15,6 +15,8 @@ module.exports = [
   },
   js.configs.recommended,
   {
+    files: ["**/*.js"],
+    ignores: ["eslint.config.js"],
     languageOptions: {
       ecmaVersion: 5,
       sourceType: "script",
@@ -42,6 +44,17 @@ module.exports = [
 
         // Debug
         isDebug: "readonly",
+      },
+    },
+  },
+  {
+    files: ["eslint.config.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "commonjs",
+      globals: {
+        module: "writable",
+        require: "readonly",
       },
     },
   },
