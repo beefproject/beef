@@ -10,7 +10,7 @@
     "author": "Wade Alcorn",
     "license": "GNU General Public License v2.0",
     "devDependencies": {
-        "eslint": "^7.32.0",
+        "eslint": "^10.4.0",
         "jsdoc": "^4.0.5",
         "jsdoc-to-markdown": "^9.1.3"
     },
