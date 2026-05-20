@@ -23,7 +23,7 @@ class Get_proxy_servers_wpad < BeEF::Core::Command
       proto = 'SOCKS' if proxy_type =~ /SOCKS/
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found #{proto} proxy [ip: #{ip}, port: #{port}]")
-        BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto.downcase, ip: ip, port: port, type: "#{proto} Proxy")
+        BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto.downcase, ip: ip, port: port, ntype: "#{proto} Proxy")
       end
     end
   end
