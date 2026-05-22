@@ -26,7 +26,7 @@ beef.execute(function() {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Chrome IFrame Created .. awaiting messages');	
 	} else {
 		beef.debug('[Fake Evernote Clipper] Unspported browser');
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=No IFrame Created -- browser is not Chrome', beef.are.status_error());
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=No IFrame Created -- browser is not Chrome', beef.status.error());
 	}
 
 });

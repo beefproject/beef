@@ -1,0 +1,35 @@
+name: 'Auto-label Dependabot PRs'
+
+on:
+  pull_request_target:
+    branches: [ master ]
+    types: [ opened, synchronize ]
+
+jobs:
+  auto-label:
+    name: 'Apply safe_to_test for Dependabot'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Add safe_to_test label'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+
+            // Remove first so re-adding always fires a labeled event,
+            // which triggers the BrowserStack workflow.
+            try {
+              await github.rest.issues.removeLabel({
+                owner, repo, issue_number,
+                name: 'safe_to_test'
+              });
+            } catch (e) {
+              if (e.status !== 404) throw e;
+            }
+
+            await github.rest.issues.addLabels({
+              owner, repo, issue_number,
+              labels: ['safe_to_test']
+            });
