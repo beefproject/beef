@@ -111,7 +111,6 @@ RSpec.describe BeEF::Core::Handlers::HookedBrowsers do
         relation = double('Relation', first: hooked_browser)
         allow(BeEF::Core::Models::HookedBrowser).to receive(:where).with(session: 'existing_session').and_return(relation)
         allow(BeEF::Core::Models::Command).to receive(:where).with(hooked_browser_id: 1, instructions_sent: false).and_return([])
-        allow(BeEF::Core::Models::Execution).to receive(:where).with(is_sent: false, session_id: 'existing_session').and_return([])
         allow(BeEF::API::Registrar.instance).to receive(:fire)
       end
 
