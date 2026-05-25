@@ -49,7 +49,8 @@ end
 RSpec.configure do |config|
   config.include ModuleSpecHelper
 
-  # Stub Kernel.sleep for all module specs so modules that call sleep (e.g. Irc_nat_pinning's post_execute sleep 30) don't slow the suite.
+  # Stub Kernel.sleep for all module specs so modules that call sleep
+  # (e.g. Irc_nat_pinning's post_execute sleep 30) don't slow the suite.
   config.before(:each) do |example|
     if example.metadata[:file_path]&.include?('spec/beef/modules')
       allow(Kernel).to receive(:sleep)

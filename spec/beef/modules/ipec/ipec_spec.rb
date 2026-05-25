@@ -5,29 +5,33 @@
 #
 # Unit tests for every module under modules/ipec/.
 #
+# Some ipec modules reference BeEF::Extension::ETag and
+# BeEF::Extension::ServerClientDnsTunnel which are not loaded in unit tests.
+# We stub these per-example with stub_const so the stubs don't leak across
+# the suite or shadow the real extensions when they happen to be loaded.
+#
 
 require_relative '../../../spec_helper'
 
-# Stub extensions that some ipec modules reference (not loaded in unit tests)
-module BeEF
-  module Extension
-    ETag = ::Module.new unless const_defined?(:ETag)
-    ServerClientDnsTunnel = ::Module.new unless const_defined?(:ServerClientDnsTunnel)
-  end
-end
-BeEF::Extension::ETag.const_set(:ETagMessages, ::Class.new do
-  def self.instance
-    @instance ||= Struct.new(:messages).new({})
-  end
-end) unless BeEF::Extension::ETag.const_defined?(:ETagMessages)
-BeEF::Extension::ServerClientDnsTunnel.const_set(:Server, ::Class.new do
-  def self.instance
-    @instance ||= Struct.new(:messages).new({})
-  end
-end) unless BeEF::Extension::ServerClientDnsTunnel.const_defined?(:Server)
-
 project_root = File.expand_path('../../../../', __dir__)
 paths = Dir[File.join(project_root, 'modules/ipec/**/module.rb')].sort
+
+# Lightweight stand-ins for the extension singletons; no real behaviour required.
+def stub_etag_messages_class
+  Class.new do
+    def self.instance
+      @instance ||= Struct.new(:messages).new({})
+    end
+  end
+end
+
+def stub_dns_tunnel_server_class
+  Class.new do
+    def self.instance
+      @instance ||= Struct.new(:messages).new({})
+    end
+  end
+end
 
 paths.each do |path|
   rel = path.sub("#{project_root}/", '').sub(/\.rb$/, '')
@@ -40,58 +44,69 @@ paths.each do |path|
   mod = Object.const_get(klass_name)
 
   RSpec.describe mod do
-    describe '.options' do
-      it 'returns an Array when defined' do
-        next unless described_class.respond_to?(:options)
-        config = instance_double(BeEF::Core::Configuration)
-        allow(config).to receive(:beef_host).and_return('127.0.0.1')
-        allow(config).to receive(:beef_port).and_return('3000')
-        allow(config).to receive(:beef_proto).and_return('http')
-        allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
-        allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
-        expect(described_class.options).to be_an(Array)
-      end
+    before(:each) do
+      # Per-example stubs (auto-removed after each example).
+      BeEF::Extension.const_set(:ETag, Module.new) unless BeEF::Extension.const_defined?(:ETag)
+      BeEF::Extension.const_set(:ServerClientDnsTunnel, Module.new) unless BeEF::Extension.const_defined?(:ServerClientDnsTunnel)
+      stub_const('BeEF::Extension::ETag::ETagMessages', stub_etag_messages_class) unless BeEF::Extension::ETag.const_defined?(:ETagMessages)
+      stub_const('BeEF::Extension::ServerClientDnsTunnel::Server', stub_dns_tunnel_server_class) unless BeEF::Extension::ServerClientDnsTunnel.const_defined?(:Server)
     end
 
-    describe '#pre_send' do
-      it 'runs without error when defined' do
-        next unless described_class.method_defined?(:pre_send)
-        handler = instance_double('AssetHandler')
-        allow(handler).to receive(:unbind).and_return(nil)
-        allow(handler).to receive(:bind).and_return(nil)
-        allow(handler).to receive(:bind_raw).and_return(nil)
-        allow(handler).to receive(:remap).and_return(nil)
-        allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
-        config = instance_double(BeEF::Core::Configuration)
-        allow(config).to receive(:get).with(anything) do |key|
-          case key
-          when 'beef.extension.etag.enable' then true
-          when 'beef.extension.s2c_dns_tunnel.enable' then true
-          when 'beef.extension.s2c_dns_tunnel.zone' then 'example.com'
-          else '127.0.0.1'
-          end
+    if described_class.respond_to?(:options)
+      describe '.options' do
+        it 'returns an Array' do
+          config = instance_double(BeEF::Core::Configuration)
+          allow(config).to receive(:beef_host).and_return('127.0.0.1')
+          allow(config).to receive(:beef_port).and_return('3000')
+          allow(config).to receive(:beef_proto).and_return('http')
+          allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
+          allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
+          expect(described_class.options).to be_an(Array)
         end
-        allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
-        instance = build_command_instance(described_class, [{'name' => 'data', 'value' => 'test'}])
-        expect { run_pre_send(instance) }.not_to raise_error
       end
     end
 
-    describe '#post_execute' do
-      it 'runs without error when defined' do
-        next unless described_class.method_defined?(:post_execute)
-        handler = instance_double('AssetHandler')
-        allow(handler).to receive(:unbind)
-        allow(handler).to receive(:bind)
-        allow(handler).to receive(:remap)
-        allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
-        file_double = double('File', write: nil, close: nil)
-        allow(File).to receive(:open).and_return(file_double)
-        allow(BeEF::Core::Models::Command).to receive(:save_result)
-        allow_any_instance_of(described_class).to receive(:ip).and_return('0.0.0.0')
-        allow_any_instance_of(described_class).to receive(:timestamp).and_return('0')
-        instance = build_command_instance(described_class, 'result' => '', 'results' => '', 'cid' => '0')
-        expect { run_post_execute(instance) }.not_to raise_error
+    if described_class.method_defined?(:pre_send)
+      describe '#pre_send' do
+        it 'runs without error' do
+          handler = instance_double('AssetHandler')
+          allow(handler).to receive(:unbind).and_return(nil)
+          allow(handler).to receive(:bind).and_return(nil)
+          allow(handler).to receive(:bind_raw).and_return(nil)
+          allow(handler).to receive(:remap).and_return(nil)
+          allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
+          config = instance_double(BeEF::Core::Configuration)
+          allow(config).to receive(:get).with(anything) do |key|
+            case key
+            when 'beef.extension.etag.enable' then true
+            when 'beef.extension.s2c_dns_tunnel.enable' then true
+            when 'beef.extension.s2c_dns_tunnel.zone' then 'example.com'
+            else '127.0.0.1'
+            end
+          end
+          allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
+          instance = build_command_instance(described_class, [{ 'name' => 'data', 'value' => 'test' }])
+          expect { run_pre_send(instance) }.not_to raise_error
+        end
+      end
+    end
+
+    if described_class.method_defined?(:post_execute)
+      describe '#post_execute' do
+        it 'runs without error' do
+          handler = instance_double('AssetHandler')
+          allow(handler).to receive(:unbind)
+          allow(handler).to receive(:bind)
+          allow(handler).to receive(:remap)
+          allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
+          file_double = double('File').as_null_object
+          allow(File).to receive(:open).and_return(file_double)
+          allow(BeEF::Core::Models::Command).to receive(:save_result)
+          allow_any_instance_of(described_class).to receive(:ip).and_return('0.0.0.0')
+          allow_any_instance_of(described_class).to receive(:timestamp).and_return('0')
+          instance = build_command_instance(described_class, 'result' => '', 'results' => '', 'cid' => '0')
+          expect { run_post_execute(instance) }.not_to raise_error
+        end
       end
     end
   end

@@ -2,6 +2,5 @@
 --color
 --require spec_helper
 -I .
---order defined
 --tag ~run_on_browserstack
 --tag ~run_on_long_tests

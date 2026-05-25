@@ -23,46 +23,49 @@ paths.each do |path|
   mod = Object.const_get(klass_name)
 
   RSpec.describe mod do
-    describe '.options' do
-      it 'returns an Array when defined' do
-        next unless described_class.respond_to?(:options)
-        config = instance_double(BeEF::Core::Configuration)
-        allow(config).to receive(:beef_host).and_return('127.0.0.1')
-        allow(config).to receive(:beef_proto).and_return('http')
-        allow(config).to receive(:beef_port).and_return('3000')
-        allow(config).to receive(:hook_file_path).and_return('/hook.js')
-        allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
-        allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
-        expect(described_class.options).to be_an(Array)
+    if described_class.respond_to?(:options)
+      describe '.options' do
+        it 'returns an Array' do
+          config = instance_double(BeEF::Core::Configuration)
+          allow(config).to receive(:beef_host).and_return('127.0.0.1')
+          allow(config).to receive(:beef_proto).and_return('http')
+          allow(config).to receive(:beef_port).and_return('3000')
+          allow(config).to receive(:hook_file_path).and_return('/hook.js')
+          allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
+          allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
+          expect(described_class.options).to be_an(Array)
+        end
       end
     end
 
-    describe '#pre_send' do
-      it 'runs without error when defined' do
-        next unless described_class.method_defined?(:pre_send)
-        handler = instance_double('AssetHandler')
-        allow(handler).to receive(:unbind).and_return(nil)
-        allow(handler).to receive(:bind).and_return(nil)
-        allow(handler).to receive(:bind_raw).and_return(nil)
-        allow(handler).to receive(:remap).and_return(nil)
-        allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
-        config = instance_double(BeEF::Core::Configuration)
-        allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
-        allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
-        instance = build_command_instance(described_class, 'result' => '', 'Result' => '', 'cid' => '0')
-        expect { run_pre_send(instance) }.not_to raise_error
+    if described_class.method_defined?(:pre_send)
+      describe '#pre_send' do
+        it 'runs without error' do
+          handler = instance_double('AssetHandler')
+          allow(handler).to receive(:unbind).and_return(nil)
+          allow(handler).to receive(:bind).and_return(nil)
+          allow(handler).to receive(:bind_raw).and_return(nil)
+          allow(handler).to receive(:remap).and_return(nil)
+          allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
+          config = instance_double(BeEF::Core::Configuration)
+          allow(config).to receive(:get).with(anything).and_return('127.0.0.1')
+          allow(BeEF::Core::Configuration).to receive(:instance).and_return(config)
+          instance = build_command_instance(described_class, 'result' => '', 'Result' => '', 'cid' => '0')
+          expect { run_pre_send(instance) }.not_to raise_error
+        end
       end
     end
 
-    describe '#post_execute' do
-      it 'runs without error when defined' do
-        next unless described_class.method_defined?(:post_execute)
-        handler = instance_double('AssetHandler')
-        allow(handler).to receive(:unbind)
-        allow(handler).to receive(:bind)
-        allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
-        instance = build_command_instance(described_class, 'result' => '', 'Result' => '', 'cid' => '0')
-        expect { run_post_execute(instance) }.not_to raise_error
+    if described_class.method_defined?(:post_execute)
+      describe '#post_execute' do
+        it 'runs without error' do
+          handler = instance_double('AssetHandler')
+          allow(handler).to receive(:unbind)
+          allow(handler).to receive(:bind)
+          allow(BeEF::Core::NetworkStack::Handlers::AssetHandler).to receive(:instance).and_return(handler)
+          instance = build_command_instance(described_class, 'result' => '', 'Result' => '', 'cid' => '0')
+          expect { run_post_execute(instance) }.not_to raise_error
+        end
       end
     end
   end

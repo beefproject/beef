@@ -78,9 +78,13 @@ bundle exec rake coverage_complete
 
 ## Key Improvements
 
-### ✅ **Eliminated Global Constants**
-- Replaced `BRANCH_COVERAGE` constants with centralized `BeefTestConfig` module
-- No more "already initialized constant" warnings
+### ✅ **Eliminated Global Constant Collisions**
+- Branch-coverage data for the dynamic module spec loaders lives in
+  `BeefTestConfig.branch_coverage_for(:component)` (in `spec/spec_helper.rb`).
+- Each module spec file pulls its own component (`:browser`, `:exploits`, `:host`,
+  `:misc`, `:network`, `:social_engineering`) into a uniquely-named local
+  constant (e.g. `BRANCH_COVERAGE_HOST`), so loading the full suite no longer
+  triggers "already initialized constant" warnings or silently overwrites data.
 
 ### ✅ **Simplified Coverage Logic**
 - Cleaner filtering using `track_files` instead of complex `add_filter` logic
@@ -100,6 +104,24 @@ bundle exec rake coverage_complete
 - Uses `.simplecov` config file (standard practice)
 - Follows RSpec best practices
 - Better separation of concerns
+
+## Module Spec Pattern (dynamic loaders)
+
+Specs under `spec/beef/modules/**/<category>_spec.rb` walk every
+`modules/<category>/**/module.rb` file and generate a `RSpec.describe` block per
+class. They cover:
+
+- `.options` returns an `Array` (when defined)
+- `#pre_send` runs without raising (when defined)
+- `#post_execute` runs without raising (when defined)
+- An extra `#post_execute` example with a realistic datastore for any module
+  listed in `BeefTestConfig.branch_coverage_for(:category)`
+
+Trade-off: this is a coverage-driving baseline. The `expect { ... }.not_to
+raise_error` assertion catches load failures, missing constants, nil crashes,
+and undefined methods, but it does not assert behavioural correctness. Add
+targeted assertions for high-value modules (see the `Wordpress_add_user` and
+`Test_get_variable` examples in `spec/beef/modules/misc/misc_spec.rb`).
 
 ## Coverage Focus Areas
 

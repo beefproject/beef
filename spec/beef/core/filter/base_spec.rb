@@ -400,14 +400,14 @@ RSpec.describe BeEF::Filters do
       expect(BeEF::Filters.has_valid_browser_details_chars?('')).to be(false)
     end
 
-    it 'returns false when string only has allowed chars' do
-      # Method returns true when regex matches (invalid char found); false when only valid chars
-      expect(BeEF::Filters.has_valid_browser_details_chars?('abc')).to be(false)
-      expect(BeEF::Filters.has_valid_browser_details_chars?('a-b (c)')).to be(false)
+    it 'returns true when string only has allowed chars' do
+      # Method returns nil-on-no-match: nil.nil? == true, so a fully-valid string returns true.
+      expect(BeEF::Filters.has_valid_browser_details_chars?('abc')).to be(true)
+      expect(BeEF::Filters.has_valid_browser_details_chars?('a-b (c)')).to be(true)
     end
 
-    it 'returns true when string contains disallowed character' do
-      expect(BeEF::Filters.has_valid_browser_details_chars?('ab@c')).to be(true)
+    it 'returns false when string contains disallowed character' do
+      expect(BeEF::Filters.has_valid_browser_details_chars?('ab@c')).to be(false)
     end
   end
 

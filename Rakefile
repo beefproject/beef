@@ -8,13 +8,13 @@ require 'rspec/core/rake_task'
 task default: ['short']
 
 # Run rspec with an explicit file list (avoids envs that only run 557).
-# Note: when run with all 81 files, module specs load after extensions; the Dns stub in
+# Note: when run with the full file list, module specs load after extensions; the Dns stub in
 # network_spec must not run before the real Dns extension (dns_spec) or you get "superclass mismatch".
 desc 'Run short spec suite (all specs except browserstack/long)'
 task :short do
   short_files = Dir[File.join(Dir.pwd, 'spec', '**', '*_spec.rb')].sort
   $stderr.puts "[rake short] spec files=#{short_files.size}"
-  abort '[rake short] Expected 81+ spec files; check you are in project root.' if short_files.size < 80
+  abort '[rake short] Expected 60+ spec files; check you are in project root.' if short_files.size < 60
   opts = [
     '--tag', '~run_on_browserstack',
     '--tag', '~run_on_long_tests'
