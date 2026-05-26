@@ -412,5 +412,158 @@ RSpec.describe BeEF::Core::Handlers::BrowserDetails do
       expect(BeEF::Core::Models::BrowserDetails).to receive(:set).with(session_id, 'network.proxy.server', 'proxy.example.com')
       described_class.new(proxy_data)
     end
+
+    context 'filter failures (err_msg branches)' do
+      # Full data with optional keys so later filters (e.g. battery, capabilities) don't trigger err_msg
+      let(:full_data) do
+        data.merge('results' => data['results'].merge(
+          'hardware.battery.level' => '50%',
+          'browser.name.reported' => 'Mozilla/5.0',
+          'browser.engine' => 'Gecko',
+          'browser.window.cookies' => 'session=abc',
+          'host.os.name' => 'Windows',
+          'host.os.family' => 'Windows',
+          'host.os.version' => '10',
+          'browser.capabilities.vbscript' => 'yes'
+        ))
+      end
+
+      def stub_all_filters_valid_except(except_key = nil)
+        %i[
+          is_valid_hook_session_id? is_valid_browsername? is_valid_browserversion? is_valid_ip?
+          is_valid_browserstring? is_valid_cookies? is_valid_osname? is_valid_hwname?
+          is_valid_date_stamp? is_valid_pagetitle? is_valid_url? is_valid_pagereferrer?
+          is_valid_hostname? is_valid_port? is_valid_browser_plugins? is_valid_system_platform?
+          nums_only? is_valid_yes_no? is_valid_memory? is_valid_gpu? is_valid_cpu? alphanums_only?
+        ].each do |m|
+          allow(BeEF::Filters).to receive(m).and_return(except_key == m ? false : true)
+        end
+      end
+
+      it 'calls err_msg when browser name is invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        stub_all_filters_valid_except(:is_valid_browsername?)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name)
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/Invalid browser name/))
+      end
+
+      it 'calls err_msg when IP is invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        stub_all_filters_valid_except(:is_valid_ip?)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name).and_return('Firefox')
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/Invalid IP address/))
+      end
+
+      it 'calls err_msg when browser version is invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        stub_all_filters_valid_except(:is_valid_browserversion?)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name).and_return('Firefox')
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/Invalid browser version/))
+      end
+
+      it 'calls err_msg when browser.name.reported is invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        allow(BeEF::Filters).to receive(:is_valid_browsername?).and_return(true)
+        allow(BeEF::Filters).to receive(:is_valid_browserversion?).and_return(true)
+        allow(BeEF::Filters).to receive(:is_valid_ip?).and_return(true)
+        allow(BeEF::Filters).to receive(:is_valid_browserstring?).and_return(false)
+        stub_all_filters_valid_except(nil)
+        allow(BeEF::Filters).to receive(:is_valid_browserstring?).and_return(false)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name).and_return('Firefox')
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/browser\.name\.reported/))
+      end
+
+      it 'calls err_msg when cookies are invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        stub_all_filters_valid_except(:is_valid_cookies?)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name).and_return('Firefox')
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/Invalid cookies/))
+      end
+
+      it 'calls err_msg when host.os.name is invalid' do
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:where).and_return([])
+        stub_all_filters_valid_except(:is_valid_osname?)
+        allow(BeEF::Core::Models::BrowserDetails).to receive(:set)
+        allow(BeEF::Core::Constants::Browsers).to receive(:friendly_name).and_return('Firefox')
+        zombie = double('HookedBrowser', id: 1, ip: '127.0.0.1')
+        allow(zombie).to receive(:firstseen=)
+        allow(zombie).to receive(:domain=)
+        allow(zombie).to receive(:port=)
+        allow(zombie).to receive(:httpheaders=)
+        allow(zombie).to receive(:httpheaders).and_return('{}')
+        allow(zombie).to receive(:save!)
+        allow(JSON).to receive(:parse).with('{}').and_return({})
+        allow(BeEF::Core::Models::HookedBrowser).to receive(:new).and_return(zombie)
+        err_msg_calls = []
+        allow_any_instance_of(described_class).to receive(:err_msg) { |*args| err_msg_calls << args.last }
+        described_class.new(full_data)
+        expect(err_msg_calls).to include(a_string_matching(/operating system name/))
+      end
+    end
   end
 end

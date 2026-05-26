@@ -2,3 +2,5 @@
 --color
 --require spec_helper
 -I .
+--tag ~run_on_browserstack
+--tag ~run_on_long_tests
