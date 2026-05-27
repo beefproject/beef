@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        detect_media_devices:
+            enable: true
+            category: "Browser"
+            name: "Detect Media Devices"
+            description: "This module enumerates media input/output devices (microphones, cameras, speakers) available to the hooked browser via navigator.mediaDevices.enumerateDevices()."
+            authors: ["Sethumadhavan", "bcoles"]
+            target:
+                not_working: ["IE"]
+                working: ["All"]
