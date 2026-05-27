@@ -11,6 +11,10 @@ RSpec.describe BeEF::Filters do
       expect(BeEF::Filters.is_valid_path_info?("\x00")).to be(false)
       expect(BeEF::Filters.is_valid_path_info?(nil)).to be(false)
     end
+
+    it 'returns false when argument is not a String' do
+      expect(BeEF::Filters.is_valid_path_info?(123)).to be(false)
+    end
   end
 
   describe '.is_valid_hook_session_id?' do
@@ -43,15 +47,22 @@ RSpec.describe BeEF::Filters do
   end
 
   describe '.has_valid_param_chars?' do
-    it 'false' do
+    it 'returns false for nil, empty, or invalid chars' do
       chars = [nil, '', '+']
       chars.each do |c|
         expect(BeEF::Filters.has_valid_param_chars?(c)).to be(false)
       end
     end
 
-    it 'true' do
+    it 'returns true for word, underscore, and colon' do
       expect(BeEF::Filters.has_valid_param_chars?('A')).to be(true)
+      expect(BeEF::Filters.has_valid_param_chars?('key_name')).to be(true)
+      expect(BeEF::Filters.has_valid_param_chars?('a:1')).to be(true)
+    end
+
+    it 'returns false for string with spaces or special chars' do
+      expect(BeEF::Filters.has_valid_param_chars?('a b')).to be(false)
+      expect(BeEF::Filters.has_valid_param_chars?('a-b')).to be(false)
     end
   end
 end
