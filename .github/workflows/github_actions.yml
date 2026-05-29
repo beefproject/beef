@@ -3,7 +3,7 @@ name: 'BrowserStack Test'
 on:
   pull_request_target:
     branches: [ master ]
-    types: [ labeled ]
+    types: [ opened, synchronize, reopened, labeled ]
 
 jobs:
   ubuntu-job:
@@ -12,12 +12,20 @@ jobs:
     concurrency:
       group: browserstack-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    if: github.event.label.name == 'safe_to_test'
+    # Auto-run for Dependabot; let humans opt in via the safe_to_test label.
+    # Require the triggering actor to also be Dependabot so commits pushed by
+    # anyone else fall back to the explicit safe_to_test opt-in.
+    if: >-
+      (github.event.pull_request.user.login == 'dependabot[bot]' &&
+       github.actor == 'dependabot[bot]' &&
+       github.event.action != 'labeled') ||
+      github.event.label.name == 'safe_to_test'
     env:
       GITACTIONS: true
     steps:
 
       - name: 'Remove safe_to_test label'
+        if: github.event.action == 'labeled'
         uses: actions/github-script@v8
         with:
           script: |
