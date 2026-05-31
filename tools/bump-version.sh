@@ -13,10 +13,17 @@ fi
 echo "Updating version ${1} to ${2}"
 
 git checkout -b "release/${2}"
-sed -i '' -e "s/$1/$2/g" VERSION
-sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package.json
-sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package-lock.json
-sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" config.yaml
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' -e "s/$1/$2/g" VERSION
+  sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package.json
+  sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package-lock.json
+  sed -i '' -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" config.yaml
+else
+  sed -i -e "s/$1/$2/g" VERSION
+  sed -i -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package.json
+  sed -i -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" package-lock.json
+  sed -i -e "s/\"version\": \"$1\"/\"version\": \"$2\"/g" config.yaml
+fi
 
 git add VERSION package.json package-lock.json config.yaml
 git commit -m "Version bump ${2}"
