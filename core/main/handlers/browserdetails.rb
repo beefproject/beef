@@ -268,7 +268,7 @@ module BeEF
               proxy_log_string += " [server: #{proxy_server}]"
               if config.get('beef.extension.network.enable') == true && (proxy_server =~ /^([\d.]+):(\d+)$/)
                 print_debug("Hooked browser [id:#{zombie.id}] is using a proxy [ip: #{Regexp.last_match(1)}]")
-                BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: Regexp.last_match(1), type: 'Proxy')
+                BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: Regexp.last_match(1), ntype: 'Proxy')
               end
             end
             BeEF::Core::Logger.instance.register('Zombie', proxy_log_string.to_s, zombie.id.to_s)

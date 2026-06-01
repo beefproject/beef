@@ -26,7 +26,7 @@ class Get_ntop_network_hosts < BeEF::Core::Command
     type = 'ntop'
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found 'ntop' [proto: #{proto}, ip: #{ip}, port: #{port}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, ntype: type)
     end
     data.to_s.scan(/"hostNumIpAddress":"([\d.]+)"/).flatten.each do |ip|
       if BeEF::Filters.is_valid_ip?(ip)
