@@ -1,0 +1,106 @@
+name: Dependency Scan
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@de0fac2649a212396112d1b82776c5b057706d33 # v6.0.2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@d5f787ce339eb0767271bc01d922e85644c2c8ab # v1.280.0
+        with:
+          bundler-cache: true
+
+      - name: Audit Ruby Gems (Vulnerabilities)
+        run: |
+          gem install bundler-audit
+          bundle audit update
+          bundle audit check --verbose > audit_gems.log 2>&1 || true
+
+      - name: Check Ruby Gems Currency
+        run: |
+          bundle config set --local deployment false
+          bundle outdated > outdated_gems.log 2>&1 || true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '24'
+
+      - name: Install Node.js Dependencies
+        run: npm ci
+
+      - name: Scan npm Packages
+        run: |
+          npm audit > audit_npm.log 2>&1 || true
+          npm outdated > outdated_npm.log 2>&1 || true
+
+      - name: Setup and Run Hadolint (Dockerfile Scan)
+        run: |
+          curl -fsSL -o hadolint https://github.com/hadolint/hadolint/releases/download/v2.14.0/hadolint-Linux-x86_64
+          echo "6bf226944684f56c84dd014e8b979d27425c0148f61b3bd99bcc6f39e9dc5a47  hadolint" | sha256sum -c
+          chmod +x hadolint
+          ./hadolint Dockerfile > hadolint.log 2>&1 || true
+
+      - name: Setup and Run Actionlint (Workflows Scan)
+        run: |
+          curl -fsSL -o actionlint.tar.gz https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  actionlint.tar.gz" | sha256sum -c
+          tar -xzf actionlint.tar.gz actionlint
+          chmod +x actionlint
+          ./actionlint -color > actionlint.log 2>&1 || true
+
+      - name: Build Step Summary
+        if: always()
+        run: |
+          dump() {
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat "$1" 2>/dev/null >> $GITHUB_STEP_SUMMARY || echo "(step did not run)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          }
+
+          echo "## Dependency Scan Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Ruby Gems Vulnerabilities (bundler-audit)" >> $GITHUB_STEP_SUMMARY
+          dump audit_gems.log
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Ruby Gems Currency (bundle outdated)" >> $GITHUB_STEP_SUMMARY
+          dump outdated_gems.log
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### npm Packages (dev-only tooling)" >> $GITHUB_STEP_SUMMARY
+          echo "> [!NOTE]" >> $GITHUB_STEP_SUMMARY
+          echo "> All npm dependencies in this project are dev-only/tooling dependencies." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### npm Vulnerabilities (npm audit)" >> $GITHUB_STEP_SUMMARY
+          dump audit_npm.log
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "#### npm Currency (npm outdated)" >> $GITHUB_STEP_SUMMARY
+          dump outdated_npm.log
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Dockerfile Scan (hadolint)" >> $GITHUB_STEP_SUMMARY
+          dump hadolint.log
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### GitHub Actions Scan (actionlint)" >> $GITHUB_STEP_SUMMARY
+          dump actionlint.log
+          echo "" >> $GITHUB_STEP_SUMMARY
