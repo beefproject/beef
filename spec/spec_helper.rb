@@ -125,8 +125,8 @@ require 'socket'
     # Reset or re-initialise the configuration to a default state
     @config = BeEF::Core::Configuration.instance
 
-    @config.set('beef.credentials.user', "beef")
-    @config.set('beef.credentials.passwd', "beef")
+    @config.set('beef.credentials.user', "ninja")
+    @config.set('beef.credentials.passwd', "kickass22")
     @config.set('beef.http.https.enable', false)
   end
 

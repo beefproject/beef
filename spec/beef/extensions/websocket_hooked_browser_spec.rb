@@ -19,8 +19,8 @@ RSpec.describe 'Browser hooking with Websockets', run_on_browserstack: true do
     db_file = @config.get('beef.database.file')
     print_info 'Resetting the database for BeEF.'
     File.delete(db_file) if File.exist?(db_file)
-    @config.set('beef.credentials.user', 'beef')
-    @config.set('beef.credentials.passwd', 'beef')
+    @config.set('beef.credentials.user', 'ninja')
+    @config.set('beef.credentials.passwd', 'kickass22')
     @config.set('beef.http.websocket.secure', false)
     @config.set('beef.http.websocket.enable', true)
     @ws = BeEF::Core::Websocket::Websocket.instance

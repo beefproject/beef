@@ -20,8 +20,8 @@ RSpec.describe 'AutoRunEngine Test', run_on_browserstack: true do
     print_info 'Resetting the database for BeEF.'
     File.delete(db_file) if File.exist?(db_file)
 
-    @config.set('beef.credentials.user', 'beef')
-    @config.set('beef.credentials.passwd', 'beef')
+    @config.set('beef.credentials.user', 'ninja')
+    @config.set('beef.credentials.passwd', 'kickass22')
     @username = @config.get('beef.credentials.user')
     @password = @config.get('beef.credentials.passwd')
 

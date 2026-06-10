@@ -21,8 +21,8 @@ RSpec.describe 'BeEF API Rate Limit', run_on_long_tests: true  do
 
     it 'confirm correct creds are successful' do
         test_api = BeefRestClient.new('http', ATTACK_DOMAIN, '3000', @username, @password) 
-        expect(@config.get('beef.credentials.user')).to eq('beef')
-        expect(@config.get('beef.credentials.passwd')).to eq('beef')
+        expect(@config.get('beef.credentials.user')).to eq('ninja')
+        expect(@config.get('beef.credentials.passwd')).to eq('kickass22')
         expect(test_api.auth()[:payload]).not_to eql("401 Unauthorized") 
         expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
     end
@@ -58,8 +58,8 @@ RSpec.describe 'BeEF API Rate Limit', run_on_long_tests: true  do
             test_api = apis[i]
             if (test_api.is_pass?(@password))
                 sleep 0.5
-                expect(@config.get('beef.credentials.user')).to eq('beef')
-                expect(@config.get('beef.credentials.passwd')).to eq('beef')
+                expect(@config.get('beef.credentials.user')).to eq('ninja')
+                expect(@config.get('beef.credentials.passwd')).to eq('kickass22')
                 expect(test_api.auth()[:payload]).not_to eql("401 Unauthorized") 
                 expect(test_api.auth()[:payload]["success"]).to be(true) # valid pass should succeed
             else

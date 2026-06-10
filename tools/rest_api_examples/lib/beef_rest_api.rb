@@ -1,7 +1,7 @@
 class BeefRestAPI
 
 # initialize
-def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'beef', pass = 'beef'
+def initialize proto = 'https', host = '127.0.0.1', port = '3000', user = 'ninja', pass = 'kickass22'
   @user = user
   @pass = pass
   @url = "#{proto}://#{host}:#{port}/api/"
