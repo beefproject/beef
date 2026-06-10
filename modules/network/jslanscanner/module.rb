@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -26,7 +26,7 @@ class Fingerprint_routers < BeEF::Core::Command
       session_id = @datastore['beefhook']
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found network service #{service} [proto: #{proto}, ip: #{ip}, port: #{port}]")
-        BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: service)
+        BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, ntype: service)
       end
     when /^ip=(.+)&device=(.+)/
       ip = Regexp.last_match(1)
@@ -34,7 +34,7 @@ class Fingerprint_routers < BeEF::Core::Command
       session_id = @datastore['beefhook']
       if BeEF::Filters.is_valid_ip?(ip)
         print_debug("Hooked browser found network device #{device} [ip: #{ip}]")
-        BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip, type: device)
+        BeEF::Core::Models::NetworkHost.create(hooked_browser_id: session_id, ip: ip, ntype: device)
       end
     end
   end

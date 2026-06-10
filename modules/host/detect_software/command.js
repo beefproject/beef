@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -8,7 +8,7 @@ beef.execute(function() {
 
   if (!("ActiveXObject" in window)) {
     beef.debug('[Detect Software] Unspported browser');
-    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.are.status_error());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>,'fail=unsupported browser', beef.status.error());
     return false;
   }
 

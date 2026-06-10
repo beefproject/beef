@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -10,29 +10,36 @@ require 'spec/support/constants.rb'
 def start_beef_and_hook_browser()
     reset_beef_db
     pid = start_beef_server_and_wait
-    beef_session = BeefTest.login
-    hooked_browser = BeefTest.new_victim
 
-    expect(hooked_browser).not_to be_nil
-    expect(hooked_browser).to be_a(Capybara::Session)
-    expect(hooked_browser).to have_content('BeEF', wait: PAGE_LOAD_TIMEOUT)
+    begin
+        beef_session = BeefTest.login
+        hooked_browser = BeefTest.new_victim
 
-    expect(beef_session).not_to be_nil
-    expect(beef_session).to be_a(Capybara::Session)
-    expect(beef_session).to have_content('Hooked Browsers', wait: PAGE_LOAD_TIMEOUT)
+        expect(hooked_browser).not_to be_nil
+        expect(hooked_browser).to be_a(Capybara::Session)
+        expect(hooked_browser).to have_content('BeEF', wait: PAGE_LOAD_TIMEOUT)
 
-    navigate_to_hooked_browser(beef_session)
+        expect(beef_session).not_to be_nil
+        expect(beef_session).to be_a(Capybara::Session)
+        expect(beef_session).to have_content('Hooked Browsers', wait: PAGE_LOAD_TIMEOUT)
 
-    expect(beef_session).to have_content('Commands', wait: PAGE_LOAD_TIMEOUT)
-    beef_session.click_on('Commands')
+        navigate_to_hooked_browser(beef_session)
 
-    return pid, beef_session, hooked_browser
+        expect(beef_session).to have_content('Commands', wait: PAGE_LOAD_TIMEOUT)
+        beef_session.click_on('Commands')
+
+        return pid, beef_session, hooked_browser
+    rescue => e
+        # If setup fails, cleanup the server before re-raising
+        stop_beef_server(pid)
+        raise e
+    end
 end
 
 def stop_beef_and_unhook_browser(pid, beef_session, hooked_browser)
     stop_beef_server(pid)
-    beef_session.driver.browser.close
-    hooked_browser.driver.browser.close
+    beef_session.driver.browser.close if beef_session
+    hooked_browser.driver.browser.close if hooked_browser
 end
 
 def navigate_to_hooked_browser(session, hooked_browser_text = nil)

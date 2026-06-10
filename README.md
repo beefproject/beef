@@ -1,6 +1,6 @@
 ===============================================================================
 
-    Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+    Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
     Browser Exploitation Framework (BeEF) - https://beefproject.com
     See the file 'doc/COPYING' for copying permission
 
@@ -30,7 +30,7 @@ __Security Bugs:__ security@beefproject.com
 
 __Twitter:__ [@beefproject](https://twitter.com/beefproject)
 
-__Discord:__ https://discord.gg/ugmKmHarKc
+__Discord:__ https://discord.gg/25wT2P8pwx
 
 Requirements
 ------------

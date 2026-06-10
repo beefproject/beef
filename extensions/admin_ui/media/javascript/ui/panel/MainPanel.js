@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -38,8 +38,6 @@ MainPanel = function(){
 
     this.welcome_tab = new WelcomeTab;
 
-    this.auto_run_tab = new AutoRunTab;
-
     MainPanel.superclass.constructor.call(this, {
         id:'main-tabs',
         activeTab:0,
@@ -77,15 +75,6 @@ MainPanel = function(){
             hideMode:'offsets',
             items:[
                 this.zombies_grid
-            ]
-        },
-        {
-            id:'autorun-view',
-            title:'Auto Run',
-            layout:'border',
-            hideMode:'offsets',
-            items:[
-                this.auto_run_tab
             ]
         }]
     });

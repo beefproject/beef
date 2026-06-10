@@ -1,6 +1,13 @@
+#
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - https://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+
 RSpec.describe 'BeEF Dynamic Reconsturction' do
 
   before(:all) do
+    @__ar_config_snapshot = SpecActiveRecordConnection.snapshot
     @port = 2001
     config = {}
     config[:BindAddress] = '127.0.0.1'
@@ -12,6 +19,10 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
     @server = Thin::Server.new('127.0.0.1', @port.to_s, @rackApp)
     trap("INT") { @server.stop }
     trap("TERM") { @server.stop }
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
+
     @pid = fork do
       @server.start!
     end
@@ -21,6 +32,7 @@ RSpec.describe 'BeEF Dynamic Reconsturction' do
 
   after(:all) do
     Process.kill("INT",@pid)
+    SpecActiveRecordConnection.restore!(@__ar_config_snapshot)
   end
 
   it 'delete' do

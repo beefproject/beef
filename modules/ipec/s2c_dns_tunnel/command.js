@@ -1,18 +1,18 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 
 /*
-This JavaScript retreives data from a server via DNS covert channel.
+This JavaScript retrieves data from a server via DNS covert channel.
 
 A remote controlled domain with a custom DNS server implementing covert channel logic is required.
 BeEF supports this feature via Server-to-Client DNS Tunnel extension.
 
-The initial concept of the DNS covert channell and its implementation are described in the following literature:
+The initial concept of the DNS covert channel and its implementation are described in the following literature:
 - K.Born. Browser-Based Covert Data Exfiltration. http://arxiv.org/ftp/arxiv/papers/1004/1004.4357.pdf
-- W. Alkorn,C. Frichot, M.Orru. The Browser Hacker's Handbook. ISBN-13: 978-1118662090, ISBN-10: 1118662091  
+- W. Alcorn,C. Frichot, M.Orru. The Browser Hacker's Handbook. ISBN-13: 978-1118662090, ISBN-10: 1118662091  
 
 */
 beef.execute(function() {
@@ -29,7 +29,7 @@ beef.execute(function() {
   var bit_transfered = new Array();
   var timing = new Array();
  
-  // Do the DNS query by reqeusting an image
+  // Do the DNS query by requesting an image
   send_query = function(fqdn, msg, byte, bit) {
     var img = new Image;
     var fport = "";
@@ -51,7 +51,7 @@ beef.execute(function() {
     }
   };
 
-	// Construct DNS names based on Active Directory SRV resource records pattern and resolv them via send_query function
+	// Construct DNS names based on Active Directory SRV resource records pattern and resolve them via send_query function
 	// See http://technet.microsoft.com/en-us/library/cc961719.aspx
   function get_byte(msg, byte) {
     bit_transfered[msg][byte] = 0;
@@ -71,7 +71,7 @@ beef.execute(function() {
         }
   }
 
-  // Construct random sring
+  // Construct random string
   function getRandomStr(n){
     return Math.random().toString(36).slice(2, 2 + Math.max(1, Math.min(n, 12)));
   }

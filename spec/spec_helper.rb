@@ -1,8 +1,218 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+
+# Coverage must start before loading application code.
+require 'simplecov' and SimpleCov.start if ENV['COVERAGE']
+
+# Branch-coverage datastore/config fixtures for the dynamic module spec loaders.
+# Each spec file under spec/beef/modules/* uses BeefTestConfig.branch_coverage_for(:component)
+# to drive an extra post_execute example with realistic data, hitting conditional branches
+# that the generic smoke test misses.
+#
+# Centralising these here:
+#   - removes duplicate top-level BRANCH_COVERAGE constant definitions across spec files
+#     (which previously triggered "already initialized constant" warnings and silent overrides),
+#   - makes the test data discoverable from one place, and
+#   - matches what spec/README.md claims.
+module BeefTestConfig
+  PRE_SEND_SKIP = {
+    # Modules whose pre_send needs Zip, real filesystem access, or speech tooling we
+    # don't want to invoke in unit tests; the dynamic loader skips the generic pre_send
+    # example for these described_class names.
+    social_engineering: %w[
+      Firefox_extension_bindshell Firefox_extension_dropper Firefox_extension_reverse_shell
+      Text_to_voice Ui_abuse_ie
+    ].freeze
+  }.freeze
+
+  def self.pre_send_skip_for(component)
+    PRE_SEND_SKIP[component] || []
+  end
+
+  def self.branch_coverage_for(component)
+    case component
+    when :browser
+      {
+        'modules/browser/detect_wmp' => { datastore: { 'results' => 'wmp=Yes', 'wmp' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_vlc' => { datastore: { 'results' => 'vlc=Yes', 'vlc' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_office' => { datastore: { 'results' => 'office=Office 2016', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_foxit' => { datastore: { 'results' => 'foxit=Yes', 'result' => '', 'cid' => '0', 'beefhook' => '1' } },
+        'modules/browser/detect_activex' => { datastore: { 'results' => 'activex=Yes', 'activex' => '', 'result' => '', 'cid' => '0', 'beefhook' => '1' } }
+      }
+    when :exploits
+      {
+        'modules/exploits/vtiger_crm_upload_exploit' => { datastore: { 'result' => 'ok', 'cid' => '0' } },
+        'modules/exploits/router/asus_rt_n12e_get_info' => {
+          datastore: {
+            'result' => '', 'results' => 'ip=192.168.1.1&clients=192.168.1.2,00:11:22:33:44:55&wanip=1.2.3.4&netmask=255.255.255.0&gateway=192.168.1.1&dns=8.8.8.8 8.8.4.4',
+            'beefhook' => '1', 'cid' => '0'
+          },
+          config_get: { 'beef.extension.network.enable' => true }
+        }
+      }
+    when :host
+      {
+        'modules/host/detect_cups' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=631&cups=Installed', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/host/detect_airdroid' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=8888&airdroid=Installed', 'airdroid' => '', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/host/get_internal_ip_java' => {
+          datastore: { 'results' => '192.168.1.1', 'Result' => '', 'result' => '', 'beefhook' => '1', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/host/get_internal_ip_webrtc' => {
+          datastore: { 'results' => 'IP is 192.168.1.1', 'Result' => '', 'result' => '', 'beefhook' => '1', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        }
+      }
+    when :misc
+      {
+        'modules/misc/wordpress_post_auth_rce' => { datastore: { 'result' => 'ok', 'cid' => '0' } }
+      }
+    when :network
+      {
+        'modules/network/port_scanner' => {
+          datastore: { 'results' => 'ip=1.2.3.4&port=HTTP: Port 80 is OPEN Apache', 'beefhook' => '1', 'result' => '', 'port' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/ping_sweep' => {
+          datastore: { 'results' => 'ip=192.168.1.1&ping=10ms', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/ping_sweep_ff' => {
+          datastore: { 'results' => 'host=192.168.1.1 is alive', 'beefhook' => '1', 'result' => '', 'host' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/get_http_servers' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=80&url=http://1.2.3.4/', 'beefhook' => '1', 'result' => '', 'url' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/cross_origin_scanner_cors' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=80&status=200', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/detect_burp' => {
+          datastore: { 'results' => 'has_burp=true&response=PROXY 127.0.0.1:8080', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/get_ntop_network_hosts' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=3000&data={"hostNumIpAddress":"192.168.1.1"}', 'beefhook' => '1', 'result' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/internal_network_fingerprinting' => {
+          datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=80&discovered=Apache&url=http://test/', 'beefhook' => '1', 'result' => '', 'discovered' => '', 'url' => '', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/get_proxy_servers_wpad' => [
+          { datastore: { 'results' => 'proxies=PROXY 192.168.1.1:3128', 'beefhook' => '1', 'result' => '', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } },
+          { datastore: { 'results' => 'proxies=SOCKS 192.168.1.1:1080', 'beefhook' => '1', 'result' => '', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } }
+        ],
+        'modules/network/jslanscanner' => [
+          { datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=80&service=HTTP', 'beefhook' => '1', 'result' => '', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } },
+          { datastore: { 'results' => 'ip=1.2.3.4&device=Router', 'beefhook' => '1', 'result' => '', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } }
+        ],
+        'modules/network/fetch_port_scanner' => {
+          datastore: { 'result' => 'ok', 'beefhook' => '1', 'cid' => '0' },
+          config_get: { 'beef.extension.network.enable' => true }
+        },
+        'modules/network/cross_origin_scanner_flash' => [
+          { datastore: { 'results' => 'ip=1.2.3.4&status=alive', 'result' => '', 'beefhook' => '1', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } },
+          { datastore: { 'results' => 'proto=http&ip=1.2.3.4&port=80&title=Apache', 'result' => '', 'beefhook' => '1', 'cid' => '0' }, config_get: { 'beef.extension.network.enable' => true } }
+        ]
+      }
+    when :social_engineering
+      {
+        'modules/social_engineering/fake_lastpass' => { datastore: { 'meta' => 'KILLFRAME', 'result' => '', 'results' => '', 'answer' => '', 'cid' => '0' } },
+        'modules/social_engineering/fake_evernote_clipper' => { datastore: { 'meta' => 'KILLFRAME', 'result' => '', 'results' => '', 'answer' => '', 'cid' => '0' } }
+      }
+    else
+      {}
+    end
+  end
+end
+
+# Returns [total_lines, covered_lines] for a group, or nil if no group.
+def group_coverage(r, group_name)
+  group = r.groups[group_name]
+  return nil unless group&.respond_to?(:each)
+
+  total_lines = 0
+  covered_lines = 0
+  group.each do |src_file|
+    total_lines += src_file.lines_of_code
+    covered_lines += src_file.covered_lines.compact.size
+  end
+  [total_lines, covered_lines]
+end
+
+# Print one group's coverage (skip forked children: very low coverage or zero).
+def print_group_coverage(r, group_name, color: "\e[36m")
+  total_lines, covered_lines = group_coverage(r, group_name)
+  return unless total_lines && total_lines.positive?
+  return if covered_lines.zero?
+
+  pct = covered_lines.to_f / total_lines * 100
+  # Skip noise from forked children (e.g. 0.03% Core).
+  return if pct < 1.0
+
+  puts "#{color}#{group_name} coverage: #{pct.round(2)}% (#{covered_lines} / #{total_lines} lines)\e[0m"
+end
+
+# Only print from the main process (skip forked children with tiny coverage).
+MIN_COVERAGE_PCT = 5.0
+
+def coverage_from_main_process?(r, focus)
+  case focus
+  when 'all'
+    %w[Core Extensions Modules].any? do |name|
+      total, covered = group_coverage(r, name)
+      next false unless total && total.positive?
+      (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+    end
+  when 'core'
+    total, covered = group_coverage(r, 'Core')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  when 'extensions'
+    total, covered = group_coverage(r, 'Extensions')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  when 'modules', nil
+    total, covered = group_coverage(r, 'Modules')
+    total && total.positive? && (covered.to_f / total * 100) >= MIN_COVERAGE_PCT
+  else
+    false
+  end
+end
+
+at_exit do
+  if defined?(SimpleCov) && SimpleCov.respond_to?(:result) && (r = SimpleCov.result)
+    focus = ENV['COVERAGE']
+    next unless coverage_from_main_process?(r, focus)
+
+    case focus
+    when 'core'
+      print_group_coverage(r, 'Core')
+    when 'extensions'
+      print_group_coverage(r, 'Extensions')
+    when 'modules'
+      print_group_coverage(r, 'Modules')
+    when 'all'
+      puts
+      print_group_coverage(r, 'Core')
+      print_group_coverage(r, 'Extensions')
+      print_group_coverage(r, 'Modules')
+    else
+      print_group_coverage(r, 'Modules')
+    end
+  end
+end
+
 # Set external and internal character encodings to UTF-8
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
@@ -24,6 +234,8 @@ require 'yaml'
 require 'selenium-webdriver'
 require 'browserstack/local'
 require 'byebug'
+
+MUTEX ||= Mutex.new
 
 # Require supports
 Dir['spec/support/*.rb'].each do |f|
@@ -67,6 +279,61 @@ if context.needs_migration?
   ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
 end
 
+# -------------------------------------------------------------------
+# Console logger shims
+# Some extensions may call Console.level= or BeEF::Core::Console.level=
+# Ensure both are safe.
+# -------------------------------------------------------------------
+module BeEF
+  module Core
+    module Console
+      class << self
+        attr_accessor :logger
+        def level=(val)
+          (self.logger ||= Logger.new($stdout)).level = val
+        end
+        def level
+          (self.logger ||= Logger.new($stdout)).level
+        end
+        # Proxy common logger methods if called directly (info, warn, error, etc.)
+        def method_missing(m, *args, &blk)
+          lg = (self.logger ||= Logger.new($stdout))
+          return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+          super
+        end
+        def respond_to_missing?(m, include_priv = false)
+          (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
+        end
+      end
+    end
+  end
+end
+BeEF::Core::Console.logger ||= Logger.new($stdout)
+
+# Some code may reference a top-level ::Console constant (not namespaced)
+unless defined?(::Console) && ::Console.respond_to?(:level=)
+  module ::Console
+    class << self
+      attr_accessor :logger
+      def level=(val)
+        (self.logger ||= Logger.new($stdout)).level = val
+      end
+      def level
+        (self.logger ||= Logger.new($stdout)).level
+      end
+      # Proxy to logger for typical logging calls
+      def method_missing(m, *args, &blk)
+        lg = (self.logger ||= Logger.new($stdout))
+        return lg.public_send(m, *args, &blk) if lg.respond_to?(m)
+        super
+      end
+      def respond_to_missing?(m, include_priv = false)
+        (self.logger ||= Logger.new($stdout)).respond_to?(m, include_priv) || super
+      end
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.disable_monkey_patching!
   config.bisect_runner = :shell
@@ -85,17 +352,25 @@ RSpec.configure do |config|
   end
 
   def server_teardown(webdriver, server_pid, server_pids)
-    webdriver.quit
-  rescue StandardError => e
-    print_info "Exception: #{e}"
-    print_info "Exception Class: #{e.class}"
-    print_info "Exception Message: #{e.message}"
-    print_info "Exception Stack Trace: #{e.backtrace}"
-    exit 0
-  ensure
-    print_info 'Shutting down server'
-    Process.kill('KILL', server_pid)
-    Process.kill('KILL', server_pids)
+    begin
+      webdriver&.quit
+    rescue => e
+      warn "[server_teardown] webdriver quit failed: #{e.class}: #{e.message}"
+    end
+
+    begin
+      Process.kill('KILL', server_pid) if server_pid
+    rescue => e
+      warn "[server_teardown] kill failed: #{e.class}: #{e.message}"
+    end
+
+    Array(server_pids).each do |pid|
+      begin
+        Process.kill('KILL', pid) if pid
+      rescue
+        # ignore
+      end
+    end
   end
 
 ########################################
@@ -139,6 +414,24 @@ require 'socket'
       BeEF::Modules.load if @config.get('beef.module').nil?
   end
 
+  # --- HARD fork-safety: disconnect every pool/adapter we can find ---
+  def disconnect_all_active_record!
+    # print_info "Entering disconnect_all_active_record!"
+    if defined?(ActiveRecord::Base)
+      # print_info "Disconnecting ActiveRecord connections"
+      handler = ActiveRecord::Base.connection_handler
+      if handler.respond_to?(:connection_pool_list)
+        # print_info "Using connection_pool_list"
+        handler.connection_pool_list.each { |pool| pool.disconnect! }
+      elsif handler.respond_to?(:connection_pools)
+        # print_info "Using connection_pools"
+        handler.connection_pools.each_value { |pool| pool.disconnect! }
+      end
+    else
+      print_info "ActiveRecord::Base not defined"
+    end
+  end
+
   def start_beef_server
     configure_beef
     @port = @config.get('beef.http.port')
@@ -146,8 +439,7 @@ require 'socket'
     @host = '127.0.0.1'
 
     unless port_available?
-      print_error "Port #{@port} is already in use. Exiting."
-      exit
+      raise "Port #{@port} is already in use. Cannot start BeEF server."
     end
     load_beef_extensions_and_modules
     
@@ -157,6 +449,9 @@ require 'socket'
     if BeEF::Core::Console::CommandLine.parse[:resetdb]
       File.delete(db_file) if File.exist?(db_file)
     end
+
+    # ***** IMPORTANT: close any and all AR/OTR connections before forking *****
+    disconnect_all_active_record!
 
     # Load up DB and migrate if necessary
     ActiveRecord::Base.logger = nil
@@ -184,6 +479,8 @@ require 'socket'
 
     # Generate a token for the server to respond with
     BeEF::Core::Crypto::api_token
+
+    disconnect_all_active_record!
 
     # Initiate server start-up
     BeEF::API::Registrar.instance.fire(BeEF::API::Server, 'pre_http_start', http_hook_server)
@@ -229,11 +526,65 @@ require 'socket'
   end
 
   def stop_beef_server(pid)
-    exit if pid.nil?
-    # Shutting down server
+    return if pid.nil?
     Process.kill("KILL", pid) unless pid.nil?
     Process.wait(pid) unless pid.nil? # Ensure the process has exited and the port is released 
-    pid = nil       
   end
 
+end
+
+# -------------------------------------------------------------------
+# ActiveRecord connection snapshot/restore helpers (test isolation)
+# Some specs disconnect ActiveRecord (fork safety), destroying the SQLite in-memory DB.
+# These helpers restore it for later specs.
+# -------------------------------------------------------------------
+module SpecActiveRecordConnection
+  module_function
+
+  def snapshot
+    # Capture the current AR connection configuration hash if possible.
+    if ActiveRecord::Base.respond_to?(:connection_db_config) && ActiveRecord::Base.connection_db_config
+      ActiveRecord::Base.connection_db_config.configuration_hash
+    else
+      ActiveRecord::Base.connection_config
+    end
+  rescue StandardError
+    nil
+  end
+
+  def restore!(config_hash)
+    # Ensure we don't leave AR disconnected for subsequent specs.
+    begin
+      handler = ActiveRecord::Base.connection_handler
+      if handler.respond_to?(:connection_pool_list)
+        handler.connection_pool_list.each { |pool| pool.disconnect! }
+      elsif handler.respond_to?(:connection_pools)
+        handler.connection_pools.each_value { |pool| pool.disconnect! }
+      else
+        ActiveRecord::Base.connection_pool.disconnect!
+      end
+    rescue StandardError
+      # ignore
+    end
+
+    if config_hash
+      OTR::ActiveRecord.configure_from_hash!(config_hash)
+    else
+      # Fallback to suite default
+      OTR::ActiveRecord.configure_from_hash!(adapter: 'sqlite3', database: ':memory:')
+    end
+
+    if Gem.loaded_specs['otr-activerecord'].version > Gem::Version.create('1.4.2')
+      OTR::ActiveRecord.establish_connection!
+    end
+    ActiveRecord::Schema.verbose = false
+
+    # Run migrations if the restored DB is empty/outdated
+    ActiveRecord::Migration.verbose = false
+    ActiveRecord::Migrator.migrations_paths = [File.join('core', 'main', 'ar-migrations')]
+    context = ActiveRecord::MigrationContext.new(ActiveRecord::Migrator.migrations_paths)
+    if context.needs_migration?
+      ActiveRecord::Migrator.new(:up, context.migrations, context.schema_migration, context.internal_metadata).migrate
+    end
+  end
 end

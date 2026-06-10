@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -24,7 +24,7 @@ package {
 
                 if (!this._cam) {
 
-	                //Either the camera is not available or some other error has occured
+	                //Either the camera is not available or some other error has occurred
                     ExternalInterface.call("naPermissions");
 
                 } else if (this._cam.muted) {

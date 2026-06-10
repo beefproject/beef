@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -21,7 +21,7 @@ class Cross_origin_scanner_cors < BeEF::Core::Command
     session_id = @datastore['beefhook']
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found HTTP server #{ip}:#{port}")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, type: type)
+      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: proto, ip: ip, port: port, ntype: type)
     end
   end
 

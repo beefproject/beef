@@ -14307,7 +14307,7 @@ Ext.data.DataProxy.Error = Ext.extend(Ext.Error, {constructor:function (b, a) {
     this.arg = a;
     Ext.Error.call(this, b)
 }, name:"Ext.data.DataProxy"});
-Ext.apply(Ext.data.DataProxy.Error.prototype, {lang:{"action-undefined":"DataProxy attempted to execute an API-action but found an undefined url / function.  Please review your Proxy url/api-configuration.", "api-invalid":"Recieved an invalid API-configuration.  Please ensure your proxy API-configuration contains only the actions from Ext.data.Api.actions."}});
+Ext.apply(Ext.data.DataProxy.Error.prototype, {lang:{"action-undefined":"DataProxy attempted to execute an API-action but found an undefined url / function.  Please review your Proxy url/api-configuration.", "api-invalid":"Received an invalid API-configuration.  Please ensure your proxy API-configuration contains only the actions from Ext.data.Api.actions."}});
 Ext.data.Request = function (a) {
     Ext.apply(this, a)
 };

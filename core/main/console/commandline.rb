@@ -1,8 +1,10 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'optparse'
+
 module BeEF
   module Core
     module Console
@@ -17,7 +19,6 @@ module BeEF
         @options[:ext_config] = ''
         @options[:port] = ''
         @options[:ws_port] = ''
-        @options[:interactive] = false
         @options[:update_disabled] = false
         @options[:update_auto] = false
 
@@ -39,7 +40,7 @@ module BeEF
               @options[:verbose] = true
             end
 
-            opts.on('-a', '--ascii_art', 'Prints BeEF ascii art') do
+            opts.on('-a', '--ascii-art', 'Prints BeEF ascii art') do
               @options[:ascii_art] = true
             end
 
@@ -55,17 +56,19 @@ module BeEF
               @options[:ws_port] = ws_port
             end
 
-            opts.on('-ud', '--update_disabled', 'Skips update') do
+            opts.on('-d', '--update-disabled', 'Skips update') do
               @options[:update_disabled] = true
             end
 
-            opts.on('-ua', '--update_auto', 'Automatic update with no prompt') do
+            opts.on('-u', '--update-auto', 'Automatic update with no prompt') do
               @options[:update_auto] = true
             end
 
-            # opts.on('-i', '--interactive', 'Starts with the Console Shell activated') do
-            #  @options[:interactive] = true
-            # end
+            opts.on('-h', '--help', 'Show this help') do
+              puts opts
+              exit 0
+            end
+
           end
 
           optparse.parse!

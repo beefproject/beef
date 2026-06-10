@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -15,7 +15,7 @@
 ###########################################################################################################
 
 # ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
-FROM ruby:3.2.1-slim-bullseye AS builder
+FROM ruby:3.4.7-slim-bookworm AS builder
 
 COPY . /beef
 
@@ -27,11 +27,14 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
  && apt-get install -y --no-install-recommends \
     git \
     curl \
+    libssl-dev \
     xz-utils \
+    pkg-config \
     make \
     g++ \
     libcurl4-openssl-dev \
     ruby-dev \
+    libyaml-dev \
     libffi-dev \
     zlib1g-dev \
     libsqlite3-dev \
@@ -44,7 +47,7 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
 
 
 # ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
-FROM ruby:3.2.1-slim-bullseye
+FROM ruby:3.4.7-slim-bookworm
 LABEL maintainer="Beef Project" \
       source_url="github.com/beefproject/beef" \
       homepage="https://beefproject.com/"
@@ -61,8 +64,10 @@ RUN adduser --home /beef --gecos beef --disabled-password beef \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     curl \
+    wget \
+    espeak \
+    lame \
     openssl \
-    libssl-dev \
     libreadline-dev \
     libyaml-dev \
     libxml2-dev \
@@ -73,8 +78,19 @@ RUN adduser --home /beef --gecos beef --disabled-password beef \
     zlib1g \
     bison \
     nodejs \
+    firefox-esr \
  && apt-get -y clean \
  && rm -rf /var/lib/apt/lists/*
+
+# Install geckodriver for Selenium tests
+# Pin version and verify checksum to mitigate supply chain attacks
+ENV GECKODRIVER_VERSION=v0.36.0
+ENV GECKODRIVER_SHA256=0bde38707eb0a686a20c6bd50f4adcc7d60d4f73c60eb83ee9e0db8f65823e04
+RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" \
+ && echo "${GECKODRIVER_SHA256}  geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" | sha256sum -c - \
+ && tar -xzf "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" -C /usr/local/bin \
+ && chmod +x /usr/local/bin/geckodriver \
+ && rm "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
 
 # Use gemset created by the builder above
 COPY --chown=beef:beef . /beef

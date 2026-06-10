@@ -9,8 +9,8 @@
 // Also, could have all that in as WP.prototype ?
 
 function log(data, status = null) {
-  if (status == 'error') { status = beef.are.status_error(); }
-  if (status == 'success') { status = beef.are.status_success(); }
+  if (status == 'error') { status = beef.status.error(); }
+  if (status == 'success') { status = beef.status.success(); }
 
   beef.net.send(beef_command_url, beef_command_id, data, status);
   beef.debug(data);

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -71,7 +71,12 @@ module BeEF
 
           # @note get zombie if already hooked the framework
           hook_session_name = config.get('beef.http.hook_session_name')
-          hook_session_id = request[hook_session_name]
+          hook_session_id =
+            if request.respond_to?(:[])
+              request[hook_session_name]
+            else
+              request.params[hook_session_name] || request.env[hook_session_name]
+            end
           begin
             raise ActiveRecord::RecordNotFound if hook_session_id.nil?
 
@@ -107,13 +112,6 @@ module BeEF
             # @note add all available command module instructions to the response
             zombie_commands = BeEF::Core::Models::Command.where(hooked_browser_id: hooked_browser.id, instructions_sent: false)
             zombie_commands.each { |command| add_command_instructions(command, hooked_browser) }
-
-            # @note Check if there are any ARE rules to be triggered. If is_sent=false rules are triggered
-            are_executions = BeEF::Core::Models::Execution.where(is_sent: false, session_id: hook_session_id)
-            are_executions.each do |are_exec|
-              @body += are_exec.mod_body
-              are_exec.update(is_sent: true, exec_time: Time.new.to_i)
-            end
 
             # @note We dynamically get the list of all browser hook handler using the API and register them
             BeEF::API::Registrar.instance.fire(BeEF::API::Server::Hook, 'pre_hook_send', hooked_browser, @body, params, request, response)

@@ -6,6 +6,12 @@ beef.log
 test/msf-test
 extensions/admin_ui/media/javascript-min/
 custom-config.yaml
+
+# Generated at runtime by Hook_default_browser#pre_send
+modules/host/hook_default_browser/bounce_to_ie_configured.pdf
+
+# Generated at runtime by browser/spyder_eye#post_execute (and possibly other capture modules)
+screenshot_*.png
 .DS_Store
 .gitignore
 .rvmrc
@@ -131,3 +137,6 @@ node_modules/
 # Generated files
 out/
 doc/rdoc/
+
+# Secrets for testing github actions locally
+.secrets

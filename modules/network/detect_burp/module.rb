@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2006-2025 Wade Alcorn - wade@bindshell.net
+# Copyright (c) 2006-2026 Wade Alcorn - wade@bindshell.net
 # Browser Exploitation Framework (BeEF) - https://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
@@ -16,7 +16,7 @@ class Detect_burp < BeEF::Core::Command
     session_id = @datastore['beefhook']
     if BeEF::Filters.is_valid_ip?(ip)
       print_debug("Hooked browser found network service [ip: #{ip}, port: #{port}]")
-      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: 'http', ip: ip, port: port, type: 'Burp Proxy')
+      BeEF::Core::Models::NetworkService.create(hooked_browser_id: session_id, proto: 'http', ip: ip, port: port, ntype: 'Burp Proxy')
     end
   end
 end
