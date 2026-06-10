@@ -24,10 +24,10 @@ beef.session = {
 		// check if the browser is already known to the framework
 		var id = this.ec.evercookie_cookie(beef.session.beefhook);
 		if (typeof id == 'undefined') {
-			var id = this.ec.evercookie_userdata(beef.session.beefhook);
+			id = this.ec.evercookie_userdata(beef.session.beefhook);
 		}
 		if (typeof id == 'undefined') {
-			var id = this.ec.evercookie_window(beef.session.beefhook);
+			id = this.ec.evercookie_window(beef.session.beefhook);
 		}
 		
 		// if the browser is not known create a hook session id and set it

