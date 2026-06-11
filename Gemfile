@@ -65,7 +65,7 @@ group :test do
   gem 'test-unit-full', '~> 0.0.5'
   gem 'rspec', '~> 3.13'
   gem 'rdoc', '~> 7.2'
-  gem 'browserstack-local', '~> 1.4'
+  gem 'browserstack-local', '~> 1.5'
 
   gem 'irb', '~> 1.18'
   gem 'pry-byebug', '~> 3.12'
