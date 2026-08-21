@@ -64,7 +64,7 @@ group :test do
   gem 'simplecov', '~> 0.22'
   gem 'test-unit-full', '~> 0.0.5'
   gem 'rspec', '~> 3.13'
-  gem 'rdoc', '~> 7.2'
+  gem 'rdoc', '~> 8.0'
   gem 'browserstack-local', '~> 1.5'
 
   gem 'irb', '~> 1.18'
