@@ -96,7 +96,7 @@ GEM
     lint_roller (1.1.0)
     logger (1.7.0)
     matrix (0.4.3)
-    maxmind-db (1.4.0)
+    maxmind-db (1.5.0)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -328,7 +328,7 @@ DEPENDENCIES
   geckodriver-helper (~> 0.24.0)
   irb (~> 1.18)
   json
-  maxmind-db (~> 1.4)
+  maxmind-db (~> 1.5)
   mime-types (~> 3.7)
   msfrpc-client (~> 1.1, >= 1.1.2)
   net-smtp
