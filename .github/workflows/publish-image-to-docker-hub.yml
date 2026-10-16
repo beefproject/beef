@@ -37,7 +37,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: composerizeallthethings/hackazon
+          images: ${{ GITHUB_REPOSITORY }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
@@ -61,6 +61,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: index.docker.io/composerizeallthethings/hackazon
+          subject-name: index.docker.io/${{ GITHUB_REPOSITORY }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
