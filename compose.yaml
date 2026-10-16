@@ -1,0 +1,14 @@
+services:
+  beef:
+    container_name: beef
+    image: beef
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yaml:/beef/config.yaml:ro
+    ports:
+    - 3000:3000
+    - 127.0.0.1:61985:61985
+    - 127.0.0.1:61986:61986
+    tty: true
