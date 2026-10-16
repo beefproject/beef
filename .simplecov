@@ -3,25 +3,25 @@
 
 SimpleCov.configure do
   # Basic filters
-  add_filter '/spec/'
-  add_filter '/config/'
-  add_filter '/test/'
+  skip '/spec/'
+  skip '/config/'
+  skip '/test/'
 
   # Group coverage by component
-  add_group 'Core', 'core'
-  add_group 'Extensions', 'extensions'
-  add_group 'Modules', 'modules'
+  group 'Core', 'core'
+  group 'Extensions', 'extensions'
+  group 'Modules', 'modules'
 
   # Track files based on coverage focus
   if ENV['COVERAGE'] == 'core'
-    track_files 'core/**/*.rb'
+    cover 'core/**/*.rb'
   elsif ENV['COVERAGE'] == 'extensions'
-    track_files 'extensions/**/*.rb'
+    cover 'extensions/**/*.rb'
   elsif ENV['COVERAGE'] == 'modules'
-    track_files 'modules/**/*.rb'
+    cover 'modules/**/*.rb'
   else
     # Default: track everything
-    track_files '{core,extensions,modules}/**/*.rb'
+    cover '{core,extensions,modules}/**/*.rb'
   end
 
   # Coverage thresholds
