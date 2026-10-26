@@ -54,7 +54,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    curb (1.4.0)
+    curb (1.4.1)
     daemons (1.4.1)
     diff-lcs (1.6.2)
     domain_name (0.6.20240107)
