@@ -58,6 +58,13 @@ ARG PROXY_PORT=6789
 ARG WEBSOCKET_PORT=61985
 ARG WEBSOCKET_SECURE_PORT=61986
 
+# Promote the port arguments to environment variables. Build arguments are not
+# visible once the image runs, and exec-form healthchecks never expand
+# variables, so the healthcheck below needs a run-time resolvable value.
+ENV UI_PORT=${UI_PORT} \
+    PROXY_PORT=${PROXY_PORT} \
+    WEBSOCKET_PORT=${WEBSOCKET_PORT} \
+    WEBSOCKET_SECURE_PORT=${WEBSOCKET_SECURE_PORT}
 
 # Create service account to run BeEF and install BeEF's runtime dependencies
 RUN adduser --home /beef --gecos beef --disabled-password beef \
@@ -102,7 +109,11 @@ USER beef
 # Expose UI, Proxy, WebSocket server, and WebSocketSecure server ports
 EXPOSE $UI_PORT $PROXY_PORT $WEBSOCKET_PORT $WEBSOCKET_SECURE_PORT
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "-fS", "localhost:$UI_PORT" ]
+# The shell form is required here: Docker stores exec-form argv verbatim and
+# does not interpolate variables inside an argument, so the healthcheck would
+# request a port literally named "$UI_PORT" and always report unhealthy.
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD curl -fS "http://localhost:${UI_PORT}" || exit 1
 
 WORKDIR /beef
 ENTRYPOINT ["/beef/beef"]
