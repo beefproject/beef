@@ -33,6 +33,7 @@ module.exports = [
         $j: "readonly",
 
         // Libraries
+        Ext: "readonly",
         MobileEsp: "readonly",
         evercookie: "readonly",
         swfobject: "readonly",
