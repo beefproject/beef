@@ -23,8 +23,8 @@ gem 'espeak-ruby', '~> 1.1.0' # Text-to-Voice
 gem 'rake', '~> 13.4'
 gem 'activerecord', '~> 8.1'
 gem 'otr-activerecord', '~> 2.6.0'
-gem 'sqlite3', '~> 2.9'
-gem 'rubocop', '~> 1.92.0', require: false
+gem 'sqlite3', '~> 2.10'
+gem 'rubocop', '~> 1.92.1', require: false
 
 # Geolocation support
 group :geoip do
@@ -67,7 +67,7 @@ group :test do
   gem 'rdoc', '~> 8.1'
   gem 'browserstack-local', '~> 1.5'
 
-  gem 'irb', '~> 1.18'
+  gem 'irb', '~> 1.19'
   gem 'pry-byebug', '~> 3.12'
 
   gem 'rest-client', '~> 2.1.0'
@@ -75,12 +75,12 @@ group :test do
 
   # Note: curb gem requires curl libraries
   # sudo apt-get install libcurl4-openssl-dev
-  gem 'curb', '~> 1.4'
+  gem 'curb', '~> 1.5'
 
   # Note: selenium-webdriver 3.x is incompatible with Firefox version 48 and prior
   # gem 'selenium' # Requires old version of selenium which is no longer available
   gem 'geckodriver-helper', '~> 0.24.0'
-  gem 'selenium-webdriver', '~> 4.51'
+  gem 'selenium-webdriver', '~> 4.52'
 
   # Note: nokogiri is needed by capybara which may require one of the below commands
   # sudo apt-get install libxslt-dev libxml2-dev
