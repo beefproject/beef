@@ -9,7 +9,7 @@ gem 'json'
 
 gem 'eventmachine', '~> 1.2', '>= 1.2.7'
 gem 'thin', '~> 2.0'
-gem 'sinatra', '~> 4.1'
+gem 'sinatra', '~> 4.2'
 gem 'rack', '~> 3.2'
 gem 'rack-protection', '~> 4.2.1'
 gem 'em-websocket', '~> 0.5.3' # WebSocket support
