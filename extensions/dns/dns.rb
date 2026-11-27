@@ -15,7 +15,10 @@ module BeEF
 
         def initialize
           super()
-          logger.level = Logger::ERROR
+          # Async::DNS::Server#logger returns the Console module itself, which
+          # has no level= method. The per-instance logger behind Console is the
+          # one that accepts a level.
+          Console.logger.level = Console::Logger::ERROR
           @lock = Mutex.new
           @database = BeEF::Core::Models::Dns::Rule
           @data_chunks = {}
