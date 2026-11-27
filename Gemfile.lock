@@ -104,6 +104,7 @@ GEM
     minitest (6.1.0)
       drb (~> 2.0)
       prism (>= 1.5, < 3)
+    mize (0.8.0)
     mojo_magick (0.6.8)
     msfrpc-client (1.1.2)
       msgpack (~> 1)
@@ -183,6 +184,8 @@ GEM
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
       tsort
+    readline (0.0.4)
+      reline
     regexp_parser (2.13.1)
     reline (0.7.0)
       io-console (~> 0.5)
@@ -250,7 +253,7 @@ GEM
     sqlite3 (2.10.2-x86_64-linux-gnu)
     sqlite3 (2.10.2-x86_64-linux-musl)
     sync (0.5.0)
-    term-ansicolor (1.11.3)
+    term-ansicolor (1.12.0)
       tins (~> 1)
     test-unit (3.7.0)
       power_assert
@@ -277,8 +280,11 @@ GEM
     tilt (2.9.0)
     timeout (0.6.1)
     timers (4.4.0)
-    tins (1.43.0)
+    tins (1.63.0)
       bigdecimal
+      irb
+      mize (~> 0.6)
+      readline
       sync
     tsort (0.2.0)
     tzinfo (2.0.6)
