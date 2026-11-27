@@ -19,34 +19,57 @@ FROM ruby:3.4.7-slim-bookworm AS builder
 
 COPY . /beef
 
-# Set gemrc config to install gems without Ruby Index (ri) and Ruby Documentation (rdoc) files.
-# Then add bundler/gem dependencies and install.
-# Finally change permissions of bundle installs so we don't need to run as root.
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-    git \
-    curl \
-    libssl-dev \
-    xz-utils \
-    pkg-config \
-    make \
-    g++ \
-    libcurl4-openssl-dev \
-    ruby-dev \
-    libyaml-dev \
-    libffi-dev \
-    zlib1g-dev \
-    libsqlite3-dev \
-    sqlite3 \
- && bundle install --gemfile=/beef/Gemfile --jobs=`nproc` \
- && rm -rf /usr/local/bundle/cache \
- && chmod -R a+r /usr/local/bundle \
- && rm -rf /var/lib/apt/lists/*
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+        curl \
+        libssl-dev \
+        xz-utils \
+        pkg-config \
+        make \
+        g++ \
+        libcurl4-openssl-dev \
+        ruby-dev \
+        libyaml-dev \
+        libffi-dev \
+        zlib1g-dev \
+        libsqlite3-dev \
+        sqlite3 \
+    && bundle install --gemfile=/beef/Gemfile --jobs=`nproc` \
+    && rm -rf /usr/local/bundle/cache \
+    && chmod -R a+r /usr/local/bundle \
+    && rm -rf /var/lib/apt/lists/*
 # ------------------------------------- End of Builder 0 -------------------------------------------------
 
+# ---------------------------- Test Stage (optional) ----------------------------
+# Use this stage to run the test suite: docker build --target test .
+FROM ruby:3.4.7-slim-bookworm AS test
 
-# ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY . /beef
+
+RUN adduser --home /beef --gecos beef --disabled-password beef \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        firefox-esr \
+        curl \
+        libsqlite3-dev \
+        sqlite3 \
+        nodejs \
+    && curl -fsSL -o /tmp/geckodriver.tar.gz \
+        "https://github.com/mozilla/geckodriver/releases/download/v0.36.0/geckodriver-v0.36.0-linux64.tar.gz" \
+    && echo "0bde38707eb0a686a20c6bd50f4adcc7d60d4f73c60eb83ee9e0db8f65823e04 /tmp/geckodriver.tar.gz" | sha256sum -c - \
+    && tar -xzf /tmp/geckodriver.tar.gz -C /usr/local/bin \
+    && chmod +x /usr/local/bin/geckodriver \
+    && rm /tmp/geckodriver.tar.gz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /beef
+USER beef
+CMD bundle exec rspec  # adjust to the actual test command
+
+# ---------------------------- Start of Final Build ------------------------------------------
 FROM ruby:3.4.7-slim-bookworm
 LABEL maintainer="Beef Project" \
       source_url="github.com/beefproject/beef" \
@@ -61,36 +84,24 @@ ARG WEBSOCKET_SECURE_PORT=61986
 
 # Create service account to run BeEF and install BeEF's runtime dependencies
 RUN adduser --home /beef --gecos beef --disabled-password beef \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-    curl \
-    wget \
-    espeak \
-    lame \
-    openssl \
-    libreadline-dev \
-    libyaml-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libncurses5-dev \
-    libsqlite3-dev \
-    sqlite3 \
-    zlib1g \
-    bison \
-    nodejs \
-    firefox-esr \
- && apt-get -y clean \
- && rm -rf /var/lib/apt/lists/*
-
-# Install geckodriver for Selenium tests
-# Pin version and verify checksum to mitigate supply chain attacks
-ENV GECKODRIVER_VERSION=v0.36.0
-ENV GECKODRIVER_SHA256=0bde38707eb0a686a20c6bd50f4adcc7d60d4f73c60eb83ee9e0db8f65823e04
-RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" \
- && echo "${GECKODRIVER_SHA256}  geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" | sha256sum -c - \
- && tar -xzf "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz" -C /usr/local/bin \
- && chmod +x /usr/local/bin/geckodriver \
- && rm "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+        espeak \
+        lame \
+        openssl \
+        libreadline-dev \
+        libyaml-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libncurses5-dev \
+        libsqlite3-dev \
+        sqlite3 \
+        zlib1g \
+        bison \
+        nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Use gemset created by the builder above
 COPY --chown=beef:beef . /beef
@@ -102,8 +113,8 @@ USER beef
 # Expose UI, Proxy, WebSocket server, and WebSocketSecure server ports
 EXPOSE $UI_PORT $PROXY_PORT $WEBSOCKET_PORT $WEBSOCKET_SECURE_PORT
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "-fS", "localhost:$UI_PORT" ]
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD ["curl", "-fS", "localhost:$UI_PORT"]
 
 WORKDIR /beef
 ENTRYPOINT ["/beef/beef"]
-# ------------------------------------- End of Builder 1 -------------------------------------------------
+# ------------------------------------- End of Final Build -------------------------------------------------
