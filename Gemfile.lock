@@ -22,7 +22,8 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.1)
       public_suffix (>= 2.0.2, < 8.0)
-    ansi (1.6.0)
+    ansi (1.6.1)
+      logger
     archive-zip (0.13.1)
       io-like (~> 0.4.0)
     ast (2.4.3)
